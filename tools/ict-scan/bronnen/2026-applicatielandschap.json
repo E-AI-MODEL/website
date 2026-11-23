@@ -8,7 +8,7 @@
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
     "evidenceCutoff": "2026-11-23",
-    "dataVersion": "2026-11-23-eigenaars-en-m365-verbanden-v2",
+    "dataVersion": "2026-11-23-index-en-m365-producten-v3",
     "classification": "Openbare, gestructureerde inventaris. Geen persoonsgebonden Entra-roltoewijzingen, wachtwoorden of toegangssleutels.",
     "limitations": [
       "61 basisregistraties zijn nog niet het gegarandeerde totaal",
@@ -17,25 +17,32 @@
       "Leveranciersfuncties en lokale AI-activering zijn apart beoordeeld",
       "Historische licentiebedragen bewijzen geen actief contract in 2026",
       "Vermoedelijke productfamilies worden niet als vastgestelde parent/child-relaties geteld.",
-      "Nieuwe bronrelaties zijn geen bevestiging van actief gebruik, betaalde licenties of getoetste autorisaties."
+      "Nieuwe bronrelaties zijn geen bevestiging van actief gebruik, betaalde licenties of getoetste autorisaties.",
+      "De 69 schoolbrede basisregels omvatten acht nog te verifiëren aanvullingen; het aantal is geen actief gebruik.",
+      "Microsoft Education-onderdelen zijn productcatalogusvermeldingen, geen bewijs van toegewezen toegang of ingeschakelde functies.",
+      "15 hardwaregroepen zijn geen actuele apparaatmetingen; aantallen en beheer worden gecontroleerd."
     ],
     "sourceFiles": [
       "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx",
       "Emmauscollege_schoolbreed_applicatielandschap_en_AI_2026.xlsx",
       "Emmauscollege-licenties-AI-scan-2026.xlsx",
-      "AI-werkregister-Emmauscollege-gecontroleerd.xlsx"
+      "AI-werkregister-Emmauscollege-gecontroleerd.xlsx",
+      "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+      "Overzicht applicaties Emmauscollege (1)(2).xlsx",
+      "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx"
     ],
     "counts": {
-      "apps": 61,
+      "apps": 69,
       "ai": 76,
       "connections": 93,
       "additionalCandidates": 76,
-      "parts": 13,
+      "parts": 53,
       "dpia": 10,
       "aiControls": 22,
       "checks": 16,
       "devices": 4,
-      "licenseReview": 40
+      "licenseReview": 40,
+      "hardwareGroups": 15
     },
     "deviceSourceStatus": "Vier geregistreerde apparaatmetingen, niet een volledige hardware-inventaris",
     "relationDerivation": {
@@ -49,38 +56,23 @@
     "relationshipUpdate": {
       "asOf": "2026-11-23",
       "ownerAuthority": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
-      "hardwareGroups": [
-        {
-          "id": "H01",
-          "name": "iPads leerlingen",
-          "owner": "ICT-beheer",
-          "source": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A19:K19"
-        },
-        {
-          "id": "H02",
-          "name": "Laptops medewerkers",
-          "owner": "ICT-beheer",
-          "source": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A20:K20"
-        },
-        {
-          "id": "H03",
-          "name": "Smartboards",
-          "owner": "ICT-beheer",
-          "source": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A21:K21"
-        },
-        {
-          "id": "H07",
-          "name": "Printers en toners",
-          "owner": "ICT-beheer",
-          "source": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A25:K25"
-        }
-      ],
+      "hardwareGroups": 15,
       "evidenceBoundaries": "M365 en hardware zijn brongeregistreerd, maar actieve koppelingen, apparaatstatus, betaalde licenties, AI-instellingen en toegangsrechten blijven onbevestigd.",
       "sources": [
         "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware / Applicaties",
         "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT",
         "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting"
-      ]
+      ],
+      "legacyHardwareMigrated": true,
+      "legacyM365Migrated": true,
+      "m365ProductEntries": 40
+    },
+    "indexContract": {
+      "version": "1.0.0",
+      "sourceOfTruth": "De vier manifest-gebonden JSON-registers, geen tweede indexbestand.",
+      "materialization": "De browser bouwt een afgeleide getypeerde relatie-index zonder eigen feiten.",
+      "auditAsOf": "2026-11-23",
+      "usagePolicy": "Bronmelding, beschikbaarheid, actieve tenantinstelling en normbeoordeling zijn afzonderlijke uitspraken."
     }
   },
   "apps": [
@@ -164,57 +156,7 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      },
-      "serviceLinks": [
-        {
-          "id": "M365-SP",
-          "name": "SharePoint Online",
-          "category": "Microsoft 365-onderdeel",
-          "status": "Inrichting nog controleren",
-          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A73:P73 (ICT-065)",
-          "note": "Delen, toegang, beheer en standaardinstellingen. Niet als aparte bevestigde schoolapplicatie geteld."
-        },
-        {
-          "id": "M365-OD",
-          "name": "OneDrive voor Bedrijven",
-          "category": "Microsoft 365-onderdeel",
-          "status": "Inrichting nog controleren",
-          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A74:P75 (ICT-066/067)",
-          "note": "Opslag, synchronisatie en migratie uit Google Drive; geen actuele synchronisatie aangetoond."
-        },
-        {
-          "id": "M365-EX",
-          "name": "Exchange Online",
-          "category": "Microsoft 365-onderdeel",
-          "status": "Inrichting nog controleren",
-          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A76:P76 (ICT-068)",
-          "note": "Mailboxtoewijzing en licenties; eerdere ontbrekende mailbox geen bewijs van de huidige stand."
-        },
-        {
-          "id": "M365-PUR",
-          "name": "Microsoft Purview",
-          "category": "Beveiligings- en gegevensbeheer",
-          "status": "Inrichting nog controleren",
-          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A77:P80 (ICT-069/070/072)",
-          "note": "Bewaren, DLP, labels en auditlogging genoemd als controleonderwerpen."
-        },
-        {
-          "id": "M365-DEF",
-          "name": "Microsoft Defender",
-          "category": "Beveiligings- en gegevensbeheer",
-          "status": "Licentie en inrichting nog controleren",
-          "evidence": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A14:P14 (ICT-006); Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A82:P83 (ICT-074/075)",
-          "note": "Defender-onderdelen en phishingbescherming genoemd als controlevragen; levering en activatie niet verondersteld."
-        },
-        {
-          "id": "M365-EDU",
-          "name": "Onderwijsinstellingen en leerlingtoegang",
-          "category": "Microsoft 365-beheer",
-          "status": "Inrichting nog controleren",
-          "evidence": "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting!B21:H34; Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A99:P99 (ICT-091)",
-          "note": "Leeftijdsgroepen, Copilot Chat, Teams, Learning Activities en beleid. Standaardinstelling is geen bewijs voor lokale configuratie."
-        }
-      ]
+      }
     },
     {
       "id": "APP-022",
@@ -792,17 +734,7 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      },
-      "hardwareLinks": [
-        {
-          "id": "H02",
-          "name": "Laptops medewerkers",
-          "owner": "ICT-beheer",
-          "status": "Geregistreerd als beheerrelatie",
-          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A20:K20",
-          "note": "MacBooks via Jamf, Windows-laptops via Intune volgens hardwareoverzicht. Aantallen en actuele instelling nog controleren."
-        }
-      ]
+      }
     },
     {
       "id": "APP-020",
@@ -876,25 +808,7 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      },
-      "hardwareLinks": [
-        {
-          "id": "H01",
-          "name": "iPads leerlingen",
-          "owner": "ICT-beheer",
-          "status": "Geregistreerd als beheerrelatie",
-          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A19:K19",
-          "note": "De werkmap noemt Jamf Pro, Apple Klaslokaal en NetSupport School; de toelichting noemt ook Jamf School via Amac. Werkelijke MDM-configuratie en omvang zijn niet bevestigd."
-        },
-        {
-          "id": "H02",
-          "name": "Laptops medewerkers",
-          "owner": "ICT-beheer",
-          "status": "Geregistreerd als beheerrelatie",
-          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A20:K20",
-          "note": "MacBooks via Jamf, Windows-laptops via Intune volgens hardwareoverzicht. Aantallen en actuele instelling nog controleren."
-        }
-      ]
+      }
     },
     {
       "id": "APP-031",
@@ -1580,17 +1494,7 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      },
-      "hardwareLinks": [
-        {
-          "id": "H01",
-          "name": "iPads leerlingen",
-          "owner": "ICT-beheer",
-          "status": "Geregistreerd als beheerrelatie",
-          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A19:K19",
-          "note": "De werkmap noemt Jamf Pro, Apple Klaslokaal en NetSupport School; de toelichting noemt ook Jamf School via Amac. Werkelijke MDM-configuratie en omvang zijn niet bevestigd."
-        }
-      ]
+      }
     },
     {
       "id": "APP-006",
@@ -3414,17 +3318,7 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      },
-      "hardwareLinks": [
-        {
-          "id": "H07",
-          "name": "Printers en toners",
-          "owner": "ICT-beheer",
-          "status": "Geregistreerd als voorzieningenrelatie",
-          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A25:K25",
-          "note": "Canon uniFLOW wordt als beheer genoemd; financiële gegevens bevestigen niet de huidige printerpopulatie."
-        }
-      ]
+      }
     },
     {
       "id": "APP-059",
@@ -3820,17 +3714,7 @@
       "recordMeta": {
         "ownerSource": "Uitdrukkelijke opdracht schoolleiding, 23 november 2026: verantwoordelijke functie; geen toewijzing van Microsoft- of applicatierechten.",
         "ownerScope": "Verantwoordelijke voor de technische inrichting en het technisch beheer; overige beslis- en toezichtrollen blijven afzonderlijk."
-      },
-      "hardwareLinks": [
-        {
-          "id": "H03",
-          "name": "Smartboards",
-          "owner": "ICT-beheer",
-          "status": "Geregistreerd als onderhoudsrelatie",
-          "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware!A21:K21",
-          "note": "Limid onderhoudscontract; het aantal borden en het werkelijke gebruik zijn niet uit de facturen af te leiden."
-        }
-      ]
+      }
     },
     {
       "id": "APP-024",
@@ -4007,6 +3891,358 @@
           "note": "Zelfde productnaam in beide registers; de status van een contract en het feitelijke licentiegebruik moeten nog afzonderlijk worden gecontroleerd."
         }
       ]
+    },
+    {
+      "id": "APP-063",
+      "originalNumber": 63,
+      "name": "Tournify",
+      "area": "Schoolorganisatie",
+      "process": "Activiteiten",
+      "kind": "Applicatie",
+      "description": "Toernooien plannen en uitslagen bijhouden",
+      "aiRefs": "0",
+      "local": "? Gebruik bevestigen",
+      "owner": "? Nog vaststellen",
+      "users": "? Nog vaststellen",
+      "data": "? Nog vaststellen",
+      "links": "? Nog controleren",
+      "processorAgreement": "? Contract controleren",
+      "dpiaStatus": "? Lokale beoordeling controleren",
+      "sourceDescription": "Aanvullende applicatieregel uit schoolbreed IAM-overzicht, stand 23 november 2026",
+      "reviewAction": "Actueel gebruik, leverancier, gegevens, verantwoordelijke en type registratie controleren.",
+      "parent": "",
+      "sourceFields": {
+        "Naam": "Tournify",
+        "Soort": "Applicatie",
+        "Omschrijving": "Toernooien plannen en uitslagen bijhouden",
+        "LokaleStatus": "? Gebruik bevestigen"
+      },
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Applicaties",
+          "row": 81
+        }
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 81"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede IAM-werkmap",
+        "statusOfUse": "Nog niet vastgesteld",
+        "referenceDate": "2026-11-23"
+      }
+    },
+    {
+      "id": "APP-064",
+      "originalNumber": 64,
+      "name": "Impact op Onderwijs",
+      "area": "Professionalisering",
+      "process": "Formatief handelen",
+      "kind": "Applicatie",
+      "description": "Ondersteuning van formatief handelen",
+      "aiRefs": "0",
+      "local": "? Gebruik bevestigen",
+      "owner": "? Nog vaststellen",
+      "users": "? Nog vaststellen",
+      "data": "? Nog vaststellen",
+      "links": "? Nog controleren",
+      "processorAgreement": "? Contract controleren",
+      "dpiaStatus": "? Lokale beoordeling controleren",
+      "sourceDescription": "Aanvullende applicatieregel uit schoolbreed IAM-overzicht, stand 23 november 2026",
+      "reviewAction": "Actueel gebruik, leverancier, gegevens, verantwoordelijke en type registratie controleren.",
+      "parent": "",
+      "sourceFields": {
+        "Naam": "Impact op Onderwijs",
+        "Soort": "Applicatie",
+        "Omschrijving": "Ondersteuning van formatief handelen",
+        "LokaleStatus": "? Gebruik bevestigen"
+      },
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Applicaties",
+          "row": 82
+        }
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 82"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede IAM-werkmap",
+        "statusOfUse": "Nog niet vastgesteld",
+        "referenceDate": "2026-11-23"
+      }
+    },
+    {
+      "id": "APP-065",
+      "originalNumber": 65,
+      "name": "NetSupport School (LCS)",
+      "area": "Onderwijs",
+      "process": "Klassenmanagement",
+      "kind": "Applicatie",
+      "description": "Klassenmanagement op leerlingapparaten",
+      "aiRefs": "0",
+      "local": "? Gebruik bevestigen",
+      "owner": "? Nog vaststellen",
+      "users": "? Nog vaststellen",
+      "data": "? Nog vaststellen",
+      "links": "? Nog controleren",
+      "processorAgreement": "? Contract controleren",
+      "dpiaStatus": "? Lokale beoordeling controleren",
+      "sourceDescription": "Aanvullende applicatieregel uit schoolbreed IAM-overzicht, stand 23 november 2026",
+      "reviewAction": "Actueel gebruik, leverancier, gegevens, verantwoordelijke en type registratie controleren.",
+      "parent": "",
+      "sourceFields": {
+        "Naam": "NetSupport School (LCS)",
+        "Soort": "Applicatie",
+        "Omschrijving": "Klassenmanagement op leerlingapparaten",
+        "LokaleStatus": "? Gebruik bevestigen"
+      },
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Applicaties",
+          "row": 83
+        }
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 83"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede IAM-werkmap",
+        "statusOfUse": "Nog niet vastgesteld",
+        "referenceDate": "2026-11-23"
+      }
+    },
+    {
+      "id": "APP-067",
+      "originalNumber": 67,
+      "name": "Mailchimp",
+      "area": "Communicatie",
+      "process": "Externe communicatie",
+      "kind": "Applicatie",
+      "description": "Nieuwsbrieven en mailings",
+      "aiRefs": "0",
+      "local": "? Gebruik bevestigen",
+      "owner": "? Nog vaststellen",
+      "users": "? Nog vaststellen",
+      "data": "? Nog vaststellen",
+      "links": "? Nog controleren",
+      "processorAgreement": "? Contract controleren",
+      "dpiaStatus": "? Lokale beoordeling controleren",
+      "sourceDescription": "Aanvullende applicatieregel uit schoolbreed IAM-overzicht, stand 23 november 2026",
+      "reviewAction": "Actueel gebruik, leverancier, gegevens, verantwoordelijke en type registratie controleren.",
+      "parent": "",
+      "sourceFields": {
+        "Naam": "Mailchimp",
+        "Soort": "Applicatie",
+        "Omschrijving": "Nieuwsbrieven en mailings",
+        "LokaleStatus": "? Gebruik bevestigen"
+      },
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Applicaties",
+          "row": 84
+        }
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 84"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede IAM-werkmap",
+        "statusOfUse": "Nog niet vastgesteld",
+        "referenceDate": "2026-11-23"
+      }
+    },
+    {
+      "id": "APP-068",
+      "originalNumber": 68,
+      "name": "Unica Building Insight",
+      "area": "Techniek en beheer",
+      "process": "Gebouw en klimaat",
+      "kind": "ICT-dienst",
+      "description": "Gebouwmonitoring en luchtkwaliteit; actueel gebruik onbekend",
+      "aiRefs": "0",
+      "local": "? Actueel gebruik onbekend",
+      "owner": "? Nog vaststellen",
+      "users": "? Nog vaststellen",
+      "data": "? Nog vaststellen",
+      "links": "? Nog controleren",
+      "processorAgreement": "? Contract controleren",
+      "dpiaStatus": "? Lokale beoordeling controleren",
+      "sourceDescription": "Aanvullende applicatieregel uit schoolbreed IAM-overzicht, stand 23 november 2026",
+      "reviewAction": "Actueel gebruik, leverancier, gegevens, verantwoordelijke en type registratie controleren.",
+      "parent": "",
+      "sourceFields": {
+        "Naam": "Unica Building Insight",
+        "Soort": "ICT-dienst",
+        "Omschrijving": "Gebouwmonitoring en luchtkwaliteit; actueel gebruik onbekend",
+        "LokaleStatus": "? Actueel gebruik onbekend"
+      },
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Applicaties",
+          "row": 85
+        }
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 85"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede IAM-werkmap",
+        "statusOfUse": "Nog niet vastgesteld",
+        "referenceDate": "2026-11-23"
+      }
+    },
+    {
+      "id": "APP-069",
+      "originalNumber": 69,
+      "name": "Isero – migratie LSM",
+      "area": "Techniek en beheer",
+      "process": "Migratie",
+      "kind": "Dienstverlener",
+      "description": "Eenmalige service voor migratie leerlingvolgsysteem/LSM",
+      "aiRefs": "0",
+      "local": "? Gebruik bevestigen",
+      "owner": "? Nog vaststellen",
+      "users": "? Nog vaststellen",
+      "data": "? Nog vaststellen",
+      "links": "? Nog controleren",
+      "processorAgreement": "? Contract controleren",
+      "dpiaStatus": "? Lokale beoordeling controleren",
+      "sourceDescription": "Aanvullende applicatieregel uit schoolbreed IAM-overzicht, stand 23 november 2026",
+      "reviewAction": "Actueel gebruik, leverancier, gegevens, verantwoordelijke en type registratie controleren.",
+      "parent": "",
+      "sourceFields": {
+        "Naam": "Isero – migratie LSM",
+        "Soort": "Dienstverlener",
+        "Omschrijving": "Eenmalige service voor migratie leerlingvolgsysteem/LSM",
+        "LokaleStatus": "? Gebruik bevestigen"
+      },
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Applicaties",
+          "row": 86
+        }
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 86"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede IAM-werkmap",
+        "statusOfUse": "Nog niet vastgesteld",
+        "referenceDate": "2026-11-23"
+      }
+    },
+    {
+      "id": "APP-071",
+      "originalNumber": 71,
+      "name": "Similarity – plagiaatcontrole",
+      "area": "Onderwijs",
+      "process": "Toetsing",
+      "kind": "Module",
+      "description": "Plagiaatcontrole van leerlingwerk, afgenomen via Magister",
+      "aiRefs": "0",
+      "local": "? Actueel gebruik onbekend",
+      "owner": "? Nog vaststellen",
+      "users": "? Nog vaststellen",
+      "data": "? Nog vaststellen",
+      "links": "? Nog controleren",
+      "processorAgreement": "? Contract controleren",
+      "dpiaStatus": "? Lokale beoordeling controleren",
+      "sourceDescription": "Aanvullende applicatieregel uit schoolbreed IAM-overzicht, stand 23 november 2026",
+      "reviewAction": "Actueel gebruik, leverancier, gegevens, verantwoordelijke en type registratie controleren.",
+      "parent": "",
+      "sourceFields": {
+        "Naam": "Similarity – plagiaatcontrole",
+        "Soort": "Module",
+        "Omschrijving": "Plagiaatcontrole van leerlingwerk, afgenomen via Magister",
+        "LokaleStatus": "? Actueel gebruik onbekend"
+      },
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Applicaties",
+          "row": 87
+        }
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 87"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede IAM-werkmap",
+        "statusOfUse": "Nog niet vastgesteld",
+        "referenceDate": "2026-11-23"
+      }
+    },
+    {
+      "id": "APP-073",
+      "originalNumber": 73,
+      "name": "Amac – Apple-ondersteuning en inhuur",
+      "area": "Techniek en beheer",
+      "process": "Technisch beheer",
+      "kind": "Dienstverlener",
+      "description": "Consultancy en inhuur voor Apple-beheer, training op locatie en ondersteuning",
+      "aiRefs": "0",
+      "local": "? Gebruik bevestigen",
+      "owner": "? Nog vaststellen",
+      "users": "? Nog vaststellen",
+      "data": "? Nog vaststellen",
+      "links": "? Nog controleren",
+      "processorAgreement": "? Contract controleren",
+      "dpiaStatus": "? Lokale beoordeling controleren",
+      "sourceDescription": "Aanvullende applicatieregel uit schoolbreed IAM-overzicht, stand 23 november 2026",
+      "reviewAction": "Actueel gebruik, leverancier, gegevens, verantwoordelijke en type registratie controleren.",
+      "parent": "",
+      "sourceFields": {
+        "Naam": "Amac – Apple-ondersteuning en inhuur",
+        "Soort": "Dienstverlener",
+        "Omschrijving": "Consultancy en inhuur voor Apple-beheer, training op locatie en ondersteuning",
+        "LokaleStatus": "? Gebruik bevestigen"
+      },
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Applicaties",
+          "row": 88
+        }
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 88"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede IAM-werkmap",
+        "statusOfUse": "Nog niet vastgesteld",
+        "referenceDate": "2026-11-23"
+      }
     }
   ],
   "ai": [
@@ -13642,13 +13878,22 @@
       "id": "C-01",
       "name": "Basisinventaris",
       "category": "Inventarisatie",
-      "value": "61",
-      "explanation": "Getelde items, geen gegarandeerd totaal",
-      "evidence": "Applicatieoverzicht 2026, 61 schoolonderdelen",
-      "status": "Afgerond als broncontrole",
+      "value": "69",
+      "explanation": "69 basisregels in de nieuwste IAM-werkmap, inclusief acht aanvullingen waarvoor het actuele gebruik nog afzonderlijk bevestigd moet worden. Vorige bronversie telde 61.",
+      "evidence": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rijen 81-88",
+      "status": "Broncontrole afgerond; gebruik aanvullingen nog controleren",
       "action": "Bij uitbreiden ook dashboardbron bijwerken",
       "sources": [
-        "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Controle & opvolging C-01"
+        "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Controle & opvolging C-01",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rijen 81-88"
+      ],
+      "recordMeta": {
+        "previousValue": "61",
+        "previousEvidence": "Applicatieoverzicht 2026, 61 schoolonderdelen",
+        "sourceUpdate": "IAM-overzicht 23 november 2026, aanvullingen 63,64,65,67,68,69,71,73"
+      },
+      "sourceIds": [
+        "SRC-00052"
       ]
     },
     {
@@ -14003,6 +14248,1102 @@
       "sources": [
         "Emmauscollege_nulmeting_gerepareerd_Excel_2026.xlsx / Entra-controle ENT-093"
       ]
+    },
+    {
+      "id": "M365-SP",
+      "name": "SharePoint Online",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Beheer en beveiliging",
+      "description": "Delen, toegang, beheer en standaardinstellingen. Niet als aparte bevestigde schoolapplicatie geteld.",
+      "local": "Inrichting nog controleren",
+      "audience": [
+        "ict-beheer"
+      ],
+      "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A73:P73 (ICT-065)"
+      ],
+      "sourceIds": [
+        "SRC-00054"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede M365-inrichting",
+        "usageIsConfirmed": false
+      }
+    },
+    {
+      "id": "M365-OD",
+      "name": "OneDrive voor Bedrijven",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Beheer en beveiliging",
+      "description": "Opslag, synchronisatie en migratie uit Google Drive; geen actuele synchronisatie aangetoond.",
+      "local": "Inrichting nog controleren",
+      "audience": [
+        "ict-beheer"
+      ],
+      "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A74:P75 (ICT-066/067)"
+      ],
+      "sourceIds": [
+        "SRC-00054"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede M365-inrichting",
+        "usageIsConfirmed": false
+      }
+    },
+    {
+      "id": "M365-EX",
+      "name": "Exchange Online",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Beheer en beveiliging",
+      "description": "Mailboxtoewijzing en licenties; eerdere ontbrekende mailbox geen bewijs van de huidige stand.",
+      "local": "Inrichting nog controleren",
+      "audience": [
+        "ict-beheer"
+      ],
+      "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A76:P76 (ICT-068)"
+      ],
+      "sourceIds": [
+        "SRC-00054"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede M365-inrichting",
+        "usageIsConfirmed": false
+      }
+    },
+    {
+      "id": "M365-PUR",
+      "name": "Microsoft Purview",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Beheer en beveiliging",
+      "description": "Bewaren, DLP, labels en auditlogging genoemd als controleonderwerpen.",
+      "local": "Inrichting nog controleren",
+      "audience": [
+        "ict-beheer"
+      ],
+      "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A77:P80 (ICT-069/070/072)"
+      ],
+      "sourceIds": [
+        "SRC-00054"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede M365-inrichting",
+        "usageIsConfirmed": false
+      }
+    },
+    {
+      "id": "M365-DEF",
+      "name": "Microsoft Defender",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Beheer en beveiliging",
+      "description": "Defender-onderdelen en phishingbescherming genoemd als controlevragen; levering en activatie niet verondersteld.",
+      "local": "Licentie en inrichting nog controleren",
+      "audience": [
+        "ict-beheer"
+      ],
+      "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A14:P14 (ICT-006); Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A82:P83 (ICT-074/075)"
+      ],
+      "sourceIds": [
+        "SRC-00054"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede M365-inrichting",
+        "usageIsConfirmed": false
+      }
+    },
+    {
+      "id": "M365-EDU",
+      "name": "Onderwijsinstellingen en leerlingtoegang",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Beheer en beveiliging",
+      "description": "Leeftijdsgroepen, Copilot Chat, Teams, Learning Activities en beleid. Standaardinstelling is geen bewijs voor lokale configuratie.",
+      "local": "Inrichting nog controleren",
+      "audience": [
+        "ict-beheer"
+      ],
+      "availability": "Afhankelijk van licentie, rechten en configuratie; niet afzonderlijk tenant-gecontroleerd.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting!B21:H34; Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A99:P99 (ICT-091)"
+      ],
+      "sourceIds": [
+        "SRC-00053"
+      ],
+      "recordMeta": {
+        "sourceKind": "Schoolbrede M365-inrichting",
+        "usageIsConfirmed": false
+      }
+    },
+    {
+      "id": "M365-WORD",
+      "name": "Word",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Werkplek",
+      "description": "Word in Microsoft 365 Education A3, lokaal gebruik niet onafhankelijk vastgesteld.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-EXCEL",
+      "name": "Excel",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Werkplek",
+      "description": "Excel beschikbaar volgens A3-catalogus; geen aparte Power BI-licentie afleiden.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-PPT",
+      "name": "PowerPoint",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Werkplek",
+      "description": "Presentatieprogramma, niet de betaalde Microsoft 365 Copilot-functies.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-ONENOTE",
+      "name": "OneNote",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Werkplek",
+      "description": "Persoonlijke notities en notitieblokken.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-OUTLOOK",
+      "name": "Outlook",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Werkplek",
+      "description": "E-mailclient; mailboxrechten en Copilot zijn afzonderlijke controles.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-FORMS",
+      "name": "Forms",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Werkplek",
+      "description": "Formulieren en quizzes; aanmaken en antwoorden kunnen verschillende rechten hebben.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-PLANNER",
+      "name": "Planner",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Planning",
+      "description": "Taken en plannen; premium functies apart licentiëren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-TODO",
+      "name": "To Do",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Planning",
+      "description": "Persoonlijke taken, tenanttoegang niet gecontroleerd.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-WHITEBOARD",
+      "name": "Whiteboard",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Samenwerken",
+      "description": "Samenwerkingsbord, rechten en delen afzonderlijk controleren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-STREAM",
+      "name": "Stream",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Samenwerken",
+      "description": "Video via Microsoft 365, opslag en privacy afhankelijk van instellingen.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-SWAY",
+      "name": "Sway",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Samenwerken",
+      "description": "Interactieve presentaties, externe publicatie controleren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-CLIPCHAMP",
+      "name": "Clipchamp",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Samenwerken",
+      "description": "Bewerken van video binnen A3, concrete beschikbaarheid controleren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-LISTS",
+      "name": "Lists",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Samenwerken",
+      "description": "Lijsten en dataverzameling, rechten per site.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-BOOKINGS",
+      "name": "Bookings",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Samenwerken",
+      "description": "Boekingsvoorziening, organisatorische inrichting niet geverifieerd.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-CLASSNOTE",
+      "name": "OneNote Class Notebook",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Notitieblokken voor klassen binnen onderwijsfuncties.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-CLASSWORK",
+      "name": "Teams Klaswerk / Classwork",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Klaswerk in Teams, gebruik en AI-generatie afzonderlijk controleren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-ASSIGN",
+      "name": "Teams Opdrachten / Assignments",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Opdrachten en beoordeling; AI-hulp is apart te beoordelen.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-READPROG",
+      "name": "Reading Progress",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Leesoefeningen, persoonsgegevens en bewaartermijnen controleren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-READCOACH",
+      "name": "Reading Coach",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Beschikbaarheid voor minderjarigen verschilt van Copilot Chat; leeftijd controleren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-SPEAKER",
+      "name": "Speaker Progress",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Spreekvaardigheid; lokale instelling onbekend.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-MATH",
+      "name": "Math Progress",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Rekenvaardigheid; lokale instelling onbekend.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-INSIGHTS",
+      "name": "Education Insights",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijsanalyse",
+      "description": "Geavanceerde afleidingen over leerlingen apart instellen en beoordelen.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-REFLECT",
+      "name": "Reflect",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Reflectie op welzijn en leren, privacybeoordeling nog niet vastgesteld.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-SEARCHPROG",
+      "name": "Search Progress / Search Coach",
+      "parent": "APP-010",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Digitale informatievaardigheid; tenanttoegang onbekend.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-POWERAPPS",
+      "name": "Power Apps voor Microsoft 365",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Automatisering",
+      "description": "Beperkte mogelijkheden onder A3; premium/connectors apart controleren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-POWERAUTO",
+      "name": "Power Automate voor Microsoft 365",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Automatisering",
+      "description": "Basisflows kunnen inbegrepen zijn, premium en connectoren apart controleren.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-VIVA",
+      "name": "Viva Engage",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Samenwerken",
+      "description": "Beschikbaarheid afhankelijk van licentie en schoolinstellingen.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-COPCHAT",
+      "name": "Microsoft Copilot Chat",
+      "parent": "APP-035",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "AI en onderwijs",
+      "description": "Medewerkers mogelijk standaard toegang; 13-17 in K-12 standaard uit, onder 13 geen toegang. ageGroup en tenantclassificatie onbekend.",
+      "local": "Leeftijdsinstellingen en toegang niet onafhankelijk gecontroleerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/1-reference/enable-copilot-chat-for-learners"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-TEACH",
+      "name": "Microsoft Teach",
+      "parent": "APP-035",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "AI en onderwijs",
+      "description": "Volgens Microsoft beschikbaar in Education voor medewerkers bij passende instellingen.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-LEARN",
+      "name": "Learning Activities",
+      "parent": "APP-035",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "AI en onderwijs",
+      "description": "Oefenen met gedeelde activiteiten en zelf genereren hebben verschillende leeftijdsregels.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-STUDY",
+      "name": "Study and Learn",
+      "parent": "APP-035",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "AI en onderwijs",
+      "description": "Leerlingtoegang afhankelijk van Copilot Chat en leeftijdsbeleid, niet bewezen.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-NOTEBOOKS",
+      "name": "Copilot Notebooks / Study Guide",
+      "parent": "APP-035",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "AI en onderwijs",
+      "description": "Beschikbaarheid niet gelijk aan volledige betaalde Microsoft 365 Copilot.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-STUDIO",
+      "name": "Copilot Studio",
+      "parent": "APP-035",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Automatisering",
+      "description": "Licenties, capaciteit, publiceren en permissies apart controleren; niet standaard onbeperkt.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
+    },
+    {
+      "id": "M365-LEARNINGZONE",
+      "name": "Learning Zone",
+      "parent": "APP-034",
+      "kind": "Microsoft 365-onderdeel",
+      "category": "Onderwijs",
+      "description": "Windows-omgeving en apparaatvereisten; beschikbaarheid niet standaard af te leiden.",
+      "local": "Aanbod volgens leverancier, feitelijke schooltoegang niet geverifieerd",
+      "audience": [
+        "medewerkers",
+        "leerlingen"
+      ],
+      "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
+      "connectionId": "",
+      "sources": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "sourceIds": [
+        "SRC-00055"
+      ],
+      "recordMeta": {
+        "sourceKind": "Leverancierscatalogus",
+        "schoolConfigured": false,
+        "asOf": "2026-11-23",
+        "notAnActiveUseClaim": true
+      }
     }
   ],
   "dpia": [
@@ -17021,6 +18362,492 @@
       "name": "AI-werkregister-Emmauscollege-gecontroleerd.xlsx",
       "type": "Excel",
       "status": "Gestructureerd verwerkt"
+    }
+  ],
+  "hardwareGroups": [
+    {
+      "id": "H01",
+      "name": "iPads leerlingen",
+      "category": "Eindapparaten",
+      "users": "Leerlingen",
+      "manager": "Jamf Pro, Apple Klaslokaal, NetSupport School",
+      "owner": "ICT-beheer",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Huurkoop via ouders",
+      "note": "Beheer via Jamf School vermeld; daadwerkelijke MDM-configuratie, aantallen en rechten verifiëren.",
+      "appRefs": [
+        "APP-020",
+        "APP-005",
+        "APP-065"
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 19"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 19
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H02",
+      "name": "Laptops medewerkers",
+      "category": "Eindapparaten",
+      "users": "Medewerkers",
+      "manager": "Jamf (MacBook), Intune (Windows)",
+      "owner": "ICT-beheer",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Aantal en type vaststellen",
+      "note": "Mac en Windows-beheer apart controleren; aankoopgegevens zijn geen actuele apparaatmeting.",
+      "appRefs": [
+        "APP-020",
+        "APP-021"
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 20"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 20
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H03",
+      "name": "Smartboards",
+      "category": "Presentatie",
+      "users": "Lokalen",
+      "manager": "Limid (SLA hard- en software)",
+      "owner": "ICT-beheer",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Onderhoudscontract",
+      "note": "Limid verzorgt volgens de werkmap onderhoud; aantal borden niet uit factuur afleidbaar.",
+      "appRefs": [
+        "APP-023"
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 21"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 21
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H04",
+      "name": "Schermen en tv's",
+      "category": "Presentatie",
+      "users": "Secties",
+      "manager": "Niet centraal",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Losse aankoop",
+      "note": "Geen centraal beheer aangetoond.",
+      "appRefs": [],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 22"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 22
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H05",
+      "name": "Camera's en microfoons",
+      "category": "Audio en video",
+      "users": "Secties en evenementen",
+      "manager": "Niet centraal",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Losse aankoop",
+      "note": "Omvang en gebruikers niet vastgesteld.",
+      "appRefs": [],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 23"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 23
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H06",
+      "name": "Geluidsapparatuur",
+      "category": "Audio en video",
+      "users": "Aula en evenementen",
+      "manager": "Niet centraal",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Losse aankoop",
+      "note": "Leveranciersvermeldingen bewijzen geen actuele inventaris.",
+      "appRefs": [],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 24"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 24
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H07",
+      "name": "Printers en toners",
+      "category": "Printen",
+      "users": "Alle gebruikers",
+      "manager": "Canon UniFlow",
+      "owner": "ICT-beheer",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Alleen verbruik zichtbaar",
+      "note": "Tonerboekingen bewijzen geen aantal of eigendomsvorm van printers.",
+      "appRefs": [
+        "APP-057"
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 25"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 25
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H08",
+      "name": "Kabels, adapters en klein materiaal",
+      "category": "Netwerk",
+      "users": "ICT",
+      "manager": "ICT",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Doorlopend",
+      "note": "Losse aankoop- en declaratiesporen; geen volledige actuele inventaris.",
+      "appRefs": [],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 26"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 26
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H09",
+      "name": "Netwerk, wifi en firewall",
+      "category": "Netwerk",
+      "users": "Hele school",
+      "manager": "IP-Security (SLA)",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Aantal apparaten vaststellen",
+      "note": "Beheercontract niet automatisch een actuele apparatuur- of complianceverklaring.",
+      "appRefs": [],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 27"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 27
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H10",
+      "name": "Koeling serverruimte (PCM-unit)",
+      "category": "Serverruimte",
+      "users": "ICT",
+      "manager": "Duraflow",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Onderhoudscontract",
+      "note": "Service- en aankoopinformatie, geen actuele verificatie.",
+      "appRefs": [],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 28"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 28
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H11",
+      "name": "Luchtkwaliteitssensoren",
+      "category": "Gebouw",
+      "users": "Gebouw",
+      "manager": "Unica Building Insight",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Abonnement",
+      "note": "Gebruiksstatus Unica en gekoppelde sensoren nog bevestigen.",
+      "appRefs": [
+        "APP-068"
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 29"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 29
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H12",
+      "name": "Kluisjes met elektronisch slot",
+      "category": "Gebouw",
+      "users": "Leerlingen",
+      "manager": "Vecos",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Niet in boekingen",
+      "note": "Software staat in het applicatieregister; werkelijke kastjes en omvang controleren.",
+      "appRefs": [
+        "APP-053"
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 30"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 30
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H13",
+      "name": "Telefonie (toestellen)",
+      "category": "Communicatie",
+      "users": "Medewerkers",
+      "manager": "3CX",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Niet in boekingen",
+      "note": "Software staat in applicatieregister; aantal toestellen onbekend.",
+      "appRefs": [
+        "APP-033"
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 31"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 31
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H14",
+      "name": "Reparaties, apparaat niet vermeld",
+      "category": "Overig",
+      "users": "Divers",
+      "manager": "Amac",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Controleren",
+      "note": "Reparatieboekingen zijn geen unieke apparaatidentiteiten.",
+      "appRefs": [
+        "APP-073"
+      ],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 32"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 32
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
+    },
+    {
+      "id": "H15",
+      "name": "Mobiel internet (4/5G-SIM)",
+      "category": "Netwerk",
+      "users": "ICT",
+      "manager": "IP-Security",
+      "owner": "? Nog vaststellen",
+      "quantity": null,
+      "status": "? Actueel gebruik en omvang bevestigen",
+      "description": "Abonnement",
+      "note": "Aantallen en werkelijke SIM-koppelingen controleren.",
+      "appRefs": [],
+      "sources": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 33"
+      ],
+      "sourceIds": [
+        "SRC-00052"
+      ],
+      "provenance": [
+        {
+          "file": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+          "sheet": "Hardware",
+          "row": 33
+        }
+      ],
+      "recordMeta": {
+        "sourceDate": "2026-11-23",
+        "scope": "Hardwaregroep, geen Entra-apparaatmeting",
+        "confirmedDeviceCount": false
+      }
     }
   ]
 }
