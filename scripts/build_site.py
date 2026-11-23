@@ -3,6 +3,7 @@ from __future__ import annotations
 # v2 editorial build: two pillars -> workforms -> practice -> publications
 
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -2875,6 +2876,22 @@ def build(sources: Path, out: Path) -> None:
         destination_file = out / "tools" / "ict-scan" / filename
         destination_file.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_file, destination_file)
+
+    # A cached older validator cannot read newer registerFiles keys. Bind the
+    # browser's profile validator URL to its actual published contents.
+    ict_path = out / "tools" / "ict-scan"
+    profile_hash = hashlib.sha256((ict_path / "assurance" / "profile.js").read_bytes()).hexdigest()[:16]
+    ict_html_file = ict_path / "index.html"
+    ict_html = ict_html_file.read_text(encoding="utf-8")
+    ict_html, replaced = re.subn(
+        r'(src="\./assurance/profile\.js\?v=)[^"]+(")',
+        lambda match: match.group(1) + profile_hash + match.group(2),
+        ict_html,
+        count=1,
+    )
+    if replaced != 1:
+        raise ValueError("ICT-scan: de versiegebonden organisatieprofielvalidator ontbreekt")
+    ict_html_file.write_text(ict_html, encoding="utf-8")
 
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.
