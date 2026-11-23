@@ -22,7 +22,7 @@ function state(){
 }
 test('Een index uit vier bestaande bronbestanden, zonder extra bronbestand of gedupliceerde feiten',()=>{
   const built=index.build(state(),{catalog});
-  assert.equal(built.nodes.size,501+12,'501 basisregistraties en 12 gedocumenteerde legacy-embedded relaties');
+  assert.equal(built.nodes.size,501+10,'501 basisregistraties plus zes M365-modules en vier unieke hardwaregroepen');
   assert.equal(built.errors.length,0,JSON.stringify(built.errors.slice(0,6)));
   assert.equal(built.count('apps'),61);
   assert.equal(built.count('ai'),76);
