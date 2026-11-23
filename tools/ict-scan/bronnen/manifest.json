@@ -8,8 +8,8 @@
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
     "evidenceCutoff": "2026-11-23",
-    "dataVersion": "2026-11-23-index-en-m365-producten-v3",
-    "faqDataVersion": "2026-11-20",
+    "dataVersion": "2026-11-23-m365-standaardinstellingen-en-dv-v1",
+    "faqDataVersion": "2026-11-23",
     "indexContractVersion": "1.0.0"
   },
   "dataFiles": [
@@ -29,7 +29,7 @@
         "licenseReview": 40,
         "hardwareGroups": 15
       },
-      "sha": "d6be29b643398933492efc50cd82fd45f3ef24da",
+      "sha": "a1971a7c49b1889ea23a73e619df0633ed5567a0",
       "verified": true
     },
     {
@@ -46,18 +46,18 @@
       "path": "2026-faq.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "faqs": 14
+        "faqs": 17
       },
-      "sha": "44962fa1747a882cc65999c89bc6b3ec0a30e890",
+      "sha": "fd64ce2977a52724237101e9caaec433f9c9548d",
       "verified": true
     },
     {
       "path": "2026-bronnenregister.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "sourceRegister": 58
+        "sourceRegister": 63
       },
-      "sha": "98a6afea5a3bd1cc378ce3f58b07b1da51088c42",
+      "sha": "adc4d6614b524c6356d2c417adf8be1786848163",
       "verified": true
     }
   ],
@@ -65,11 +65,11 @@
     "De basisinventaris telt 61 toepassingen en diensten; dit is geen bevestigd volledig aantal.",
     "76 aanvullende kandidaten tellen niet als bevestigd schoolgebruik.",
     "De ruwe Entra-roltoewijzingen en persoonlijke gegevens zijn niet gepubliceerd.",
-    "Het bronregister bevat 51 voorstelregels met 468 exact overgenomen verwijzingen. De vermelde SHA controleert de JSON-bestandsinhoud; bronhouderschap, rechten en goedkeuring zijn nog niet vastgesteld.",
     "Zes Microsoft 365-beheeronderdelen zijn als context bij APP-034 opgenomen; gegevens uit controlematrices zijn geen bevestiging van actieve tenantinstellingen.",
     "69 basisapplicaties, waaronder acht aanvullende regels waarvoor schoolgebruik nog moet worden geverifieerd; telt niet als 69 actieve applicaties.",
     "15 schoolbrede hardwaregroepen, 53 onderdelen (13 Entra-registraties en 40 Microsoft 365-productvermeldingen), zonder extra Entra-apparaatmeting.",
-    "58 bronnen in register, waaronder zeven aangevulde school- en leveranciersbronnen, die nog afzonderlijk moeten worden beoordeeld.",
-    "Één afgeleide index verbindt de vier gecontroleerde bronbestanden, geen vijfde bronbestand."
+    "Één afgeleide index verbindt de vier gecontroleerde bronbestanden, geen vijfde bronbestand.",
+    "63 bronnen in het bronnenregister, waaronder vijf nieuwe openbare bronnen voor Microsoft Education-standaarden en de Kennisnet-verwerkersovereenkomstprocedure. Alle nieuwe bronnen blijven inhoudelijk te beoordelen.",
+    "17 FAQ-kaarten, waaronder standaard M365-instellingen en de eHerkenning-route. Geen automatische goedkeuring van verwerkersovereenkomsten, tenanttoegang of individuele licentietoewijzing."
   ]
 }
