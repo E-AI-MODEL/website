@@ -60,6 +60,12 @@
     return hits[0]?.app||null;
   }
   function shortList(items,limit=5){const names=items.slice(0,limit).map(x=>x.name);return names.join(', ')+(items.length>limit?' en '+(items.length-limit)+' andere':'');}
+  function m365Modules(index,appId){
+    if(!index)return null;
+    return index.descendants('apps',appId,{maxDepth:3})
+      .filter(x=>x.type==='parts'&&x.record.kind==='Microsoft 365-onderdeel')
+      .map(x=>x.record);
+  }
   function describeApp(q,app,data){
     const own=app.name,base=[entry('apps',app)],src=recordSources([app]);
     const ix=data.index;
@@ -102,6 +108,23 @@
       }
       return result('field',candidateAnswer(app.links,'Bij '+own+' staat over koppelingen: ','Voor '+own+' is de feitelijke gegevensuitwisseling nog niet vastgesteld.'),base,unknown(app.links)?'Niet vastgesteld':'Geregistreerd',src);
     }
+    if(app.id==='APP-034'&&/\b(welke|wat|overzicht|beschikbaar|toegang)\b/.test(q)&&
+      /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden|leerlingen|docenten|medewerkers)\b/.test(q)){
+      const modules=m365Modules(ix,app.id);
+      if(!modules)return result('relations',
+        'De gedeelde relatie-index is niet geladen. De Microsoft 365-productcatalogus kan niet betrouwbaar worden bepaald.',
+        base,'Niet vastgesteld',src);
+      const audience=/\b(leerling|leerlingen)\b/.test(q)?'leerlingen':/\b(docent|docenten|medewerker|medewerkers)\b/.test(q)?'medewerkers':'alle gebruikers';
+      const relevant=modules.filter(x=>audience==='alle gebruikers'||
+        (Array.isArray(x.audience)&&x.audience.includes(audience)));
+      const description=modules.length?
+        'In het bronpakket zijn '+modules.length+' Microsoft 365-onderdelen beschreven, waaronder '+shortList(relevant.length?relevant:modules,8)+'. ':
+        'In de gedeelde index zijn nog geen Microsoft 365-productonderdelen vastgelegd. ';
+      return result('relations',description+
+        'Dit is geen bevestiging dat ieder onderdeel is geactiveerd of dat '+audience+' werkelijk toegang hebben. Licenties, leeftijdsinstellingen en rechten moeten afzonderlijk worden gecontroleerd.',
+        (relevant.length?relevant:modules).slice(0,12).map(x=>entry('parts',x)).concat(base),
+        'Productcatalogus; daadwerkelijke toegang niet vastgesteld',src);
+    }
     if(/\b(ai|copilot|kunstmatige|functie|functies)\b/.test(q)){
       if(!ai.length)return result('relations','Aan '+own+' zijn in het AI-register geen AI-functies gekoppeld. Dat bewijst niet dat de leverancier geen AI-functies aanbiedt.',base,'Geen bronkoppeling',src);
       return result('relations','Voor '+own+' zijn '+ai.length+' AI-functies beschreven, waaronder '+shortList(ai)+'. Beschrijving betekent niet dat de functies op school zijn ingeschakeld.',base.concat(ai.map(x=>entry('ai',x))),'Beschreven functies',recordSources(ai).concat(src));
@@ -109,22 +132,6 @@
     if(/\b(onderdelen|modules|onderdeel|module|familie|parent|child)\b/.test(q)){
       if(!parts.length)return result('relations','Bij '+own+' zijn nog geen technische onderdelen in het bronregister gekoppeld. Eventuele andere modules zijn hiermee niet uitgesloten.',base,'Geen bronkoppeling',src);
       return result('relations','Bij '+own+' staan '+parts.length+' technische registraties: '+shortList(parts)+'. Hun productrelatie en actieve werking vragen afzonderlijke bevestiging.',parts.map(x=>entry('parts',x)).concat(base),'Geregistreerde onderdelen',recordSources(parts).concat(src));
-    }
-    if(app.id==='APP-034'&&/\b(welke|wat|overzicht|beschikbaar|toegang)\b/.test(q)&&
-      /\b(apps|applicaties|diensten|onderdelen|software|mogelijkheden|leerlingen|docenten|medewerkers)\b/.test(q)){
-      const modules=(ix?.descendants('apps',app.id,{maxDepth:3})||[])
-        .filter(x=>x.type==='parts'&&x.record.kind==='Microsoft 365-onderdeel')
-        .map(x=>x.record);
-      const audience=/\b(leerling|leerlingen)\b/.test(q)?'leerlingen':/\b(docent|docenten|medewerker|medewerkers)\b/.test(q)?'medewerkers':'alle gebruikers';
-      const relevant=modules.filter(x=>audience==='alle gebruikers'||
-        (Array.isArray(x.audience)&&x.audience.includes(audience)));
-      const description=modules.length?
-        'In het bronpakket zijn '+modules.length+' Microsoft 365-onderdelen beschreven, waaronder '+shortList(relevant.length?relevant:modules,8)+'. ':
-        'De volledige Microsoft 365-productlijst ontbreekt in de huidige bronregistratie. ';
-      return result('relations',description+
-        'Dit is geen bevestiging dat ieder onderdeel is geactiveerd of dat '+audience+' werkelijk toegang hebben. Licenties, leeftijdsinstellingen en rechten moeten afzonderlijk worden gecontroleerd.',
-        (relevant.length?relevant:modules).slice(0,12).map(x=>entry('parts',x)).concat(base),
-        'Productcatalogus; daadwerkelijke toegang niet vastgesteld',src);
     }
     if(/\b(gebruiken|gebruikt|gebruik|actief|ingeschakeld|aanwezig|hebben|heeft|installatie)\b/.test(q)){
       if(unknown(app.local))return result('usage',own+' is geregistreerd in het applicatieregister ('+app.id+'). Het daadwerkelijke schoolgebruik is nog niet bevestigd.',base,'Niet vastgesteld',src);
@@ -152,6 +159,20 @@
         ' is niet geverifieerd in deze openbare index. Het totale aantal licentiecontrolepunten is geen licentietelling.',
         [entry('apps',mentioned),...linked.map(x=>entry('licenseReview',x))],
         'Niet vastgesteld',recordSources([mentioned]));
+    }
+    if(mentioned?.id==='APP-034'&&
+      /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden)\b/.test(q)){
+      const modules=m365Modules(data.index,mentioned.id);
+      if(!modules)return result('count',
+        'De gedeelde relatie-index is niet geladen. Het aantal Microsoft 365-productonderdelen kan niet betrouwbaar worden bepaald.',
+        [entry('apps',mentioned)],'Niet vastgesteld',recordSources([mentioned]));
+      const audience=/\b(leerling|leerlingen)\b/.test(q)?'leerlingen':/\b(docent|docenten|medewerker|medewerkers)\b/.test(q)?'medewerkers':'alle gebruikers';
+      const note=audience==='alle gebruikers'?
+        'Dit is een telling van productvermeldingen, geen bewijs van activatie of licentietoewijzing.':
+        'Hoeveel daarvan voor '+audience+' op school toegankelijk zijn, is niet geverifieerd.';
+      return result('count','De broncatalogus bevat '+modules.length+' Microsoft 365-productonderdelen. '+note,
+        [entry('apps',mentioned),...modules.slice(0,12).map(x=>entry('parts',x))],
+        'Productcatalogus; toegang niet vastgesteld',recordSources([mentioned]));
     }
     if(/\b(ai|kunstmatige|copilot)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q)){
       const ids=new Set(apps.map(x=>x.id)),withAi=new Set(ai.filter(x=>ids.has(x.parentId)).map(x=>x.parentId));
