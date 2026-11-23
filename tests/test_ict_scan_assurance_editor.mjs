@@ -399,7 +399,7 @@ test('Een bronkaart toont provenance als object of lijst zonder de brongegevens 
     const visible=node=>[node.textContent||'',...(node.children||[]).flatMap(child=>visible(child))];
     assert.ok(visible(app.document.body).join('\n').includes(grouped.provenance.file));
     assert.deepEqual(app.state.sourceRegister.get(source.id),source);
-    await await app.cards.open('sourceRegister',source.id,true,'manager');
+    await app.cards.open('sourceRegister',source.id,true,'manager');
     assert.deepEqual(app.state.sourceRegister.get(source.id),source);
   }
 });
