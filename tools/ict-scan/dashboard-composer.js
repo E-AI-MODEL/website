@@ -257,6 +257,10 @@
     select.value=app.id;
     select.addEventListener('change',()=>{config.focusApp=select.value;refresh();});root.append(select);
     const groups=relationSets(app,index),stage=text('div',undefined,'ds-network');
+    if(app.id==='APP-034'){
+      groups.find(g=>g.key==='parts').rows=index.descendants('apps',app.id,{maxDepth:3})
+        .filter(x=>x.type==='parts'&&x.record.kind==='Microsoft 365-onderdeel').map(x=>x.record);
+    }
     const svg=svgEl('svg',{viewBox:'0 0 900 280',class:'ds-network-lines','aria-hidden':'true',preserveAspectRatio:'none'});
     svg.append(svgEl('circle',{cx:450,cy:140,r:84,class:'ds-orbit-guide'}));
     const positions=[[130,71],[755,71],[755,221],[130,221]];
