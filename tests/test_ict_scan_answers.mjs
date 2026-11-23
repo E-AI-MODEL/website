@@ -198,8 +198,8 @@ test('Geen automatisch FAQ-antwoord bij onduidelijke vragen',()=>{
 });
 test('FAQ-cards zijn uniek, brongebonden en niet bestuurlijk goedgekeurd',()=>{
   assert.equal(faq.schema,'eai-school-ict-v1');
-  assert.equal(faq.faqs.length,14);
-  assert.equal(new Set(faq.faqs.map(x=>x.id)).size,14);
+  assert.equal(faq.faqs.length,17);
+  assert.equal(new Set(faq.faqs.map(x=>x.id)).size,17);
   for(const x of faq.faqs){
     assert.ok(x.answer.length>50,x.id);
     assert.ok(x.aliases,x.id);
