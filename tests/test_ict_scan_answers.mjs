@@ -118,6 +118,20 @@ test('Vragen gebruiken de actuele bronpopulatie en geen vaste aantallen',()=>{
   assert.match(query('Hoeveel Entra-registraties zijn er?',changed).answer,/12 Entra-registraties/);
   assert.match(query('Hoeveel kandidaten zijn er?',changed).answer,/7 aanvullende kandidaten/);
 });
+test('LessonUp-telling is geen totaal van veertig schoolbrede licentiecontrolepunten',()=>{
+  const output=ask('Hoeveel licenties heeft LessonUp?');
+  assert.equal(output.kind,'count');
+  assert.match(output.answer,/niet geverifieerd/i);
+  assert.doesNotMatch(output.answer,/40 licentieregistraties/i);
+  assert.ok(output.records.some(x=>x.id==='APP-008'));
+});
+
+test('M365-leerlingvraag noemt geen ongecontroleerde tenanttoegang',()=>{
+  const output=ask('Welke apps van Microsoft 365 zijn beschikbaar voor leerlingen?');
+  assert.equal(output.kind,'relations');
+  assert.match(output.answer,/Microsoft 365-onderdelen/i);
+  assert.match(output.answer,/niet.*bevestiging|niet vastgesteld|moeten afzonderlijk worden gecontroleerd/i);
+});
 test('Geen automatisch FAQ-antwoord bij onduidelijke vragen',()=>{
   const out=ask('heeft 3CX een actieve verwerkersovereenkomst en een DPIA');
   assert.notEqual(out.kind,'faq');
