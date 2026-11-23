@@ -1,0 +1,47 @@
+/* Dashboard Studio: adjustable sidebar, responsive stage */
+@media (min-width: 901px) {
+  .workspace.monitor-layout #viewStudio .ds-shell {
+    grid-template-columns: minmax(240px, var(--ds-sidebar-width, 300px)) minmax(0, 1fr);
+  }
+  .workspace.monitor-layout #viewStudio .ds-resizer {
+    position:absolute;left:calc(var(--ds-sidebar-width, 300px) - 7px);top:0;bottom:0;
+    width:14px;z-index:12;cursor:col-resize;touch-action:none;
+    background:transparent;border:0;padding:0;
+  }
+  .workspace.monitor-layout #viewStudio .ds-resizer::after {
+    content:"";position:absolute;left:6px;top:0;bottom:0;width:2px;
+    background:transparent;transition:background .16s;
+  }
+  .workspace.monitor-layout #viewStudio .ds-resizer:hover::after,
+  .workspace.monitor-layout #viewStudio .ds-resizer:focus-visible::after,
+  .workspace.monitor-layout #viewStudio .ds-shell.ds-resizing .ds-resizer::after {
+    background:#b48d58;
+  }
+  .workspace.monitor-layout #viewStudio .ds-resizer:focus-visible {outline:2px solid #557d9c;outline-offset:-3px}
+  .workspace.monitor-layout #viewStudio .ds-shell.ds-resizing {cursor:col-resize;user-select:none}
+  .workspace.monitor-layout #viewStudio .ds-panel .ds-option > span {
+    min-width:0;overflow-wrap:anywhere;
+  }
+  .workspace.monitor-layout #viewStudio .ds-panel .ds-option > small {
+    flex:0 0 auto;max-width:55%;white-space:normal;overflow-wrap:anywhere;
+  }
+}
+@media (max-width: 900px) {
+  .workspace.monitor-layout #viewStudio .ds-resizer {display:none}
+}
+.workspace.monitor-layout #viewStudio .ds-stage {container-type:inline-size}
+@container (max-width: 800px) {
+  .workspace.monitor-layout #viewStudio .ds-component:not(:has(.ds-measure-strip)) {
+    grid-column:1 / -1;
+  }
+  .workspace.monitor-layout #viewStudio .ds-toolbar {flex-wrap:wrap}
+  .workspace.monitor-layout #viewStudio .ds-toolbar-actions {flex-wrap:wrap}
+}
+@container (max-width: 560px) {
+  .workspace.monitor-layout #viewStudio .ds-measure-strip {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .workspace.monitor-layout #viewStudio .ds-measure:nth-child(2) {border-right:0}
+  .workspace.monitor-layout #viewStudio .ds-measure:nth-child(-n+2) {border-bottom:1px solid var(--ds-line)}
+}
+@media print {
+  .workspace.monitor-layout #viewStudio .ds-resizer {display:none!important}
+}
