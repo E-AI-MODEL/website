@@ -15,7 +15,7 @@ const sync=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
 
 test('Bronregistraties 2026 zijn compleet volgens de gecontroleerde werkmap',()=>{
   assert.equal(source.schema,'eai-school-ict-v1');
-  const totals={apps:61,ai:76,connections:93,additionalCandidates:76,dpia:10,aiControls:22,checks:16,licenseReview:40,devices:4};
+  const totals={apps:69,ai:76,connections:93,additionalCandidates:76,dpia:10,aiControls:22,checks:16,licenseReview:40,devices:4,hardwareGroups:15,parts:53};
   for(const [category,count] of Object.entries(totals)){
     assert.equal(source[category].length,count,category);
     assert.equal(source.metadata.counts[category],count,category+' in metadata');
@@ -23,7 +23,7 @@ test('Bronregistraties 2026 zijn compleet volgens de gecontroleerde werkmap',()=
   assert.equal(source.metadata.firstInventoryStarted,'2026-08-10');
   assert.equal(source.metadata.compiledBy,'Hans Visser');
   assert.equal(manifest.metadata.firstInventoryStarted,source.metadata.firstInventoryStarted);
-  assert.equal(manifest.dataFiles[0].recordCounts.apps,61);
+  assert.equal(manifest.dataFiles[0].recordCounts.apps,69);
   assert.equal(manifest.dataFiles[0].recordCounts.ai,76);
 });
 
