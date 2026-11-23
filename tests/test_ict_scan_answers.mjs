@@ -27,10 +27,10 @@ const tasks=[
   ['Welke koppelingen heeft 3CX?','field',/gegevensuitwisseling nog niet vastgesteld/i,'APP-033'],
   ['Heeft 3CX een verwerkersovereenkomst?','field',/nog niet vastgesteld/i,'APP-033'],
   ['Wat is de DPIA-status van Kuario?','field',/nog niet vastgesteld/i,'APP-045'],
-  ['Wat is de bron van 3CX?','source',/Applicaties rij/i,'APP-033'],
+  ['Wat is de bron van 3CX?','source',/Bronnen.*bewaard voor de interne controle/i,'APP-033'],
   ['Heeft 3CX AI-functies?','relations',/geen AI-functies gekoppeld/i,'APP-033'],
   ['Welke AI-functies kent Microsoft 365?','relations',/16 AI-functies beschreven/i,'APP-034'],
-  ['Hoeveel applicaties zijn er?','count',/61 basisregistraties/i],
+  ['Hoeveel applicaties zijn er?','count',/69 basisregistraties/i],
   ['Hoeveel AI-functies staan er?','count',/76 beschreven AI-functies/i],
   ['Hoeveel Entra-registraties zijn er?','count',/93 Entra-registraties/i],
   ['Hoeveel kandidaten zijn er?','count',/76 aanvullende kandidaten/i],
@@ -113,7 +113,7 @@ test('Geen bevestiging uit een ontbrekend veld verzinnen',()=>{
 });
 test('Vragen gebruiken de actuele bronpopulatie en geen vaste aantallen',()=>{
   const changed={...dataset,apps:dataset.apps.slice(1),ai:dataset.ai.slice(0,10),connections:dataset.connections.slice(0,12),candidates:dataset.candidates.slice(0,7)};
-  assert.match(query('Hoeveel applicaties zijn er?',changed).answer,/60 basisregistraties/);
+  assert.match(query('Hoeveel applicaties zijn er?',changed).answer,/68 basisregistraties/);
   assert.match(query('Hoeveel AI-functies zijn er?',changed).answer,/10 beschreven AI-functies/);
   assert.match(query('Hoeveel Entra-registraties zijn er?',changed).answer,/12 Entra-registraties/);
   assert.match(query('Hoeveel kandidaten zijn er?',changed).answer,/7 aanvullende kandidaten/);
