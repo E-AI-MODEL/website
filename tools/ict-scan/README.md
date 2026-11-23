@@ -2,6 +2,16 @@
 
 Een zelfstandige pagina van de EAI-website. Inlezen, zoeken, controleren en rapporteren werken met gewone JavaScript-code, zonder modelaanroepen. De gepubliceerde inventaris staat in GitHub. Het dashboard leest die bron bij het openen. Lokale imports en exports blijven op het apparaat. Alleen de afzonderlijke, uitdrukkelijk gekozen wijzigingsroute verstuurt kaartwijzigingen naar een nieuwe GitHub-branch en pull request.
 
+## Verantwoordelijken en controleerbare verbanden (23 november 2026)
+
+De eigenaar op de applicatiekaart is de door de schoolleiding aangewezen **verantwoordelijke functie**, geen autorisatie in Microsoft Entra of elders. De technische inrichting van Microsoft 365, Teams, Copilot, Power BI, Entra, Intune, Jamf, de lokale identiteitsvoorzieningen, Apple Klaslokaal, Canon uniFLOW en Limid staat op `ICT-beheer`. LessonUp en Showbie staan op `Stuurgroep ICT`. Het veld `recordMeta.ownerSource` bewaart de herkomst van de aanvulling.
+
+De bestaande 61 applicaties tellen nu 64 brongebonden relaties op 34 applicaties. De 10 nieuwe technische relatievoorstellen verbinden onder meer NIVO, lokale AD, AFAS, Magister, Jamf en Intune met Entra, en uniFLOW met Microsoft 365 en Teams. Deze staan op **Vermoedelijk**; een controlevraag of technische registratie bewijst geen actuele werkende synchronisatie, SSO of gegevensuitwisseling. Het dashboard toont ook inkomende verbanden, zodat Microsoft 365 en Entra niet als losse, nauwelijks verbonden kaarten verschijnen.
+
+Voor vier hardwaregroepen uit de IAM-werkmap (iPads, laptops, smartboards en printers) is `ICT-beheer` vastgelegd. Hun koppelingen aan Jamf, Intune, Apple Klaslokaal, Limid en Canon staan als `hardwareLinks[]` op bestaande applicatiekaarten. De zes Microsoft 365-beheeronderwerpen, waaronder SharePoint, OneDrive, Exchange, Purview, Defender en leerlingtoegang, staan als `serviceLinks[]` bij Microsoft 365. Beide lijsten behouden bronverwijzing en bewijsgrens; ze worden niet als actieve apparaten, losse applicaties of aparte licenties geteld. De oorspronkelijke vier Entra-apparaatmetingen blijven ongewijzigd.
+
+De persoonlijke LessonUp- en Showbie-accountlijsten en financiële detailregels zijn **niet** toegevoegd aan de openbare GitHub-bron. Bewerkvoorstellen blijven via de bestaande gecontroleerde PR-route gaan; de 404-ingang en de bewerkpop-up zijn geen toegangsbeveiliging.
+
 ## Huidige uitbreiding: herbruikbare controles
 
 De map [assurance](assurance/README.md) bevat een zelfstandige controlefunctie, een vast testcorpus en expliciete organisatieprofielen. Het huidige dashboard gebruikt Emmauscollege. Dezelfde controlefunctie is ook met een tweede, fictieve organisatie beproefd. De bestaande onderwijsinterface is daarmee nog niet voor iedere sector aangepast.
