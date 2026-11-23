@@ -131,6 +131,8 @@ async function exerciseBoundApprovals(target){
   await target.locator('#cardEditor').waitFor({state:'visible'});
   await target.locator('#cardTypeFilter').selectOption('sourceRegister');
   await target.locator('#cardNew').click();
+  await target.locator('#cardGatePassword').fill('Emmauscollege');
+  await target.locator('.card-edit-gate [data-unlock]').click();
   assert.equal(await target.locator('#cardRecordId').innerText(),'SRC-99002','Een nieuwe bronkaart moet een geldig bron-ID met minimaal vijf cijfers krijgen');
   assert.equal(await target.locator('#cardFormFields [data-field="owner"]').inputValue(),'');
   assert.equal(await target.locator('#cardFormFields [name="confirmSourceApproval"]').isChecked(),false);
