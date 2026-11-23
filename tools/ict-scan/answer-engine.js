@@ -34,7 +34,7 @@
     if(scored[0]?.score>=0.88 && (!scored[1]||scored[0].score-scored[1].score>=0.11))return scored[0].faq;
     return null;
   }
-  function findApp(q,apps){
+  function findApp(q,apps,strict=false){
     let hits=[];
     const hay=' '+q+' ';
     for(const app of apps){
@@ -51,7 +51,7 @@
         }
       }
     }
-    if(!hits.length && !(/\b(welke|alle|hoeveel)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q))){
+    if(!hits.length && !strict && !(/\b(welke|alle|hoeveel)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q))){
       const phraseTokens=words(q).filter(x=>x.length>3);
       const matched=apps.filter(app=>phraseTokens.some(w=>norm(app.name).split(' ').includes(w)));
       if(matched.length===1)hits=[{app:matched[0],score:2}];
@@ -147,7 +147,7 @@
     if(!/\b(hoeveel|aantal|totaal)\b/.test(q))return null;
     const apps=data.apps,ai=data.ai;
     // Een specifiek product krijgt nooit het totaal van het schoolbrede licentieregister.
-    const mentioned=findApp(q,apps);
+    const mentioned=findApp(q,apps,true);
     if(mentioned&&/\b(licenties|licentie|licentieplaatsen)\b/.test(q)){
       const linked=data.index?data.index.connected('apps',mentioned.id,{type:'licenseReview'}).map(x=>x.other):[];
       const summary=linked.length?'Er zijn '+linked.length+' licentiecontrole-registraties voor deze toepassing. ':'';
