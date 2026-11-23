@@ -126,7 +126,12 @@ function detail(label,val){return '<div class="detail-field"><span class="detail
 function barChart(id,entries,maxRows=7,callback){const parent=$(id);if(!parent)return;parent.replaceChildren();const arr=entries.filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,maxRows);const max=Math.max(1,...arr.map(x=>x[1]));if(!arr.length){parent.innerHTML='<div class="no-results">Nog geen gegevens voor deze verdeling.</div>';return;}
  for(const [label,count] of arr){const el=document.createElement(callback?'button':'div');el.className='bar-row';if(callback){el.type='button';el.setAttribute('role','button');el.addEventListener('click',()=>callback(label));}const left=document.createElement('span');left.className='bar-label';left.textContent=label;left.title=label;const track=document.createElement('span');track.className='bar-track';const fill=document.createElement('span');fill.className='bar-fill';fill.style.display='block';fill.style.width=Math.max(4,count/max*100)+'%';track.appendChild(fill);const number=document.createElement('span');number.className='bar-n';number.textContent=count;el.append(left,track,number);parent.append(el);}}
 function groupCounts(list,field){const m=new Map();for(const it of list){const text=String(it[field]||'Niet ingedeeld').trim()||'Niet ingedeeld';m.set(text,(m.get(text)||0)+1);}return [...m.entries()];}
-function aiAppsCount(){const ix=window.IctInventoryIndex?.build(state);return ix?ix.records('apps').filter(app=>ix.connected('apps',app.id,{type:'ai'}).length>0).length:0;}
+function aiAppsCount(){
+ const ix=typeof window==='object'?window.IctInventoryIndex?.build(state):null;
+ const ids=ix?new Set(ix.records('apps').filter(app=>ix.connected('apps',app.id,{type:'ai'}).length>0).map(app=>app.id)):
+   new Set([...state.ai.values()].map(ai=>ai.parentId).filter(id=>state.apps.has(id)));
+ return ids.size;
+}
 function renderOverview(){const apps=array(state.apps),links=array(state.connections),ai=array(state.ai),checks=array(state.checks);$('kpiGrid').innerHTML=kpi('Toepassingen en diensten',apps.length,'Geregistreerde onderdelen; gebruik nog te verifi\u00ebren')+kpi('Met beschreven AI',aiAppsCount(),'Toepassingen met een of meer AI-functies')+kpi('AI-functies',ai.length,ai.filter(isClassroomAi).length+' in de klas / '+ai.filter(x=>IctScanTaxonomy.isSchoolAi(x)).length+' in de school')+kpi('Entra-koppelingen',links.length,'Registraties, niet automatisch actief');
  barChart('areaChart',groupCounts(apps,'area'),8,label=>{state.area=label;selectView('apps');$('appsArea').value=label;renderApps();});
  barChart('typeChart',groupCounts(apps,'kind'),8,label=>{state.type=label;selectView('apps');$('appsType').value=label;renderApps();});
