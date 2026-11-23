@@ -109,7 +109,9 @@
     }
     if(app.id==='APP-034'&&/\b(welke|wat|overzicht|beschikbaar|toegang)\b/.test(q)&&
       /\b(apps|applicaties|diensten|onderdelen|software|mogelijkheden|leerlingen|docenten|medewerkers)\b/.test(q)){
-      const modules=parts.filter(x=>x.kind==='Microsoft 365-onderdeel');
+      const modules=(ix?.descendants('apps',app.id,{maxDepth:3})||[])
+        .filter(x=>x.type==='parts'&&x.record.kind==='Microsoft 365-onderdeel')
+        .map(x=>x.record);
       const audience=/\b(leerling|leerlingen)\b/.test(q)?'leerlingen':/\b(docent|docenten|medewerker|medewerkers)\b/.test(q)?'medewerkers':'alle gebruikers';
       const relevant=modules.filter(x=>audience==='alle gebruikers'||
         (Array.isArray(x.audience)&&x.audience.includes(audience)));
