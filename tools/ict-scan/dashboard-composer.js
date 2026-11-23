@@ -311,7 +311,7 @@
       const wrap=text('div',undefined,'ds-network-records ds-network-current-list');
       wrap.append(text('strong',group.label+' · '+group.rows.length),text('small',group.note));
       const list=text('div',undefined,'ds-record-links');
-      for(const record of group.rows.slice(0,30)){
+      for(const record of group.rows){
         const store=group.card==='additionalCandidates'?'candidates':group.card;
         if(state[store] instanceof Map&&state[store].has(record.id)){
           list.append(button(record.name||record.id,'ds-record-link',()=>openCard({card:group.card},record)));
