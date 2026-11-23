@@ -267,7 +267,6 @@ try {
   assert.match(sourceDetails,/Grondslag voor gebruik\s*Onbekend/);
   assert.match(sourceDetails,/Bewijs van goedkeuring\s*Onbekend/);
   await page.locator('#cardEditorClose').click();
-  await page.locator('#railDrawerClose').click();
   await page.locator('.app-register-tab').nth(1).click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),true);
   assert(!/76\s+aanwijzingen/.test(await page.locator('#candidateInfo').textContent()),'Dezelfde 76 wordt dubbel getoond');
