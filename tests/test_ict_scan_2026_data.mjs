@@ -63,11 +63,11 @@ test('Aanvullende kandidaten zijn niet als bevestigde toepassingen meegeteld',()
 
 test('FAQ-registraties en hun bronnen zijn afzonderlijk gecontroleerd',()=>{
   assert.equal(faq.schema,'eai-school-ict-v1');
-  assert.equal(faq.faqs.length,14);
-  assert.equal(new Set(faq.faqs.map(x=>x.id)).size,14);
+  assert.equal(faq.faqs.length,17);
+  assert.equal(new Set(faq.faqs.map(x=>x.id)).size,17);
   const row=manifest.dataFiles.find(x=>x.path==='2026-faq.json');
   assert.ok(row,'FAQ staat niet in het manifest');
-  assert.equal(row.recordCounts.faqs,14);
+  assert.equal(row.recordCounts.faqs,17);
   assert.ok(faq.faqs.every(x=>x.answer&&x.status==='Brongebonden werkversie'&&x.sources.length));
 });
 
