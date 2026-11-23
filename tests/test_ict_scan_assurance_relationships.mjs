@@ -19,8 +19,8 @@ test('Bevestigde bronpopulaties blijven ongewijzigd en elke nieuwe relatie heeft
  assert.equal(data.licenseReview.length,40);
  assert.equal(work.softwareReview.length,12);
  assert.equal(work.workActions.length,13);
- assert.equal(all.length,54);
- assert.equal(new Set(all.map(x=>x.app.id)).size,32);
+ assert.equal(all.length,64);
+ assert.equal(new Set(all.map(x=>x.app.id)).size,34);
  const uniq=new Set();
  for(const {app,rel} of all){
    assert.ok(indexed[rel.targetType]?.has(rel.targetId),app.id+' -> '+rel.targetType+'/'+rel.targetId);
@@ -46,6 +46,52 @@ test('LessonUp, Showbie en Microsoft-productfamilie zijn bereikbaar via de nieuw
  assert.ok(has('APP-035','apps','APP-034'));
  assert.ok(has('APP-016','workActions','WRK-008'));
 });
+test('Verantwoordelijke functies zijn door schoolleiding aangewezen zonder gebruikersrechten te suggereren',()=>{
+ const byId=id=>data.apps.find(x=>x.id===id);
+ for(const id of ['APP-034','APP-010','APP-035','APP-058','APP-027','APP-021','APP-020','APP-025','APP-026','APP-005','APP-057','APP-023','APP-022']){
+   assert.equal(byId(id).owner,'ICT-beheer',id);
+   assert.match(byId(id).recordMeta.ownerSource,/schoolleiding/i);
+ }
+ for(const id of ['APP-008','APP-012']){
+   assert.equal(byId(id).owner,'Stuurgroep ICT',id);
+   assert.match(byId(id).recordMeta.ownerScope,/onderwijsapplicatie/i);
+ }
+});
+
+test('Microsoft-identiteitsketen staat als onderzoekssignaal en niet als actief bevestigd geregistreerd',()=>{
+ const byId=id=>data.apps.find(x=>x.id===id);
+ const pairs=[
+  ['APP-026','APP-027'],['APP-025','APP-027'],['APP-052','APP-027'],
+  ['APP-056','APP-027'],['APP-020','APP-027'],['APP-021','APP-027'],
+  ['APP-057','APP-010'],['APP-057','APP-034'],['APP-045','APP-027'],['APP-035','APP-058']
+ ];
+ for(const [id,target] of pairs){
+   const edge=byId(id).relations.find(r=>r.targetType==='apps'&&r.targetId===target);
+   assert.ok(edge, id+' -> '+target);
+   assert.equal(edge.status,'Vermoedelijk');
+   assert.ok(edge.evidence);
+ }
+ assert.equal(byId('APP-034').serviceLinks.length,6);
+ assert.ok(byId('APP-034').serviceLinks.every(x=>x.evidence&&x.note&&x.status));
+ assert.ok(byId('APP-034').serviceLinks.some(x=>x.name.includes('SharePoint')));
+ assert.ok(byId('APP-034').serviceLinks.some(x=>x.name.includes('OneDrive')));
+});
+
+test('iPads, laptops, print en smartboards hebben brongebonden technisch beheer, geen extra apparaatmetingen',()=>{
+ const byId=id=>data.apps.find(x=>x.id===id);
+ const expected={
+  'APP-020':['H01','H02'],'APP-021':['H02'],'APP-005':['H01'],
+  'APP-023':['H03'],'APP-057':['H07']
+ };
+ for(const [id,ids] of Object.entries(expected)){
+   assert.deepEqual(byId(id).hardwareLinks.map(x=>x.id),ids,id);
+   for(const h of byId(id).hardwareLinks){
+     assert.equal(h.owner,'ICT-beheer');assert.ok(h.evidence.includes('/ Hardware!'));
+     assert.ok(h.note);
+   }
+ }
+ assert.equal(data.devices.length,4,'Hardwaregroepen blijven gescheiden van Entra-apparaatmetingen');
+});
 test('Manifest is gebonden aan de exacte bronbytes en bevat geen individuele accountgegevens',()=>{
  const file=readFileSync(dir+'2026-applicatielandschap.json');
  const blob=createHash('sha1').update('blob '+file.length+String.fromCharCode(0)).update(file).digest('hex');
@@ -58,5 +104,5 @@ test('Manifest is gebonden aan de exacte bronbytes en bevat geen individuele acc
 });
 test('De systeemkaart toont licenties, werkacties en de bronstatus',()=>{
  const js=readFileSync('tools/ict-scan/dashboard-composer.js','utf8');
- for(const token of ['ds-recorded-links','state.licenseReview','state.softwareReview','state.workActions','link.status','link.evidence'])assert.ok(js.includes(token),token);
+ for(const token of ['ds-recorded-links','state.licenseReview','state.softwareReview','state.workActions','link.status','link.evidence','ds-relationship-detail','incoming','app.hardwareLinks','app.serviceLinks'])assert.ok(js.includes(token),token);
 });
