@@ -2884,7 +2884,7 @@ def build(sources: Path, out: Path) -> None:
     ict_html_file = ict_path / "index.html"
     ict_html = ict_html_file.read_text(encoding="utf-8")
     ict_html, replaced = re.subn(
-        r'(src="\\./assurance/profile\\.js\\?v=)[^"]+(")',
+        r'(src="\./assurance/profile\.js\?v=)[^"]+(")',
         lambda match: match.group(1) + profile_hash + match.group(2),
         ict_html,
         count=1,
