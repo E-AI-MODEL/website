@@ -187,6 +187,7 @@
     }
     const overview=panes.get('overview');
     lines(overview,'',first.map(k=>[label(k,r),r[k]]));
+    if(spec.key==='sourceRegister')lines(overview,'Bronbeoordeling',[['Goedkeuringsstatus',sourceApprovalState(r)]]);
     if(spec.key==='apps'){const ix=window.IctInventoryIndex?.build(state);
       if(ix)lines(overview,'AI-functies',[['Beschreven functies',ix.connected('apps',r.id,{type:'ai'}).length]]);
     }
