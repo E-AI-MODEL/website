@@ -259,6 +259,33 @@
       stage.append(b);
     }
     root.append(stage,text('p','De lijnen tonen bronrelaties, geen bevestigde actieve gegevensuitwisseling.','ds-note'));
+    const relationshipTypes={
+      license_review:'Licentiecontroles',
+      software_review:'Softwarecontroles',
+      follow_up:'Open werkacties',
+      part_of:'Productonderdelen',
+      integration:'Mogelijke integraties'
+    };
+    const stores={apps:state.apps,licenseReview:state.licenseReview,softwareReview:state.softwareReview,workActions:state.workActions};
+    const recorded=(app.relations||[]).map(link=>{
+      const target=stores[link.targetType]?.get(link.targetId);
+      return target?{link,target}:null;
+    }).filter(Boolean);
+    if(recorded.length){
+      const section=text('section',undefined,'ds-network-records ds-recorded-links');
+      section.append(text('strong','Vastgelegde relaties · '+recorded.length));
+      section.append(text('small','Bronstatus per relatie. Vermoedelijke technische koppelingen zijn niet als actief bevestigd.'));
+      const list=text('div',undefined,'ds-record-links');
+      for(const {link,target} of recorded){
+        const label=(relationshipTypes[link.relationType]||link.relationType)+' · '+(target.name||target.id);
+        const b=button(label+' · '+link.status,'ds-record-link',()=>openCard({card:link.targetType},target));
+        b.title=(link.note||'')+' | Bron: '+(link.evidence||'Niet vastgelegd');
+        if(link.status==='Vermoedelijk')b.dataset.status='vermoedelijk';
+        list.append(b);
+      }
+      section.append(list);root.append(section);
+    }
+
     function showRelationList(stage,g){
       const old=root.querySelector('.ds-network-records');if(old)old.remove();
       const wrap=text('div',undefined,'ds-network-records');wrap.append(text('strong',g.label+' · '+g.rows.length));
