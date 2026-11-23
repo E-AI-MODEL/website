@@ -3,15 +3,15 @@
    Only existing DOM nodes move, so graphs, imports and form listeners are retained. */
 (function(){
   const groups={
-    overview:[['Schoolbreed',4],['Systeemrelaties',1],['Broncontrole',1],['Toepassingen',1]],
-    apps:[['Toepassingen',3]],
-    connections:[['Registraties en status',2],['Koppelingen doorzoeken',3]],
-    devices:[['Apparaatstatus',3],['Onderliggende metingen',1]],
-    ai:[['AI-functies',2],['Functies doorzoeken',2],['AI-beheer',1]],
-    privacy:[['DPIA-bronnen',3],['Privacykaders',1]],
-    findings:[['Stand van controles',3],['Controlepunten',4]],
-    reports:[['Rapport kiezen',2],['Rapport ophalen',2]],
-    sources:[['Synchroniseren',3],['Herkomst en beheer',3],['Documentatie',2]]
+    overview:[['Aantallen en verdeling',4],['Geregistreerde verbanden',1],['Ingevulde velden',1],['Toepassingen openen',1]],
+    apps:[['Toepassingen zoeken',3]],
+    connections:[['Entra in cijfers',2],['Entra-registraties bekijken',3]],
+    devices:[['Apparaatmetingen',3],['Meetgegevens bekijken',1]],
+    ai:[['AI per lesfase',2],['AI-functies bekijken',2],['AI-inrichting en beheer',1]],
+    privacy:[['DPIA en privacy',3],['Wet- en regelgeving',1]],
+    findings:[['Uitkomst van controles',3],['Openstaande gegevens aanvullen',4]],
+    reports:[['Kies een rapport',2],['Download het rapport',2]],
+    sources:[['Bronnen ophalen',3],['Bronnen en herkomst',3],['Broninformatie',2]]
   };
   const leading={ai:2};
   const scenes=new Map();
