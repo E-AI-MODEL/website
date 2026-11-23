@@ -3,10 +3,12 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {resolve} from 'node:path';
+import inventoryIndex from '../tools/ict-scan/inventory-index.js';
 const read=p=>readFileSync(resolve(p),'utf8');
 const main=JSON.parse(read('tools/ict-scan/bronnen/2026-applicatielandschap.json'));
 const work=JSON.parse(read('tools/ict-scan/bronnen/2026-werkregister.json'));
 const faq=JSON.parse(read('tools/ict-scan/bronnen/2026-faq.json'));
+const sources=JSON.parse(read('tools/ict-scan/bronnen/2026-bronnenregister.json'));
 const source=read('tools/ict-scan/answer-engine.js');
 const html=read('tools/ict-scan/index.html');
 const ctx={window:{},document:{getElementById(){return null;}}};
@@ -126,16 +128,51 @@ test('LessonUp-telling is geen totaal van veertig schoolbrede licentiecontrolepu
   assert.ok(output.records.some(x=>x.id==='APP-008'));
 });
 
-test('M365-leerlingvraag volgt de getrapte index zonder tenanttoegang te verzinnen',()=>{
-  const byId=new Map(main.apps.map(x=>[x.id,x]));
-  const children=new Set(['APP-034',...main.apps.filter(x=>(x.relations||[]).some(r=>r.targetType==='apps'&&r.targetId==='APP-034'&&r.relationType==='part_of')).map(x=>x.id)]);
-  const relevant=main.parts.filter(x=>x.kind==='Microsoft 365-onderdeel'&&children.has(x.parent));
-  assert.ok(relevant.length>30,'De M365-productcatalogus omvat ook onderdelen van Teams en Copilot');
-  assert.ok(relevant.some(x=>x.name==='Forms'));
-  assert.ok(relevant.every(x=>x.accessStatus==='Niet onafhankelijk geverifieerd'));
-  const output=ask('Welke apps van Microsoft 365 zijn beschikbaar voor leerlingen?');
-  assert.equal(output.kind,'relations');
-  assert.match(output.answer,/moeten afzonderlijk worden gecontroleerd/i);
+function indexedDataset(){
+  const store={};
+  for(const type of inventoryIndex.TYPES){
+    const rows=main[type]||work[type]||faq[type]||sources[type]||[];
+    store[inventoryIndex.STORES[type]]=new Map(rows.map(row=>[row.id,row]));
+  }
+  return {...dataset,index:inventoryIndex.build(store)};
+}
+test('M365-vragen tellen uitsluitend productonderdelen uit de gedeelde index',()=>{
+  const data=indexedDataset();
+  assert.deepEqual(data.index.errors,[]);
+  const modules=data.index.descendants('apps','APP-034',{maxDepth:3})
+    .filter(x=>x.type==='parts'&&x.record.kind==='Microsoft 365-onderdeel');
+  assert.equal(modules.length,40,'Teams- en Copilot-onderdelen worden via hun parent meegenomen');
+  const count=query('Hoeveel apps heeft Microsoft 365?',data);
+  assert.equal(count.kind,'count');
+  assert.match(count.answer,/40 Microsoft 365-productonderdelen/);
+  assert.doesNotMatch(count.answer,/69 basisregistraties|69 toepassingen/);
+  assert.match(count.answer,/geen bewijs van activatie of licentietoewijzing/i);
+  const list=query('Welke apps van Microsoft 365 zijn beschikbaar voor leerlingen?',data);
+  assert.equal(list.kind,'relations');
+  assert.match(list.answer,/40 Microsoft 365-onderdelen/);
+  assert.match(list.answer,/daadwerkelijk toegang hebben/i);
+  assert.ok(list.records.some(x=>x.type==='parts'));
+  const parts=query('Welke onderdelen heeft Microsoft 365?',data);
+  assert.equal(parts.kind,'relations');
+  assert.match(parts.answer,/40 Microsoft 365-onderdelen/);
+});
+test('Onbekende M365-toegang blijft onbekend, ook als de productcatalogus compleet is',()=>{
+  const data=indexedDataset();
+  assert.ok(data.index.records('parts').filter(x=>x.kind==='Microsoft 365-onderdeel')
+    .every(x=>x.accessStatus==='Niet onafhankelijk geverifieerd'));
+  const count=query('Hoeveel apps heeft Microsoft 365 voor leerlingen?',data);
+  assert.match(count.answer,/niet geverifieerd/i);
+  assert.doesNotMatch(count.answer,/hebben werkelijk toegang|toegang bevestigd/i);
+  const licenties=query('Hoeveel licenties heeft Microsoft 365?',data);
+  assert.match(licenties.answer,/niet geverifieerd/i);
+  assert.doesNotMatch(licenties.answer,/40 toegewezen licenties/i);
+});
+test('Zonder relatie-index geen verzonnen M365-totaal',()=>{
+  const count=ask('Hoeveel apps heeft Microsoft 365?');
+  assert.match(count.answer,/relatie-index is niet geladen/i);
+  assert.doesNotMatch(count.answer,/69 basisregistraties/);
+  const list=ask('Welke apps van Microsoft 365 zijn beschikbaar voor leerlingen?');
+  assert.match(list.answer,/relatie-index is niet geladen/i);
 });
 test('Geen automatisch FAQ-antwoord bij onduidelijke vragen',()=>{
   const out=ask('heeft 3CX een actieve verwerkersovereenkomst en een DPIA');
