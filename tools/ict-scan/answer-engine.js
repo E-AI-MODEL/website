@@ -34,7 +34,7 @@
     if(scored[0]?.score>=0.88 && (!scored[1]||scored[0].score-scored[1].score>=0.11))return scored[0].faq;
     return null;
   }
-  function findApp(q,apps){
+  function findApp(q,apps,strict=false){
     let hits=[];
     const hay=' '+q+' ';
     for(const app of apps){
@@ -43,7 +43,7 @@
       if(hay.includes(' '+name+' '))hits.push({app,score:name.length+20});
     }
     if(!hits.length){
-      const aliases=[['microsoft 365','office 365|m365|ms 365'],['canon uniflow','uniflow|canon printer'],['3cx','telefooncentrale 3cx']];
+      const aliases=[['microsoft 365','office 365|m365|ms 365'],['canon uniflow','uniflow|canon printer'],['3cx','telefooncentrale 3cx'],['teams for education','klasteams|klas teams|class teams|teams klas|klasteam']];
       for(const [name,forms] of aliases){
         if(forms.split('|').some(x=>hay.includes(' '+x+' '))){
           const app=apps.find(x=>norm(x.name)===name);
@@ -51,7 +51,7 @@
         }
       }
     }
-    if(!hits.length && !(/\b(welke|alle|hoeveel)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q))){
+    if(!hits.length && !strict && !(/\b(welke|alle|hoeveel)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q))){
       const phraseTokens=words(q).filter(x=>x.length>3);
       const matched=apps.filter(app=>phraseTokens.some(w=>norm(app.name).split(' ').includes(w)));
       if(matched.length===1)hits=[{app:matched[0],score:2}];
@@ -60,16 +60,28 @@
     return hits[0]?.app||null;
   }
   function shortList(items,limit=5){const names=items.slice(0,limit).map(x=>x.name);return names.join(', ')+(items.length>limit?' en '+(items.length-limit)+' andere':'');}
+  function m365Modules(index,appId){
+    if(!index)return null;
+    return index.descendants('apps',appId,{maxDepth:3})
+      .filter(x=>x.type==='parts'&&x.record.kind==='Microsoft 365-onderdeel')
+      .map(x=>x.record);
+  }
   function describeApp(q,app,data){
     const own=app.name,base=[entry('apps',app)],src=recordSources([app]);
-    const ai=data.ai.filter(x=>x.parentId===app.id);
-    const entra=data.connections.filter(x=>x.matchedId===app.id);
-    const parts=data.parts.filter(x=>x.parent===app.id);
+    const ix=data.index;
+    const related=type=>ix?ix.connected('apps',app.id,{type}).map(x=>x.other):
+      (type==='ai'?data.ai.filter(x=>x.parentId===app.id):
+       type==='connections'?data.connections.filter(x=>x.matchedId===app.id):
+       type==='parts'?data.parts.filter(x=>x.parent===app.id):[]);
+    const ai=related('ai'),entra=related('connections');
+    const parts=related('parts').filter(x=>x.kind==='Microsoft 365-onderdeel'||x.parent===app.id);
     if(/\b(wie|verantwoordelijk|beheerder|beheert|eigenaar|beheer)\b/.test(q)){
       return result('field',candidateAnswer(app.owner,'Bij '+own+' staat als verantwoordelijke: ','Voor '+own+' is de verantwoordelijke nog niet vastgesteld in de inventarisatie.'),base,unknown(app.owner)?'Niet vastgesteld':'Geregistreerd',src);
     }
     if(/\b(verwerkersovereenkomst|verwerkerscontract|dpa|verwerker)\b/.test(q)){
-      return result('field',candidateAnswer(app.processorAgreement,'Bij '+own+' staat over de verwerkersovereenkomst: ','Voor '+own+' is de status van de verwerkersovereenkomst nog niet vastgesteld.'),base,unknown(app.processorAgreement)?'Niet vastgesteld':'Geregistreerd',src);
+      const detail=candidateAnswer(app.processorAgreement,'Bij '+own+' staat over de verwerkersovereenkomst: ','Voor '+own+' is de status van de verwerkersovereenkomst nog niet vastgesteld.');
+      const route=' Voor deelnemende leveranciers kun je via https://dv.kennisnet.nl/ met eHerkenning de overeenkomst en bijlagen beoordelen en door een bevoegd ondertekenaar laten ondertekenen. Beoordelen en ondertekenen hebben verschillende eHerkenning-machtigingen. Bij andere leveranciers, waaronder Microsoft, moet de toepasselijke overeenkomst apart worden gecontroleerd. Dit is geen bevestiging van een ondertekende overeenkomst.';
+      return result('field',detail+route,base,unknown(app.processorAgreement)?'Niet vastgesteld':'Geregistreerde contractstatus',src);
     }
     if(/\b(dpia|gegevensbeschermingseffectbeoordeling)\b/.test(q)){
       return result('field',candidateAnswer(app.dpiaStatus,'Bij '+own+' is de geregistreerde DPIA-status: ','Voor '+own+' is de DPIA-status nog niet vastgesteld. Dat betekent niet automatisch dat een DPIA vereist of afgerond is.'),base,unknown(app.dpiaStatus)?'Niet vastgesteld':'Geregistreerd',src);
@@ -80,7 +92,7 @@
       return result('legal','Bij '+own+' staan '+rules.length+' toetsingsverwijzingen: '+rules.map(x=>x.frameworkId+' '+x.article+' ('+(x.status||'nog te beoordelen')+')').join('; ')+'. Een verwijzing betekent geen automatische naleving.',base,'Beoordelingsregistratie',src);
     }
     if(/\b(bron|bronnen|herkomst|vandaan|afkomst)\b/.test(q)){
-      return result('source','De registratie van '+own+' ('+app.id+') verwijst naar: '+(src.length?src.join('; '):'geen expliciete bronverwijzing')+'.',base,src.length?'Bronvermelding':'Geen bron',src);
+      return result('source','Bronnen en originele bestandsverwijzingen zijn bewaard voor de interne controle. De gewone kaart toont geen Excel-herkomst.',base,'Broncontrole apart',[],q);
     }
     if(/\b(gegevens|persoonsgegevens|data|verwerkt|gegevenscategorie)\b/.test(q)&&!/\b(koppel|koppelingen|deelt|uitwisseling)\b/.test(q)){
       return result('field',candidateAnswer(app.data,'Bij '+own+' zijn de volgende gegevens geregistreerd: ','Voor '+own+' is nog niet vastgesteld welke gegevens worden verwerkt.'),base,unknown(app.data)?'Niet vastgesteld':'Geregistreerd',src);
@@ -90,7 +102,40 @@
       return result('relations','Bij '+own+' staan '+entra.length+' mogelijke Entra-matches: '+shortList(entra)+'. Dit zijn technische registraties; hun actuele werking is niet bevestigd.',entra.map(x=>entry('connections',x)).concat(base),'Mogelijke koppeling',recordSources(entra).concat(src));
     }
     if(/\b(koppel|koppelingen|deelt|uitwisseling|uitwisselen|integratie|api)\b/.test(q)){
-      return result('field',candidateAnswer(app.links,'Bij '+own+' is over koppelingen vastgelegd: ','Voor '+own+' is de feitelijke gegevensuitwisseling nog niet vastgesteld.'),base,unknown(app.links)?'Niet vastgesteld':'Geregistreerd',src);
+      const linked=ix?ix.connected('apps',app.id).filter(x=>['integration','sso','possible_match','registered_as'].includes(x.relationType)):[];
+      if(linked.length){
+        return result('relations','Voor '+own+' zijn '+linked.length+' mogelijke technische verbanden geregistreerd, waaronder '+shortList(linked.map(x=>x.other))+
+          '. De actieve werking is niet aangetoond.',base.concat(linked.slice(0,8).map(x=>entry(x.otherType,x.other))),
+          'Mogelijke verbindingen',src);
+      }
+      return result('field',candidateAnswer(app.links,'Bij '+own+' staat over koppelingen: ','Voor '+own+' is de feitelijke gegevensuitwisseling nog niet vastgesteld.'),base,unknown(app.links)?'Niet vastgesteld':'Geregistreerd',src);
+    }
+    if(app.defaultPolicy&&/\b(standaard|default|defaults|defaultsettings|defaultinstellingen|standaardinstellingen|a3|a5)\b/.test(q)){
+      const policy=app.defaultPolicy;
+      const audience=/\b(leerling|leerlingen|student|studenten)\b/.test(q)?'leerlingen':/\b(docent|docenten|medewerker|medewerkers)\b/.test(q)?'medewerkers':'beide doelgroepen';
+      const described=audience==='leerlingen'?policy.students:
+        audience==='medewerkers'?policy.staff:policy.staff+' Voor leerlingen: '+policy.students;
+      return result('field','Volgens de Microsoft Education-standaard voor '+own+': '+described+
+        ' '+(policy.condition||'')+' De beschrijving is een leveranciersuitgangspunt en geen controle van de schooltenant of individuele licentietoewijzing.',
+        base,'Leveranciersstandaard; schooltenant niet gecontroleerd',src);
+    }
+    if(app.id==='APP-034'&&/\b(welke|wat|overzicht|beschikbaar|toegang)\b/.test(q)&&
+      /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden|leerlingen|docenten|medewerkers)\b/.test(q)&&
+      !(/\b(ai|kunstmatige)\b/.test(q)&&/\b(functie|functies|mogelijkheden)\b/.test(q))){
+      const modules=m365Modules(ix,app.id);
+      if(!modules)return result('relations',
+        'De gedeelde relatie-index is niet geladen. De Microsoft 365-productcatalogus kan niet betrouwbaar worden bepaald.',
+        base,'Niet vastgesteld',src);
+      const audience=/\b(leerling|leerlingen)\b/.test(q)?'leerlingen':/\b(docent|docenten|medewerker|medewerkers)\b/.test(q)?'medewerkers':'alle gebruikers';
+      const relevant=modules.filter(x=>audience==='alle gebruikers'||
+        (Array.isArray(x.audience)&&x.audience.includes(audience)));
+      const description=modules.length?
+        'In het bronpakket zijn '+modules.length+' Microsoft 365-onderdelen beschreven, waaronder '+shortList(relevant.length?relevant:modules,8)+'. ':
+        'In de gedeelde index zijn nog geen Microsoft 365-productonderdelen vastgelegd. ';
+      return result('relations',description+
+        'Dit is geen bevestiging dat ieder onderdeel is geactiveerd of dat '+audience+' werkelijk toegang hebben. Licenties, leeftijdsinstellingen en rechten moeten afzonderlijk worden gecontroleerd.',
+        (relevant.length?relevant:modules).slice(0,12).map(x=>entry('parts',x)).concat(base),
+        'Productcatalogus; daadwerkelijke toegang niet vastgesteld',src);
     }
     if(/\b(ai|copilot|kunstmatige|functie|functies)\b/.test(q)){
       if(!ai.length)return result('relations','Aan '+own+' zijn in het AI-register geen AI-functies gekoppeld. Dat bewijst niet dat de leverancier geen AI-functies aanbiedt.',base,'Geen bronkoppeling',src);
@@ -112,6 +157,55 @@
   function countQuery(q,data){
     if(!/\b(hoeveel|aantal|totaal)\b/.test(q))return null;
     const apps=data.apps,ai=data.ai;
+    // Een specifiek product krijgt nooit het totaal van het schoolbrede licentieregister.
+    const mentioned=findApp(q,apps,true);
+    if(mentioned&&/\b(licenties|licentie|licentieplaatsen)\b/.test(q)){
+      const linked=data.index?data.index.connected('apps',mentioned.id,{type:'licenseReview'}).map(x=>x.other):[];
+      const summary=linked.length?'Er zijn '+linked.length+' licentiecontrole-registraties voor deze toepassing. ':'';
+      const counted=mentioned.licenseSnapshot;
+      if(counted&&Number.isSafeInteger(counted.assigned)&&counted.verified===true){
+        return result('count','Voor '+mentioned.name+' zijn '+counted.assigned+' toegewezen licenties geverifieerd op '+counted.asOf+'.', 
+          [entry('apps',mentioned)],'Geverifieerde licentietelling',recordSources([mentioned]));
+      }
+      return result('count',summary+'Het aantal daadwerkelijk toegewezen of betaalde licenties van '+mentioned.name+
+        ' is niet geverifieerd in deze openbare index. Het totale aantal licentiecontrolepunten is geen licentietelling.',
+        [entry('apps',mentioned),...linked.map(x=>entry('licenseReview',x))],
+        'Niet vastgesteld',recordSources([mentioned]));
+    }
+    if(mentioned&&/\b(ai|kunstmatige|copilot)\b/.test(q)&&
+      /\b(functie|functies|functionaliteiten)\b/.test(q)){
+      if(!data.index)return result('count','De gedeelde relatie-index is niet geladen. Een telling van AI-functies bij '+mentioned.name+' is niet betrouwbaar.',
+        [entry('apps',mentioned)],'Niet vastgesteld',recordSources([mentioned]));
+      const related=data.index.connected('apps',mentioned.id,{type:'ai'});
+      const unique=[...new Map(related.map(link=>[link.otherId,link.other])).values()];
+      return result('count','Bij '+mentioned.name+' zijn '+unique.length+' AI-functies beschreven. Dit bewijst niet dat deze functies op school zijn ingeschakeld.',
+        [entry('apps',mentioned),...unique.slice(0,12).map(x=>entry('ai',x))],
+        'Beschreven AI-functies; gebruik niet vastgesteld',recordSources([mentioned]));
+    }
+    if(mentioned&&/\b(entra|sso)\b/.test(q)&&
+      /\b(registratie|registraties|match|matches|koppeling|koppelingen)\b/.test(q)){
+      if(!data.index)return result('count','De gedeelde relatie-index is niet geladen. Entra-matches bij '+mentioned.name+' zijn niet betrouwbaar te tellen.',
+        [entry('apps',mentioned)],'Niet vastgesteld',recordSources([mentioned]));
+      const related=data.index.connected('apps',mentioned.id,{type:'connections'});
+      const unique=[...new Map(related.map(link=>[link.otherId,link.other])).values()];
+      return result('count','Bij '+mentioned.name+' zijn '+unique.length+' mogelijke Entra-matches beschreven. Dit bewijst geen actieve koppeling of werkende aanmelding.',
+        [entry('apps',mentioned),...unique.slice(0,12).map(x=>entry('connections',x))],
+        'Mogelijke Entra-matches; werking niet vastgesteld',recordSources([mentioned]));
+    }
+    if(mentioned?.id==='APP-034'&&
+      /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden)\b/.test(q)){
+      const modules=m365Modules(data.index,mentioned.id);
+      if(!modules)return result('count',
+        'De gedeelde relatie-index is niet geladen. Het aantal Microsoft 365-productonderdelen kan niet betrouwbaar worden bepaald.',
+        [entry('apps',mentioned)],'Niet vastgesteld',recordSources([mentioned]));
+      const audience=/\b(leerling|leerlingen)\b/.test(q)?'leerlingen':/\b(docent|docenten|medewerker|medewerkers)\b/.test(q)?'medewerkers':'alle gebruikers';
+      const note=audience==='alle gebruikers'?
+        'Dit is een telling van productvermeldingen, geen bewijs van activatie of licentietoewijzing.':
+        'Hoeveel daarvan voor '+audience+' op school toegankelijk zijn, is niet geverifieerd.';
+      return result('count','De broncatalogus bevat '+modules.length+' Microsoft 365-productonderdelen. '+note,
+        [entry('apps',mentioned),...modules.slice(0,12).map(x=>entry('parts',x))],
+        'Productcatalogus; toegang niet vastgesteld',recordSources([mentioned]));
+    }
     if(/\b(ai|kunstmatige|copilot)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q)){
       const ids=new Set(apps.map(x=>x.id)),withAi=new Set(ai.filter(x=>ids.has(x.parentId)).map(x=>x.parentId));
       return result('count',withAi.size+' van '+apps.length+' basisregistraties hebben een koppeling naar ten minste één beschreven AI-functie. Dit zegt niet of die functie op school actief is.',apps.filter(x=>withAi.has(x.id)).slice(0,12).map(x=>entry('apps',x)),'Afgeleide telling',recordSources(apps));
@@ -177,7 +271,7 @@
   function search(question,dataset){
     const q=norm(question);
     const data={apps:dataset.apps||[],ai:dataset.ai||[],connections:dataset.connections||[],parts:dataset.parts||[],candidates:dataset.candidates||[],faqs:dataset.faqs||[],
-      dpia:dataset.dpia||[],licenseReview:dataset.licenseReview||[],workActions:dataset.workActions||[],devices:dataset.devices||[]};
+      dpia:dataset.dpia||[],licenseReview:dataset.licenseReview||[],workActions:dataset.workActions||[],devices:dataset.devices||[],index:dataset.index||null};
     if(q.length<2)return result('empty','');
     const faq=exactFaq(q,data.faqs);
     if(faq)return result('faq',faq.answer,[entry('faqs',faq)],faq.status||'Vast antwoord',faq.sources||[],question);
@@ -281,8 +375,12 @@
   input.setAttribute('aria-autocomplete','list');
   input.setAttribute('aria-expanded','false');
   function snapshot(){
-    const from=name=>state[name] instanceof Map?Array.from(state[name].values()):[];
-    return {apps:from('apps'),ai:from('ai'),connections:from('connections'),parts:from('parts'),candidates:from('candidates'),faqs:from('faqs'),dpia:from('dpia'),licenseReview:from('licenseReview'),workActions:from('workActions'),devices:from('devices')};
+    const ix=window.IctInventoryIndex?.build(state);
+    const from=name=>ix?ix.records(name):(state[name] instanceof Map?[...state[name].values()]:[]);
+    return {index:ix,apps:from('apps'),ai:from('ai'),connections:from('connections'),
+      parts:from('parts'),candidates:from('additionalCandidates'),faqs:from('faqs'),
+      dpia:from('dpia'),licenseReview:from('licenseReview'),workActions:from('workActions'),
+      devices:from('devices'),hardwareGroups:from('hardwareGroups')};
   }
   function show(){
     host.hidden=false;wrap?.classList.add('has-answer');input.setAttribute('aria-expanded','true');
@@ -324,14 +422,8 @@
       card.append(list);
       if(found.records.length>8)card.append(make('p','answer-foot','Bekijk de overige resultaten in het register.'));
     }
-    if(found.sources.length){
-      const details=make('details','answer-evidence'),summary=make('summary','','Bronnen ('+found.sources.length+')');
-      details.append(summary);
-      for(const src of found.sources)details.append(make('p','answer-source',src));
-      card.append(details);
-    }else if(found.kind==='none'||found.kind==='suggestions'){
-      card.append(make('p','answer-foot','Er is geen antwoord uit de bronnen afgeleid.'));
-    }
+    if(found.kind==='none'||found.kind==='suggestions')card.append(make('p','answer-foot','Er is geen controleerbaar antwoord gevonden.'));
+    // Herkomst blijft in de bronregistratie, niet in openbare zoekresultaten.
     const back=make('button','answer-again','Andere vraag');
     back.type='button';back.addEventListener('click',()=>{
       input.value='';suggest();input.focus();

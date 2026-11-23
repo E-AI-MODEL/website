@@ -91,7 +91,7 @@ try {
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
-  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('61 toepassingen'));
+  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 toepassingen'));
   await page.locator('#viewStudio:not([hidden])').waitFor();
   assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
   assert.equal(await page.locator('#evidencePath').textContent(),'Overzicht samenstellen');
@@ -130,7 +130,7 @@ try {
     }
   };
   if(width<700)await assertNoComponentOverlap('start');
-  assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/61/);
+  assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/69/);
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/93/);
   await page.waitForFunction(()=>{
     const view=document.getElementById('viewStudio'),parts=[...document.querySelectorAll('#dsCanvas .ds-component')];
@@ -211,7 +211,7 @@ try {
   await page.locator('#roleModeFG').check();
   assert.equal(await page.locator('#roleModeFG').isChecked(),true);
   await page.locator('#railDrawerClose').click();
-  assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),5);
+  assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-modus mag geen DPIA-koppelingen verzinnen op basis van naamgelijkenis');
   await navigate('privacy');
   assert.equal(await page.locator('#viewPrivacy .scene-tab').count(),2);
   assert.equal(await page.locator('#viewPrivacy .privacy-governance-panel').count(),0,'AI-beheer mag niet onder FG staan');
@@ -226,7 +226,7 @@ try {
   await page.locator('#cardEditor').waitFor({state:'visible'});
   assert.equal(await page.locator('#cardEditor').evaluate(el=>el.classList.contains('card-context-mode')),true);
   assert.equal(await page.locator('#cardBrowserList').isVisible(),false,'Extra registerlijst mag een gekozen kaart niet verdringen');
-  assert.equal(await page.locator('#cardReadView .card-read-tab').count(),4);
+  assert.equal(await page.locator('#cardReadView .card-read-tab').count(),3,'Overzicht, gegevens en relaties zonder openbare herkomsttab');
   assert.equal(await page.locator('#cardReadView .card-tab-panel:not([hidden])').count(),1);
   assert.equal(await page.locator('#cardJsonPanel').isVisible(),false,'JSON is technische broninformatie, geen tweede kaart');
   await page.waitForFunction(()=>{const r=document.getElementById('cardEditor')?.getBoundingClientRect();return !!r&&r.left>=-1&&r.right<=innerWidth+1;},null,{timeout:4500});
@@ -236,8 +236,7 @@ try {
   await page.screenshot({path:'test-results/ict-scan-'+width+'-single-record.png'});
   await page.locator('#cardReadView .card-read-tab[data-target="details"]').click();
   assert.equal(await page.locator('#cardReadView [data-card-tab="details"]').isVisible(),true);
-  await page.locator('#cardReadView .card-read-tab[data-target="source"]').click();
-  assert.equal(await page.locator('#cardJsonPanel').isVisible(),true);
+  assert.equal(await page.locator('#cardReadView .card-read-tab[data-target="source"]').count(),0);
   await page.locator('#cardReadView .card-read-tab[data-target="overview"]').click();
   assert.equal(await page.locator('#cardJsonPanel').isVisible(),false);
   await page.locator('#cardEditButton').click();
@@ -247,6 +246,27 @@ try {
   await page.locator('#cardCancelEdit').click();
   await page.locator('#cardEditorClose').click();
   assert.equal(await page.locator('#cardEditor').isVisible(),false);
+  // Bronkaart: lege metadata is zichtbaar onbekend, zonder de JSON-waarden aan te vullen.
+  await page.locator('#railMore').click();
+  await page.locator('#cardOpen').click();
+  await page.locator('#cardTypeFilter').selectOption('sourceRegister');
+  await page.locator('#cardBrowserList .card-browser-item').first().click();
+  const sourceOverview=await page.evaluate(()=>{
+    const panel=document.querySelector('#cardReadView [data-card-tab="overview"]');
+    const values=Object.fromEntries([...panel.querySelectorAll('dt')].map(node=>[node.textContent,node.nextElementSibling?.textContent]));
+    return {values,original:JSON.parse(document.getElementById('cardJson').textContent)};
+  });
+  assert.equal(sourceOverview.values['Verantwoordelijke'],'Onbekend');
+  assert.equal(sourceOverview.values['Bronversie'],'Onbekend');
+  assert.equal(sourceOverview.values['Gebruiksrecht'],'Onbekend');
+  assert.equal(sourceOverview.values['Goedkeuring'],'Nog te beoordelen');
+  assert.equal(sourceOverview.original.owner,'');
+  assert.equal(sourceOverview.original.version,'');
+  await page.locator('#cardReadView .card-read-tab[data-target="details"]').click();
+  const sourceDetails=await page.locator('#cardReadView [data-card-tab="details"]').textContent();
+  assert.match(sourceDetails,/Grondslag voor gebruik\s*Onbekend/);
+  assert.match(sourceDetails,/Bewijs van goedkeuring\s*Onbekend/);
+  await page.locator('#cardEditorClose').click();
   await page.locator('.app-register-tab').nth(1).click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),true);
   assert(!/76\s+aanwijzingen/.test(await page.locator('#candidateInfo').textContent()),'Dezelfde 76 wordt dubbel getoond');
@@ -321,7 +341,7 @@ try {
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
  }
- console.log('ICT-scan '+browserType.name()+': 61 toepassingen geladen, vaste schermen, menu, grafieken en desktop/mobiele sync gecontroleerd');
+ console.log('ICT-scan '+browserType.name()+': 69 toepassingen geladen, vaste schermen, menu, grafieken en desktop/mobiele sync gecontroleerd');
 }finally{
  await browser?.close();
  server.kill('SIGTERM');

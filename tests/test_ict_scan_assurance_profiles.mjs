@@ -17,7 +17,7 @@ test('Organisatieprofielen benoemen hun eigen bron en de herkomst van de termijn
     assert.equal(profile.organisation.id, name);
     assert.equal(profile.policy.basis, 'project-default');
     assert.equal(profile.policy.reviewMaxAgeDays, 365);
-    assert.equal(Object.keys(profile.source.registerFiles).length, 14);
+    assert.equal(Object.keys(profile.source.registerFiles).length, name==='emmauscollege'?15:14);
     assert.ok(Object.isFrozen(profile));
     assert.ok(Object.isFrozen(profile.source.registerFiles));
   }
@@ -70,6 +70,7 @@ test('Configuratiepaden zijn volledig, uniek en veilig relatief aan de ingesteld
 test('Een eerder profiel met dertien registers blijft leesbaar zonder stil bronregister toe te voegen', () => {
   const original = read('emmauscollege');
   delete original.source.registerFiles.sourceRegister;
+  delete original.source.registerFiles.hardwareGroups;
   const profile = api.validate(original);
   assert.equal(Object.keys(profile.source.registerFiles).length, 13);
   assert.equal(Object.hasOwn(profile.source.registerFiles, 'sourceRegister'), false);

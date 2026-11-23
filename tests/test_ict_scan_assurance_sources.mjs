@@ -29,15 +29,17 @@ const wrap = source => ({type:'sourceRegister',id:source.id,data:source});
 const target = data => ({type:'apps',id:'APP-001',data:{id:'APP-001',name:'Test',...data}});
 const codes = findings => findings.map(item=>item.code);
 
-test('Voorstelregister bewaart alle 468 exacte verwijzingen eenmaal in 51 nog niet goedgekeurde regels', () => {
+test('Bronregister bewaart eerdere verwijzingen en zeven aanvullende, nog niet goedgekeurde bronidentiteiten', () => {
   const expected=new Set();
   for(const [type,file] of Object.entries(profile.source.registerFiles)){
     if(type==='sourceRegister')continue;
     for(const row of documents[file][type])for(const field of ['sources','sourceRefs'])for(const ref of row[field]||[])expected.add(ref);
   }
   const actual=seed.flatMap(row=>row.referenceKeys);
-  assert.equal(seed.length,51);assert.equal(expected.size,468);assert.equal(actual.length,468);
-  assert.deepEqual([...new Set(actual)].sort(),[...expected].sort());
+  assert.equal(seed.length,63);
+  assert.equal(new Set(actual).size,actual.length,'Bronalias is nooit dubbel toegewezen');
+  for(const ref of expected)assert.ok(actual.includes(ref),'Ontbrekende oorspronkelijke bronverwijzing: '+ref);
+  assert.ok(actual.length>=expected.size,'Supplementaire verwijzingen naar bestanden en relatiebewijzen blijven traceerbaar');
   const grouped=seed.filter(row=>row.provenance?.file);
   assert.equal(grouped.length,2);assert.equal(grouped.reduce((sum,row)=>sum+row.referenceKeys.length,0),419);
   const originalFiles=new Set(Object.entries(profile.source.registerFiles).filter(([type])=>type!=='sourceRegister').flatMap(([type,file])=>documents[file][type].flatMap(row=>(row.provenance||[]).map(item=>item.file))));
@@ -50,16 +52,17 @@ test('Voorstelregister bewaart alle 468 exacte verwijzingen eenmaal in 51 nog ni
   }
 });
 
-test('Manifest bindt het vierde bronbestand en de drie eerdere bestanden zijn bytegelijk gebleven', () => {
+test('Manifest bindt alle vier bronbestanden inclusief M365-, hardware- en bronaanvullingen', () => {
   const manifest=json(profile.source.sourceDir+'/manifest.json');
   assert.equal(manifest.dataFiles.length,4);
-  for(const [file,known] of Object.entries({'2026-applicatielandschap.json':'153ce56af55558a93ac0db6a5150c981c65f7c37','2026-werkregister.json':'8f017f556ec029419e24eec78c13741edc23e8cb','2026-faq.json':'44962fa1747a882cc65999c89bc6b3ec0a30e890'})){
+  for(const [file,known] of Object.entries({'2026-applicatielandschap.json':'a1971a7c49b1889ea23a73e619df0633ed5567a0','2026-werkregister.json':'8f017f556ec029419e24eec78c13741edc23e8cb','2026-faq.json':'faf91bb13091fb88b765c463a105fabaa88c98ca'})){
     const bytes=readFileSync(profile.source.sourceDir+'/'+file);
     const hash=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
     assert.equal(hash,known,file);
+    assert.equal(manifest.dataFiles.find(item=>item.path===file)?.sha,hash,'manifest SHA '+file);
   }
   const item=manifest.dataFiles.find(row=>row.path==='2026-bronnenregister.json'),bytes=readFileSync(profile.source.sourceDir+'/'+item.path);
-  assert.equal(item.recordCounts.sourceRegister,51);
+  assert.equal(item.recordCounts.sourceRegister,63);
   assert.equal(item.sha,createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex'));
 });
 
@@ -214,9 +217,9 @@ test('Native import en ruwe documenten leveren exact dezelfde canonical records 
   const app=dashboard();
   for(const [file,data] of Object.entries(documents))await app.load(file,data);
   const imported=adapter.fromState(profile,app.state,catalog,context),raw=adapter.fromDocuments(profile,documents,catalog,context);
-  assert.equal(imported.records.length,501);assert.deepEqual(imported,raw);
+  assert.equal(imported.records.length,579);assert.deepEqual(imported,raw);
   assert.equal(app.state.sourceRegisterLoaded,true);
-  assert.equal(app.state.sourceRegister.size,51);
+  assert.equal(app.state.sourceRegister.size,63);
   assert.equal(Object.hasOwn(app.state.sourceRegister.get(seed[0].id),'sources'),false);
   assert.deepEqual(imported.reviewRules.registerFiles,profile.source.registerFiles);
   imported.reviewRules.catalog.references[0].label='Gewijzigde kopie';assert.notEqual(catalog.references[0].label,'Gewijzigde kopie');
@@ -273,7 +276,7 @@ test('JSON-export bewaart bronregels inclusief goedkeuring en onbekende velden',
   assert.equal(Object.hasOwn(JSON.parse(await empty.downloads[0].blob.text()),'sourceRegister'),false);
 });
 
-test('Een volledige JSON-export onder een nieuwe bestandsnaam verandert geen van de 501 originele records', async () => {
+test('Een volledige JSON-export onder een nieuwe bestandsnaam behoudt alle 579 geregistreerde regels', async () => {
   const app=dashboard();
   for(const [file,data] of Object.entries(documents))await app.load(file,data);
   const before=adapter.fromState(profile,app.state,catalog,context);

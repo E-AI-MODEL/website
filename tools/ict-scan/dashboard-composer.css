@@ -370,3 +370,24 @@
   .workspace.monitor-layout #viewStudio:not([hidden]),
   .workspace.monitor-layout #viewStudio .ds-component{animation:none!important}
 }
+
+/* Brongebonden systeemverbanden, leesbaar op desktop en mobiel. */
+.workspace.monitor-layout #viewStudio .ds-recorded-links .ds-record-links,
+.workspace.monitor-layout #viewStudio .ds-context-links .ds-record-links{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:0;
+}
+.workspace.monitor-layout #viewStudio .ds-relationship-detail{
+  border-bottom:1px solid var(--ds-line);min-width:0;width:100%;font-size:11px;color:#365477;
+}
+.workspace.monitor-layout #viewStudio .ds-relationship-detail summary{
+  cursor:pointer;line-height:1.5;padding:9px 2px;overflow-wrap:anywhere;
+}
+.workspace.monitor-layout #viewStudio .ds-relationship-detail summary:focus-visible{
+  outline:2px solid #6b91b2;outline-offset:2px;
+}
+.workspace.monitor-layout #viewStudio .ds-relationship-proof{
+  padding:3px 4px 12px 14px;display:grid;gap:7px;overflow-wrap:anywhere;
+}
+.workspace.monitor-layout #viewStudio .ds-relationship-proof p{margin:0;font-size:11px;}
+.workspace.monitor-layout #viewStudio .ds-relationship-proof small{font-size:10px;color:#667a90;}
+.workspace.monitor-layout #viewStudio .ds-relationship-proof .ds-record-link{justify-self:start;}

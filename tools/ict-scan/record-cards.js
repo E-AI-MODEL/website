@@ -14,6 +14,7 @@
     {key:'dpia',store:'dpia',label:'FG | DPIA-bronnen',prefix:'DPIA',fields:['name','type','assessment','description','sourceDate','url','evidence','local']},
     {key:'aiControls',store:'aiControls',label:'AI-beheer',prefix:'B',fields:['name','domain','aiRefs','advice','description','knownUse','local','managementLocation','action','nuance','execution','nextStep','sourceInternal','supplierSource','extraSources']},
     {key:'devices',store:'devices',label:'Apparaatmetingen',prefix:'DEV',fields:['name','type','quantity','description','measurementDate','limitation']},
+    {key:'hardwareGroups',store:'hardwareGroups',label:'Hardwaregroepen',prefix:'H',fields:['name','category','users','manager','owner','status','description','quantity','note','appRefs']},
     {key:'licenseReview',store:'licenseReview',label:'Licenties ter controle',prefix:'LIC',fields:['name','domain','type','status','aiPossibilities','localAI','license2026','priority','action','sourceNotes','sourceCode']},
     {key:'workActions',store:'workActions',label:'Werkregisteracties',prefix:'WRK',fields:['name','action','involvedRoles','status']},
     {key:'softwareReview',store:'softwareReview',label:'Softwarecontroles',prefix:'SWR',fields:['name','known','action','status']},
@@ -30,12 +31,12 @@
     matched:'Mogelijke koppeling',matchedId:'Mogelijke toepassing-ID',category:'Categorie',priority:'Prioriteit',usageConfirmed:'Actief gebruik bevestigd?',status:'Status',included:'Opgenomen in basisinventaris',
     source:'Bron',evidenceDate:'Bewijsdatum',evidence:'Bewijs',value:'Waarde',url:'Bron-URL',sourceDate:'Datum bron',knownUse:'Bekend gebruik',managementLocation:'Beheerlocatie',advice:'Advies',nuance:'Nuance',execution:'Uitvoering',
     nextStep:'Vervolgstap',sourceInternal:'Interne bron',extraSources:'Aanvullende bronnen',quantity:'Aantal of waarde',measurementDate:'Meetdatum',limitation:'Beperking van de meting',license2026:'Licentie 2026',aiPossibilities:'Mogelijke AI-functies',
-    localAI:'AI lokaal ingeschakeld?',sourceNotes:'Bronnotities',sourceCode:'Broncode',involvedRoles:'Betrokken rollen',known:'Bekend uit documenten',
+    localAI:'AI lokaal ingeschakeld?',manager:'Beheer via',appRefs:'Beheerrelaties (app-ID’s)',audience:'Doelgroepen',availability:'Licentiebeschikbaarheid',accessStatus:'Toegang in schooltenant',sourceNotes:'Bronnotities',sourceCode:'Broncode',involvedRoles:'Betrokken rollen',known:'Bekend uit documenten',
     originalNumber:'Oorspronkelijk nummer',sourceRow:'Rij in export',moduleId:'Module-ID',usageContext:'Gebruikssituatie',m365Context:'Microsoft 365-context',
     version:'Bronversie',contentSha256:'SHA-256 van het bronbestand',rightsStatus:'Gebruiksrecht',rightsBasis:'Grondslag voor gebruik',allowedUse:'Toegestaan gebruik',scope:'Toepassingsgebied',retention:'Bewaarafspraak',approvalStatus:'Goedkeuring',approvedBy:'Goedgekeurd door',approvedAt:'Goedgekeurd op',approvalEvidence:'Bewijs van goedkeuring',nextReviewAt:'Opnieuw beoordelen op',referenceKeys:'Bijbehorende bronverwijzingen',
     sourceIds:'Gekoppelde bronnen',frameworkLinks:'Normbeoordelingen',approvalBinding:'Bevestigde bronversie',reviewBinding:'Bevestigde beoordeling',relations:'Verbanden',recordMeta:'Beoordelingsgegevens'
   };
-  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
+  const PROTECTED=new Set(['id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','hardwareLinks','serviceLinks','relations','frameworkLinks','sourceMeta','recordMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding','defaultPolicy']);
   const MULTILINE=/answer|aliases|description|action|explanation|attention|didactics|learning|evidence|processing|agreement|note|instructions|source|data|links|review|unknown|advice|formative|usageContext|m365Context|nuance|execution|nextStep|limitation|input|teacher|student|known|status/i;
   const typesByKey=Object.fromEntries(SPECS.map(s=>[s.key,s]));
   const model={drafts:new Map(),current:null,editing:false,adding:false,original:null,working:null,catalog:null,loading:false,contextMode:false,returnFocus:null,editSourceScope:null};
@@ -133,12 +134,14 @@
     const pending=$c('cardPendingPanel');
     if(pending)pending.hidden=model.contextMode&&!model.editing&&model.drafts.size===0;
   }
-  function lines(container,title,items){
+  function lines(container,title,items,showUnknown=false){
     const group=text('section','card-read-section');if(title)group.append(text('h4','',title));
     const dl=text('dl','card-read-grid');
     for(const [name,value] of items){
-      if(value===undefined||value===null||value===''||(Array.isArray(value)&&!value.length))continue;
-      const dt=text('dt','',name),dd=text('dd','',typeof value==='object'?JSON.stringify(value,null,2):value);
+      const missing=value===undefined||value===null||(typeof value==='string'&&!value.trim())||(Array.isArray(value)&&!value.length);
+      if(missing&&!showUnknown)continue;
+      // Alleen een weergavelabel. Een onbekend bronveld blijft leeg in de JSON en in de controles.
+      const dt=text('dt','',name),dd=text('dd','',missing?'Onbekend':typeof value==='object'?JSON.stringify(value,null,2):value);
       dl.append(dt,dd);
     }
     if(dl.children.length){group.append(dl);container.append(group);}
@@ -157,6 +160,7 @@
       ai:['product','action','phase','teacher','local','unknown'],
       connections:['enabled','matched','assessment','local'],
       devices:['quantity','measurementDate','limitation'],
+      hardwareGroups:['category','users','manager','owner','status','quantity','description'],
       dpia:['assessment','sourceDate','evidence','local'],
       aiControls:['advice','managementLocation','execution','nextStep'],
       additionalCandidates:['kind','status','action','priority'],
@@ -164,13 +168,13 @@
       sourceRegister:['owner','version','rightsStatus','allowedUse','approvalStatus','approvedBy','approvedAt']
     };
     const first=(important[spec.key]||['description','local','status','action','owner','priority'])
-      .filter(k=>k in r && r[k]!==undefined && r[k]!==null && String(r[k]).trim());
-    const other=spec.fields.filter(k=>k!=='name'&&!first.includes(k));
+      .filter(k=>spec.key==='sourceRegister'||(k in r && r[k]!==undefined && r[k]!==null && String(r[k]).trim()));
+    const other=spec.fields.filter(k=>k!=='name'&&!first.includes(k)&&!['aiRefs','sourceDescription','sourceNotes','sourceCode','sourceInternal','supplierSource','source'].includes(k));
     const nav=text('nav','card-read-tabs');nav.setAttribute('role','tablist');
     nav.setAttribute('aria-label','Inhoud van de registratie');
     const panes=new Map(),tabs=new Map();
     const sections=[
-      ['overview','Overzicht'],['details','Meer gegevens'],['links','Verbanden'],['source','Herkomst']
+      ['overview','Overzicht'],['details','Meer gegevens'],['links','Verbanden']
     ];
     for(const [id,name] of sections){
       const panel=text('section','card-tab-panel');
@@ -184,52 +188,70 @@
       nav.append(button);panes.set(id,panel);tabs.set(id,button);
     }
     const overview=panes.get('overview');
-    lines(overview,'',first.map(k=>[label(k,r),r[k]]));
+    lines(overview,'',first.map(k=>[label(k,r),r[k]]),spec.key==='sourceRegister');
+    if(spec.key==='sourceRegister')lines(overview,'Bronbeoordeling',[['Goedkeuringsstatus',sourceApprovalState(r)]]);
+    if((spec.key==='apps'||spec.key==='parts')&&r.defaultPolicy){
+      const p=r.defaultPolicy;
+      lines(overview,'Standaardinstellingen volgens Microsoft',[
+        ['Medewerkers / docenten',p.staff],['Leerlingen',p.students],
+        ['KlasTeams',p.classTeams],['Voorwaarde',p.condition],['Licentie-uitgangspunt',p.licenseBasis],
+        ['Bewijsstatus',p.evidenceStatus],
+        ['Werkelijke toegang in schooltenant',p.verifiedInTenant===true?'Gecontroleerd':'Niet onafhankelijk gecontroleerd']
+      ]);
+    }
+    if(spec.key==='apps'&&Object.prototype.hasOwnProperty.call(r,'processorAgreement')){
+      lines(overview,'Verwerkersovereenkomst: beoordelingsroute',[
+        ['Route','Dienst Verwerkersovereenkomsten Kennisnet (https://dv.kennisnet.nl/), voor aangesloten leveranciers'],
+        ['Toegang','eHerkenning: beoordelen DV of beheren voor beoordeling; ondertekenen vereist afzonderlijke machtiging'],
+        ['Beoordeling','Controleer overeenkomst, privacybijsluiter, beveiligingsbijlage en afwijkingen'],
+        ['Besluit','Bevoegd ondertekenaar accordeert; status en ondertekenbewijs pas na afronding vastleggen'],
+        ['Andere leveranciers','Bijvoorbeeld Microsoft: toepasselijke DPA afzonderlijk beoordelen']
+      ]);
+    }
+
+    if(spec.key==='apps'){const ix=window.IctInventoryIndex?.build(state);
+      if(ix)lines(overview,'AI-functies',[['Beschreven functies',ix.connected('apps',r.id,{type:'ai'}).length]]);
+    }
     if(!overview.children.length)overview.append(text('p','card-empty','Voor deze registratie zijn nog geen hoofdgegevens ingevuld.'));
     const details=panes.get('details');
-    lines(details,'',other.map(k=>[label(k,r),r[k]]));
-    const hiddenFields=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
+    lines(details,'',other.map(k=>[label(k,r),r[k]]),spec.key==='sourceRegister');
+    const hiddenFields=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','hardwareLinks','serviceLinks','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
     const extras=Object.keys(r).filter(k=>!hiddenFields.has(k)).map(k=>[label(k,r),r[k]]);
     if(extras.length)lines(details,'Overige gegevens',extras);
     if(!details.children.length)details.append(text('p','card-empty','Geen aanvullende gegevens.'));
     const links=panes.get('links');
-    const relations=Array.isArray(r.relations)?r.relations:[];
+    const ix=window.IctInventoryIndex?.build(state);
+    const relations=ix?ix.connected(spec.key,r.id):[];
     const references=Array.isArray(r.frameworkLinks)?r.frameworkLinks:[];
     const catalog=new Map((model.catalog?.references||[]).map(x=>[x.id,x]));
-    lines(links,'Vastgelegde verbanden',relations.length
-      ?relations.map(x=>[x.relationType+' · '+x.targetType+':'+x.targetId,(x.status||'Niet bevestigd')+' · '+(x.evidence||'Bron ontbreekt')+(x.note?' · '+x.note:'')])
-      :[['Verbanden','Nog geen beoordeelde verbanden vastgelegd']]);
-    lines(links,'Normverwijzingen',references.length
-      ?references.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),[(x.status||'Nog te beoordelen'),reviewState(r,x),(x.evidence||'Geen bewijs vastgelegd'),x.note,x.role&&'Rol: '+x.role,x.reviewedBy&&'Beoordeeld door: '+x.reviewedBy,x.reviewedAt&&'Beoordeeld: '+x.reviewedAt,x.nextReviewAt&&'Volgende beoordeling: '+x.nextReviewAt,x.followUp&&'Actie: '+x.followUp,x.followUpOwner&&'Actiehouder: '+x.followUpOwner,x.followUpStatus&&'Opvolging: '+x.followUpStatus,x.completionEvidence&&'Uitvoering: '+x.completionEvidence].filter(Boolean).join(' · ')])
+    const relationNames=new Map((model.catalog?.relationTypes||[]).map(x=>[x.id,x.label]));
+    lines(links,'Verbanden ('+relations.length+')',relations.length
+      ?relations.map(x=>[
+        (relationNames.get(x.relationType)||x.relationType)+' · '+(x.other?.name||x.otherId)+' ('+x.otherId+')',
+        (x.status||'Niet vastgesteld')+' · '+(x.direction==='incoming'?'Relatie naar deze registratie':'Relatie vanuit deze registratie')+
+        (x.note?' · '+x.note:'')
+      ])
+      :[['Verbanden','Geen vastgelegde relatie in de ingelezen index']]);
+    lines(links,'Normbeoordelingen',references.length
+      ?references.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),
+        [x.status||'Nog te beoordelen',reviewState(r,x),x.note,
+        x.role&&'Rol: '+x.role,x.reviewedBy&&'Beoordeeld door: '+x.reviewedBy,
+        x.reviewedAt&&'Beoordeeld: '+x.reviewedAt,
+        x.nextReviewAt&&'Volgende beoordeling: '+x.nextReviewAt,
+        x.followUp&&'Actie: '+x.followUp,
+        x.followUpOwner&&'Actiehouder: '+x.followUpOwner,
+        x.followUpStatus&&'Opvolging: '+x.followUpStatus].filter(Boolean).join(' · ')])
       :[['Normen','Nog niet per bepaling beoordeeld']]);
-    const source=panes.get('source'),meta=r.recordMeta||{};
-    lines(source,'Herkomst',[
-      ['Brongoedkeuring',spec.key==='sourceRegister'?sourceApprovalState(r):''],
-      ['Bronnen',(r.sources||[]).join('; ')],
-      ['Bronverwijzingen',(r.sourceRefs||[]).join('; ')],
-      ['Gekoppelde bronnen',(r.sourceIds||[]).map(id=>record('sourceRegister',id)?.name||id).join('; ')],
-      ['Verwijzingen bij deze bron',(r.referenceKeys||[]).join('; ')],
-      ['Bronrijen',provenanceText(r.provenance)],
-      ['Oorspronkelijk nummer',r.originalNumber],
-      ['Broninstellingen',Object.keys(meta).length?JSON.stringify(meta):'']
-    ]);
-    const history=r.auditTrail||[];
-    lines(source,'Logboek',history.length?history.map(x=>[(x.timestamp||'Datum onbekend')+' · '+(x.actor||'Onbekend'),(x.action||'Wijziging')+' · '+(x.fields||[]).join(', ')+' · '+(x.reason||'Geen toelichting')]):[['Wijzigingen','Nog geen vastgelegde wijzigingen']]);
-    if(r.sourceFields||r.otherDescription){
-      const legacy=text('details','card-details');
-      legacy.append(text('summary','','Oorspronkelijke bronvelden'));
-      if(r.sourceFields)lines(legacy,'Excelvelden',Object.entries(r.sourceFields));
-      if(r.otherDescription)lines(legacy,'Aanvullende bronbeschrijving',[['Beschrijving',r.otherDescription]]);
-      source.append(legacy);
-    }
+    // Bronverwijzingen blijven in het bronregister en worden niet in deze
+    // publiek zichtbare kaart uitgegeven. Zij blijven onderdeel van de review.
     function activate(key){
       for(const [name,panel] of panes)panel.hidden=name!==key;
       for(const [name,tab] of tabs){
         const active=name===key;tab.classList.toggle('active',active);
         tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;
       }
-      $c('cardJsonPanel').hidden=key!=='source';
-      if(key!=='source')$c('cardJsonPanel').open=false;
+      $c('cardJsonPanel').hidden=true;
+      $c('cardJsonPanel').open=false;
       $c('cardEditSurface').scrollTop=0;
     }
     const names=sections.map(([id])=>id);
@@ -262,6 +284,7 @@
     else if(multiline){input.rows=String(value||'').length>250?4:2;}
     else{input.type=model.current?.type==='sourceRegister'&&['approvedAt','nextReviewAt'].includes(name)?'date':'text';input.autocomplete='off';}
     input.value=typeof value==='boolean'?String(value):String(value??'');
+    if(model.current?.type==='sourceRegister'&&!choice&&!String(value??'').trim())input.placeholder='Onbekend';
     if(name==='name')input.required=true;
     if(name==='parentId'||name==='matchedId'||name==='parent'||name==='connectionId'){
       input.setAttribute('list','cardKnownIds');input.title='Gebruik een bestaand ID, geen nieuwe naam';

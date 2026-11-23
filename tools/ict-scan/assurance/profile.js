@@ -11,7 +11,7 @@
     'dpia', 'aiControls', 'devices', 'licenseReview', 'workActions',
     'softwareReview', 'faqs'
   ]);
-  const REGISTERS = Object.freeze([...LEGACY_REGISTERS, 'sourceRegister']);
+  const REGISTERS = Object.freeze([...LEGACY_REGISTERS, 'hardwareGroups', 'sourceRegister']);
   const fail = message => { throw new TypeError('Ongeldig organisatieprofiel: ' + message); };
   const object = (value, label) => {
     if (!value || typeof value !== 'object' || Array.isArray(value)) fail(label + ' moet een object zijn.');
@@ -78,7 +78,7 @@
     }
     path(input.source.sourceDir, 'source.sourceDir');
     identifier(input.source.scopeId, 'source.scopeId');
-    keys(input.source.registerFiles, LEGACY_REGISTERS, 'source.registerFiles', ['sourceRegister']);
+    keys(input.source.registerFiles, LEGACY_REGISTERS, 'source.registerFiles', ['sourceRegister','hardwareGroups']);
     for (const type of Object.keys(input.source.registerFiles)) path(input.source.registerFiles[type], 'source.registerFiles.' + type, true);
     if (Object.prototype.hasOwnProperty.call(input.source, 'configurationFiles')) {
       const files = input.source.configurationFiles;

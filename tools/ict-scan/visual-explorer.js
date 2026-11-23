@@ -265,64 +265,53 @@
     foot.append(dom('th','',fmt(total)));body.append(foot);
     table.append(body);shell.append(table);result.append(shell);
   }
-  function recordedConnections(app){
-    const groups=[['apps','apps'],['ai','ai'],['connections','connections'],['parts','parts'],['additionalCandidates','candidates'],['checks','checks'],['dpia','dpia'],['aiControls','aiControls'],['devices','devices'],['licenseReview','licenseReview'],['workActions','workActions'],['softwareReview','softwareReview'],['faqs','faqs']];
-    const lookup=Object.fromEntries(groups.map(([type,store])=>[type,state[store]]));
-    const linked=[],seen=new Set();
-    for(const [type,store] of groups){
-      for(const current of state[store]?.values()||[]){
-        for(const relation of current.relations||[]){
-          const outgoing=type==='apps'&&current.id===app.id;
-          const incoming=relation.targetType==='apps'&&relation.targetId===app.id;
-          if(!outgoing&&!incoming)continue;
-          const target=outgoing?lookup[relation.targetType]?.get(relation.targetId):current;
-          const otherType=outgoing?relation.targetType:type;
-          if(!target)continue;
-          const id=type+'/'+current.id+'/'+relation.relationType+'/'+relation.targetType+'/'+relation.targetId;
-          if(seen.has(id))continue;seen.add(id);
-          linked.push({
-            id:target.id,name:target.name||target.id,cardType:otherType,
-            description:relation.relationType+' · '+(relation.status||'Status onbekend')+
-              (relation.evidence?' · Bron: '+relation.evidence:' · Bron nog niet vastgelegd')+
-              (relation.note?' · '+relation.note:'')
-          });
-        }
-      }
-    }
-    return linked;
+  function recordedConnections(app,index){
+    return index.connected('apps',app.id).filter(x=>x.origin==='declared').map(link=>({
+      id:link.otherId,name:link.other?.name||link.otherId,
+      cardType:link.otherType,
+      description:link.relationType+' · '+link.status+(link.note?' · '+link.note:'')
+    }));
   }
   function applicableRules(app){
     return (app.frameworkLinks||[]).map(link=>({
       id:link.frameworkId+' '+link.article,
       name:link.frameworkId+' · '+link.article,
-      description:(link.status||'Nog te beoordelen')+
-        (link.evidence?' · Bron: '+link.evidence:' · Bewijs ontbreekt')+
-        (link.note?' · '+link.note:'')
+      description:(link.status||'Nog te beoordelen')+(link.note?' · '+link.note:'')
     }));
   }
-  function matchingFamily(app){
-    const key=normalize(app.name);
+  function matchingFamily(app,index){
+    const related=index.connected('apps',app.id);
+    const entries=(type,predicate=()=>true)=>related.filter(x=>x.otherType===type&&predicate(x)).map(x=>x.other);
+    const unique=items=>[...new Map(items.map(x=>[x.id,x])).values()];
     return [
-      {key:'child',title:'Onderliggende toepassingen',entries:array(state.apps).filter(x=>x.id!==app.id&&(x.parent===app.id||normalize(x.parent||'')===key)),view:'apps'},
-      {key:'part',title:'Technische registraties',entries:array(state.parts).filter(x=>x.parent===app.id),view:''},
-      {key:'ai',title:'Beschreven AI-functies',entries:array(state.ai).filter(x=>x.parentId===app.id),view:'ai'},
-      {key:'entra',title:'Mogelijke Entra-matches',entries:array(state.connections).filter(x=>x.matchedId===app.id),view:'connections'},
-      {key:'recorded',title:'Beoordeelde verbanden',entries:recordedConnections(app),view:''},
-      {key:'legal',title:'Gekoppelde normen en wetten',entries:applicableRules(app),view:''}
+      {key:'child',title:'Onderliggende toepassingen',
+        entries:unique(entries('apps',x=>x.relationType==='part_of'&&x.direction==='incoming')),view:'apps'},
+      {key:'part',title:'Technische onderdelen en M365-modules',
+        entries:unique(entries('parts',x=>x.relationType==='part_of')),view:''},
+      {key:'ai',title:'Beschreven AI-functies',entries:unique(entries('ai')),view:'ai'},
+      {key:'entra',title:'Mogelijke Entra-matches',entries:unique(entries('connections')),view:'connections'},
+      {key:'recorded',title:'Vastgelegde verbanden',entries:recordedConnections(app,index),view:''},
+      {key:'hardware',title:'Apparatuur en beheer',
+        entries:unique(entries('hardwareGroups')).map(x=>({
+          id:x.id,name:x.name,description:(x.owner||'Verantwoordelijke onbekend')+' · '+(x.status||'Nog te controleren')+' · '+(x.note||x.description||'')
+        })),view:''},
+      {key:'legal',title:'Normbeoordelingen',entries:applicableRules(app),view:''}
     ].filter(g=>g.entries.length>0);
   }
-  function familyScore(app){return matchingFamily(app).reduce((n,g)=>n+g.entries.length,0);}
+  function familyScore(app,index){return matchingFamily(app,index).reduce((n,g)=>n+g.entries.length,0);}
   function renderFamily(){
+    const ix=window.IctInventoryIndex?.build(state);
     const apps=array(state.apps),select=el('familyApp'),panel=el('familyVisual');panel.replaceChildren();
-    const families=apps.slice().sort((a,b)=>familyScore(b)-familyScore(a)||a.name.localeCompare(b.name,'nl'));
+    if(!ix){subtitle(panel,'Index niet beschikbaar.');return;}
+    const families=apps.slice().sort((a,b)=>familyScore(b,ix)-familyScore(a,ix)||a.name.localeCompare(b.name,'nl'));
     if(!families.length){subtitle(panel,'Er zijn nog geen relaties beschreven.');el('familyContext').textContent='Geen relaties verzonnen uit productnamen.';return;}
     const active=focusedFamily&&families.some(x=>x.id===focusedFamily)?focusedFamily:families[0].id;
     if(select.options.length!==families.length||select.value!==active){
-      select.replaceChildren();for(const app of families){const opt=dom('option','',app.name+' · '+familyScore(app));opt.value=app.id;select.append(opt);}
+      select.replaceChildren();for(const app of families){const opt=dom('option','',app.name+' · '+familyScore(app,ix));opt.value=app.id;select.append(opt);}
     }
     select.value=active;focusedFamily=active;
     const app=state.apps.get(active);if(!app)return;
-    const groups=matchingFamily(app),size=groups.reduce((n,g)=>n+g.entries.length,0);
+    const groups=matchingFamily(app,ix),size=groups.reduce((n,g)=>n+g.entries.length,0);
     const root=dom('div','family-main');
     const label=dom('span','family-main-label',app.id+' · '+category(app.kind));
     root.append(label,dom('strong','family-main-name',app.name));

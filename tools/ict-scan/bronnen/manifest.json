@@ -7,27 +7,29 @@
     "firstInventoryStarted": "2026-08-10",
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
-    "evidenceCutoff": "2026-11-17",
-    "dataVersion": "2026-11-20-inventaris-v1",
-    "faqDataVersion": "2026-11-20"
+    "evidenceCutoff": "2026-11-23",
+    "dataVersion": "2026-11-23-m365-standaardinstellingen-en-dv-v1",
+    "faqDataVersion": "2026-11-23",
+    "indexContractVersion": "1.0.0"
   },
   "dataFiles": [
     {
       "path": "2026-applicatielandschap.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "apps": 61,
+        "apps": 69,
         "ai": 76,
         "connections": 93,
         "additionalCandidates": 76,
-        "parts": 13,
+        "parts": 53,
         "dpia": 10,
         "aiControls": 22,
         "checks": 16,
         "devices": 4,
-        "licenseReview": 40
+        "licenseReview": 40,
+        "hardwareGroups": 15
       },
-      "sha": "153ce56af55558a93ac0db6a5150c981c65f7c37",
+      "sha": "a1971a7c49b1889ea23a73e619df0633ed5567a0",
       "verified": true
     },
     {
@@ -44,18 +46,18 @@
       "path": "2026-faq.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "faqs": 14
+        "faqs": 17
       },
-      "sha": "44962fa1747a882cc65999c89bc6b3ec0a30e890",
+      "sha": "faf91bb13091fb88b765c463a105fabaa88c98ca",
       "verified": true
     },
     {
       "path": "2026-bronnenregister.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "sourceRegister": 51
+        "sourceRegister": 63
       },
-      "sha": "a9a426872fd93d60ee7042084f9fa61bb699a12d",
+      "sha": "13dd30ccf5898b9c2b9f01908d9a5734426becf8",
       "verified": true
     }
   ],
@@ -63,6 +65,11 @@
     "De basisinventaris telt 61 toepassingen en diensten; dit is geen bevestigd volledig aantal.",
     "76 aanvullende kandidaten tellen niet als bevestigd schoolgebruik.",
     "De ruwe Entra-roltoewijzingen en persoonlijke gegevens zijn niet gepubliceerd.",
-    "Het bronregister bevat 51 voorstelregels met 468 exact overgenomen verwijzingen. De vermelde SHA controleert de JSON-bestandsinhoud; bronhouderschap, rechten en goedkeuring zijn nog niet vastgesteld."
+    "Zes Microsoft 365-beheeronderdelen zijn als context bij APP-034 opgenomen; gegevens uit controlematrices zijn geen bevestiging van actieve tenantinstellingen.",
+    "69 basisapplicaties, waaronder acht aanvullende regels waarvoor schoolgebruik nog moet worden geverifieerd; telt niet als 69 actieve applicaties.",
+    "15 schoolbrede hardwaregroepen, 53 onderdelen (13 Entra-registraties en 40 Microsoft 365-productvermeldingen), zonder extra Entra-apparaatmeting.",
+    "Één afgeleide index verbindt de vier gecontroleerde bronbestanden, geen vijfde bronbestand.",
+    "63 bronnen in het bronnenregister, waaronder vijf nieuwe openbare bronnen voor Microsoft Education-standaarden en de Kennisnet-verwerkersovereenkomstprocedure. Alle nieuwe bronnen blijven inhoudelijk te beoordelen.",
+    "17 FAQ-kaarten, waaronder standaard M365-instellingen en de eHerkenning-route. Geen automatische goedkeuring van verwerkersovereenkomsten, tenanttoegang of individuele licentietoewijzing."
   ]
 }

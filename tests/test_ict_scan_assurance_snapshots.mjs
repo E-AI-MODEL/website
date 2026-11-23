@@ -9,7 +9,7 @@ const profiles = require('../tools/ict-scan/assurance/profile.js');
 const read = path => readFileSync(path, 'utf8');
 const loadProfile = name => profiles.validate(JSON.parse(read('tools/ict-scan/assurance/profiles/' + name + '.json')));
 const clone = value => structuredClone(value);
-const storeNames = ['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'];
+const storeNames = ['apps','ai','connections','checks','devices','hardwareGroups','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'];
 const source = read('tools/ict-scan/enhancements.js');
 // Run the actual snapshot functions with an IndexedDB substitute. Rendering and
 // browser persistence are outside this unit test's scope.

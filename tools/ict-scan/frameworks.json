@@ -144,6 +144,36 @@
       "id": "replaces",
       "label": "Vervangt",
       "note": "Historische opvolging, met peildatum."
+    },
+    {
+      "id": "license_review",
+      "label": "Licentiecontrole",
+      "note": "Een toepassing verwijst naar een licentieregistratie; geen bewijs dat een licentie betaald of toegewezen is."
+    },
+    {
+      "id": "software_review",
+      "label": "Softwarecontrole",
+      "note": "Een toepassing wordt genoemd bij een gerichte controle in het werkregister."
+    },
+    {
+      "id": "follow_up",
+      "label": "Openstaande actie",
+      "note": "Een toepassing is expliciet genoemd in een open werkactie; geen automatische afronding."
+    },
+    {
+      "id": "possible_match",
+      "label": "Mogelijke Entra-overeenkomst",
+      "note": "Een exportmatch of naamovereenkomst bewijst geen SSO of actieve gegevensuitwisseling."
+    },
+    {
+      "id": "registered_as",
+      "label": "Geregistreerd als",
+      "note": "Een technisch onderdeel is terug te vinden in een registratie; geen actieve koppeling verondersteld."
+    },
+    {
+      "id": "reviews",
+      "label": "Beheer- of controlepunt bij",
+      "note": "Een controle betreft deze functie; geen wettelijk nalevingsoordeel."
     }
   ],
   "statuses": [

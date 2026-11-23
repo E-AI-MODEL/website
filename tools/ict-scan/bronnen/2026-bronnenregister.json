@@ -16,14 +16,18 @@
         ],
         "identityField": "provenance.file",
         "groupingRule": "Alleen een exact gelijk provenance.file of die exacte bestandsnaam gevolgd door de letterlijke scheiding \" / \" koppelt een verwijzing aan een bestandsidentiteit. Overige verwijzingen blijven afzonderlijk.",
-        "referenceCount": 468,
-        "recordCount": 51,
-        "groupedFileCount": 2
+        "referenceCount": 517,
+        "recordCount": 63,
+        "groupedFileCount": 2,
+        "previousRecordCount": 51,
+        "notes": []
       },
       "notes": [
         "Dit register bewaart bestaande bronverwijzingen. Het bevestigt niet dat de oorspronkelijke bestanden zijn ingezien of geverifieerd.",
         "Twee expliciet vastgelegde bestandsidentiteiten bevatten samen 419 exacte verwijzingen; 49 overige verwijzingen zijn afzonderlijk behouden.",
-        "Bronhouder, versie, rechten, toegestaan gebruik en goedkeuring zijn niet uit verwijsteksten afgeleid. Deze gegevens moeten nog worden beoordeeld."
+        "Bronhouder, versie, rechten, toegestaan gebruik en goedkeuring zijn niet uit verwijsteksten afgeleid. Deze gegevens moeten nog worden beoordeeld.",
+        "Zeven aanvullende bronidentiteiten voor het schoolbrede IAM-overzicht, M365-werkbladen en vier officiële Microsoft Learn-pagina's; nog geen formele goedkeuring.",
+        "Vijf extra openbare bronnen: licentietoewijzing, klasTeams, leerlingenbeleid en verwerkersovereenkomsten via Kennisnet. Geen schooltenanttoegang of ondertekende overeenkomst afgeleid."
       ]
     }
   },
@@ -1419,6 +1423,336 @@
       "approvedAt": "",
       "approvalEvidence": "",
       "nextReviewAt": ""
+    },
+    {
+      "id": "SRC-00052",
+      "name": "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+      "referenceKeys": [
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X22",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X23",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X24",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X25",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties!X28",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 81",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 82",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 83",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 84",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 85",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 86",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 87",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rij 88",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 19",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 20",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 21",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 22",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 23",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 24",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 25",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 26",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 27",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 28",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 29",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 30",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 31",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 32",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Hardware rij 33",
+        "01_Emmauscollege_schoolbreed_applicatielandschap_met_IAM(3).xlsx / Applicaties rijen 81-88"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Aangeleverde schoolbrede werkmap",
+        "asOf": "2026-11-23"
+      }
+    },
+    {
+      "id": "SRC-00053",
+      "name": "Overzicht applicaties Emmauscollege (1)(2).xlsx",
+      "referenceKeys": [
+        "Overzicht applicaties Emmauscollege (1)(2).xlsx",
+        "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting!B32:H32",
+        "Overzicht applicaties Emmauscollege (1)(2).xlsx / M365-inrichting!B21:H34; Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A99:P99 (ICT-091)"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Werkblad of leveranciersbron",
+        "asOf": "2026-11-23"
+      }
+    },
+    {
+      "id": "SRC-00054",
+      "name": "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx",
+      "referenceKeys": [
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A21:P21 (ICT-013)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A20:P20 (ICT-012)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A61:P61 (ICT-053); Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A64:P64 (ICT-056)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A62:P62 (ICT-054); 2026-applicatielandschap.json / parts MOD-005",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A19:P19 (ICT-011)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A18:P18 (ICT-010)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A73:P73 (ICT-065)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A74:P75 (ICT-066/067)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A76:P76 (ICT-068)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A77:P80 (ICT-069/070/072)",
+        "Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A14:P14 (ICT-006); Emmauscollege_nulmeting_M365_en_applicaties_2026(1).xlsx / M365 & ICT!A82:P83 (ICT-074/075)"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Werkblad of leveranciersbron",
+        "asOf": "2026-11-23"
+      }
+    },
+    {
+      "id": "SRC-00055",
+      "name": "Microsoft Learn: Microsoft 365 Education service description",
+      "referenceKeys": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Werkblad of leveranciersbron",
+        "asOf": "2026-11-23"
+      }
+    },
+    {
+      "id": "SRC-00056",
+      "name": "Microsoft Learn: Microsoft 365 Education licentievergelijking",
+      "referenceKeys": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Werkblad of leveranciersbron",
+        "asOf": "2026-11-23"
+      }
+    },
+    {
+      "id": "SRC-00057",
+      "name": "Microsoft Learn: beheer AI-functies in Education",
+      "referenceKeys": [
+        "https://learn.microsoft.com/microsoft-365/education/guide/1-reference/manage-microsoft-365-education-ai-features"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Werkblad of leveranciersbron",
+        "asOf": "2026-11-23"
+      }
+    },
+    {
+      "id": "SRC-00058",
+      "name": "Microsoft Learn: Copilot Chat voor leerlingen",
+      "referenceKeys": [
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/1-reference/enable-copilot-chat-for-learners"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Werkblad of leveranciersbron",
+        "asOf": "2026-11-23"
+      }
+    },
+    {
+      "id": "SRC-00059",
+      "name": "Microsoft Learn: toewijzing Microsoft 365- en Teams Education-licenties",
+      "referenceKeys": [
+        "https://learn.microsoft.com/en-us/microsoftteams/teams-edu-licensing",
+        "Microsoft Learn Education, licenties en standaardservices"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00060",
+      "name": "Microsoft Learn: klasTeams en leerlingfuncties",
+      "referenceKeys": [
+        "https://learn.microsoft.com/en-us/microsoftteams/remote-learning-edu",
+        "https://learn.microsoft.com/en-us/microsoft-365/education/deploy/set-up-teams-for-education"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00061",
+      "name": "Microsoft Learn: standaardbeleid voor leerlingen in Teams Education",
+      "referenceKeys": [
+        "https://learn.microsoft.com/en-us/microsoftteams/easy-policy-setup-edu",
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/2-baseline/applications/baseline-apps-teams-policies",
+        "Microsoft Learn, klasTeams en Education Policy Wizard"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00062",
+      "name": "Kennisnet: Dienst Verwerkersovereenkomsten via eHerkenning",
+      "referenceKeys": [
+        "https://www.kennisnet.nl/diensten/dienst-verwerkersovereenkomsten/",
+        "https://www.kennisnet.nl/diensten/dienst-verwerkersovereenkomsten/inloggen/",
+        "https://dv.kennisnet.nl/",
+        "Kennisnet Dienst Verwerkersovereenkomsten en Privacyconvenant"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00063",
+      "name": "Privacyconvenant onderwijs: modelovereenkomst en bestuurlijke verantwoordelijkheid",
+      "referenceKeys": [
+        "https://www.privacyconvenant.nl/veelgestelde-vragen/"
+      ],
+      "owner": "",
+      "version": "",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Openbare leveranciersinformatie / procesbron",
+        "asOf": "2026-11-23",
+        "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
     }
   ]
 }

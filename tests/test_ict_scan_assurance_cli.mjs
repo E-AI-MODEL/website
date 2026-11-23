@@ -49,8 +49,8 @@ function invoke(root,args=[]){
 }
 
 test('CLI controleert de echte manifestbytes zonder een baseline te verzinnen',()=>{
-  const output=spawnSync(process.execPath,[SCRIPT,'--as-of','2026-11-21'],{cwd:REPO,encoding:'utf8',timeout:15000});
-  assert.equal(output.status,0,output.stderr);
+  const output=spawnSync(process.execPath,[SCRIPT,'--as-of','2026-11-23'],{cwd:REPO,encoding:'utf8',timeout:15000});
+  assert.equal(output.status,0,output.stderr+'\n'+(output.stdout?JSON.stringify(JSON.parse(output.stdout).checks?.filter(x=>x.status==='fail'),null,2):''));
   const data=JSON.parse(output.stdout);
   assert.equal(data.execution.engineExecuted,true);
   assert.equal(data.execution.technicalGate.status,'pass');
