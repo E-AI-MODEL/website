@@ -246,6 +246,28 @@ try {
   await page.locator('#cardCancelEdit').click();
   await page.locator('#cardEditorClose').click();
   assert.equal(await page.locator('#cardEditor').isVisible(),false);
+  // Bronkaart: lege metadata is zichtbaar onbekend, zonder de JSON-waarden aan te vullen.
+  await page.locator('#railMore').click();
+  await page.locator('#cardOpen').click();
+  await page.locator('#cardTypeFilter').selectOption('sourceRegister');
+  await page.locator('#cardBrowserList .card-browser-item').first().click();
+  const sourceOverview=await page.evaluate(()=>{
+    const panel=document.querySelector('#cardReadView [data-card-tab="overview"]');
+    const values=Object.fromEntries([...panel.querySelectorAll('dt')].map(node=>[node.textContent,node.nextElementSibling?.textContent]));
+    return {values,original:JSON.parse(document.getElementById('cardJson').textContent)};
+  });
+  assert.equal(sourceOverview.values['Verantwoordelijke'],'Onbekend');
+  assert.equal(sourceOverview.values['Bronversie'],'Onbekend');
+  assert.equal(sourceOverview.values['Gebruiksrecht'],'Onbekend');
+  assert.equal(sourceOverview.values['Goedkeuring'],'Nog te beoordelen');
+  assert.equal(sourceOverview.original.owner,'');
+  assert.equal(sourceOverview.original.version,'');
+  await page.locator('#cardReadView .card-read-tab[data-target="details"]').click();
+  const sourceDetails=await page.locator('#cardReadView [data-card-tab="details"]').textContent();
+  assert.match(sourceDetails,/Grondslag voor gebruik\\s*Onbekend/);
+  assert.match(sourceDetails,/Bewijs van goedkeuring\\s*Onbekend/);
+  await page.locator('#cardEditorClose').click();
+  await page.locator('#railDrawerClose').click();
   await page.locator('.app-register-tab').nth(1).click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),true);
   assert(!/76\s+aanwijzingen/.test(await page.locator('#candidateInfo').textContent()),'Dezelfde 76 wordt dubbel getoond');
