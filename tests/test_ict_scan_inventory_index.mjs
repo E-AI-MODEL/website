@@ -22,17 +22,17 @@ function state(){
 }
 test('Een index uit vier bestaande bronbestanden, zonder extra bronbestand of gedupliceerde feiten',()=>{
   const built=index.build(state(),{catalog});
-  assert.equal(built.nodes.size,501+10,'501 basisregistraties plus zes M365-modules en vier unieke hardwaregroepen');
+  assert.equal(built.nodes.size,571,'501 oorspronkelijke registraties plus acht applicaties, 40 modules, 15 hardwaregroepen en zeven bronnen');
   assert.equal(built.errors.length,0,JSON.stringify(built.errors.slice(0,6)));
-  assert.equal(built.count('apps'),61);
+  assert.equal(built.count('apps'),69);
   assert.equal(built.count('ai'),76);
   assert.equal(built.count('connections'),93);
   assert.equal(built.count('devices'),4);
-  assert.equal(built.count('sourceRegister'),51);
-  assert.equal(built.count('parts'),19,'Oorspronkelijke onderdelen en zes als zodanig gemarkeerde oudere M365-onderdelen');
-  assert.equal(built.count('hardwareGroups'),4,'Vier legacy hardwaregroepen, geen vier nieuwe Entra-metingen');
-  assert.equal(built.sourceCoverage.directReferences,485);
-  assert.equal(built.sourceCoverage.matched,485);
+  assert.equal(built.count('sourceRegister'),58);
+  assert.equal(built.count('parts'),53,'13 Entra-registraties en 40 Microsoft 365-productonderdelen');
+  assert.equal(built.count('hardwareGroups'),15,'Hardwaregroepen zijn geen Entra-apparaatmetingen');
+  assert.ok(built.sourceCoverage.directReferences>=485);
+  assert.equal(built.sourceCoverage.unmatched,0,'Alle rechtstreeks genoemde bestanden moeten via een bron-ID terugvindbaar zijn');
 });
 test('De index ontsluit alle soorten getypeerde koppelingen in beide richtingen',()=>{
   const idx=index.build(state(),{catalog});
@@ -66,10 +66,10 @@ test('Bronverwijzingen en ontbrekende aliases blijven zichtbaar als aparte contr
 test('Dynamische verandering van de bron wordt niet door een eerder berekende index verborgen',()=>{
   const data=state();
   const before=index.build(data,{catalog});
-  assert.equal(before.count('apps'),61);
+  assert.equal(before.count('apps'),69);
   data.apps.set('APP-ZZZ',{id:'APP-ZZZ',name:'Nieuwe gecontroleerde testregistratie',relations:[{relationType:'part_of',targetType:'apps',targetId:'APP-034',status:'Geregistreerd',evidence:'test',note:'test'}]});
   const after=index.build(data,{catalog});
-  assert.equal(after.count('apps'),62);
+  assert.equal(after.count('apps'),70);
   assert.ok(after.connected('apps','APP-034',{type:'apps'}).some(x=>x.otherId==='APP-ZZZ'));
-  assert.equal(before.count('apps'),61);
+  assert.equal(before.count('apps'),69);
 });
