@@ -13,7 +13,7 @@ const indexed=Object.fromEntries(Object.entries(registries).map(([type,rows])=>[
 const all=data.apps.flatMap(app=>(app.relations||[]).map(rel=>({app,rel})));
 
 test('Bevestigde bronpopulaties blijven ongewijzigd en elke nieuwe relatie heeft een echte doel-ID',()=>{
- assert.equal(data.apps.length,61);
+ assert.equal(data.apps.length,69);
  assert.equal(data.ai.length,76);
  assert.equal(data.connections.length,93);
  assert.equal(data.licenseReview.length,40);
@@ -71,27 +71,32 @@ test('Microsoft-identiteitsketen staat als onderzoekssignaal en niet als actief 
    assert.equal(edge.status,'Vermoedelijk');
    assert.ok(edge.evidence);
  }
- assert.equal(byId('APP-034').serviceLinks.length,6);
- assert.ok(byId('APP-034').serviceLinks.every(x=>x.evidence&&x.note&&x.status));
- assert.ok(byId('APP-034').serviceLinks.some(x=>x.name.includes('SharePoint')));
- assert.ok(byId('APP-034').serviceLinks.some(x=>x.name.includes('OneDrive')));
+ assert.equal(data.parts.length,53,'13 bestaande Entra-onderdelen en 40 M365-productvermeldingen');
+ assert.equal(data.parts.filter(x=>x.kind==='Microsoft 365-onderdeel').length,40);
+ assert.ok(data.parts.some(x=>x.id==='M365-SP'&&x.parent==='APP-034'));
+ assert.ok(data.parts.some(x=>x.id==='M365-FORMS'&&x.parent==='APP-034'));
+ assert.ok(data.parts.some(x=>x.id==='M365-COPCHAT'&&x.parent==='APP-035'));
+ assert.equal(Object.hasOwn(byId('APP-034'),'serviceLinks'),false,'M365-onderdelen zitten niet meer in een aparte embedded lijst');
 });
 
-test('iPads, laptops, print en smartboards hebben brongebonden technisch beheer, geen extra apparaatmetingen',()=>{
- const byId=id=>data.apps.find(x=>x.id===id);
- const expected={
-  'APP-020':['H01','H02'],'APP-021':['H02'],'APP-005':['H01'],
-  'APP-023':['H03'],'APP-057':['H07']
- };
- for(const [id,ids] of Object.entries(expected)){
-   assert.deepEqual(byId(id).hardwareLinks.map(x=>x.id),ids,id);
-   for(const h of byId(id).hardwareLinks){
-     assert.equal(h.owner,'ICT-beheer');assert.ok(h.evidence.includes('/ Hardware!'));
-     assert.ok(h.note);
-   }
+test('15 hardwaregroepen zijn eenduidig verbonden en niet gemengd met vier Entra-metingen',()=>{
+ const byId=id=>data.hardwareGroups.find(x=>x.id===id);
+ assert.equal(data.hardwareGroups.length,15);
+ for(const [id,refs] of Object.entries({
+   H01:['APP-020','APP-005','APP-065'],H02:['APP-020','APP-021'],
+   H03:['APP-023'],H07:['APP-057']
+ })){
+   const h=byId(id);
+   assert.ok(h,h.id);assert.equal(h.owner,'ICT-beheer');
+   assert.deepEqual(h.appRefs,refs,id);
+   assert.ok(h.sources[0].includes('Hardware rij'));
  }
- assert.equal(data.devices.length,4,'Hardwaregroepen blijven gescheiden van Entra-apparaatmetingen');
+ assert.equal(data.devices.length,4);
+ assert.ok(data.hardwareGroups.every(x=>x.quantity===null&&x.status.startsWith('?')),
+   'De bronwerkmap bevat geen onafhankelijk geverifieerde hardwareaantallen');
+ assert.ok(data.apps.every(x=>!Object.hasOwn(x,'hardwareLinks')));
 });
+
 test('Manifest is gebonden aan de exacte bronbytes en bevat geen individuele accountgegevens',()=>{
  const file=readFileSync(dir+'2026-applicatielandschap.json');
  const blob=createHash('sha1').update('blob '+file.length+String.fromCharCode(0)).update(file).digest('hex');
