@@ -53,7 +53,7 @@ test('Voorstelregister bewaart alle 468 exacte verwijzingen eenmaal in 51 nog ni
 test('Manifest bindt de bijgewerkte applicatierelaties; overige registers blijven ongewijzigd', () => {
   const manifest=json(profile.source.sourceDir+'/manifest.json');
   assert.equal(manifest.dataFiles.length,4);
-  for(const [file,known] of Object.entries({'2026-applicatielandschap.json':'762d89f63060517995ad04bca15cc74247505d5d','2026-werkregister.json':'8f017f556ec029419e24eec78c13741edc23e8cb','2026-faq.json':'44962fa1747a882cc65999c89bc6b3ec0a30e890'})){
+  for(const [file,known] of Object.entries({'2026-applicatielandschap.json':'f44f0b83ff516abe5b35a90328adbff6a598e128','2026-werkregister.json':'8f017f556ec029419e24eec78c13741edc23e8cb','2026-faq.json':'44962fa1747a882cc65999c89bc6b3ec0a30e890'})){
     const bytes=readFileSync(profile.source.sourceDir+'/'+file);
     const hash=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
     assert.equal(hash,known,file);
