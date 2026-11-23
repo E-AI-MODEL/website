@@ -109,7 +109,8 @@
       return result('field',candidateAnswer(app.links,'Bij '+own+' staat over koppelingen: ','Voor '+own+' is de feitelijke gegevensuitwisseling nog niet vastgesteld.'),base,unknown(app.links)?'Niet vastgesteld':'Geregistreerd',src);
     }
     if(app.id==='APP-034'&&/\b(welke|wat|overzicht|beschikbaar|toegang)\b/.test(q)&&
-      /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden|leerlingen|docenten|medewerkers)\b/.test(q)){
+      /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden|leerlingen|docenten|medewerkers)\b/.test(q)&&
+      !(/\b(ai|kunstmatige)\b/.test(q)&&/\b(functie|functies|mogelijkheden)\b/.test(q))){
       const modules=m365Modules(ix,app.id);
       if(!modules)return result('relations',
         'De gedeelde relatie-index is niet geladen. De Microsoft 365-productcatalogus kan niet betrouwbaar worden bepaald.',
@@ -159,6 +160,26 @@
         ' is niet geverifieerd in deze openbare index. Het totale aantal licentiecontrolepunten is geen licentietelling.',
         [entry('apps',mentioned),...linked.map(x=>entry('licenseReview',x))],
         'Niet vastgesteld',recordSources([mentioned]));
+    }
+    if(mentioned&&/\b(ai|kunstmatige|copilot)\b/.test(q)&&
+      /\b(functie|functies|functionaliteiten)\b/.test(q)){
+      if(!data.index)return result('count','De gedeelde relatie-index is niet geladen. Een telling van AI-functies bij '+mentioned.name+' is niet betrouwbaar.',
+        [entry('apps',mentioned)],'Niet vastgesteld',recordSources([mentioned]));
+      const related=data.index.connected('apps',mentioned.id,{type:'ai'});
+      const unique=[...new Map(related.map(link=>[link.otherId,link.other])).values()];
+      return result('count','Bij '+mentioned.name+' zijn '+unique.length+' AI-functies beschreven. Dit bewijst niet dat deze functies op school zijn ingeschakeld.',
+        [entry('apps',mentioned),...unique.slice(0,12).map(x=>entry('ai',x))],
+        'Beschreven AI-functies; gebruik niet vastgesteld',recordSources([mentioned]));
+    }
+    if(mentioned&&/\b(entra|sso)\b/.test(q)&&
+      /\b(registratie|registraties|match|matches|koppeling|koppelingen)\b/.test(q)){
+      if(!data.index)return result('count','De gedeelde relatie-index is niet geladen. Entra-matches bij '+mentioned.name+' zijn niet betrouwbaar te tellen.',
+        [entry('apps',mentioned)],'Niet vastgesteld',recordSources([mentioned]));
+      const related=data.index.connected('apps',mentioned.id,{type:'connections'});
+      const unique=[...new Map(related.map(link=>[link.otherId,link.other])).values()];
+      return result('count','Bij '+mentioned.name+' zijn '+unique.length+' mogelijke Entra-matches beschreven. Dit bewijst geen actieve koppeling of werkende aanmelding.',
+        [entry('apps',mentioned),...unique.slice(0,12).map(x=>entry('connections',x))],
+        'Mogelijke Entra-matches; werking niet vastgesteld',recordSources([mentioned]));
     }
     if(mentioned?.id==='APP-034'&&
       /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden)\b/.test(q)){
