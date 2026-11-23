@@ -103,11 +103,15 @@ try {
     }
     assert.equal(await page.locator('.rail-button[data-view="connections"]').isVisible(),false,'Secundaire onderdelen horen onder Meer');
     await navigate('connections');
-    assert.equal(await page.locator('#sectionTitle').textContent(),'Entra-koppelingen');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Entra-registraties en toegang');
     await navigate('studio');
     assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
   }
+  assert.equal(await page.locator('#viewStudio .ds-panel-head h2').textContent(),'Dashboard instellen');
+  assert.equal(await page.locator('.rail-button[data-view="studio"] .rail-label').textContent(),'Dashboard');
   assert.equal(await page.locator('#dsDataOptions .ds-option').count(),8,'Gegevenskeuze moet alle acht beschikbare bronsoorten bevatten');
+  assert.equal(await page.locator('#dsDataOptions .ds-option-description').count(),8,'Een gegevensgroep moet direct vertellen waarvoor die dient');
+  assert.equal(await page.locator('#dsPartOptions .ds-option-description').count(),9,'Elk dashboardonderdeel moet zijn werking uitleggen');
   assert.equal(await page.locator('#dsPartOptions .ds-part').count(),9,'Er ontbreken vrij kiesbare dashboardonderdelen');
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),5,'Het startdashboard moet direct bruikbaar zijn');
   const assertNoComponentOverlap=async where=>{
