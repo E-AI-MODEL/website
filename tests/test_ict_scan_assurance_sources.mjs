@@ -50,13 +50,14 @@ test('Voorstelregister bewaart alle 468 exacte verwijzingen eenmaal in 51 nog ni
   }
 });
 
-test('Manifest bindt het vierde bronbestand en de drie eerdere bestanden zijn bytegelijk gebleven', () => {
+test('Manifest bindt de bijgewerkte applicatierelaties; overige registers blijven ongewijzigd', () => {
   const manifest=json(profile.source.sourceDir+'/manifest.json');
   assert.equal(manifest.dataFiles.length,4);
-  for(const [file,known] of Object.entries({'2026-applicatielandschap.json':'153ce56af55558a93ac0db6a5150c981c65f7c37','2026-werkregister.json':'8f017f556ec029419e24eec78c13741edc23e8cb','2026-faq.json':'44962fa1747a882cc65999c89bc6b3ec0a30e890'})){
+  for(const [file,known] of Object.entries({'2026-applicatielandschap.json':'762d89f63060517995ad04bca15cc74247505d5d','2026-werkregister.json':'8f017f556ec029419e24eec78c13741edc23e8cb','2026-faq.json':'44962fa1747a882cc65999c89bc6b3ec0a30e890'})){
     const bytes=readFileSync(profile.source.sourceDir+'/'+file);
     const hash=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
     assert.equal(hash,known,file);
+    assert.equal(manifest.dataFiles.find(item=>item.path===file)?.sha,hash,'manifest SHA '+file);
   }
   const item=manifest.dataFiles.find(row=>row.path==='2026-bronnenregister.json'),bytes=readFileSync(profile.source.sourceDir+'/'+item.path);
   assert.equal(item.recordCounts.sourceRegister,51);
