@@ -1410,24 +1410,36 @@
       "search_scope": "algemeen"
     },
     {
+      "id": "page:/beheer/",
+      "url": "/beheer/",
+      "file": "beheer/index.html",
+      "title": "EAI Beheer | Inloggen",
+      "kind": "afgeschermd_of_app",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": null,
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/tools/html-galerij/",
       "url": "/tools/html-galerij/",
       "file": "tools/html-galerij/index.html",
-      "title": "HTML uploaden",
-      "kind": "toepassing",
+      "title": "HTML-galerij inloggen | EAI",
+      "kind": "afgeschermd_of_app",
       "category": "Hulpmiddelen · Werkruimtes en delen",
-      "review": "bronstructuur_gelezen_backend_en_toegang_niet_getest",
+      "review": "noindex_en_worker_bron_gecontroleerd_persoonlijke_login_nog_niet_getest",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "embedded_inventory": "uploadformulier_en_dynamische_galerij_geen_statische_onderdelen",
-      "note": "Uploads en galerijvermeldingen worden niet door de website-repository beheerd. Geen schijnzekerheid over live items.",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
       "in_committed_sitemap": true,
-      "functional_sections": [
-        "HTML-bestand toevoegen",
-        "Door anderen gemaakte HTML bekijken"
-      ],
-      "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository",
-      "search_scope": "algemeen"
+      "search_scope": "niet_indexeren",
+      "note": "Statische inlogpagina. Server-side rechtencontrole via de Cloudflare Worker; uploads en beheerdata staan niet in Git.",
+      "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository"
     },
     {
       "id": "page:/tools/llm-observatorium/",
