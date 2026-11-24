@@ -9,7 +9,7 @@
   const label={apps:'Applicatie',ai:'AI-functie',connections:'Koppeling vanuit Entra',candidates:'Overige software',additionalCandidates:'Overige software',faqs:'FAQ',parts:'Technisch onderdeel',checks:'Controle',dpia:'DPIA',aiControls:'AI-beheer',devices:'Apparaatmeting',hardwareGroups:'Hardwaregroep',licenseReview:'Licentiecontrole',workActions:'Actie',softwareReview:'Softwarecontrole',sourceRegister:'Bron'};
   const result=(kind,answer,records=[],status='Brongebonden',sources=[],question='')=>({kind,answer,status,records:[...new Map(records.map(row=>[row.type+':'+row.id,row])).values()],sources:[...new Set(sources.filter(Boolean))],question});
   function entry(type,x){return {type,id:x.id,name:x.name||x.question||x.id,detail:type==='apps'?(x.description||''):type==='ai'?(x.product||''):type==='connections'?(x.matched||''):type==='faqs'?(x.topic||''):(x.kind||'')};}
-  function recordSources(items){return items.flatMap(x=>Array.isArray(x.sources)?x.sources:[]).slice(0,5);}
+  function recordSources(items){return items.flatMap(x=>Array.isArray(x.sources)?x.sources:[]);}
   function candidateAnswer(value,yes,no){return unknown(value)?no:yes+String(value).trim();}
   function exactFaq(q,faqs){
     return faqs.find(f=>[f.name,...String(f.aliases||'').split('|')].some(v=>norm(v)===q))||null;
@@ -137,6 +137,15 @@
         (relevant.length?relevant:modules).map(x=>entry('parts',x)).concat(base),
         'Productcatalogus; daadwerkelijke toegang niet vastgesteld',src);
     }
+    const aiAsked=/\b(ai|copilot|kunstmatige)\b/.test(q);
+    const localAsked=/\b(status|actief|ingeschakeld|uitgeschakeld|gebruiken|gebruikt|gebruik|ingezet|inzet)\b/.test(q)||/\b(staat|staan)\b.*\b(aan|uit)\b/.test(q);
+    const listAsked=/\b(welke|lijst|hoeveel|aantal)\b/.test(q);
+    if(/\bstatus\b/.test(q)||(aiAsked&&localAsked&&!listAsked)){
+      const extra=aiAsked?[...related('licenseReview').map(x=>entry('licenseReview',x)),...related('softwareReview').map(x=>entry('softwareReview',x)),...ai.map(x=>entry('ai',x))]:[];
+      const local=String(app.local||'').trim();
+      const registered=local&&!local.startsWith('?')?'Bij '+own+' staat als lokale status: '+local.replace(/[.]+$/,'')+'.':'De lokale status van '+own+' is nog niet vastgesteld.';
+      return result('usage',registered,base.concat(extra),unknown(local)?'Niet vastgesteld':'Geregistreerde schoolstatus',src);
+    }
     if(/\b(ai|copilot|kunstmatige|functie|functies)\b/.test(q)){
       if(!ai.length)return result('relations','Aan '+own+' zijn in het AI-register geen AI-functies gekoppeld. Dat bewijst niet dat de leverancier geen AI-functies aanbiedt.',base,'Geen bronkoppeling',src);
       return result('relations','Voor '+own+' zijn '+ai.length+' AI-functies beschreven, waaronder '+shortList(ai)+'. Beschrijving betekent niet dat de functies op school zijn ingeschakeld.',base.concat(ai.map(x=>entry('ai',x))),'Beschreven functies',recordSources(ai).concat(src));
@@ -147,7 +156,7 @@
     }
     if(/\b(gebruiken|gebruikt|gebruik|actief|ingeschakeld|aanwezig|hebben|heeft|installatie)\b/.test(q)){
       if(unknown(app.local))return result('usage',own+' is geregistreerd in het applicatieregister ('+app.id+'). Het daadwerkelijke schoolgebruik is nog niet bevestigd.',base,'Niet vastgesteld',src);
-      return result('usage','Bij '+own+' staat als lokale gebruiksstatus: '+app.local+'.',base,'Geregistreerde status',src);
+      return result('usage','Bij '+own+' staat als lokale gebruiksstatus: '+String(app.local).replace(/[.]+$/,'')+'.',base,'Geregistreerde status',src);
     }
     if(/\b(wat|waarvoor|functie|beschrijving|doel)\b/.test(q)){
       return result('description',own+' is geregistreerd met de omschrijving: '+(app.description||'Geen beschrijving aanwezig')+'.'+(unknown(app.local)?' Het daadwerkelijke schoolgebruik is nog niet bevestigd.':''),base,unknown(app.local)?'Gebruik niet vastgesteld':'Bronbeschrijving',src);

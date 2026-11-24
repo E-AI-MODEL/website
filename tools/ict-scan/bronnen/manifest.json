@@ -9,7 +9,7 @@
     "referencePeriod": "november 2026",
     "evidenceCutoff": "2026-11-24",
     "dataVersion": "2026-11-24-ai-tussenstand",
-    "faqDataVersion": "2026-11-23",
+    "faqDataVersion": "2026-11-24",
     "indexContractVersion": "1.0.0"
   },
   "dataFiles": [
@@ -48,7 +48,7 @@
       "recordCounts": {
         "faqs": 17
       },
-      "sha": "faf91bb13091fb88b765c463a105fabaa88c98ca",
+      "sha": "ca586ccf928a3edd1000a2a6b3f76f31ddaff455",
       "verified": true
     },
     {
