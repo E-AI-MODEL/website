@@ -65,7 +65,7 @@ test('GitHub-bron wordt alleen gelezen, verwerkt en de token gewist',async()=>{
   assert.ok(x.calls.every(c=>c.options.method==='GET'));
   assert.ok(x.calls.every(c=>c.options.headers.Authorization==='Bearer test-token-not-real'));
   assert.equal(x.state.sources[0].githubRemote.repository,'E-AI-MODEL/private-data');
-  assert.equal(x.state.view,'studio');
+  assert.equal(x.state.view,'overview');
   assert.ok(x.renders>0);
 });
 
