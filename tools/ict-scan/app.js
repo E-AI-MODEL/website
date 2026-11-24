@@ -151,7 +151,7 @@ const displayRecordNames=Object.freeze({
   'DPIA van school en verwerkersovereenkomsten':'Privacyonderzoek en verwerkersovereenkomsten'
 });
 function displayRecordName(value){return displayRecordNames[String(value||'')]||String(value||'');}
-window.IctScanViewName=displayRecordName;
+if(typeof window==='object')window.IctScanViewName=displayRecordName;
 function displayEntraStatus(value){
   const input=String(value||'').trim();
   if(/^(true|ja)$/i.test(input))return 'Ingeschakeld (Entra)';
