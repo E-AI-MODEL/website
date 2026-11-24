@@ -137,3 +137,29 @@
 @media(min-width:651px){.relation-atlas-dialog:has(.ra-network-node) .ra-graph{height:480px;background:#fff}}
 
 .relation-atlas-dialog .ra-network-edge.ra-historic{stroke:#9ca3af;opacity:.42;stroke-width:.75}.relation-atlas-dialog .ra-network-edge.ra-confirmed{stroke:#417f76;opacity:.9;stroke-width:1.5}
+
+/* Give the diagram room, and keep filters and totals subordinate. */
+.relation-atlas-dialog .ra-shell{gap:12px}
+.relation-atlas-dialog .ra-header{position:sticky;top:-20px;z-index:4;background:#f8fafc;padding:9px 0 10px;border-bottom:1px solid #e3ebf3}
+.relation-atlas-dialog .ra-stats{gap:6px}
+.relation-atlas-dialog .ra-stat{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 8px;padding:7px 10px;border-radius:7px}
+.relation-atlas-dialog .ra-stat strong{font-size:18px}
+.relation-atlas-dialog .ra-stat span{grid-column:1/-1;font-size:10px}
+.relation-atlas-dialog .ra-graph-title{gap:6px 10px}
+.relation-atlas-dialog .ra-graph-title>span{flex:1;min-width:110px}
+.relation-atlas-dialog .ra-graph-controls{flex-wrap:wrap;justify-content:flex-end;gap:4px}
+.relation-atlas-dialog .ra-graph-controls .ra-graph-mode{width:auto;min-width:130px;max-width:210px;min-height:35px;padding:6px 8px}
+.relation-atlas-dialog .ra-back-network[hidden]{display:none}
+.relation-atlas-dialog .ra-network-edge{stroke:#b5c4d3;stroke-width:.9;opacity:.52}
+.relation-atlas-dialog .ra-network-edge.ra-probable{stroke:#b98542;opacity:.8}
+.relation-atlas-dialog .ra-network-active .ra-network-edge:not(.is-connected){opacity:.08}
+.relation-atlas-dialog .ra-network-active .ra-network-node:not(.is-connected){opacity:.19}
+.relation-atlas-dialog .ra-network-active .ra-network-edge.is-connected{opacity:1;stroke-width:1.8}
+.relation-atlas-dialog .ra-network-active .ra-network-node.is-connected{opacity:1}
+.relation-atlas-dialog .ra-network-label{font-size:10.5px;stroke-width:3.5px;fill:#29466c}
+.relation-atlas-dialog .ra-shortcuts{display:grid;gap:4px;margin:0 0 13px}
+.relation-atlas-dialog .ra-shortcut{display:flex;justify-content:space-between;align-items:center;gap:6px;width:100%;padding:8px;border:1px solid #dce6ef;border-radius:5px;background:white;color:#345477;text-align:left;font-size:11px;cursor:pointer}
+.relation-atlas-dialog .ra-shortcut:hover{background:#eef4f9}
+.relation-atlas-dialog .ra-shortcut small{font-size:9px;color:#70849b;white-space:nowrap}
+@media(min-width:651px){.relation-atlas-dialog:has(.ra-network-node) .ra-graph{height:clamp(420px,58vh,620px);background:#fff}}
+@media(max-width:650px){.relation-atlas-dialog .ra-header{top:-15px}.relation-atlas-dialog .ra-stat strong{font-size:16px}.relation-atlas-dialog .ra-graph-mode{max-width:150px}}

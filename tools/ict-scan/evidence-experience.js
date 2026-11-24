@@ -200,18 +200,39 @@
       {key:'entra',label:'Entra-appregistraties',value:connections.length,detail:fmt(directMatches)+' mogelijke directe appmatches · '+fmt(connections.length-directMatches)+' zonder directe appmatch',context:'Actuele technische koppelingen niet vastgesteld.',view:'connections',link:'Bekijk Entra-registraties'},
       {key:'hardware',label:'Hardwaregroepen',value:hardware.length,detail:measurement!==null?measurement+' Entra-apparaatrecords · '+(d.total.measurementDate||'peildatum onbekend'):'Geen Entra-apparaattelling beschikbaar.',context:'Schoolbreed aantal fysieke apparaten niet vastgesteld.',view:'devices',link:'Bekijk hardware en metingen'}
     ].filter(row=>row.view!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
+    const navigation={
+      software:['Applicaties en software','M3 3h7l2 3h9v14H3z M3 9h18'],
+      ai:['AI-functies','M12 3v4 M12 17v4 M3 12h4 M17 12h4 M6 6l3 3 M15 15l3 3 M6 18l3-3 M15 9l3-3 M9 9h6v6H9z'],
+      entra:['Entra en toegang','M8 11V7a4 4 0 0 1 8 0v4 M5 11h14v10H5z M12 15v3'],
+      hardware:['Hardware en apparaten','M3 4h18v12H3z M12 16v4 M7 20h10']
+    };
     const grid=byId('kpiGrid');
     grid.replaceChildren();
     for(const row of cards){
+      const [name,path]=navigation[row.key];
       const b=document.createElement('button');
-      b.type='button';b.className='kpi trust-kpi evidence-kpi';
-      b.dataset.metric=row.key;
-      b.setAttribute('aria-label',row.label+': '+fmt(row.value)+'. '+row.detail+'. '+row.context+' '+row.link);
-      b.innerHTML='<span class="kpi-label">'+safe(row.label)+'</span><strong class="kpi-value">'+safe(fmt(row.value))+'</strong><span class="kpi-desc">'+safe(row.detail)+'</span><span class="evidence-kpi-context">'+safe(row.context)+'</span><span class="evidence-kpi-open">'+safe(row.link)+'</span>';
+      b.type='button';b.className='overview-category kpi';b.dataset.metric=row.key;
+      b.setAttribute('aria-label','Bekijk '+name);
+      b.innerHTML='<span class="overview-category-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+path+'"/></svg></span><strong>'+safe(name)+'</strong><svg class="overview-category-arrow" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>';
       b.addEventListener('click',()=>selectView(row.view));grid.append(b);
     }
+    // These counts are intentionally separate from the navigation. The
+    // unit, denominator and limitations remain alongside every value.
+    const host=byId('overviewCounts');
+    if(host){
+      host.replaceChildren();
+      for(const row of cards){
+        const b=document.createElement('button');
+        b.type='button';b.className='overview-count-row';b.dataset.countMetric=row.key;
+        b.innerHTML='<span class="overview-count-label">'+safe(row.label)+'</span><strong class="kpi-value">'+safe(fmt(row.value))+'</strong><span class="overview-count-detail"><span class="kpi-desc">'+safe(row.detail)+'</span><span class="evidence-kpi-context">'+safe(row.context)+'</span></span>';
+        b.addEventListener('click',()=>selectView(row.view));host.append(b);
+      }
+    }
+    const countNote=byId('overviewRegisterCount');
+    if(countNote)countNote.textContent=fmt(totalRecords)+' records in alle ingelezen registers. Geen telling van unieke systemen.';
     const sub=byId('inventoryPopulation');
-    if(sub)sub.textContent=fmt(totalRecords)+' records in alle ingelezen registers. Geen telling van unieke systemen.';
+    if(sub)sub.textContent='';
+
   }
   renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
   const oldCandidates=renderCandidates;

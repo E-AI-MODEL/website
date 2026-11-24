@@ -15,9 +15,9 @@
 <link rel="stylesheet" href="./monitor.css?v=20261124b">
 <link rel="stylesheet" href="./visual-explorer.css?v=20261120b">
 <link rel="stylesheet" href="./scene-navigation.css?v=20261120b">
-<link rel="stylesheet" href="./evidence-experience.css?v=20261124kpi1">
+<link rel="stylesheet" href="./evidence-experience.css?v=20261124explorer1">
 <link rel="stylesheet" href="./role-modes.css?v=20261120d">
-<link rel="stylesheet" href="./record-cards.css?v=20261121d">
+<link rel="stylesheet" href="./record-cards.css?v=20261124explorer1">
 <link rel="stylesheet" href="./edit-gate.css?v=20261123a">
 <link rel="stylesheet" href="./assurance.css?v=20261121b">
 <link rel="stylesheet" href="./answer-engine.css?v=20261124ux3">
@@ -44,17 +44,17 @@
 <script defer src="./github-sync.js?v=20261124ux3"></script>
 <script defer src="./rail-drawer.js?v=20261124ux3"></script>
 <script defer src="./edit-gate.js?v=20261123a"></script>
-<script defer src="./record-cards.js?v=20261124view1"></script>
+<script defer src="./record-cards.js?v=20261124explorer1"></script>
 <script defer src="./record-github.js?v=20261124shared1"></script>
 <script defer src="./answer-engine.js?v=20261124ux4"></script>
-<script defer src="./scene-navigation.js?v=20261124view2"></script>
-<script defer src="./evidence-experience.js?v=20261124kpi1"></script>
+<script defer src="./scene-navigation.js?v=20261124explorer1"></script>
+<script defer src="./evidence-experience.js?v=20261124explorer1"></script>
 <script defer src="./role-modes.js?v=20261124r1"></script>
 <script defer src="./dashboard-composer.js?v=20261124view2"></script>
 <script defer src="./composer-resize.js?v=20261123a"></script>
 <script defer src="./assurance-ui.js?v=20261124r2"></script>
-<link rel="stylesheet" href="./relationship-atlas.css?v=20261124view2">
-<script defer src="./relationship-atlas.js?v=20261124view2"></script>
+<link rel="stylesheet" href="./relationship-atlas.css?v=20261124explorer1">
+<script defer src="./relationship-atlas.js?v=20261124explorer1"></script>
 </head>
 <body>
 <div id="notFound" class="litespeed-404" aria-label="404 Not Found">
@@ -181,6 +181,7 @@
           <div class="family-controls"><label class="visually-hidden" for="familyApp">Toepassing kiezen</label><select id="familyApp" aria-label="Kies een toepassing voor de relatievisual"></select><label class="visually-hidden" for="familyMode">Familieweergave</label><select id="familyMode" aria-label="Technische familieweergave" hidden><option value="map">Kaart</option><option value="list">Lijst</option></select></div>
           <div id="familyVisual" class="family-visual"></div><p class="viz-caption" id="familyContext"></p>
         </article>
+        <section class="panel overview-counts" id="overviewCountsPanel" aria-label="Aantallen uit de registers"><div class="panel-head"><h2>Aantallen en hun herkomst</h2></div><div id="overviewCounts"></div><p id="overviewRegisterCount" class="viz-caption"></p></section>
         <div class="dashboard-tools"><span class="tools-title">Schoolbreed</span><select id="overviewArea" aria-label="Gebruik filteren"><option value="">Alle gebruiksgebieden</option></select><select id="overviewKind" aria-label="Soort toepassing filteren"><option value="">Alle soorten</option></select><div class="tools-spacer"></div><span id="overviewResultCount" class="tools-note"></span><button id="overviewClear" class="monitor-button subtle" type="button">Filters wissen</button></div>
         <div class="two-col gap-lg">
           <article class="panel viz-panel">
@@ -309,16 +310,16 @@
   <div id="cardScrim" class="card-scrim" hidden></div>
   <section id="cardEditor" class="card-editor" role="dialog" aria-modal="true" aria-labelledby="cardEditorTitle" hidden>
     <div class="card-editor-heading">
-      <div><span class="card-eyebrow">APPLICATIELANDSCHAP · 2026</span><h2 id="cardEditorTitle">Gegevens</h2></div>
+      <div><span class="card-eyebrow">APPLICATIELANDSCHAP · 2026</span><h2 id="cardEditorTitle">Registraties</h2></div>
       <button type="button" class="card-icon-close" id="cardEditorClose" aria-label="Kaart sluiten">×</button>
     </div>
     <div class="card-editor-body">
       <aside class="card-browser" aria-label="Registraties">
         <div class="card-browser-controls">
-          <label for="cardTypeFilter">Register</label>
+          <label for="cardTypeFilter">Ga direct naar een register</label>
           <select id="cardTypeFilter" aria-label="Kies register"></select>
-          <input type="search" id="cardSearch" placeholder="Zoek ID, naam of beschrijving" aria-label="Zoek registraties">
-          <button type="button" id="cardNew" class="card-button card-button-subtle">+ Nieuwe kaart</button>
+          <input type="search" id="cardSearch" placeholder="Zoek in alle registers" aria-label="Zoek registraties">
+          <button type="button" id="cardNew" class="card-button card-button-subtle">+ Nieuwe registratie</button>
         </div>
         <div class="card-browser-list" id="cardBrowserList"></div>
       </aside>

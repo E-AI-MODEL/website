@@ -92,8 +92,9 @@
   const zoomReset=button('100%','ra-zoom-label',()=>setZoom(1));
   const graphMode=el('select','ra-select ra-graph-mode');graphMode.setAttribute('aria-label','Netwerkweergave');for(const [v,t] of [['groups','Groepen'],['network','Netwerk van registraties']]){const opt=el('option','',t);opt.value=v;graphMode.append(opt);}graphMode.addEventListener('change',()=>{mode=graphMode.value;focused=null;zoom=1;render();});
   graphControls.append(zoomOut,zoomReset,zoomIn);
-  graphTitle.append(graphMode);
-  graphTitle.append(graphControls);
+  graphControls.prepend(graphMode);
+  const backToNetwork=button('Terug naar netwerk','ra-action ra-back-network',()=>{focused=null;zoom=1;render();});backToNetwork.hidden=true;
+  graphTitle.append(backToNetwork,graphControls);
   const graphScroll=el('div','ra-graph-scroll');
   const svg=svgNode('svg',{viewBox:'0 0 1000 600',class:'ra-graph',role:'img','aria-label':'Relaties tussen registraties'});
   graphScroll.append(svg);
@@ -262,33 +263,85 @@
     const colors=new Map(types.map(t=>[t,palette[Math.max(0,Object.keys(TYPE_NAMES).indexOf(t))%palette.length]]));
     for(const type of types){const swatch=el('i','ra-legend-dot');swatch.style.background=colors.get(type);const item=el('span','ra-legend-item');item.append(swatch,el('span','',label(type)));legend.append(item);}
     legend.append(el('span','ra-legend-item','Gestippeld: vermoedelijk · Doorgetrokken: geregistreerd/bevestigd · Dun grijs: historisch'));
-    // Compact initial spiral; a bounded force relaxation makes shared endpoints
-    // cluster without inventing any links. Deterministic, no external library.
-    const n=shown.length,scale=Math.min(1,Math.sqrt(n/150));
-    shown.forEach((p,i)=>{const a=i*2.399963229728653,r=Math.sqrt((i+.5)/n);p.x=500+400*r*Math.cos(a);p.y=300+245*r*Math.sin(a);p.dx=0;p.dy=0;});
-    for(let step=0;step<90;step++){
-      const cooling=1-step/100;
-      for(const p of shown){p.dx=(500-p.x)*.004;p.dy=(300-p.y)*.004;}
-      for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){
-        const a=shown[i],b=shown[j],x=a.x-b.x,y=a.y-b.y,dist=Math.max(9,Math.hypot(x,y)),f=(115+100*scale)/(dist*dist);
-        a.dx+=x*f;a.dy+=y*f;b.dx-=x*f;b.dy-=y*f;
-      }
-      for(const {a:i,b:j} of pairs){if(i===j)continue;const a=shown[i],b=shown[j],x=b.x-a.x,y=b.y-a.y,d=Math.max(1,Math.hypot(x,y)),f=(d-50)*.022/d;a.dx+=x*f;a.dy+=y*f;b.dx-=x*f;b.dy-=y*f;}
-      for(const p of shown){p.x=Math.max(28,Math.min(972,p.x+Math.max(-12,Math.min(12,p.dx))*cooling));p.y=Math.max(28,Math.min(572,p.y+Math.max(-12,Math.min(12,p.dy))*cooling));}
+    // Place each connected component separately. No position is clamped to a
+    // rectangular edge: forces are resolved first, then fitted proportionally.
+    const n=shown.length,adj=shown.map(()=>new Set());
+    for(const {a,b} of pairs){if(a!==b){adj[a].add(b);adj[b].add(a);}}
+    const seen=new Set(),components=[];
+    for(let i=0;i<n;i++){
+      if(seen.has(i))continue;
+      const queue=[i];seen.add(i);
+      for(let j=0;j<queue.length;j++)for(const id of adj[queue[j]])if(!seen.has(id)){seen.add(id);queue.push(id);}
+      components.push(queue);
     }
-    const layer=svgNode('g',{class:'ra-network-edges'});
-    for(const {a,b,edge} of pairs){const p=shown[a],q=shown[b];const line=svgNode('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,class:'ra-network-edge'+(edge.status==='Vermoedelijk'?' ra-probable':edge.status==='Historisch'?' ra-historic':edge.status==='Bevestigd'?' ra-confirmed':''),'data-status':edge.status});line.append(svgNode('title',{},edgeName(edge)+' · '+relationName(edge.relationType)+' · '+edge.status));layer.append(line);}
+    components.sort((a,b)=>b.length-a.length||a[0]-b[0]);
+    const fit=(ids,x,y,w,h)=>{
+      const pad=Math.min(22,w*.15,h*.15),m=ids.length,area=Math.max(1,w*h);
+      const k=Math.sqrt(area/Math.max(1,m))*.83;
+      const member=new Set(ids);
+      const localPairs=[];for(const a of ids)for(const b of adj[a])if(a<b&&member.has(b))localPairs.push([a,b]);
+      ids.forEach((id,j)=>{
+        const p=shown[id],a=j*2.399963229728653,r=k*Math.sqrt(j+.5);
+        p.x=r*Math.cos(a);p.y=r*Math.sin(a);p.dx=0;p.dy=0;
+      });
+      if(m===2){shown[ids[0]].x=-1;shown[ids[0]].y=0;shown[ids[1]].x=1;shown[ids[1]].y=0;if(h>w){shown[ids[0]].x=0;shown[ids[0]].y=-1;shown[ids[1]].x=0;shown[ids[1]].y=1;}}
+      else if(m>2){
+        const steps=m>50?125:75;
+        for(let step=0;step<steps;step++){
+          const temperature=Math.max(.2,k*1.6*Math.pow(1-step/steps,1.8));
+          for(const id of ids){const p=shown[id];p.dx=-p.x*.035;p.dy=-p.y*.035;}
+          for(let i=0;i<m;i++)for(let j=i+1;j<m;j++){
+            const a=shown[ids[i]],b=shown[ids[j]],dx=a.x-b.x,dy=a.y-b.y,d2=Math.max(.01,dx*dx+dy*dy),f=k*k/d2;
+            a.dx+=dx*f;a.dy+=dy*f;b.dx-=dx*f;b.dy-=dy*f;
+          }
+          for(const [i,j] of localPairs){const a=shown[i],b=shown[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.max(.1,Math.hypot(dx,dy)),f=d/k;a.dx+=dx*f;a.dy+=dy*f;b.dx-=dx*f;b.dy-=dy*f;}
+          for(const id of ids){const p=shown[id],d=Math.hypot(p.dx,p.dy),factor=d?Math.min(temperature,d)/d:0;p.x+=p.dx*factor;p.y+=p.dy*factor;}
+        }
+      }
+      const points=ids.map(i=>shown[i]),xs=points.map(p=>p.x),ys=points.map(p=>p.y);
+      const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+      const spanX=maxX-minX,spanY=maxY-minY,scale=Math.min((w-2*pad)/Math.max(1,spanX),(h-2*pad)/Math.max(1,spanY),m===2?Math.min(w,h)*.32:Infinity);
+      for(const p of points){p.x=x+w/2+(p.x-(minX+maxX)/2)*scale;p.y=y+h/2+(p.y-(minY+maxY)/2)*scale;p.component=ids[0];p.radius=Math.min(3.3+Math.sqrt(p.degree)*1.65,11,Math.max(2.8,Math.min(w,h)*.11));}
+    };
+    const weight=ids=>Math.max(4,ids.length);
+    const pack=(groups,x,y,w,h)=>{
+      if(!groups.length)return;
+      if(groups.length===1){fit(groups[0],x,y,w,h);return;}
+      const total=groups.reduce((v,g)=>v+weight(g),0);let split=1,first=weight(groups[0]);
+      while(split<groups.length-1&&Math.abs(first+weight(groups[split])-total/2)<Math.abs(first-total/2)){first+=weight(groups[split++]);}
+      const ratio=first/total;
+      if(w>=h){const a=w*ratio;pack(groups.slice(0,split),x,y,a,h);pack(groups.slice(split),x+a,y,w-a,h);}
+      else{const a=h*ratio;pack(groups.slice(0,split),x,y,w,a);pack(groups.slice(split),x,y+a,w,h-a);}
+    };
+    pack(components,18,20,964,560);
+    const layer=svgNode('g',{class:'ra-network-edges'}),edgeEls=[],nodeEls=[];
+    for(const {a,b,edge} of pairs){
+      const p=shown[a],q=shown[b],line=svgNode('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,class:'ra-network-edge'+(edge.status==='Vermoedelijk'?' ra-probable':edge.status==='Historisch'?' ra-historic':edge.status==='Bevestigd'?' ra-confirmed':''),'data-status':edge.status});
+      line.append(svgNode('title',{},edgeName(edge)+' · '+relationName(edge.relationType)+' · '+edge.status));layer.append(line);edgeEls.push({a,b,line});
+    }
     svg.append(layer);
+    const labelBoxes=[];
+    function clearHighlight(){svg.classList.remove('ra-network-active');for(const o of edgeEls)o.line.classList.remove('is-connected');for(const node of nodeEls)node.classList.remove('is-connected');}
+    function highlight(i){
+      clearHighlight();svg.classList.add('ra-network-active');
+      nodeEls[i]?.classList.add('is-connected');
+      for(const j of adj[i])nodeEls[j]?.classList.add('is-connected');
+      for(const o of edgeEls)if(o.a===i||o.b===i)o.line.classList.add('is-connected');
+    }
     for(const [i,p] of shown.entries()){
-      const group=svgNode('g',{class:'ra-network-node','data-record-id':p.id,'data-record-type':p.type,'aria-label':fullName(p.type,p.id)+', '+label(p.type)+', '+p.degree+' verbanden'});
-      const radius=4+Math.min(12,Math.sqrt(p.degree)*2);
-      group.append(svgNode('circle',{cx:p.x,cy:p.y,r:radius,fill:colors.get(p.type),stroke:'#fff','stroke-width':1.5}));
+      const group=svgNode('g',{class:'ra-network-node','data-record-id':p.id,'data-record-type':p.type,'data-component':p.component,'aria-label':fullName(p.type,p.id)+', '+label(p.type)+', '+p.degree+' verbanden'});
+      const radius=p.radius;
+      group.append(svgNode('circle',{cx:p.x,cy:p.y,r:radius,fill:colors.get(p.type),stroke:'#fff','stroke-width':1.3}));
       group.append(svgNode('title',{},fullName(p.type,p.id)+' · '+p.id+' · '+p.degree+' verbanden'));
-      if(i<12||n<25)group.append(svgText(p.x,p.y-radius-4,shorten(fullName(p.type,p.id),24),'ra-network-label'));
-      clickNode(group,()=>selection(p.type,p.id));svg.append(group);
+      if(i<18||n<25){
+        const name=shorten(fullName(p.type,p.id),26),width=name.length*5.5,ly=p.y-radius-5,box={l:p.x-width/2,r:p.x+width/2,t:ly-12,b:ly+2};
+        if(box.l>6&&box.r<994&&box.t>1&&!labelBoxes.some(b=>box.l<b.r&&box.r>b.l&&box.t<b.b&&box.b>b.t)){group.append(svgText(p.x,ly,name,'ra-network-label'));labelBoxes.push(box);}
+      }
+      clickNode(group,()=>selection(p.type,p.id));group.addEventListener('mouseenter',()=>highlight(i));group.addEventListener('mouseleave',clearHighlight);group.addEventListener('focus',()=>highlight(i));group.addEventListener('blur',clearHighlight);
+      nodeEls.push(group);svg.append(group);
     }
     for(const type of types)mobileGraph.append(button(label(type)+' · '+fmt(shown.filter(p=>p.type===type).length)+' registraties','ra-mobile-group',()=>{typeSelect.value=type;mode='groups';graphMode.value=mode;render();}));
-    graphNote.textContent=fmt(shown.length)+' van '+fmt(ordered.length)+' verbonden registraties · '+fmt(pairs.length)+' van '+fmt(edges.length)+' verbanden. Posities zijn alleen bedoeld om het netwerk leesbaar te maken. Alle geselecteerde verbanden staan in de lijst hieronder.';
+    graphNote.textContent=fmt(shown.length)+' van '+fmt(ordered.length)+' verbonden registraties, verdeeld over '+components.length+' groepen. '+fmt(pairs.length)+' van '+fmt(edges.length)+' verbanden getoond. Wijs een punt aan om de directe lijnen uit te lichten. De afstand tussen punten heeft geen betekenis.';
   }
   function drawFocusGraph(edges){
     const selected=node(focused.type,focused.id);
@@ -335,11 +388,13 @@
   function describeSelection(){
     detail.replaceChildren();
     if(!focused){
-      detail.append(el('h3','', 'Onderzoek de verbanden'),el('p','ra-detail-copy','Selecteer een groep in het diagram of zoek op naam. Je ziet welke registraties met elkaar verbonden zijn en hoe zeker die relatie is.'));
+      detail.append(el('h3','', 'Bekijk een registratie'),el('p','ra-detail-copy','Kies een toepassing hieronder, zoek op naam of klik in het diagram. Je ziet de directe verbanden en hun bronstatus.'));
+      const degree=new Map();for(const e of currentEdges)for(const [t,id] of endpoints(e))if(t==='apps')degree.set(id,(degree.get(id)||0)+1);
+      const shortcuts=el('div','ra-shortcuts');for(const [id,count] of [...degree].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,7)){const b=button(fullName('apps',id),'ra-shortcut',()=>selection('apps',id));b.append(el('small','',count+' verbanden'));shortcuts.append(b);}if(shortcuts.children.length){detail.append(el('p','ra-detail-note','Applicaties met veel vastgelegde verbanden'),shortcuts);}
       const registered=currentEdges.filter(e=>e.status==='Geregistreerd').length;
       const presumed=currentEdges.filter(e=>e.status==='Vermoedelijk').length;
       detail.append(el('div','ra-status-row',fmt(registered)+' geregistreerd'),el('div','ra-status-row',fmt(presumed)+' vermoedelijk'));
-      detail.append(el('p','ra-detail-note','De lijnbreedte laat het aantal vastgelegde verbanden tussen twee groepen zien, niet de intensiteit van gegevensuitwisseling.'));
+      detail.append(el('p','ra-detail-note',mode==='groups'?'De lijnbreedte toont het aantal geregistreerde verbanden tussen groepen, niet de intensiteit van gegevensuitwisseling.':'Een lijn staat voor een vastgelegd verband, niet voor gemeten gegevensuitwisseling.'));
       return;
     }
     const selected=node(focused.type,focused.id);
@@ -413,8 +468,8 @@
     addStat('Verbanden',fmt(index.edges.length),'In de gegevensindex');
     addStat('Vermoedelijk',fmt(allStatus.Vermoedelijk||0),'Nog niet bevestigd');
     addStat('Zonder vastgelegd verband',fmt(index.nodes.size-connected.size),'Niet automatisch ongebruikt');
-    svg.replaceChildren();legend.replaceChildren();
-    mobileGraph.replaceChildren();graphMode.value=mode;
+    svg.replaceChildren();svg.classList.remove('ra-network-active');legend.replaceChildren();
+    mobileGraph.replaceChildren();graphMode.value=mode;backToNetwork.hidden=!focused;
     if(focused)drawFocusGraph(currentEdges);else if(mode==='network')drawNetworkGraph(currentEdges);else drawGroupGraph(currentEdges);
     describeSelection();renderMatches();renderList();setZoom(zoom);
   }
@@ -472,7 +527,7 @@
     studioActions.append(studioLink);
   }
   window.EmmausRelationAtlas=Object.freeze({
-    open,openNetwork:()=>open(null,'network'),close,refresh:()=>{if(openState&&ensureIndex()){initFilters();render();}},
+    open,openNetwork:()=>open(null,'groups'),close,refresh:()=>{if(openState&&ensureIndex()){initFilters();render();}},
     counts:()=>index?({registrations:index.nodes.size,links:index.edges.length,visible:currentEdges.length}):null
   });
 })();

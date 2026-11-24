@@ -101,25 +101,131 @@
     const list=$c('cardTypeFilter');list.replaceChildren();
     for(const spec of SPECS){if(!window.IctOrganisation.profile?.source.registerFiles[spec.key])continue;const o=text('option','',spec.label+' ('+(state[spec.store]?.size||0)+')');o.value=spec.key;list.append(o);}
   }
+  // Navigation folders are projections of existing registers and fields.
+  // They are not persisted and never change source IDs, drafts or permissions.
+  const TREE_SECTIONS=[
+    ['Software',['apps','parts','additionalCandidates','licenseReview','softwareReview']],
+    ['AI',['ai','aiControls']],
+    ['Techniek en hardware',['connections','hardwareGroups','devices']],
+    ['Privacy en opvolging',['dpia','checks','workActions']],
+    ['Bronnen en vragen',['sourceRegister','faqs']]
+  ];
+  const GROUP_FIELD={apps:'area',parts:'kind',additionalCandidates:'kind',licenseReview:'domain',ai:'product',aiControls:'domain',connections:'category',hardwareGroups:'category',devices:'type',dpia:'type',checks:'category',faqs:'topic'};
+  const folderState={group:null,collapsed:false};
+  function groupName(type,r){
+    const value=r?.[GROUP_FIELD[type]];
+    return typeof value==='string'&&value.trim()?value.trim():'Overig / niet ingedeeld';
+  }
+  function groupRecords(type,items){
+    if(!GROUP_FIELD[type])return [['',items]];
+    const grouped=new Map();
+    for(const r of items){const name=groupName(type,r);if(!grouped.has(name))grouped.set(name,[]);grouped.get(name).push(r);}
+    return grouped.size>1?[...grouped].sort((a,b)=>a[0].localeCompare(b[0],'nl')):[['',items]];
+  }
+  function folderIcon(kind){
+    const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');svg.setAttribute('class','card-tree-icon '+kind);svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.6');svg.setAttribute('stroke-linejoin','round');
+    const path=document.createElementNS(ns,'path');
+    path.setAttribute('d',kind==='folder'?'M3 5h7l2 3h9v12H3z M3 10h18':'M6 3h8l4 4v14H6z M14 3v5h4 M9 12h6 M9 16h6');svg.append(path);return svg;
+  }
+  function chooseFolder(type,group=null,collapse=false){
+    if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
+    model.current=null;model.editing=false;model.working=null;model.contextMode=false;
+    $c('cardTypeFilter').value=type;folderState.group=group;folderState.collapsed=collapse;
+    showList();showPane();
+  }
+  function fileButton(type,r,cls='card-browser-item'){
+    const b=text('button',cls);b.type='button';b.dataset.recordType=type;b.dataset.recordId=r.id;
+    if(model.current?.type===type&&model.current?.id===r.id){b.classList.add('active');b.setAttribute('aria-current','true');}
+    const name=text('span','card-file-name');
+    name.append(text('strong','',window.IctScanViewName?.(r.name)||r.name||'Zonder naam'),text('small','',r.id));
+    b.append(folderIcon('file'),name);
+    if(model.drafts.has(key(type,r.id)))b.append(text('em','','Concept'));
+    b.addEventListener('click',()=>open(type,r.id,false,'manager'));
+    return b;
+  }
   function showList(){
     const type=$c('cardTypeFilter').value,query=$c('cardSearch').value.trim().toLocaleLowerCase('nl-NL');
-    const list=$c('cardBrowserList');list.replaceChildren();
-    const items=records(type).filter(r=>window.IctInventoryIndex?.matchesRecord(r,query)??String(r.name||'').toLocaleLowerCase('nl-NL').includes(query));
-    for(const r of items){
-      const button=text('button','card-browser-item');button.type='button';
-      if(model.current?.type===type&&model.current?.id===r.id)button.classList.add('active');
-      button.append(text('small','',r.id),text('strong','',window.IctScanViewName?.(r.name)||r.name||'Zonder naam'));
-      if(model.drafts.has(key(type,r.id)))button.append(text('em','','Concept'));
-      button.addEventListener('click',()=>open(type,r.id,false,'manager'));
-      list.append(button);
+    const list=$c('cardBrowserList'),scroll=list.scrollTop;list.replaceChildren();
+    const available=new Set([...$c('cardTypeFilter').options].map(o=>o.value));
+    const matches=r=>window.IctInventoryIndex?.matchesRecord(r,query)??String(r.name||'').toLocaleLowerCase('nl-NL').includes(query);
+    let matchCount=0;
+    for(const [heading,keys] of TREE_SECTIONS){
+      const section=text('section','card-tree-section');
+      const title=text('h3','card-tree-heading',heading);section.append(title);
+      let visible=0;
+      for(const register of keys.filter(k=>available.has(k))){
+        const items=records(register).filter(matches);
+        if(query&&!items.length)continue;
+        visible++;matchCount+=items.length;
+        const selected=register===type,expanded=query?true:selected&&!folderState.collapsed;
+        const folder=text('div','card-tree-register');
+        const toggle=text('button','card-tree-folder'+(selected?' selected':''));toggle.type='button';
+        toggle.dataset.treeRegister=register;toggle.setAttribute('aria-expanded',String(expanded));
+        toggle.append(text('span','card-tree-caret',expanded?'▾':'▸'),folderIcon('folder'),text('span','card-tree-label',specFor(register).label),text('small','card-tree-count',items.length));
+        toggle.addEventListener('click',()=>{if(query)$c('cardSearch').value='';chooseFolder(register,null,selected&&expanded&&!query);});
+        folder.append(toggle);
+        // Only the open register is populated in browse mode. Search may open
+        // several registers and preserves their real membership.
+        if(expanded){
+          const children=text('div','card-tree-children');
+          const groups=groupRecords(register,items);
+          for(const [name,rows] of groups){
+            const opened=!name||!!query||folderState.group===name;
+            const sub=text('div','card-tree-subfolder');
+            if(name){
+              const b=text('button','card-tree-folder card-tree-subfolder-button'+(opened?' selected':''));b.type='button';b.dataset.treeGroup=name;b.setAttribute('aria-expanded',String(opened));
+              b.append(text('span','card-tree-caret',opened?'▾':'▸'),folderIcon('folder'),text('span','card-tree-label',name),text('small','card-tree-count',rows.length));
+              b.addEventListener('click',()=>chooseFolder(register,opened?null:name));sub.append(b);
+            }
+            const leaves=text('div','card-tree-files');leaves.hidden=!opened;
+            for(const r of rows)leaves.append(fileButton(register,r));
+            sub.append(leaves);children.append(sub);
+          }
+          if(!items.length)children.append(text('p','card-empty','Geen registraties.'));
+          folder.append(children);
+        }
+        section.append(folder);
+      }
+      if(visible)list.append(section);
     }
-    if(!items.length)list.append(text('p','card-empty','Geen registraties bij deze selectie.'));
+    if(query){
+      const result=text('p','card-tree-search-count',matchCount+' gevonden registraties');list.prepend(result);
+      if(!matchCount)list.append(text('p','card-empty','Geen registraties bij deze zoekterm.'));
+    }
+    list.scrollTop=scroll;
+  }
+  function renderFolder(container){
+    const type=$c('cardTypeFilter').value;
+    if(!typesByKey[type]){container.append(text('p','card-empty','Kies links een register.'));return;}
+    const query=$c('cardSearch').value.trim();
+    if(query){container.append(text('p','card-empty','Kies een zoekresultaat in de mappen aan de linkerkant.'));return;}
+    const rows=records(type),groups=groupRecords(type,rows),current=groups.find(([name])=>name&&name===folderState.group);
+    if(current){
+      const back=text('button','card-folder-back','Alle mappen in '+specFor(type).label);back.type='button';back.addEventListener('click',()=>chooseFolder(type));container.append(back);
+    }
+    const target=current?current[1]:groups.length===1&&!groups[0][0]?rows:null;
+    if(target){
+      const heading=text('p','card-folder-caption',target.length+' registraties');container.append(heading);
+      const files=text('div','card-folder-file-list');for(const r of target)files.append(fileButton(type,r,'card-directory-file'));container.append(files);
+    }else{
+      container.append(text('p','card-folder-caption','Kies een map om de registraties te bekijken.'));
+      const folders=text('div','card-folder-grid');
+      for(const [name,items] of groups){
+        const b=text('button','card-directory-folder');b.type='button';b.append(folderIcon('folder'),text('strong','',name),text('small','',items.length+' registraties'));
+        b.addEventListener('click',()=>chooseFolder(type,name));folders.append(b);
+      }
+      container.append(folders);
+    }
+    if(!rows.length)container.append(text('p','card-empty','Dit register is nog leeg.'));
   }
   function showPane(){
     const recordObj=model.working|| (model.current?record(model.current.type,model.current.id):null);
     $c('cardRecordId').textContent=recordObj?.id||'';
-    $c('cardRecordName').textContent=(recordObj?.name?window.IctScanViewName?.(recordObj.name)||recordObj.name:null)||'Kies een onderwerp';
-    $c('cardRecordContext').textContent=model.current?specFor(model.current.type).label:'';
+    const currentType=model.current?.type||$c('cardTypeFilter').value;
+    const folderTitle=typesByKey[currentType]?.label||'Registraties';
+    $c('cardRecordName').textContent=(recordObj?.name?window.IctScanViewName?.(recordObj.name)||recordObj.name:null)||folderState.group||folderTitle;
+    $c('cardRecordContext').textContent='Registraties / '+folderTitle+(folderState.group?' / '+folderState.group:'');
     $c('cardEditButton').hidden=!recordObj||model.editing;
     $c('cardNewFromRecord').hidden=!recordObj||model.editing;
     $c('cardForm').hidden=!model.editing;
@@ -132,7 +238,7 @@
     else showForm();
     showPending();
     const pending=$c('cardPendingPanel');
-    if(pending)pending.hidden=model.contextMode&&!model.editing&&model.drafts.size===0;
+    if(pending)pending.hidden=!model.editing&&model.drafts.size===0&&!$c('cardFeedback').textContent;
   }
   function lines(container,title,items,showUnknown=false){
     const group=text('section','card-read-section');if(title)group.append(text('h4','',title));
@@ -166,7 +272,7 @@
     const container=$c('cardReadView');
     container.replaceChildren();
     if(!r){
-      container.append(text('p','card-empty','Kies een registratie. De details verschijnen hier.'));
+      renderFolder(container);
       $c('cardJsonPanel').hidden=true;
       return;
     }
@@ -545,7 +651,7 @@
       showList();showPane();
     }catch(error){feedback(error.message,true);}
   }
-  function feedback(msg,bad=false){const el=$c('cardFeedback');el.textContent=msg;el.dataset.error=bad?'true':'false';}
+  function feedback(msg,bad=false){const el=$c('cardFeedback');el.textContent=msg;el.dataset.error=bad?'true':'false';if(msg)$c('cardPendingPanel').hidden=false;}
   function showPending(){
     const drafts=[...model.drafts.values()];
     const count=drafts.length;$c('cardDraftCount').textContent=count?count+' conceptwijziging'+(count!==1?'en':''):'Geen conceptwijzigingen';
@@ -580,11 +686,12 @@
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     const spec=specFor(type);
     if(!record(type,id)){feedback('Registratie niet gevonden.',true);return;}
-    model.returnFocus=document.activeElement;
+    if($c('cardEditor').hidden)model.returnFocus=document.activeElement;
     model.contextMode=!edit&&mode!=='manager';
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;document.body.classList.add('record-card-open');
     model.current={type,id};model.editing=false;model.working=null;model.adding=false;
-    $c('cardTypeFilter').value=type;$c('cardSearch').value='';
+    $c('cardTypeFilter').value=type;if(mode!=='manager')$c('cardSearch').value='';
+    folderState.collapsed=false;folderState.group=groupRecords(type,records(type)).find(([name,rs])=>name&&rs.some(x=>x.id===id))?.[0]||null;
     showList();showPane();if(edit)await startEdit(fieldName);
   }
   async function create(){
@@ -636,7 +743,9 @@
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
     model.editing=false;model.working=null;
     model.contextMode=false;
-    fillTypeSelect();
+    if($c('cardEditor').hidden)model.returnFocus=document.activeElement;
+    folderState.collapsed=false;folderState.group=null;
+    feedback('');fillTypeSelect();
     if(typeof type==='string'&&typesByKey[type])model.current=null;
     if(!$c('cardEditor').hidden&&typeof type!=='string'){showList();showPane();return;}
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;
@@ -687,8 +796,8 @@
   $c('registerOpen')?.addEventListener('click',()=>launch($c('registerPicker').value));
   $c('cardEditorClose').addEventListener('click',close);
   $c('cardScrim').addEventListener('click',close);
-  $c('cardTypeFilter').addEventListener('change',()=>{if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?')){$c('cardTypeFilter').value=model.current.type;return;}model.current=null;model.editing=false;model.working=null;showList();showPane();});
-  $c('cardSearch').addEventListener('input',showList);
+  $c('cardTypeFilter').addEventListener('change',()=>{const type=$c('cardTypeFilter').value;if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?')){$c('cardTypeFilter').value=model.current.type;return;}$c('cardSearch').value='';model.current=null;model.editing=false;model.working=null;folderState.group=null;folderState.collapsed=false;showList();showPane();});
+  $c('cardSearch').addEventListener('input',()=>{showList();if(!model.current&&!model.editing)showPane();});
   $c('cardNew').addEventListener('click',create);
   $c('cardNewFromRecord').addEventListener('click',create);
   $c('cardEditButton').addEventListener('click',()=>void startEdit());

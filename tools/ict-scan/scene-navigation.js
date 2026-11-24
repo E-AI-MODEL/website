@@ -3,7 +3,7 @@
    Only existing DOM nodes move, so graphs, imports and form listeners are retained. */
 (function(){
   const groups={
-    overview:[['Start',2],['Koppelingen',1],['Verdeling en volledigheid',3],['Applicaties',1]],
+    overview:[['Start',2],['Koppelingen',1],['Cijfers en verdeling',4],['Applicaties',1]],
     apps:[['Applicaties zoeken',3]],
     connections:[['Koppelingen in cijfers',2],['Koppelingen zoeken',3]],
     devices:[['Apparaten in cijfers',3],['Meetgegevens',1]],
