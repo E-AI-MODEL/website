@@ -34,7 +34,12 @@ class CiPrScopeTests(unittest.TestCase):
         self.assertEqual(affected_suites([]), set(SUITES))
 
     def test_topo_and_docs_are_independent(self):
-        self.assertEqual(affected_suites(["topo/instellingen/index.html", "docs/notes.md"]), set())
+        self.assertEqual(affected_suites(["topo/instellingen/index.html", "docs/notes.md"]), {"topo"})
+
+    def test_ict_and_eaigit_are_independent(self):
+        self.assertEqual(affected_suites(["tools/ict-scan/app.js", "tests/test_ict_scan_export.mjs"]), {"ictscan"})
+        self.assertEqual(affected_suites(["assets/eaigit/wizard.mjs", "tests/test_eaigit_github_checks.mjs"]), {"eaigit"})
+        self.assertEqual(affected_suites(["tools/ict-scan/app.js", "scripts/test_topo_mobile.mjs"]), {"ictscan", "topo"})
 
     def test_reject_path_escape(self):
         self.assertEqual(affected_suites(["../tools/anatomie/index.html"]), set(SUITES))
