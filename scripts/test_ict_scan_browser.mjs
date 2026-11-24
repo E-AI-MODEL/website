@@ -200,6 +200,25 @@ try {
   await page.locator('#viewOverview .scene-tab').nth(1).click();
   assert.equal(await page.locator('#viewOverview .scene-panel:not([hidden])').count(),1);
   assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-informatie mag niet standaard zichtbaar zijn');
+  // Alle verbanden komen uit een enkele index, inclusief licenties en acties.
+  await page.locator('#relationAtlasOpen').click();
+  const atlas=page.locator('#relationAtlasDialog');
+  await atlas.waitFor({state:'visible'});
+  assert.match(await atlas.locator('#relationAtlasStats').textContent(),/579/);
+  assert.match(await atlas.locator('#relationAtlasStats').textContent(),/273/);
+  assert.equal(await atlas.locator('.ra-link-row').count(),273,'Niet alle bronverbanden staan in de lijst');
+  await atlas.locator('select[aria-label="Filter status van het verband"]').selectOption('Vermoedelijk');
+  assert.equal(await atlas.locator('.ra-link-row').count(),37,'Vermoedelijke verbanden onjuist geteld');
+  await atlas.locator('button.ra-reset').click();
+  await atlas.locator('select[aria-label="Filter onderdeel"]').selectOption('licenseReview');
+  assert.equal(await atlas.locator('.ra-link-row').count(),26,'Licentierelaties ontbreken');
+  await atlas.locator('button.ra-reset').click();
+  await atlas.locator('input.ra-search').fill('APP-034');
+  assert(await atlas.locator('.ra-match-button').count()>0,'Zoeken in alle registraties werkt niet');
+  await atlas.locator('.ra-match-button').first().click();
+  assert(await atlas.locator('.ra-link-row').count()>0,'Gerichte verbanden blijven niet zichtbaar');
+  await atlas.locator('button.ra-close').click();
+  await atlas.waitFor({state:'hidden'});
   assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false,'FG-modus moet standaard uit staan');
   await page.screenshot({path:'test-results/ict-scan-'+width+'-relationships.png'});
   await navigate('devices');
