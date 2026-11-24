@@ -243,7 +243,7 @@
       const [t,id]=e.fromType===focused.type&&e.fromId===focused.id?[e.toType,e.toId]:[e.fromType,e.fromId];
       return [key(t,id),{type:t,id,edge:e}];
     })).values()].sort((a,b)=>label(a.type).localeCompare(label(b.type),'nl')||fullName(a.type,a.id).localeCompare(fullName(b.type,b.id),'nl'));
-    const shown=direct.slice(0,36);
+    const shown=direct.slice(0,22);
     const center={x:500,y:288};
     if(!shown.length){
       svg.append(svgText(500,180,'Geen directe verbanden bij deze selectie','ra-empty-text'));
@@ -289,7 +289,7 @@
     const source=index.sourcesFor(focused.type,focused.id);
     const sources=el('div','ra-sources');
     sources.append(el('strong','', 'Bronverwijzingen'));
-    const names=source.matched.slice(0,10);
+    const names=source.matched;
     const note=names.length?names.join(', '):'Geen gekoppelde bron-ID';
     sources.append(el('p','',note));
     if(source.unmatched.length)sources.append(el('p','ra-detail-note',source.unmatched.length+' bronverwijzingen kunnen niet worden gekoppeld aan het bronnenregister.'));
@@ -403,6 +403,13 @@
   trigger.id='relationAtlasOpen';
   trigger.setAttribute('aria-haspopup','dialog');
   atlasPanel.append(trigger);
+  const studioActions=document.querySelector('#viewStudio .ds-toolbar-actions');
+  if(studioActions){
+    const studioLink=button('Alle verbanden','ds-icon-action',open);
+    studioLink.setAttribute('aria-haspopup','dialog');
+    studioLink.id='relationAtlasStudioOpen';
+    studioActions.append(studioLink);
+  }
   window.EmmausRelationAtlas=Object.freeze({
     open,close,refresh:()=>{if(openState&&ensureIndex()){initFilters();render();}},
     counts:()=>index?({registrations:index.nodes.size,links:index.edges.length,visible:currentEdges.length}):null
