@@ -50,7 +50,7 @@ async function waitForChecks(target,count){
     const summary=document.getElementById('assuranceSummary');
     const stamp=document.getElementById('assuranceStamp');
     return document.querySelectorAll('#assuranceChecks .assurance-check').length===5 &&
-      stamp?.textContent.startsWith(expected+' registraties') &&
+      stamp?.textContent.startsWith(expected+' gecontroleerde registerrecords') &&
       summary?.dataset.status!=='not_run' && !document.getElementById('assuranceExport').disabled;
   },count,{timeout:20000});
 }
