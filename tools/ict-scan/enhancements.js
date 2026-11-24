@@ -1,11 +1,11 @@
 'use strict';
 /* Dashboard UI. No uploads, analytics, external scripts or implicit persistence. */
-viewNames.privacy='FG | DPIA-bronnen';
+viewNames.privacy='Privacybronnen';
 viewNames.reports='Rapporten';
-viewTitles.privacy='FG | DPIA-bronnen en privacy';
-viewTitles.reports='Rapportages op maat';
+viewTitles.privacy='Privacybronnen';
+viewTitles.reports='Rapporten';
 sectionTexts.privacy='Aangeleverde bronnen voor het onafhankelijke advies en toezicht van de FG. Geen FG-oordeel of DPIA van deze scan.';
-sectionTexts.reports='Kies een onderwerp. Elke export gebruikt alleen de ingelezen gegevens.';
+sectionTexts.reports='Kies het onderwerp en het bestandsformaat.';
 state.overviewArea='';
 state.overviewKind='';
 state.chartMode='bars';
@@ -69,13 +69,13 @@ function renderPrivacy(){
   $('privacyControls').innerHTML=admin.length?admin.map(x=>governanceRow(x,'control')).join(''):'<div class="no-results">Nog geen AI-beheerregistratie ingelezen.</div>';
   $('privacyLegal').innerHTML=legalSources.map(x=>'<div class="legal-item"><div><strong>'+esc(x.name)+'</strong><p>'+esc(x.description)+'</p></div><a target="_blank" rel="noopener noreferrer" href="'+esc(x.url)+'">Bron openen</a></div>').join('');
 }
-const reportNames={all:['Volledige broninventaris','Bronregistraties, waaronder externe privacybronnen. Geen DPIA of FG-oordeel door deze scan.'],schoolbreed:['Applicatielandschap','Software, diensten en de onderliggende productstructuur.'],koppelingen:['Entra en toegang','Technische registraties, matches en ontbrekend bewijs.'],ai:['AI in het onderwijs','AI-functies per lesfase en AI in de schoolorganisatie.'],privacy:['FG | DPIA-bronnen','Bronvermeldingen ter ondersteuning van de FG, niet een eigen DPIA of goedkeuring.'],controles:['Controlepunten','Vastgelegde vragen, bronverwijzingen en aanvullende signalen.'],devices:['Apparaten en beheer','Apparaatrecords, meetdekking en grenzen van de huidige export.']};
+const reportNames={all:['Alle gegevens','Alle ingelezen registraties, inclusief de bronverwijzingen.'],schoolbreed:['Applicaties en diensten','Applicaties, onderdelen en apparaatmetingen.'],koppelingen:['Koppelingen vanuit Entra','Geregistreerde koppelingen en hun status.'],ai:['AI-functies','AI in het onderwijs en de schoolorganisatie.'],privacy:['Privacybronnen (FG)','Externe privacyonderzoeken en broninformatie, geen goedkeuring door de school.'],controles:['Controles en acties','Openstaande controles, signalen en vervolgacties.'],devices:['Apparaten','Apparaatmetingen en de volledigheid van de gegevens.']};
 function renderReports(){
   document.querySelectorAll('[data-report]').forEach(b=>{const selected=b.dataset.report===state.reportScope;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',selected?'true':'false');});
   const [title,desc]=reportNames[state.reportScope]||reportNames.all;
   $('reportPreviewTitle').textContent=title;
   $('reportPreviewDescription').textContent=desc;
-  const counts={all:[['Toepassingen',state.apps.size],['AI-functies',state.ai.size],['Entra-koppelingen',state.connections.size],['Controles',state.checks.size]],schoolbreed:[['Toepassingen',state.apps.size],['Onderdelen',state.parts.size],['Apparaatmetingen',state.devices.size]],koppelingen:[['Entra-koppelingen',state.connections.size],['Te bevestigen matches',array(state.connections).filter(x=>!x.matched).length]],ai:[['AI-functies',state.ai.size],['Onderwijs',array(state.ai).filter(isClassroomAi).length],['Beheer',state.aiControls.size]],privacy:[['DPIA-onderwerpen',state.dpia.size],['AI-beheer',state.aiControls.size],['Toetsingsbronnen',legalSources.length]],devices:[['Apparaatmetingen',state.devices.size],['Entra-records',Number(String([...state.devices.values()].find(x=>/Entra apparaatrecords/i.test(x.name))?.quantity||'').match(/\d+/)?.[0]||0)],['Meetperiode','september 2026']],controles:[['Unieke controles',state.checks.size],['Aanvullende signalen',state.derived.length],['Bronregels',state.sources.filter(x=>x.kind==='controles').reduce((n,x)=>n+x.rows,0)]]};
+  const counts={all:[['Toepassingen',state.apps.size],['AI-functies',state.ai.size],['Entra-koppelingen',state.connections.size],['Controles',state.checks.size]],schoolbreed:[['Toepassingen',state.apps.size],['Onderdelen',state.parts.size],['Apparaatmetingen',state.devices.size]],koppelingen:[['Entra-koppelingen',state.connections.size],['Zonder toegewezen applicatie',array(state.connections).filter(x=>!x.matched).length]],ai:[['AI-functies',state.ai.size],['Onderwijs',array(state.ai).filter(isClassroomAi).length],['Beheer',state.aiControls.size]],privacy:[['DPIA-onderwerpen',state.dpia.size],['AI-beheer',state.aiControls.size],['Toetsingsbronnen',legalSources.length]],devices:[['Apparaatmetingen',state.devices.size],['Entra-records',Number(String([...state.devices.values()].find(x=>/Entra apparaatrecords/i.test(x.name))?.quantity||'').match(/\d+/)?.[0]||0)],['Meetperiode','september 2026']],controles:[['Unieke controles',state.checks.size],['Aanvullende signalen',state.derived.length],['Bronregels',state.sources.filter(x=>x.kind==='controles').reduce((n,x)=>n+x.rows,0)]]};
   $('reportPreviewMeta').innerHTML=(counts[state.reportScope]||[]).map(([label,count])=>'<span><b>'+count+'</b> '+esc(label)+'</span>').join('');
   $('reportStamp').textContent=state.sources.length?reportStatusText():'Nog geen bronbestanden ingelezen';
   for(const id of ['reportExcel','reportPdf','reportJson'])$(id).disabled=!state.ready;
@@ -89,8 +89,8 @@ function sheetsForScope(scope){
   if(scope==='ai')return baselineGenerateSheets().filter(s=>s.name==='AI in de klas'||s.name==='AI in de school');
   if(scope==='koppelingen'){
     const s=scopedSheet('Entra-koppelingen','Geregistreerde verbindingen met toepassingen en diensten. Aanwezigheid bewijst geen actief gebruik.');
-    rkpis(s,[['ENTRA-REGISTRATIES',state.connections.size,'Niet automatisch actief'],['GEKOPPELD AAN TOEPASSING',array(state.connections).filter(x=>x.matched).length,'Mogelijke match, nog controleren'],['TOEPASSINGEN',state.apps.size,'Geregistreerde diensten'],['BRONNEN',state.sources.length,'Ingelezen brononderdelen']]);
-    rsection(s,'REGISTER EN KOPPELINGEN');const h=rtableHeader(s,['ID','Naam','Enabled in export','Zichtbaarheid','Mogelijke toepassing','Bron']);
+    rkpis(s,[['KOPPELINGEN VANUIT ENTRA',state.connections.size,'Gebruik niet overal bevestigd'],['VERWIJZING NAAR APPLICATIE',array(state.connections).filter(x=>x.matched).length,'Naamovereenkomst, geen bevestiging van actief gebruik'],['APPLICATIES',state.apps.size,'Geregistreerde applicaties en diensten'],['BRONBESTANDEN',state.sources.length,'Ingelezen bestanden']]);
+    rsection(s,'REGISTER EN KOPPELINGEN');const h=rtableHeader(s,['ID','Naam','Ingeschakeld (Entra)','Zichtbaarheid','Mogelijke applicatie','Bron']);
     for(const e of array(state.connections).sort((a,b)=>a.name.localeCompare(b.name,'nl')))rline(s,[e.id,e.name,e.enabled,e.visible,e.matched,(e.sources||[]).join('; ')],42);
     s.filter='A'+h+':F'+s.rows.length;return [s];
   }
