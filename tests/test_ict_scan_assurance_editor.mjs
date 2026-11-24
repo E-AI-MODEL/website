@@ -30,6 +30,7 @@ function documentStub() {
       this.classList = {add: x => classes.add(x), remove: x => classes.delete(x), contains: x => classes.has(x), toggle(x, enabled) {if (enabled ?? !classes.has(x)) classes.add(x); else classes.delete(x);}};
     }
     append(...nodes) {for (const value of nodes) {const node = typeof value === 'object' ? value : {textContent: String(value), children: []}; node.parentElement = this; this.children.push(node);}}
+    prepend(...nodes) {for(const node of nodes)node.parentElement=this;this.children.unshift(...nodes);}
     replaceChildren(...nodes) {for (const node of this.children) node.parentElement = null; this.children = []; this.append(...nodes);}
     addEventListener(name, handler) {(this.events[name] ??= []).push(handler);}
     dispatch(name, event = {}) {for (const handler of this.events[name] || []) handler(event);}
@@ -44,6 +45,7 @@ function documentStub() {
   const doc = {
     body, activeElement: body, events: {},
     createElement: tag => new Element(tag),
+    createElementNS: (_namespace, tag) => new Element(tag),
     createTextNode: text => ({textContent: String(text), children: []}),
     getElementById(id) {const existing = byId(body, id); if (existing) return existing; const item = new Element('div'); item.id = id; body.append(item); return item;},
     addEventListener(name, handler) {(this.events[name] ??= []).push(handler);},

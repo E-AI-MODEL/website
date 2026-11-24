@@ -147,7 +147,7 @@
   function showList(){
     const type=$c('cardTypeFilter').value,query=$c('cardSearch').value.trim().toLocaleLowerCase('nl-NL');
     const list=$c('cardBrowserList'),scroll=list.scrollTop;list.replaceChildren();
-    const available=new Set([...$c('cardTypeFilter').options].map(o=>o.value));
+    const available=new Set(Object.keys(window.IctOrganisation.profile?.source?.registerFiles||{}));
     const matches=r=>window.IctInventoryIndex?.matchesRecord(r,query)??String(r.name||'').toLocaleLowerCase('nl-NL').includes(query);
     let matchCount=0;
     for(const [heading,keys] of TREE_SECTIONS){
