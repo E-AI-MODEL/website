@@ -10,7 +10,9 @@ const legalSources=[
  {name:'Kennisnet | IBP-normenkader',url:'https://normenkaderibp.kennisnet.nl/',description:'Informatiebeveiliging, privacy, verantwoordelijken en schoolafspraken.'},
  {name:'Autoriteit Persoonsgegevens | DPIA',url:'https://www.autoriteitpersoonsgegevens.nl/themas/basis-avg/praktisch-avg/data-protection-impact-assessment-dpia',description:'Wanneer een gegevensbeschermingseffectbeoordeling nodig kan zijn.'},
  {name:'EN 18286:2026 | Kwaliteitsmanagement',url:'https://eur-lex.europa.eu/eli/dec_impl/2026/2274/oj/eng',description:'Geharmoniseerde norm voor kwaliteitsmanagement bij AI. Toepasselijkheid en dekking per systeem beoordelen; een ingevulde controle is geen conformiteitsverklaring.'},
- {name:'EUR-Lex | AI-verordening',url:'https://eur-lex.europa.eu/eli/reg/2024/1689/oj',description:'Officiele tekst en actuele wijzigingen. Beoordeel per concrete AI-toepassing.'},
+ {name:'EUR-Lex | AI-verordening (geconsolideerd op 27 juli 2026)',url:'https://eur-lex.europa.eu/eli/reg/2024/1689/2026-07-27',description:'Beoordeel per concrete AI-inzet, rol en toepasselijke datum.'},
+ {name:'EUR-Lex | Verordening (EU) 2026/1744, Digitale omnibus AI',url:'https://eur-lex.europa.eu/eli/reg/2026/1744/oj',description:'Wijzigingen van onder meer AI-geletterdheid, verboden praktijken, overgangsrecht en toepassingsdata.'},
+ {name:'EUR-Lex | AVG (EU) 2016/679',url:'https://eur-lex.europa.eu/eli/reg/2016/679/oj',description:'Verwerkingsactiviteiten, grondslagen, verwerkers, beveiliging en DPIA waar toepasselijk.'},
  {name:'SURF | Compliance en DPIA',url:'https://vendorcompliance.surf.nl/alle-compliance-trajecten/',description:'Externe leveranciersrapporten; afzonderlijk beoordelen of de versie van toepassing is.'},
  {name:'Kennisnet | IBP-voorbeeldmaterialen',url:'https://www.kennisnet.nl/informatiebeveiliging-en-privacy/',description:'Praktische documenten en afspraken over ICT, leveranciers en toegang.'}
 ];

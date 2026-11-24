@@ -12,7 +12,7 @@
 <title>404 Not Found</title>
 
 <link rel="stylesheet" href="./style.css?v=20261120b">
-<link rel="stylesheet" href="./monitor.css?v=20261124b">
+<link rel="stylesheet" href="./monitor.css?v=20261124reports2">
 <link rel="stylesheet" href="./visual-explorer.css?v=20261120b">
 <link rel="stylesheet" href="./scene-navigation.css?v=20261120b">
 <link rel="stylesheet" href="./evidence-experience.css?v=20261124aiux1">
@@ -35,9 +35,9 @@
 <script defer src="./record-taxonomy.js?v=20261121a"></script>
 <script defer src="./inventory-index.js?v=20261124aiux2"></script>
 <link rel="stylesheet" href="./report-print.css?v=20261124view2">
-<script defer src="./report-print.js?v=20261124view1"></script>
-<script defer src="./app.js?v=20261124portal1"></script>
-<script defer src="./enhancements.js?v=20261124aiux1"></script>
+<script defer src="./report-print.js?v=20261124reports2"></script>
+<script defer src="./app.js?v=20261124portalreports1"></script>
+<script defer src="./enhancements.js?v=20261124reports2"></script>
 <script defer src="./document-library.js?v=20261124a"></script>
 <link rel="stylesheet" href="./document-library.css?v=20261124a">
 <script defer src="./visual-explorer.js?v=20261124aiux1"></script>
@@ -49,7 +49,7 @@
 <script defer src="./answer-engine.js?v=20261124ux4"></script>
 <script defer src="./scene-navigation.js?v=20261124fixed4"></script>
 <script defer src="./evidence-experience.js?v=20261124fixed1"></script>
-<script defer src="./role-modes.js?v=20261124r1"></script>
+<script defer src="./role-modes.js?v=20261124reports2"></script>
 <script defer src="./dashboard-composer.js?v=20261124view2"></script>
 <script defer src="./composer-resize.js?v=20261123a"></script>
 <script defer src="./assurance-ui.js?v=20261124r2"></script>
@@ -252,20 +252,17 @@
         <details class="panel candidates-panel" id="workPanel"><summary><strong>Openstaande acties uit het werkregister</strong><small><span id="workTotal">0</span> acties</small></summary><div class="candidate-content"><div class="list-tools"><input id="workSearch" type="search" placeholder="Zoek openstaande actie" aria-label="Zoek openstaande acties"></div><div id="workList" class="item-list"></div></div></details>
       </section>
       <section id="viewReports" class="view" hidden>
-        <div class="report-intro"><div><p class="panel-kicker">RAPPORTAGES</p><h2>Rapport kiezen</h2><p>Het rapport gebruikt de ingelezen gegevens, ook wanneer er op een ander scherm filters actief zijn.</p></div><span class="report-datetime" id="reportStamp">Laatste overzicht: nog geen data</span></div>
-        <div class="report-picker" id="reportPicker" role="group" aria-label="Rapport kiezen">
-<button type="button" data-report="ict" class="report-tile"><span class="report-category">ICT</span><strong>ICT-beheer en inrichting</strong><small>Toegang, hardware, licenties en vervolgacties</small></button>
-<button type="button" data-report="aiGovernance" class="report-tile"><span class="report-category">AI</span><strong>AI-beleid en uitvoering</strong><small>Instellingen, AI Act, scholing en opvolging</small></button>
-          <button type="button" data-report="all" class="report-tile selected"><span class="report-category">01</span><strong>Alle gegevens</strong><small>Registerinformatie, waaronder externe privacybronnen. Geen FG-oordeel.</small></button>
-          <button type="button" data-report="schoolbreed" class="report-tile"><span class="report-category">02</span><strong>Applicatielandschap</strong><small>Toepassingen, soorten voorzieningen en samenhang</small></button>
-          <button type="button" data-report="koppelingen" class="report-tile"><span class="report-category">03</span><strong>Entra & toegang</strong><small>Koppelingen en te verifiëren instellingen</small></button>
-          <button type="button" data-report="ai" class="report-tile"><span class="report-category">04</span><strong>AI in onderwijs</strong><small>Lesfasen, functies, docentrol en instelbaarheid</small></button>
-          <button type="button" data-report="devices" class="report-tile"><span class="report-category">05</span><strong>Apparaten en beheer</strong><small>Meetwaarden, ontbrekende gegevens en bronpeildatum</small></button>
-          <button type="button" data-report="privacy" class="report-tile"><span class="report-category">06</span><strong>FG | Privacy en toezicht</strong><small>DPIA-bronnen, gegevensstromen, bewijs en vervolgacties</small></button>
-          <button type="button" data-report="controles" class="report-tile"><span class="report-category">07</span><strong>Onderzoekspunten</strong><small>Open controles, dubbelingen en bewijsstatus</small></button>
-        </div>
-        <article class="panel report-workbench"><div class="report-workbench-text"><p class="panel-kicker">GESELECTEERD RAPPORT</p><h2 id="reportPreviewTitle">Alle gegevens</h2><p id="reportPreviewDescription">Overzicht van de volledige digitale omgeving, inclusief de beschikbare onderbouwing.</p><div id="reportPreviewMeta" class="report-preview-meta"></div></div><div class="report-workbench-actions"><button type="button" id="reportExcel" class="monitor-button primary">Excelrapport</button><button type="button" id="reportPdf" class="monitor-button subtle">PDF-rapport</button><button type="button" id="reportJson" class="monitor-button subtle">Gegevensbestand (JSON)</button></div></article>
-        <article class="panel local-panel"><div><p class="panel-kicker">LOKAAL GEGEVENSBEHEER</p><h2>Deze inventaris bewaren</h2><p>Bewaar een lokale kopie voor als GitHub niet bereikbaar is. Bij het openen wordt altijd eerst de actuele bron gecontroleerd. Een lokale kopie krijgt nooit de status van een actuele GitHub-versie.</p></div><div class="local-actions"><button type="button" class="monitor-button subtle" id="saveLocal">Bewaar op dit apparaat</button><button type="button" class="monitor-button subtle" id="deleteLocal">Wis lokale gegevens</button></div><span class="save-status" id="saveStatus"></span><details class="local-legacy"><summary>Eerdere lokale kopie</summary><p>Bewaar een kopie uit de vorige versie als archiefbestand. Het bestand bevat de oorspronkelijke gegevens, zonder ze aan een organisatie toe te wijzen.</p><button type="button" class="monitor-button subtle" id="downloadLegacyLocal">Oude lokale kopie downloaden</button></details></article>
+        <div class="report-intro"><div><p class="panel-kicker">RAPPORTAGES</p><h2>Waarvoor heb je een rapport nodig?</h2><p>Kies een doel. Bekijk daarna de inhoud, aantallen, beperkingen en het gewenste bestandsformaat. Alle rapporten blijven beschikbaar, ook wanneer een functieweergave uit staat.</p></div><span class="report-datetime" id="reportStamp">Laatste overzicht: nog geen data</span></div>
+        <div class="report-picker" id="reportPicker" role="group" aria-label="Kies het doel van het rapport"></div>
+        <article class="panel report-workbench"><div class="report-workbench-text">
+          <p class="panel-kicker">GESELECTEERD RAPPORT</p><h2 id="reportPreviewTitle">Bestuurlijke stand van zaken</h2>
+          <p id="reportPreviewAudience" class="report-preview-audience"></p><p id="reportPreviewDescription"></p>
+          <div id="reportPreviewMeta" class="report-preview-meta"></div>
+          <div class="report-limit"><strong>Afbakening</strong><p id="reportPreviewLimit"></p></div>
+          <div class="report-chapters"><h3>Wat staat erin?</h3><ul id="reportPreviewChapters"></ul></div>
+          </div><div class="report-workbench-actions"><button type="button" id="reportPdf" class="monitor-button primary">PDF-rapport</button><button type="button" id="reportExcel" class="monitor-button subtle">Excelrapport</button><button type="button" id="reportJson" class="monitor-button subtle">Rapportgegevens (JSON)</button><p>Alle drie gebruiken dezelfde rapportselectie. Andere dashboardfilters hebben geen invloed.</p></div>
+        </article>
+        <article class="panel local-panel"><div><p class="panel-kicker">LOKAAL GEGEVENSBEHEER</p><h2>Deze inventaris bewaren</h2><p>Bewaar een lokale kopie voor als GitHub niet bereikbaar is. Bij het openen wordt altijd eerst de actuele bron gecontroleerd. Een lokale kopie krijgt nooit de status van een actuele GitHub-versie.</p></div><div class="local-actions"><button type="button" class="monitor-button subtle" id="reportInventoryJson">Volledige inventaris (JSON)</button><button type="button" class="monitor-button subtle" id="saveLocal">Bewaar op dit apparaat</button><button type="button" class="monitor-button subtle" id="deleteLocal">Wis lokale gegevens</button></div><span class="save-status" id="saveStatus"></span><details class="local-legacy"><summary>Eerdere lokale kopie</summary><p>Bewaar een kopie uit de vorige versie als archiefbestand. Het bestand bevat de oorspronkelijke gegevens, zonder ze aan een organisatie toe te wijzen.</p><button type="button" class="monitor-button subtle" id="downloadLegacyLocal">Oude lokale kopie downloaden</button></details></article>
       </section>
       <section id="viewSources" class="view" hidden>
         <article class="panel github-sync-panel" id="githubSyncPanel">
