@@ -151,6 +151,24 @@ try {
   await page.locator('#overviewQuickActions button').filter({hasText:'Rapport maken'}).click();
   await page.locator('#reportPicker:visible').waitFor();
   assert.equal(await page.locator('#sectionTitle').textContent(),'Rapporten');
+  if(width===1440){
+    await page.evaluate(()=>{window.print=()=>{};});
+    const reports=await page.evaluate(()=>Object.keys(window.IctPrintReports.titles));
+    assert.equal(reports.length,9);
+    for(const scope of reports){
+      const model=await page.evaluate(scope=>indexedReport(scope),scope);
+      assert(model.sections.length>1);
+      assert(model.kpis.length>0);
+      await page.evaluate(scope=>printIndexedReport(scope),scope);
+      assert.equal(await page.locator('#printReport .report-cover h1').count(),1);
+      assert.equal(await page.locator('#printReport .report-chapter').count(),model.sections.length);
+      assert.equal(await page.locator('#printReport script').count(),0);
+      if(browserType===chromium&&['ict','privacy','aiGovernance'].includes(scope)){
+        await page.pdf({path:'test-results/ict-scan-report-'+scope+'.pdf',format:'A4',preferCSSPageSize:true,printBackground:true});
+      }
+    }
+    await page.evaluate(()=>{document.getElementById('printReport').replaceChildren();});
+  }
   await navigate('overview');
   await page.locator('#overviewQuickActions button').filter({hasText:'Gegevens aanpassen'}).click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
