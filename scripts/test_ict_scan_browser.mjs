@@ -207,6 +207,11 @@ try {
   assert.match(await atlas.locator('#relationAtlasStats').textContent(),/579/);
   assert.match(await atlas.locator('#relationAtlasStats').textContent(),/273/);
   assert.equal(await atlas.locator('.ra-link-row').count(),273,'Niet alle bronverbanden staan in de lijst');
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-relatieatlas.png'});
+  const downloadPromise=page.waitForEvent('download');
+  await atlas.locator('button').filter({hasText:'CSV downloaden'}).click();
+  const csvDownload=await downloadPromise;
+  assert.equal(csvDownload.suggestedFilename(),'ict-scan-verbanden.csv','De atlasexport heeft geen herkenbare bestandsnaam');
   await atlas.locator('select[aria-label="Filter status van het verband"]').selectOption('Vermoedelijk');
   assert.equal(await atlas.locator('.ra-link-row').count(),37,'Vermoedelijke verbanden onjuist geteld');
   await atlas.locator('button.ra-reset').click();
