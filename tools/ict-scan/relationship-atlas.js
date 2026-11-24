@@ -113,7 +113,7 @@
   dialog.append(shell);
   document.body.append(dialog);
 
-  let index=null,focused=null,zoom=1,matchedNodes=[],currentEdges=[],mode='groups',openState=false;
+  let index=null,focused=null,zoom=1,matchedNodes=[],currentEdges=[],mode='groups',openState=false,opener=null;
   function node(type,id){return index?.get(type,id)||null;}
   const fullName=(type,id)=>node(type,id)?.record?.name||id;
   function endpoints(edge){
@@ -374,7 +374,8 @@
     const url=URL.createObjectURL(blob),a=el('a');
     a.href=url;a.download='ict-scan-verbanden.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
-  function open(){
+  function open(event){
+    opener=event?.currentTarget||document.activeElement;
     if(!ensureIndex()){
       // No false graph when data have not loaded.
       if(typeof toast==='function')toast('De gegevens zijn nog niet ingelezen.');
@@ -390,9 +391,9 @@
     if(typeof dialog.close==='function'&&dialog.open)dialog.close();
     else dialog.removeAttribute('open');
     openState=false;
-    trigger.focus();
+    (opener||trigger).focus();
   }
-  dialog.addEventListener('close',()=>{openState=false;trigger.focus();});
+  dialog.addEventListener('close',()=>{openState=false;(opener||trigger).focus();});
   dialog.addEventListener('click',event=>{if(event.target===dialog)close();});
   for(const control of [search,typeSelect,statusSelect,relationSelect])control.addEventListener(control===search?'input':'change',()=>{
     focused=null;render();
