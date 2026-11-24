@@ -3,17 +3,17 @@
    Only existing DOM nodes move, so graphs, imports and form listeners are retained. */
 (function(){
   const groups={
-    overview:[['Schoolbreed',4],['Systeemrelaties',1],['Broncontrole',1],['Toepassingen',1]],
-    apps:[['Toepassingen',3]],
-    connections:[['Registraties en status',2],['Koppelingen doorzoeken',3]],
-    devices:[['Apparaatstatus',3],['Onderliggende metingen',1]],
-    ai:[['AI-functies',2],['Functies doorzoeken',2],['AI-beheer',1]],
-    privacy:[['DPIA-bronnen',3],['Privacykaders',1]],
-    findings:[['Stand van controles',3],['Controlepunten',4]],
-    reports:[['Rapport kiezen',2],['Rapport ophalen',2]],
-    sources:[['Synchroniseren',3],['Herkomst en beheer',3],['Documentatie',2]]
+    overview:[['Start',2],['Koppelingen',1],['Verdeling en volledigheid',3],['Applicaties',1]],
+    apps:[['Applicaties zoeken',3]],
+    connections:[['Koppelingen in cijfers',2],['Koppelingen zoeken',3]],
+    devices:[['Apparaten in cijfers',3],['Meetgegevens',1]],
+    ai:[['Tussenstand',1],['AI per lesfase',2],['AI-functies',2],['AI-instellingen en beheer',1]],
+    privacy:[['Privacyonderzoeken',3],['Wet- en regelgeving',1]],
+    findings:[['Controle-uitkomsten',3],['Controles en acties',4]],
+    reports:[['Rapport kiezen',2],['Rapport downloaden',2]],
+    sources:[['Bronbestanden ophalen',3],['Bestanden en wijzigingen',3],['Broninformatie',2]]
   };
-  const leading={ai:2};
+  const leading={ai:2,apps:1};
   const scenes=new Map();
   const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
   function show(view,index,animate=true){
@@ -50,7 +50,7 @@
     const nav=document.createElement('nav');
     nav.className='scene-navigation';
     nav.setAttribute('role','tablist');
-    nav.setAttribute('aria-label','Weergaven binnen '+name);
+    nav.setAttribute('aria-label','Onderdelen van dit scherm');
     const frame=document.createElement('div');
     frame.className='scene-frame';
     const panels=[],tabs=[];
@@ -91,17 +91,17 @@
     previousSelect(view);
     if(!scenes.has(view))return;
     const searches={connections:'connectionsSearch',ai:'aiSearch',findings:'findingsSearch'};
-    if(searches[view]&&document.getElementById(searches[view])?.value.trim())show(view,1,false);
+    if(searches[view]&&document.getElementById(searches[view])?.value.trim())show(view,view==='ai'?2:1,false);
     scenes.get(view).frame.scrollTop=0;
   };
   // The school AI mode has no analytical chart yet: show the actual records,
   // rather than a nearly empty introductory screen.
-  document.getElementById('aiModeSchool')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',1)));
-  document.getElementById('aiModeKlas')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',0)));
+  document.getElementById('aiModeSchool')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',2)));
+  document.getElementById('aiModeKlas')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',1)));
   // Open the record list rather than leaving a filtered graph on screen.
   for(const [chart,view] of [['connectionChart','connections'],['phaseChart','ai'],['aiProducts','ai'],['findingsChart','findings']]){
     document.getElementById(chart)?.addEventListener('click',e=>{
-      if(e.target.closest('button,[role="button"]'))queueMicrotask(()=>show(view,1));
+      if(e.target.closest('button,[role="button"]'))queueMicrotask(()=>show(view,view==='ai'?2:1));
     });
   }
   document.getElementById('reportPicker')?.addEventListener('click',e=>{

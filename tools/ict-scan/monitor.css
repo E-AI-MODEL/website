@@ -303,3 +303,24 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,su
 .candidate-content .section-mini-title{font-size:12px;font-weight:720;color:#344767;margin:18px 0 10px;padding-top:12px;border-top:1px solid #edf0f4}
 
 .rail-drawer[hidden]{display:none!important}
+
+/* AI-tussenstand: dezelfde kaarten, een compacte schoolbrede weergave. */
+.ai-progress-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.ai-progress-metric{min-width:0;padding:12px;border:1px solid #dce3eb;border-radius:8px;background:#f7f9fb;color:#23334a;display:flex;flex-direction:column;gap:4px}
+.ai-progress-metric strong{font-size:1.55rem;line-height:1.1}
+.ai-progress-metric span{font-size:.8rem;line-height:1.4}
+.ai-progress-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
+.ai-progress-group{min-width:0;border:1px solid #dce3eb;border-radius:8px;overflow:hidden;background:#fff;color:#23334a}
+.ai-progress-group h3{font-size:.9rem;line-height:1.4;margin:0;padding:12px;border-left:4px solid #8694a5;background:#f3f5f7}
+.ai-progress-group[data-progress=good] h3{border-color:#408365}
+.ai-progress-group[data-progress=open] h3{border-color:#bd7e30}
+.ai-progress-row{display:flex;flex-direction:column;gap:5px;text-align:left;width:100%;padding:12px;border:0;border-top:1px solid #e1e6eb;background:transparent;color:inherit;font:inherit;cursor:pointer;overflow-wrap:anywhere}
+.ai-progress-row:hover,.ai-progress-row:focus-visible{background:#eef3f7}
+.ai-progress-row strong{font-size:.9rem}
+.ai-progress-row span,.ai-progress-row small,.ai-progress-empty{font-size:.8rem;line-height:1.5}
+.ai-progress-row small{color:#52627a}
+.ai-progress-empty{padding:12px;margin:0}
+.ai-progress-risk{margin-top:16px;border:1px solid #dce3eb;border-radius:8px;color:#23334a;background:#fff}
+.ai-progress-risk summary{padding:12px;cursor:pointer;font-size:.9rem;font-weight:600}
+@media(max-width:900px){.ai-progress-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.ai-progress-metrics{grid-template-columns:1fr}.ai-progress-metric{flex-direction:row;align-items:center;gap:10px}}

@@ -1,0 +1,60 @@
+name: ICT-scan WebKit mobiel
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ict-scan-webkit.yml'
+      - 'tools/ict-scan/**'
+      - 'scripts/test_ict_scan_browser.mjs'
+      - 'scripts/build_site.py'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ict-scan-webkit.yml'
+      - 'tools/ict-scan/**'
+      - 'scripts/test_ict_scan_browser.mjs'
+      - 'scripts/build_site.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ict-webkit-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  webkit:
+    name: WebKit iPhone-layout, grafieken en bronimport
+    runs-on: ubuntu-24.04
+    # WebKit and its Ubuntu libraries are already installed in this pinned image.
+    # Avoid repeated slow apt downloads, while still running the real browser test.
+    container:
+      image: mcr.microsoft.com/playwright/python:v1.56.0-noble
+    timeout-minutes: 14
+    steps:
+      - name: Checkout zonder opgeslagen credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Gebruik Node.js 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Bereid de sitebuild voor
+        run: pip3 install --disable-pip-version-check --user beautifulsoup4
+      - name: Bouw bestaande ICT-scan zonder externe gegevens
+        run: python3 scripts/build_site.py --sources content/legacy --out site-build
+      - name: Gebruik bij de container passende Playwright
+        run: npm install --no-save --package-lock=false --ignore-scripts playwright@1.56.0
+      - name: Test dashboard in echte WebKit-renderer
+        run: node scripts/test_ict_scan_browser.mjs site-build webkit
+      - name: Bewaar screenshots van WebKit-test
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ict-scan-webkit-${{ github.run_id }}
+          path: test-results/ict-scan-*
+          if-no-files-found: warn
+          retention-days: 7

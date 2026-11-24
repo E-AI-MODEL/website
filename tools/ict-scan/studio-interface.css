@@ -298,9 +298,49 @@ body>.rail-drawer .rail-drawer-link:hover{
 @media(max-width:990px){
   .workspace.monitor-layout #kpiGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+body>.rail-drawer .rail-drawer-navigation{display:none}
 @media(max-width:720px){
-  .workspace.monitor-layout .sidebar.icon-rail{width:54px;flex-basis:54px}
-  .workspace.monitor-layout .icon-rail .rail-button{width:40px;height:40px}
+  /* A later desktop rule previously shrank the mobile bottom dock to 54px wide.
+     Keep the dock full-width; move less-used destinations into More. */
+  .workspace.monitor-layout .sidebar.icon-rail{
+    order:2;width:100%;max-width:100%;min-width:0;
+    flex:0 0 58px;height:58px;min-height:58px;box-sizing:border-box;
+    display:flex;flex-direction:row;align-items:center;
+    padding:0 max(8px,env(safe-area-inset-right,0px)) 0 max(8px,env(safe-area-inset-left,0px));
+    border-right:0;border-top:1px solid rgba(255,255,255,.12);
+  }
+  .workspace.monitor-layout .icon-rail .side-nav{
+    display:flex;flex-direction:row;flex:1 1 auto;min-width:0;width:auto;height:100%;
+    padding:0 2px;gap:2px;align-items:center;justify-content:space-around;overflow:visible;
+  }
+  .workspace.monitor-layout .icon-rail .rail-button{
+    width:40px;height:40px;min-height:40px;flex:0 0 40px;
+  }
+  .workspace.monitor-layout .side-nav .rail-button[data-view="connections"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="devices"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="privacy"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="findings"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="reports"]{display:none}
+  .workspace.monitor-layout .icon-rail .rail-more{
+    display:grid;flex:0 0 44px;width:44px;height:44px;min-height:44px;
+    margin:0 0 0 auto;
+  }
+  body>.rail-drawer:not([hidden]){
+    left:8px;right:8px;width:auto;
+    bottom:calc(68px + env(safe-area-inset-bottom,0px));
+    max-height:calc(100dvh - 90px - env(safe-area-inset-bottom,0px));
+  }
+  body>.rail-drawer .rail-drawer-navigation{display:block}
+  body>.rail-drawer .rail-drawer-view-list{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;
+  }
+  body>.rail-drawer .rail-drawer-view{
+    min-width:0;min-height:44px;border:1px solid #e2e9f1;border-radius:9px;
+    background:#f8fafc;font-size:11px;padding:10px;text-align:left;
+  }
+  body>.rail-drawer .rail-drawer-view.active{
+    color:#243e6d;background:#edf3fb;border-color:#c9d9ea;
+  }
   .workspace.monitor-layout .main-content{padding:13px 10px 8px}
   .workspace.monitor-layout .topbar.monitor-topbar{height:60px;flex-basis:60px}
   .workspace.monitor-layout .page-head h1{font-size:20px}
@@ -322,4 +362,26 @@ body>.rail-drawer .rail-drawer-link:hover{
   .workspace.monitor-layout .main-content{background:#fff!important}
   .workspace.monitor-layout .panel{box-shadow:none!important;background:#fff!important;backdrop-filter:none!important}
   .workspace.monitor-layout .scene-frame{mask-image:none!important}
+}
+
+/* Keep the no-data illustration in normal flow. On short iPhone screens the
+   icon must not shrink into the heading while source sync is running. */
+@media(max-width:720px){
+  .workspace.monitor-layout #emptyState:not([hidden]){
+    flex:1 1 0;min-height:0;overflow-y:auto;justify-content:flex-start;
+    padding:24px 16px 34px;box-sizing:border-box;
+  }
+  .workspace.monitor-layout #emptyState .empty-illustration{
+    flex:0 0 96px;height:96px;min-height:96px;margin:4px auto 22px;
+  }
+  .workspace.monitor-layout #emptyState h2{
+    flex:0 0 auto;line-height:1.3;max-width:100%;margin:0 0 13px;
+  }
+  .workspace.monitor-layout #emptyState p,
+  .workspace.monitor-layout #emptyState button{flex-shrink:0}
+}
+
+/* Display the mobile menu immediately with its scrim, not after a blurred delay. */
+@media(max-width:720px){
+  body>.rail-drawer:not([hidden]){animation:none!important}
 }

@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "eai.watermerk.evidence.v1",
+  "last_checked": "2026-11-23",
+  "about": {
+    "nl": "Door de auteurs gepubliceerde metingen. Percentages komen uit verschillende proeven en zijn niet onderling uitwisselbaar. De cijfers bewijzen geen effect van textGrain op afzonderlijke antwoorden of IdeaLens-uitslagen.",
+    "en": "Measurements published by the authors. Percentages come from different experiments and are not interchangeable. They do not establish a textGrain effect on individual answers or IdeaLens classifications."
+  },
+  "sources": {
+    "openai_post": {
+      "url": "https://openai.com/index/eu-text-provenance/",
+      "title": "Our approach to EU text provenance rules",
+      "publisher": "OpenAI",
+      "date": "2026-10-05",
+      "kind": "company evaluation"
+    },
+    "openai_help": {
+      "url": "https://help.openai.com/en/articles/8912793-provenance-signals-in-content-processed-by-openai-tools",
+      "title": "Provenance signals in content processed by OpenAI tools",
+      "publisher": "OpenAI",
+      "kind": "help article"
+    },
+    "idealens": {
+      "url": "https://arxiv.org/abs/2610.06778",
+      "html": "https://arxiv.org/html/2610.06778v1",
+      "title": "IdeaLens: Detecting AI Ideas in Long-form Writing",
+      "publisher": "Rajendhran et al.",
+      "date": "2026-10",
+      "kind": "preprint"
+    }
+  },
+  "measurements": {
+    "astra_benchmarks": {
+      "source": "openai_post",
+      "model": "Astra (max)",
+      "interpretation": "OpenAI reports no meaningful aggregate differences; individual rows have benchmark-specific scales and do not measure changes in a single answer.",
+      "rows": [
+        {
+          "id": "artificial-analysis",
+          "label": "Artificial Analysis Intelligence Index",
+          "without": 49.57,
+          "with": 49.76,
+          "unit": "index points"
+        },
+        {
+          "id": "automationbench",
+          "label": "AutomationBench",
+          "without": 34.09,
+          "with": 34.86,
+          "unit": "percent"
+        },
+        {
+          "id": "deepswe",
+          "label": "DeepSWE v1.1",
+          "without": 72.8,
+          "with": 71.68,
+          "unit": "percent"
+        },
+        {
+          "id": "terminal-bench",
+          "label": "Terminal-Bench 4.0",
+          "without": 53.9,
+          "with": 56.06,
+          "unit": "percent"
+        },
+        {
+          "id": "terminal-science",
+          "label": "Terminal-Bench Science 0.1",
+          "without": 56.9,
+          "with": 60,
+          "unit": "percent"
+        },
+        {
+          "id": "browsecomp",
+          "label": "BrowseComp",
+          "without": 87.92,
+          "with": 87.35,
+          "unit": "percent"
+        },
+        {
+          "id": "healthbench",
+          "label": "HealthBench Professional",
+          "without": 64.27,
+          "with": 64.6,
+          "unit": "percent"
+        },
+        {
+          "id": "gpqa",
+          "label": "GPQA Diamond",
+          "without": 94.44,
+          "with": 93.94,
+          "unit": "percent"
+        }
+      ]
+    },
+    "length_detection": {
+      "source": "openai_post",
+      "dataset": "ELI5, questions in subjects such as psychology",
+      "target_false_positive_percent": 1,
+      "approximate": true,
+      "rows": [
+        {
+          "tokens": 200,
+          "detected_percent": 80
+        },
+        {
+          "tokens": 400,
+          "detected_percent": 95
+        }
+      ],
+      "limitation": "OpenAI reports substantially lower detection on mathematics without giving those values in the accompanying article text."
+    },
+    "synonym_edit": {
+      "source": "openai_post",
+      "dataset": "watermarked English ELI5 responses, 400 tokens",
+      "approximate": true,
+      "rows": [
+        {
+          "words_replaced_percent": 0,
+          "detected_percent": 92
+        },
+        {
+          "words_replaced_percent": 10,
+          "detected_percent": 66
+        },
+        {
+          "words_replaced_percent": 25,
+          "detected_percent": 17
+        }
+      ],
+      "limitation": "Different evaluation from the psychology/length comparison. Do not assume the same 400-token baseline or compare them as one sample."
+    },
+    "language_range": {
+      "source": "openai_help",
+      "synthetic_english_prompts": 500,
+      "official_eu_languages": 24,
+      "target_false_positive_percent": 1,
+      "initial_low": {
+        "language": "Romanian",
+        "detected_percent": 42.2
+      },
+      "initial_high": {
+        "language": "Spanish",
+        "detected_percent": 69
+      },
+      "notes": "OpenAI strengthened the watermark for languages under 60%; the published page text does not provide all post-adjustment language-specific values."
+    },
+    "idea_shift": {
+      "source": "idealens",
+      "dataset": "IdeaShift",
+      "seed_documents": 500,
+      "tested_levels": 6,
+      "minimal_human_plan_idealens_ai_flag_percent": 94.9,
+      "full_human_plan_idealens_ai_flag_percent": 6.8,
+      "full_human_plan_pangram4_ai_flag_percent": 92.4,
+      "ai_sourced_plans_idealens_ai_flag_percent_lower_bound": 96,
+      "limitation": "Controlled AI prose from prompts containing plans. The AI-flag rate is not authorship certainty."
+    },
+    "twice_told": {
+      "source": "idealens",
+      "dataset": "TwiceTold",
+      "human_written_stories": 50,
+      "human_writers": 17,
+      "ai_sourced_plan": true,
+      "idealens_ai_flag_percent": 68,
+      "idealens_flagged_count": 34,
+      "idealens_percent_95_ci": [
+        54,
+        79
+      ],
+      "pangram4_ai_flag_percent": 8,
+      "pangram4_flagged_count": 4,
+      "limitation": "Small controlled sample, writers followed AI-sourced outlines; cannot generalize to all human-AI writing."
+    },
+    "outline_stability": {
+      "source": "idealens",
+      "dataset": "repeated outline extraction",
+      "runs_per_document": 5,
+      "all_runs_same_label_random_percent": 94,
+      "all_runs_same_label_boundary_percent": 52.5,
+      "limitation": "Subsample sizes for these stability groups are not stated in the public article text; repeatability near the classification boundary is weaker."
+    },
+    "aggregate_detection": {
+      "source": "idealens",
+      "dataset": "shared versus mixed idea/prose provenance across evaluation splits",
+      "idealens_shared_accuracy_percent": 95.3,
+      "idealens_mixed_accuracy_percent": 81.3,
+      "pangram4_shared_accuracy_percent": 98.5,
+      "pangram4_mixed_accuracy_percent": 25.9,
+      "limitation": "Aggregated evaluation settings, not individual author-truth probabilities. Models target different provenance constructs."
+    }
+  }
+}

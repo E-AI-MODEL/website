@@ -3,6 +3,7 @@ from __future__ import annotations
 # v2 editorial build: two pillars -> workforms -> practice -> publications
 
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -2842,14 +2843,6 @@ def build(sources: Path, out: Path) -> None:
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
-    # Standalone local-only school ICT scan. Not part of navigation or sitemap.
-    ict_scan_source = repo_root / "tools" / "ict-scan"
-    if ict_scan_source.is_dir():
-        for name in ("index.html", "style.css", "app.js"):
-            if not (ict_scan_source / name).is_file():
-                raise FileNotFoundError(f"Missing local ICT scan asset: {name}")
-        shutil.copytree(ict_scan_source, out / "tools" / "ict-scan", dirs_exist_ok=True)
-
     # EAIgit is a separate browser wizard: publish only its four intended pages.
     # Do not let the general site generator rewrite their UI or JavaScript.
     eai_routes = (
@@ -2873,16 +2866,32 @@ def build(sources: Path, out: Path) -> None:
     ):
         if not (out / relative).is_file():
             raise FileNotFoundError(f"Missing EAIgit browser asset: {relative}")
-    # Schoolbrede ICT-scan: standalone local-first browser tool. No public navigation,
-    # no sitemap entry and no public source data. Files stay in the browser.
+    # Publish only the explicit app asset allowlist. Never copy sources/
+    # (tools/ict-scan/bronnen), which stay readable through GitHub only.
     ict_scan_source = repo_root / "tools" / "ict-scan"
-    for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "studio-interface.css", "relationship-orbit.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
+    for filename in ("index.html", "style.css", "monitor.css", "record-taxonomy.js", "inventory-index.js", "report-print.js", "report-print.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js", "ux-clarity.css", "studio-interface.css", "relationship-orbit.css", "relationship-atlas.js", "relationship-atlas.css", "document-library.js", "document-library.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", ".htaccess", "README.md"):
         source_file = ict_scan_source / filename
         if not source_file.is_file():
             raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")
         destination_file = out / "tools" / "ict-scan" / filename
         destination_file.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_file, destination_file)
+
+    # A cached older validator cannot read newer registerFiles keys. Bind the
+    # browser's profile validator URL to its actual published contents.
+    ict_path = out / "tools" / "ict-scan"
+    profile_hash = hashlib.sha256((ict_path / "assurance" / "profile.js").read_bytes()).hexdigest()[:16]
+    ict_html_file = ict_path / "index.html"
+    ict_html = ict_html_file.read_text(encoding="utf-8")
+    ict_html, replaced = re.subn(
+        r'(src="\./assurance/profile\.js\?v=)[^"]+(")',
+        lambda match: match.group(1) + profile_hash + match.group(2),
+        ict_html,
+        count=1,
+    )
+    if replaced != 1:
+        raise ValueError("ICT-scan: de versiegebonden organisatieprofielvalidator ontbreekt")
+    ict_html_file.write_text(ict_html, encoding="utf-8")
 
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.
