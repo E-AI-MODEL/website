@@ -182,24 +182,36 @@
   }
   const earlierOverview=renderOverview;
   function renderOverviewMetrics(){
-    const apps=items(state.apps),filtered=apps,narrowed=false,aiCount=state.ai.size;
-    const d=deviceData(),totals=[
-      ['Applicaties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
-      ['AI-functies',aiCount,narrowed?'Gekoppeld aan de selectie; '+state.ai.size+' totaal':'Beschreven functies, niet automatisch ingeschakeld','ai'],
-      ['Koppelingen vanuit Entra',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
-      ['Apparaatregistraties',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
-    ].filter(row=>row[3]!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
+    // Count source records by type, not all graph nodes or inferred relationships.
+    const index=window.IctInventoryIndex.build(state);
+    const registered=type=>index.records(type).filter(r=>index.get(type,r.id)?.derived===false);
+    const apps=registered('apps'),candidates=registered('additionalCandidates'),ai=registered('ai');
+    const connections=registered('connections'),hardware=registered('hardwareGroups'),parts=registered('parts');
+    const appIds=new Set(apps.map(r=>r.id));
+    const aiWithParent=ai.filter(r=>appIds.has(r.parentId));
+    const appsWithAi=new Set(aiWithParent.map(r=>r.parentId)).size;
+    const directMatches=connections.filter(r=>appIds.has(r.matchedId)).length;
+    const totalRecords=[...index.nodes.values()].filter(n=>!n.derived).length;
+    const d=deviceData(),rawAmount=String(d.total?.quantity??'').trim();
+    const measurement=/^\d+$/.test(rawAmount)&&Number.isSafeInteger(Number(rawAmount))?fmt(Number(rawAmount)):null;
+    const cards=[
+      {key:'software',label:'Softwarevermeldingen',value:apps.length+candidates.length,detail:fmt(apps.length)+' applicatieregistraties · '+fmt(candidates.length)+' overige vermeldingen',context:'Overlap mogelijk. '+fmt(parts.length)+' onderdelen worden apart geteld.',view:'apps',link:'Bekijk software'},
+      {key:'ai',label:'Beschreven AI-functies',value:ai.length,detail:'Bij '+fmt(appsWithAi)+' van '+fmt(apps.length)+' applicatieregistraties'+(aiWithParent.length<ai.length?' · '+fmt(ai.length-aiWithParent.length)+' functies zonder geregistreerde bovenliggende applicatie':''),context:'Aantal daadwerkelijk ingeschakelde functies niet vastgesteld.',view:'ai',link:'Bekijk AI-functies'},
+      {key:'entra',label:'Entra-appregistraties',value:connections.length,detail:fmt(directMatches)+' mogelijke directe appmatches · '+fmt(connections.length-directMatches)+' zonder directe appmatch',context:'Actuele technische koppelingen niet vastgesteld.',view:'connections',link:'Bekijk Entra-registraties'},
+      {key:'hardware',label:'Hardwaregroepen',value:hardware.length,detail:measurement!==null?measurement+' Entra-apparaatrecords · '+(d.total.measurementDate||'peildatum onbekend'):'Geen Entra-apparaattelling beschikbaar.',context:'Schoolbreed aantal fysieke apparaten niet vastgesteld.',view:'devices',link:'Bekijk hardware en metingen'}
+    ].filter(row=>row.view!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
     const grid=byId('kpiGrid');
     grid.replaceChildren();
-    for(const [label,value,explain,view] of totals){
+    for(const row of cards){
       const b=document.createElement('button');
       b.type='button';b.className='kpi trust-kpi evidence-kpi';
-      b.setAttribute('aria-label',label+': '+value+'. Open '+viewNames[view]);
-      b.innerHTML='<span class="kpi-label">'+safe(label)+'</span><strong class="kpi-value">'+safe(value)+'</strong><span class="kpi-desc">'+safe(explain)+'</span><span class="evidence-kpi-open">Bekijk '+safe(viewNames[view])+'</span>';
-      b.addEventListener('click',()=>selectView(view));grid.append(b);
+      b.dataset.metric=row.key;
+      b.setAttribute('aria-label',row.label+': '+fmt(row.value)+'. '+row.detail+'. '+row.context+' '+row.link);
+      b.innerHTML='<span class="kpi-label">'+safe(row.label)+'</span><strong class="kpi-value">'+safe(fmt(row.value))+'</strong><span class="kpi-desc">'+safe(row.detail)+'</span><span class="evidence-kpi-context">'+safe(row.context)+'</span><span class="evidence-kpi-open">'+safe(row.link)+'</span>';
+      b.addEventListener('click',()=>selectView(row.view));grid.append(b);
     }
     const sub=byId('inventoryPopulation');
-    if(sub)sub.textContent='De cijfers tellen verschillende soorten registraties. Ze zijn niet optelbaar.';
+    if(sub)sub.textContent=fmt(totalRecords)+' records in alle ingelezen registers. Geen telling van unieke systemen.';
   }
   renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
   const oldCandidates=renderCandidates;

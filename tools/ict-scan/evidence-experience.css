@@ -156,3 +156,9 @@
 @media(max-width:720px){.workspace.monitor-layout .overview-quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.workspace.monitor-layout .overview-quick-action{min-width:0;min-height:43px;padding:9px 8px;font-size:12px;text-align:center}}
 @media(max-width:350px){.workspace.monitor-layout .overview-quick-actions{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.workspace.monitor-layout .overview-quick-action{transition:none}}
+
+/* Overview: make populations and measurement limits distinct and legible. */
+.workspace.monitor-layout .evidence-kpi .kpi-desc{color:#405773;font-weight:600;font-size:12px;line-height:1.4;margin-top:4px}
+.workspace.monitor-layout .evidence-kpi-context{display:block;color:#62748b;font-size:11px;line-height:1.4;margin:5px 0 0;overflow-wrap:anywhere}
+.workspace.monitor-layout .evidence-kpi .evidence-kpi-open{padding-top:10px;font-size:11px}
+@media(max-width:720px){.workspace.monitor-layout .evidence-kpi .kpi-desc{font-size:11px}.workspace.monitor-layout .evidence-kpi-context{font-size:10px}}

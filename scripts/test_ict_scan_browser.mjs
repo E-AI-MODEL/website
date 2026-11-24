@@ -309,6 +309,36 @@ try {
   await navigate('overview');
 
   assert.equal(await page.locator('#kpiGrid .kpi').count(),4,'Vier statuscijfers ontbreken');
+  // Primary counts and denominators must describe their own source population.
+  const sourceRows=type=>expectedIndex.records(type).filter(r=>expectedIndex.get(type,r.id)?.derived===false);
+  const appRecords=sourceRows('apps'),appIds=new Set(appRecords.map(r=>r.id));
+  const candidates=sourceRows('additionalCandidates'),aiRecords=sourceRows('ai'),entra=sourceRows('connections');
+  const aiParents=new Set(aiRecords.filter(r=>appIds.has(r.parentId)).map(r=>r.parentId));
+  const direct=entra.filter(r=>appIds.has(r.matchedId)).length;
+  const metric=key=>page.locator('#kpiGrid [data-metric="'+key+'"]');
+  const number=n=>n.toLocaleString('nl-NL');
+  assert.equal(await metric('software').locator('.kpi-value').textContent(),number(appRecords.length+candidates.length));
+  assert.match(await metric('software').locator('.kpi-desc').textContent(),new RegExp(number(appRecords.length)+' applicatieregistraties'));
+  assert.match(await metric('software').locator('.kpi-desc').textContent(),new RegExp(number(candidates.length)+' overige vermeldingen'));
+  assert.match(await metric('software').locator('.evidence-kpi-context').textContent(),/Overlap mogelijk/);
+  assert.equal(await metric('ai').locator('.kpi-value').textContent(),number(aiRecords.length));
+  assert.match(await metric('ai').locator('.kpi-desc').textContent(),new RegExp(number(aiParents.size)+' van '+number(appRecords.length)));
+  assert.equal(await metric('entra').locator('.kpi-value').textContent(),number(entra.length));
+  assert.match(await metric('entra').locator('.kpi-desc').textContent(),new RegExp(number(direct)+' mogelijke directe appmatches'));
+  assert.equal(await metric('hardware').locator('.kpi-value').textContent(),number(sourceRows('hardwareGroups').length));
+  const measure=sourceRows('devices').find(r=>/entra apparaatrecords/i.test(r.name));
+  if(measure){
+    const detail=await metric('hardware').locator('.kpi-desc').textContent();
+    assert(detail.includes(measure.quantity+' Entra-apparaatrecords'));
+    assert(detail.includes(measure.measurementDate));
+  }
+  assert.match(await metric('hardware').locator('.evidence-kpi-context').textContent(),/Schoolbreed aantal fysieke apparaten niet vastgesteld/);
+  assert.match(await page.locator('#inventoryPopulation').textContent(),new RegExp(number([...expectedIndex.nodes.values()].filter(n=>!n.derived).length)+' records'));
+  // Overview is school-wide even if the distribution tab has an app filter.
+  await page.evaluate(()=>{state.overviewArea=[...state.apps.values()][0].area;renderOverview();});
+  assert.equal(await metric('software').locator('.kpi-value').textContent(),number(appRecords.length+candidates.length));
+  await page.evaluate(()=>{state.overviewArea='';renderOverview();});
+  if(width===1440)await page.screenshot({path:'test-results/ict-scan-overview-populations.png'});
   assert.equal(await page.locator('#viewOverview .scene-tab').count(),4,'Schoolbreed, relaties, broncontrole en toepassingen moeten afzonderlijk toegankelijk zijn');
   const size=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,height:innerHeight,main:document.querySelector('.main-content').getBoundingClientRect().height,cardWidth:document.querySelector('.panel')?.getBoundingClientRect().width}));
   assert(size.scrollWidth<=size.clientWidth+1,'Horizontale overflow bij '+width+': '+JSON.stringify(size));
