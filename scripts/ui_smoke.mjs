@@ -143,6 +143,48 @@ try {
   assert(await page.locator('.eai-explore-choices').isVisible(), 'Back returns to all subjects');
   await page.locator('.eai-explore-choice[href="#vak-oceanografie"]').click();
   assert(await page.locator('#vak-oceanografie a[href="/tools/abyss/"]').isVisible(), 'Oceanography has a working direct entry');
+  // Leeuw: zelfstandige observatoriumroute, zonder externe scripts, ook op telefoon.
+  for (const width of [1440, 390, 320]) {
+    const leo = await context.newPage();
+    await leo.setViewportSize({width,height:900});
+    const leoErrors=[];
+    leo.on('pageerror',e=>leoErrors.push(e.message));
+    await leo.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
+    await leo.goto(base+'/tools/science-observatory/labs/leeuw/',{waitUntil:'load'});
+    await leo.waitForFunction(()=>window.LEO_STATE?.().points===9);
+    assert.equal(await leo.locator('.nav-btn').count(),7);
+    assert(await leo.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leo horizontal overflow '+width);
+    await leo.locator('#space').click();
+    await leo.waitForFunction(()=>window.LEO_STATE().mode==='ruimte');
+    await leo.locator('#near').click();
+    await leo.waitForFunction(()=>window.LEO_STATE().points===8);
+    await leo.locator('.star[data-id="49583"]').click();
+    await leo.waitForFunction(()=>window.LEO_STATE().view==='space'&&window.LEO_STATE().star===49583);
+    await leo.locator('[data-mode="meten"]').click();
+    await leo.locator('#pairA').selectOption('49669');
+    await leo.locator('#pairB').selectOption('49583');
+    assert.ok(Math.abs(await leo.evaluate(()=>window.LEO_STATE().separation)-1736.502)<.02);
+    await leo.locator('[data-mode="parallax"]').click();
+    const d0=await leo.evaluate(()=>window.LEO_STATE().distance);
+    await leo.locator('#sigma').focus();
+    await leo.keyboard.press('ArrowRight');
+    await leo.waitForFunction(old=>window.LEO_STATE().distance<old,d0);
+    await leo.locator('[data-mode="licht"]').click();
+    await leo.locator('#light').selectOption('absolute');
+    assert.equal(await leo.evaluate(()=>window.LEO_STATE().light),'absolute');
+    await leo.locator('[data-mode="beweging"]').click();
+    await leo.locator('#future').click();
+    assert.equal(await leo.evaluate(()=>window.LEO_STATE().years),20000);
+    await leo.locator('[data-mode="waarnemen"]').click();
+    await leo.locator('#lat').fill('0');
+    await leo.locator('#lon').fill('0');
+    assert.ok((await leo.evaluate(()=>window.LEO_STATE().points))<=9);
+    await leo.goto(base+'/tools/science-observatory/labs/leeuw/#ruimte');
+    await leo.waitForFunction(()=>window.LEO_STATE?.().mode==='ruimte');
+    assert.deepEqual(leoErrors,[]);
+    await leo.screenshot({path:'test-results/leeuw-'+width+'.png',fullPage:true});
+    await leo.close();
+  }
   // WiHTML: van de rustige landingspagina via elke keuze naar een echte offline HTML-les.
   const wiContext = await browser.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
   const wiPage = await wiContext.newPage();
