@@ -44,6 +44,15 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertIn("include-hidden-files: true", ui)
         self.assertIn("mirror -R", deploy)
 
+    def test_anatomy_is_checked_before_preparation_and_manifest_on_every_run(self):
+        ui = (WORKFLOWS / "verify-ui.yml").read_text(encoding="utf-8")
+        self.assertLess(ui.index("python scripts/build_anatomie.py"), ui.index("test_anatomie_publish.py"))
+        self.assertLess(ui.index("test_anatomie_publish.py"), ui.index("python scripts/prepare_ui.py"))
+        manifest_step = ui.split("      - name: Leg de gecontroleerde build vast en toets de bestandsintegriteit", 1)[1].split("      - name:", 1)[0]
+        self.assertNotIn("if:", manifest_step)
+        self.assertIn("scripts/release_artifact.py create", manifest_step)
+        self.assertIn("scripts/release_artifact.py verify", manifest_step)
+
     def test_manual_recovery_publishers_do_not_compete_automatically(self):
         for workflow in (
             "deploy-delf-preview.yml",

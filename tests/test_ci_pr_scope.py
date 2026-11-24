@@ -41,6 +41,25 @@ class CiPrScopeTests(unittest.TestCase):
         self.assertEqual(affected_suites(["assets/eaigit/wizard.mjs", "tests/test_eaigit_github_checks.mjs"]), {"eaigit"})
         self.assertEqual(affected_suites(["tools/ict-scan/app.js", "scripts/test_topo_mobile.mjs"]), {"ictscan", "topo"})
 
+    def test_eaigit_workflow_runs_own_browser_suite(self):
+        self.assertEqual(affected_suites([
+            ".github/workflows/projecthulp-browser.yml",
+            "assets/eaigit/github-checks.mjs",
+            "tests/test_eaigit_github_checks.mjs",
+            "tools/eaigit/index.html",
+        ]), {"eaigit"})
+
+    def test_ict_build_checks_keep_publication_protection_unconditional(self):
+        root = Path(__file__).resolve().parents[1]
+        build = (root / ".github/workflows/build-site.yml").read_text(encoding="utf-8")
+        for name in ("Check local-only ICT scan publishing", "Controleer verborgen lokale ICT-scan"):
+            step = build.split("      - name: " + name + "\n", 1)[1].split("      - name:", 1)[0]
+            self.assertNotIn("if:", step)
+            self.assertIn("test_ict_scan_publish.py", step)
+        for name in ("Test ICT scan Excel reports and AI categorization", "Controleer de brondata en JSON-import van Applicatielandschap 2026"):
+            step = build.split("      - name: " + name + "\n", 1)[1].split("      - name:", 1)[0]
+            self.assertIn("steps.scope.outputs.ictscan == 'true'", step)
+
     def test_reject_path_escape(self):
         self.assertEqual(affected_suites(["../tools/anatomie/index.html"]), set(SUITES))
 
