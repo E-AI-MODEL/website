@@ -393,3 +393,5 @@
 .workspace.monitor-layout #viewStudio .ds-relationship-proof .ds-record-link{justify-self:start;}
 
 .ds-shared-actions{display:flex;flex-wrap:wrap;gap:8px}.ds-shared-dialog{max-height:calc(100dvh - 24px);width:min(520px,calc(100vw - 24px));overflow:auto}.ds-shared-dialog pre{max-height:200px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px}.ds-shared-dialog .ds-shared-consent{display:flex;align-items:flex-start;gap:8px}.ds-shared-dialog .ds-shared-consent input{width:16px;height:16px;flex:none}.ds-shared-dialog #dsSharedTarget{overflow-wrap:anywhere}
+
+.ds-shared-dialog .ds-shared-submit{background:#263d6a;color:#fff;border-color:#263d6a}
