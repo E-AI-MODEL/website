@@ -289,7 +289,7 @@ function renderAiProgress(){
  }
  root.append(grid,el('p','ai-evidence-note','Gemelde maatregelen zijn geen goedkeuring. De groepen tellen registraties met AI Act-verwijzingen, geen AI-functies.'));
 }
-window.matchMedia('(max-width: 950px), (max-height: 740px)').addEventListener('change',event=>{
+if(typeof window!=='undefined'&&typeof window.matchMedia==='function')window.matchMedia('(max-width: 950px), (max-height: 740px)').addEventListener?.('change',event=>{
   for(const toggle of document.querySelectorAll('#aiProgress .ai-group-toggle')){
     const content=document.getElementById(toggle.getAttribute('aria-controls'));
     if(content){content.hidden=event.matches;toggle.setAttribute('aria-expanded',String(!content.hidden));}
