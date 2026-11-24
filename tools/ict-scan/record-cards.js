@@ -5,33 +5,33 @@
 (function(){
   const $c=id=>document.getElementById(id);
   const SPECS=[
-    {key:'apps',store:'apps',label:'Toepassingen en diensten',prefix:'APP',fields:['name','description','area','process','kind','local','owner','users','data','links','processorAgreement','dpiaStatus','aiRefs','reviewAction','sourceDescription','suggestedParent','suggestedParentStatus']},
+    {key:'apps',store:'apps',label:'Applicaties en diensten',prefix:'APP',fields:['name','description','area','process','kind','local','owner','users','data','links','processorAgreement','dpiaStatus','aiRefs','reviewAction','sourceDescription','suggestedParent','suggestedParentStatus']},
     {key:'ai',store:'ai',label:'AI-functies',prefix:'AI',fields:['name','product','supplier','parentId','domain','phase','action','input','teacher','student','reviewer','didactics','learning','attention','formative','unknown','steer','instructions','aiAct','aiActExplanation','local','users','defaultSetting','privacyStatus','processingAgreement','supplierSource']},
-    {key:'connections',store:'connections',label:'Entra-registraties',prefix:'ENT',fields:['name','visible','enabled','registeredAt','assessment','matched','matchedId','category','priority','local','usageConfirmed']},
-    {key:'parts',store:'parts',label:'Technische onderdelen',prefix:'MOD',fields:['name','parent','kind','description','local','connectionId']},
-    {key:'additionalCandidates',store:'candidates',label:'Aanvullende kandidaten',prefix:'A',fields:['name','kind','status','priority','included','description','action','source','evidenceDate','confirmed']},
+    {key:'connections',store:'connections',label:'Koppelingen vanuit Entra',prefix:'ENT',fields:['name','visible','enabled','registeredAt','assessment','matched','matchedId','category','priority','local','usageConfirmed']},
+    {key:'parts',store:'parts',label:'Onderdelen',prefix:'MOD',fields:['name','parent','kind','description','local','connectionId']},
+    {key:'additionalCandidates',store:'candidates',label:'Overige software',prefix:'A',fields:['name','kind','status','priority','included','description','action','source','evidenceDate','confirmed']},
     {key:'checks',store:'checks',label:'Controles',prefix:'C',fields:['name','category','status','explanation','evidence','value','action']},
     {key:'dpia',store:'dpia',label:'FG | DPIA-bronnen',prefix:'DPIA',fields:['name','type','assessment','description','sourceDate','url','evidence','local']},
     {key:'aiControls',store:'aiControls',label:'AI-beheer',prefix:'B',fields:['name','domain','aiRefs','advice','description','knownUse','local','managementLocation','action','nuance','execution','nextStep','sourceInternal','supplierSource','extraSources']},
     {key:'devices',store:'devices',label:'Apparaatmetingen',prefix:'DEV',fields:['name','type','quantity','description','measurementDate','limitation']},
-    {key:'hardwareGroups',store:'hardwareGroups',label:'Hardwaregroepen',prefix:'H',fields:['name','category','users','manager','owner','status','description','quantity','note','appRefs']},
+    {key:'hardwareGroups',store:'hardwareGroups',label:'Apparaatgroepen',prefix:'H',fields:['name','category','users','manager','owner','status','description','quantity','note','appRefs']},
     {key:'licenseReview',store:'licenseReview',label:'Licenties ter controle',prefix:'LIC',fields:['name','domain','type','status','aiPossibilities','localAI','license2026','priority','action','sourceNotes','sourceCode']},
-    {key:'workActions',store:'workActions',label:'Werkregisteracties',prefix:'WRK',fields:['name','action','involvedRoles','status']},
+    {key:'workActions',store:'workActions',label:'Openstaande acties',prefix:'WRK',fields:['name','action','involvedRoles','status']},
     {key:'softwareReview',store:'softwareReview',label:'Softwarecontroles',prefix:'SWR',fields:['name','known','action','status']},
     {key:'faqs',store:'faqs',label:'Veelgestelde vragen',prefix:'FAQ',fields:['name','answer','aliases','topic','reference','status','reviewedAt']},
-    {key:'sourceRegister',store:'sourceRegister',label:'Bronnenregister',prefix:'SRC',fields:['name','owner','version','contentSha256','rightsStatus','rightsBasis','allowedUse','scope','retention','approvalStatus','approvedBy','approvedAt','approvalEvidence','nextReviewAt']}
+    {key:'sourceRegister',store:'sourceRegister',label:'Bronnen',prefix:'SRC',fields:['name','owner','version','contentSha256','rightsStatus','rightsBasis','allowedUse','scope','retention','approvalStatus','approvedBy','approvedAt','approvalEvidence','nextReviewAt']}
   ];
   const labels={
-    name:'Naam',id:'ID',answer:'Vast antwoord',aliases:'Andere vraagformuleringen (gescheiden door |)',topic:'Onderwerp',reference:'Verwijzing naar bron',reviewedAt:'Beoordeeld op',description:'Beschrijving',area:'Gebruiksgebied',process:'Proces',kind:'Soort voorziening',type:'Type',local:'Gebruik op school',owner:'Verantwoordelijke',users:'Gebruikers',
-    data:'Welke gegevens?',links:'Gegevensuitwisseling en koppelingen',processorAgreement:'Verwerkersovereenkomst',dpiaStatus:'DPIA-status',aiRefs:'AI-functies',reviewAction:'Nog controleren',sourceDescription:'Aanvullende bronbeschrijving',
+    name:'Naam',id:'ID',answer:'Vast antwoord',aliases:'Andere vraagformuleringen (gescheiden door |)',topic:'Onderwerp',reference:'Verwijzing naar bron',reviewedAt:'Beoordeeld op',description:'Beschrijving',area:'Gebruiksgebied',process:'Proces',kind:'Soort applicatie',type:'Type',local:'Gebruik op school',owner:'Verantwoordelijke',users:'Gebruikers',
+    data:'Welke gegevens?',links:'Gegevensuitwisseling en koppelingen',processorAgreement:'Verwerkersovereenkomst',dpiaStatus:'Privacyonderzoek (DPIA)',aiRefs:'AI-functies',reviewAction:'Nog controleren',sourceDescription:'Aanvullende bronbeschrijving',
     product:'Toepassing',supplier:'Leverancier',parentId:'Hoofdtoepassing-ID',parent:'Hoofdtoepassing-ID',suggestedParent:'Mogelijke familie',suggestedParentStatus:'Status mogelijke familie',
     domain:'Domein',phase:'Lesfase',action:'Functie of vervolgstap',input:'Wat kan de docent instellen?',teacher:'Controle door docent',student:'Wat doet de leerling?',reviewer:'Wie beoordeelt de uitkomst?',didactics:'Didactische onderbouwing',learning:'Leerdoel',attention:'Didactisch aandachtspunt',
     formative:'Formatief handelen',unknown:'Niet inzichtelijk of te controleren',steer:'Stuurbaarheid',instructions:'Instructies',aiAct:'AI Act-indicatie (brontekst)',aiActExplanation:'Toelichting AI Act',defaultSetting:'Leveranciersinstelling',
     privacyStatus:'Privacy-status',processingAgreement:'Verwerkersafspraak',supplierSource:'Leveranciersbron',visible:'Zichtbaarheid',enabled:'Ingeschakeld volgens export',registeredAt:'Registratiedatum',assessment:'Beoordeling',
-    matched:'Mogelijke koppeling',matchedId:'Mogelijke toepassing-ID',category:'Categorie',priority:'Prioriteit',usageConfirmed:'Actief gebruik bevestigd?',status:'Status',included:'Opgenomen in basisinventaris',
+    matched:'Mogelijke gekoppelde applicatie',matchedId:'Mogelijke toepassing-ID',category:'Categorie',priority:'Prioriteit',usageConfirmed:'Actief gebruik bevestigd?',status:'Status',included:'Opgenomen in basisinventaris',
     source:'Bron',evidenceDate:'Bewijsdatum',evidence:'Bewijs',value:'Waarde',url:'Bron-URL',sourceDate:'Datum bron',knownUse:'Bekend gebruik',managementLocation:'Beheerlocatie',advice:'Advies',nuance:'Nuance',execution:'Uitvoering',
     nextStep:'Vervolgstap',sourceInternal:'Interne bron',extraSources:'Aanvullende bronnen',quantity:'Aantal of waarde',measurementDate:'Meetdatum',limitation:'Beperking van de meting',license2026:'Licentie 2026',aiPossibilities:'Mogelijke AI-functies',
-    localAI:'AI lokaal ingeschakeld?',manager:'Beheer via',appRefs:'Beheerrelaties (app-ID’s)',audience:'Doelgroepen',availability:'Licentiebeschikbaarheid',accessStatus:'Toegang in schooltenant',sourceNotes:'Bronnotities',sourceCode:'Broncode',involvedRoles:'Betrokken rollen',known:'Bekend uit documenten',
+    localAI:'AI lokaal ingeschakeld?',manager:'Beheer via',appRefs:'Beheerrelaties (app-ID’s)',audience:'Doelgroepen',availability:'Licentiebeschikbaarheid',accessStatus:'M365-instellingen (tenant)',sourceNotes:'Bronnotities',sourceCode:'Broncode',involvedRoles:'Betrokken rollen',known:'Bekend uit documenten',
     originalNumber:'Oorspronkelijk nummer',sourceRow:'Rij in export',moduleId:'Module-ID',usageContext:'Gebruikssituatie',m365Context:'Microsoft 365-context',
     version:'Bronversie',contentSha256:'SHA-256 van het bronbestand',rightsStatus:'Gebruiksrecht',rightsBasis:'Grondslag voor gebruik',allowedUse:'Toegestaan gebruik',scope:'Toepassingsgebied',retention:'Bewaarafspraak',approvalStatus:'Goedkeuring',approvedBy:'Goedgekeurd door',approvedAt:'Goedgekeurd op',approvalEvidence:'Bewijs van goedkeuring',nextReviewAt:'Opnieuw beoordelen op',referenceKeys:'Bijbehorende bronverwijzingen',
     sourceIds:'Gekoppelde bronnen',frameworkLinks:'Normbeoordelingen',approvalBinding:'Bevestigde bronversie',reviewBinding:'Bevestigde beoordeling',relations:'Verbanden',recordMeta:'Beoordelingsgegevens'
@@ -141,7 +141,18 @@
       const missing=value===undefined||value===null||(typeof value==='string'&&!value.trim())||(Array.isArray(value)&&!value.length);
       if(missing&&!showUnknown)continue;
       // Alleen een weergavelabel. Een onbekend bronveld blijft leeg in de JSON en in de controles.
-      const dt=text('dt','',name),dd=text('dd','',missing?'Onbekend':typeof value==='object'?JSON.stringify(value,null,2):value);
+      // Geen ruwe JSON of machinewaarden in een gewone gegevenskaart.
+      // De oorspronkelijke structuur blijft leesbaar onder Technische gegevens.
+      let shown=missing?'Onbekend':value;
+      if(!missing&&typeof value==='boolean')shown=value?'Ja':'Nee';
+      if(!missing&&Array.isArray(value)){
+        shown=value.every(item=>item===null||typeof item!=='object')
+          ?value.join(', ')
+          :value.map(item=>item&&typeof item==='object'?(item.name||item.title||item.label||''):String(item)).filter(Boolean).join(', ')||value.length+' gekoppelde gegevens';
+      }else if(!missing&&typeof value==='object'){
+        shown='Zie technische gegevens';
+      }
+      const dt=text('dt','',name),dd=text('dd','',shown);
       dl.append(dt,dd);
     }
     if(dl.children.length){group.append(dl);container.append(group);}
@@ -174,7 +185,7 @@
     nav.setAttribute('aria-label','Inhoud van de registratie');
     const panes=new Map(),tabs=new Map();
     const sections=[
-      ['overview','Overzicht'],['details','Meer gegevens'],['links','Verbanden']
+      ['overview','Overzicht'],['details','Gegevens'],['links','Koppelingen en controles']
     ];
     for(const [id,name] of sections){
       const panel=text('section','card-tab-panel');
@@ -192,11 +203,11 @@
     if(spec.key==='sourceRegister')lines(overview,'Bronbeoordeling',[['Goedkeuringsstatus',sourceApprovalState(r)]]);
     if((spec.key==='apps'||spec.key==='parts')&&r.defaultPolicy){
       const p=r.defaultPolicy;
-      lines(overview,'Standaardinstellingen volgens Microsoft',[
+      lines(overview,'M365-instellingen volgens Microsoft',[
         ['Medewerkers / docenten',p.staff],['Leerlingen',p.students],
         ['KlasTeams',p.classTeams],['Voorwaarde',p.condition],['Licentie-uitgangspunt',p.licenseBasis],
         ['Bewijsstatus',p.evidenceStatus],
-        ['Werkelijke toegang in schooltenant',p.verifiedInTenant===true?'Gecontroleerd':'Niet onafhankelijk gecontroleerd']
+        ['M365-instellingen (tenant)',p.verifiedInTenant===true?'Gecontroleerd':'Niet gecontroleerd']
       ]);
     }
     if(spec.key==='apps'&&Object.prototype.hasOwnProperty.call(r,'processorAgreement')){
@@ -215,7 +226,7 @@
     if(!overview.children.length)overview.append(text('p','card-empty','Voor deze registratie zijn nog geen hoofdgegevens ingevuld.'));
     const details=panes.get('details');
     lines(details,'',other.map(k=>[label(k,r),r[k]]),spec.key==='sourceRegister');
-    const hiddenFields=new Set([...spec.fields,'id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','hardwareLinks','serviceLinks','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
+    const hiddenFields=new Set([...spec.fields,'defaultPolicy','id','originalNumber','sourceFields','otherDescription','provenance','sources','auditTrail','hardwareLinks','serviceLinks','relations','frameworkLinks','recordMeta','sourceMeta','sourceRefs','sourceIds','referenceKeys','approvalBinding']);
     const extras=Object.keys(r).filter(k=>!hiddenFields.has(k)).map(k=>[label(k,r),r[k]]);
     if(extras.length)lines(details,'Overige gegevens',extras);
     if(!details.children.length)details.append(text('p','card-empty','Geen aanvullende gegevens.'));
@@ -227,12 +238,11 @@
     const relationNames=new Map((model.catalog?.relationTypes||[]).map(x=>[x.id,x.label]));
     lines(links,'Verbanden ('+relations.length+')',relations.length
       ?relations.map(x=>[
-        (relationNames.get(x.relationType)||x.relationType)+' · '+(x.other?.name||x.otherId)+' ('+x.otherId+')',
-        (x.status||'Niet vastgesteld')+' · '+(x.direction==='incoming'?'Relatie naar deze registratie':'Relatie vanuit deze registratie')+
-        (x.note?' · '+x.note:'')
+        (relationNames.get(x.relationType)||'Verband')+' · '+(x.other?.name||'Naam onbekend'),
+        (x.status||'Niet vastgesteld')+(x.note?' · '+x.note:'')
       ])
       :[['Verbanden','Geen vastgelegde relatie in de ingelezen index']]);
-    lines(links,'Normbeoordelingen',references.length
+    lines(links,'Beoordelingen',references.length
       ?references.map(x=>[(catalog.get(x.frameworkId)?.name||x.frameworkId)+' '+(x.article||''),
         [x.status||'Nog te beoordelen',reviewState(r,x),x.note,
         x.role&&'Rol: '+x.role,x.reviewedBy&&'Beoordeeld door: '+x.reviewedBy,
@@ -241,7 +251,7 @@
         x.followUp&&'Actie: '+x.followUp,
         x.followUpOwner&&'Actiehouder: '+x.followUpOwner,
         x.followUpStatus&&'Opvolging: '+x.followUpStatus].filter(Boolean).join(' · ')])
-      :[['Normen','Nog niet per bepaling beoordeeld']]);
+      :[['Beoordelingen','Nog niet beoordeeld']]);
     // Bronverwijzingen blijven in het bronregister en worden niet in deze
     // publiek zichtbare kaart uitgegeven. Zij blijven onderdeel van de review.
     function activate(key){
