@@ -63,7 +63,7 @@ async function setup(records = [{id: 'APP-001', name: 'Original name', descripti
     renderSources() {}, confirm: () => true,
     fetch: async () => ({ok: true, json: async () => clone(catalog)})};
   context.window = context;
-  context.EmmausEditGate = {request: async () => true};
+  context.EmmausEditGate = {request: async () => true, githubRequest: async (url,method,payload) => {const response=await context.fetch(url,{method,body:payload===undefined?undefined:JSON.stringify(payload),redirect:'error',credentials:'omit'});if(!response.ok)throw Error('GitHub kon het verzoek niet afronden.');return response.json();}};
   vm.createContext(context);
   for (const path of ['tools/ict-scan/assurance/profile.js', 'tools/ict-scan/assurance/source-register.js', 'tools/ict-scan/assurance/engine.js', 'tools/ict-scan/assurance/adapter.js', 'tools/ict-scan/assurance/record-contract.js']) vm.runInContext(read(path), context, {filename: path});
   const profile = context.AssuranceProfile.validate(clone(profileJson));
@@ -79,7 +79,7 @@ async function setup(records = [{id: 'APP-001', name: 'Original name', descripti
     document, state, context, profile, cards, logic,
     open(id = 'APP-001') {return cards.open('apps', id, true, 'manager');},
     set(name, value) {const input = document.getElementById('cardFormFields').querySelector('[name="' + name + '"]'); assert.ok(input, 'Input ontbreekt: ' + name); input.value = value;},
-    save() {this.set('changeReason', 'Correctie op basis van vastgelegde brongegevens'); document.getElementById('cardForm').dispatch('submit', {preventDefault() {}});}
+    save() {this.set('changeReason', 'Correctie op basis van vastgelegde brongegevens'); document.getElementById('cardKeepDraft').dispatch('click');}
   };
 }
 function documents(profile, apps) {
@@ -242,9 +242,6 @@ test('De publicatiecallback behoudt een tijdens de API-aanvraag gemaakt concept'
     if (method === 'POST' && url === base + '/pulls') {prCreated(); return {ok: true, json: async () => ({html_url: 'https://github.com/' + app.profile.source.repository + '/pull/123', number: 123})};}
     throw Error('Onverwacht API-verzoek in lokale test: ' + method + ' ' + url);
   };
-  app.document.getElementById('cardGithubToken').value = 'synthetic-token-for-local-test';
-  app.document.getElementById('cardCommitMessage').value = 'Local publication regression';
-  app.document.getElementById('cardConfirmPublic').checked = true;
   app.document.getElementById('cardCreatePR').dispatch('click');
   await requested;
   await app.open('APP-002'); app.set('name', 'New unsent change'); app.save();
@@ -259,7 +256,7 @@ test('De publicatiecallback behoudt een tijdens de API-aanvraag gemaakt concept'
   const published = JSON.parse(Buffer.from(dataWrite.payload.content, 'base64').toString('utf8'));
   assert.equal(published.apps.find(record => record.id === 'APP-001').name, 'Submitted change');
   assert.equal(published.apps.find(record => record.id === 'APP-002').name, 'Second');
-  assert.equal(app.document.getElementById('cardGithubToken').value, '');
+  assert.equal(app.document.getElementById('cardCreatePR').disabled, false);
 });
 
 function approvedSource(app, overrides = {}) {

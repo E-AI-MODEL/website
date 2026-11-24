@@ -71,23 +71,7 @@ try {
      const bytes=readFileSync('tools/ict-scan/dashboard-layouts/layouts.json');
      const sha=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
      data={type:'file',encoding:'base64',content:bytes.toString('base64'),size:bytes.length,sha};
-   }else if(method!=='GET'){
-     const payload=route.request().postDataJSON();
-     assert.equal(route.request().headers().authorization,'Bearer browser-test-design-token');
-     if(url.pathname.endsWith('/git/refs')&&method==='POST'){
-       assert.match(payload.ref,/^refs\/heads\/applicatielandschap\/ontwerp-/);assert.equal(payload.sha,'d'.repeat(40));data={ref:payload.ref};
-     }else if(url.pathname.endsWith('/contents/tools/ict-scan/dashboard-layouts/layouts.json')&&method==='PUT'){
-       assert.match(payload.branch,/^applicatielandschap\/ontwerp-/);
-       const file=JSON.parse(Buffer.from(payload.content,'base64').toString('utf8'));
-       assert.equal(file.schema,'eai-ict-dashboard-designs-v1');
-       for(const item of Object.values(file.designs))assert.deepEqual(Object.keys(item).sort(),['components','content','format','layout','primary','title','variant','version','visuals']);
-       assert(!JSON.stringify(file).includes('APP-034'));assert(!JSON.stringify(file).includes('browser-test-design-token'));
-       data={content:{sha:'e'.repeat(40)}};
-     }else if(url.pathname.endsWith('/pulls')&&method==='POST'){
-       assert.equal(payload.base,'main');assert.match(payload.head,/^applicatielandschap\/ontwerp-/);data={number:9999,html_url:'https://github.com/E-AI-MODEL/website/pull/9999'};
-     }else throw Error('Onverwachte schrijfroute '+url.pathname);
-     designWrites.push({method,path:url.pathname});
-   }
+   }else if(method!=='GET'){throw Error('Browser mag GitHub niet rechtstreeks wijzigen');}
    if(data!==undefined){await route.fulfill({status:200,headers:cors,body:JSON.stringify(data)});return;}
    if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen')&&width<700&&!initialSyncDelayed){
      initialSyncDelayed=true;
@@ -112,6 +96,40 @@ try {
    if(url.startsWith(base))return route.continue();
    if(url.startsWith('https://api.github.com/'))return route.fallback();
    return route.abort();
+  });
+  let editorUnlocked=false,loginCount=0;
+  await page.route('**/edit-api.php',async route=>{
+    const body=route.request().postDataJSON();let data;
+    assert(!route.request().headers().authorization,'Geen GitHub-sleutel in de browser');
+    if(body.action==='status')data={unlocked:editorUnlocked,csrf:editorUnlocked?'test-csrf':null};
+    else if(body.action==='login'){assert.equal(body.password,'test-editor-password');editorUnlocked=true;loginCount++;data={unlocked:true,csrf:'test-csrf'};}
+    else if(body.action==='github'){
+      assert(editorUnlocked);assert.equal(route.request().headers()['x-ict-csrf'],'test-csrf');
+      const url=new URL(body.url),method=body.method,payload=body.payload;
+      let result;
+      if(method==='GET'&&url.pathname.endsWith('/git/ref/heads/main'))result={object:{sha:'d'.repeat(40)}};
+      else if(method==='GET'&&url.pathname.endsWith('/contents/tools/ict-scan/dashboard-layouts/layouts.json')){
+        const bytes=readFileSync('tools/ict-scan/dashboard-layouts/layouts.json');
+        const sha=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+        result={type:'file',encoding:'base64',content:bytes.toString('base64'),sha};
+      }else{
+     if(url.pathname.endsWith('/git/refs')&&method==='POST'){
+       assert.match(payload.ref,/^refs\/heads\/applicatielandschap\/ontwerp-/);assert.equal(payload.sha,'d'.repeat(40));result={ref:payload.ref};
+     }else if(url.pathname.endsWith('/contents/tools/ict-scan/dashboard-layouts/layouts.json')&&method==='PUT'){
+       assert.match(payload.branch,/^applicatielandschap\/ontwerp-/);
+       const file=JSON.parse(Buffer.from(payload.content,'base64').toString('utf8'));
+       assert.equal(file.schema,'eai-ict-dashboard-designs-v1');
+       for(const item of Object.values(file.designs))assert.deepEqual(Object.keys(item).sort(),['components','content','format','layout','primary','title','variant','version','visuals']);
+       assert(!JSON.stringify(file).includes('APP-034'));assert(!JSON.stringify(file).includes('browser-test-design-token'));
+       result={content:{sha:'e'.repeat(40)}};
+     }else if(url.pathname.endsWith('/pulls')&&method==='POST'){
+       assert.equal(payload.base,'main');assert.match(payload.head,/^applicatielandschap\/ontwerp-/);result={number:9999,html_url:'https://github.com/E-AI-MODEL/website/pull/9999'};
+     }else throw Error('Onverwachte schrijfroute '+url.pathname);
+     designWrites.push({method,path:url.pathname});
+      }
+      data={data:result};
+    }else throw Error('Onverwachte bewerkservicehandeling');
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
   });
   await page.goto(base+'/tools/ict-scan/',{waitUntil:'load'});
   assert.equal(await page.locator('script[src^="./assurance/profile.js"]').getAttribute('src'),'./assurance/profile.js?v='+profileHash,'De browser moet de juiste, versienummergebonden validator laden');
@@ -535,8 +553,9 @@ try {
   await page.locator('#cardReadView .card-read-tab[data-target="overview"]').click();
   assert.equal(await page.locator('#cardJsonPanel').isVisible(),false);
   await page.locator('#cardEditButton').click();
-  await page.locator('#cardGatePassword').fill('Emmauscollege');
+  await page.locator('#cardGatePassword').fill('test-editor-password');
   await page.locator('.card-edit-gate [data-unlock]').click();
+  await page.locator('#cardForm').waitFor({state:'visible'});
   assert.equal(await page.locator('#cardForm').isVisible(),true,'Bewerken hoort in dezelfde kaart');
   await page.locator('#cardCancelEdit').click();
   await page.locator('#cardEditorClose').click();
@@ -648,16 +667,11 @@ try {
     await page.locator('#dsSharedDialog').waitFor({state:'visible'});
     assert.equal(designWrites.length,0,'Openen van de pop-up mag niets schrijven');
     await page.locator('#dsSharedReason').fill('Browserproef gedeelde indeling');
-    await page.locator('#dsSharedToken').fill('browser-test-design-token');
-    await page.locator('#dsSharedSubmit').click();
-    await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('bevestig'));
-    assert.equal(designWrites.length,0,'Zonder toestemming wordt niets geschreven');
-    await page.locator('#dsSharedToken').fill('browser-test-design-token');
-    await page.locator('#dsSharedConsent').check();
+    assert.equal(await page.locator('#dsSharedToken,#cardGithubToken').count(),0);
     await page.locator('#dsSharedSubmit').click();
     await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('PR #9999'));
-    assert.equal(designWrites.length,3,'Uitsluitend een branch, layoutbestand en pull request');
-    assert.equal(await page.locator('#dsSharedToken').inputValue(),'');
+    assert.equal(designWrites.length,3,'Uitsluitend branch, layoutbestand en pull request');
+    assert.equal(loginCount,1,'Eén wachtwoord voor alle bewerkingen binnen de sessie');
     await page.locator('#dsSharedClose').click();
     assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
     await page.locator('#dsLayout').selectOption('balanced');

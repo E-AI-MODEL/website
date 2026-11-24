@@ -582,7 +582,8 @@
     const recordMeta={...(r.recordMeta||{})};
     for(const input of $c('cardFormFields').querySelectorAll('[name^="recordMeta."]')){const field=input.name.slice(11);if(input.value.trim())recordMeta[field]=input.value.trim();else delete recordMeta[field];}
     if(Object.keys(recordMeta).length||Object.prototype.hasOwnProperty.call(r,'recordMeta'))r.recordMeta=recordMeta;
-    const reason=$c('cardFormFields').querySelector('[name="changeReason"]').value.trim()||'Handmatige wijziging; geen toelichting opgegeven.';
+    const suppliedReason=$c('cardFormFields').querySelector('[name="changeReason"]').value.trim();
+    const reason=suppliedReason.length>=8?suppliedReason:suppliedReason?'Handmatige wijziging: '+suppliedReason:'Handmatige wijziging; geen toelichting opgegeven.';
     if(!r.name?.trim())throw Error('Naam is verplicht.');
     if(!reason||reason.length<8)throw Error('Beschrijf de wijziging en de herkomst in minimaal acht tekens.');
     if(r.recordMeta?.referenceDate&&!window.AssuranceRecord.validDate(r.recordMeta.referenceDate))throw Error('Peildatum moet een bestaande datum zijn (jjjj-mm-dd).');

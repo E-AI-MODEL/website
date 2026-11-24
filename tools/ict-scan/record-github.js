@@ -322,13 +322,13 @@
   async function post(){
     const cards=window.EmmausRecordCards,button=el('cardCreatePR');
     if(!cards)return;
+    if(window.top!==window.self){cards.feedback('Open het dashboard rechtstreeks om wijzigingen op te slaan.',true);return false;}
     if(saving)return false;
     const drafts=cards.drafts();
     if(!drafts.length)return false;
     const message=drafts.length===1?'Bijwerken '+drafts[0].after.name:'Bijwerken '+drafts.length+' registraties';
-    saving=true;button.disabled=true;
+    saving=true;button.disabled=true;el('cardPublishToggle').disabled=true;
     try{
-      if(window.top!==window.self)fail('Open het dashboard rechtstreeks om wijzigingen op te slaan.');
       const profile=await window.IctOrganisation.ready;
       const SOURCE_DIR=profile.source.sourceDir+'/',baseRef=profile.source.baseRef;
       assertNoSecrets({drafts,message});
@@ -337,6 +337,7 @@
       if(!await window.EmmausEditGate.request())return false;
       const configuration=configurationFor(profile,cards.catalog?.());
       button.disabled=true;button.textContent='GitHub controleren…';
+      el('cardFeedback').textContent='Wijziging opslaan…';
       const request=api(profile);
       const [user,head]=await Promise.all([
         request('GET','https://api.github.com/user'),
@@ -389,7 +390,7 @@
           body:'## Wijzigingen vanuit JSON-kaarten\n\n'+summary.map(x=>'- '+x).join('\n')+
             '\n\n## Controles\n- Bestaande bronvelden intact gelaten\n- Wijzigingen gekoppeld aan record-ID en bronversie\n- Relaties en normverwijzingen gecontroleerd\n- Wijzigingslog per registratie toegevoegd\n- Manifest en bestands-SHA bijgewerkt\n\nGoedkeuring vereist voordat de website de nieuwe gegevens uit main kan laden.'
         });
-        if(!pr.html_url||!/^https:\/\/github\.com\//.test(pr.html_url))fail('GitHub heeft geen PR-link teruggegeven.');
+        if(!Number.isInteger(pr.number)||pr.html_url!=='https://github.com/'+profile.source.repository+'/pull/'+pr.number)fail('GitHub heeft geen geldige PR-link teruggegeven.');
         const remaining=cards.clearPublished(drafts)?.remaining||0;
         const p=el('cardFeedback');p.replaceChildren();
         p.append(document.createTextNode('Opgeslagen als wijzigingsvoorstel: '));
@@ -403,7 +404,7 @@
       }
     }catch(error){cards.feedback(safeMessage(error.message,''),true);return false;}
     finally{
-      saving=false;button.disabled=false;button.textContent='Opslaan';
+      saving=false;button.disabled=false;button.textContent='Opslaan';el('cardPublishToggle').disabled=false;
     }
   }
   el('cardCreatePR').addEventListener('click',()=>void post());
