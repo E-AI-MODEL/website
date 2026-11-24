@@ -304,7 +304,7 @@ function renderAiList(){
  $('aiPhaseFilterField').hidden=!phases.length;$('aiStatusFilter').value=state.aiStatusFilter||'';
  const ids=new Set((state.aiStatusFilter==='unknown'?report.unknownLocal:state.aiStatusFilter==='risk'?report.possibleHighRisk:[]).map(x=>x.id));
  const q=$('aiSearch').value;
- const list=scope.filter(x=>IctInventoryIndex.matchesRecord(x,q)&&(!state.phase||IctScanTaxonomy.chartPhases(x).includes(state.phase))&&(!state.aiProduct||(x.product||'Onbekend')===state.aiProduct)&&(!state.aiStatusFilter||ids.has(x.id))).sort((a,b)=>(a.product||'').localeCompare(b.product||'','nl')||a.name.localeCompare(b.name,'nl')||a.id.localeCompare(b.id,'nl'));
+ const list=scope.filter(x=>IctInventoryIndex.matchesRecord(x,q,{exactId:true,excludeMetadata:true})&&(!state.phase||IctScanTaxonomy.phases(x).includes(state.phase)||(state.phase==='Niet vastgelegd'&&IctScanTaxonomy.chartPhases(x).includes(state.phase)))&&(!state.aiProduct||(x.product||'Onbekend')===state.aiProduct)&&(!state.aiStatusFilter||ids.has(x.id))).sort((a,b)=>(a.product||'').localeCompare(b.product||'','nl')||a.name.localeCompare(b.name,'nl')||a.id.localeCompare(b.id,'nl'));
  $('aiCount').textContent=list.length+' van '+scope.length+' functies';
  $('aiClearFilters').disabled=!(q.trim()||state.phase||state.aiProduct||state.aiStatusFilter);
  renderList('aiList',list,'ai',Math.max(115,list.length));

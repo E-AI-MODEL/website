@@ -24,6 +24,7 @@ const manifestSha=createHash('sha1').update('blob '+manifestContent.length+'\0')
 sources.set(manifestSha,manifestContent);
 listing.push({type:'file',name:'manifest.json',path:'tools/ict-scan/bronnen/manifest.json',sha:manifestSha,size:manifestContent.length});
 const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
+const {default:taxonomy}=await import('../tools/ict-scan/record-taxonomy.js');
 const fixture=manifest.dataFiles.map(f=>JSON.parse(readFileSync('tools/ict-scan/bronnen/'+f.path,'utf8')));
 const fixtureState=Object.fromEntries(Object.entries(inventory.STORES).map(([type,store])=>[store,fixture.flatMap(f=>f[type]||[])]));
 const expectedIndex=inventory.build(fixtureState);
@@ -607,6 +608,14 @@ try {
   assert((await page.locator('#aiList .item-card-direct').count())>0);
   assert.match(await page.locator('#aiList .item-sub').first().textContent(),new RegExp(product.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   await page.locator('#aiClearFilters').click();
+  const classFunctions=expectedIndex.records('ai').filter(taxonomy.isClassroomAi);
+  for(const phase of taxonomy.PHASES){
+    await page.locator('#aiFilterPhase').selectOption(phase);
+    const expected=classFunctions.filter(row=>taxonomy.phases(row).includes(phase));
+    assert.equal(await page.locator('#aiList .item-card-direct').count(),expected.length,'Onjuiste functiepopulatie bij '+phase);
+  }
+  await page.locator('#aiClearFilters').click();
+  assert.equal(await page.locator('#aiList .item-card-direct').count(),classFunctions.length);
   if(width===1440)await page.screenshot({path:'test-results/ict-scan-ai-functions.png',animations:'disabled'});
   await page.locator('#viewAi .scene-tab').nth(1).click();
   await page.locator('#viewAiScene1:not([hidden])').waitFor({state:'visible'});
@@ -620,6 +629,14 @@ try {
   await page.locator('#aiControlSearch').fill(control.id);
   assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),1);
   assert.equal(await page.locator('#privacyControls .evidence-group[open]:not([hidden])').count(),1);
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden]) [data-card-id]').getAttribute('data-card-id'),control.id);
+  await page.locator('#aiControlSearch').fill(' '+control.id.toLowerCase()+' ');
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),1);
+  await page.locator('#aiControlSearch').fill('B-999999');
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),0);
+  assert.equal(await page.locator('#aiControlEmpty').isVisible(),true);
+  await page.locator('#aiControlSearch').fill('Teams Classwork');
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),expectedIndex.records('aiControls').filter(row=>inventory.matchesRecord(row,'Teams Classwork',{exactId:true,excludeMetadata:true})).length);
   await page.locator('#aiControlClear').click();
   assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),expectedIndex.records('aiControls').length);
   if(width===1440)await page.screenshot({path:'test-results/ict-scan-ai-management.png',animations:'disabled'});

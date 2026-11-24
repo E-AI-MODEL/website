@@ -75,7 +75,7 @@
       let count=0;
       for(const row of group.querySelectorAll('.evidence-row')){
         const id=row.querySelector('[data-card-id]')?.dataset.cardId,record=state.aiControls.get(id);
-        const visible=!!record&&IctInventoryIndex.matchesRecord(record,query);
+        const visible=!!record&&IctInventoryIndex.matchesRecord(record,query,{exactId:true,excludeMetadata:true});
         row.hidden=!visible;if(visible)count++;
       }
       group.hidden=!count;shown+=count;

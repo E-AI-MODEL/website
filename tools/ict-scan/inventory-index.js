@@ -28,9 +28,16 @@
     if(value&&typeof value==='object')return Object.values(value).map(recordText).join(' ');
     return value===null||value===undefined?'':String(value);
   }
-  function matchesRecord(record,query){
-    const q=normalize(query);if(!q)return true;
-    const haystack=normalize(recordText(record));
+  function matchesRecord(record,query,options={}){
+    const raw=String(query??'').trim(),q=normalize(raw);if(!q)return true;
+    // In a register browser a complete ID identifies the record itself,
+    // not a reference in another record's audit history. Keep the broader
+    // reference-search behavior for other index consumers.
+    if(options.exactId&&/^[a-z][a-z0-9]*\s*-\s*\d+(?:-[a-z0-9]+)*$/i.test(raw))return normalize(record?.id)===q;
+    const searchable=options.excludeMetadata&&record&&typeof record==='object'
+      ?Object.fromEntries(Object.entries(record).filter(([field])=>!['auditTrail','recordMeta'].includes(field)))
+      :record;
+    const haystack=normalize(recordText(searchable));
     return q.split(' ').every(term=>haystack.includes(term));
   }
   function build(state,options={}){
