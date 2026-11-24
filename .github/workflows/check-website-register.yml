@@ -1,35 +1,9 @@
 name: Controle inhoudsregister website
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - '.github/workflows/check-website-register.yml'
-      - 'catalog/**'
-      - 'scripts/check_website_register.py'
-      - 'tests/test_website_register.py'
-      - '**/*.html'
-      - 'content/workforms.json'
-      - 'nl/llmscan/catalogue.js'
-      - 'assets/eaigame-questions.js'
-      - 'content/wihtml/bibliotheek/*.json'
-      - 'sitemap.xml'
-      - 'scripts/build_site.py'
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/check-website-register.yml'
-      - 'catalog/**'
-      - 'scripts/check_website_register.py'
-      - 'tests/test_website_register.py'
-      - '**/*.html'
-      - 'content/workforms.json'
-      - 'nl/llmscan/catalogue.js'
-      - 'assets/eaigame-questions.js'
-      - 'content/wihtml/bibliotheek/*.json'
-      - 'sitemap.xml'
-      - 'scripts/build_site.py'
+  workflow_call:
   workflow_dispatch:
+
 
 permissions:
   contents: read

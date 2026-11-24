@@ -2,36 +2,6 @@ name: ICT-registers en deterministische controles
 
 on:
   workflow_call:
-  pull_request:
-    branches: [main]
-    paths:
-      - '.github/workflows/check-ict-assurance.yml'
-      - '.github/workflows/deploy-theory7.yml'
-      - 'tools/ict-scan/**'
-      - 'scripts/check_ict_assurance.mjs'
-      - 'scripts/build_site.py'
-      - 'tests/test_ict_scan_assurance*.mjs'
-      - 'tests/verify_ict_assurance_browser.mjs'
-      - 'tests/test_ict_scan_cards.mjs'
-      - 'tests/test_ict_scan_github_sync.mjs'
-      - 'tests/test_ict_scan_export.mjs'
-      - 'tests/test_ict_scan_taxonomy.mjs'
-      - 'tests/test_ict_scan_publish.py'
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/check-ict-assurance.yml'
-      - '.github/workflows/deploy-theory7.yml'
-      - 'tools/ict-scan/**'
-      - 'scripts/check_ict_assurance.mjs'
-      - 'scripts/build_site.py'
-      - 'tests/test_ict_scan_assurance*.mjs'
-      - 'tests/verify_ict_assurance_browser.mjs'
-      - 'tests/test_ict_scan_cards.mjs'
-      - 'tests/test_ict_scan_github_sync.mjs'
-      - 'tests/test_ict_scan_export.mjs'
-      - 'tests/test_ict_scan_taxonomy.mjs'
-      - 'tests/test_ict_scan_publish.py'
   workflow_dispatch:
     inputs:
       as_of:
@@ -40,6 +10,7 @@ on:
         type: string
   schedule:
     - cron: '23 5 * * *'
+
 
 permissions:
   contents: read
