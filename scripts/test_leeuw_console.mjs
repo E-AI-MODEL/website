@@ -86,7 +86,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     assert.equal(await p.locator('#app').isVisible(),false);
     assert.equal(await p.locator('.voyage-chapter').count(),5);
     const vs=()=>p.evaluate(()=>window.LEO_VOYAGE_STATE());
-    const shot=name=>p.screenshot({path:'test-results/leeuw-'+engine+'-'+w+'-reis-'+name+'.png'});
+    const shot=async name=>{await p.waitForFunction(()=>Number(getComputedStyle(document.querySelector('#voyageCopy')).opacity)>.98);await p.screenshot({path:'test-results/leeuw-'+engine+'-'+w+'-reis-'+name+'.png'})};
     const seek=async v=>{const before=(await vs()).frame;await p.locator('#voyageSeek').evaluate((el,v)=>{el.value=v;el.dispatchEvent(new Event('input',{bubbles:true}))},v);await p.waitForFunction(frame=>window.LEO_VOYAGE_STATE().frame>frame,before)};
     const visible=async()=>{
       const m=await p.evaluate(()=>{
