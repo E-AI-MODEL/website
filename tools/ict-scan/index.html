@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="./assurance.css?v=20261121b">
 <link rel="stylesheet" href="./answer-engine.css?v=20261124ux3">
 <link rel="stylesheet" href="./studio-interface.css?v=20261122b">
-<link rel="stylesheet" href="./dashboard-composer.css?v=20261122b">
+<link rel="stylesheet" href="./dashboard-composer.css?v=20261124shared1">
 <link rel="stylesheet" href="./composer-resize.css?v=20261123a">
 <link rel="stylesheet" href="./relationship-orbit.css?v=20261121a">
 <link rel="stylesheet" href="./ux-clarity.css?v=20261124ux4">
@@ -41,12 +41,12 @@
 <script defer src="./rail-drawer.js?v=20261124ux3"></script>
 <script defer src="./edit-gate.js?v=20261123a"></script>
 <script defer src="./record-cards.js?v=20261124ux3"></script>
-<script defer src="./record-github.js?v=20261121e"></script>
+<script defer src="./record-github.js?v=20261124shared1"></script>
 <script defer src="./answer-engine.js?v=20261124ux4"></script>
 <script defer src="./scene-navigation.js?v=20261124ux3"></script>
 <script defer src="./evidence-experience.js?v=20261124a"></script>
 <script defer src="./role-modes.js?v=20261124b"></script>
-<script defer src="./dashboard-composer.js?v=20261124ux3"></script>
+<script defer src="./dashboard-composer.js?v=20261124shared1"></script>
 <script defer src="./composer-resize.js?v=20261123a"></script>
 <script defer src="./assurance-ui.js?v=20261124a"></script>
 <link rel="stylesheet" href="./relationship-atlas.css?v=20261124c">
@@ -142,6 +142,7 @@
       <div class="ds-group-header"><h3>Hoe wil je ze bekijken?</h3><span id="dsPartCount">0 gekozen</span></div>
       <div id="dsPartOptions" class="ds-options ds-parts" aria-label="Onderdelen kiezen"></div>
       <div class="ds-side-bottom"><button type="button" id="dsSuggest" class="ds-text-action">Kies passende grafieken</button><button type="button" id="dsBlank" class="ds-text-action">Verwijder alle grafieken</button></div>
+      <div class="ds-rule"></div><div class="ds-group-header"><h3>Gedeeld dashboardontwerp</h3></div><div class="ds-shared-actions"><button type="button" class="ds-text-action" id="dsSharedLoad">Gedeeld ontwerp openen</button><button type="button" class="ds-text-action" id="dsSharedPublish">Indeling voorstellen</button></div><p id="dsSharedStatus" class="ds-side-note" role="status">Alleen de indeling wordt gedeeld, niet de brongegevens.</p>
       <p class="ds-side-note">Deze instellingen wijzigen geen gegevens.</p>
     </aside>
     <div class="ds-stage">
@@ -162,6 +163,7 @@
   </div>
 </section>
 
+<dialog id="dsSharedDialog" class="card-edit-gate ds-shared-dialog" aria-labelledby="dsSharedTitle"><div class="card-edit-gate-form"><h2 id="dsSharedTitle">Dashboardindeling voorstellen</h2><p id="dsSharedDiff"></p><p id="dsSharedTarget"></p><details><summary>Bekijk exact wat wordt opgeslagen</summary><pre id="dsSharedPreview"></pre></details><label for="dsSharedReason">Toelichting</label><input id="dsSharedReason" type="text" maxlength="200" autocomplete="off"><label for="dsSharedToken">GitHub-token met beperkte schrijfrechten</label><input id="dsSharedToken" type="password" autocomplete="off"><label class="ds-shared-consent"><input id="dsSharedConsent" type="checkbox"> Ik bevestig dat deze dashboardindeling openbaar mag worden voorgesteld.</label><p id="dsSharedFeedback" role="status"></p><div class="card-gate-actions"><button id="dsSharedClose" type="button">Sluiten</button><button id="dsSharedSubmit" type="button" data-unlock>Pull request maken</button></div></div></dialog>
       <section id="viewOverview" class="view" hidden>
         <div class="inventory-line" aria-label="Peildatum en herkomst">
           <div class="inventory-line-main"><span class="inventory-year">2026</span><span id="inventoryMetaLine">Brongegevens worden geladen</span></div>
