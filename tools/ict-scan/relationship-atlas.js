@@ -5,7 +5,7 @@
   const NS='http://www.w3.org/2000/svg';
   const $=id=>document.getElementById(id);
   const TYPE_NAMES=Object.freeze({
-    apps:'Applicaties',ai:'AI-functies',connections:'Koppelingen vanuit Entra',
+    apps:'Applicaties',ai:'AI-functies',connections:'Entra-registraties',
     parts:'Onderdelen',additionalCandidates:'Overige software',checks:'Controles',
     dpia:'Privacybronnen',aiControls:'AI-beheer',devices:'Apparaatmetingen',
     hardwareGroups:'Apparaatgroepen',licenseReview:'Licenties',
@@ -52,7 +52,7 @@
   const heading=el('div','ra-heading');
   heading.append(el('p','ra-overline','ICT-SCAN'),el('h2','', 'Alle verbanden'));
   heading.querySelector('h2').id='relationAtlasTitle';
-  heading.append(el('p','ra-intro','Alle geregistreerde verbanden uit dezelfde gegevensindex. Een registratie is niet automatisch een werkende koppeling.'));
+  heading.append(el('p','ra-intro','Geregistreerde en vermoedelijke verbanden uit dezelfde gegevensindex. Geen van beide bewijst op zichzelf een actieve koppeling.'));
   const headerActions=el('div','ra-head-actions');
   const exportButton=button('CSV downloaden','ra-action',()=>exportCsv());
   const closeButton=button('Sluiten','ra-close',()=>close());
@@ -288,7 +288,7 @@
       const registered=currentEdges.filter(e=>e.status==='Geregistreerd').length;
       const presumed=currentEdges.filter(e=>e.status==='Vermoedelijk').length;
       detail.append(el('div','ra-status-row',fmt(registered)+' geregistreerd'),el('div','ra-status-row',fmt(presumed)+' vermoedelijk'));
-      detail.append(el('p','ra-detail-note','De lijnbreedte laat het aantal geregistreerde relaties tussen twee groepen zien, niet de intensiteit van gegevensuitwisseling.'));
+      detail.append(el('p','ra-detail-note','De lijnbreedte laat het aantal vastgelegde verbanden tussen twee groepen zien, niet de intensiteit van gegevensuitwisseling.'));
       return;
     }
     const selected=node(focused.type,focused.id);

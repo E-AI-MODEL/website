@@ -6,7 +6,7 @@
   function norm(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');}
   function words(value){return norm(value).split(' ').filter(w=>w&&!stop.has(w));}
   function unknown(value){const v=norm(value);return String(value??'').trim().startsWith('?')||!v||v.startsWith('nog ')||v.startsWith('niet vastgesteld')||v.startsWith('onbekend')||v.startsWith('schoolgebruik nog niet')||v.startsWith('afhankelijk van')||v.startsWith('standaard volgens leverancier');}
-  const label={apps:'Toepassing',ai:'AI-functie',connections:'Entra-registratie',candidates:'Kandidaat',faqs:'FAQ',parts:'Technisch onderdeel'};
+  const label={apps:'Applicatie',ai:'AI-functie',connections:'Koppeling vanuit Entra',candidates:'Overige software',faqs:'FAQ',parts:'Technisch onderdeel'};
   const result=(kind,answer,records=[],status='Brongebonden',sources=[],question='')=>({kind,answer,status,records:records.slice(0,12),sources:[...new Set(sources.filter(Boolean))].slice(0,5),question});
   function entry(type,x){return {type,id:x.id,name:x.name||x.question||x.id,detail:type==='apps'?(x.description||''):type==='ai'?(x.product||''):type==='connections'?(x.matched||''):type==='faqs'?(x.topic||''):(x.kind||'')};}
   function recordSources(items){return items.flatMap(x=>Array.isArray(x.sources)?x.sources:[]).slice(0,5);}
@@ -98,8 +98,8 @@
       return result('field',candidateAnswer(app.data,'Bij '+own+' zijn de volgende gegevens geregistreerd: ','Voor '+own+' is nog niet vastgesteld welke gegevens worden verwerkt.'),base,unknown(app.data)?'Niet vastgesteld':'Geregistreerd',src);
     }
     if(/\b(entra|sso|aanmeld|login)\b/.test(q)){
-      if(!entra.length)return result('relations','Bij '+own+' is in deze bronstand geen Entra-match vastgelegd. Dat bewijst niet dat er geen technische koppeling bestaat.',base,'Niet vastgesteld',src);
-      return result('relations','Bij '+own+' staan '+entra.length+' mogelijke Entra-matches: '+shortList(entra)+'. Dit zijn technische registraties; hun actuele werking is niet bevestigd.',entra.map(x=>entry('connections',x)).concat(base),'Mogelijke koppeling',recordSources(entra).concat(src));
+      if(!entra.length)return result('relations','Voor '+own+' is geen koppeling vanuit Entra geregistreerd. Er kan wel een koppeling bestaan die niet in deze gegevens staat.',base,'Niet vastgesteld',src);
+      return result('relations','Bij '+own+' staan '+entra.length+' mogelijke koppelingen vanuit Entra: '+shortList(entra)+'. Dit zijn technische registraties; hun actuele werking is niet bevestigd.',entra.map(x=>entry('connections',x)).concat(base),'Mogelijke koppeling',recordSources(entra).concat(src));
     }
     if(/\b(koppel|koppelingen|deelt|uitwisseling|uitwisselen|integratie|api)\b/.test(q)){
       const linked=ix?ix.connected('apps',app.id).filter(x=>['integration','sso','possible_match','registered_as'].includes(x.relationType)):[];
@@ -116,8 +116,8 @@
       const described=audience==='leerlingen'?policy.students:
         audience==='medewerkers'?policy.staff:policy.staff+' Voor leerlingen: '+policy.students;
       return result('field','Volgens de Microsoft Education-standaard voor '+own+': '+described+
-        ' '+(policy.condition||'')+' De beschrijving is een leveranciersuitgangspunt en geen controle van de schooltenant of individuele licentietoewijzing.',
-        base,'Leveranciersstandaard; schooltenant niet gecontroleerd',src);
+        ' '+(policy.condition||'')+' Dit zijn M365-instellingen volgens Microsoft. M365-instellingen (tenant) en toegewezen licenties zijn niet gecontroleerd.',
+        base,'Microsoft-standaard; M365-instellingen (tenant) niet gecontroleerd',src);
     }
     if(app.id==='APP-034'&&/\b(welke|wat|overzicht|beschikbaar|toegang)\b/.test(q)&&
       /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden|leerlingen|docenten|medewerkers)\b/.test(q)&&
@@ -184,13 +184,13 @@
     }
     if(mentioned&&/\b(entra|sso)\b/.test(q)&&
       /\b(registratie|registraties|match|matches|koppeling|koppelingen)\b/.test(q)){
-      if(!data.index)return result('count','De gedeelde relatie-index is niet geladen. Entra-matches bij '+mentioned.name+' zijn niet betrouwbaar te tellen.',
+      if(!data.index)return result('count','De gegevens over koppelingen zijn niet geladen. Het aantal koppelingen vanuit Entra bij '+mentioned.name+' kan niet worden bepaald.',
         [entry('apps',mentioned)],'Niet vastgesteld',recordSources([mentioned]));
       const related=data.index.connected('apps',mentioned.id,{type:'connections'});
       const unique=[...new Map(related.map(link=>[link.otherId,link.other])).values()];
-      return result('count','Bij '+mentioned.name+' zijn '+unique.length+' mogelijke Entra-matches beschreven. Dit bewijst geen actieve koppeling of werkende aanmelding.',
+      return result('count','Bij '+mentioned.name+' staan '+unique.length+' mogelijke koppelingen vanuit Entra. Actueel gebruik is niet bevestigd.',
         [entry('apps',mentioned),...unique.slice(0,12).map(x=>entry('connections',x))],
-        'Mogelijke Entra-matches; werking niet vastgesteld',recordSources([mentioned]));
+        'Koppelingen vanuit Entra; gebruik niet vastgesteld',recordSources([mentioned]));
     }
     if(mentioned?.id==='APP-034'&&
       /\b(apps|applicaties|diensten|onderdelen|modules|producten|software|mogelijkheden)\b/.test(q)){
@@ -208,19 +208,19 @@
     }
     if(/\b(ai|kunstmatige|copilot)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q)){
       const ids=new Set(apps.map(x=>x.id)),withAi=new Set(ai.filter(x=>ids.has(x.parentId)).map(x=>x.parentId));
-      return result('count',withAi.size+' van '+apps.length+' basisregistraties hebben een koppeling naar ten minste één beschreven AI-functie. Dit zegt niet of die functie op school actief is.',apps.filter(x=>withAi.has(x.id)).slice(0,12).map(x=>entry('apps',x)),'Afgeleide telling',recordSources(apps));
+      return result('count',withAi.size+' van '+apps.length+' applicaties hebben ten minste één beschreven AI-functie. Het gebruik op school is niet voor alle functies vastgesteld.',apps.filter(x=>withAi.has(x.id)).slice(0,12).map(x=>entry('apps',x)),'Afgeleide telling',recordSources(apps));
     }
     const categories=[
-      {rx:/\b(eigenaar|verantwoordelijke|beheerder|beheert)\b/,rows:apps.filter(x=>unknown(x.owner)),name:'basisregistraties zonder vastgestelde verantwoordelijke',type:'apps'},
+      {rx:/\b(eigenaar|verantwoordelijke|beheerder|beheert)\b/,rows:apps.filter(x=>unknown(x.owner)),name:'applicaties zonder vastgestelde verantwoordelijke',type:'apps'},
       {rx:/\b(ai|copilot|ai functies)\b/,rows:ai,name:'beschreven AI-functies',type:'ai'},
-      {rx:/\b(entra|sso)\b/,rows:data.connections,name:'Entra-registraties',type:'connections'},
-      {rx:/\b(kandidaat|kandidaten|onderzoekssignalen)\b/,rows:data.candidates,name:'aanvullende kandidaten',type:'candidates'},
+      {rx:/\b(entra|sso)\b/,rows:data.connections,name:'koppelingen vanuit Entra',type:'connections'},
+      {rx:/\b(kandidaat|kandidaten|onderzoekssignalen)\b/,rows:data.candidates,name:'overige softwarevermeldingen',type:'candidates'},
       {rx:/\b(dpia|privacychecks)\b/,rows:data.dpia,name:'DPIA-registraties',type:'dpia'},
       {rx:/\b(licenties|licentie)\b/,rows:data.licenseReview,name:'licentieregistraties ter controle',type:'licenseReview'},
       {rx:/\b(faq|veelgestelde|vragen)\b/,rows:data.faqs,name:'vaste FAQ-antwoorden',type:'faqs'},
-      {rx:/\b(werkacties|werkregister|acties)\b/,rows:data.workActions,name:'werkregisteracties',type:'workActions'},
+      {rx:/\b(werkacties|werkregister|acties)\b/,rows:data.workActions,name:'openstaande acties',type:'workActions'},
       {rx:/\b(apparaten|apparaatmetingen|hardware)\b/,rows:data.devices,name:'apparaatmetingen, geen volledige hardwarelijst',type:'devices'},
-      {rx:/\b(applicatie|applicaties|toepassing|toepassingen|software|diensten|apps)\b/,rows:apps,name:'basisregistraties van toepassingen en diensten; geen bewezen volledig schooltotaal',type:'apps'}
+      {rx:/\b(applicatie|applicaties|toepassing|toepassingen|software|diensten|apps)\b/,rows:apps,name:'geregistreerde applicaties en diensten; de lijst is mogelijk nog niet volledig',type:'apps'}
     ];
     const match=categories.find(x=>x.rx.test(q));
     if(!match)return null;
@@ -244,15 +244,15 @@
     if(/\b(ai|kunstmatige|copilot)\b/.test(q)){
       const ids=new Set(data.ai.map(x=>x.parentId).filter(Boolean));
       const rows=apps.filter(x=>ids.has(x.id));
-      return result('list',rows.length+' toepassingen hebben een relatie met beschreven AI-functies: '+shortList(rows)+'. Dit is geen bewijs van ingeschakelde functies.',rows.map(x=>entry('apps',x)),'Beschreven AI-relaties',recordSources(rows));
+      return result('list',rows.length+' applicaties bevatten beschreven AI-functies: '+shortList(rows)+'. Dit is geen bewijs van ingeschakelde functies.',rows.map(x=>entry('apps',x)),'Beschreven AI-relaties',recordSources(rows));
     }
     if(/\b(entra|sso)\b/.test(q)){
       const ids=new Set(data.connections.map(x=>x.matchedId).filter(Boolean));
       const rows=apps.filter(x=>ids.has(x.id));
-      return result('list',rows.length+' basisregistraties hebben een mogelijke Entra-match: '+shortList(rows)+'. Een match is geen bevestiging van een actieve koppeling.',rows.map(x=>entry('apps',x)),'Mogelijke koppelingen',recordSources(rows));
+      return result('list',rows.length+' applicaties hebben een mogelijke koppeling vanuit Entra: '+shortList(rows)+'. Een match is geen bevestiging van een actieve koppeling.',rows.map(x=>entry('apps',x)),'Mogelijke koppelingen',recordSources(rows));
     }
     if(/\b(applicatie|applicaties|toepassing|toepassingen|software|apps|diensten)\b/.test(q)){
-      return result('list','Er zijn '+apps.length+' basisregistraties: '+shortList(apps)+'. De inventarisatie is nog niet als volledig vastgesteld.',apps.slice(0,12).map(x=>entry('apps',x)),'Basisinventaris',recordSources(apps));
+      return result('list','Er staan '+apps.length+' applicaties in het overzicht: '+shortList(apps)+'. De inventarisatie is nog niet als volledig vastgesteld.',apps.slice(0,12).map(x=>entry('apps',x)),'Basisinventaris',recordSources(apps));
     }
     return null;
   }
@@ -312,9 +312,9 @@
       add('Hoeveel toepassingen staan er in het overzicht?','aantal applicaties software diensten apps','Overzicht');
       add('Welke toepassingen hebben AI-functies?','ai copilot toepassingen software','AI');
       add('Welke toepassingen hebben nog geen verantwoordelijke?','beheer eigenaars beheerder eigenaar ontbreekt','Controle');
-      add('Welke toepassingen hebben een Entra-match?','entra sso koppelingen','Verbanden');
+      add('Welke applicaties hebben een koppeling vanuit Entra?','entra sso koppelingen','Verbanden');
     }
-    if(data.connections.length)add('Hoeveel Entra-registraties zijn er?','entra sso connecties','Overzicht');
+    if(data.connections.length)add('Hoeveel koppelingen vanuit Entra staan er in het overzicht?','entra sso connecties','Overzicht');
     if(data.ai.length)add('Hoeveel AI-functies zijn beschreven?','ai copilot functies','AI');
     for(const faq of data.faqs){
       const aliases=String(faq.aliases||'').split('|').join(' ');

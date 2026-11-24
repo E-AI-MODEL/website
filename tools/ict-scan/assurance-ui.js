@@ -7,6 +7,11 @@
   let profile=null,catalog=null,corpus=null,worker=null,timer=null,queued=false,serial=0;
   let latest=null,latestBasis=null,candidateBaseline=null,baseline=null,lastInput=null;
   const node=(tag,text,cls)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;};
+  // Toon herkenbare rubrieken. Technische registernamen blijven in het controledossier.
+  const registerNames={apps:'Applicaties',ai:'AI-functies',connections:'Koppelingen vanuit Entra',parts:'Onderdelen',additionalCandidates:'Overige software',hardwareGroups:'Apparaatgroepen',sourceRegister:'Bronnen',checks:'Controles',workActions:'Acties',licenseReview:'Licenties',dpia:'Privacybronnen',aiControls:'AI-beheer',devices:'Apparaatmetingen'};
+  const readableFinding=value=>String(value||'').replace(/Register ontbreekt in het dashboard:\s*(\w+)/g,(_,type)=>
+    (registerNames[type]||'Gegevensgroep '+type)+' ontbreken in de ingelezen gegevens.');
+
   const day=()=>new Date().toISOString().slice(0,10);
   async function json(path){const response=await fetch(path,{cache:'no-store',credentials:'omit',redirect:'error'});if(!response.ok)throw Error('Controlebestand niet beschikbaar (HTTP '+response.status+').');return response.json();}
   const ready=Promise.all([window.IctOrganisation.ready,json('./frameworks.json'),json('./assurance/evaluation-corpus.json')]).then(values=>{[profile,catalog,corpus]=values;});
@@ -56,7 +61,7 @@
       else{
         const list=node('ul');
         for(const finding of check.findings.slice(0,30)){
-          const item=node('li');item.append(node('span',(finding.recordId?finding.recordId+': ':'')+finding.message));
+          const item=node('li');item.append(node('span',(finding.recordId?finding.recordId+': ':'')+readableFinding(finding.message)));
           if(finding.recordType&&finding.recordId&&window.EmmausRecordCards){const open=node('button','Open registratie','assurance-link');open.type='button';open.addEventListener('click',()=>window.EmmausRecordCards.open(finding.recordType,finding.recordId));item.append(open);}
           list.append(item);
         }

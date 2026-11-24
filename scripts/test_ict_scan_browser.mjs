@@ -94,10 +94,26 @@ try {
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
-  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 toepassingen'));
-  await page.locator('#viewStudio:not([hidden])').waitFor();
-  assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
-  assert.equal(await page.locator('#evidencePath').textContent(),'Overzicht samenstellen');
+  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 applicaties'));
+  await page.locator('#viewOverview:not([hidden])').waitFor();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'ICT-overzicht');
+  assert.match(await page.locator('#evidencePath').textContent(),/^Overzicht/);
+  assert.equal(await page.locator('#overviewQuickActions button').count(),4,'De vier gebruikerstaken ontbreken');
+  await page.locator('#overviewQuickActions button').filter({hasText:'Applicatie zoeken'}).click();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'Applicaties en diensten');
+  assert.equal(await page.locator('#appsSearch').evaluate(el=>el===document.activeElement),true,'Zoeken opent direct het zoekveld');
+  await navigate('overview');
+  await page.locator('#overviewQuickActions button').filter({hasText:'Controles bekijken'}).click();
+  await page.locator('#viewFindingsScene1:not([hidden])').waitFor();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'Controles');
+  await navigate('overview');
+  await page.locator('#overviewQuickActions button').filter({hasText:'Rapport maken'}).click();
+  await page.locator('#reportPicker:visible').waitFor();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'Rapporten');
+  await navigate('overview');
+  await page.locator('#overviewQuickActions button').filter({hasText:'Gegevens aanpassen'}).click();
+  await page.locator('#cardEditor').waitFor({state:'visible'});
+  await page.locator('#cardEditorClose').click();
   if(width<700){
     const dock=await page.locator('.sidebar.icon-rail').boundingBox();
     assert(dock&&dock.x>=-1&&dock.width>=width-2&&dock.x+dock.width<=width+1,'Mobiele navigatie is geen volledige balk: '+JSON.stringify(dock));
@@ -106,12 +122,14 @@ try {
     }
     assert.equal(await page.locator('.rail-button[data-view="connections"]').isVisible(),false,'Secundaire onderdelen horen onder Meer');
     await navigate('connections');
-    assert.equal(await page.locator('#sectionTitle').textContent(),'Entra-registraties en toegang');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Koppelingen vanuit Entra');
     await navigate('studio');
-    assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Dashboard op maat');
   }
-  assert.equal(await page.locator('#viewStudio .ds-panel-head h2').textContent(),'Dashboard instellen');
-  assert.equal(await page.locator('.rail-button[data-view="studio"] .rail-label').textContent(),'Dashboard');
+  await navigate('studio');
+  await page.locator('#viewStudio:not([hidden])').waitFor();
+  assert.equal(await page.locator('#viewStudio .ds-panel-head h2').textContent(),'Gegevens en grafieken');
+  assert.equal(await page.locator('.rail-button[data-view="studio"] .rail-label').textContent(),'Op maat');
   assert.equal(await page.locator('#dsDataOptions .ds-option').count(),8,'Gegevenskeuze moet alle acht beschikbare bronsoorten bevatten');
   assert.equal(await page.locator('#dsDataOptions .ds-option-description').count(),8,'Een gegevensgroep moet direct vertellen waarvoor die dient');
   assert.equal(await page.locator('#dsPartOptions .ds-option-description').count(),9,'Elk dashboardonderdeel moet zijn werking uitleggen');
@@ -199,7 +217,7 @@ try {
   assert(size.main<size.height,'Hoofdvenster groeit buiten de viewport bij '+width);
   await page.locator('#viewOverview .scene-tab').nth(1).click();
   await page.locator('#viewOverviewScene1:not([hidden])').waitFor({state:'visible'});
-  assert.match(await page.locator('#viewOverview .scene-tab.active').textContent(),/^(Koppelingen|Geregistreerde verbanden)$/);
+  assert.equal(await page.locator('#viewOverview .scene-tab.active').textContent(),'Koppelingen');
   assert.equal(await page.locator('#viewOverview .scene-panel:not([hidden])').count(),1);
   assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-informatie mag niet standaard zichtbaar zijn');
   // Alle verbanden komen uit een enkele index, inclusief licenties en acties.
@@ -210,22 +228,82 @@ try {
   assert.match(await atlas.locator('#relationAtlasStats').textContent(),/273/);
   assert.equal(await atlas.locator('.ra-link-row').count(),273,'Niet alle bronverbanden staan in de lijst');
   assert((await atlas.locator('.ra-mobile-group').count())>=8,'De categorieën zijn niet volledig opgebouwd');
-  if(width<700){
-    assert(await atlas.locator('.ra-mobile-graph').isVisible(),'Op mobiel ontbreken de klikbare groepen');
-    assert(!(await atlas.locator('.ra-graph-scroll').isVisible()),'Op mobiel blijft het afgesneden netwerkdiagram zichtbaar');
-  }else{
-    assert(await atlas.locator('.ra-graph-scroll').isVisible(),'De desktopvisual ontbreekt');
-    const chart=await atlas.locator('.ra-graph').boundingBox();
-    const frame=await atlas.locator('.ra-graph-wrap').boundingBox();
-    assert(chart&&frame&&chart.bottom<=frame.bottom+2,'Het netwerkdiagram wordt onderaan afgesneden');
+  const assertAtlasLayout=async w=>{
+    const mobile=w<=650;
+    assert.equal(await atlas.locator('.ra-mobile-graph').isVisible(),mobile,'Onjuiste mobiele atlasweergave bij '+w);
+    assert.equal(await atlas.locator('.ra-graph-scroll').isVisible(),!mobile,'Onjuiste netwerkweergave bij '+w);
+    const geometry=await atlas.locator('.ra-shell').evaluate(shell=>({scrollWidth:shell.scrollWidth,clientWidth:shell.clientWidth,scrollHeight:shell.scrollHeight,clientHeight:shell.clientHeight}));
+    assert(geometry.scrollWidth<=geometry.clientWidth+2,'Horizontale overloop in de atlas bij '+w+': '+JSON.stringify(geometry));
+    if(!mobile){
+      const chart=await atlas.locator('.ra-graph').boundingBox();
+      const frame=await atlas.locator('.ra-graph-wrap').boundingBox();
+      assert(chart&&frame&&chart.width>0&&chart.height>0,'Geen meetbaar netwerkdiagram');
+      assert(chart.y>=frame.y-2&&chart.y+chart.height<=frame.y+frame.height+2&&chart.x>=frame.x-2&&chart.x+chart.width<=frame.x+frame.width+2,'Netwerkdiagram valt buiten kader bij '+w+': '+JSON.stringify({chart,frame}));
+    }
+    const reachable=await atlas.locator('.ra-shell').evaluate(shell=>{
+      shell.scrollTop=shell.scrollHeight;
+      const last=shell.querySelector('.ra-link-row:last-child');
+      return {last:last.getBoundingClientRect().bottom,bottom:shell.getBoundingClientRect().bottom,scrollTop:shell.scrollTop};
+    });
+    assert(reachable.scrollTop>0&&reachable.last<=reachable.bottom+3,'Laatste verband niet bereikbaar bij '+w+': '+JSON.stringify(reachable));
+    await atlas.locator('.ra-shell').evaluate(shell=>{shell.scrollTop=0;});
+  };
+  await assertAtlasLayout(width);
+  if(width===1440){
+    for(const w of [1024,680,320]){
+      await page.setViewportSize({width:w,height:740});
+      await assertAtlasLayout(w);
+      await page.screenshot({path:'test-results/ict-scan-atlas-'+w+'.png'});
+    }
+    await page.setViewportSize({width,height:900});
   }
   await page.screenshot({path:'test-results/ict-scan-'+width+'-relatieatlas.png'});
-  const downloadPromise=page.waitForEvent('download');
-  await atlas.locator('button').filter({hasText:'CSV downloaden'}).click();
-  const csvDownload=await downloadPromise;
-  assert.equal(csvDownload.suggestedFilename(),'ict-scan-verbanden.csv','De atlasexport heeft geen herkenbare bestandsnaam');
+  const readAtlasCsv=async()=>{
+    const pending=page.waitForEvent('download');
+    await atlas.getByRole('button',{name:'CSV downloaden',exact:true}).click();
+    const download=await pending;
+    assert.equal(download.suggestedFilename(),'ict-scan-verbanden.csv','De atlasexport heeft geen herkenbare bestandsnaam');
+    const raw=readFileSync(await download.path(),'utf8');
+    assert(raw.startsWith('\ufeff'),'Excel-compatibele BOM ontbreekt');
+    // Quoted fields may contain delimiters, escaped quotes and line breaks.
+    const field=/"((?:[^"]|"")*)"(;|\r\n|$)/gy;
+    const records=[];let row=[];const body=raw.slice(1);
+    while(field.lastIndex<body.length){
+      const pos=field.lastIndex,match=field.exec(body);
+      assert(match&&field.lastIndex>pos,'Ongeldige CSV op teken '+pos);
+      row.push(match[1].replace(/""/g,'"'));
+      if(match[2]!==';'){records.push(row);row=[];}
+    }
+    assert.equal(row.length,0,'Onvolledige CSV-regel');
+    assert.deepEqual(records.shift(),['Van (ID)','Van (naam)','Van (onderdeel)','Naar (ID)','Naar (naam)','Naar (onderdeel)','Soort verband','Status','Bron','Toelichting']);
+    assert(records.every(r=>r.length===10&&r.slice(0,8).every(Boolean)),'CSV bevat onvolledige verbanden');
+    return records;
+  };
+  const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
+  const fixture=manifest.dataFiles.map(f=>JSON.parse(readFileSync('tools/ict-scan/bronnen/'+f.path,'utf8')));
+  const fixtureState=Object.fromEntries(Object.entries(inventory.STORES).map(([type,store])=>[store,fixture.flatMap(f=>f[type]||[])]));
+  const expectedIndex=inventory.build(fixtureState);
+  const safeValue=v=>/^[\s]*[=+\-@\t\r]/.test(v)?"'"+v:v;
+  const expectedRows=edges=>edges.map(e=>JSON.stringify([e.fromId,e.toId,e.status,safeValue(e.evidence||''),safeValue(e.note||'')])).sort();
+  const actualRows=rows=>rows.map(r=>JSON.stringify([r[0],r[3],r[7],r[8],r[9]])).sort();
+  const records=await readAtlasCsv();
+  assert.equal(records.length,273);
+  assert.deepEqual(actualRows(records),expectedRows(expectedIndex.edges),'CSV wijkt af van de volledige index');
+  assert.equal(records.filter(r=>r[7]==='Geregistreerd').length,236);
+  assert.equal(records.filter(r=>r[7]==='Vermoedelijk').length,37);
+  assert.equal(await atlas.locator('.ra-link-proof').count(),273);
+  const proof=atlas.locator('.ra-link-proof').first();
+  await proof.locator('summary').click();
+  assert(await proof.locator('p').nth(1).isVisible(),'Broninformatie niet zichtbaar');
+  assert.match(await proof.locator('p').nth(1).textContent(),/^Bron: .+/);
+  assert.match(await proof.locator('p').nth(2).textContent(),/^Status: (Geregistreerd|Vermoedelijk)$/);
+  await proof.locator('summary').click();
+  await atlas.locator('.ra-shell').evaluate(shell=>{shell.scrollTop=0;});
   await atlas.locator('select[aria-label="Filter status van het verband"]').selectOption('Vermoedelijk');
   assert.equal(await atlas.locator('.ra-link-row').count(),37,'Vermoedelijke verbanden onjuist geteld');
+  assert.deepEqual(actualRows(await readAtlasCsv()),expectedRows(expectedIndex.edges.filter(e=>e.status==='Vermoedelijk')),'Gefilterde CSV bevat verkeerde verbanden');
+  await atlas.locator('select[aria-label="Filter status van het verband"]').selectOption('Geregistreerd');
+  assert.equal(await atlas.locator('.ra-link-row').count(),236,'Geregistreerde verbanden onjuist geteld');
   await atlas.locator('button.ra-reset').click();
   await atlas.locator('select[aria-label="Filter onderdeel"]').selectOption('licenseReview');
   assert.equal(await atlas.locator('.ra-link-row').count(),26,'Licentierelaties ontbreken');
@@ -233,7 +311,12 @@ try {
   await atlas.locator('input.ra-search').fill('APP-034');
   assert(await atlas.locator('.ra-match-button').count()>0,'Zoeken in alle registraties werkt niet');
   await atlas.locator('.ra-match-button').first().click();
-  assert(await atlas.locator('.ra-link-row').count()>0,'Gerichte verbanden blijven niet zichtbaar');
+  const selectedEdges=expectedIndex.edges.filter(e=>(e.fromType==='apps'&&e.fromId==='APP-034')||(e.toType==='apps'&&e.toId==='APP-034'));
+  assert(selectedEdges.length>0,'Zoekfixture bevat geen verbanden');
+  assert.equal(await atlas.locator('.ra-link-row').count(),selectedEdges.length,'Gerichte verbanden niet volledig');
+  assert.match(await atlas.locator('.ra-detail').textContent(),/APP-034/);
+  assert.match(await atlas.locator('.ra-sources').textContent(),/Bronverwijzingen/);
+  console.log('Relatieatlas '+browserType.name()+' '+width+'px: 579 registraties, 273 verbanden (236 geregistreerd, 37 vermoedelijk), CSV-inhoud, bronstatus, filters, zoekfunctie en bereikbaarheid gecontroleerd');
   await atlas.locator('button.ra-close').click();
   await atlas.waitFor({state:'hidden'});
   assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false,'FG-modus moet standaard uit staan');
@@ -375,7 +458,7 @@ try {
     const menu=await page.locator('#railDrawer').boundingBox();
     assert(menu&&menu.x>=0&&menu.x+menu.width<=321,'Menu valt buiten 320px viewport: '+JSON.stringify(menu));
     await page.locator('[data-drawer-view="findings"]').click();
-    assert.equal(await page.locator('#sectionTitle').textContent(),'Wat moet nog worden gecontroleerd?');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Controles');
   }
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();

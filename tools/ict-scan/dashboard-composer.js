@@ -7,31 +7,31 @@
   const NS='http://www.w3.org/2000/svg';
   const KEY='emmaus-ict-dashboard-studio-v1';
   const DATA=[
-    {key:'apps',store:'apps',card:'apps',label:'Toepassingen',help:'Software en online diensten in het register.',unit:'basisregistraties',field:'area',fieldLabel:'Gebruiksgebied',fields:['owner','local','kind']},
+    {key:'apps',store:'apps',card:'apps',label:'Applicaties',help:'Geregistreerde applicaties en online diensten.',unit:'applicaties',field:'area',fieldLabel:'Gebruiksgebied',fields:['owner','local','kind']},
     {key:'ai',store:'ai',card:'ai',label:'AI-functies',help:'Beschreven functies, niet automatisch ingeschakeld.',unit:'beschreven functies',field:'domain',fieldLabel:'Domein',fields:['product','local','parentId'],role:'ai'},
-    {key:'connections',store:'connections',card:'connections',label:'Entra-registraties',help:'Toegang en mogelijke systeemkoppelingen.',unit:'Entra-registraties',field:'category',fieldLabel:'Categorie',fields:['matchedId','local','usageConfirmed']},
+    {key:'connections',store:'connections',card:'connections',label:'Koppelingen vanuit Entra',help:'Registraties in Microsoft Entra. Gebruik niet automatisch bevestigd.',unit:'koppelingen',field:'category',fieldLabel:'Categorie',fields:['matchedId','local','usageConfirmed']},
     {key:'devices',store:'devices',card:'devices',label:'Apparaatmetingen',help:'Beschikbare metingen, niet het aantal apparaten.',unit:'apparaatmetingen',field:'type',fieldLabel:'Meettype',fields:['measurementDate','quantity','limitation']},
     {key:'checks',store:'checks',card:'checks',label:'Controlepunten',help:'Vastgelegde vragen die nog moeten worden nagegaan.',unit:'controlepunten',field:'category',fieldLabel:'Categorie',fields:['status','evidence','action']},
-    {key:'candidates',store:'candidates',card:'additionalCandidates',label:'Mogelijke toepassingen',help:'Aanwijzingen voor software, nog niet bevestigd.',unit:'mogelijke toepassingen',field:'kind',fieldLabel:'Soort',fields:['status','confirmed','action']},
+    {key:'candidates',store:'candidates',card:'additionalCandidates',label:'Overige software',help:'Software buiten de applicatielijst. Gebruik nog controleren.',unit:'softwarevermeldingen',field:'kind',fieldLabel:'Soort',fields:['status','confirmed','action']},
     {key:'aiControls',store:'aiControls',card:'aiControls',label:'AI-beheer',help:'Beheerafspraken, inrichting en controleacties.',unit:'beheerpunten',field:'domain',fieldLabel:'Domein',fields:['local','execution','managementLocation'],role:'ai'},
-    {key:'dpia',store:'dpia',card:'dpia',label:'Privacybronnen',help:'Bronnen over DPIA en privacytoezicht.',unit:'brononderwerpen',field:'type',fieldLabel:'Soort bron',fields:['sourceDate','local','evidence'],role:'fg'}
+    {key:'dpia',store:'dpia',card:'dpia',label:'Privacyonderzoeken',help:'Broninformatie over privacyonderzoeken en gegevensbescherming.',unit:'brononderwerpen',field:'type',fieldLabel:'Soort bron',fields:['sourceDate','local','evidence'],role:'fg'}
   ];
   const PARTS=[
-    {id:'numbers',name:'Aantallen per register',eyebrow:'AANTALLEN',caption:'Tel de registraties in de gekozen gegevensgroepen.',span:12},
-    {id:'distribution',name:'Verdeling naar categorie',eyebrow:'VERDELING',caption:'Bekijk de verdeling en klik om te filteren.',span:6},
-    {id:'relations',name:'Vastgelegde systeemverbanden',eyebrow:'VERBANDEN',caption:'Bekijk beschreven relaties, geen bewezen live koppelingen.',span:8,needs:'apps'},
-    {id:'coverage',name:'Ingevulde gegevens',eyebrow:'INVULSTATUS',caption:'Zie welke velden wel en niet zijn ingevuld.',span:4},
-    {id:'matrix',name:'Gebruiksgebied en soort toepassing',eyebrow:'UITSPLITSING',caption:'Vergelijk gebruiksgebieden met soorten voorzieningen.',span:6,needs:'apps'},
-    {id:'records',name:'Gegevenskaarten openen',eyebrow:'REGISTRATIES',caption:'Klik op een registratie voor inhoud en bronnen.',span:6},
-    {id:'hardware',name:'Apparaatmetingen bekijken',eyebrow:'APPARATEN',caption:'Bekijk de gemeten waarden, datum en beperkingen.',span:5,needs:'devices'},
-    {id:'actions',name:'Controlepunten en opvolging',eyebrow:'CONTROLE',caption:'Bekijk geregistreerde vragen en vervolgstappen.',span:5,needsAny:['checks','candidates','aiControls']},
-    {id:'sources',name:'Ingelezen bronbestanden',eyebrow:'BRONNEN',caption:'Bekijk van welke bestanden de cijfers afkomstig zijn.',span:4}
+    {id:'numbers',name:'Aantallen per onderdeel',eyebrow:'AANTALLEN',caption:'Aantallen uit de gekozen gegevensgroepen.',span:12},
+    {id:'distribution',name:'Verdeling',eyebrow:'VERDELING',caption:'Kies een categorie om te filteren.',span:6},
+    {id:'relations',name:'Koppelingen tussen systemen',eyebrow:'KOPPELINGEN',caption:'Geregistreerde relaties. Actuele werking is niet altijd bevestigd.',span:8,needs:'apps'},
+    {id:'coverage',name:'Volledigheid gegevens',eyebrow:'GEGEVENS',caption:'Ingevulde en ontbrekende informatie.',span:4},
+    {id:'matrix',name:'Applicaties per gebruiksgebied',eyebrow:'VERDELING',caption:'Verdeling naar gebruiksgebied en type applicatie.',span:6,needs:'apps'},
+    {id:'records',name:'Applicaties en gegevens',eyebrow:'GEGEVENS',caption:'Open een kaart voor gegevens en bewerken.',span:6},
+    {id:'hardware',name:'Apparaatmetingen',eyebrow:'APPARATEN',caption:'Meetwaarden, datum en beperkingen.',span:5,needs:'devices'},
+    {id:'actions',name:'Controles en acties',eyebrow:'CONTROLES',caption:'Openstaande controles en vervolgacties.',span:5,needsAny:['checks','candidates','aiControls']},
+    {id:'sources',name:'Bronbestanden',eyebrow:'BRONNEN',caption:'Bestanden waarop dit overzicht is gebaseerd.',span:4}
   ];
   const PRESETS={
-    school:{data:['apps','ai','connections','devices'],parts:['numbers','distribution','relations','coverage','records'],primary:'apps',title:'Schoolbreed overzicht'},
-    ai:{data:['ai','apps','aiControls'],parts:['numbers','distribution','relations','coverage','records'],primary:'ai',title:'AI en toepassingen'},
-    technology:{data:['apps','connections','devices'],parts:['numbers','relations','matrix','hardware','records'],primary:'connections',title:'Technische inrichting'},
-    review:{data:['apps','checks','candidates'],parts:['numbers','coverage','actions','distribution','records'],primary:'checks',title:'Wat moet nog worden nagegaan?'}
+    school:{data:['apps','ai','connections','devices'],parts:['numbers','distribution','relations','coverage','records'],primary:'apps',title:'ICT-overzicht'},
+    ai:{data:['ai','apps','aiControls'],parts:['numbers','distribution','relations','coverage','records'],primary:'ai',title:'AI-overzicht'},
+    technology:{data:['apps','connections','devices'],parts:['numbers','relations','matrix','hardware','records'],primary:'connections',title:'Techniek en toegang'},
+    review:{data:['apps','checks','candidates'],parts:['numbers','coverage','actions','distribution','records'],primary:'checks',title:'Controles en acties'}
   };
   function defaultConfig(){const p=PRESETS.school;return {data:p.data.slice(),parts:p.parts.slice(),primary:p.primary,title:p.title,layout:'balanced',variant:0,focusApp:'APP-034',filter:null,visuals:{distribution:'lines',matrix:'matrix'}};}
   const config=defaultConfig();
@@ -240,9 +240,9 @@
     return [
       {label:'AI-functies',key:'ai',card:'ai',
         rows:window.EmmausRoles?.isEnabled('ai')===false?[]:ai,note:'Beschreven functies, niet automatisch lokaal ingeschakeld'},
-      {label:'Entra-matches',key:'connections',card:'connections',
+      {label:'Entra-koppelingen',key:'connections',card:'connections',
         rows:index.connected('apps',app.id,{type:'connections'}).map(link=>link.other),
-        note:'Mogelijke Entra-matches. Een registratie is geen actieve koppeling.'},
+        note:'Koppelingen vanuit Entra. Actueel gebruik nog niet altijd bevestigd.'},
       {label:'Onderdelen',key:'parts',card:'parts',
         rows:index.connected('apps',app.id,{type:'parts',relationType:'part_of'}).map(link=>link.other),
         note:'Onderdelen en modules uit de gezamenlijke index, niet automatisch ingeschakeld'},
@@ -365,7 +365,7 @@
       }
       list.append(body);
       const scroll=text('div',undefined,'ds-table-wrap');scroll.append(list);root.append(scroll);
-      root.append(text('p','Alle '+fmt(apps.length)+' basisregistraties. Selecteer een aantal om op het gebruiksgebied te filteren.','ds-note'));
+      root.append(text('p','Alle '+fmt(apps.length)+' applicaties. Selecteer een vak om op gebruiksgebied te filteren.','ds-note'));
       return;
     }
     const table=text('table',undefined,'ds-matrix');const thead=text('thead');const tr=text('tr');
@@ -385,7 +385,7 @@
     }
     const foot=text('tr');foot.append(text('th','Totaal'));for(const kind of kinds)foot.append(text('th',fmt(apps.filter(x=>category(x.kind)===kind).length)));foot.append(text('th',fmt(apps.length)));body.append(foot);
     table.append(body);const viewport=text('div',undefined,'ds-table-wrap');viewport.append(table);root.append(viewport);
-    root.append(text('p','De rij- en kolomsommen tellen elk op tot '+fmt(apps.length)+' basisregistraties.','ds-note'));
+    root.append(text('p','De totalen per rij en kolom tellen elk op tot '+fmt(apps.length)+' applicaties.','ds-note'));
   }
   function drawRecords(root){
     const d=activeSource();if(!d){root.append(text('p','Selecteer een register.','ds-component-hint'));return;}
@@ -409,12 +409,12 @@
     const strip=text('div',undefined,'ds-hardware-strip');
     for(const [value,cls] of [[yes,'true'],[no,'false'],[missing,'missing']]){const part=text('span');part.className='ds-hardware-'+cls;part.style.width=(value/n*100)+'%';strip.append(part);}
     root.append(strip);
-    const legend=text('div',undefined,'ds-hardware-legend');for(const [name,value,cls] of [['True',yes,'true'],['False',no,'false'],['Niet ingevuld',missing,'missing']]){const item=text('div',undefined,'ds-hardware-key');item.append(text('i',undefined,cls),text('span',name),text('strong',fmt(value)));legend.append(item);}root.append(legend);
+    const legend=text('div',undefined,'ds-hardware-legend');for(const [name,value,cls] of [['Voldoet (Entra)',yes,'true'],['Voldoet niet (Entra)',no,'false'],['Niet ingevuld',missing,'missing']]){const item=text('div',undefined,'ds-hardware-key');item.append(text('i',undefined,cls),text('span',name),text('strong',fmt(value)));legend.append(item);}root.append(legend);
     root.append(text('p','De compliancewaarden staan in de export. Dit is geen volledig apparaatbeheer- of veiligheidsbeeld.','ds-note'));
   }
   function drawActions(root){
     const d=availableData().find(x=>['checks','candidates','aiControls'].includes(x.key));
-    if(!d){root.append(text('p','Kies Controles, Kandidaten of AI-beheer om werkpunten te tonen.','ds-component-hint'));return;}
+    if(!d){root.append(text('p','Kies Controles, Overige software of AI-beheer om openstaande punten te zien.','ds-component-hint'));return;}
     const rows=filtered(d),slice=rows.slice(0,9);const list=text('div',undefined,'ds-actions');
     for(const r of slice){const b=button('','ds-action-row',()=>openCard(d,r));
       b.append(text('strong',r.name||r.id),text('span',clean(r.status)||clean(r.action)||clean(r.local)||'Status niet vastgesteld'));
@@ -540,8 +540,8 @@
     const link=document.createElement('a');link.href=url;link.download='Emmaus-dashboard-ontwerp.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),600);
     showMessage('Ontwerp gedownload. Er zijn geen leerling- of applicatiegegevens opgenomen.');
   }
-  viewNames.studio='Samenstellen';viewTitles.studio='Applicatielandschap';
-  sectionTexts.studio='Kies gegevens en grafieken. Het overzicht verandert meteen.';
+  viewNames.studio='Dashboard op maat';viewTitles.studio='Dashboard op maat';
+  sectionTexts.studio='Kies de gegevens en grafieken voor je eigen overzicht.';
   const originalSelectView=selectView;
   selectView=function(view){originalSelectView(view);if(view==='studio'&&state.ready)refresh();};
   const originalRenderAll=renderAll;
@@ -559,9 +559,9 @@
   const rbutton=$('dsToggleControls');rbutton?.addEventListener('click',()=>{
     const shell=$('viewStudio');shell.classList.toggle('ds-controls-open');rbutton.setAttribute('aria-expanded',String(shell.classList.contains('ds-controls-open')));
   });
-  // The composition surface is the first view. Legacy registers and reports
-  // remain accessible through the normal rail; they are not duplicated.
-  state.view='studio';selectView('studio');
+  // Start with the school overview. The dashboard composer remains available
+  // through the navigation for people who want to build their own view.
+  state.view='overview';selectView('overview');
   window.EmmausDashboardStudio=Object.freeze({
     config:()=>({data:config.data.slice(),parts:config.parts.slice(),layout:config.layout,primary:config.primary,visuals:{...config.visuals}}),
     build:refresh

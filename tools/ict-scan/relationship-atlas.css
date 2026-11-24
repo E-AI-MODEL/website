@@ -15,6 +15,7 @@
 }
 .relation-atlas-dialog::backdrop{background:rgba(22,37,60,.46);backdrop-filter:blur(3px)}
 .relation-atlas-dialog .ra-shell{height:100%;overflow:auto;padding:20px 25px 26px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px}
+.relation-atlas-dialog .ra-shell > *{flex-shrink:0;min-width:0}
 .relation-atlas-dialog .ra-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
 .relation-atlas-dialog .ra-overline{margin:0 0 6px;font-size:10px;font-weight:700;letter-spacing:.09em;color:#778dab}
 .relation-atlas-dialog .ra-heading h2{margin:0;font-size:25px;letter-spacing:-.035em;font-weight:745;line-height:1.2;color:#273b61}
@@ -48,8 +49,8 @@
 .relation-atlas-dialog .ra-graph-controls{margin-left:auto;display:flex;gap:3px;align-items:center}
 .relation-atlas-dialog .ra-zoom{padding:4px 8px;min-width:32px}
 .relation-atlas-dialog .ra-zoom-label{padding:4px 9px;min-width:49px}
-.relation-atlas-dialog .ra-graph-scroll{width:100%;height:auto;min-height:0;overflow:visible;background:radial-gradient(ellipse at center,#eef5fb 0%,#fff 70%)}
-.relation-atlas-dialog .ra-graph{display:block;width:100%;height:360px;min-width:620px}
+.relation-atlas-dialog .ra-graph-scroll{width:100%;height:auto;min-height:0;flex:0 0 auto;overflow:visible;background:radial-gradient(ellipse at center,#eef5fb 0%,#fff 70%)}
+.relation-atlas-dialog .ra-graph{display:block;width:100%;height:360px;min-width:0;max-width:100%}
 .relation-atlas-dialog .ra-line{fill:none;stroke:#b5c9dc;stroke-opacity:.64;stroke-linecap:round}
 .relation-atlas-dialog .ra-line.ra-probable{stroke-dasharray:5 6;stroke:#c0a17e}
 .relation-atlas-dialog .ra-type-group,.relation-atlas-dialog .ra-record-group{cursor:pointer}
@@ -109,7 +110,7 @@
   .relation-atlas-dialog .ra-header{flex-direction:column;gap:8px}
   .relation-atlas-dialog .ra-heading h2{font-size:21px}
   .relation-atlas-dialog .ra-head-actions{width:100%;justify-content:flex-end}
-  .relation-atlas-dialog .ra-toolbar{grid-template-columns:1fr 1fr}
+  .relation-atlas-dialog .ra-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}
   .relation-atlas-dialog .ra-search,.relation-atlas-dialog .ra-select{font-size:12px}
   .relation-atlas-dialog .ra-reset{grid-column:1/-1}
   .relation-atlas-dialog .ra-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -117,7 +118,7 @@
   .relation-atlas-dialog .ra-graph-scroll,.relation-atlas-dialog .ra-graph-controls{display:none}
   .relation-atlas-dialog .ra-mobile-graph{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px}
   .relation-atlas-dialog .ra-mobile-group:hover{background:#f1f7fb}
-  .relation-atlas-dialog .ra-link-list{grid-template-columns:1fr}
+  .relation-atlas-dialog .ra-link-list{grid-template-columns:minmax(0,1fr)}
 }
 @media(prefers-reduced-motion:reduce){
   .relation-atlas-dialog *{scroll-behavior:auto!important;transition:none!important}

@@ -40,7 +40,7 @@ class ICTScanTests(unittest.TestCase):
         self.assertNotIn("Kies. De rest volgt.", html)
         self.assertNotIn("Dunne lijnen, direct filteren", composer)
         self.assertNotIn("De weergave volgt vanzelf", composer)
-        for label in ("Dashboard instellen", "Welke gegevens?", "Hoe wil je ze bekijken?", "Bewaar in browser", "Download indeling"):
+        for label in ("Gegevens en grafieken", "Welke gegevens?", "Hoe wil je ze bekijken?", "Bewaar in browser", "Download indeling"):
             self.assertIn(label, html)
         self.assertEqual(html.count('class="rail-label"'), 11)
         self.assertIn("ds-option-description", composer)
