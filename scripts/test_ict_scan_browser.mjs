@@ -44,6 +44,7 @@ try {
  assert(ready,'De ICT-scan ontbreekt in de sitebuild');
  browser=await browserType.launch({headless:true});
  mkdirSync('test-results',{recursive:true});
+ const fixedScreenFailures=[];
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
   const errors=[],network=[],designWrites=[];
@@ -672,6 +673,7 @@ try {
   const assertFixedStarts=async viewport=>{
     await page.setViewportSize(viewport);
     for(const name of ['overview','apps','connections','devices','ai','privacy','findings','reports','sources']){
+      try{
       await navigate(name);
       await page.evaluate(n=>window.EmmausScenes.show(n,0,false),name);
       const id='view'+name[0].toUpperCase()+name.slice(1);
@@ -683,6 +685,7 @@ try {
         const blocks=[...panel.children].filter(el=>!el.hidden&&getComputedStyle(el).display!=='none').map(el=>{const b=el.getBoundingClientRect();return {name:el.id||el.className,bottom:b.bottom,top:b.top};});
         return {frame:frame.clientHeight,frameScroll:frame.scrollHeight,frameOverflow:getComputedStyle(frame).overflowY,panel:panel.clientHeight,panelScroll:panel.scrollHeight,top:r.top,bottom:r.bottom,frameBottom:f.bottom,blocks};
       },id);
+      await page.screenshot({path:'test-results/ict-scan-fixed-'+viewport.width+'-'+name+'.png',animations:'disabled'});
       assert(geometry.frame>70,'Geen bruikbare schermruimte bij '+name+' '+JSON.stringify(viewport));
       assert.equal(geometry.frameOverflow,'hidden','Startscherm scrolt als geheel: '+name);
       assert(geometry.panelScroll<=geometry.panel+3&&geometry.frameScroll<=geometry.frame+3,'Startscherm past niet: '+name+' '+JSON.stringify({viewport,geometry}));
@@ -701,11 +704,39 @@ try {
         }
       }
       if(name==='ai')assert.equal(await page.locator('#aiProgress .ai-group-toggle').count(),3);
-      if(viewport.width===1280||viewport.width===320)await page.screenshot({path:'test-results/ict-scan-fixed-'+viewport.width+'-'+name+'.png',animations:'disabled'});
+      const requiredRegions={apps:'#appsList',connections:'#connectionChart',devices:'#viewDevicesScene0>.two-col',ai:'#aiProgress>.ai-progress-grid',privacy:'#privacyDpia',findings:'#assuranceDetailArea',reports:'#reportPicker',sources:'#githubSyncDetailArea'};
+      if(requiredRegions[name]){
+        const region=page.locator(requiredRegions[name]);
+        if(await region.isVisible()){
+          const box=await region.boundingBox();
+          assert(box&&box.height>=44&&box.y+box.height<=geometry.bottom+3,'Onbruikbaar of afgesneden detailvlak: '+name+' '+JSON.stringify({viewport,box,geometry}));
+        }else assert(name==='apps'&&await page.locator('#candidatePanel').isVisible(),'Detailvlak ontbreekt: '+name);
+      }
+      if(name==='privacy'){
+        const list=page.locator('#privacyDpia');
+        const result=await list.evaluate(el=>{
+          const last=el.lastElementChild;el.scrollTop=el.scrollHeight;
+          const visible=!!last&&last.getBoundingClientRect().bottom<=el.getBoundingClientRect().bottom+4;
+          el.scrollTop=0;return {visible,count:el.children.length};
+        });
+        assert(result.visible&&result.count===10,'DPIA-lijst niet volledig bereikbaar: '+JSON.stringify(result));
+      }
+      if(name==='sources'){
+        for(const selector of ['#githubSyncStart','#sourcesImport']){
+          const button=page.locator(selector),box=await button.boundingBox();
+          assert(box&&box.height>=30&&box.y+box.height<=geometry.bottom+3,'Bronactie buiten scherm: '+selector);
+          await button.click({trial:true});
+        }
+      }
+      console.log('Vast scherm '+browserType.name()+' '+viewport.width+'x'+viewport.height+' '+name+' OK');
+      }catch(error){
+        const diagnostic=browserType.name()+' '+viewport.width+'x'+viewport.height+' '+name+': '+error.message;
+        fixedScreenFailures.push(diagnostic);console.error(diagnostic);
+      }
     }
     await navigate('studio');
     const studio=await page.locator('#viewStudio').boundingBox();
-    assert(studio&&studio.y+studio.height<=viewport.height+3,'Dashboardbouwer valt buiten beeld');
+    if(!studio||studio.y+studio.height>viewport.height+3)fixedScreenFailures.push(browserType.name()+' '+viewport.width+'x'+viewport.height+' Dashboardbouwer valt buiten beeld');
   };
   await assertFixedStarts(width===1440?{width:1280,height:720}:{width:320,height:740});
   await assertFixedStarts({width,height:900});
@@ -780,6 +811,7 @@ try {
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
  }
+ assert.deepEqual(fixedScreenFailures,[],'Afwijkingen vaste schermen:\n'+fixedScreenFailures.join('\n'));
  console.log('ICT-scan '+browserType.name()+': 69 toepassingen geladen, vaste schermen, menu, grafieken en desktop/mobiele sync gecontroleerd');
 }finally{
  await browser?.close();

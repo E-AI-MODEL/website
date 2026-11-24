@@ -11,7 +11,7 @@
     privacy:[['Privacyonderzoeken',3],['Wet- en regelgeving',1]],
     findings:[['Controle-uitkomsten',1],['Controles en acties',6]],
     reports:[['Rapport kiezen',2],['Rapport downloaden',2]],
-    sources:[['Bronbestanden ophalen',3],['Bestanden en wijzigingen',3],['Broninformatie',2]]
+    sources:[['Bronbestanden ophalen',2],['Bestanden en wijzigingen',3],['Broninformatie',3]]
   };
   const leading={apps:1};
   const scenes=new Map();
@@ -88,7 +88,7 @@
     ['#privacyDpia','DPIA-bronvermeldingen'],
     ['#assuranceDetailArea','Toelichting en vergelijking van controles'],
     ['#reportPicker','Rapportkeuze'],
-    ['#githubSyncOptions','Broninstellingen'],['#githubSyncSummary','Details synchronisatie']
+    ['#githubSyncDetailArea','Synchronisatiestatus en broninstellingen']
   ]){
     const el=document.querySelector(selector);if(!el)continue;
     el.classList.add('screen-scroll');

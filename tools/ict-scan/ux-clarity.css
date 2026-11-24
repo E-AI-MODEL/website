@@ -365,3 +365,114 @@ body>.rail-drawer .rail-drawer-view.active{background:#eaf1f8;border-color:#b9cc
  .workspace.monitor-layout #viewAi #aiProgress>.ai-progress-grid{grid-auto-rows:max-content}
 }
 }
+
+/* Compact opening panels on phones: preserve real content and controls, with
+   bounded scrolling for the record lists and source details. */
+@media screen{
+.workspace.monitor-layout #viewPrivacyScene0 .privacy-evidence-panel{
+ min-height:0;display:flex;flex-direction:column;overflow:hidden
+}
+.workspace.monitor-layout #viewPrivacyScene0 #privacyDpia{
+ flex:1 1 0;min-height:0;overflow:auto;scroll-padding:4px
+}
+.workspace.monitor-layout #viewPrivacyScene0 #privacyDpia .dpia-evidence{
+ flex:0 0 auto;min-width:0
+}
+.workspace.monitor-layout #viewSourcesScene0 #githubSyncPanel{
+ flex:1 1 0;min-height:0;overflow:hidden
+}
+.workspace.monitor-layout #viewSourcesScene0 #githubSyncPanel>*{flex:0 0 auto}
+.workspace.monitor-layout #viewSourcesScene0 #githubSyncDetailArea{
+ flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:7px;overflow-y:auto
+}
+.workspace.monitor-layout #viewSourcesScene0 #githubSyncDetailArea>*{
+ flex:0 0 auto;min-height:0;max-width:100%
+}
+.workspace.monitor-layout #viewSourcesScene0 #githubSyncDetailArea #githubSyncSummary:not([hidden]){
+ flex:0 0 auto
+}
+.workspace.monitor-layout #viewSourcesScene0>.two-col{
+ display:grid;grid-template-columns:minmax(0,1fr);gap:0;margin:0
+}
+.workspace.monitor-layout #viewSourcesScene0 .github-sync-options[open]{
+ flex:0 0 auto;overflow:visible
+}
+.workspace.monitor-layout #viewSourcesScene0 .github-sync-options{margin:0}
+.workspace.monitor-layout #viewSourcesScene0 .github-sync-status[data-mode]{
+ margin:0;padding:7px 9px
+}
+.workspace.monitor-layout #viewFindingsScene0 #assurancePanel{
+ overflow:hidden
+}
+.workspace.monitor-layout #viewFindingsScene0 #assurancePanel>*{flex:0 0 auto}
+.workspace.monitor-layout #viewFindingsScene0 #assurancePanel>#assuranceDetailArea{
+ flex:1 1 0;min-height:0;overflow:auto;scroll-padding:3px
+}
+@media(max-width:720px){
+ .workspace.monitor-layout #viewPrivacyScene0 .fg-role-boundary{padding:6px 9px;margin:0}
+ .workspace.monitor-layout #viewPrivacyScene0 .fg-role-boundary strong{font-size:11px}
+ .workspace.monitor-layout #viewPrivacyScene0 .fg-role-boundary p{margin:3px 0 0;font-size:10.5px;line-height:1.35}
+ .workspace.monitor-layout #viewPrivacyScene0 #privacySummary{gap:5px}
+ .workspace.monitor-layout #viewPrivacyScene0 .evidence-stat{
+   padding:5px 7px;gap:2px;min-height:0;border-radius:8px;box-shadow:none
+ }
+ .workspace.monitor-layout #viewPrivacyScene0 .evidence-stat small{font-size:10px;line-height:1.25}
+ .workspace.monitor-layout #viewPrivacyScene0 .evidence-stat strong{font-size:20px;line-height:1.1;letter-spacing:-.025em}
+ .workspace.monitor-layout #viewPrivacyScene0 .evidence-stat:nth-child(n+3) strong{
+   font-size:13px;line-height:1.25;letter-spacing:0;overflow-wrap:anywhere
+ }
+ .workspace.monitor-layout #viewPrivacyScene0 .evidence-stat span{font-size:10px;line-height:1.3}
+ .workspace.monitor-layout #viewPrivacyScene0 .privacy-evidence-panel{padding:8px 9px}
+ .workspace.monitor-layout #viewPrivacyScene0 .privacy-evidence-panel .panel-head{margin:0 0 5px;gap:5px}
+ .workspace.monitor-layout #viewPrivacyScene0 .privacy-evidence-panel .panel-kicker{display:none}
+ .workspace.monitor-layout #viewPrivacyScene0 .privacy-evidence-panel .panel-head h2{font-size:13px;line-height:1.3;margin:0}
+ .workspace.monitor-layout #viewPrivacyScene0 .privacy-evidence-panel .scope-label{font-size:9px}
+ .workspace.monitor-layout #viewPrivacyScene0 .privacy-evidence-panel .explain{font-size:10px;line-height:1.35;margin:0 0 7px}
+ .workspace.monitor-layout #viewFindingsScene0 #assurancePanel{gap:5px;padding:8px 10px}
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-header{
+   flex-direction:row;align-items:flex-start;gap:5px
+ }
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-header .panel-kicker{display:none}
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-header h2{font-size:13px;margin:0 0 3px}
+ .workspace.monitor-layout #viewFindingsScene0 #assuranceStamp{font-size:10px;line-height:1.3}
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-summary{font-size:10px;padding:4px 6px;gap:4px}
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-checks{
+   grid-template-columns:minmax(0,1fr);gap:3px;margin:1px 0
+ }
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-check{
+   min-height:29px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:6px;padding:4px 7px
+ }
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-check-title{min-width:0;font-size:10.5px;line-height:1.25}
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-check-status{flex:0 0 auto;white-space:nowrap;font-size:10px;line-height:1.2}
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin:2px 0}
+ .workspace.monitor-layout #viewFindingsScene0 .assurance-actions button{min-width:0;white-space:normal;font-size:10px;line-height:1.25;padding:5px 6px}
+ .workspace.monitor-layout #viewFindingsScene0 #assurancePanel>.panel-foot{font-size:10px;line-height:1.35;margin:0}
+ .workspace.monitor-layout #viewSourcesScene0 #githubSyncPanel{gap:5px;padding:9px 11px}
+ .workspace.monitor-layout #viewSourcesScene0 #githubSyncPanel .panel-head{gap:6px}
+ .workspace.monitor-layout #viewSourcesScene0 #githubSyncPanel .panel-head h2{font-size:13px;line-height:1.35;margin:0}
+ .workspace.monitor-layout #viewSourcesScene0 #githubSyncPanel .panel-kicker{display:none}
+ .workspace.monitor-layout #viewSourcesScene0 #githubSyncPanel .github-readonly{font-size:9px;padding:4px 6px;white-space:nowrap}
+ .workspace.monitor-layout #viewSourcesScene0 #githubSyncPanel .github-sync-intro{font-size:10px;line-height:1.4;margin:0}
+ .workspace.monitor-layout #viewSourcesScene0 #githubSyncStart{font-size:11px;padding:7px 10px;min-height:33px}
+ .workspace.monitor-layout #viewSourcesScene0 #dropzone{grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;padding:8px 10px}
+ .workspace.monitor-layout #viewSourcesScene0 #dropzone button{grid-column:2;grid-row:1/3;font-size:10px;max-width:120px;white-space:normal;text-align:center}
+ .workspace.monitor-layout #viewSourcesScene0 #dropzone small{grid-column:1/-1}
+ .workspace.monitor-layout #viewSourcesScene0 #dropzone h2{font-size:13px;line-height:1.3}
+ .workspace.monitor-layout #viewSourcesScene0 #dropzone p{font-size:10px;line-height:1.35}
+}
+/* On short phones use the breadcrumb as the orientation cue, not a repeated
+   eyebrow. The data status remains visible alongside the page title. */
+@media(max-width:720px) and (max-height:760px){
+ .workspace.monitor-layout .main-content>.page-head{
+   display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:5px 7px;margin-bottom:5px;padding-bottom:6px
+ }
+ .workspace.monitor-layout .main-content>.page-head #sectionEyebrow{display:none}
+ .workspace.monitor-layout .main-content>.page-head .evidence-path{font-size:10px;line-height:1.25;margin:0 0 4px}
+ .workspace.monitor-layout .main-content>.page-head h1{font-size:18px;line-height:1.15;margin:0;overflow-wrap:anywhere}
+ .workspace.monitor-layout .main-content>.page-head .head-status{
+   max-width:112px;min-width:0;white-space:normal;margin:0;padding:5px 7px;line-height:1.2;font-size:9px;gap:4px
+ }
+ .workspace.monitor-layout .scene-navigation{padding:3px;margin:2px 0 6px}
+ .workspace.monitor-layout .scene-tab{min-height:30px;padding:6px 10px}
+}
+}

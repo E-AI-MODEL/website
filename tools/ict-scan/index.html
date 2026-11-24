@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="./dashboard-composer.css?v=20261124view1">
 <link rel="stylesheet" href="./composer-resize.css?v=20261123a">
 <link rel="stylesheet" href="./relationship-orbit.css?v=20261121a">
-<link rel="stylesheet" href="./ux-clarity.css?v=20261124fixed3">
+<link rel="stylesheet" href="./ux-clarity.css?v=20261124fixed4">
 <script defer src="./assurance/profile.js?v=20261123h"></script>
 <script defer src="./organisation.js?v=20261121b" data-profile="./assurance/profiles/emmauscollege.json"></script>
 <script defer src="./assurance/source-register.js?v=20261121d"></script>
@@ -47,7 +47,7 @@
 <script defer src="./record-cards.js?v=20261124explorer3"></script>
 <script defer src="./record-github.js?v=20261124shared1"></script>
 <script defer src="./answer-engine.js?v=20261124ux4"></script>
-<script defer src="./scene-navigation.js?v=20261124fixed1"></script>
+<script defer src="./scene-navigation.js?v=20261124fixed4"></script>
 <script defer src="./evidence-experience.js?v=20261124fixed1"></script>
 <script defer src="./role-modes.js?v=20261124r1"></script>
 <script defer src="./dashboard-composer.js?v=20261124view2"></script>
@@ -234,11 +234,11 @@
   <article class="panel"><div class="panel-head"><div><p class="panel-kicker">BRON EN BEPERKING</p><h2>Onderliggende metingen</h2></div><button type="button" class="monitor-button subtle" data-open="sources">Bronnen bekijken</button></div><div id="deviceRecords" class="device-records"></div></article>
 </section>
       <section id="viewPrivacy" class="view" hidden>
-  <div class="fg-role-boundary"><strong>FG · privacy en DPIA</strong><p>Broninformatie ter ondersteuning van het onafhankelijke advies en toezicht van de FG. Geen DPIA, FG-oordeel of goedkeuring door deze inventarisatie. Het bevoegd gezag is verantwoordelijk voor uitvoering en besluiten.</p></div>
+  <div class="fg-role-boundary"><strong>FG · privacy en DPIA</strong><p>De FG adviseert en houdt onafhankelijk toezicht. Het bevoegd gezag beslist. Deze scan is geen lokale DPIA of goedkeuring.</p></div>
   <div class="privacy-summary" id="privacySummary"></div>
-  <article class="panel privacy-evidence-panel"><div class="panel-head"><div><p class="panel-kicker">EXTERNE BRON EN LOKALE STATUS</p><h2>DPIA-bronvermeldingen</h2></div><span class="scope-label">Per brononderwerp</span></div><p class="explain">We tonen wat in de aangeleverde bronnen staat. De FG adviseert en ziet onafhankelijk toe. Een extern rapport is geen beoordeling van de lokale inrichting.</p><div id="privacyDpia" class="record-notes"></div></article>
+  <article class="panel privacy-evidence-panel"><div class="panel-head"><div><p class="panel-kicker">EXTERNE BRON EN LOKALE STATUS</p><h2>DPIA-bronvermeldingen</h2></div><span class="scope-label">Per brononderwerp</span></div><p class="explain">Een externe bron is geen beoordeling van de lokale inrichting.</p><div id="privacyDpia" class="record-notes"></div></article>
   
-  <article class="panel"><div class="panel-head"><div><p class="panel-kicker">JURIDISCHE EN SECTORALE BRONNEN</p><h2>Wetgeving en privacy</h2></div></div><p class="explain">Een normverwijzing helpt om te toetsen, maar vormt op zichzelf geen bewijs dat een maatregel is uitgevoerd.</p><div id="privacyLegal" class="legal-list"></div><button type="button" class="monitor-button subtle" id="docOpenFromPrivacy">Wetsteksten en documenten lezen</button></article>
+  <article class="panel"><div class="panel-head"><div><p class="panel-kicker">JURIDISCHE EN SECTORALE BRONNEN</p><h2>Wetgeving en privacy</h2></div></div><p class="explain">De FG geeft onafhankelijk advies en houdt toezicht. Het bevoegd gezag is verantwoordelijk voor uitvoering en besluiten. Deze inventarisatie bevat broninformatie, geen uitgevoerde DPIA, FG-oordeel of goedkeuring. Een normverwijzing is geen bewijs dat een maatregel is uitgevoerd.</p><div id="privacyLegal" class="legal-list"></div><button type="button" class="monitor-button subtle" id="docOpenFromPrivacy">Wetsteksten en documenten lezen</button></article>
 </section>
       <section id="viewFindings" class="view" hidden><article class="panel assurance-panel" id="assurancePanel" aria-labelledby="assuranceTitle">
   <div class="assurance-header"><div><p class="panel-kicker">CONTROLES</p><h2 id="assuranceTitle">Gegevens en opvolging</h2><p id="assuranceStamp">Nog geen controle uitgevoerd.</p></div><span id="assuranceSummary" class="assurance-summary" data-status="not_run" role="status" aria-live="polite">Niet uitgevoerd</span></div>
@@ -268,11 +268,13 @@
         <article class="panel local-panel"><div><p class="panel-kicker">LOKAAL GEGEVENSBEHEER</p><h2>Deze inventaris bewaren</h2><p>Bewaar een lokale kopie voor als GitHub niet bereikbaar is. Bij het openen wordt altijd eerst de actuele bron gecontroleerd. Een lokale kopie krijgt nooit de status van een actuele GitHub-versie.</p></div><div class="local-actions"><button type="button" class="monitor-button subtle" id="saveLocal">Bewaar op dit apparaat</button><button type="button" class="monitor-button subtle" id="deleteLocal">Wis lokale gegevens</button></div><span class="save-status" id="saveStatus"></span><details class="local-legacy"><summary>Eerdere lokale kopie</summary><p>Bewaar een kopie uit de vorige versie als archiefbestand. Het bestand bevat de oorspronkelijke gegevens, zonder ze aan een organisatie toe te wijzen.</p><button type="button" class="monitor-button subtle" id="downloadLegacyLocal">Oude lokale kopie downloaden</button></details></article>
       </section>
       <section id="viewSources" class="view" hidden>
-        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">INFORMATIE</p><h2>Over deze inventarisatie</h2></div></div><p class="explain" id="inventoryInfo">Eerste inventarisatie gestart: 10 augustus 2026 · Samenstelling: Hans Visser.</p></article>
         <article class="panel github-sync-panel" id="githubSyncPanel">
           <div class="panel-head"><div><p class="panel-kicker">BRONNEN BEHEREN</p><h2>Nieuwste bronbestanden ophalen uit GitHub</h2></div><span class="github-readonly">Alleen lezen</span></div>
-          <p class="github-sync-intro">Haal de nieuwste bronbestanden op uit een GitHub-map. De scanner verwerkt ze hier in de browser; er worden geen schoolbestanden teruggestuurd.</p>
-          <details id="githubSyncOptions" class="github-sync-options"><summary>Broninstellingen</summary>          <div class="github-sync-grid">
+          <p class="github-sync-intro">Haal de nieuwste bronbestanden op. Verwerking gebeurt in deze browser; schoolbestanden worden niet teruggestuurd.</p>
+          <div class="github-sync-toolbar">
+            <div class="github-sync-actions"><button type="button" class="monitor-button primary" id="githubSyncStart">Vernieuwen vanuit GitHub</button><button type="button" class="monitor-button subtle" id="githubSyncCancel" hidden>Annuleren</button></div>
+          </div>
+          <div id="githubSyncDetailArea">          <details id="githubSyncOptions" class="github-sync-options"><summary>Broninstellingen</summary>          <div class="github-sync-grid">
             <label>Repository <input id="githubRepo" type="text" value="E-AI-MODEL/website" spellcheck="false" autocomplete="off" placeholder="E-AI-MODEL/website"></label>
             <label>Map met bronbestanden <input id="githubFolder" type="text" value="tools/ict-scan/bronnen" spellcheck="false" autocomplete="off" placeholder="tools/ict-scan/bronnen"></label>
             <label>Branch of tag <input id="githubRef" type="text" value="main" spellcheck="false" autocomplete="off"></label>
@@ -282,11 +284,9 @@
             <label class="github-sync-replace"><input id="githubReplace" type="checkbox" checked> Andere bron: huidige gegevens vervangen na geslaagde download (schoolbron wordt altijd volledig vervangen)</label>
           </div>
           <p class="github-sync-note">Een privé-repository vraagt een GitHub-token met uitsluitend leesrechten voor bestanden. De token wordt niet opgeslagen of geëxporteerd. De standaardmap tools/ict-scan/bronnen moet bestaan en bronbestanden bevatten.</p></details>
-          <div class="github-sync-toolbar">
-            <div class="github-sync-actions"><button type="button" class="monitor-button primary" id="githubSyncStart">Vernieuwen vanuit GitHub</button><button type="button" class="monitor-button subtle" id="githubSyncCancel" hidden>Annuleren</button></div>
-          </div>
           <div id="githubSyncStatus" class="github-sync-status" role="status" aria-live="polite">Bij iedere opening wordt de actuele GitHub-versie gecontroleerd. Voor een privérepository is een leestoken nodig.</div>
           <div id="githubSyncSummary" class="github-sync-summary" hidden></div>
+          </div>
 
         </article>
         <div class="two-col gap-lg"><article class="panel upload-panel" id="dropzone"><div class="upload-mark">&#8682;</div><h2>Bestanden toevoegen</h2><p>Sleep bestanden hierheen of selecteer ze. De gegevens worden uitsluitend in deze browser verwerkt.</p><button class="button primary" id="sourcesImport">Bestanden selecteren</button><small>Excel, CSV, JSON, DOCX en PDF. Handmatige import maakt een lokale, niet-gecontroleerde gegevensstand. GitHub blijft de officiële bron.</small></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">RAPPORTAGE</p><h2>Exporteer het overzicht</h2></div></div><div class="export-actions"><button id="exportExcel" class="export-option"><span class="export-icon green">X</span><span><strong>Excel</strong><small>Vier leesbare bladen: schoolbreed, AI in de klas, AI in de school en controles</small></span><span>&#8594;</span></button><button id="exportPdf" class="export-option"><span class="export-icon dark">P</span><span><strong>PDF</strong><small>Leesbaar overzicht via Afdrukken / Bewaar als PDF</small></span><span>&#8594;</span></button><button id="exportJson" class="export-option"><span class="export-icon blue">J</span><span><strong>JSON</strong><small>Gecontroleerde data voor een volgende sessie</small></span><span>&#8594;</span></button></div><p class="panel-foot">Bedragen, boekingsnummers en persoonlijke accountgegevens zijn uitgesloten van de exports.</p></article></div>
@@ -295,6 +295,7 @@
         <details class="panel license-panel" id="licensePanel"><summary><strong>Licentiecontrole 2026</strong><small><span id="licenseTotal">0</span> registraties, actuele contractstatus apart controleren</small></summary><div class="candidate-content"><div class="list-tools"><input type="search" id="licenseSearch" aria-label="Zoek licentiecontrole" placeholder="Zoek in licentieregistraties"></div><div class="item-list" id="licenseList"></div>
           <h3 class="section-mini-title">Softwarecontroles uit het werkregister (<span id="softwareReviewTotal">0</span>)</h3>
           <div class="list-tools"><input type="search" id="softwareReviewSearch" placeholder="Zoek softwarecontrole" aria-label="Zoek softwarecontroles"></div><div id="softwareReviewList" class="item-list"></div></div></details>
+        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">INFORMATIE</p><h2>Over deze inventarisatie</h2></div></div><p class="explain" id="inventoryInfo">Eerste inventarisatie gestart: 10 augustus 2026 · Samenstelling: Hans Visser.</p></article>
         <article class="panel"><div class="panel-head"><div><p class="panel-kicker">BELEID EN PROCEDURES</p><h2>Aangetroffen documenten</h2></div></div><div id="policyDocs" class="source-list"></div></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">TOETSINGSKADERS</p><h2>Privacy en AI</h2></div></div><p class="explain">Deze bronnen helpen bij de beoordeling. De aanwezigheid van een document is geen bewijs dat de school aan alle vereisten voldoet. Wetgeving en rapportversies moeten bij een besluit opnieuw worden gecontroleerd.</p><div id="legalList" class="legal-list"></div></article><article class="panel doc-library-panel" aria-labelledby="docLibraryTitle">
   <div class="panel-head"><div><p class="panel-kicker">BRONDOCUMENTEN · WETTEN · NORMEN</p><h2 id="docLibraryTitle">Documentbibliotheek</h2></div><button type="button" id="docLibraryOpen" class="monitor-button subtle">Documenten lezen</button></div>
   <p class="explain">Volledige Nederlandstalige wetsteksten staan als gecontroleerde momentopname in de repository. Kennisnet-voorbeelden blijven bij Kennisnet; een eigen exemplaar kun je uitsluitend in deze browser lezen. Een verwijzing bewijst geen naleving of vaststelling.</p>
