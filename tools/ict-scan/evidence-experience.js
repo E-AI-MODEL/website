@@ -182,12 +182,7 @@
   }
   const earlierOverview=renderOverview;
   function renderOverviewMetrics(){
-    const apps=items(state.apps),filtered=apps.filter(a=>
-      (!state.overviewArea||String(a.area||'').trim()===state.overviewArea)&&
-      (!state.overviewKind||String(a.kind||'').trim()===state.overviewKind));
-    const ids=new Set(filtered.map(a=>a.id));
-    const narrowed=filtered.length!==apps.length;
-    const aiCount=narrowed?items(state.ai).filter(a=>ids.has(a.parentId)).length:state.ai.size;
+    const apps=items(state.apps),filtered=apps,narrowed=false,aiCount=state.ai.size;
     const d=deviceData(),totals=[
       ['Applicaties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
       ['AI-functies',aiCount,narrowed?'Gekoppeld aan de selectie; '+state.ai.size+' totaal':'Beschreven functies, niet automatisch ingeschakeld','ai'],

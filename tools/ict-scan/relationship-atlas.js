@@ -259,9 +259,9 @@
     const pairs=edges.map(e=>({a:lookup.get(key(e.fromType,e.fromId)),b:lookup.get(key(e.toType,e.toId)),edge:e})).filter(e=>e.a!==undefined&&e.b!==undefined);
     if(!shown.length){svg.append(svgText(500,270,'Geen verbanden in deze selectie','ra-empty-text'));graphNote.textContent='Wis de filters om het netwerk te bekijken.';return;}
     const types=[...new Set(shown.map(n=>n.type))].sort();
-    const colors=new Map(types.map((t,i)=>[t,palette[i%palette.length]]));
+    const colors=new Map(types.map(t=>[t,palette[Math.max(0,Object.keys(TYPE_NAMES).indexOf(t))%palette.length]]));
     for(const type of types){const swatch=el('i','ra-legend-dot');swatch.style.background=colors.get(type);const item=el('span','ra-legend-item');item.append(swatch,el('span','',label(type)));legend.append(item);}
-    legend.append(el('span','ra-legend-item','··· Vermoedelijk verband'));
+    legend.append(el('span','ra-legend-item','Gestippeld: vermoedelijk · Doorgetrokken: geregistreerd/bevestigd · Dun grijs: historisch'));
     // Compact initial spiral; a bounded force relaxation makes shared endpoints
     // cluster without inventing any links. Deterministic, no external library.
     const n=shown.length,scale=Math.min(1,Math.sqrt(n/150));
@@ -277,7 +277,7 @@
       for(const p of shown){p.x=Math.max(28,Math.min(972,p.x+Math.max(-12,Math.min(12,p.dx))*cooling));p.y=Math.max(28,Math.min(572,p.y+Math.max(-12,Math.min(12,p.dy))*cooling));}
     }
     const layer=svgNode('g',{class:'ra-network-edges'});
-    for(const {a,b,edge} of pairs){const p=shown[a],q=shown[b];const line=svgNode('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,class:'ra-network-edge'+(edge.status==='Vermoedelijk'?' ra-probable':''),'data-status':edge.status});line.append(svgNode('title',{},edgeName(edge)+' · '+relationName(edge.relationType)+' · '+edge.status));layer.append(line);}
+    for(const {a,b,edge} of pairs){const p=shown[a],q=shown[b];const line=svgNode('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,class:'ra-network-edge'+(edge.status==='Vermoedelijk'?' ra-probable':edge.status==='Historisch'?' ra-historic':edge.status==='Bevestigd'?' ra-confirmed':''),'data-status':edge.status});line.append(svgNode('title',{},edgeName(edge)+' · '+relationName(edge.relationType)+' · '+edge.status));layer.append(line);}
     svg.append(layer);
     for(const [i,p] of shown.entries()){
       const group=svgNode('g',{class:'ra-network-node','data-record-id':p.id,'data-record-type':p.type,'aria-label':fullName(p.type,p.id)+', '+label(p.type)+', '+p.degree+' verbanden'});

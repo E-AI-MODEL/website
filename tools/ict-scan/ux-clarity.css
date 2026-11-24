@@ -168,6 +168,11 @@ body>.rail-drawer .rail-drawer-view.active{background:#eaf1f8;border-color:#b9cc
 .workspace.monitor-layout #viewStudio .ds-component{border:1px solid #dce5ed;border-radius:10px;background:#fff;padding:12px}
 .workspace.monitor-layout .overview-quick-action.overview-edit-action{border-style:dashed;color:#5a6170}
 .workspace.monitor-layout .overview-quick-action.overview-layout-action{background:#eef4fa;border-color:#b8cce0}
-.workspace.monitor-layout #viewOverviewScene0 .dashboard-tools{display:none}
 .workspace.monitor-layout #viewOverviewScene0 .inventory-population{font-size:11px;color:#697b92}
 @media(max-width:610px){.workspace.monitor-layout #viewStudio .ds-mobile-compose{font-size:11px;padding:7px 8px}.workspace.monitor-layout #viewStudio .ds-component{padding:9px}}
+
+.workspace.monitor-layout #viewStudio .ds-coverage-settings{margin:6px 0 12px;border:1px solid #d6e0ea;border-radius:7px;padding:7px 9px;background:#f8fafc}
+.workspace.monitor-layout #viewStudio .ds-coverage-settings summary{font-size:12px;font-weight:650;cursor:pointer;color:#29466a}
+.workspace.monitor-layout #viewStudio .ds-coverage-options{display:grid;gap:5px;margin:8px 0}
+.workspace.monitor-layout #viewStudio .ds-coverage-option{display:flex;align-items:center;gap:7px;font-size:12px;color:#354d70;cursor:pointer}
+.workspace.monitor-layout #viewStudio .ds-coverage-option input{width:15px;height:15px;flex:none}

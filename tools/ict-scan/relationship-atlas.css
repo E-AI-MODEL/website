@@ -135,3 +135,5 @@
 .relation-atlas-dialog .ra-network-node:focus-visible circle,.relation-atlas-dialog .ra-network-node:hover circle{stroke:#223e62;stroke-width:2.8}
 .relation-atlas-dialog .ra-network-label{font-size:10px;font-weight:600;fill:#324f70;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;pointer-events:none}
 @media(min-width:651px){.relation-atlas-dialog:has(.ra-network-node) .ra-graph{height:480px;background:#fff}}
+
+.relation-atlas-dialog .ra-network-edge.ra-historic{stroke:#9ca3af;opacity:.42;stroke-width:.75}.relation-atlas-dialog .ra-network-edge.ra-confirmed{stroke:#417f76;opacity:.9;stroke-width:1.5}

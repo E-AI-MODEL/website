@@ -226,17 +226,43 @@
     action:'Actie',confirmed:'Bevestigd',execution:'Uitvoering',
     managementLocation:'Beheeromgeving',sourceDate:'Datum bron',parent:'Bovenliggende toepassing',accessStatus:'Status van toegang',license2026:'Licentie 2026',localAI:'AI-instelling op school',involvedRoles:'Betrokken functies',known:'Wat bekend is',answer:'Antwoord',reviewedAt:'Beoordelingsdatum',version:'Bronversie',rightsStatus:'Gebruiksrecht'
   });
+  const visibleCoverage=new Map();
   function drawCoverage(root){
-    const d=activeSource();if(!d){root.append(text('p','Kies een bron voor deze meting.','ds-component-hint'));return;}
-    const rows=filtered(d);root.append(text('p','Ingevulde velden bij '+d.label+'. Dit is geen inhoudelijke goedkeuring.','ds-component-hint'));
+    const d=activeSource();if(!d){root.append(text('p','Kies een gegevensgroep om te zien welke gegevens bekend zijn.','ds-component-hint'));return;}
+    const rows=filtered(d);
+    const top=text('div',undefined,'ds-coverage-tools');
+    top.append(text('p','Per veld: hoeveel registraties hebben een bekende waarde?','ds-component-hint'));
+    const settings=text('details',undefined,'ds-coverage-settings');
+    settings.append(text('summary','Velden aanpassen'));
+    const selected=visibleCoverage.get(d.key)||new Set(d.fields);
+    const choices=text('div',undefined,'ds-coverage-options');
     for(const field of d.fields){
-      const value=rows.filter(r=>known(r[field])).length,total=rows.length;
-      const line=text('div',undefined,'ds-coverage-row');
-      const head=text('div',undefined,'ds-coverage-head');head.append(text('span',COVERAGE_LABELS[field]||field.replace(/([A-Z])/g,' $1')),text('strong',fmt(value)+' / '+fmt(total)));
-      const meter=text('div',undefined,'ds-coverage-meter');const fill=text('span');fill.style.width=(total?100*value/total:0).toFixed(2)+'%';meter.append(fill);
-      line.append(head,meter);root.append(line);
+      const label=text('label',undefined,'ds-coverage-option'),checkbox=text('input');
+      checkbox.type='checkbox';checkbox.checked=selected.has(field);
+      const name=COVERAGE_LABELS[field]||field;
+      label.append(checkbox,text('span',name));
+      checkbox.addEventListener('change',()=>{
+        if(checkbox.checked)selected.add(field);else selected.delete(field);
+        visibleCoverage.set(d.key,selected);drawRows();
+      });
+      choices.append(label);
     }
-    root.append(text('small','Peilmoment uit de ingelezen bron. Een lege waarde is niet automatisch een tekortkoming.','ds-note'));
+    settings.append(choices,text('small','Deze keuze geldt voor de huidige sessie; de brongegevens en het gedeelde ontwerp blijven ongewijzigd.','ds-note'));
+    top.append(settings);root.append(top);
+    const meters=text('div');root.append(meters);
+    function drawRows(){
+      meters.replaceChildren();
+      for(const field of d.fields.filter(f=>selected.has(f))){
+        const value=rows.filter(r=>known(r[field])).length,total=rows.length;
+        const line=text('div',undefined,'ds-coverage-row');
+        const head=text('div',undefined,'ds-coverage-head');head.append(text('span',COVERAGE_LABELS[field]||field),text('strong',fmt(value)+' / '+fmt(total)));
+        const meter=text('div',undefined,'ds-coverage-meter');const fill=text('span');fill.style.width=(total?100*value/total:0).toFixed(2)+'%';meter.append(fill);
+        line.append(head,meter);meters.append(line);
+      }
+      if(!selected.size)meters.append(text('p','Geen velden geselecteerd. Open Velden aanpassen om velden te tonen.','ds-note'));
+    }
+    drawRows();
+    root.append(text('small','Een bekende waarde is geen bewijs dat de inhoud klopt of is goedgekeurd.','ds-note'));
   }
   function relationSets(app,index){
     const ai=index.connected('apps',app.id,{type:'ai'}).map(link=>link.other);

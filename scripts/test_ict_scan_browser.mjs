@@ -240,6 +240,14 @@ try {
   if(width<700)await assertNoComponentOverlap('start');
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/69/);
   assert.match(await page.locator('#dsCanvas .ds-numbers').textContent(),/93/);
+  const coverage=page.locator('#dsCanvas .ds-coverage');
+  await coverage.locator('.ds-coverage-settings summary').click();
+  const fields=coverage.locator('.ds-coverage-option input');
+  const originalFields=await coverage.locator('.ds-coverage-row').count();
+  await fields.first().uncheck();
+  assert.equal(await coverage.locator('.ds-coverage-row').count(),originalFields-1);
+  await fields.first().check();
+  await coverage.locator('.ds-coverage-settings summary').click();
   await page.waitForFunction(()=>{
     const view=document.getElementById('viewStudio'),parts=[...document.querySelectorAll('#dsCanvas .ds-component')];
     return view&&!view.hidden&&Number(getComputedStyle(view).opacity)>.98
@@ -569,6 +577,7 @@ try {
   // The shared design is the same native layout schema, not a second data source.
   if(width>=700){
     await navigate('studio');
+    await page.locator('#dsToggleControls').click();
     await page.locator('[data-ds-preset="school"]').click();
     const sourceBefore=await page.evaluate(()=>JSON.stringify([...state.apps.values()]));
     await page.locator('#dsSharedLoad').click();
@@ -592,6 +601,7 @@ try {
     await page.locator('#dsSharedClose').click();
     assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
     await page.locator('#dsLayout').selectOption('balanced');
+    await page.locator('#dsCloseControls').click();
   }
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
