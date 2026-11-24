@@ -532,8 +532,8 @@
     const link=document.createElement('a');link.href=url;link.download='Emmaus-dashboard-ontwerp.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),600);
     showMessage('Ontwerp gedownload. Er zijn geen leerling- of applicatiegegevens opgenomen.');
   }
-  viewNames.studio='Samenstellen';viewTitles.studio='Applicatielandschap';
-  sectionTexts.studio='Kies gegevens en grafieken. Het overzicht verandert meteen.';
+  viewNames.studio='Dashboard op maat';viewTitles.studio='Dashboard op maat';
+  sectionTexts.studio='Kies de gegevens en grafieken voor je eigen overzicht.';
   const originalSelectView=selectView;
   selectView=function(view){originalSelectView(view);if(view==='studio'&&state.ready)refresh();};
   const originalRenderAll=renderAll;
