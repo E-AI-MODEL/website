@@ -1,5 +1,6 @@
 """Static publication safety checks for the standalone LLM Observatory."""
 from pathlib import Path
+import json
 import re
 import subprocess
 import unittest
@@ -93,33 +94,86 @@ class LlmObservatorySourceTests(unittest.TestCase):
                        'id="guideNext"', 'id="guidePrev"',
                        'function setupGuide()', 'function guideSetVisible(open)',
                        'function guideTokenChips(parent,contextMode)',
-                       'function guideBarData()', 'function guideDrawBars()',
-                       'function guideRender()', 'setupGuide();loadRealTokenizer();'):
+                       'function guideDrawEmbedding()', 'function guideDrawOrder()',
+                       'function guideDrawAttention()', 'function guideDrawExperts()',
+                       'function guideDrawLayers()', 'function guideDrawBars()',
+                       'function guideDrawAnswer()', 'function guideRender()',
+                       'setupGuide();loadRealTokenizer();'):
             self.assertIn(marker, html)
-        self.assertIn("Dit zijn voorbeeldkansen. Er is niets berekend voor jouw vraag.", html)
-        self.assertIn("Zonder de echte tokenizer zie je een woordvoorbeeld", html)
-        self.assertIn("zonder iets te versturen.", html)
+        self.assertIn("const GUIDE_LABELS=['Jouw vraag','Echte tokens','Getallen','Volgorde'", html)
+        self.assertIn("STAP 1 VAN 9", html)
+        self.assertIn("llm-learning-math.js", html)
+        self.assertIn("guideMath().miniTrace", html)
+        self.assertIn("Deze vier waarden zijn lokaal berekend", html)
+        self.assertIn("geen metingen uit een draaiend model", html)
         self.assertIn("function drawExpertsGrid()", html)
         self.assertIn("function renderInspector()", html)
 
     def test_explanations_start_with_a_clear_action(self):
         html = self.html
         for passage in (
-            "Elke laag verwerkt de tekst verder.",
-            "Een expert is een klein rekennetwerk, geen persoon.",
-            "AI verdeelt tekst in kleine stukjes: tokens.",
-            "De kleuren tonen de volgorde.",
-            "Elke balk is een mogelijk volgend stukje tekst.",
-            "Een taalmodel maakt een antwoord niet in één keer",
-            "Deze route is een voorbeeld, geen live meting.",
-            "Dit zijn verzonnen rekenvoorbeelden.",
+            "Je zin valt uiteen",
+            "Een tokennummer wordt een rij getallen",
+            "De volgorde maakt verschil",
+            "Welke eerdere tekst telt mee?",
+            "Vier rekennetwerken doen mee",
+            "De getallen veranderen per laag",
+            "Welk stukje komt hierna?",
+            "Een antwoord groeit token voor token",
+            "De kansberekening is echt, maar de scores en woorden zijn voorbeelden.",
+            "De technische weergave toont welke tekst bereikbaar is, niet hoeveel gewicht die krijgt.",
+            "vooraf geschreven",
         ):
             self.assertIn(passage, html)
+
+    def test_automatic_story_and_interactive_guide_share_steps(self):
+        html = self.html
+        self.assertIn("const STORY_PHASES=GUIDE_STEPS.map", html)
+        self.assertNotIn("const STORY_PHASES=[", html)
+        self.assertIn("storyExampleTrace()", html)
+        self.assertIn("guideMath().softmax([2.45,1.50,.82,.24],state.temp)", html)
+        self.assertIn("storyTokenRow($('vTokens'),state.promptWords,10)", html)
+        self.assertIn("guideStep=storyState.phase", html)
+        self.assertIn("guideOpenTechnical(true)", html)
+        self.assertIn("const GUIDE_TECH_MODES=[0,1,1,1,3,2,0,5,5]", html)
+        self.assertIn("function guideOpenTechnical(finish=false)", html)
+        self.assertIn("repeat(9,minmax(0,1fr))", html)
+        self.assertIn("VOORAF GESCHREVEN ANTWOORD", html)
+
+    def test_real_training_trace_is_genuine_and_separate_from_gpt_oss(self):
+        trace_path = ROOT / "assets" / "llm-real-trace.json"
+        self.assertTrue(trace_path.is_file(), "De vooraf opgenomen echte meting ontbreekt")
+        self.assertLess(trace_path.stat().st_size, 50_000,
+                        "De echte meting moet zonder grote download op mobiel beschikbaar blijven")
+        data = json.loads(trace_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["kind"], "recorded_model_execution")
+        self.assertEqual(data["model"]["id"], "EphAsad/IllaryiaStories-1M")
+        self.assertEqual(data["model"]["experts"], 0)
+        self.assertEqual(data["model"]["tokenizer"],
+                         "model-specific GPT-Neo/GPT-2 tokenizer, not o200k_harmony")
+        self.assertEqual(data["prompt"], "Once upon a time,")
+        self.assertEqual(len(data["steps"]), 4)
+        self.assertIn('llm-real-trace-viewer.js', self.html)
+        self.assertIn('function guideAddRealTrace(host)', self.html)
+        self.assertIn('guideAddRealTrace(interactive)', self.html)
+        viewer = (ROOT / "assets" / "llm-real-trace-viewer.js").read_text(encoding="utf-8")
+        self.assertIn("/assets/llm-real-trace.json", viewer)
+        self.assertIn("niet jouw vraag", viewer)
+        self.assertIn("head 1 in de eerste laag is dus niet dezelfde head", viewer)
+
+    def test_local_math_module_is_present(self):
+        math = ROOT / "assets" / "llm-learning-math.js"
+        self.assertTrue(math.is_file(), "De echte lokale berekeningen ontbreken")
+        content = math.read_text(encoding="utf-8")
+        for fn in ("function softmax(", "function attention(", "function routeExperts(",
+                   "function miniTrace(", "function tokenVector("):
+            self.assertIn(fn, content)
+        self.assertIn("Geen activaties uit gpt-oss", content)
 
     def test_visual_first_story_and_mobile_panels(self):
         html = self.html
         self.assertIn('id="aiGuide" class="ai-guide" hidden', html)
-        self.assertIn("guideNode('button','Zelf proberen'", html)
+        self.assertIn("guideNode('button','Stap voor stap'", html)
         self.assertIn("function visualSetScene(id)", html)
         self.assertIn("v-flow-svg", html)
         self.assertIn("v-score-list", html)
@@ -168,7 +222,7 @@ class LlmObservatorySourceTests(unittest.TestCase):
         self.assertTrue(published.is_file(), "Gepubliceerde LLM-pagina ontbreekt")
         self.assertEqual(SOURCE.read_bytes(), published.read_bytes(),
                          "Publicatie mag de zelfstandige HTML niet wijzigen")
-        for rel in ("tools/index.html", "nl/tools/index.html"):
+        for rel in ("nl/tools/index.html", "en/tools/index.html"):
             with self.subTest(page=rel):
                 page = ROOT / "site-build" / rel
                 self.assertTrue(page.is_file())

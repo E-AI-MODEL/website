@@ -1,15 +1,5 @@
 name: Publish Zhang Review
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-zhang-review-rapid.yml'
-      - 'nl/onderzoek/zhang-genai-taal/**'
-      - 'en/research/zhang-genai-language/**'
-      - 'assets/research/zhang-genai-l2-review-nl-2026.pdf'
-      - 'assets/research/zhang-genai-l2-review-en-2026.pdf'
-      - 'scripts/rebuild_zhang_review.py'
-      - 'scripts/rebuild_zhang_review_en.py'
   workflow_dispatch:
 permissions:
   contents: write

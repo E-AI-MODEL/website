@@ -36,7 +36,9 @@ for (const path of paths) {
     }) &&
     /<link\b[^>]*\bhreflang="nl"/i.test(html) &&
     /<link\b[^>]*\bhreflang="en"/i.test(html);
-  if (!hasNavLanguage && !hasDictionaryLanguage) fail('missing NL/EN selector');
+  // De Rotterdamse regiopagina heeft nog geen EN-tegenhanger. Geen valse taalwissel tonen.
+  const isDutchRegion = path === 'nl/onderwijsregio-proef/index.html';
+  if (!hasNavLanguage && !hasDictionaryLanguage && !isDutchRegion) fail('missing NL/EN selector');
   if ((html.match(/<h1\b/gi) || []).length !== 1) fail('expected exactly one H1');
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(x => x[1]);
   for (const id of new Set(ids.filter((x, i) => ids.indexOf(x) !== i))) fail('duplicate id: ' + id);

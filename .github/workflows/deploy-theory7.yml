@@ -3,6 +3,12 @@ name: Deploy to Theory7
 on:
   push:
     branches: [main]
+    # TOPO publishes through deploy-topo-theory7.yml, not the site-wide pipeline.
+    paths-ignore:
+      - 'topo/**'
+      - '.github/workflows/deploy-topo-theory7.yml'
+      - '.github/workflows/topo-mobile-verify.yml'
+      - 'scripts/test_topo_mobile.mjs'
   workflow_dispatch:
 
 permissions:
@@ -13,7 +19,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  release-check:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    uses: ./.github/workflows/site-check.yml
+    with:
+      release_artifact: true
+      skip_topo: true
+
   deploy:
+    needs: release-check
+    if: ${{ github.ref == 'refs/heads/main' && needs.release-check.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -22,17 +37,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Use Node.js 22 for the anatomical 3D atlas
-        uses: actions/setup-node@v4
+      - name: Download exact de geteste productiebuild
+        uses: actions/download-artifact@v4
         with:
-          node-version: '22'
-      - name: Build and validate the release to publish
+          name: site-release-${{ github.run_id }}
+      - name: Verifieer commit en alle bestanden voor upload
         run: |
           pip install beautifulsoup4
-          python scripts/build_site.py --sources content/legacy --out site-build
-          python scripts/build_anatomie.py --out site-build/tools/anatomie
-          python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
-          python scripts/prepare_ui.py --root site-build
+          python scripts/release_artifact.py verify --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
           python scripts/verify_ui.py --root site-build
       - name: Install FTPS client
         run: |
@@ -41,7 +53,7 @@ jobs:
       - name: Verify Theory7 FTPS certificate fingerprint
         shell: bash
         env:
-          HOST: ftp.eaimodel.nl
+          HOST: web0102.theory7.net
         run: |
           set -euo pipefail
           expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
@@ -50,10 +62,16 @@ jobs:
             echo "Unexpected FTPS certificate fingerprint."
             exit 1
           fi
+      - name: Controleer dat dit nog de actuele hoofdversie is
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(git ls-remote --exit-code origin refs/heads/main | cut -f1)"
+          test "$current" = "$GITHUB_SHA" || { echo "Nieuwere hoofdversie aanwezig; geen oude release uploaden."; exit 1; }
       - name: Publish assets before HTML
         shell: bash
         env:
-          HOST: ftp.eaimodel.nl
+          HOST: web0102.theory7.net
           FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
         run: |
@@ -62,7 +80,8 @@ jobs:
           set cmd:fail-exit yes
           set ftp:ssl-force true
           set ftp:ssl-protect-data true
-          set ssl:verify-certificate false
+          set ssl:verify-certificate true
+          set ssl:check-hostname true
           set net:timeout 20
           set net:max-retries 1
           set xfer:use-temp-file yes
@@ -72,9 +91,61 @@ jobs:
           # Publish the anatomical viewer's generated JS, CSS and Draco helpers
           # explicitly, before making its HTML visible to visitors.
           mirror -R --parallel=3 --verbose site-build/tools/anatomie/assets/ /tools/anatomie/assets/
-          mirror -R --parallel=3 --verbose --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ site-build/ /
+          # Publish the ICT directory's headers before its HTML. The host's
+          # root .htaccess remains excluded from the site-wide mirror.
+          mkdir -p /tools/ict-scan
+          put site-build/tools/ict-scan/.htaccess -o /tools/ict-scan/.htaccess
+          # TOPO is published independently and cannot be overwritten by a whole-site deploy.
+          mirror -R --parallel=3 --verbose --exclude-glob topo/ --exclude-glob 'topo/**' --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ site-build/ /
           bye
           EOF
+      - name: Verify live ICT-scan profile and validator version
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import re
+          import time
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+
+          built = Path("site-build/tools/ict-scan")
+          built_html = (built / "index.html").read_text(encoding="utf-8")
+          expected_js = (built / "assurance/profile.js").read_bytes()
+          expected_profile = (built / "assurance/profiles/emmauscollege.json").read_bytes()
+          version = hashlib.sha256(expected_js).hexdigest()[:16]
+          script_ref = "./assurance/profile.js?v=" + version
+          assert script_ref in built_html, "De sitebuild moet de echte hash van de profielvalidator gebruiken"
+          assert "hardwareGroups" in expected_js.decode("utf-8"), "De validator kent hardwareGroups niet"
+          assert "hardwareGroups" in json.loads(expected_profile)["source"]["registerFiles"]
+
+          base = "https://eaimodel.nl/tools/ict-scan/"
+          def get(path):
+              request = Request(base + path, headers={"Cache-Control": "no-cache", "User-Agent": "EAI-ICT-release-check/1.0"})
+              with urlopen(request, timeout=35) as response:
+                  assert response.status == 200, path
+                  return response.read()
+
+          error = ""
+          for attempt in range(6):
+              try:
+                  live_html = get("?release=" + version).decode("utf-8")
+                  assert script_ref in live_html, "De livepagina verwijst naar een oude profielvalidator"
+                  live_js = get("assurance/profile.js?v=" + version)
+                  assert live_js == expected_js, "De livevalidator wijkt af van de gevalideerde release"
+                  live_profile = get("assurance/profiles/emmauscollege.json?release=" + version)
+                  assert live_profile == expected_profile, "Het live organisatieprofiel wijkt af van de release"
+                  error = ""
+                  print("ICT-scan live: profiel, hardwareGroups en validatorversie komen overeen")
+                  break
+              except Exception as exc:
+                  error = str(exc)
+                  print(f"ICT-scan livecontrole {attempt + 1}/6: {error}", flush=True)
+                  if attempt < 5:
+                      time.sleep(4)
+          if error:
+              raise AssertionError("ICT-scan live niet synchroon: " + error)
+          PY
       - name: Verify live HTML and exact asset hashes
         run: python scripts/verify_ui.py --root site-build --url https://eaimodel.nl --timeout 90
       - name: Verify live anatomy JavaScript and stylesheets
@@ -112,6 +183,8 @@ jobs:
           python - <<'PY'
           import hashlib
           import json
+          import re
+          import time
           from pathlib import Path
           from urllib.request import Request, urlopen
 
@@ -132,16 +205,42 @@ jobs:
           assert manifest['sourceMeshCount'] == 34
           assert len(manifest['parts']) == 34
 
+          # The browser loads heart.js with this release-specific query value.
+          # Verify the same URL, not a potentially older unversioned CDN response.
+          built_page = (local / 'index.html').read_text(encoding='utf-8')
+          release_match = re.search(r'\./heart\.js\?v=([0-9a-f]{12})', built_page)
+          assert release_match, 'Missing versioned Hartslaglab script in release HTML'
+          release = release_match.group(1)
           for name in ('heart.js', 'atlas-heart-rich.json', 'atlas-heart-rich.bin'):
               expected = hashlib.sha256((local / name).read_bytes()).hexdigest()
-              with release_open('https://eaimodel.nl/' + relative + name, timeout=70) as response:
-                  assert response.status == 200, name
-                  hasher = hashlib.sha256()
-                  while chunk := response.read(1024 * 1024):
-                      hasher.update(chunk)
-                  actual = hasher.hexdigest()
-              assert actual == expected, f'Live Hartslaglab verschilt: {name}'
-              print(f'Hartslaglab live gecontroleerd: {name}, sha256={actual}')
+              url = 'https://eaimodel.nl/' + relative + name + '?v=' + release
+              last_problem = ''
+              for attempt in range(4):
+                  try:
+                      with release_open(url, timeout=70) as response:
+                          assert response.status == 200, name
+                          hasher = hashlib.sha256()
+                          size = 0
+                          while chunk := response.read(1024 * 1024):
+                              size += len(chunk)
+                              hasher.update(chunk)
+                          actual = hasher.hexdigest()
+                          encoding = response.headers.get('Content-Encoding', 'identity')
+                      if actual == expected:
+                          print(f'Hartslaglab live: {name}, bytes={size}, sha256={actual}, release={release}')
+                          last_problem = ''
+                          break
+                      last_problem = (
+                          f'{name}: expected={expected}, got={actual}, bytes={size}, '
+                          f'encoding={encoding}, url={url}'
+                      )
+                  except Exception as exc:
+                      last_problem = f'{name}: request failed: {type(exc).__name__}: {exc}'
+                  print(f'Live Hartslaglab check {attempt+1}/4: {last_problem}', flush=True)
+                  if attempt < 3:
+                      time.sleep(4)
+              if last_problem:
+                  raise AssertionError('Live Hartslaglab verschilt: ' + last_problem)
           PY
       - name: Verify live anatomical models
         run: |
@@ -155,7 +254,7 @@ jobs:
               }), timeout=timeout)
           with release_open(base, timeout=35) as response:
               assert response.status == 200
-              assert b'Anatomisch Observatorium' in response.read(120000)
+              assert b'Het lichaam in 3D' in response.read(120000)
           for system in ('skeletal', 'muscular', 'joints', 'cardiovascular',
                          'lymphatic', 'nervous', 'visceral'):
               with release_open(base + 'models/' + system + '.glb', timeout=40) as response:

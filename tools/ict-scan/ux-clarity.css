@@ -1,0 +1,178 @@
+/* Clear-purpose controls for the existing ICT-scan; no new dashboard or duplicate data. */
+/* A compact label below each navigation icon remains visible without hover. */
+.workspace.monitor-layout .sidebar.icon-rail .side-nav{
+  flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:none;gap:2px;padding:8px 3px;
+}
+.workspace.monitor-layout .sidebar.icon-rail .side-nav::-webkit-scrollbar{display:none}
+.workspace.monitor-layout .icon-rail .rail-button[data-view],
+.workspace.monitor-layout .icon-rail .rail-more{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;width:60px;height:55px;min-height:55px;flex-shrink:0;
+  padding:6px 1px 8px;border-radius:10px;box-sizing:border-box;
+}
+.workspace.monitor-layout .icon-rail .rail-button svg{width:18px;height:18px;flex:0 0 18px}
+.workspace.monitor-layout .icon-rail .rail-label{
+  display:block;color:inherit;font-size:8px;font-weight:600;line-height:1.15;font-family:inherit;
+  letter-spacing:0;text-align:center;white-space:nowrap;
+  max-width:100%;overflow:hidden;text-overflow:clip;
+}
+.workspace.monitor-layout .icon-rail .rail-button.active:after{bottom:2px}
+.workspace.monitor-layout .icon-rail .rail-more{margin:3px 0 1px}
+.workspace.monitor-layout .item-action-hint{
+  font-size:10px;font-weight:650;color:#56769b;line-height:1.3;white-space:nowrap;
+}
+@media(max-width:720px){
+  .workspace.monitor-layout .item-action-hint{font-size:9px}
+}
+.workspace.monitor-layout #viewStudio .ds-presets-label{
+  font-size:10px;font-weight:650;color:#516783;margin:0 0 7px
+}
+.workspace.monitor-layout #viewStudio .ds-preset.selected,
+.workspace.monitor-layout #viewStudio .ds-preset[aria-pressed="true"]{
+  color:#27476d;background:#eaf1f8;border-color:#a7bed5;
+}
+.workspace.monitor-layout #viewStudio .ds-option{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:start;gap:7px;padding:8px 8px 9px 12px;
+}
+.workspace.monitor-layout #viewStudio .ds-option>.ds-option-text{
+  display:flex;flex-direction:column;min-width:0;gap:2px;
+}
+.workspace.monitor-layout #viewStudio .ds-option .ds-option-name{
+  color:inherit;font-size:11px;font-weight:650;line-height:1.35;
+  overflow-wrap:anywhere;
+}
+.workspace.monitor-layout #viewStudio .ds-option .ds-option-description{
+  color:#8190a3;font-size:9.5px;font-weight:450;line-height:1.4;
+  text-align:left;white-space:normal;max-width:none;overflow-wrap:break-word;
+}
+.workspace.monitor-layout #viewStudio .ds-option>.ds-option-count{
+  font-size:10px;font-weight:640;font-variant-numeric:tabular-nums;
+  line-height:1.4;color:#748baa;padding-top:1px;
+}
+.workspace.monitor-layout #viewStudio .ds-option.selected>.ds-option-count{color:#3a628c}
+.workspace.monitor-layout #viewStudio .ds-option.unavailable{opacity:.66}
+.workspace.monitor-layout #viewStudio .ds-parts .ds-option{grid-template-columns:minmax(0,1fr)}
+.workspace.monitor-layout #viewStudio .ds-toolbar-actions{flex:0 1 auto;flex-wrap:wrap;justify-content:flex-end;min-width:0;gap:5px}
+.workspace.monitor-layout #viewStudio .ds-visual-select{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:9.5px;color:#6f819a;white-space:nowrap;
+}
+.workspace.monitor-layout #viewStudio .ds-visual-select>span{font-size:9.5px;font-weight:570}
+.workspace.monitor-layout #viewStudio .ds-visual-select select{max-width:155px;min-width:74px}
+.workspace.monitor-layout #viewStudio .ds-focus select{max-width:165px}
+.workspace.monitor-layout #viewStudio .ds-icon-action{
+  gap:6px;min-width:0;min-height:33px;padding:6px 8px;
+  white-space:nowrap;
+}
+.workspace.monitor-layout #viewStudio .ds-action-text{
+  font-size:10px;font-weight:600;line-height:1.25;
+}
+.workspace.monitor-layout #viewStudio .ds-stage-title{min-width:170px}
+.workspace.monitor-layout #viewStudio .ds-component-label>h3{
+  overflow-wrap:anywhere;
+}
+@container (max-width:960px){
+  .workspace.monitor-layout #viewStudio .ds-toolbar{flex-wrap:wrap}
+  .workspace.monitor-layout #viewStudio .ds-toolbar-actions{justify-content:flex-start}
+  .workspace.monitor-layout #viewStudio .ds-action-text{display:none}
+}
+@container (max-width:620px){
+  .workspace.monitor-layout #viewStudio .ds-visual-select>span{display:none}
+  .workspace.monitor-layout #viewStudio .ds-toolbar-actions{width:100%;justify-content:space-between}
+}
+@media(max-width:720px){
+  .workspace.monitor-layout .sidebar.icon-rail .side-nav{
+    display:flex;flex-direction:row;min-height:0;height:100%;overflow-x:auto;
+    overflow-y:hidden;gap:1px;padding:0 1px;align-items:center;
+    justify-content:space-around;
+  }
+  .workspace.monitor-layout .icon-rail .rail-button[data-view],
+  .workspace.monitor-layout .icon-rail .rail-more{
+    width:51px;min-width:0;height:52px;min-height:52px;
+    flex:0 0 51px;gap:2px;padding:4px 1px 7px;border-radius:8px;
+  }
+  .workspace.monitor-layout .icon-rail .rail-label{font-size:7.5px}
+  .workspace.monitor-layout .icon-rail .rail-more{margin:0 0 0 auto}
+  .workspace.monitor-layout .side-nav .rail-button[data-view="connections"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="devices"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="privacy"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="findings"],
+  .workspace.monitor-layout .side-nav .rail-button[data-view="reports"]{display:none}
+  .workspace.monitor-layout .icon-rail .rail-button.active:after{bottom:2px}
+}
+@media(max-width:370px){
+  .workspace.monitor-layout .icon-rail .rail-button[data-view],
+  .workspace.monitor-layout .icon-rail .rail-more{width:44px;flex-basis:44px}
+  .workspace.monitor-layout .icon-rail .rail-label{font-size:7px}
+}
+@media print{
+  .workspace.monitor-layout .sidebar.icon-rail .rail-label{display:none}
+}
+
+/* Vier hoofdonderdelen. De bestaande detailpagina's blijven bereikbaar via Menu. */
+.workspace.monitor-layout .side-nav .rail-button[data-view]:not([data-view="overview"]):not([data-view="apps"]):not([data-view="ai"]):not([data-view="findings"]){display:none!important}
+.workspace.monitor-layout .side-nav .rail-button[data-view="findings"]:not([hidden]){display:flex}
+.workspace.monitor-layout .topbar.monitor-topbar{gap:14px;position:relative;overflow:visible;z-index:40;isolation:isolate}
+.workspace.monitor-layout .main-content{position:relative;z-index:0;isolation:isolate}
+.workspace.monitor-layout .top-search{flex:1 1 430px;min-width:0;max-width:640px}
+.workspace.monitor-layout .top-search .global-search-wrap{height:38px}
+.workspace.monitor-layout .top-search input{font-size:13px;background:#f3f5f8;border:1px solid #dce3ec}
+.workspace.monitor-layout .top-search input::placeholder{color:#687c94}
+.github-live-status{flex:0 0 auto;border:1px solid #dce3eb;background:#f6f8fa;color:#52647d;border-radius:7px;min-height:35px;font:inherit;font-size:11px;font-weight:620;padding:8px 10px;cursor:pointer;white-space:nowrap}
+.github-live-status[data-mode="success"]{color:#245e49;border-color:#b9d8cb;background:#f1f8f4}
+.github-live-status[data-mode="warning"]{color:#8b5927;border-color:#e5d3bd;background:#fffbf4}
+.github-live-status:focus-visible,.register-access button:focus-visible{outline:2px solid #557daf;outline-offset:2px}
+.register-access{flex:0 0 auto;display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:10px 12px;border:1px solid #dfe6ef;background:#fff;border-radius:8px;min-width:0}
+.register-access>div{display:flex;flex:1 1 auto;flex-direction:column;gap:3px;color:#354964;font-size:13px}
+.register-access small{font-size:11px;color:#657891}
+.register-access select{min-width:0;max-width:52%;flex:1 1 180px;min-height:35px;border:1px solid #dce3eb;border-radius:6px;background:#fff;color:#31435e;padding:5px}
+.register-access button{flex:0 0 auto;white-space:nowrap}
+@media(max-width:720px){
+ .workspace.monitor-layout .topbar.monitor-topbar{height:auto;min-height:90px;flex:0 0 auto;flex-wrap:wrap;padding:6px 10px 9px;gap:4px}
+ .workspace.monitor-layout .top-identity{order:0;flex:1 1 auto}
+ .workspace.monitor-layout .top-identity img{height:37px;width:106px}
+ .workspace.monitor-layout .top-search{order:2;flex:1 1 100%;max-width:none}
+ .workspace.monitor-layout .github-live-status{order:1;font-size:10px;min-height:30px;padding:5px 8px}
+ .workspace.monitor-layout .top-search input::placeholder{color:#687c94;font-size:12px}
+ .register-access{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;padding:8px}
+ .register-access>div{grid-column:1/-1}
+ .register-access select{max-width:none;width:100%}
+}
+
+/* De secundaire schermen staan nu ook op desktop onder Menu. */
+body>.rail-drawer .rail-drawer-navigation{display:block}
+body>.rail-drawer .rail-drawer-view-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+body>.rail-drawer .rail-drawer-view{min-width:0;white-space:normal;overflow-wrap:anywhere;min-height:39px;padding:8px 9px;border:1px solid #e3e8ef;background:#f6f8fa;border-radius:7px}
+body>.rail-drawer .rail-drawer-view[hidden]{display:none!important}
+body>.rail-drawer .rail-drawer-view.active{background:#eaf1f8;border-color:#b9ccdf;color:#304f76}
+
+/* Read and explore first; edit layout only on explicit request. */
+.workspace.monitor-layout #viewStudio .ds-mobile-compose{display:inline-flex!important;border:1px solid #bacbdd;border-radius:7px;background:#fff;color:#28466e;font-size:12px;font-weight:700;padding:8px 12px}
+.workspace.monitor-layout #viewStudio:not(.ds-controls-open) .ds-panel,
+.workspace.monitor-layout #viewStudio:not(.ds-controls-open) .ds-resizer,
+.workspace.monitor-layout #viewStudio:not(.ds-controls-open) .ds-component-remove{display:none!important}
+@media(min-width:901px){
+ .workspace.monitor-layout #viewStudio:not(.ds-controls-open) .ds-shell{grid-template-columns:minmax(0,1fr)}
+ .workspace.monitor-layout #viewStudio .ds-panel-close{display:block;float:right;border:1px solid #c6d4e2;background:white;border-radius:6px;padding:6px 9px;font:inherit;cursor:pointer;color:#29446a}
+}
+.workspace.monitor-layout #viewStudio .ds-edit-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;margin-bottom:16px}
+.workspace.monitor-layout #viewStudio .ds-edit-actions .ds-icon-action{justify-content:flex-start;background:#fff;border:1px solid #d3dfea;border-radius:6px;min-height:34px}
+.workspace.monitor-layout #viewStudio .ds-edit-actions .ds-action-text{display:inline!important}
+.workspace.monitor-layout #viewStudio .ds-edit-actions .ds-visual-select{display:grid;gap:4px}
+.workspace.monitor-layout #viewStudio .ds-edit-actions select{width:100%;max-width:none}
+.workspace.monitor-layout #viewStudio .ds-option .ds-option-description{font-size:11px;line-height:1.45;color:#526984}
+.workspace.monitor-layout #viewStudio .ds-component-label>h3{font-size:13px;color:#253e63}
+.workspace.monitor-layout #viewStudio .ds-canvas{gap:16px}
+.workspace.monitor-layout #viewStudio .ds-component{border:1px solid #dce5ed;border-radius:10px;background:#fff;padding:12px}
+.workspace.monitor-layout .overview-quick-action.overview-edit-action{border-style:dashed;color:#5a6170}
+.workspace.monitor-layout .overview-quick-action.overview-layout-action{background:#eef4fa;border-color:#b8cce0}
+.workspace.monitor-layout #viewOverviewScene0 .inventory-population{font-size:11px;color:#697b92}
+@media(max-width:610px){.workspace.monitor-layout #viewStudio .ds-mobile-compose{font-size:11px;padding:7px 8px}.workspace.monitor-layout #viewStudio .ds-component{padding:9px}}
+
+.workspace.monitor-layout #viewStudio .ds-coverage-settings{margin:6px 0 12px;border:1px solid #d6e0ea;border-radius:7px;padding:7px 9px;background:#f8fafc}
+.workspace.monitor-layout #viewStudio .ds-coverage-settings summary{font-size:12px;font-weight:650;cursor:pointer;color:#29466a}
+.workspace.monitor-layout #viewStudio .ds-coverage-options{display:grid;gap:5px;margin:8px 0}
+.workspace.monitor-layout #viewStudio .ds-coverage-option{display:flex;align-items:center;gap:7px;font-size:12px;color:#354d70;cursor:pointer}
+.workspace.monitor-layout #viewStudio .ds-coverage-option input{width:15px;height:15px;flex:none}

@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#060e1c">
-<title>LLM Observatorium | EAI</title>
+<title>Hoe werkt een taalmodel? | EAI</title>
 <style>
 :root{color-scheme:dark;--bg:#060d1a;--nav:#081221;--surface:#0a1829;--inner:#102239;--edge:#263950;--fg:#e7f2fd;--muted:#93abc3;--dim:#65809b;--cyan:#66e9e9;--amber:#f5bd77;--purple:#b4a0f8;--green:#96ddc2;--left:211px;--right:318px}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--fg);font:13px/1.5 Inter,system-ui,-apple-system,'Segoe UI',sans-serif;overflow:hidden}button,input,select,textarea{font:inherit}button,select,input{accent-color:#72d8dd}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #72e6e5;outline-offset:2px}a{color:#8de7f1}#app{height:100dvh;display:grid;grid-template-columns:var(--left) minmax(0,1fr) var(--right);grid-template-rows:54px minmax(0,1fr) 220px 41px;overflow:hidden}
@@ -201,6 +201,15 @@
 .ai-guide-token.is-after{background:#102331;border-color:#2b4a5b;color:#819aaa}
 .ai-guide-token.is-focus{background:#e4c089;border-color:#ffe0ad;color:#2b261c}
 .ai-guide-legend{color:#a4bfc8;font-size:11px;line-height:1.45}
+.ai-guide-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.ai-guide-flow-item{min-width:0;border:1px solid #3b6170;border-radius:12px;background:#102c3b;padding:11px;display:flex;flex-direction:column;gap:5px}
+.ai-guide-flow-item>span{font-size:10px;letter-spacing:.04em;color:#94bbc4}
+.ai-guide-flow-item>b{font-size:clamp(13px,1.5vw,18px);font-weight:650;color:#baf3dc;overflow-wrap:anywhere}
+.ai-guide-flow-item>small{font-size:11px;line-height:1.4;color:#c0d4dc}
+.ai-guide-layer-track{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px}
+.ai-guide-layer-track i{display:block;height:10px;border-radius:3px;background:#244c5a;border:1px solid #44717f}
+.ai-guide-layer-track i.is-current{background:#eec68c;border-color:#ffdfaf;box-shadow:0 0 9px #d7a56366}
+@media(max-width:680px){.ai-guide-flow{gap:5px}.ai-guide-flow-item{padding:8px 6px;gap:3px}.ai-guide-flow-item>b{font-size:12px}.ai-guide-flow-item>small{font-size:9px;line-height:1.25}.ai-guide-layer-track{gap:3px}.ai-guide-layer-track i{height:7px}}
 .ai-guide-mini{font-size:13px;line-height:1.45;color:#b4d4d9}
 .ai-guide-scale{display:grid;grid-template-columns:1fr auto;gap:7px 12px;align-items:center}
 .ai-guide-scale label{color:#cfdee3;font-size:13px}
@@ -226,7 +235,7 @@
 .ai-guide-actions button{min-height:45px;padding:9px 17px;border-radius:12px;border:1px solid #436374;color:#d2e1e8;background:#132537;white-space:nowrap;font-size:13px!important}
 .ai-guide-actions button:disabled{opacity:.28}
 .ai-guide-actions .ai-guide-next{background:#8be8c4;border-color:#8be8c4;color:#0a2c23;font-weight:750}
-#guideReturn{border-color:#52917c;background:#153d33;color:#c4f5df}
+#guideReturn{border-color:#52917c;background:#153d33;color:#c4f5df;font-weight:650}
 @media(max-width:960px){
  .ai-guide-body{grid-template-columns:minmax(0,1fr);padding:14px 18px}
  .ai-guide-steps{display:none}
@@ -554,19 +563,408 @@
   position:absolute;top:auto;left:13px;bottom:12px;z-index:30
  }
 }
+
+/* Uitleg op basis van echte kleine berekeningen, in de bestaande EAI-vormgeving. */
+.ai-learn-numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ai-learn-number{min-width:0;background:#102b38;border:1px solid #406472;border-radius:10px;padding:9px;text-align:center;display:grid;gap:3px}
+.ai-learn-number small{color:#a5bec7;font-size:10px}
+.ai-learn-number strong{color:#e8c58e;font-size:clamp(13px,1.6vw,20px);font-variant-numeric:tabular-nums}
+.ai-learn-source{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:#a3c0c9;font-size:12px}
+.ai-learn-source b{font-weight:600;color:#a9e7d5}
+.ai-learn-order{display:flex;gap:7px;flex-wrap:wrap}
+.ai-learn-orderpiece{display:grid;gap:3px;min-width:40px;padding:8px;border:1px solid #466c7c;border-radius:9px;background:#143441}
+.ai-learn-orderpiece strong{font-weight:600;color:#dcf3f0;font-size:13px;overflow-wrap:anywhere}
+.ai-learn-orderpiece small{font-size:10px;color:#a0bdc9}
+.ai-learn-orderpiece.is-swapped{border-color:#e6bd81;background:#3b3529}
+.ai-learn-bars{display:grid;gap:7px;max-height:100%;overflow:auto}
+.ai-learn-bar{display:grid;grid-template-columns:85px minmax(0,1fr) 40px;gap:9px;align-items:center}
+.ai-learn-bar span{font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-learn-bar strong{font-size:11px;text-align:right;font-variant-numeric:tabular-nums}
+.ai-learn-expert-grid{display:grid;grid-template-columns:repeat(var(--expert-cols,16),minmax(0,1fr));gap:4px}
+.ai-learn-expert{display:block;height:clamp(7px,1.3vw,15px);background:#214454;border:1px solid #416877;border-radius:2px}
+.ai-learn-expert.chosen{background:#efc58e;border-color:#ffe1ad}
+.ai-learn-selection{display:flex;flex-wrap:wrap;gap:5px}
+.ai-learn-selection span{border:1px solid #b78d59;background:#3b3226;color:#f8d7a0;border-radius:7px;padding:4px 7px;font-size:11px}
+.ai-learn-layer-rows{display:grid;gap:6px}
+.ai-learn-layer-row{display:grid;gap:4px;padding:8px 10px;background:#102a39;border:1px solid #426575;border-radius:9px}
+.ai-learn-layer-row span{font-size:11px;color:#a9c2ce}
+.ai-learn-layer-row strong{font-size:clamp(11px,1.5vw,16px);font-weight:600;color:#afe6d4;font-variant-numeric:tabular-nums;word-spacing:3px}
+.ai-learn-position-choices,.ai-learn-answer-actions{display:flex;flex-wrap:wrap;gap:6px}
+.ai-learn-position-choices button{min-width:30px;min-height:31px;background:#123545;color:#cbeced;border:1px solid #4e7b8a;border-radius:8px}
+.ai-learn-position-choices button.chosen{background:#efc58e;border-color:#ffe0ad;color:#282315}
+.ai-learn-answer{max-height:100%;overflow:auto;overflow-wrap:anywhere}
+.ai-learn-piece{white-space:pre-wrap}
+.ai-learn-piece.newest{background:#375b49;color:#c3ffe5;border-radius:3px}
+@media(max-width:680px){.ai-learn-number{padding:6px 3px}.ai-learn-number small{font-size:9px}.ai-learn-bar{grid-template-columns:61px minmax(0,1fr) 36px;gap:5px}.ai-learn-expert-grid{gap:3px}.ai-learn-layer-row{padding:6px 8px}.ai-learn-layer-row strong{font-size:11px}.ai-learn-orderpiece{padding:5px}.ai-learn-selection span{padding:3px 5px;font-size:10px}}
+
+
+/* Korte mobiele schermen: uitleg en berekeningen blijven zelf scrollbaar. */
+.ai-guide-visual{overflow-x:hidden;overflow-y:auto;justify-content:flex-start;scrollbar-width:thin}
+.ai-guide-aside{overflow-x:hidden;overflow-y:auto;justify-content:flex-start;scrollbar-width:thin}
+.ai-guide-chip-area{overflow-y:visible;max-height:none;flex-shrink:0}
+.ai-guide-steps{overflow-y:auto;scrollbar-width:thin}
+@media(max-width:680px){
+ .ai-guide-visual{padding:11px;gap:8px}
+ .ai-guide-aside{padding:10px 12px}
+ .ai-guide-intro h2{font-size:clamp(19px,5.2vw,27px)}
+ .ai-guide-boundary{font-size:10px}
+ .ai-guide-cta{min-height:34px;font-size:12px!important}
+}
+
+
+/* Mobiel: geen twee afgesneden panelen. Eerst de volledige illustratie,
+   daarna de uitleg in dezelfde natuurlijke scrollruimte. Navigatie blijft vast. */
+@media(max-width:680px){
+ .ai-guide-main{display:block;overflow-x:hidden;overflow-y:auto;scrollbar-width:thin}
+ .ai-guide-intro{margin-bottom:10px}
+ .ai-guide-work{display:flex;flex-direction:column;overflow:visible;gap:10px}
+ .ai-guide-visual{flex:0 0 auto;min-height:190px;max-height:none;overflow:visible;justify-content:flex-start;padding:12px;gap:9px}
+ .ai-guide-aside{flex:0 0 auto;min-height:80px;max-height:none;overflow:visible}
+ .ai-guide-chip-area{overflow:visible;max-height:none}
+ .ai-guide-input{min-height:95px}
+ .ai-learn-layer-row{gap:2px;padding:6px 8px}
+ .ai-learn-layer-rows{gap:5px}
+ .ai-learn-bars{max-height:none;overflow:visible}
+}
+
+
+/* Dezelfde negen lesstappen in de automatische animatie. Geen tweede huisstijl. */
+.story-timeline{grid-template-columns:repeat(9,minmax(0,1fr))}
+.v-mini-caption{font:11px/1.45 system-ui;color:#9bb9c4;text-align:center;max-width:500px}
+.v-mini-source{font:600 clamp(15px,2.5vw,23px) ui-monospace,monospace;color:#f5d5a9;border:1px solid #947752;border-radius:10px;padding:10px 17px;background:#3c3427}
+.v-mini-table{width:min(560px,100%);display:grid;gap:9px}
+.v-mini-row{display:grid;grid-template-columns:minmax(115px,.7fr) minmax(0,1.5fr);align-items:center;gap:9px;padding:10px 13px;border:1px solid #426578;border-radius:10px;background:#102d3d}
+.v-mini-row.is-result{border-color:#9bbd9c;background:#173f37}
+.v-mini-row-label{font:12px/1.35 system-ui;color:#b8d6db}
+.v-mini-values{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.v-mini-values strong{font:600 clamp(12px,1.4vw,17px) ui-monospace,monospace;color:#f2cc95;text-align:center}
+.v-mini-stack{display:grid;gap:12px;width:min(520px,100%)}
+.v-mini-order{display:flex;justify-content:center;flex-wrap:wrap;gap:6px}
+.v-mini-word{background:#193d4b;border:1px solid #548594;color:#e5f6f5;padding:7px 9px;border-radius:6px;font:500 12px ui-monospace,monospace;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.v-mini-order.is-alt .v-mini-word:nth-child(-n+3){border-color:#ddba84;background:#483d2d}
+.v-story-experts{width:min(485px,100%);max-height:155px;overflow:hidden}
+.v-story-experts i{height:clamp(7px,1.7vw,12px);aspect-ratio:auto}
+.v-mini-selected{font:12px/1.5 ui-monospace,monospace;color:#f2ce96;text-align:center}
+.v-answer-token{white-space:pre-wrap}
+@media(max-width:800px){
+ .story-time-item .name{display:none}
+ .story-timeline .story-time-item{min-height:16px}
+ .v-mini-caption{font-size:10px;line-height:1.32}
+ .v-mini-row{padding:7px 8px;gap:6px;grid-template-columns:100px minmax(0,1fr)}
+ .v-mini-row-label{font-size:10px}
+ .v-mini-values{gap:2px}
+ .v-mini-values strong{font-size:11px}
+ .v-story-experts{max-height:130px}
+ .v-mini-word{padding:6px 7px;font-size:11px}
+ .v-answer{min-height:65px;max-height:100%;overflow:auto;gap:4px;padding:9px}
+ .v-answer span{padding:3px 5px;font-size:12px}
+}
+@media(max-height:620px){
+ .v-mini-row{padding:5px 7px}
+ .v-mini-table{gap:5px}
+ .v-story-experts{max-height:90px}
+ .v-mini-caption{font-size:9px}
+}
+
+
+/* Goed leesbare geselecteerde experts en laagwaarden op telefoons. */
+.v-story-experts i.active{background:#efc58e!important;border-color:#ffe0a7!important;box-shadow:0 0 9px #e3ac68bb!important;opacity:1!important}
+.v-mini-row-label{color:#d7eaf0}
+.v-mini-values strong{color:#ffdbab}
+@media(max-width:800px){.v-mini-values strong{font-size:12px}.v-mini-row{background:#153446}}
+
+
+/* Echte vooraf opgeslagen modelmeting. Behoud het donkere EAI-palet. */
+.ai-trace-outer{margin-top:15px;padding:11px;border:1px solid #41677a;border-radius:12px;background:#0b2232;min-width:0;display:grid;gap:8px}
+.ai-trace-toggle{display:block;width:100%;border:1px solid #609a9a;background:#173c46;color:#d4f6ee;border-radius:8px;padding:10px 9px;text-align:left;font:600 12px system-ui;cursor:pointer;min-height:39px}
+.ai-trace-toggle:hover{border-color:#8ec6bd;background:#204f52}
+.ai-trace-intro,.ai-trace-help,.ai-trace-disclaimer,.ai-trace-footnote{margin:0;color:#acc8d1;font:11px/1.5 system-ui}
+.ai-trace-intro{font-size:10px}
+.ai-trace-content{display:grid;gap:10px;min-width:0;border-top:1px solid #2d5060;padding-top:10px}
+.ai-trace-content[hidden]{display:none}
+.ai-trace-title{display:block;color:#f7d3a0;font:650 13px/1.3 system-ui}
+.ai-trace-source{color:#9ee6d2;font:11px system-ui;text-decoration:underline}
+.ai-trace-prompt,.ai-trace-choice{font:600 12px/1.45 ui-monospace,monospace;color:#e6d0af;margin:0;overflow-wrap:anywhere}
+.ai-trace-numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.ai-trace-number{min-width:0;padding:7px 4px;text-align:center;background:#143342;border:1px solid #345b70;border-radius:6px}
+.ai-trace-number small{display:block;color:#95adbb;font:10px ui-monospace,monospace}
+.ai-trace-number strong{color:#f4d7aa;font:600 clamp(11px,1.15vw,15px) ui-monospace,monospace}
+.ai-trace-bars{display:grid;gap:7px}
+.ai-trace-bar{display:grid;grid-template-columns:minmax(0,65px) minmax(0,1fr) 44px;gap:5px;align-items:center;font:11px system-ui}
+.ai-trace-word{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#cce8e8}
+.ai-trace-track{height:11px;border-radius:3px;background:#234153;overflow:hidden}
+.ai-trace-track i{display:block;height:100%;min-width:1px;background:#e9bc7d;border-radius:3px}
+.ai-trace-bar strong{font:600 10px ui-monospace,monospace;text-align:right;color:#e7d2ad}
+.ai-trace-completion{margin:0;padding:12px;border:1px solid #477e7d;background:#153b3d;color:#e5f5ee;border-radius:8px;font:600 15px/1.5 system-ui;overflow-wrap:anywhere;white-space:pre-wrap}
+.ai-trace-nav{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.ai-trace-nav button,.ai-trace-nav select{border:1px solid #406d80;border-radius:7px;background:#15384a;color:#d7eded;padding:7px 9px;min-height:34px;font:11px system-ui}
+.ai-trace-nav button:disabled{opacity:.35}
+.ai-trace-nav span{font:10px ui-monospace,monospace;color:#afc4cc}
+.ai-trace-footnote{font-size:10px;color:#92aeb9}
+.ai-trace-error{color:#eac9a6;font:11px/1.5 system-ui}
+@media(max-width:680px){.ai-trace-outer{margin-top:10px;padding:8px}.ai-trace-bar{grid-template-columns:52px minmax(0,1fr) 41px;gap:4px}.ai-trace-number{padding:5px 2px}.ai-trace-number strong{font-size:11px}}
+
+
+/* Plaats de optionele gemeten uitvoer in de normale stroom.
+   Laat het bewijslimiet onder de knoppen staan, zonder overlapping. */
+.ai-guide-aside #guideInteractive{flex-shrink:0;min-width:0}
+.ai-guide-aside #guideBoundary{flex-shrink:0}
+@media(min-width:681px){.ai-guide-aside{justify-content:flex-start;overflow-y:auto;overflow-x:hidden}}
+@media(max-width:680px){.ai-guide-aside{justify-content:flex-start;overflow:visible}}
+
+
+/* Vier echte modelvoorspellingen, binnen het bestaande EAI-kleurgebruik. */
+.ai-trace-journey{border:1px solid #47777b;border-radius:10px;background:#12313d;padding:9px;display:grid;gap:7px}
+.ai-trace-journey-title{font:650 12px/1.3 system-ui;color:#d9f4e9}
+.ai-trace-existing{font:500 12px/1.5 system-ui;color:#c8e0e7;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.ai-trace-token-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.ai-trace-token-step{border:1px solid #527689;border-radius:7px;background:#163a48;color:#bcdce0;padding:8px 4px;min-width:0;min-height:39px;font:600 11px/1.2 ui-monospace,monospace;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-trace-token-step.is-active{border-color:#f0c784;background:#473a2b;color:#ffdfac}
+.ai-trace-token-step:focus-visible,.ai-trace-head-btn:focus-visible{outline:2px solid #91e6d5;outline-offset:2px}
+.ai-trace-selected{color:#f2d39f;font:600 11px/1.4 ui-monospace,monospace;margin:0;overflow-wrap:anywhere}
+.ai-trace-head-choices{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+.ai-trace-head-label{flex-basis:100%;font:11px system-ui;color:#b1cbd0}
+.ai-trace-head-btn{border:1px solid #547d90;border-radius:7px;background:#17394c;color:#d4eaed;padding:7px 9px;min-height:33px;font:11px system-ui}
+.ai-trace-head-btn.is-active{border-color:#ebbb77;background:#44362a;color:#ffe0b4}
+.ai-trace-differences{display:grid;gap:6px}
+.ai-trace-diff-title{font:11px system-ui;color:#accdd2}
+.ai-trace-delta strong{color:#bcebd8}
+.ai-trace-new-token{background:#456044;color:#f6e2a9;border-radius:3px;padding:0 2px;white-space:pre-wrap}
+@media(max-width:680px){
+ .ai-trace-journey{padding:7px;gap:6px}
+ .ai-trace-token-steps{gap:3px}
+ .ai-trace-token-step{font-size:10px;padding:7px 2px;min-height:36px}
+ .ai-trace-journey-title{font-size:11px}
+ .ai-trace-existing{font-size:11px}
+}
+
+
+/* EAI LLM visual refresh 2026-11: editorial surfaces, hairlines and restrained interaction.
+   A visual layer only: the nine learning steps, real measurement data and 3D logic stay intact. */
+:root{
+ --bg:#0b1018;--nav:#0c131d;--surface:#101923;--inner:#151f2a;
+ --edge:#283440;--fg:#eef3f5;--muted:#a4b3bd;--dim:#7e929f;
+ --cyan:#aad9d1;--amber:#dec4a0;--purple:#b9bcd4;--green:#b6d9c9;
+ --llm-bg:#0b1018;--llm-panel:#111922;--llm-raised:#17212b;
+ --llm-hairline:rgba(202,219,225,.15);--llm-line:rgba(202,219,225,.24);
+ --llm-text:#edf2f4;--llm-subtle:#b5c2ca;--llm-dim:#91a3ae;--llm-accent:#aed9ca;
+}
+html,body{background:var(--llm-bg);color:var(--llm-text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font-family:inherit}
+button{transition:background-color .15s,border-color .15s,color .15s}
+:focus-visible{outline:2px solid #b6e2d2!important;outline-offset:2px}
+.ai-guide,.model-story{background:var(--llm-bg);color:var(--llm-text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+.ai-guide-shell{grid-template-rows:76px minmax(0,1fr) 74px;max-width:1540px}
+.ai-guide-head,.ai-guide-bottom{background:#0c131c;border-color:var(--llm-hairline)}
+.ai-guide-head{padding-inline:clamp(16px,3vw,45px)}
+.ai-guide-brand{gap:14px}
+.ai-guide-mark{width:38px;height:38px;background:#15211f;border:1px solid #54766a;color:#c4e5d8;border-radius:8px;font-size:13px;font-weight:650;letter-spacing:0}
+.ai-guide-kicker,.ai-guide-stepname,.ai-guide-small{color:var(--llm-accent);font-size:10px;letter-spacing:.065em;font-weight:600}
+.ai-guide-brand h1{font-weight:570;letter-spacing:-.028em;color:#f4f6f7}
+.ai-guide-body{gap:clamp(18px,2.2vw,35px);padding:clamp(13px,2vw,29px)}
+.ai-guide-steps{border-right:1px solid var(--llm-hairline);gap:4px;padding:12px 13px 12px 0}
+.ai-guide-steps button{padding:10px 11px;border:1px solid transparent;border-radius:7px;background:transparent;color:#aebdc6;font-size:13px!important;font-weight:450!important}
+.ai-guide-steps button:hover{background:#17212b;color:#f0f5f6}
+.ai-guide-steps button span{width:25px;height:25px;border:1px solid var(--llm-line);border-radius:5px;background:transparent;color:#99abb7;font-size:11px}
+.ai-guide .ai-guide-steps button[aria-current=step]{border-color:var(--llm-hairline);background:#182822;color:#f1f6f4;font-weight:550!important;box-shadow:inset 2px 0 0 #b4d9ca}
+.ai-guide .ai-guide-steps button[aria-current=step] span{border-color:#6c9181;background:transparent;color:#d9eee5}
+.ai-guide-intro h2{font-weight:560;letter-spacing:-.042em;line-height:1.1;color:#f2f5f5}
+.ai-guide-intro p{color:var(--llm-subtle);font-weight:400;line-height:1.5}
+.ai-guide-main{gap:clamp(13px,2vh,23px)}
+.ai-guide-work{gap:clamp(12px,1.7vw,23px);grid-template-columns:minmax(0,1.36fr) minmax(250px,.72fr)}
+.ai-guide-visual,.ai-guide-aside{border:1px solid var(--llm-hairline);border-radius:10px;box-shadow:none}
+.ai-guide-visual{background:#111a24;padding:clamp(16px,2.3vw,31px);gap:16px}
+.ai-guide-aside{background:#101822;padding:clamp(16px,2.2vw,29px);gap:13px}
+.ai-guide-aside>p:not(.ai-guide-boundary){color:#e0e8ed;font-weight:400;letter-spacing:-.012em}
+.ai-guide-boundary{border-color:var(--llm-hairline);color:#9eafb9}
+.ai-guide-question{font-size:10px;letter-spacing:.075em;text-transform:uppercase;color:#a9c6c8;font-weight:650}
+.ai-guide-small{color:#b2cac4}
+.ai-guide-input{background:#0b141e;border:1px solid #506775;border-radius:8px;color:#f1f5f6;box-shadow:none;padding:16px 18px;font-size:clamp(16px,1.5vw,19px)!important}
+.ai-guide-input:focus{border-color:#8ebba9}
+.ai-guide-chat{border:1px solid var(--llm-line);border-radius:10px 10px 3px 10px;background:#1a2a35;box-shadow:none}
+.ai-guide-token{border:1px solid #526a74;border-radius:6px;background:#1a3039;color:#e5eeed;box-shadow:none}
+.ai-guide-token[aria-pressed=true],.ai-guide-token.is-focus{background:#d7bf98;border-color:#d7bf98;color:#202622}
+.ai-guide-token.is-before{background:#213b34;border-color:#658b7d;color:#d6eee3}
+.ai-guide-token.is-after{background:#15222b;border-color:#334653;color:#a1b2bd}
+.ai-guide-flow-item,.ai-guide-mini-values,.ai-guide-mini{border-color:var(--llm-hairline)}
+.ai-guide-flow-item{background:#17242c;border:1px solid var(--llm-hairline);border-radius:7px}
+.ai-guide-flow-item>b{color:#d1e5dd;font-weight:570}
+.ai-guide-flow-item>span,.ai-guide-flow-item>small,.ai-guide-legend{color:#afc0c9}
+.ai-guide-layer-track i{background:#253745;border-color:#455a66;box-shadow:none}
+.ai-guide-layer-track i.is-current{background:#d3b990;border-color:#d3b990;box-shadow:none}
+.ai-guide-bar>span,.ai-guide-bar>strong,.ai-guide-scale label{color:#d8e3e8}
+.ai-guide-scale output{color:#c7e1d7}
+.ai-guide-track{border:1px solid var(--llm-hairline);background:#21303a;border-radius:4px}
+.ai-guide-fill{background:#8fb5a9;border-radius:3px}
+.ai-guide-bar:first-child .ai-guide-fill{background:#d0b18a}
+.ai-guide-answer strong{color:#b8dfd0}
+.ai-guide .ai-guide-cta,.ai-guide .ai-guide-technical,.ai-guide .ai-guide-actions button{font-weight:500!important;box-shadow:none;border-radius:7px}
+.ai-guide .ai-guide-technical{background:#151f29;border-color:var(--llm-line);color:#e2ebed;padding:10px 15px}
+.ai-guide .ai-guide-technical span{color:#bbdcca}
+.ai-guide .ai-guide-cta{background:#20342e;border:1px solid #6c9b88;color:#e1f0e9}
+.ai-guide .ai-guide-cta:hover,.ai-guide .ai-guide-technical:hover{background:#273a37;border-color:#96bbab}
+.ai-guide-bottom{padding-inline:clamp(16px,3vw,45px)}
+.ai-guide-counter{font-size:12px;color:#b8c6cb}
+.ai-guide-progress{gap:5px;max-width:285px}
+.ai-guide-progress i{height:2px;border-radius:2px;background:#354650}
+.ai-guide-progress i.on{background:#b8d6ca}
+.ai-guide .ai-guide-actions button{background:#141e27;border:1px solid var(--llm-line);color:#d9e4e9;min-height:43px;padding:9px 16px}
+.ai-guide .ai-guide-actions button:hover:not(:disabled){background:#1d3035;border-color:#7f9b9c}
+.ai-guide .ai-guide-actions .ai-guide-next{background:#c8dfd4;border-color:#c8dfd4;color:#162820;font-weight:620!important}
+.ai-guide .ai-guide-actions .ai-guide-next:hover{background:#deede6;border-color:#deede6}
+#guideReturn{background:#182b26;border-color:#668b7a;color:#d9ece1}
+.ai-guide .ai-guide-actions button:disabled{opacity:.38}
+.ai-trace-outer,.ai-trace-journey{background:#141f28;border:1px solid var(--llm-hairline);border-radius:8px}
+.ai-trace-toggle,.ai-trace-nav button,.ai-trace-nav select,.ai-trace-token-step,.ai-trace-head-btn{border:1px solid var(--llm-line);background:#1b2933;border-radius:6px;color:#dde9ec;font-weight:500}
+.ai-trace-toggle:hover,.ai-trace-nav button:hover:not(:disabled),.ai-trace-head-btn:hover{background:#253640;border-color:#74978f}
+.ai-trace-number{background:#192833;border:1px solid var(--llm-hairline);border-radius:5px}
+.ai-trace-title,.ai-trace-selected,.ai-trace-prompt,.ai-trace-choice{color:#ddcaab}
+.ai-trace-intro,.ai-trace-help,.ai-trace-disclaimer,.ai-trace-footnote,.ai-trace-head-label{color:#acbdc4}
+.ai-trace-source{color:#badbd0}
+.ai-trace-bar strong,.ai-trace-number strong{color:#e3d0b1}
+.ai-trace-track{background:#283b44}
+.ai-trace-track i{background:#c4b18f}
+.ai-trace-completion{background:#202f30;border:1px solid #678d7e;border-radius:6px;font-weight:520}
+.ai-trace-token-step.is-active,.ai-trace-head-btn.is-active{background:#3a342b;border-color:#bca37e;color:#f0dab7}
+.ai-trace-new-token{background:#496151;color:#f6ebcf}
+.ai-trace-content{border-color:var(--llm-hairline)}
+/* The same visual language continues in the animated explanation and technical 3D view. */
+.model-story{background:#0d141d}
+.story-copy h2{font-weight:560;color:#eef3f4}
+.story-copy p,.v-label,.story-evidence{color:#abc0ca}
+.story-kicker{color:#aed7c9}
+.story-board{background:#111d27;border:1px solid var(--llm-hairline);border-radius:9px}
+.story-board:before{opacity:.35}
+.v-question{background:#1b2f39;border:1px solid #526c76;border-radius:9px 9px 9px 3px;box-shadow:none}
+.v-token{background:#1e3640;border:1px solid #53717a;border-radius:4px;box-shadow:none}
+.v-token.is-hot{background:#3e372c;border-color:#bda57e;color:#f0d8b6}
+.v-machine{background:#192c35;border:1px solid #557d79;border-radius:9px;box-shadow:none}
+.v-layers-sketch i{box-shadow:none;border-color:#55777a}
+.v-layers-sketch i.is-hot{box-shadow:none;background:#bca482}
+.v-process-col,.v-numerics{background:#152632;border:1px solid var(--llm-hairline);border-radius:7px}
+.v-numerics span{background:#9ec0b4}
+.v-expert-grid i.active,.v-stepcount i.active{box-shadow:none}
+.v-score .track,.v-bar-track{background:#223640}
+.story-bottom{border-color:var(--llm-hairline)}
+.story-actions button,.story-back3d{border-radius:6px;box-shadow:none}
+.sidebar,.topbar,.plot-panel,.inspector,.footer{background:#0d151e;border-color:var(--llm-hairline)}
+.logo{border-color:var(--llm-hairline)}
+.logo .mark{border-color:#678279}
+.logo .mark:before,.logo .mark:after{border-color:#7d9a8d}
+.logo strong{color:#eef3f5;letter-spacing:.04em;font-weight:610}
+.logo small,.section-label,.mode-btn small,.side-foot{color:#91a6b1;letter-spacing:.045em}
+.side-foot{border-color:var(--llm-hairline)}
+.side-foot .live{color:#b8d7c9;letter-spacing:.04em}
+.side-foot .live:before{box-shadow:none;background:#a7ceb9}
+.mode-list{gap:4px}
+.mode-btn{border:1px solid transparent;border-radius:6px;min-height:58px;color:#b5c5cd}
+.mode-btn strong{color:#c2d0d6;font-weight:530}
+.mode-btn small{font-family:inherit;font-weight:400}
+.mode-btn .mode-icon{background:#192530;border:1px solid var(--llm-hairline);border-radius:5px;color:#b5d6ce}
+.mode-btn:hover{background:#17232d}
+.mode-btn.active{background:#192a2c;border-color:var(--llm-hairline);box-shadow:inset 2px 0 0 #afd7c6}
+.mode-btn.active .mode-icon{border-color:#729b8d;color:#d2e8dc}
+.mode-btn.active strong{color:#eff5f3}
+.topbar .breadcrumb{font-family:inherit;letter-spacing:.03em;color:#99acb6}
+.topbar .breadcrumb b{color:#d8e4e9}
+.tool-btn,.top-actions select,.small-btn,.control select,.control textarea,.control input[type=text]{background:#182532;border:1px solid var(--llm-line);border-radius:6px;color:#d7e4e8;box-shadow:none}
+.tool-btn.primary,.small-btn.selected{background:#243e37;border-color:#688f80;color:#e2f1e9}
+.stage{background:radial-gradient(ellipse at 52% 46%,#182a38 0%,#0e1a26 43%,#0a111a 89%)}
+.stage-title .eyebrow,.stage-status,.scene-caption,.hint{color:#abc3c8;text-shadow:none}
+.stage-title h1{color:#f0f5f6;font-weight:570;letter-spacing:-.04em}
+.stage-title p{color:#b5c5cd}
+.cam-switch,.journey-panel{background:#101d27e8;border:1px solid var(--llm-line);border-radius:7px;box-shadow:none}
+.cam-switch button{color:#b0c2cd}
+.cam-switch button.active{background:#274039;color:#e6f1ed}
+.journey-top strong{color:#e3cfac}
+.journey-kicker{color:#b8d9cd}
+.journey-controls button,.journey-data button,.stage-journey-cta{background:#1a2c35;border:1px solid var(--llm-line);border-radius:6px;color:#dbe8ec;box-shadow:none}
+.journey-controls .journey-primary{background:#344336;border-color:#9aa786;color:#ecf2e2}
+.journey-track,.plot-summary{background:#1b2b34;border-color:var(--llm-hairline)}
+.journey-track>div{background:#a8cfc1;box-shadow:none}
+.plot-head,.plot-note,.plot-summary{color:#b7c7ce;border-color:var(--llm-hairline);font-family:inherit;letter-spacing:0}
+.plot-panel,.plot-note,.plot-summary{background:#111c26}
+.ins-head{border-color:var(--llm-hairline)}
+.ins-head h2{color:#ecf2f4;font-weight:590}
+.ins-head p{color:#acbec6}
+.stat,.learn-card,.source-note{background:#16242f;border:1px solid var(--llm-hairline);border-radius:7px;color:#b9cbd2}
+.stat small{color:#95acb8}
+.stat strong{color:#edf3f5;font-weight:570}
+.stat strong.warm{color:#e0c49d}
+.block-title{border-color:var(--llm-hairline);color:#cfdbdf;font-family:inherit;letter-spacing:.055em}
+.control label{color:#bdd0d9}
+.control label output{color:#b4dacb}
+.data-pill{background:#1b302e;border-color:#547a6f;border-radius:4px;color:#c7e3d5}
+.data-pill.demo{background:#362c23;border-color:#79694d;color:#e0c69d}
+.footer{border-color:var(--llm-hairline)}
+.mobile-dock{background:#0d151e;border-color:var(--llm-hairline)}
+.mobile-dock button{border-radius:6px}
+.mobile-dock button b{color:#bad6d1}
+.mobile-dock button.active{background:#1b302c;border:1px solid #5d8275;color:#eff5f3}
+@media(max-width:960px){
+ .ai-guide-work{grid-template-columns:minmax(0,1fr) minmax(220px,.8fr)}
+}
+@media(max-width:800px){
+ .sidebar,.inspector,.plot-panel{background:#111d27;border:1px solid var(--llm-line);border-radius:10px;box-shadow:0 -8px 32px #0007}
+ .mobile-dock{border-top:1px solid var(--llm-hairline)}
+}
+@media(max-width:680px){
+ .ai-guide-shell{grid-template-rows:64px minmax(0,1fr) 64px}
+ .ai-guide-head{padding:8px 13px}
+ .ai-guide-brand{gap:9px}
+ .ai-guide-mark{height:32px;width:32px;border-radius:6px;font-size:11px}
+ .ai-guide-brand h1{font-size:15px;font-weight:560}
+ .ai-guide-kicker,.ai-guide-stepname,.ai-guide-small{font-size:9px;letter-spacing:.045em}
+ .ai-guide-technical{padding:7px 9px!important;font-size:11px!important}
+ .ai-guide-body{padding:10px 12px;gap:9px}
+ .ai-guide-intro h2{font-size:clamp(20px,5.25vw,29px);line-height:1.12}
+ .ai-guide-intro p{font-size:12px;line-height:1.42}
+ .ai-guide-visual,.ai-guide-aside{padding:13px;border-radius:8px}
+ .ai-guide-visual{gap:11px}
+ .ai-guide-aside{gap:9px}
+ .ai-guide-aside>p:not(.ai-guide-boundary){font-size:13px;line-height:1.48}
+ .ai-guide-input{border-radius:7px;min-height:85px;padding:13px}
+ .ai-guide-flow-item{border-radius:5px}
+ .ai-guide-bottom{padding:7px 12px;gap:9px}
+ .ai-guide-actions{gap:7px}
+ .ai-guide .ai-guide-actions button{min-height:41px;border-radius:6px;padding:8px 12px;font-size:12px!important}
+ .ai-guide-progress i{height:2px}
+ .story-board{border-radius:8px}
+ .story-copy h2{font-size:clamp(21px,5.6vw,27px)}
+ .story-board:before{opacity:.2}
+}
+@media(prefers-reduced-motion:reduce){
+ button{transition:none!important}
+}
+
+
+/* Narrow phones: keep previous/next completely inside the viewport. */
+@media(max-width:380px){
+ .ai-guide-bottom{padding-left:10px;padding-right:10px;gap:6px}
+ .ai-guide-progress{display:none}
+ .ai-guide-counter{min-width:27px;flex:none;font-size:11px}
+ .ai-guide-actions{gap:5px;min-width:0;margin-left:auto}
+ .ai-guide .ai-guide-actions button{
+   padding:7px 10px;min-height:40px;font-size:11px!important;
+   max-width:calc(100vw - 110px);
+ }
+}
+
 </style>
+<script src="/assets/llm-learning-math.js"></script>
+<script src="/assets/llm-real-trace-viewer.js"></script>
 <script defer src="/assets/site-analytics.js"></script></head>
 <body>
 <div id="app" data-panel="">
 <aside class="sidebar" id="modulesPanel">
- <div class="logo"><span class="mark"><i></i></span><div><strong>LLM / 01</strong><small>OBSERVATORIUM</small></div></div>
+ <div class="logo"><span class="mark"><i></i></span><div><strong>Taalmodel</strong><small>IN 3D</small></div></div>
  <div class="mobile-panel-title">ONDERZOEKEN <button class="mobile-close" data-close>Sluiten x</button></div>
- <span class="section-label">Onderzoeksmodules</span>
+ <span class="section-label">Onderwerpen</span>
  <nav class="mode-list" id="modes" aria-label="Onderzoeksmodules"></nav>
  <div class="side-foot"><div class="live">3D-WEERGAVE ACTIEF</div><p>Modelafmetingen uit openbare configuraties. Ruimtelijke posities en routes zijn een rekenvoorbeeld.</p><p>LLM-01 / zelfstandig</p></div>
 </aside>
 <header class="topbar">
- <div class="breadcrumb">EAI / <b>LLM OBSERVATORIUM</b> <span class="hide-mobile">/ MODELWERELD</span></div>
+ <div class="breadcrumb">EAI / <b>HOE WERKT EEN TAALMODEL?</b> <span class="hide-mobile">/ MODELWERELD</span></div>
  <div class="top-actions"><span class="data-pill" id="dataLabel">CONFIG + DEMO</span><select id="modelSelect" aria-label="Kies model"><option value="120">gpt-oss-120b</option><option value="20">gpt-oss-20b</option></select><button class="tool-btn" id="resetBtn" type="button">Herstel</button><button class="tool-btn primary" id="exportBtn" type="button">Model JSON</button></div>
 </header>
 <main class="stage" id="stage"><canvas id="universe" aria-label="Interactieve 3D-projectie: draai het model, zoom in en selecteer een laag of expert"></canvas>
@@ -643,14 +1041,14 @@
   <div class="ai-guide-body">
    <nav class="ai-guide-steps" id="guideSteps" aria-label="Stappen van de uitleg"></nav>
    <div class="ai-guide-main">
-    <div class="ai-guide-intro"><span id="guideEyebrow" class="ai-guide-stepname">STAP 1 VAN 5</span><h2 id="guideHeading">Je stelt een vraag</h2><p id="guideSubheading"></p></div>
+    <div class="ai-guide-intro"><span id="guideEyebrow" class="ai-guide-stepname">STAP 1 VAN 9</span><h2 id="guideHeading">Je stelt een vraag</h2><p id="guideSubheading"></p></div>
     <div class="ai-guide-work">
      <div class="ai-guide-visual" id="guideVisual" aria-label="Voorbeeld van deze stap"></div>
      <div class="ai-guide-aside"><span class="ai-guide-small">WAT GEBEURT ER?</span><p id="guideExplanation"></p><div id="guideInteractive"></div><p id="guideBoundary" class="ai-guide-boundary"></p></div>
     </div>
    </div>
   </div>
-  <footer class="ai-guide-bottom"><span id="guideCounter" class="ai-guide-counter" aria-live="polite">1 / 5</span><div class="ai-guide-progress" id="guideProgress" aria-hidden="true"></div><div class="ai-guide-actions"><button type="button" id="guidePrev">Vorige</button><button type="button" id="guideNext" class="ai-guide-next">Bekijk de stukjes <span aria-hidden="true">→</span></button></div></footer>
+  <footer class="ai-guide-bottom"><span id="guideCounter" class="ai-guide-counter" aria-live="polite">1 / 9</span><div class="ai-guide-progress" id="guideProgress" aria-hidden="true"></div><div class="ai-guide-actions"><button type="button" id="guidePrev">Vorige</button><button type="button" id="guideNext" class="ai-guide-next">Bekijk de stukjes <span aria-hidden="true">→</span></button></div></footer>
  </div>
 </section>
 <script>
@@ -658,22 +1056,22 @@
 const $=id=>document.getElementById(id), TAU=Math.PI*2;
 const CONFIG={120:{name:'gpt-oss-120b',layers:36,experts:128,top:4,heads:64,kv:8,dim:2880,context:131072,window:128,vocab:201088,billions:116.83,active:5.13},20:{name:'gpt-oss-20b',layers:24,experts:32,top:4,heads:64,kv:8,dim:2880,context:131072,window:128,vocab:201088,billions:20.91,active:3.61}};
 const MODES=[
- {name:'Opbouw',sub:'Lagen en kleine rekennetwerken',glyph:'&#9673;',title:'Zo rekent AI met tekst.',desc:'Elke laag verwerkt de tekst verder. Het gouden vlak toont één laag. Tik op een puntje om een klein rekennetwerk te bekijken.',ins:'Zo zit dit model in elkaar',insDesc:'Een laag is een stap in de berekening. Een expert is een klein rekennetwerk, geen persoon. De plekken in deze tekening zijn schematisch.',plot:'WELKE EERDERE TEKST KAN DE LAAG BEREIKEN?',note:'De aantallen lagen en experts komen uit de modelbeschrijving. De getekende verbindingen zijn voorbeelden.',task:'Kies het kleinere model gpt-oss-20b. Hoeveel lagen telt het?',options:['24 lagen','36 lagen','128 lagen'],answer:0},
- {name:'Tekststukjes',sub:'Volg een token',glyph:'&#8644;',title:'Volg een stukje tekst.',desc:'De AI verdeelt je zin in kleine stukjes, tokens genoemd. Kies een stukje en bekijk de voorbeeldroute door de rekenlagen.',ins:'Een stukje tekst volgen',insDesc:'Een tokenizer verdeelt tekst in tokens en geeft ze een nummer. De getekende route en scores zijn berekende voorbeelden, geen metingen uit een draaiend model.',plot:'GEKOZEN TEKSTSTUKJE EN LAAG',note:'De stukjes tekst kunnen echt getokeniseerd zijn. De getekende routergewichten zijn voorbeelden.',task:'Kies een ander stukje tekst. Verandert de voorbeeldroute?',options:['Ja, elke route is hetzelfde','Nee, de voorbeeldroute verandert'],answer:1},
- {name:'Experts',sub:'Vier rekennetwerken werken mee',glyph:'&#9649;',title:'Wie rekent er mee?',desc:'In een laag zitten veel kleine rekennetwerken. Het model kiest er vier voor ieder stukje tekst. Tik op een vakje om er een te bekijken.',ins:'Wie rekent er mee?',insDesc:'Een expert is een klein rekennetwerk. De router kiest welke vier experts voor het stukje tekst meewerken. De getoonde scores zijn voorbeelden.',plot:'GEKOZEN EXPERTS EN VOORBEELDSCORES',note:'De keuze van vier experts hoort bij deze modellen. De getekende scores zijn geen echte activaties.',task:'Kijk naar de gekleurde vakjes. Hoeveel experts zijn er voor één stukje tekst geselecteerd?',options:['Alle experts','Vier','Eentje'],answer:1},
- {name:'Eerdere tekst',sub:'Waar kan AI naar terugkijken?',glyph:'&#8780;',title:'Welke eerdere tekst telt mee?',desc:'Voor een volgend stukje tekst gebruikt het model wat ervoor staat. Sommige lagen kijken kort terug; andere bereiken veel meer eerdere tekst.',ins:'Terugkijken tijdens het rekenen',insDesc:'Dit heet attention: eerdere stukjes tekst gebruiken om het volgende stukje te voorspellen. De kleuren tonen welk deel bereikbaar is, niet waar het model echt naar keek.',plot:'BEREIKBARE STUKJES EERDERE TEKST',note:'Sommige lagen kijken direct 128 stukjes terug, andere kunnen alle eerdere stukjes bereiken. Dit zijn geen gemeten aandachtsscores.',task:'Kan de AI bij het voorspellen alvast een stukje lezen dat nog niet is gemaakt?',options:['Ja','Nee'],answer:1},
- {name:'Hoeveel tekst?',sub:'Kort of ver terugkijken',glyph:'&#9638;',title:'Hoe ver kan AI terugkijken?',desc:'Een lange vraag bevat veel stukjes tekst. Maak de invoer langer en bekijk welke eerdere stukjes de gekozen laag direct kan gebruiken.',ins:'Hoeveel tekst past er mee?',insDesc:'De context is de tekst die het model voor zijn berekening krijgt. Een lokaal venster gebruikt alleen recente stukjes direct; andere lagen kunnen verder terugkijken.',plot:'DEEL VAN DE TEKST DAT DIRECT BEREIKBAAR IS',note:'De grafiek laat alleen bereik zien. Je kunt er niet uit aflezen hoeveel het model heeft onthouden.',task:'Een laag kan direct 128 vorige stukjes gebruiken. Kan die dan in één stap alle 4096 eerdere stukjes bereiken?',options:['Ja','Nee'],answer:1},
- {name:'Volgend stukje',sub:'Kansen en een keuze',glyph:'&#10022;',title:'Hoe kiest AI een vervolg?',desc:'Het model geeft mogelijke vervolgen verschillende kansen. Verander de instellingen en kijk hoe de balken verschuiven.',ins:'Mogelijke vervolgen vergelijken',insDesc:'Temperatuur verandert hoe uitgesproken de kansen zijn. Top-p bepaalt welke mogelijkheden meedoen. Dit zijn verzonnen rekenvoorbeelden.',plot:'VOORBEELDKANS PER MOGELIJK VERVOLG',note:'De balken zijn een rekenvoorbeeld met acht kandidaten, geen scores uit een draaiend taalmodel.',task:'Zet de temperatuur hoger. Wat gebeurt er met de verdeling van de voorbeeldkansen?',options:['De kansen worden gelijker','De hoogste kans wordt steeds groter'],answer:0},
- {name:'Kosten',sub:'Wat wordt er meegerekend?',glyph:'&#9678;',title:'Wat kost een AI-antwoord?',desc:'De AI verwerkt je vraag en maakt nieuwe tekst. Ook onzichtbare redeneerstappen kunnen tokens kosten. Verander de aantallen en bekijk het verschil.',ins:'Rekenwerk en voorbeeldkosten',insDesc:'Een token is een klein stukje tekst. Invoer en uitvoer kunnen verschillend worden afgerekend. De prijzen op dit scherm zijn voorbeelden.',plot:'VOORBEELDKOSTEN PER SOORT TOKEN',note:'De aantallen starten met een gepubliceerd voorbeeld. Dit zijn geen actuele API-tarieven.',task:'In het voorbeeld zijn er 1024 redeneertokens. Bij welke categorie worden die voor de kosten gerekend?',options:['Bij invoer','Bij uitvoer','Ze tellen niet mee'],answer:1}
+ {name:'Opbouw',sub:'Lagen en kleine rekennetwerken',glyph:'&#9673;',title:'Zo rekent AI met tekst.',desc:'Dit model heeft meerdere lagen. Elke laag rekent verder met de getallen van de vorige. Goud toont welke laag je onderzoekt.',ins:'Zo zit dit model in elkaar',insDesc:'Een laag is een stap in de berekening. Een expert is een klein rekennetwerk, geen persoon. De plekken in deze tekening zijn schematisch.',plot:'WELKE EERDERE TEKST KAN DE LAAG BEREIKEN?',note:'De aantallen lagen en experts komen uit de modelbeschrijving. De getekende verbindingen zijn voorbeelden.',task:'Kies het kleinere model gpt-oss-20b. Hoeveel lagen telt het?',options:['24 lagen','36 lagen','128 lagen'],answer:0},
+ {name:'Tekststukjes',sub:'Volg een token',glyph:'&#8644;',title:'Volg een stukje tekst.',desc:'De echte tokenizer geeft ieder stukje tekst een eigen nummer. Kies een token en volg daarna de voorbeeldroute door het model.',ins:'Een stukje tekst volgen',insDesc:'Een tokenizer verdeelt tekst in tokens en geeft ze een nummer. De getekende route en scores zijn berekende voorbeelden, geen metingen uit een draaiend model.',plot:'GEKOZEN TEKSTSTUKJE EN LAAG',note:'De stukjes tekst kunnen echt getokeniseerd zijn. De getekende routergewichten zijn voorbeelden.',task:'Kies een ander stukje tekst. Verandert de voorbeeldroute?',options:['Ja, elke route is hetzelfde','Nee, de voorbeeldroute verandert'],answer:1},
+ {name:'Experts',sub:'Vier rekennetwerken werken mee',glyph:'&#9649;',title:'Wie rekent er mee?',desc:'Een router kiest vier van de beschikbare rekennetwerken om mee te rekenen. De gekleurde experts hier zijn een voorbeeldkeuze.',ins:'Wie rekent er mee?',insDesc:'Een router berekent scores en kiest vier rekennetwerken. Deze 3D-selectie gebruikt andere voorbeeldscores dan de begeleide leerroute. Het zijn geen gemeten modelwaarden.',plot:'GEKOZEN EXPERTS EN VOORBEELDSCORES',note:'Vier experts per token is een echt modelgegeven. De gekozen experts en de scores komen uit een apart 3D-rekenvoorbeeld.',task:'Kijk naar de gekleurde vakjes. Hoeveel experts zijn er voor één stukje tekst geselecteerd?',options:['Alle experts','Vier','Eentje'],answer:1},
+ {name:'Eerdere tekst',sub:'Waar kan AI naar terugkijken?',glyph:'&#8780;',title:'Welke eerdere tekst telt mee?',desc:'Het model kan eerdere tekst gebruiken, maar niet de tokens die nog moeten komen. De kleur toont welke posities rechtstreeks bereikbaar zijn.',ins:'Terugkijken tijdens het rekenen',insDesc:'Met attention kan het model eerdere tekst meewegen. Dit scherm toont alleen welke eerdere posities rechtstreeks bereikbaar zijn, niet de echte gewichten.',plot:'BEREIKBARE STUKJES EERDERE TEKST',note:'Sommige lagen kijken direct 128 stukjes terug, andere kunnen alle eerdere stukjes bereiken. Dit zijn geen gemeten aandachtsscores.',task:'Kan de AI bij het voorspellen alvast een stukje lezen dat nog niet is gemaakt?',options:['Ja','Nee'],answer:1},
+ {name:'Hoeveel tekst?',sub:'Kort of ver terugkijken',glyph:'&#9638;',title:'Hoe ver kan AI terugkijken?',desc:'Een lange vraag bevat meer tokens. Een lokaal venster gebruikt rechtstreeks alleen de laatste 128 posities. Maak de tekst langer en vergelijk.',ins:'Hoeveel tekst past er mee?',insDesc:'De context is de tekst die het model voor zijn berekening krijgt. Een lokaal venster gebruikt alleen recente stukjes direct; andere lagen kunnen verder terugkijken.',plot:'DEEL VAN DE TEKST DAT DIRECT BEREIKBAAR IS',note:'De grafiek laat alleen bereik zien. Je kunt er niet uit aflezen hoeveel het model heeft onthouden.',task:'Een laag kan direct 128 vorige stukjes gebruiken. Kan die dan in één stap alle 4096 eerdere stukjes bereiken?',options:['Ja','Nee'],answer:1},
+ {name:'Volgend stukje',sub:'Kansen en een keuze',glyph:'&#10022;',title:'Hoe kiest AI een vervolg?',desc:'Elk mogelijk volgend token krijgt een score. Verander de variatie en zie hoe de voorbeeldkansen verschuiven. Dit is geen voorspelling voor jouw vraag.',ins:'Mogelijke vervolgen vergelijken',insDesc:'Temperatuur verandert de verdeling van kansen. Top-p beperkt de kandidaten. De balken zijn berekend uit voorbeeldscores, niet uit je vraag.',plot:'VOORBEELDKANS PER MOGELIJK VERVOLG',note:'De balken zijn een rekenvoorbeeld met acht kandidaten, geen scores uit een draaiend taalmodel.',task:'Zet de temperatuur hoger. Wat gebeurt er met de verdeling van de voorbeeldkansen?',options:['De kansen worden gelijker','De hoogste kans wordt steeds groter'],answer:0},
+ {name:'Kosten',sub:'Wat wordt er meegerekend?',glyph:'&#9678;',title:'Wat kost een AI-antwoord?',desc:'Een model gebruikt tokens voor invoer en uitvoer. Ook verborgen redeneertokens kunnen meetellen. Verander de aantallen in het kostenvoorbeeld.',ins:'Rekenwerk en voorbeeldkosten',insDesc:'Een token is een klein stukje tekst. Invoer en uitvoer kunnen verschillend worden afgerekend. De prijzen op dit scherm zijn voorbeelden.',plot:'VOORBEELDKOSTEN PER SOORT TOKEN',note:'De aantallen starten met een gepubliceerd voorbeeld. Dit zijn geen actuele API-tarieven.',task:'In het voorbeeld zijn er 1024 redeneertokens. Bij welke categorie worden die voor de kosten gerekend?',options:['Bij invoer','Bij uitvoer','Ze tellen niet mee'],answer:1}
 ];
 const MOBILE_DESCS=[
- 'Goud is de gekozen laag. Tik op een puntje.',
- 'Kies een tekststukje. Volg de route.',
- 'Vier vakjes doen mee. Tik op een vakje.',
- 'Welke tekst stond ervoor? Bekijk de rij.',
- 'Maak de tekst langer. Kijk wat bereikbaar is.',
- 'Verander de kansen. Bekijk het verschil.',
- 'Verander aantallen. Bekijk de kosten.'
+ 'Elke laag rekent verder. Goud toont jouw laag.',
+ 'Echte tokens. De getekende route is een voorbeeld.',
+ 'Vier experts worden gekozen. Dit is een voorbeeld.',
+ 'Kleur toont bereik, geen echte aandachtsscore.',
+ 'Lokaal bereik: de laatste 128 tokens.',
+ 'Deze kansen komen uit voorbeeldscores.',
+ 'Invoer en uitvoer tellen mee in de kosten.'
 ];
 const state={model:120,mode:0,layer:17,expert:21,token:0,input:'Waarom is de lucht blauw?',promptWords:[],tokenStatus:'example',contextTokens:4096,temp:.8,topP:.9,showExperts:true,showFields:true,showTrails:true,showLabels:true,yaw:.35,pitch:.79,zoom:1.07,time:120,playing:false,speed:1,panel:'',journey:0,follow:false,uInput:75,uCached:0,uWrite:0,uReason:1024,uOther:162,uRateIn:1,uRateOut:5,uFocus:3,dirty:true,chartDirty:true};
 let cfg=CONFIG[state.model],world=null,routeCache=new Map(),plotMeta=null,screenJourney=[],cam={cy:1,sy:0,cp:1,sp:0,sc:1,ox:0,oy:0},canvas=$('universe'),ct=canvas.getContext('2d',{alpha:false}),plot=$('plot'),pc=plot.getContext('2d'),W=0,H=0,PW=0,PH=0,dpr=1,screenExperts=[],lastTime=0,lastDraw=0,pointer=null,moveDist=0,lastGraph=0;
@@ -721,6 +1119,11 @@ async function loadRealTokenizer(){
  if(!tokenizer)state.tokenStatus='error';
  const range=$('r-token');if(range){range.max=Math.max(0,words().length-1);range.value=state.token}
  renderTokenPieces();refreshNumbers();updateJourneyUI();if(typeof guideRender==='function')guideRender();
+ if(state.mode===0&&$('app').dataset.storyView==='animation'&&storyState.phase>0&&!storyState.finished){
+  const phase=storyState.phase,elapsed=storyState.elapsed;
+  storySetPhase(phase);storyState.elapsed=elapsed;
+  storyPaint(Math.min(1,elapsed/STORY_PHASES[phase].duration));
+ }
 }
 function chooseRoute(layer,token=state.token){const tokenSeed=state.promptWords[token]?.id??token;const key=state.model+':'+layer+':'+tokenSeed;if(routeCache.has(key))return routeCache.get(key);const ranked=[];for(let e=0;e<cfg.experts;e++){const score=1.6*hash(layer+4,e+7,tokenSeed+93)+.7*Math.sin((e+1)*.071+layer*.63+tokenSeed*.39)+.2*Math.cos(e*.18-layer*.49);ranked.push({e,score})}ranked.sort((a,b)=>b.score-a.score);const chosen=ranked.slice(0,cfg.top);const exps=chosen.map(x=>Math.exp(x.score*2));const total=exps.reduce((a,b)=>a+b,0);const answer=chosen.map((x,i)=>({e:x.e,p:exps[i]/total,score:x.score}));routeCache.set(key,answer);return answer}
 function logits(){let base=[2.35,1.7,1.05,.66,.23,-.19,-.65,-1.16];let weights=base.map(x=>Math.exp(x/state.temp));let sum=weights.reduce((a,b)=>a+b,0);let p=weights.map(x=>x/sum);let order=[...p.keys()].sort((a,b)=>p[b]-p[a]);let used=[],cumulative=0;for(const idx of order){used.push(idx);cumulative+=p[idx];if(cumulative>=state.topP)break}let m=p.map((x,i)=>used.includes(i)?x:0);let k=m.reduce((a,b)=>a+b,0);return {p:p,keep:used,chosen:m.map(x=>x/k),candidates:['leren','denken','taal','vragen','antwoord','onderzoek','model','gegevens']}}
@@ -1178,16 +1581,26 @@ function selectAtGraph(x){
 
 function modeSlug(name){return name.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 function modeFromHash(){return MODES.findIndex(m=>modeSlug(m.name)===location.hash.slice(1))}
-function setMode(index){state.mode=clamp(index,0,MODES.length-1);const slug=modeSlug(MODES[state.mode].name);if(location.hash.slice(1)!==slug)history.replaceState(null,'',location.pathname+location.search+'#'+slug);if(state.mode===1){state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.zoom=1.06;}state.follow=false;state.playing=false;state.time=0;$('playBtn').textContent=state.playing?'II':'>';document.querySelector('[data-cam=focus]').textContent='FOCUS';const m=MODES[state.mode];document.querySelectorAll('.mode-btn').forEach((e,i)=>{e.classList.toggle('active',i===state.mode);e.setAttribute('aria-pressed',String(i===state.mode))});$('app').dataset.mode=String(state.mode);$('graphDockLabel').textContent=state.mode===1?'Details':'Grafiek';$('eyebrow').textContent=String(state.mode+1).padStart(2,'0')+' / '+m.name.toUpperCase();$('modeTitle').textContent=m.title;$('modeDesc').textContent=innerWidth<=800?MOBILE_DESCS[state.mode]:m.desc;$('insTitle').textContent=m.ins;$('insDesc').textContent=m.insDesc;$('modeCount').textContent=String(state.mode+1).padStart(2,'0')+' / '+String(MODES.length).padStart(2,'0');$('plotTitle').textContent=m.plot;$('plotNote').textContent=m.note;$('dataLabel').textContent=state.mode===0?'MODELGEGEVENS':state.mode===6?'BRON + REKENSOM':'MODEL + VOORBEELD';$('usageStageTag').hidden=state.mode!==6;$('statusHint').innerHTML=state.mode===0?'<strong>'+cfg.layers+' lagen · '+cfg.experts+' experts per laag</strong><br>Goud is de gekozen laag; ieder puntje is een klein rekennetwerk.':state.mode===1?'<strong>Volg één stukje tekst</strong><br>Deze route is een voorbeeld, geen live meting.':state.mode===2?'<strong>Vier rekennetwerken werken mee</strong><br>De kleuren tonen een voorbeeldkeuze.':state.mode===3?'<strong>Welke eerdere tekst telt mee?</strong><br>De kleuren tonen wat bereikbaar is.':state.mode===4?'<strong>Verder terugkijken</strong><br>Een lokaal venster gebruikt slechts recente tekst direct.':state.mode===5?'<strong>Lange balk = grotere voorbeeldkans</strong><br>Dit zijn geen antwoorden op jouw vraag.':'<strong>Een AI verwerkt en maakt tekst</strong><br>Ook onzichtbare tekststukjes kunnen meetellen.';renderInspector();state.dirty=true;state.chartDirty=true;updateJourneyUI();closePanel();if(state.mode===0)storyOpen();else{storyStop();$('app').dataset.storyView=''} }
+function setMode(index){state.mode=clamp(index,0,MODES.length-1);const slug=modeSlug(MODES[state.mode].name);if(location.hash.slice(1)!==slug)history.replaceState(null,'',location.pathname+location.search+'#'+slug);if(state.mode===1){state.journey=0;state.layer=0;state.expert=chooseRoute(0)[0].e;state.zoom=1.06;}state.follow=false;state.playing=false;state.time=0;$('playBtn').textContent=state.playing?'II':'>';document.querySelector('[data-cam=focus]').textContent='FOCUS';const m=MODES[state.mode];document.querySelectorAll('.mode-btn').forEach((e,i)=>{e.classList.toggle('active',i===state.mode);e.setAttribute('aria-pressed',String(i===state.mode))});$('app').dataset.mode=String(state.mode);$('graphDockLabel').textContent=state.mode===1?'Details':'Grafiek';$('eyebrow').textContent=String(state.mode+1).padStart(2,'0')+' / '+m.name.toUpperCase();$('modeTitle').textContent=m.title;$('modeDesc').textContent=innerWidth<=800?MOBILE_DESCS[state.mode]:m.desc;$('insTitle').textContent=m.ins;$('insDesc').textContent=m.insDesc;$('modeCount').textContent=String(state.mode+1).padStart(2,'0')+' / '+String(MODES.length).padStart(2,'0');$('plotTitle').textContent=m.plot;$('plotNote').textContent=m.note;$('dataLabel').textContent=state.mode===0?'MODELGEGEVENS':state.mode===6?'BRON + REKENSOM':'MODEL + VOORBEELD';$('usageStageTag').hidden=state.mode!==6;$('statusHint').innerHTML=state.mode===0?'<strong>'+cfg.layers+' lagen · '+cfg.experts+' experts per laag</strong><br>Goud is de gekozen laag; ieder puntje is een klein rekennetwerk.':state.mode===1?'<strong>Volg één stukje tekst</strong><br>Deze route is een voorbeeld, geen live meting.':state.mode===2?'<strong>Vier experts gekozen door een router</strong><br>Deze 3D-keuze is een ander rekenvoorbeeld dan in de les.':state.mode===3?'<strong>Welke eerdere tekst telt mee?</strong><br>De kleuren tonen wat bereikbaar is.':state.mode===4?'<strong>Verder terugkijken</strong><br>Een lokaal venster gebruikt slechts recente tekst direct.':state.mode===5?'<strong>Lange balk = grotere voorbeeldkans</strong><br>Dit zijn geen antwoorden op jouw vraag.':'<strong>Een AI verwerkt en maakt tekst</strong><br>Ook onzichtbare tekststukjes kunnen meetellen.';renderInspector();state.dirty=true;state.chartDirty=true;updateJourneyUI();closePanel();if(state.mode===0)storyOpen();else{storyStop();$('app').dataset.storyView=''} }
 function changeModel(id){state.model=+id;cfg=CONFIG[state.model];rebuildWorld();$('modelName').textContent=cfg.name;renderInspector();setMode(state.mode)}
 function renderModes(){const symbols=['▤','↣','▦','≋','▥','▧','▣'];$('modes').innerHTML=MODES.map((m,i)=>'<button type="button" class="mode-btn '+(i===state.mode?'active':'')+'" data-mode="'+i+'" aria-pressed="'+(i===state.mode)+'"><span class="mode-icon">'+symbols[i]+'</span><span><strong>'+m.name+'</strong><small>'+m.sub+'</small></span><span class="num">'+String(i+1).padStart(2,'0')+'</span></button>').join('');$('modes').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setMode(+b.dataset.mode)})}
 function setStats(items){$('stats').innerHTML=items.map(item=>'<div class="stat"><small>'+item[0]+'</small><strong class="'+(item[2]?'warm':'')+'">'+item[1]+'</strong><span>'+((item[3]||''))+'</span></div>').join('')}
 function addRange(label,key,min,max,step,suffix='',cb){let d=document.createElement('div');d.className='control';d.innerHTML='<label for="r-'+key+'"><span>'+label+'</span><output id="o-'+key+'">'+state[key]+suffix+'</output></label><input id="r-'+key+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+state[key]+'">';$('controls').appendChild(d);d.querySelector('input').addEventListener('input',e=>{state[key]=+e.target.value;d.querySelector('output').textContent=state[key]+suffix;if(cb)cb();if(state.mode===1&&key==='layer'){state.journey=state.layer;state.playing=false;$('playBtn').textContent='>';state.expert=chooseRoute(state.layer)[0].e;}if(state.mode===1&&key==='token'){state.expert=chooseRoute(state.layer)[0].e;}state.dirty=true;state.chartDirty=true;refreshNumbers();updateJourneyUI()})}
 function addCheck(label,key){let d=document.createElement('label');d.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 10px;color:#bdd2df;font-size:11px';d.innerHTML='<span>'+label+'</span><input type="checkbox" '+(state[key]?'checked':'')+'>';d.querySelector('input').addEventListener('change',e=>{state[key]=e.target.checked;state.dirty=true});$('controls').appendChild(d)}
+/* Concrete uitleg bij de bestaande technische onderzoeken; ook voor mobiel. */
+const TECH_EXPLANATIONS=[
+ {title:'Waarom zoveel lagen?',text:'Iedere laag gebruikt de getallen die de vorige laag heeft berekend. Kies een andere laag en kijk waar je in de reeks zit. De stippen zijn rekennetwerken, geen losse gedachten.'},
+ {title:'Waarom tokens?',text:'Het model rekent niet rechtstreeks met letters. De tokenizer geeft stukjes tekst een nummer. Kies een token: het nummer is echt, maar de getekende route is een voorbeeld.'},
+ {title:'Waarom vier experts?',text:'Een router kiest vier rekennetwerken om mee te rekenen. Het model hoeft daardoor niet alle experts te gebruiken. Wissel van token om de voorbeeldkeuze te vergelijken.'},
+ {title:'Waarom eerdere tekst?',text:'Voor een volgend token kan het model alleen al geschreven tekst gebruiken. Kies een andere laag en zie welk deel rechtstreeks bereikbaar is. Dit is niet hetzelfde als gemeten aandacht.'},
+ {title:'Waarom een venster van 128?',text:'Een lokale laag gebruikt rechtstreeks de laatste 128 tokenposities. Maak het tekstvoorbeeld langer: dan vormt dit venster een steeds kleiner deel van de totale invoer.'},
+ {title:'Waarom verschillende kansen?',text:'Het model kiest een token uit verschillende mogelijkheden. Hogere temperatuur maakt dit rekenvoorbeeld minder uitgesproken. Top-p beperkt welke kandidaten meedoen.'},
+ {title:'Waarom tellen redeneertokens mee?',text:'Ook extra tokens die een redeneermodel intern genereert, kunnen onder uitvoer vallen. Verander de aantallen en kijk hoe de voorbeeldkosten wijzigen. Dit is geen factuur.'}
+];
 function makeTask(){
- const mode=MODES[state.mode];
- $('taskTitle').textContent=mode.name;
- $('taskText').textContent=mode.desc+' '+mode.note;
+ const explanation=TECH_EXPLANATIONS[state.mode];
+ $('taskTitle').textContent=explanation.title;
+ $('taskText').textContent=explanation.text;
 }
 function renderInspector(){const m=state.mode;$('controls').innerHTML='';if(m===0){setStats([['LAGEN',cfg.layers],['EXPERTS / LAAG',cfg.experts],['EXPERTPOSITIES',cfg.layers*cfg.experts],['BREEDTE',cfg.dim,'', 'dimensies']]);addRange('Laag','layer',0,cfg.layers-1,1,'',()=>{state.expert=clamp(state.expert,0,cfg.experts-1)});addRange('Expert','expert',0,cfg.experts-1,1);addCheck('Laat experts zien','showExperts');addCheck('Toon informatiesporen','showTrails');addCheck('Toon lichtveld','showFields')}
 else if(m===1){setStats([]);addInput();addRange('Contextposities (voorbeeld)','contextTokens',128,8192,128)}
@@ -1237,13 +1650,28 @@ for(const eventName of ['pointerup','pointercancel'])canvas.addEventListener(eve
 let lastJourneyUI=0;
 
 /* Een automatisch en leesbaar voorbeeld. Geen nagebootste activaties of echte modeluitvoer. */
-const STORY_PHASES=[
- {name:'Vraag',title:'Je stelt een vraag',text:'Je woorden gaan het taalmodel in.',duration:5.6},
- {name:'Stukjes',title:'De zin valt uiteen',text:'Het model verwerkt kleine stukjes tekst, tokens genoemd.',duration:7.0},
- {name:'Rekenen',title:'De getallen gaan door de lagen',text:'Eerdere tekst en kleine rekennetwerken veranderen de getallen in iedere laag.',duration:9.0},
- {name:'Kiezen',title:'Welk stukje komt hierna?',text:'Het model vergelijkt mogelijke vervolgen en kiest er één.',duration:7.0},
- {name:'Antwoord',title:'Zo groeit het antwoord',text:'Voor ieder nieuw stukje wordt opnieuw gerekend.',duration:8.0}
+/* Hetzelfde lesverhaal voedt de animatie én de interactieve uitleg. */
+const GUIDE_LABELS=['Jouw vraag','Echte tokens','Getallen','Volgorde','Eerdere tekst','Experts','Rekenlagen','Volgend token','Het antwoord'];
+/* Bij iedere lesstap hoort een bestaand technisch onderzoek. Geen extra menu. */
+const GUIDE_TECH_MODES=[0,1,1,1,3,2,0,5,5];
+const GUIDE_TECH_NAMES=['3D-model','tokens','tokenroute','tokenroute','context','experts','lagen','kansen','kansen'];
+const MODE_GUIDE_STEPS=[6,1,5,4,4,7,8];
+let guideVisited=false;
+
+const GUIDE_STEPS=[
+ {title:'Je stelt een vraag',sub:'Typ een zin. Diezelfde zin blijft zichtbaar wanneer je verdergaat.',storyText:'Het model gebruikt je tekst om een volgend stukje te berekenen.',explain:'Een taalmodel krijgt tekst en berekent welk stukje erna kan komen. Je eigen tekst blijft op dit apparaat. Er wordt geen online taalmodel aangeroepen.',boundary:'Een model kan overtuigend klinken en toch een onjuist antwoord maken.'},
+ {title:'Je zin valt uiteen',sub:'Tik op een stukje tekst. Je ziet het echte nummer van dat token.',storyText:'Een tokenizer verdeelt de zin. Ieder stukje krijgt een nummer.',explain:'De tokenizer verdeelt je zin in stukjes. Dat zijn niet altijd hele woorden. Bij ieder stukje hoort een nummer dat het model kan herkennen.',boundary:'Echte o200k_harmony-tokenizer zodra die is geladen. Anders: duidelijk gemarkeerd woordvoorbeeld.'},
+ {title:'Een tokennummer wordt een rij getallen',sub:'Bekijk de getallen bij je gekozen token.',storyText:'Het tokennummer verwijst naar een rij getallen. Daarmee gaat het model rekenen.',explain:'Het tokennummer is een verwijzing. In het taalmodel hoort bij dat nummer een rij getallen. Daarmee kan het model verder rekenen. De vier getallen hier zijn een klein, zelf berekend voorbeeld, niet uit gpt-oss.',boundary:'Echt tokennummer, voorbeeldgetallen. Echte embeddings van gpt-oss worden hier niet uitgelezen.'},
+ {title:'De volgorde maakt verschil',sub:'Wissel twee stukjes om. Wat verandert er aan de zin?',storyText:'De plek van een woord maakt verschil. Dezelfde woorden kunnen iets anders betekenen.',explain:'De volgorde van woorden maakt verschil. Het model gebruikt bij de berekeningen ook de plek van ieder token. Bij gpt-oss gebeurt dat onder meer in attention.',boundary:'Echte tokenposities. Het verwisselen is alleen een illustratie; het model wordt niet opnieuw uitgevoerd.'},
+ {title:'Welke eerdere tekst telt mee?',sub:'Tik op een token en zie de gewichten in een kleine voorbeeldberekening.',storyText:'Het model gebruikt eerdere tekst. Hier berekenen we met een klein voorbeeld hoeveel die stukjes bijdragen.',explain:'Een token wordt niet los van de tekst berekend. Met attention kan het model informatie uit eerdere tokens combineren. De gekleurde balken hieronder zijn echt uitgerekend met een klein voorbeeld, niet gemeten bij gpt-oss.',boundary:'Deze gewichten zijn zelf berekend, niet gemeten bij gpt-oss. De technische weergave toont welke tekst bereikbaar is, niet hoeveel gewicht die krijgt.'},
+ {title:'Vier rekennetwerken doen mee',sub:'Bekijk welke vier een kleine voorbeeldrouter selecteert.',storyText:'Voor ieder token kiest een router vier rekennetwerken. Niet alle experts doen mee.',explain:'Bij gpt-oss staan veel kleine rekennetwerken klaar: experts. Een router kiest er vier per token om mee te rekenen. We rekenen zo’n keuze hier zelf uit met een klein voorbeeld.',boundary:'Het aantal experts is echt. De selectie hier komt uit ons minivoorbeeld. De technische 3D-weergave rekent met andere voorbeeldscores en kiest mogelijk andere experts.'},
+ {title:'De getallen veranderen per laag',sub:'Kies een voorbeeldlaag en vergelijk de getallen ervoor en erna.',storyText:'Iedere laag verandert de getallen. De volgende laag rekent met die uitkomst verder.',explain:'Een laag gebruikt eerdere tekst en rekennetwerken om de getallen te veranderen. De volgende laag rekent verder met die nieuwe getallen. Hier doen we dat echt, maar met een klein voorbeeld van vier lagen.',boundary:'Het aantal gpt-oss-lagen is echt. De getallen hieronder zijn uit een eigen vierlagenvoorbeeld, niet uit gpt-oss.'},
+ {title:'Welk stukje komt hierna?',sub:'Verander de variatie. Bekijk hoe de kansen verschuiven.',storyText:'Er zijn meerdere mogelijke vervolgen. De balken tonen kansen uit ons rekenvoorbeeld.',explain:'Het model geeft verschillende mogelijke vervolgen een score. Uit die scores kunnen we kansen berekenen. Hier rekenen we met vier voorbeeldscores om het verschil te laten zien.',boundary:'De kansberekening is echt, maar de scores en woorden zijn voorbeelden. De technische grafiek gebruikt een ander voorbeeld met acht kandidaten.'},
+ {title:'Een antwoord groeit token voor token',sub:'Voeg een token toe en zie hoe het antwoord groeit.',storyText:'Het model kiest telkens een volgend token. Dit antwoord is vooraf geschreven, niet door AI gemaakt.',explain:'Een taalmodel kiest een volgend token, voegt het toe en berekent het volgende token opnieuw. Dit antwoord is vooraf geschreven. De echte tokenizer laat zien uit welke tokens die tekst bestaat.',boundary:'Vooraf geschreven voorbeeld, geen antwoord van een draaiend taalmodel. De tokenindeling is echt zodra de tokenizer is geladen.'}
 ];
+const STORY_PHASES=GUIDE_STEPS.map((step,i)=>({
+ name:GUIDE_LABELS[i],title:step.title,text:step.storyText,duration:[4.1,4.1,4.2,3.7,4.4,4.2,4.5,4.0,5.0][i]
+}));
 const storyState={phase:0,elapsed:0,playing:false,finished:false,lastPaint:-1};
 const storyReduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function storyEl(tag,content,className){const node=document.createElement(tag);if(content!=null)node.textContent=String(content);if(className)node.className=className;return node;}
@@ -1279,65 +1707,155 @@ function visualLayerMachine(){
  <text id="vCurrentLayer" x="340" y="423" text-anchor="end" fill="#eac18a" font-family="monospace" font-size="11">1 / ${cfg.layers}</text>
  </svg>`;
 }
+/* Animatie gebruikt dezelfde invoer, tokens en minivoorbeeldberekeningen als de gids. */
+function storyFocusIndex(){return Math.min(3,Math.max(0,state.promptWords.length-1))}
+function storyExampleTrace(){
+ const ids=state.promptWords.slice(0,6).map((p,i)=>Number.isInteger(p.id)?p.id:73+i);
+ return guideMath().miniTrace(ids,Math.min(storyFocusIndex(),ids.length-1),0,cfg.experts);
+}
+function storyTokenRow(container,tokens,limit=8){
+ tokens.slice(0,limit).forEach((t,i)=>{
+  const el=storyEl('span',readableToken(t.text).slice(0,24),'v-token');
+  el.title=t.id==null?'Woordvoorbeeld, geen echte token-ID':'Echt token-ID '+t.id;
+  container.append(el);
+ });
+}
+function storyValueRow(container,label,values,kind){
+ const row=storyEl('div',null,'v-mini-row'+(kind?' '+kind:''));
+ row.append(storyEl('span',label,'v-mini-row-label'));
+ const numbers=storyEl('div',null,'v-mini-values');
+ values.forEach(v=>numbers.append(storyEl('strong',Number(v).toFixed(2))));
+ row.append(numbers);container.append(row);
+ return row;
+}
 function storySetPhase(index){
  storyState.phase=index;storyState.elapsed=0;storyState.lastPaint=-1;
- const data=STORY_PHASES[index];$('storyKicker').textContent='ZO WERKT EEN TAALMODEL  ·  '+(index+1)+' / 5';$('storyHeading').textContent=data.title;$('storyDescription').textContent=data.text;
+ const data=STORY_PHASES[index];
+ $('storyKicker').textContent='ZO WERKT EEN TAALMODEL · '+(index+1)+' / '+STORY_PHASES.length;
+ $('storyHeading').textContent=data.title;$('storyDescription').textContent=data.text;
  const scene=visualSetScene(index);
  if(index===0){
-  scene.innerHTML='<span class="v-label">JOUW VRAAG</span><div class="v-question" id="vQuestion"></div>'+visualArrow()+visualMachine();
+  scene.innerHTML='<span class="v-label">DE VRAAG VAN DE BEZOEKER</span><div class="v-question" id="vQuestion"></div>'+visualArrow()+visualMachine();
   $('vQuestion').textContent=state.input;
- }
- if(index===1){
-  scene.innerHTML='<div class="v-question small" id="vSource"></div>'+visualArrow()+'<span class="v-label">ÉÉN ZIN, MEERDERE TEKSTSTUKJES</span><div class="v-wordline" id="vTokens"></div>'+visualArrow()+visualCodeBars([18,52,27,70,38,91,34,58,47,76,22,44]);
+ }else if(index===1){
+  scene.innerHTML='<div class="v-question small" id="vSource"></div><span class="v-label" id="vTokenSource"></span><div class="v-wordline" id="vTokens"></div><div class="v-mini-caption">Tik op Stap voor stap om een token en zijn nummer te onderzoeken.</div>';
   $('vSource').textContent=state.input;
-  const items=state.promptWords.slice(0,10);for(const p of items)$('vTokens').append(storyEl('span',readableToken(p.text).slice(0,18),'v-token'));
- }
- if(index===2){
-  scene.innerHTML=visualLayerMachine();
-  for(let i=0;i<4;i++){
-   const piece=state.promptWords[i];
-   const el=$('vSvgWord'+i);if(el)el.textContent=piece?readableToken(piece.text).slice(0,10):'·';
+  $('vTokenSource').textContent=state.tokenStatus==='real'?'ECHTE TOKENIZER · O200K_HARMONY':state.tokenStatus==='error'?'WOORDVOORBEELD · TOKENIZER NIET BESCHIKBAAR':'WOORDVOORBEELD · TOKENIZER WORDT GELADEN';
+  storyTokenRow($('vTokens'),state.promptWords,10);
+  const selected=$('vTokens').children[storyFocusIndex()];if(selected)selected.classList.add('is-hot');
+ }else if(index===2){
+  scene.innerHTML='<span class="v-label">VAN ECHT TOKENNUMMER NAAR VIER VOORBEELDGETALLEN</span><div class="v-mini-source" id="vTokenId"></div>'+visualArrow()+'<div id="vMiniNumbers" class="v-mini-table"></div>';
+  const p=state.promptWords[storyFocusIndex()]||{},real=Number.isInteger(p.id);
+  $('vTokenId').textContent=real?'Token-ID '+p.id:'Geen echt tokennummer beschikbaar';
+  storyValueRow($('vMiniNumbers'),'Zelf berekend voorbeeld',guideMath().tokenVector(real?p.id:73),'');
+ }else if(index===3){
+  scene.innerHTML='<span class="v-label">DEZELFDE TEKSTSTUKJES, EEN ANDERE PLEK</span><div class="v-mini-stack" id="vOrderRows"></div><div class="v-mini-caption">De tokennummers blijven gelijk. Hun plek in de zin verandert.</div>';
+  const tokens=state.promptWords.slice(0,5),order=$('vOrderRows');
+  for(let r=0;r<2;r++){
+   const line=storyEl('div',null,'v-mini-order'+(r?' is-alt':''));line.dataset.order=String(r);
+   const items=[...tokens];
+   if(r&&items.length>=3){const saved=items[0];items[0]=items[2];items[2]=saved;}
+   items.forEach((token,i)=>{
+    const cell=storyEl('span',readableToken(token.text).slice(0,18),'v-mini-word');
+    cell.title='Positie '+(i+1);
+    line.append(cell);
+   });order.append(line);
   }
- }
- if(index===3){
-  scene.innerHTML='<span class="v-label">MOGELIJKE VOLGENDE STUKJES  ·  VOORBEELD</span><div class="v-score-list" id="vScores"></div>'+visualArrow()+'<div class="v-picked" id="vChoice">De</div>';
-  [['De',46],['Omdat',27],['Het',18],['Door',9]].forEach(([label,score],i)=>{const row=storyEl('div',null,'v-score'+(i===0?' is-picked':''));row.innerHTML='<span></span><div class="track"><span class="fill" data-percent="'+score+'"></span></div><strong>'+score+'%</strong>';row.querySelector('span').textContent=label;$('vScores').append(row)});
- }
- if(index===4){
-  scene.innerHTML='<span class="v-label">VOORAF GESCHREVEN VOORBEELDANTWOORD</span><div class="v-answer" id="vAnswer"></div><div class="v-repeat"><i>↻</i><span>NA ELK STUKJE OPNIEUW REKENEN</span></div>'+visualMachine();
-  'De lucht lijkt blauw doordat zonlicht in de atmosfeer wordt verstrooid.'.split(' ').forEach(word=>$('vAnswer').append(storyEl('span',word)));
+ }else if(index===4){
+  scene.innerHTML='<span class="v-label">ATTENTION · ECHTE WISKUNDE OP VOORBEELDGETALLEN</span><div class="v-score-list" id="vAttentionScores"></div><div class="v-mini-caption">Eerdere tokens krijgen verschillende gewichten. Geen meting uit gpt-oss.</div>';
+  const trace=storyExampleTrace(),box=$('vAttentionScores');
+  trace.current.attention.weights.forEach((w,i)=>{
+   const row=storyEl('div',null,'v-score');
+   row.innerHTML='<span></span><div class="track"><span class="fill" data-percent="'+(w*100)+'"></span></div><strong>'+(w*100).toFixed(1)+'%</strong>';
+   row.querySelector('span').textContent=readableToken(state.promptWords[i]?.text||'?').slice(0,14);
+   box.append(row);
+  });
+ }else if(index===5){
+  scene.innerHTML='<span class="v-label">VIER VAN DE '+cfg.experts+' EXPERTS · MINIVOORBEELD</span><div class="v-expert-grid v-story-experts" id="vStoryExperts"></div><div class="v-mini-selected" id="vStorySelected"></div><div class="v-mini-caption">De vier gouden vakjes zijn gekozen door ons eigen rekenvoorbeeld.</div>';
+  const selected=storyExampleTrace().current.experts.selected;
+  const chosen=new Set(selected.map(e=>e.expert));
+  const grid=$('vStoryExperts');
+  for(let i=0;i<cfg.experts;i++){
+   const dot=document.createElement('i');
+   dot.className=chosen.has(i)?'active':'';
+   if(chosen.has(i)){dot.style.background='#efc58e';dot.style.borderColor='#ffe0a7';dot.style.boxShadow='0 0 9px #e3ac68bb';}
+   dot.title='Expert '+(i+1)+(chosen.has(i)?' (gekozen)':'');
+   grid.append(dot);
+  }
+  $('vStorySelected').textContent=selected.map(e=>'Expert '+(e.expert+1)).join('  ·  ');
+ }else if(index===6){
+  scene.innerHTML='<span class="v-label">ÉÉN LAAG STAP VOOR STAP · MINIVOORBEELD</span><div id="vLayerRows" class="v-mini-table"></div><div class="v-mini-caption">De getallen veranderen echt in dit minivoorbeeld. gpt-oss heeft '+cfg.layers+' lagen; de uitkomsten hierboven komen niet uit dat model.</div>';
+  const step=storyExampleTrace().current,rows=$('vLayerRows');
+  storyValueRow(rows,'Voor de laag',step.input,'');
+  storyValueRow(rows,'Na eerdere tekst',step.afterAttention,'');
+  storyValueRow(rows,'Na vier experts',step.result,'is-result');
+ }else if(index===7){
+  scene.innerHTML='<span class="v-label">MOGELIJKE VOLGENDE TOKENS · VOORBEELDSCORES</span><div class="v-score-list" id="vScores"></div><div class="v-mini-caption">De balken komen uit een echte kansberekening op vier voorbeeldscores.</div>';
+  const scores=guideMath().softmax([2.45,1.50,.82,.24],state.temp);
+  ['Omdat','De','Het','Dat'].forEach((label,i)=>{
+   const row=storyEl('div',null,'v-score'+(i===0?' is-picked':''));
+   row.innerHTML='<span></span><div class="track"><span class="fill" data-percent="'+(scores[i]*100)+'"></span></div><strong>'+(scores[i]*100).toFixed(1)+'%</strong>';
+   row.querySelector('span').textContent=label;$('vScores').append(row);
+  });
+ }else if(index===8){
+  scene.innerHTML='<span class="v-label" id="vAnswerSource"></span><div class="v-answer" id="vAnswer"></div><div class="v-repeat"><i>↻</i><span>VOOR IEDER VOLGEND TOKEN OPNIEUW REKENEN</span></div>';
+  $('vAnswerSource').textContent=state.tokenStatus==='real'?'VOORAF GESCHREVEN ANTWOORD · ECHTE TOKENVERDELING':'VOORAF GESCHREVEN ANTWOORD · WOORDVOORBEELD';
+  guideAnswerTokens().slice(0,22).forEach(t=>{
+   const part=storyEl('span',readableToken(t.text),'v-answer-token');
+   part.title=t.id==null?'Woordvoorbeeld':'Token-ID '+t.id;$('vAnswer').append(part);
+  });
  }
  storyPaint(0);
 }
 function storyPaint(progress){
  const t=Math.max(0,Math.min(1,progress)),phase=storyState.phase,scene=$('storyBoard');
- if(phase===0){const question=$('vQuestion');question.style.opacity=String(Math.max(.08,Math.min(1,t*3)));question.style.transform='translateY('+((1-t)*13).toFixed(0)+'px)';const signal=scene.querySelector('.v-signal');signal.style.opacity=String(t>.2&&t<.9?1:0);signal.style.transform='translateY('+Math.min(25,Math.max(0,(t-.2)/.7*35)).toFixed(1)+'px)';scene.querySelectorAll('.v-layers-sketch i').forEach((el,i)=>el.classList.toggle('is-hot',i===Math.min(9,Math.floor(t*10))));}
- if(phase===1){scene.querySelectorAll('.v-token').forEach((el,i,a)=>{const show=t*1.35>(i+.6)/a.length;el.style.opacity=show?'1':'.08';el.style.transform=show?'translateY(0)':'translateY(-14px)';});scene.querySelectorAll('.v-numerics span').forEach((el,i)=>el.style.opacity=t>.65?'1':'.12');}
- if(phase===2){
-  const current=Math.min(cfg.layers-1,Math.floor(t*cfg.layers)),plane=Math.min(5,Math.floor(t*6)),y=145+plane*39;
-  $('vCurrentLayer').textContent=(current+1)+' / '+cfg.layers;
-  scene.querySelectorAll('#vSteps rect').forEach((e,i)=>e.setAttribute('fill',i===current?'#f3cb8e':i<current?'#75bba9':'#234a56'));
-  scene.querySelectorAll('.v-plane').forEach((e,i)=>{const hot=i===plane; e.querySelector('.v-plane-face').setAttribute('stroke',hot?'#f1c18a':'#588998');e.querySelector('.v-plane-face').setAttribute('fill-opacity',hot?'.85':'.48');});
-  const signal=$('vFlowMarker');signal.setAttribute('cy',String(117+t*256));
-  const xcoords=[104,144,211,252];scene.querySelectorAll('#vGoldExperts circle').forEach((el,i)=>{el.setAttribute('cx',String(xcoords[i]));el.setAttribute('cy',String(y+16));});
-  const branches=$('vBranches');branches.replaceChildren();
-  for(let i=0;i<4;i++){const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M180 ${y+14} Q${(180+xcoords[i])/2} ${y-1} ${xcoords[i]} ${y+16}`);branches.append(p);}
-  scene.querySelectorAll('[data-bar]').forEach((el,i)=>{const height=8+((i*17+current*13)%37);el.setAttribute('y',String(417-height));el.setAttribute('height',String(height));el.setAttribute('fill',i===current%11?'#f2c48b':'#70bbb6');});
+ if(phase===0){
+  const question=$('vQuestion');question.style.opacity=String(Math.max(.08,Math.min(1,t*3)));
+  question.style.transform='translateY('+((1-t)*13).toFixed(0)+'px)';
+  const signal=scene.querySelector('.v-signal');
+  if(signal){signal.style.opacity=String(t>.2&&t<.9?1:0);signal.style.transform='translateY('+Math.min(25,Math.max(0,(t-.2)/.7*35)).toFixed(1)+'px)';}
+  scene.querySelectorAll('.v-layers-sketch i').forEach((el,i)=>el.classList.toggle('is-hot',i===Math.min(9,Math.floor(t*10))));
+ }else if(phase===1){
+  scene.querySelectorAll('.v-token').forEach((el,i,a)=>{
+   const show=t*1.3>(i+.35)/Math.max(a.length,1);
+   el.style.opacity=show?'1':'.1';el.style.transform=show?'translateY(0)':'translateY(-12px)';
+  });
+ }else if(phase===2){
+  // De voorbeeldgetallen blijven direct leesbaar, ook zonder animatie.
+ }else if(phase===3){
+  const alt=scene.querySelector('.v-mini-order.is-alt');if(alt)alt.style.opacity=String(Math.max(.15,Math.min(1,(t-.3)*2)));
+ }else if(phase===4||phase===7){
+  scene.querySelectorAll('.v-score .fill').forEach(el=>el.style.width=(Number(el.dataset.percent)*Math.min(1,t*1.7))+'%');
+ }else if(phase===5){
+  // Geselecteerde experts blijven duidelijk goud tijdens de hele stap.
+ }else if(phase===6){
+  scene.querySelectorAll('#vLayerRows .v-mini-row').forEach((el,i)=>{
+   el.style.borderColor=i===Math.min(2,Math.floor(t*3))?'#dfb778':'#426578';
+  });
+ }else if(phase===8){
+  const pieces=scene.querySelectorAll('#vAnswer span');
+  pieces.forEach((el,i)=>{
+   const show=t*pieces.length>=i+.5;
+   el.style.opacity=show?'1':'0';el.style.transform=show?'translateY(0)':'translateY(7px)';
+  });
  }
- if(phase===3){scene.querySelectorAll('.v-score .fill').forEach(el=>el.style.width=(Number(el.dataset.percent)*Math.min(1,t*1.4))+'%');const choose=$('vChoice');choose.style.opacity=String(Math.max(0,Math.min(1,(t-.65)*5)));choose.style.transform=t>.65?'scale(1)':'scale(.93)';}
- if(phase===4){const words=scene.querySelectorAll('#vAnswer span');words.forEach((el,i)=>{const shown=t*words.length>=i+.45;el.style.opacity=shown?'1':'0';el.style.transform=shown?'translateY(0)':'translateY(7px)'});scene.querySelectorAll('.v-layers-sketch i').forEach((el,i)=>el.classList.toggle('is-hot',i===Math.floor(t*words.length*2)%10));}
- document.querySelectorAll('#storyTimeline .story-time-item').forEach((el,i)=>{el.classList.toggle('is-current',i===phase);el.querySelector('.bar>span').style.width=(i<phase?100:i===phase?t*100:0)+'%'});
+ document.querySelectorAll('#storyTimeline .story-time-item').forEach((el,i)=>{
+  el.classList.toggle('is-current',i===phase);
+  el.setAttribute('aria-current',i===phase?'step':'false');
+  el.querySelector('.bar>span').style.width=(i<phase?100:i===phase?t*100:0)+'%';
+ });
 }
-
 function storyStaticSummary(){
  storyState.playing=false;storyState.finished=true;
  $('storyKicker').textContent='DE UITLEG ZONDER BEWEGING';
  $('storyHeading').textContent='Van vraag naar antwoord';
- $('storyDescription').textContent='De AI verdeelt de tekst, verwerkt de stukjes en kiest daarna steeds een volgend stukje.';
+ $('storyDescription').textContent='Dit zijn dezelfde negen stappen. Je kunt elke stap bekijken via Stap voor stap.';
  const board=$('storyBoard');board.replaceChildren();
  const rows=storyEl('div',null,'story-summary');
- [['Jouw vraag','Je typt tekst in.'],['Kleine stukjes','De tekst wordt verdeeld in tokens.'],['Rekenlagen',cfg.layers+' lagen verwerken de stukjes.'],['Volgend stukje','Het model berekent mogelijke vervolgen.'],['Antwoord','Het voegt steeds een stukje toe.']].forEach(([name,desc])=>{
-  const line=storyEl('div',null,'story-summary-row');line.append(storyEl('strong',name),storyEl('span',desc));rows.append(line);
+ STORY_PHASES.forEach((step,i)=>{
+  const line=storyEl('div',null,'story-summary-row');
+  line.append(storyEl('strong',(i+1)+'. '+step.name),storyEl('span',step.text));
+  rows.append(line);
  });
  board.append(rows);
  $('storyPause').disabled=true;$('storyReplay').disabled=true;
@@ -1424,128 +1942,367 @@ function tick(now){
  if(state.chartDirty&&now-lastGraph>70&&($('app').dataset.panel==='graph'||window.innerWidth>800)){drawPlot();lastGraph=now}
  requestAnimationFrame(tick);
 }
-/* Toegankelijke route voor beginners. Technische modellen en gegevens blijven intact. */
-const GUIDE_LABELS=['Jouw vraag','Stukjes tekst','Wat stond ervoor?','Mogelijke vervolgen','Het antwoord'];
-const GUIDE_STEPS=[
- {title:'Je stelt een vraag',sub:'Een taalmodel is software die tekst kan aanvullen. Typ een vraag.',explain:'In een echte AI-chat krijgt het taalmodel jouw tekst. Hier kun je zien hoe dat werkt, zonder iets te versturen.',boundary:'Een AI kan overtuigend antwoorden zonder dat het antwoord klopt.'},
- {title:'AI verdeelt tekst in stukjes',sub:'Zo’n stukje heet een token. Het kan kleiner zijn dan een woord.',explain:'De AI verdeelt tekst in kleine stukjes: tokens. Een token kan een woord, een woorddeel of een leesteken zijn. Tik op een stukje om het nummer te zien.',boundary:'Zonder de echte tokenizer zie je een woordvoorbeeld, niet de precieze verdeling.'},
- {title:'AI gebruikt eerdere tekst',sub:'Groen stond al vóór het gekozen stukje. Goud is je keuze.',explain:'De AI gebruikt wat eerder is geschreven om het volgende stukje te voorspellen. Tik op een ander stukje. Alles wat ervoor staat, kleurt groen.',boundary:'De kleuren tonen de volgorde. Ze zeggen niet hoeveel aandacht AI aan ieder stukje geeft.'},
- {title:'AI berekent mogelijke vervolgen',sub:'Uit veel voorbeeldteksten leerde de AI welke stukjes bij elkaar passen.',explain:'Elke balk is een mogelijk volgend stukje tekst. Een lange balk betekent hier meer kans. Verander de variatie en bekijk wat er met de kansen gebeurt.',boundary:'Dit zijn voorbeeldkansen. Er is niets berekend voor jouw vraag.'},
- {title:'Het antwoord groeit stukje voor stukje',sub:'Na ieder stukje berekent AI opnieuw wat erop kan volgen.',explain:'Klik om de volgende tekst te tonen. Een taalmodel maakt een antwoord niet in één keer: het voegt telkens een volgend stukje toe.',boundary:'We gebruiken hier leesbare zinsdelen. Het antwoord is vooraf geschreven, niet door AI berekend.'}
-];
-let guideStep=0,guideBuildCount=1,guideTokenIndex=0;
+/* Negen leerstappen, van de eigen vraag tot de herhaalde tokenkeuze.
+ * De 4D-math is een echt doorgerekend MINIVOORBEELD, nooit een gpt-oss-activatie.
+ */
+let guideStep=0,guideBuildCount=1,guideTokenIndex=0,guideMiniLayer=0,guideSwapped=false,guideSampledIndex=-1;
 const guideEl=id=>document.getElementById(id);
-function guideNode(tag,text,klass){
- const node=document.createElement(tag);if(text!=null)node.textContent=String(text);if(klass)node.className=klass;return node;
+const guideMath=()=>globalThis.EAILearningMath;
+function guideNode(tag,value,klass){
+ const node=document.createElement(tag);
+ if(value!=null)node.textContent=String(value);
+ if(klass)node.className=klass;
+ return node;
+}
+function guideLabel(parent,value){
+ parent.appendChild(guideNode('div',value,'ai-guide-question'));
 }
 function guideSetVisible(open){
  guideEl('aiGuide').hidden=!open;
  guideEl('app').setAttribute('aria-hidden',String(open));
- if(open){storyStop();guideRender();guideEl('guideNext').focus({preventScroll:true});}
+ if(open){guideVisited=true;storyStop();guideRender();guideEl('guideNext').focus({preventScroll:true});}
  else if(state.mode===0&&$('app').dataset.storyView==='animation')storyRestart();
+}
+function guideOpenTechnical(finish=false){
+ const mode=finish?0:GUIDE_TECH_MODES[guideStep];
+ const token=guideTokenIndex;
+ guideSetVisible(false);
+ setMode(mode);
+ if(mode===0){
+  // De vier miniatuurlagen zijn niet dezelfde lagen als die van gpt-oss.
+  // Neem de miniatuurindex dus bewust niet over naar de 3D-architectuur.
+  $('story3d').click();
+  state.dirty=true;state.chartDirty=true;
+ }else if(mode===1){
+  selectLayerToken(token);
+ }else if(mode===2){
+  state.token=clamp(token,0,state.promptWords.length-1);
+  state.expert=chooseRoute(state.layer)[0].e;
+  renderInspector();refreshNumbers();state.dirty=true;state.chartDirty=true;
+ }
 }
 function guideSetStep(n){
  const previous=guideStep;
  guideStep=clamp(n,0,GUIDE_STEPS.length-1);
- if(guideStep===2&&previous!==2)guideTokenIndex=Math.max(0,state.promptWords.length-1);
+ if(guideStep===4&&previous!==4)guideTokenIndex=Math.max(0,Math.min(state.promptWords.length-1,7));
  guideRender();
+}
+function guideTokenIds(){
+ return state.promptWords.slice(0,8).map((t,i)=>Number.isInteger(t.id)?t.id:i+73);
+}
+function guideTrace(){
+ const ids=guideTokenIds();
+ return guideMath().miniTrace(ids,Math.min(guideTokenIndex,ids.length-1),guideMiniLayer,cfg.experts);
 }
 function guideTokenChips(parent,contextMode){
  const tokens=state.promptWords.slice(0,18);
- const area=guideNode('div',null,'ai-guide-chip-area');area.setAttribute('aria-label','Stukjes van de ingevoerde tekst');
+ const area=guideNode('div',null,'ai-guide-chip-area');
+ area.setAttribute('aria-label','Stukjes van de ingevoerde tekst');
  tokens.forEach((token,i)=>{
   const b=guideNode('button',readableToken(token.text).slice(0,30),'ai-guide-token');
   b.type='button';b.setAttribute('aria-pressed',String(i===guideTokenIndex));
   if(contextMode)b.classList.add(i<guideTokenIndex?'is-before':i===guideTokenIndex?'is-focus':'is-after');
-  b.title=token.id==null?'Woordvoorbeeld, geen echte token-ID':'Echt token-ID '+token.id;
+  b.title=token.id==null?'Woordvoorbeeld zonder echt token-ID':'Echt token-ID '+token.id;
   b.onclick=()=>{guideTokenIndex=i;state.token=i;guideRender()};
   area.appendChild(b);
  });
  parent.appendChild(area);
- if(state.promptWords.length>tokens.length)parent.append(guideNode('p','+ '+(state.promptWords.length-tokens.length)+' extra stukjes. Maak de tekst korter om ze allemaal te zien.','ai-guide-legend'));
+ if(state.promptWords.length>tokens.length)parent.append(guideNode('p','+ '+(state.promptWords.length-tokens.length)+' extra tokens. Verkort je vraag om ze te bekijken.','ai-guide-legend'));
+}
+function guideNumbers(parent,values){
+ const wrap=guideNode('div',null,'ai-learn-numbers');
+ values.forEach((n,i)=>{
+  const cell=guideNode('div',null,'ai-learn-number');
+  cell.append(guideNode('small','Getal '+(i+1)),guideNode('strong',n.toFixed(2)));
+  wrap.append(cell);
+ });
+ parent.append(wrap);
+}
+function guideDrawEmbedding(){
+ const visual=guideEl('guideVisual'),t=state.promptWords[guideTokenIndex]||{};
+ guideLabel(visual,'ECHT TOKENNUMMER → BEREKEND MINIVOORBEELD');
+ const line=guideNode('div',null,'ai-learn-source');
+ line.append(guideNode('span',t.id==null?'Tokennummer niet beschikbaar':'Echt tokennummer: '+t.id),guideNode('b','Vier voorbeeldgetallen'));
+ visual.append(line);
+ guideNumbers(visual,guideMath().tokenVector(Number.isInteger(t.id)?t.id:73));
+ visual.append(guideNode('p','Deze vier waarden zijn lokaal berekend voor de uitleg. Het echte gpt-oss-model gebruikt veel meer getallen; die lezen we hier niet uit.','ai-guide-legend'));
+}
+function guideDrawOrder(){
+ const visual=guideEl('guideVisual');
+ guideLabel(visual,'DEZELFDE TOKENS, EEN ANDERE VOLGORDE');
+ const tokens=state.promptWords.slice(0,8);
+ const swapAt=tokens.length>=3?2:tokens.length-1;
+ const pieces=tokens.map((t,i)=>({text:t.text,id:t.id,from:i}));
+ if(guideSwapped&&pieces.length>=2){const a=0,b=swapAt;const old=pieces[a];pieces[a]=pieces[b];pieces[b]=old;}
+ const row=guideNode('div',null,'ai-learn-order');
+ pieces.forEach((token,i)=>{
+  const cell=guideNode('div',null,'ai-learn-orderpiece');
+  cell.append(guideNode('strong',readableToken(token.text)),guideNode('small','Plek '+(i+1)));
+  if(guideSwapped&&(token.from===0||token.from===swapAt))cell.classList.add('is-swapped');
+  row.append(cell);
+ });
+ visual.append(row);
+ visual.append(guideNode('p','De tokennummers veranderen niet. Alleen de plekken van de stukjes veranderen. Dat kan de betekenis veranderen.','ai-guide-legend'));
+}
+function guideDrawAttention(){
+ const visual=guideEl('guideVisual');
+ guideLabel(visual,'ATTENTION · ECHTE BEREKENING MET VOORBEELDGETALLEN');
+ const trace=guideTrace(),weights=trace.current.attention.weights;
+ const row=guideNode('div',null,'ai-learn-bars');
+ weights.forEach((w,i)=>{
+  const t=state.promptWords[i],el=guideNode('div',null,'ai-learn-bar');
+  const label=guideNode('span',readableToken(t?.text||'?').slice(0,13));
+  const track=guideNode('div',null,'ai-guide-track'),fill=guideNode('div',null,'ai-guide-fill');
+  fill.style.width=(100*w).toFixed(1)+'%';track.append(fill);
+  el.append(label,track,guideNode('strong',(100*w).toFixed(1)+'%'));
+  row.append(el);
+ });
+ visual.append(row);
+ visual.append(guideNode('p','Berekend voor de gekozen tokenpositie met maximaal acht tokens. Tokens die later staan doen niet mee.','ai-guide-legend'));
+}
+function guideDrawExperts(){
+ const visual=guideEl('guideVisual'),trace=guideTrace(),chosen=trace.current.experts.selected;
+ guideLabel(visual,'SELECTIE VAN VIER EXPERTS · MINIVOORBEELD');
+ const selected=new Set(chosen.map(x=>x.expert));
+ const grid=guideNode('div',null,'ai-learn-expert-grid');
+ grid.style.setProperty('--expert-cols',cfg.experts<=32?'8':'16');
+ for(let i=0;i<cfg.experts;i++){
+  const cell=guideNode('span',null,'ai-learn-expert'+(selected.has(i)?' chosen':''));
+  cell.title='Expert '+(i+1)+(selected.has(i)?' geselecteerd':'');
+  grid.append(cell);
+ }
+ visual.append(grid);
+ const answer=guideNode('div',null,'ai-learn-selection');
+ chosen.forEach(e=>answer.append(guideNode('span','Expert '+(e.expert+1)+' · '+e.weight.toFixed(2))));
+ visual.append(answer);
+ visual.append(guideNode('p','Van '+cfg.experts+' experts lichten er vier op. Deze keuze is zelf berekend, niet uit gpt-oss gemeten.','ai-guide-legend'));
+}
+function guideDrawLayers(){
+ const visual=guideEl('guideVisual');visual.replaceChildren();
+ const trace=guideTrace().current;
+ guideLabel(visual,'ÉÉN REKENLAAG VAN DICHTBIJ · MINIVOORBEELD');
+ const rows=[
+  ['Getallen uit vorige laag',trace.input],
+  ['Na eerdere tekst',trace.afterAttention],
+  ['Na vier experts',trace.result]
+ ];
+ const wrap=guideNode('div',null,'ai-learn-layer-rows');
+ rows.forEach(([title,values])=>{
+  const line=guideNode('div',null,'ai-learn-layer-row');
+  line.append(guideNode('span',title),guideNode('strong',values.map(x=>x.toFixed(2)).join('  ·  ')));
+  wrap.append(line);
+ });
+ visual.append(wrap);
+ const track=guideNode('div',null,'ai-guide-layer-track');
+ for(let i=0;i<cfg.layers;i++){const bar=guideNode('i',null,i===guideMiniLayer?'is-current':'');bar.title='Architectuurlaag '+(i+1);track.append(bar);}
+ visual.append(track);
+ visual.append(guideNode('p','Boven: drie stappen van onze echte vierlagenberekening. Onder: de '+cfg.layers+' lagen van '+cfg.name+' als openbaar modelgegeven. Niet dezelfde modeluitvoering.','ai-guide-legend'));
 }
 function guideBarData(){
- const scores=[2.45,1.50,.82,.24],temperature=clamp(state.temp,.3,1.8);
- const weights=scores.map(x=>Math.exp(x/temperature)),sum=weights.reduce((a,b)=>a+b,0);
- return weights.map(v=>v/sum);
+ return guideMath().softmax([2.45,1.50,.82,.24],state.temp);
 }
 function guideDrawBars(){
  const visual=guideEl('guideVisual');visual.replaceChildren();
- visual.appendChild(guideNode('div','DE VOLGENDE WOORDSTUKJES ZIJN EEN REKENVOORBEELD','ai-guide-question'));
+ guideLabel(visual,'KANSBEREKENING OP VIER VOORBEELDSCORES');
  const bars=guideNode('div',null,'ai-guide-barlist');
  const data=guideBarData(),labels=['Omdat','De','Het','Dat'];
  data.forEach((value,i)=>{
-  const row=guideNode('div',null,'ai-guide-bar');row.append(guideNode('span',labels[i]));
-  const track=guideNode('div',null,'ai-guide-track'),fill=guideNode('div',null,'ai-guide-fill');fill.style.width=(value*100).toFixed(1)+'%';track.append(fill);row.append(track,guideNode('strong',(value*100).toFixed(1)+'%'));bars.append(row);
+  const row=guideNode('div',null,'ai-guide-bar');
+  row.append(guideNode('span',labels[i]+(guideSampledIndex===i?' ✓':'')));
+  const track=guideNode('div',null,'ai-guide-track'),fill=guideNode('div',null,'ai-guide-fill');
+  fill.style.width=(value*100).toFixed(1)+'%';
+  track.append(fill);row.append(track,guideNode('strong',(value*100).toFixed(1)+'%'));bars.append(row);
  });
  visual.append(bars);
- const out=guideEl('guideTemperatureValue');if(out)out.textContent=state.temp.toFixed(1);
+ if(guideSampledIndex>=0)visual.append(guideNode('p','Gekozen in dit voorbeeld: '+labels[guideSampledIndex]+'. De hoogste kans wordt niet altijd gekozen.','ai-guide-legend'));
+ const output=guideEl('guideTemperatureValue');if(output)output.textContent=state.temp.toFixed(1);
+}
+function guideAnswerTokens(){
+ const defaultQuestion=state.input.trim().toLowerCase()==='waarom is de lucht blauw?';
+ const answer=defaultQuestion?'De lucht lijkt blauw doordat zonlicht in de lucht wordt verstrooid.':'Dit is een voorbeeldzin, niet het antwoord op jouw vraag.';
+ if(tokenizer){
+  try{return tokenizer.encode(answer).map(id=>({id,text:tokenizer.decode([id])}));}
+  catch(error){}
+ }
+ return (answer.match(/\S+\s*/g)||[answer]).map(text=>({id:null,text}));
+}
+function guideDrawAnswer(){
+ const visual=guideEl('guideVisual'),tokens=guideAnswerTokens();
+ guideBuildCount=clamp(guideBuildCount,1,tokens.length);
+ guideLabel(visual,tokenizer?'VOORAF GESCHREVEN TEKST · ECHTE TOKENS':'VOORAF GESCHREVEN TEKST · WOORDVOORBEELD');
+ const answer=guideNode('div',null,'ai-guide-answer ai-learn-answer');
+ tokens.slice(0,guideBuildCount).forEach((t,i)=>{
+  const piece=guideNode('span',t.text,'ai-learn-piece'+(i===guideBuildCount-1?' newest':''));
+  piece.title=t.id==null?'Woordvoorbeeld':'Echt token-ID '+t.id;
+  answer.append(piece);
+ });
+ if(guideBuildCount<tokens.length)answer.append(guideNode('span',' …'));
+ visual.append(answer);
+ visual.append(guideNode('p',guideBuildCount+' van '+tokens.length+' '+(tokenizer?'echte tokens':'woordstukjes')+' getoond. Het antwoord is vooraf geschreven, niet door AI voorspeld.','ai-guide-legend'));
+}
+/* Alleen op verzoek een klein opgeslagen meetbestand tonen.
+ * De meetgegevens horen bij een ander getraind model, niet bij de eigen vraag.
+ */
+function guideAddRealTrace(host){
+ if(![2,4,6,7,8].includes(guideStep))return;
+ const viewer=globalThis.EAIRealTraceViewer;
+ if(!viewer)return;
+ const outer=guideNode('section',null,'ai-trace-outer');
+ outer.dataset.lessonStep=String(guideStep);
+ const button=guideNode('button','Bekijk echte modelmeting (ander model)','ai-trace-toggle');
+ button.type='button';button.setAttribute('aria-expanded','false');
+ const contents=guideNode('div',null,'ai-trace-content');contents.hidden=true;
+ const intro=guideNode('p','Wat je hierboven ziet, is ons minivoorbeeld. Hieronder kun je echte waarden bekijken uit een vooraf uitgevoerde, kleine GPT-Neo. Dat is niet gpt-oss en gebruikt niet jouw eigen tekst.','ai-trace-intro');
+ outer.append(button,intro,contents);host.append(outer);
+ const currentStep=guideStep;
+ button.onclick=async()=>{
+  if(!contents.hidden){contents.hidden=true;button.setAttribute('aria-expanded','false');return}
+  contents.hidden=false;button.setAttribute('aria-expanded','true');
+  contents.replaceChildren(guideNode('p','Meetbestand openen…','ai-trace-loading'));
+  try{
+   const trace=await viewer.load();
+   if(!contents.isConnected||guideStep!==currentStep)return;
+   const show=(tokenIndex,layerIndex)=>viewer.render(contents,trace,currentStep,tokenIndex,layerIndex,show);
+   show(0,0);
+  }catch(error){
+   if(contents.isConnected)contents.replaceChildren(
+    guideNode('p','De echte modelmeting is niet beschikbaar. Het lokale rekenvoorbeeld hierboven blijft werken.','ai-trace-error')
+   );
+  }
+ };
 }
 function guideRender(){
  const step=GUIDE_STEPS[guideStep],visual=guideEl('guideVisual'),interactive=guideEl('guideInteractive');
  if(!visual||!interactive)return;
+ const main=document.querySelector('.ai-guide-main');if(main)main.scrollTop=0;
  guideEl('guideEyebrow').textContent='STAP '+(guideStep+1)+' VAN '+GUIDE_STEPS.length;
- guideEl('guideHeading').textContent=step.title;guideEl('guideSubheading').textContent=step.sub;
- guideEl('guideExplanation').textContent=step.explain;guideEl('guideBoundary').textContent=step.boundary;
+ guideEl('guideHeading').textContent=step.title;
+ guideEl('guideSubheading').textContent=step.sub;
+ guideEl('guideExplanation').textContent=step.explain;
+ guideEl('guideBoundary').textContent=step.boundary;
  guideEl('guideCounter').textContent=(guideStep+1)+' / '+GUIDE_STEPS.length;
+ const tech=guideEl('guideTechnical');
+ tech.firstChild.textContent='Bekijk '+GUIDE_TECH_NAMES[guideStep]+' ';
+ tech.title='Open de technische modus '+MODES[GUIDE_TECH_MODES[guideStep]].name+
+  '. De routes en scores zijn voorbeelden, geen metingen uit gpt-oss.';
  guideEl('guidePrev').disabled=guideStep===0;
- guideEl('guideNext').firstChild.textContent=guideStep===GUIDE_STEPS.length-1?'Bekijk de techniek':guideStep===0?'Bekijk de stukjes':guideStep===1?'Bekijk de context':guideStep===2?'Bekijk de keuzes':'Bouw een antwoord';
+ guideEl('guideNext').firstChild.textContent=['Bekijk de tokens','Bekijk de getallen','Bekijk de volgorde','Bekijk de eerdere tekst','Bekijk de experts','Bekijk de lagen','Bekijk de kansen','Bouw een antwoord','Bekijk de techniek'][guideStep];
  const stepButtons=guideEl('guideSteps');stepButtons.replaceChildren();
- GUIDE_LABELS.forEach((title,i)=>{const b=guideNode('button',null);b.type='button';b.append(guideNode('span',i+1),guideNode('strong',title));if(i===guideStep)b.setAttribute('aria-current','step');b.onclick=()=>guideSetStep(i);stepButtons.append(b)});
+ GUIDE_LABELS.forEach((title,i)=>{
+  const b=guideNode('button',null);b.type='button';
+  b.append(guideNode('span',i+1),guideNode('strong',title));
+  if(i===guideStep)b.setAttribute('aria-current','step');
+  b.onclick=()=>guideSetStep(i);stepButtons.append(b);
+ });
  const progress=guideEl('guideProgress');progress.replaceChildren();
- GUIDE_STEPS.forEach((_,i)=>{const mark=document.createElement('i');if(i<=guideStep)mark.classList.add('on');progress.append(mark)});
+ GUIDE_STEPS.forEach((_,i)=>{
+  const mark=document.createElement('i');if(i<=guideStep)mark.classList.add('on');progress.append(mark);
+ });
+ // Keep the optional recorded execution open through redraws of this same
+ // lesson (e.g. asynchronous tokenizer initialization). Changing lessons
+ // intentionally creates a fresh viewer. The recording is independent of input.
+ const previousTrace=interactive.querySelector('.ai-trace-outer');
+ const retainedTrace=previousTrace?.dataset.lessonStep===String(guideStep)?previousTrace:null;
  visual.replaceChildren();interactive.replaceChildren();
  if(guideStep===0){
-  const prompt=guideNode('div','JOUW VRAAG','ai-guide-question');
-  const box=guideNode('textarea',null,'ai-guide-input');box.id='guidePrompt';box.maxLength=140;box.rows=3;box.setAttribute('aria-label','Jouw vraag aan AI');
+  guideLabel(visual,'JOUW VRAAG');
+  const box=guideNode('textarea',null,'ai-guide-input');
+  box.id='guidePrompt';box.maxLength=140;box.rows=3;box.setAttribute('aria-label','Jouw vraag aan AI');
   box.placeholder='Typ een vraag';box.value=state.input;
-  box.addEventListener('input',()=>{state.input=box.value||' ';tokenizeInput();guideTokenIndex=0;});
-  visual.append(prompt,box);
+  box.addEventListener('input',()=>{state.input=box.value||' ';tokenizeInput();guideTokenIndex=0;guideBuildCount=1;});
+  visual.append(box);
   interactive.append(guideNode('p','Probeer bijvoorbeeld: Waarom is de lucht blauw?','ai-guide-mini'));
  }else if(guideStep===1){
-  visual.append(guideNode('div','KLIK OP EEN STUKJE','ai-guide-question'));
-  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,false);
-  visual.append(guideNode('div',state.tokenStatus==='real'?'De tekst is echt in tokens verdeeld.':'Dit is een woordvoorbeeld. De precieze verdeling is nog niet geladen.','ai-guide-legend'));
-  const token=state.promptWords[guideTokenIndex]||{};
-  interactive.append(guideNode('p',state.promptWords.length+' stukjes in deze invoer.','ai-guide-mini'));
-  interactive.append(guideNode('p',token.id==null?'Bij dit voorbeeld hoort nog geen echt tokennummer.':'Gekozen stukje: nummer '+token.id,'ai-guide-mini'));
+  guideLabel(visual,state.tokenStatus==='real'?'ECHTE TOKENIZER · GPT-OSS · O200K_HARMONY':state.tokenStatus==='error'?'TOKENIZER NIET BESCHIKBAAR · WOORDVOORBEELD':'TOKENIZER WORDT GELADEN · WOORDVOORBEELD');
+  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);
+  guideTokenChips(visual,false);
+  const tok=state.promptWords[guideTokenIndex]||{};
+  interactive.append(guideNode('p',state.promptWords.length+' '+(state.tokenStatus==='real'?'echte tokens':'woordstukjes')+' in jouw tekst.','ai-guide-mini'));
+  interactive.append(guideNode('p',tok.id==null?'Nog geen echt token-ID.':('Geselecteerd echt token-ID: '+tok.id),'ai-guide-mini'));
  }else if(guideStep===2){
-  visual.append(guideNode('div','GROEN: AL GELEZEN  ·  GOUD: GEKOZEN','ai-guide-question'));
-  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);guideTokenChips(visual,true);
-  visual.append(guideNode('p','Tekst rechts van het gekozen stukje hoort op dat moment nog niet bij de eerdere context.','ai-guide-legend'));
-  interactive.append(guideNode('p','Je kunt op een ander stukje tikken om de grens te verplaatsen.','ai-guide-mini'));
+  guideTokenIndex=clamp(guideTokenIndex,0,state.promptWords.length-1);
+  guideDrawEmbedding();
+  interactive.append(guideNode('p','Een echt taalmodel heeft een grote tabel met aangeleerde getallen. We doen die niet na alsof we ze hebben uitgelezen.','ai-guide-mini'));
+  const btn=guideNode('button','Kies een ander token','ai-guide-cta');
+  btn.onclick=()=>{guideTokenIndex=(guideTokenIndex+1)%Math.min(state.promptWords.length,8);guideRender()};
+  interactive.append(btn);
  }else if(guideStep===3){
-  const label=guideNode('label','Variatie in het rekenvoorbeeld');
-  label.htmlFor='guideTemperature';
+  guideDrawOrder();
+  const btn=guideNode('button',guideSwapped?'Herstel de volgorde':'Wissel twee tokens','ai-guide-cta');
+  btn.onclick=()=>{guideSwapped=!guideSwapped;guideRender()};
+  interactive.append(btn);
+ }else if(guideStep===4){
+  guideTokenIndex=clamp(guideTokenIndex,0,Math.min(state.promptWords.length,8)-1);
+  guideDrawAttention();
+  interactive.append(guideNode('p','Kies een ander token. De gewichten van dit kleine rekenvoorbeeld veranderen.','ai-guide-mini'));
+  const select=guideNode('div',null,'ai-learn-position-choices');
+  state.promptWords.slice(0,8).forEach((token,i)=>{
+   const b=guideNode('button',String(i+1),i===guideTokenIndex?'chosen':'');
+   b.type='button';b.title=readableToken(token.text);
+   b.onclick=()=>{guideTokenIndex=i;guideRender()};select.append(b);
+  });
+  interactive.append(select);
+ }else if(guideStep===5){
+  guideDrawExperts();
+  interactive.append(guideNode('p','Probeer een ander token. De berekende routerkeuze kan veranderen.','ai-guide-mini'));
+  const btn=guideNode('button','Ander token','ai-guide-cta');
+  btn.onclick=()=>{guideTokenIndex=(guideTokenIndex+1)%Math.min(state.promptWords.length,8);guideRender()};
+  interactive.append(btn);
+ }else if(guideStep===6){
+  guideDrawLayers();
+  const scale=guideNode('div',null,'ai-guide-scale');
+  const label=guideNode('label','Bekijk een laag van het minivoorbeeld');label.htmlFor='guideLayerRange';
+  const output=guideNode('output','Voorbeeldlaag '+(guideMiniLayer+1)+' / 4');output.id='guideLayerCount';
+  const input=document.createElement('input');input.id='guideLayerRange';
+  input.type='range';input.min='1';input.max='4';input.step='1';input.value=String(guideMiniLayer+1);
+  input.oninput=()=>{guideMiniLayer=+input.value-1;output.textContent='Voorbeeldlaag '+(guideMiniLayer+1)+' / 4';guideDrawLayers()};
+  scale.append(label,output,input);interactive.append(scale);
+ }else if(guideStep===7){
+  const label=guideNode('label','Variatie in het rekenvoorbeeld');label.htmlFor='guideTemperature';
   const scale=guideNode('div',null,'ai-guide-scale'),out=guideNode('output',state.temp.toFixed(1));out.id='guideTemperatureValue';
-  const input=document.createElement('input');input.type='range';input.id='guideTemperature';input.min='.3';input.max='1.8';input.step='.1';input.value=String(state.temp);
-  input.oninput=()=>{state.temp=+input.value;guideDrawBars()};
+  const input=document.createElement('input');input.type='range';
+  input.id='guideTemperature';input.min='.3';input.max='1.8';input.step='.1';input.value=String(state.temp);
+  input.oninput=()=>{state.temp=+input.value;guideSampledIndex=-1;guideDrawBars()};
   scale.append(label,out,input);interactive.append(scale);
-  guideDrawBars();
+  const btn=guideNode('button','Kies een voorbeeldtoken','ai-guide-cta');
+  btn.onclick=()=>{
+   const r=Math.random(),dist=guideBarData();let total=0;
+   guideSampledIndex=dist.findIndex(p=>(total+=p)>=r);
+   if(guideSampledIndex<0)guideSampledIndex=dist.length-1;
+   guideDrawBars();
+  };
+  interactive.append(btn);guideDrawBars();
  }else{
-  const defaultQuestion=state.input.trim().toLowerCase()==='waarom is de lucht blauw?';
-  const parts=defaultQuestion
-   ?['De lucht lijkt blauw','omdat moleculen in de atmosfeer','blauw licht sterker verstrooien.']
-   :['Dit is een voorbeeldzin','die in stukjes wordt toegevoegd.','Jouw vraag wordt hier niet door een AI beantwoord.'];
-  guideBuildCount=clamp(guideBuildCount,1,parts.length);
-  visual.append(guideNode('div',defaultQuestion?'VOORBEELD BIJ: WAAROM IS DE LUCHT BLAUW?':'VOORBEELD VAN TEKST OPBOUWEN · GEEN ECHT AI-ANTWOORD','ai-guide-question'));
-  const answer=guideNode('div',null,'ai-guide-answer');
-  parts.slice(0,guideBuildCount).forEach((part,i)=>answer.append(guideNode('strong',part+(i<guideBuildCount-1?' ':''))));
-  if(guideBuildCount<parts.length)answer.append(guideNode('span',' …'));
-  visual.append(answer);
-  const button=guideNode('button',guideBuildCount<parts.length?'Laat het volgende stukje zien':'Begin opnieuw','ai-guide-cta');button.type='button';button.onclick=()=>{guideBuildCount=guideBuildCount<parts.length?guideBuildCount+1:1;guideRender()};
-  interactive.append(button);
+  guideDrawAnswer();
+  const tokens=guideAnswerTokens(),actions=guideNode('div',null,'ai-learn-answer-actions');
+  const add=guideNode('button',guideBuildCount<tokens.length?(tokenizer?'Voeg één token toe':'Voeg een woordstukje toe'):'Begin opnieuw','ai-guide-cta');
+  add.type='button';add.onclick=()=>{guideBuildCount=guideBuildCount<tokens.length?guideBuildCount+1:1;guideRender()};
+  actions.append(add);
+  const quick=guideNode('button','Voeg vijf toe','ai-guide-cta');
+  quick.type='button';quick.disabled=guideBuildCount===tokens.length;
+  quick.onclick=()=>{guideBuildCount=Math.min(tokens.length,guideBuildCount+5);guideRender()};
+  actions.append(quick);interactive.append(actions);
  }
+ if(retainedTrace)interactive.append(retainedTrace);
+ else guideAddRealTrace(interactive);
 }
 function setupGuide(){
  window.addEventListener('resize',()=>{
   $('modeDesc').textContent=innerWidth<=800?MOBILE_DESCS[state.mode]:MODES[state.mode].desc;
  });
- const back=guideNode('button','Zelf proberen','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>guideSetVisible(true);
+ const back=guideNode('button','Stap voor stap','tool-btn');back.id='guideReturn';back.type='button';back.onclick=()=>{
+  if(state.mode===0&&$('app').dataset.storyView==='animation'){
+   guideStep=storyState.phase;
+   if(guideStep>=2&&guideStep<=6)guideTokenIndex=storyFocusIndex();
+  }else if(!guideVisited){
+   guideStep=MODE_GUIDE_STEPS[state.mode];
+  }
+  guideSetVisible(true);
+ };
  document.querySelector('.top-actions').prepend(back);
- guideEl('guideTechnical').onclick=()=>guideSetVisible(false);
+ guideEl('guideTechnical').onclick=()=>guideOpenTechnical();
  guideEl('guidePrev').onclick=()=>guideSetStep(guideStep-1);
- guideEl('guideNext').onclick=()=>guideStep===GUIDE_STEPS.length-1?guideSetVisible(false):guideSetStep(guideStep+1);
+ guideEl('guideNext').onclick=()=>guideStep===GUIDE_STEPS.length-1?guideOpenTechnical(true):guideSetStep(guideStep+1);
  guideRender();
 }
 

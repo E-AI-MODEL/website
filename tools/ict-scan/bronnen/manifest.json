@@ -1,0 +1,76 @@
+{
+  "schema": "eai-school-ict-manifest-v1",
+  "metadata": {
+    "title": "Applicatielandschap Emmauscollege",
+    "institution": "Emmauscollege Rotterdam",
+    "inventoryYear": 2026,
+    "firstInventoryStarted": "2026-08-10",
+    "compiledBy": "Hans Visser",
+    "referencePeriod": "november 2026",
+    "evidenceCutoff": "2026-11-24",
+    "dataVersion": "2026-11-24-ai-tussenstand",
+    "faqDataVersion": "2026-11-24",
+    "indexContractVersion": "1.0.0"
+  },
+  "dataFiles": [
+    {
+      "path": "2026-applicatielandschap.json",
+      "schema": "eai-school-ict-v1",
+      "recordCounts": {
+        "apps": 69,
+        "ai": 76,
+        "connections": 93,
+        "additionalCandidates": 76,
+        "parts": 53,
+        "dpia": 10,
+        "aiControls": 22,
+        "checks": 16,
+        "devices": 4,
+        "licenseReview": 40,
+        "hardwareGroups": 15
+      },
+      "sha": "ffd92033b9595bb5db986cf910e7fa22e6e9f289",
+      "verified": true
+    },
+    {
+      "path": "2026-werkregister.json",
+      "schema": "eai-school-ict-v1",
+      "recordCounts": {
+        "workActions": 16,
+        "softwareReview": 12
+      },
+      "sha": "b868edc2ffa67498676618b470ef488184936da5",
+      "verified": true
+    },
+    {
+      "path": "2026-faq.json",
+      "schema": "eai-school-ict-v1",
+      "recordCounts": {
+        "faqs": 17
+      },
+      "sha": "ca586ccf928a3edd1000a2a6b3f76f31ddaff455",
+      "verified": true
+    },
+    {
+      "path": "2026-bronnenregister.json",
+      "schema": "eai-school-ict-v1",
+      "recordCounts": {
+        "sourceRegister": 64
+      },
+      "sha": "495f77e27897e181b183dfce04700cd6a8669dcc",
+      "verified": true
+    }
+  ],
+  "notes": [
+    "De basisinventaris telt 61 toepassingen en diensten; dit is geen bevestigd volledig aantal.",
+    "76 aanvullende kandidaten tellen niet als bevestigd schoolgebruik.",
+    "De ruwe Entra-roltoewijzingen en persoonlijke gegevens zijn niet gepubliceerd.",
+    "Zes Microsoft 365-beheeronderdelen zijn als context bij APP-034 opgenomen; gegevens uit controlematrices zijn geen bevestiging van actieve tenantinstellingen.",
+    "69 basisapplicaties, waaronder acht aanvullende regels waarvoor schoolgebruik nog moet worden geverifieerd; telt niet als 69 actieve applicaties.",
+    "15 schoolbrede hardwaregroepen, 53 onderdelen (13 Entra-registraties en 40 Microsoft 365-productvermeldingen), zonder extra Entra-apparaatmeting.",
+    "Één afgeleide index verbindt de vier gecontroleerde bronbestanden, geen vijfde bronbestand.",
+    "64 bronnen in het bronnenregister, waaronder vijf nieuwe openbare bronnen voor Microsoft Education-standaarden en de Kennisnet-verwerkersovereenkomstprocedure. Alle nieuwe bronnen blijven inhoudelijk te beoordelen.",
+    "17 FAQ-kaarten, waaronder standaard M365-instellingen en de eHerkenning-route. Geen automatische goedkeuring van verwerkersovereenkomsten, tenanttoegang of individuele licentietoewijzing.",
+    "Interview schoolleiding 24 november 2026 verwerkt in bestaande kaarten; lokale status en bronbewijs blijven gescheiden."
+  ]
+}

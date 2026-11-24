@@ -97,7 +97,8 @@ test("Downloads zijn voorstellen, geen valse documentatie",()=>{
 test("Websitepagina bevat toegankelijke route, geen serverupload of AI",()=>{
  const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
  const app=readFileSync(new URL("../assets/eaigit/wizard.mjs",import.meta.url),"utf8");
- assert.match(html,/name="robots" content="noindex,nofollow"/);
+ assert.match(html,/name="robots" content="index,follow"/);
+ assert.match(html,/<link rel="canonical" href="https:\/\/eaimodel\.nl\/tools\/eaigit\/">/);
  assert.match(html,/class="eaigit-wizard/);
  assert.match(html,/type="file"/);
  assert.match(html,/assets\/eaigit\/wizard\.mjs/);
@@ -279,6 +280,20 @@ test("Wizard past stappen aan bij ZIP-only, nog geen GitHub en publicatie",()=>{
  assert.equal(unsure[0].id,"source");
 });
 
+test("Herstellen en verkennen verplichten geen GitHub-upload",()=>{
+ const archive={eligible:["index.html"],secret:[],missingReferences:[],project:{hasHtml:true}};
+ for(const intent of ["repair","explore"]){
+  const steps=buildJourney({intent,source:"zip",archive,repo:null,guidance:{problems:[]}});
+  assert.ok(steps.some(x=>x.id==="unzip"));
+  assert.ok(steps.some(x=>x.id==="try"));
+  assert.ok(!steps.some(x=>["create","upload","files"].includes(x.id)),
+   "Bij "+intent+" is een GitHub-account niet nodig");
+ }
+ const both=buildJourney({intent:"repair",source:"both",archive,
+  repo:{readable:true,url:"https://github.com/voorbeeld/site"},guidance:{problems:[]}});
+ assert.ok(both.some(x=>x.id==="compare"));
+ assert.ok(!both.some(x=>["create","upload"].includes(x.id)));
+});
 test("Regressie: bestaande index.html krijgt geen melding over ontbrekend startbestand",async()=>{
  const archive=await analyzeArchive(fake(makeZip([["site/index.html","<h1>Site</h1>"]])));
  const purpose=checkProjectPurpose({goal:"site",archive});
@@ -401,4 +416,44 @@ test("Doelcontrole kijkt afzonderlijk naar opgaven, antwoorden, feedback en scor
  assert.ok(guidance.good.some(x=>x.includes("antwoord controleren")));
  assert.ok(guidance.uncertain.some(x=>x.includes("score of resultaat")));
  assert.ok(guidance.uncertain.some(x=>x.includes("geen bewijs")));
+});
+
+
+test("EAIgit zegt zonder projectbron niet dat bestanden zijn bekeken",()=>{
+ const guidance=makeGuidance({archive:null,repo:null,advice:{purpose:{}},goal:"code",aim:""});
+ const first=primaryFinding(guidance,{archive:null,repo:null});
+ assert.match(first.title,/nog geen bestanden onderzocht/i);
+ assert.equal(first.kind,"info");
+ assert.doesNotMatch(first.description,/zijn bekeken/i);
+ const failed=primaryFinding({problems:[{title:"GitHub kon niet worden gecontroleerd",detail:"Repository niet gevonden",severity:"attention"}]},{repoError:"Repository niet gevonden"});
+ assert.equal(failed.title,"GitHub kon niet worden gecontroleerd");
+});
+
+test("ZIP: statische lintachtige controles draaien lokaal en nemen concrete bronregels mee",async()=>{
+ const zip=makeZip([
+  ["mijnsite/index.html",'<!doctype html><html><head><meta name="viewport" content="width=device-width"></head><body><div id="bestaat"></div></body></html>'],
+  ["mijnsite/app.js",'const ongelukkig = ;\ndocument.getElementById("onbekend");']
+ ]);
+ const a=await analyzeArchive(fake(zip));
+ assert.equal(a.contentCheck.audit.checked.javascript,1);
+ assert.ok(a.contentCheck.findings.some(x=>x.type==="javascript-syntax"&&x.path==="app.js"&&x.line===1));
+ assert.ok(a.contentCheck.findings.some(x=>x.type==="dom-id-unseen"&&x.certainty==="review"));
+ assert.equal(a.contentCheck.audit.passed.javascript,0);
+});
+test("GitHub: openbare en hash-gecontroleerde JS-bestanden worden statisch geparseerd",async()=>{
+ const text="const x = ;",bytes=new TextEncoder().encode(text);
+ const sha=await gitBlobId(bytes);
+ assert.ok(sha);
+ const blob={content:Buffer.from(bytes).toString("base64"),encoding:"base64",size:bytes.length};
+ const fetcher=async url=>{
+  const content=url.includes("/git/blobs/")?blob:
+   url.includes("/git/trees/")?{sha:"tree",truncated:false,tree:[{type:"blob",path:"app.js",size:bytes.length,sha}]}:
+   {private:false,full_name:"u/r",default_branch:"main",html_url:"https://github.com/u/r"};
+  return new Response(JSON.stringify(content),{status:200});
+ };
+ const r=await fetchPublicRepo("https://github.com/u/r",fetcher);
+ assert.equal(r.readable,true);
+ assert.equal(r.contentCheck.audit.checked.javascript,1);
+ assert.ok(r.contentCheck.findings.some(x=>x.type==="javascript-syntax"&&x.path==="app.js"));
+ assert.equal(r.contentCheck.source,"github-public-blobs");
 });

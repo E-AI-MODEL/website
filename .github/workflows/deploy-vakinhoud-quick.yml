@@ -1,14 +1,12 @@
 name: Publish Vakinhoud navigation
+# Manual-only targeted recovery. A regular main push uses the complete
+# Deploy to Theory7 release and verifies the exact published site.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-vakinhoud-quick.yml'
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: vakinhoud-targeted-publication
+  group: theory7-production
   cancel-in-progress: false
 jobs:
   publish:
@@ -27,15 +25,18 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           for path,expected in {
-            'site-build/nl/index.html': 'Vakinhoud',
-            'site-build/en/index.html': 'Subject knowledge',
-            'site-build/nl/tools/index.html': 'Vakinhoud en interactieve modellen',
-            'site-build/en/tools/index.html': 'Subject knowledge and interactive models',
-            'site-build/tools/science-observatory/index.html': 'Onderzoek een onderwerp uit je vak',
+            'site-build/nl/index.html': 'Zelf aan de slag',
+            'site-build/en/index.html': 'Explore & create',
+            'site-build/nl/tools/index.html': 'Waar wil je mee aan de slag?',
+            'site-build/en/tools/index.html': 'What would you like to explore?',
+            'site-build/tools/science-observatory/index.html': 'Natuurkunde en wiskunde',
           }.items():
             text=Path(path).read_text(encoding='utf-8')
             assert expected in text, (path,expected)
             assert 'Proeven & simulaties' not in text, path
+            if 'nl/tools/' in path or 'en/tools/' in path:
+              assert 'href="#vak-oceanografie"' in text, path
+              assert 'href="/tools/melkweg-lab/"' in text, path
           PY
       - name: Install FTPS tools
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp openssl
@@ -65,7 +66,7 @@ jobs:
           put site-build/nl/tools/index.html -o /nl/tools/index.html
           put site-build/en/tools/index.html -o /en/tools/index.html
           put site-build/tools/science-observatory/index.html -o /tools/science-observatory/index.html
-          put site-build/assets/site-refresh.js -o /assets/site-refresh.js
+          mirror -R --parallel=3 site-build/assets/ /assets/
           bye
           EOF
       - name: Verify revised public labels
@@ -74,11 +75,11 @@ jobs:
           from urllib.request import Request,urlopen
           from time import sleep
           checks={
-            '/nl/':b'Vakinhoud',
-            '/en/':b'Subject knowledge',
-            '/nl/tools/':b'Vakinhoud en interactieve modellen',
-            '/en/tools/':b'Subject knowledge and interactive models',
-            '/tools/science-observatory/':b'Onderzoek een onderwerp uit je vak',
+            '/nl/':b'Zelf aan de slag',
+            '/en/':b'Explore & create',
+            '/nl/tools/':b'Waar wil je mee aan de slag?',
+            '/en/tools/':b'What would you like to explore?',
+            '/tools/science-observatory/':b'Natuurkunde en wiskunde',
           }
           for path,word in checks.items():
             problem=None
@@ -90,6 +91,9 @@ jobs:
                   assert response.status==200,(path,response.status)
                   assert word in page,path
                   assert b'Proeven & simulaties' not in page,path
+                  if path in ('/nl/tools/', '/en/tools/'):
+                    assert b'href="#vak-oceanografie"' in page, path
+                    assert b'href="/tools/melkweg-lab/"' in page, path
                 print('LIVE:',path)
                 problem=None
                 break

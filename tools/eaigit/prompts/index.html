@@ -1,53 +1,117 @@
 <!doctype html>
-<html lang="nl"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
-<title>EAIgit · Promptbibliotheek per ontwikkelfase</title>
-<meta name="description" content="Gerichte opdrachten voor projectonderzoek, GitHub, bouwen, testen en publiceren. Met concrete bewijs- en toestemmingsafspraken.">
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://eaimodel.nl/tools/eaigit/prompts/">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#f7f8f5">
+<title>EAIgit · Promptbibliotheek | Opdrachten voor je project</title>
+<meta name="description" content="Bekijk en pas opdrachten aan voor GitHub, codecontrole, testen en publiceren. Met duidelijke resultaten en controleerbare stappen.">
 <link rel="icon" href="/assets/eaigit/icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/eaigit/wizard.css">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/eaigit/wizard.css">
 <link rel="stylesheet" href="/assets/eaigit/references.css">
+<link rel="stylesheet" href="/assets/eaigit/prompt-dashboard.css">
 <script type="module" src="/assets/eaigit/prompts-page.mjs"></script>
-</head><body class="eaigit-wizard eg-reference-page">
+</head>
+<body class="eaigit-wizard eg-reference-page eg-prompt-dashboard">
 <a class="eg-skip" href="#promptsMain">Ga naar de inhoud</a>
-<header class="eg-header">
- <a class="eg-logo" href="/tools/eaigit/" aria-label="EAIgit start"><img src="/assets/eaigit/logo.svg" alt="EAIgit"></a>
- <nav class="eg-ref-nav" aria-label="EAIgit"><a href="/tools/eaigit/">Wizard</a><a href="/tools/eaigit/hulp/">Uitleg & hulp</a></nav>
+<header class="eg-header eg-product-header eg-dashboard-product-header">
+ <a href="/tools/eaigit/" class="eg-logo" aria-label="EAIgit start"><img src="/assets/eaigit/logo.svg" alt="EAIgit"></a>
+ <nav class="eg-header-actions" aria-label="EAIgit">
+  <a href="/tools/eaigit/" class="eg-header-link">Wizard</a>
+  <a href="/tools/eaigit/hulp/" class="eg-header-link">Uitleg</a>
+  <span class="eg-header-current" aria-current="page">Opdrachten</span>
+ </nav>
 </header>
-<main id="promptsMain" class="eg-ref-shell eg-prompt-page">
- <div class="eg-ref-intro">
-  <span class="eg-ref-eyebrow">EAIgit · Promptbibliotheek</span>
-  <h1>Een goede vraag voor elke stap.</h1>
-  <p>Kies eerst waar je mee bezig bent. Kopieer pas daarna de opdracht die daarbij past.</p>
- </div>
- <div class="eg-prompt-settings">
-  <div><label for="promptRepo">Je GitHub-link <span>(mag je overslaan)</span></label><input id="promptRepo" type="url" class="eg-input" placeholder="https://github.com/naam/project" autocomplete="url" spellcheck="false"></div>
-  <div><label for="promptGoal">Wat moet je project kunnen? <span>(mag je overslaan)</span></label><input id="promptGoal" class="eg-input" type="text" maxlength="180" placeholder="Bijvoorbeeld: bezoekers kunnen oefeningen maken"></div>
- </div>
- <section aria-labelledby="phasesTitle" class="eg-prompt-library">
-  <div class="eg-section-heading"><h2 id="phasesTitle">Waar ben je mee bezig?</h2><p>De opdrachten blijven kort en vragen om controleerbare resultaten.</p></div>
-  <div id="promptFilters" class="eg-prompt-filters" role="group" aria-label="Filter op ontwikkelfase"></div>
-  <p id="promptCount" class="eg-count" aria-live="polite"></p>
-  <div id="promptList" class="eg-prompt-list"></div>
- </section>
- <section id="selectedPrompt" class="eg-prompt-choice eg-hidden" aria-labelledby="selectedTitle">
-  <div class="eg-prompt-choice-head"><span id="selectedPhase" class="eg-ref-eyebrow"></span><button id="closePrompt" class="eg-text-button" type="button">Sluiten</button></div>
-  <h2 id="selectedTitle"></h2>
-  <p id="selectedUse" class="eg-muted"></p>
-  <label for="selectedBody">Je kunt deze opdracht aanpassen voordat je hem gebruikt</label>
-  <textarea id="selectedBody" class="eg-input eg-prompt-text" rows="12" spellcheck="false"></textarea>
-  <div class="eg-ref-actions">
-   <button type="button" class="eg-primary" id="copySelected">Kopieer de opdracht</button>
-   <button type="button" class="eg-secondary" id="restoreSelected">Herstel het voorbeeld</button>
+<main id="promptsMain" class="eg-dashboard-shell">
+ <section class="eg-dashboard-intro" aria-labelledby="promptPageTitle">
+  <div>
+   <p class="eg-dashboard-eyebrow">EAIgit</p>
+   <h1 id="promptPageTitle">Hulp bij je volgende taak</h1>
+   <p class="eg-dashboard-lead">Kies wat je wilt aanpakken. Je krijgt een gerichte opdracht met controles. EAIgit kan je bestanden ook zelfstandig onderzoeken, zonder AI.</p>
   </div>
-  <p id="copyFeedback" class="eg-status" role="status" aria-live="polite"></p>
-  <p class="eg-note">Je besluit zelf wat het doel is. Laat uitvoerende tools alleen werken met passende rechten en laat wijzigingen en tests controleerbaar terugkomen.</p>
+  <aside class="eg-dashboard-intro-aside">
+   <strong>Geen prompt nodig om te beginnen</strong>
+   <p>Heb je een ZIP of openbare GitHub-repository? Laat EAIgit eerst zelf kijken welke bestanden er staan en wat aandacht vraagt.</p>
+   <a href="/tools/eaigit/">Onderzoek mijn project <span aria-hidden="true">→</span></a>
+  </aside>
  </section>
- <section class="eg-next-panel">
-  <h2>Nog geen idee welke opdracht past?</h2>
-  <p>De EAIgit-wizard helpt je eerst je situatie bepalen. Daarna kun je gericht verder.</p>
-  <div class="eg-ref-actions"><a href="/tools/eaigit/" class="eg-primary">Start de wizard</a><a href="/tools/eaigit/hulp/" class="eg-secondary">GitHub of ChatGPT begrijpen</a></div>
+ <section class="eg-prompt-assist" aria-labelledby="assistTitle">
+  <div><p class="eg-dashboard-eyebrow">Wat wil je doen?</p><h2 id="assistTitle">Kies een startpunt</h2></div>
+  <div class="eg-assist-options" role="group" aria-label="Kies waar je hulp bij wilt">
+   <button type="button" data-suggest="begrijp">Mijn project begrijpen</button>
+   <button type="button" data-suggest="fix">Een fout oplossen</button>
+   <button type="button" data-suggest="gebruikstest">De werking testen</button>
+   <button type="button" data-suggest="publiceer-plan">Online zetten</button>
+  </div>
+ </section>
+ <section class="eg-dashboard-work" aria-labelledby="phasesTitle">
+  <div class="eg-dashboard-work-head">
+   <div>
+    <span class="eg-dashboard-eyebrow">Alle opdrachten</span>
+    <h2 id="phasesTitle">Opdrachten</h2>
+   </div>
+   <p>Zoek hieronder ook op onderwerp of kies een ontwikkelfase.</p>
+  </div>
+  <div class="eg-dashboard-workspace" id="promptWorkspace">
+   <section class="eg-dashboard-browser" aria-label="Opdrachten kiezen">
+    <div class="eg-dashboard-browser-top">
+     <label class="eg-dashboard-search-label" for="promptSearch">Zoeken in opdrachten</label>
+     <input id="promptSearch" type="search" class="eg-input eg-dashboard-search" autocomplete="off" placeholder="Bijvoorbeeld testen, GitHub of publiceren">
+     <div id="promptFilters" class="eg-prompt-filters" role="group" aria-label="Filter op ontwikkelfase"></div>
+     <p id="promptCount" class="eg-count" role="status" aria-live="polite"></p>
+    </div>
+    <div id="promptList" class="eg-prompt-list" aria-label="Beschikbare opdrachten"></div>
+    <p id="promptEmpty" class="eg-dashboard-empty eg-hidden">Geen opdracht gevonden. Probeer een andere zoekterm of fase.</p>
+   </section>
+   <section id="selectedPrompt" class="eg-dashboard-editor eg-hidden" aria-labelledby="selectedTitle">
+    <div class="eg-dashboard-editor-head">
+     <span id="selectedPhase" class="eg-dashboard-eyebrow"></span>
+     <button id="closePrompt" class="eg-dashboard-back" type="button">Terug naar opdrachten</button>
+    </div>
+    <h2 id="selectedTitle"></h2>
+    <p id="selectedUse" class="eg-dashboard-editor-intro"></p>
+    <div class="eg-dashboard-outcome">
+     <span class="eg-dashboard-eyebrow">Dit levert de opdracht op</span>
+     <p id="selectedOutcome"></p>
+    </div>
+    <details class="eg-project-settings" id="projectSettings">
+     <summary>Maak deze opdracht specifieker</summary>
+     <p>Een projectlink of korte beschrijving helpt de opdracht bij je eigen project te laten aansluiten.</p>
+  <div class="eg-dashboard-context-fields">
+   <div>
+    <label for="promptRepo">GitHub-repository <small>optioneel</small></label>
+    <input id="promptRepo" type="url" class="eg-input" autocomplete="url" spellcheck="false" placeholder="https://github.com/naam/project">
+   </div>
+   <div>
+    <label for="promptGoal">Wat moet het project kunnen? <small>optioneel</small></label>
+    <input id="promptGoal" class="eg-input" type="text" maxlength="220" placeholder="Bijvoorbeeld: leerlingen maken oefeningen en zien feedback">
+   </div>
+  </div>
+    </details>
+    <div class="eg-dashboard-text-head">
+     <label for="selectedBody">Jouw opdracht</label>
+     <span>Je kunt de tekst aanpassen</span>
+    </div>
+    <textarea id="selectedBody" class="eg-input eg-prompt-text" rows="17" spellcheck="false"></textarea>
+    <p id="promptChanged" class="eg-dashboard-changed eg-hidden" role="status">Je projectgegevens zijn gewijzigd. Kies ‘Herstel opdracht’ om de nieuwe gegevens over te nemen.</p>
+    <div class="eg-dashboard-buttons">
+     <button type="button" class="eg-dashboard-copy" id="copySelected">Kopieer opdracht</button>
+     <button type="button" class="eg-dashboard-restore" id="restoreSelected">Herstel opdracht</button>
+    </div>
+    <p id="copyFeedback" class="eg-status" role="status" aria-live="polite"></p>
+    <p class="eg-dashboard-editor-note">Dit is een opdracht voor een AI-hulpmiddel. De bestandscontrole van EAIgit zelf werkt zonder AI. Niets wordt hier geschreven of gepubliceerd.</p>
+   </section>
+  </div>
+ </section>
+ <section class="eg-dashboard-bottom" aria-label="Aanvullende hulp">
+  <p><strong>Eerst zelf onderzoeken?</strong> EAIgit kan een ZIP en openbare repository bekijken, zonder AI-model.</p>
+  <div><a href="/tools/eaigit/">Open de wizard</a><a href="/tools/eaigit/hulp/">Lees de uitleg</a></div>
  </section>
 </main>
-<footer class="eg-footer"><span>EAIgit</span><a href="/tools/eaigit/">Terug naar de wizard</a></footer>
-</body></html>
+<footer class="eg-dashboard-footer"><span>EAIgit</span><a href="/">Terug naar EAI</a></footer>
+</body>
+</html>

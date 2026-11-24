@@ -62,6 +62,114 @@ class ReleaseTests(unittest.TestCase):
                     with self.assertRaisesRegex(RuntimeError, 'HTML content mismatch: ' + target):
                         verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
 
+    def test_legacy_handoffs_do_not_need_editorial_ui_markers(self):
+        # Redirects are full-byte verified but intentionally contain no
+        # data-ui-version or main navigation. Exercise all six old URLs.
+        from prepare_ui import LEGACY_HUB_REDIRECTS
+
+        redirects = {}
+        for route, target in LEGACY_HUB_REDIRECTS.items():
+            redirect_html = (
+                '<!doctype html><html><head>'
+                f'<link rel="canonical" href="https://eaimodel.nl{target}">'
+                f'<meta http-equiv="refresh" content="0;url={target}">'
+                '</head><body><main>'
+                f'<a href="{target}">Door naar nieuwe pagina</a>'
+                '</main></body></html>'
+            ).encode()
+            relative = route.lstrip('/') + 'index.html'
+            file = self.root / relative
+            file.parent.mkdir(parents=True, exist_ok=True)
+            file.write_bytes(redirect_html)
+            self.manifest['pages'].append(relative)
+            redirects[route] = redirect_html
+
+        def response(request, **kwargs):
+            route = urlsplit(request.full_url).path
+            if route in redirects:
+                return io.BytesIO(redirects[route])
+            if route == '/leif/':
+                return io.BytesIO(self.leif)
+            if route == '/leif/continue/':
+                return io.BytesIO(self.continuation)
+            if route == '/leif/verhaal/':
+                return io.BytesIO(self.story)
+            return io.BytesIO(self.current)
+
+        with patch.object(verify_ui, 'urlopen', side_effect=response):
+            verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
+
+    def test_legacy_handoff_with_modified_html_is_rejected(self):
+        from prepare_ui import LEGACY_HUB_REDIRECTS
+
+        route = '/kennis/'
+        target = LEGACY_HUB_REDIRECTS[route]
+        relative = 'kennis/index.html'
+        handoff = (
+            '<!doctype html><html><head>'
+            f'<meta http-equiv="refresh" content="0;url={target}">'
+            '</head><body><main>Verder</main></body></html>'
+        ).encode()
+        file = self.root / relative
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_bytes(handoff)
+        self.manifest['pages'].append(relative)
+
+        def response(request, **kwargs):
+            path = urlsplit(request.full_url).path
+            if path == route:
+                return io.BytesIO(handoff.replace(b'Verder', b'Veranderd'))
+            return io.BytesIO(self.current)
+
+        with patch.object(verify_ui, 'urlopen', side_effect=response):
+            with self.assertRaisesRegex(RuntimeError, 'HTML content mismatch: /kennis/'):
+                verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
+
+    def test_byte_identical_invalid_redirect_is_still_rejected(self):
+        from prepare_ui import LEGACY_HUB_REDIRECTS
+        route = '/kennis/'
+        target = LEGACY_HUB_REDIRECTS[route]
+        relative = 'kennis/index.html'
+        self.manifest['pages'].append(relative)
+        valid = (
+            '<html><head>'
+            f'<link rel="canonical" href="https://eaimodel.nl{target}">'
+            f'<meta http-equiv="refresh" content="0;url={target}">'
+            '</head><body><main>'
+            f'<a href="{target}">Verder</a>'
+            '</main></body></html>'
+        )
+        bad_cases = (
+            (valid.replace(f'https://eaimodel.nl{target}', 'https://example.invalid/'), 'canonical'),
+            (valid.replace(f'0;url={target}', f'0;url=/wrong/?next={target}'), 'refresh'),
+            (valid.replace(f'href="{target}"', 'href="/wrong/"'), 'fallback'),
+            (valid.replace('>Verder</a>', '></a>'), 'fallback'),
+        )
+        for bad, label in bad_cases:
+            with self.subTest(label=label, html=bad):
+                data = bad.encode()
+                file = self.root / relative
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_bytes(data)
+                def response(request, **kwargs):
+                    return io.BytesIO(data if urlsplit(request.full_url).path == route else self.current)
+                with patch.object(verify_ui, 'urlopen', side_effect=response):
+                    with self.assertRaisesRegex(RuntimeError, f'Invalid {label} redirect: /kennis/'):
+                        verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
+
+    def test_editorial_page_without_matching_ui_version_is_rejected(self):
+        relative = 'nl/tools/index.html'
+        missing_version = self.current.replace(b'data-ui-version="same-ui-assets"', b'')
+        (self.root / relative).write_bytes(missing_version)
+
+        def response(request, **kwargs):
+            path = urlsplit(request.full_url).path
+            return io.BytesIO(missing_version if path == '/nl/tools/' else self.current)
+
+        with patch.object(verify_ui, 'urlopen', side_effect=response):
+            with self.assertRaisesRegex(RuntimeError, 'Stale UI: /nl/tools/'):
+                verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
+
     def test_leif_missing_online_is_rejected(self):
         def response(request, **kwargs):
             path = urlsplit(request.full_url).path

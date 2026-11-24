@@ -12,6 +12,21 @@ from bs4 import BeautifulSoup, Comment
 from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, LEGACY_HUB_REDIRECTS, canonical
 
 
+def assert_live_ui_contract(path: str, soup: BeautifulSoup, version: str) -> None:
+    """Redirects and editorial pages have different strict page contracts."""
+    if path in LEGACY_HUB_REDIRECTS:
+        target = LEGACY_HUB_REDIRECTS[path]
+        link = soup.find('link', rel='canonical')
+        refresh = soup.find('meta', attrs={'http-equiv': 'refresh'})
+        fallback = soup.select_one('main a[href]')
+        assert link and link.get('href') == 'https://eaimodel.nl' + target, f'Invalid canonical redirect: {path}'
+        assert refresh and refresh.get('content') == '0;url=' + target, f'Invalid refresh redirect: {path}'
+        assert fallback and fallback.get('href') == target and fallback.get_text(strip=True), f'Invalid fallback redirect: {path}'
+        return
+    assert soup.body and soup.body.get('data-ui-version') == version, f'Stale UI: {path}'
+    assert soup.select_one('.eai-site-menu'), path
+
+
 def check(root: Path):
     manifest = json.loads((root / 'assets/ui-manifest.json').read_text())
     assert manifest['pages'], 'No pages were prepared'
@@ -24,10 +39,7 @@ def check(root: Path):
         if route in LEGACY_HUB_REDIRECTS:
             # Redirect handoffs are byte-verified on the live site like all HTML.
             # They have no shared menu because the browser immediately navigates.
-            expected = LEGACY_HUB_REDIRECTS[route]
-            assert soup.find('link', rel='canonical')['href'] == 'https://eaimodel.nl' + expected, rel
-            assert expected in soup.find('meta', attrs={'http-equiv': 'refresh'})['content'], rel
-            assert soup.select_one('main a[href]')['href'] == expected, rel
+            assert_live_ui_contract(route, soup, manifest['version'])
             assert 'location.search + location.hash' in (root / rel).read_text(), rel
             continue
         assert len(soup.select('header.eai-masthead')) == 1, rel
@@ -156,23 +168,6 @@ def html_matches_release(data: bytes, digest: str) -> tuple[bool, bool]:
             if hashlib.sha256(before + remainder).hexdigest() == digest:
                 return True, True
     return False, False
-
-def assert_live_ui_contract(path: str, soup: BeautifulSoup, version: str) -> None:
-    """A verified redirect is not a UI page; both have strict page contracts."""
-    if path in LEGACY_HUB_REDIRECTS:
-        target = LEGACY_HUB_REDIRECTS[path]
-        # The caller has already checked the exact published HTML hash.
-        # A redirect deliberately lacks the large full-page UI shell.
-        canonical_link = soup.find('link', rel='canonical')
-        refresh = soup.find('meta', attrs={'http-equiv': 'refresh'})
-        fallback = soup.select_one('main a[href]')
-        assert canonical_link and canonical_link.get('href') == 'https://eaimodel.nl' + target, path
-        assert refresh and target in refresh.get('content', ''), path
-        assert fallback and fallback.get('href') == target, path
-        return
-    assert soup.body and soup.body.get('data-ui-version') == version, f'Stale UI: {path}'
-    assert soup.select_one('.eai-site-menu'), path
-
 
 def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     def get(path):

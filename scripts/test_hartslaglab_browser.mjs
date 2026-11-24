@@ -14,6 +14,16 @@ const errors=[];
 let browser;
 const state=p=>p.evaluate(()=>window.__EAI_HEART_LAB__.state);
 const setTime=(p,t)=>p.evaluate(t=>window.__EAI_HEART_LAB__.setTime(t),t);
+const changedFlowProjection=async(p,previous)=>{
+  assert(typeof previous==='string'&&previous.trim().length>0,
+    'Een zichtbare bloedstroombaan is nodig voordat de camera beweegt');
+  const changed=await p.waitForFunction(previous=>{
+    const current=document.querySelector('#flowOverlay path')?.getAttribute('d');
+    return typeof current==='string'&&current.trim().length>0&&current!==previous?current:false;
+  },previous,{timeout:6000,polling:'raf'});
+  try{return await changed.jsonValue();}
+  finally{await changed.dispose();}
+};
 
 try {
   let ready=false;
@@ -29,7 +39,7 @@ try {
   const page=await browser.newPage({viewport:{width:1400,height:920},deviceScaleFactor:1});
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/tools/anatomie/labs/hartslag/',{waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.atlasRich===true,{timeout:40000});
+  await page.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.atlasRich===true,undefined,{timeout:40000});
   const initial=await state(page);
   assert(initial.cutaway&&initial.anatomyView&&initial.atlasPartCount===34,'Het echte hart opent vanbinnen');
   assert.equal(initial.focusSide,'both','De rode en blauwe bloedsomloop horen samen in beeld');
@@ -163,10 +173,55 @@ try {
 
   // Bewijs dat afspelen doorloopt over de overgang 100% -> 0%.
   await setTime(page,.98);
-  await page.locator('#play').click();
-  await page.waitForTimeout(520);
-  const wrapped=await state(page);
-  assert(wrapped.playing&&wrapped.t<.35,'Hartslag moet vanzelf opnieuw beginnen');
+  const beforeWrap=await state(page);
+  assert(!beforeWrap.playing&&beforeWrap.t>.97,'De cyclusproef begint gepauzeerd aan het einde');
+  // Observeer de overgang per beeld, ook wanneer software-WebGL traag is.
+  // Bewaar de waarneming in de pagina; een latere protocolrespons mag haar
+  // niet vervangen door een momentopname uit een volgende fase.
+  await page.evaluate(()=>{
+    const observation={previous:window.__EAI_HEART_LAB__.state.t,started:null,transition:null,frame:0};
+    window.__EAI_HEART_WRAP_OBSERVATION__=observation;
+    document.getElementById('play').addEventListener('click',()=>{
+      const started=window.__EAI_HEART_LAB__.state;
+      observation.started={t:started.t,playing:started.playing};
+    },{once:true});
+    const sample=()=>{
+      const current=window.__EAI_HEART_LAB__.state;
+      if(current.playing&&observation.previous>.95&&current.t<.35){
+        observation.transition={from:observation.previous,to:current.t,playing:current.playing,started:observation.started};
+        return;
+      }
+      observation.previous=current.t;
+      observation.frame=requestAnimationFrame(sample);
+    };
+    observation.frame=requestAnimationFrame(sample);
+  });
+  let wrapped;
+  try{
+    await page.locator('#play').click();
+    const transition=await page.waitForFunction(
+      ()=>window.__EAI_HEART_WRAP_OBSERVATION__.transition,
+      undefined,{timeout:10000,polling:'raf'}
+    );
+    wrapped=await transition.jsonValue();
+    await transition.dispose();
+  }catch(error){
+    console.error('Hartslag cyclusproef:',await page.evaluate(()=>({
+      state:window.__EAI_HEART_LAB__.state,
+      observation:window.__EAI_HEART_WRAP_OBSERVATION__
+    })));
+    throw error;
+  }finally{
+    await page.evaluate(()=>{
+      cancelAnimationFrame(window.__EAI_HEART_WRAP_OBSERVATION__.frame);
+      delete window.__EAI_HEART_WRAP_OBSERVATION__;
+    });
+  }
+  assert(wrapped.started?.playing&&Math.abs(wrapped.started.t-.98)<.001,
+    'Afspelen moet vanaf de ingestelde eindfase beginnen');
+  assert(wrapped.playing&&wrapped.from>.95&&wrapped.to<.35,
+    'Hartslag moet tijdens afspelen van het cyclus-einde naar het begin gaan');
+  console.log('Hartslag cyclusovergang:',JSON.stringify(wrapped));
   await page.locator('#play').click();
 
   mkdirSync('test-results',{recursive:true});
@@ -277,8 +332,8 @@ try {
   await page.mouse.move(dragBox.x+dragBox.width*.76,dragBox.y+dragBox.height*.52,{steps:8});
   await page.mouse.up();
   assert(Math.abs((await state(page)).yaw-before.yaw)>.1,'Het hart is draaibaar');
-  await page.waitForTimeout(80);
-  assert.notEqual(await page.locator('#flowOverlay path').first().getAttribute('d'),projectedBefore,
+  const projectedAfter=await changedFlowProjection(page,projectedBefore);
+  assert.notEqual(projectedAfter,projectedBefore,
     'De bloedstroombanen draaien mee met het echte 3D-hart');
   const panBefore=(await state(page)).pan;
   const flowBeforePan=await page.locator('#flowOverlay path').first().getAttribute('d');
@@ -292,9 +347,8 @@ try {
     'Shift-slepen verplaatst het hart in plaats van te draaien');
   // WebKit kan langer dan 80 ms nodig hebben om de nieuwe cameraprojectie te tekenen.
   // Wacht op echte bijwerking van de lijn; een stilgevallen renderer blijft falen.
-  await page.waitForFunction(previous=>document.querySelector('#flowOverlay path')?.getAttribute('d')!==previous,
-    flowBeforePan,{timeout:6000});
-  assert.notEqual(await page.locator('#flowOverlay path').first().getAttribute('d'),flowBeforePan,
+  const flowAfterPan=await changedFlowProjection(page,flowBeforePan);
+  assert.notEqual(flowAfterPan,flowBeforePan,
     'Ook bij verschuiven blijven de routes aan het hart gekoppeld');
   await page.locator('#resetCamera').click();
   assert(Math.abs((await state(page)).yaw+.2)<.005);
@@ -303,13 +357,15 @@ try {
   await page.locator('#explainMore summary').click();
   await page.locator('#tabSourcesBtn').click();
   assert.equal(await page.locator('.source-links a').count(),4,'Bronnen blijven beschikbaar');
+  // De desktopproef is klaar; laat die renderer niet doorwerken tijdens mobiel.
+  await page.close();
 
   const mobile=await browser.newPage({
     viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:engine==='webkit',hasTouch:true
   });
   mobile.on('pageerror',e=>errors.push(e.message));
   await mobile.goto(base+'/tools/anatomie/labs/hartslag/',{waitUntil:'domcontentloaded'});
-  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.atlasRich===true,{timeout:40000});
+  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__?.state.atlasRich===true,undefined,{timeout:40000});
   const m0=await state(mobile);
   assert(m0.cutaway&&m0.anatomyView&&m0.focusSide==='both','Mobiel begint met beide harthelften');
   assert(await mobile.locator('#atlasLoading').isHidden());
@@ -408,7 +464,31 @@ try {
   assert.equal((await state(mobile)).anatomyView,true,'Onderzoek behoudt echte anatomie');
   const guided=await mobile.evaluate(()=>window.__EAI_HEART_LAB__.motion);
   assert(guided.playbackSeconds>=7.5,'Begeleide klepbeweging is vertraagd');
-  await mobile.waitForFunction(()=>window.__EAI_HEART_LAB__.state.studyStage==='compare',{timeout:20000});
+  const studyWaitStarted=performance.now();
+  let finishedStudy;
+  try{
+    // De oude aanroep gebruikte effectief de standaard van Playwright 1.56.1:
+    // 30 seconden. Bewaar die grens nu expliciet op de juiste parameter.
+    const completed=await mobile.waitForFunction(()=>{
+      const current=window.__EAI_HEART_LAB__.state;
+      return current.studyStage==='compare'?{
+        t:current.t,playing:current.playing,studyStage:current.studyStage
+      }:false;
+    },undefined,{timeout:30000,polling:'raf'});
+    try{finishedStudy=await completed.jsonValue();}
+    finally{await completed.dispose();}
+  }catch(error){
+    console.error('Begeleide hartbeweging:',JSON.stringify({
+      waitMs:Math.round(performance.now()-studyWaitStarted),state:await state(mobile)
+    }));
+    throw error;
+  }
+  assert.equal(finishedStudy.studyStage,'compare');
+  assert.equal(finishedStudy.playing,false,'De begeleide beweging pauzeert op het eindpunt');
+  assert(Math.abs(finishedStudy.t-.90)<1e-6,'De beweging stopt op het afgesproken vergelijkingspunt');
+  console.log('Begeleide hartbeweging afgerond:',JSON.stringify({
+    waitMs:Math.round(performance.now()-studyWaitStarted),...finishedStudy
+  }));
   await mobile.locator('#discoveryAction').click();
   assert.match(await mobile.locator('#discoveryFeedback').textContent(),/AV-kleppen sluiten eerst/);
   assert.deepEqual(errors,[],'Browserfouten: '+errors.join(' | '));

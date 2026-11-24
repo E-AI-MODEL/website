@@ -51,7 +51,7 @@ class MelkwegLabPublicationTests(unittest.TestCase):
     def test_scientific_observatory_and_planets_are_available(self):
         html = SOURCE.read_text(encoding="utf-8")
         for marker in (
-            "MW / 01 | Galactisch Observatorium",
+            "De Melkweg | EAI",
             "instrument-hud",
             "instrument-meta",
             "instrument-controls",

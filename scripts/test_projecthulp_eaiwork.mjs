@@ -17,6 +17,40 @@ const [{validateMissionPlan,applyMissionEvent,blockingConstraints,missionProgres
  get("packages/operations/src/store.ts"),
  get("packages/operations/src/preflight.ts")
 ]);
+// Valideer de werkplannen uit de EAIgit-browser met de echte, ongewijzigde
+// EAIwork-MissionPlan-validator. Dit voert geen browseropdrachten uit.
+const {buildLocalWorkPlan}=await import("../assets/eaigit/work-plan.mjs");
+const browserCases=[
+ {name:"geen-bestanden",source:"unknown",intent:"explore"},
+ {name:"zip-start",source:"zip",intent:"start",
+  archive:{eligible:["index.html"],contentCheck:{checkedFiles:1}}},
+ {name:"git-alleen",source:"github",intent:"repair",
+  repo:{readable:true,paths:["index.html"],contentCheck:{checkedFiles:1}}},
+ {name:"beide-bronnen",source:"both",intent:"repair",aim:"De belangrijkste knop moet werken",
+  archive:{eligible:["index.html","app.js"],contentCheck:{checkedFiles:2}},
+  repo:{readable:true,paths:["index.html","app.js"]},
+  advice:{comparison:{missingCount:0,changed:[],unknown:[]}}},
+ {name:"publicatie-niet-toegestaan",source:"zip",intent:"publish",
+  archive:{eligible:["index.html"],contentCheck:{checkedFiles:1}}}
+];
+const websitePlans=browserCases.map(({name,...settings})=>{
+ const built=buildLocalWorkPlan(settings);
+ validateMissionPlan(built.plan);
+ const check=inspectMissionPlan(built.plan);
+ assert.equal(check.status,"requires-human-review");
+ assert.equal(check.approvalGranted,false);
+ assert.equal(check.canExecute,false);
+ assert.equal(check.instructionCoverage,"not-evaluated");
+ assert.ok(built.plan.tasks.every(task=>task.effect==="local"));
+ assert.ok(built.pendingDecisions.every(decision=>decision.approved===false));
+ assert.ok(built.observations.some(x=>x.id==="user-test"&&x.state==="niet-getest"));
+ if(settings.aim)assert.equal(built.plan.sourceInstruction,settings.aim);
+ else assert.equal(built.plan.sourceInstruction,undefined);
+ return {name,structuralValidation:check.structuralValidation,
+  tasks:built.plan.tasks.length,phases:built.plan.phases.length,
+  pendingDecisions:built.pendingDecisions.map(x=>x.effect),
+  userTest:"not-performed",approvalGranted:check.approvalGranted};
+});
 const plan=JSON.parse(readFileSync(planFile,"utf8"));
 validateMissionPlan(plan);
 const preflight=inspectMissionPlan(plan);
@@ -96,7 +130,7 @@ try{
   permissionScope:"test-only-no-external-writes",remaining:missionProgress(snapshot)};
 }finally{store.close();rmSync(temp,{recursive:true,force:true});}
 const result={
- contract:"EAIwork MissionPlan v1",mission:plan.id,
+ contract:"EAIwork MissionPlan v1",mission:plan.id,websitePlans,
  preflight:{status:preflight.status,approvalGranted:preflight.approvalGranted,canExecute:preflight.canExecute,blocked:preflight.tasks.filter(t=>t.blockers?.length).map(t=>({task:t.taskId,blockers:t.blockers}))},
  outcome:"first-two-dependency-tasks-executed-in-eaiwork-opsstore-remainder-blocked",
  phases:plan.phases.map(p=>({id:p.id,title:p.title,tasks:p.taskIds})),
@@ -116,4 +150,5 @@ const result={
 };
 if(outputFile){mkdirSync(dirname(resolve(outputFile)),{recursive:true});writeFileSync(outputFile,JSON.stringify(result,null,2)+"\n");}
 console.log("EAI Work genuine contract: "+plan.tasks.length+" tasks / "+plan.phases.length+" phases / "+actual.length+" real text adapters / "+publishGates.length+" publication gate unresolved.");
+console.log("EAIgit browser workplans validated against actual EAIwork: "+websitePlans.length+" paths, no external approval.");
 console.log("Remaining adapters are NOT installed in EAIwork runtime. This fixture does NOT run a user ZIP or target repository.");

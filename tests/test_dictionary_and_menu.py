@@ -40,7 +40,8 @@ class DictionaryAndMenuTests(unittest.TestCase):
         self.assertIn('/nl/begrippen/', dict(nl['Het model']).values())
         self.assertIn('/en/glossary/', dict(en['The model']).values())
         self.assertEqual(dict(nl['Artikelen'])['Artikelen en publicaties'], '/nl/publicaties/')
-        self.assertIn('/tools/science-observatory/', dict(nl['Zelf aan de slag']).values())
+        self.assertEqual(dict(nl['Zelf aan de slag'])['Kies een vakgebied of hulpmiddel'], '/nl/tools/')
+        self.assertIn('/tools/science-observatory/', (ROOT / 'nl/tools/index.html').read_text(encoding='utf-8'))
 
     def test_begrippen_worden_als_directe_zoekresultaten_geindexeerd(self):
         with tempfile.TemporaryDirectory() as temp:

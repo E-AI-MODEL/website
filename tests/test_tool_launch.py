@@ -27,8 +27,10 @@ class ToolLaunchTests(unittest.TestCase):
             for slug in ['eaimesh','eaistudio','wihtml']:
                 self.assertIsNotNone(legacy.select_one(f'main a[href="/tools/{slug}/"]'))
         menu=(ROOT/'assets/site-refresh.js').read_text(encoding='utf-8')
-        for slug in ['eaimesh','eaistudio','wihtml']:
-            self.assertIn("'/tools/"+slug+"/'", menu)
+        self.assertIn("'Zelf aan de slag',[['Kies een vakgebied of hulpmiddel','/nl/tools/'", menu)
+        self.assertNotIn("Galactisch Observatorium", menu)
+        # The three application URLs remain in both subject choice screens above,
+        # but no longer enlarge the global menu with a second tool catalogue.
     def test_pwa_assets_are_complete(self):
         root=BUILD/'tools/eaistudio/studio';manifest=json.loads((root/'manifest.webmanifest').read_text())
         for icon in manifest['icons']:self.assertTrue((root/icon['src']).is_file())

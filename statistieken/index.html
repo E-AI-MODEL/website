@@ -190,7 +190,7 @@ main{padding-bottom:65px}
     var axis=document.createElement("div");axis.className="axis";var a=document.createElement("span");var b=document.createElement("span");text(a,dateLabel(data[0].date));text(b,dateLabel(data[data.length-1].date));axis.append(a,b);target.appendChild(axis);
     var note=document.createElement("p");note.className="chart-note";text(note,"De meest recente dag kan nog onvolledig zijn.");target.appendChild(note);
   }
-  var labels={"/":"Startpagina","/nl/":"Startpagina (Nederlands)","/en/":"Homepage (English)","/model-monitor/":"AI Model Monitor","/nl/model-monitor/":"AI Model Monitor","/tools/science-observatory/":"Science Observatory","/tools/llm-observatorium/":"Hoe werkt AI?","/tools/anatomie/":"Anatomie van de mens","/tools/abyss/":"ABYSS","/tools/wihtml/":"Wiskunde","/tools/lo-aanvalslab/":"Sport en bewegen","/tools/melkweg-lab/":"Galactisch Observatorium"};
+  var labels={"/":"Startpagina","/nl/":"Startpagina (Nederlands)","/en/":"Homepage (English)","/model-monitor/":"AI Model Monitor","/nl/model-monitor/":"AI Model Monitor","/tools/science-observatory/":"Natuurkunde en wiskunde","/tools/llm-observatorium/":"Hoe werkt een taalmodel?","/tools/anatomie/":"Het lichaam in 3D","/tools/abyss/":"Oceanografie","/tools/wihtml/":"Wiskunde","/tools/lo-aanvalslab/":"Sport en bewegen","/tools/melkweg-lab/":"De Melkweg"};
   function ranks(id,items,kind){
     var target=el(id);target.replaceChildren();if(!items.length){var p=document.createElement("p");p.className="note";text(p,"Voor deze periode is geen uitsplitsing beschikbaar.");target.appendChild(p);return;}
     var max=Math.max(1,items[0].views);var list=document.createElement("ol");list.className="rank-list";

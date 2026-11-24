@@ -78,3 +78,86 @@
  .eg-prompt-choice{padding:19px 15px}
  .eg-ref-actions>*{flex:1 1 auto}
 }
+
+
+/* EAIgit-hulp krijgt dezelfde vormgeving als de wizard en de opdrachtenpagina.
+   Geen invloed op de afzonderlijke promptwerkruimte. */
+body.eg-reference-page:not(.eg-prompt-dashboard){
+ background:#f7f9f6;color:#263f35;
+ font:15px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-shell{
+ width:min(1060px,calc(100% - 40px));margin:36px auto 65px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-eyebrow{
+ color:#27836f;letter-spacing:.085em;font-weight:760;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-intro h1{
+ font:770 clamp(31px,4.6vw,43px)/1.14 system-ui,-apple-system,"Segoe UI",sans-serif;
+ letter-spacing:-.04em;color:#263e34;margin:11px 0 13px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-intro p{
+ font-size:15px;color:#5b7565;line-height:1.67;max-width:61ch;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards article,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-group,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-decision{
+ border:1px solid #dce8df;border-radius:9px;box-shadow:none;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards article{
+ padding:24px;background:#fff;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-icon{
+ width:36px;height:36px;background:#eff6f1;
+ border-color:#c9e1d3;color:#217b66;border-radius:7px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards h2{
+ font:740 19px/1.25 system-ui,-apple-system,"Segoe UI",sans-serif;
+ letter-spacing:-.025em;color:#2c4639;margin:0 0 10px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-decision h2,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-topics h2,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-next-panel h2{
+ font:750 clamp(22px,2.5vw,27px)/1.25 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:#2b4539;letter-spacing:-.03em;margin-bottom:16px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards p,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-decision-grid,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-content p,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-content li{
+ color:#536d5e;font-size:13px;line-height:1.68;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards a,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-note a,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-links a{
+ color:#166f5d;text-underline-offset:3px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-group h3{
+ color:#2a4e3f;font-size:15px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-topic summary{
+ color:#305544;font-weight:620;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-topic summary:hover{
+ color:#0f7968;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-next-panel{
+ background:#eff7f1;border:1px solid #d8e8db;border-radius:9px;
+}
+@media(max-width:700px){
+ .eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-shell{
+  width:calc(100% - 24px);margin:22px auto 40px;
+ }
+ .eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-intro h1{
+  font-size:30px;line-height:1.14;
+ }
+ .eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards article{padding:19px}
+}
+
+/* Extra koppelhandleiding staat standaard ingeklapt en vraagt geen invoer. */
+.eg-connection-guide{margin-top:-20px;margin-bottom:38px}
+.eg-connection-guide>summary{cursor:pointer;color:#2e505b;font-size:14px;font-weight:650;line-height:1.55}
+.eg-connection-guide>summary:hover{color:#167395}
+.eg-connection-guide[open]>summary{margin-bottom:14px}
+.eg-connection-guide .eg-help-content{padding:0;max-width:830px}
+.eg-connection-guide .eg-help-content strong{color:#335963}

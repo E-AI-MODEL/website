@@ -1,0 +1,36 @@
+name: TOPO mobile and country map verification
+on:
+  workflow_call:
+  workflow_dispatch:
+
+
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate sourced TOPO questions and language bank
+        run: node scripts/validate_topo_content.mjs
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start local static site
+        run: python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/topo-server.log 2>&1 &
+      - name: Test national map, mobile keyboard and settings
+        run: node scripts/test_topo_mobile.mjs
+        env:
+          TOPO_BROWSER: ${{ matrix.browser }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: topo-${{ matrix.browser }}-screenshots
+          path: test-results/topo/
