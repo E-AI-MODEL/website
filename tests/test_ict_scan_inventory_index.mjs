@@ -74,3 +74,21 @@ test('Dynamische verandering van de bron wordt niet door een eerder berekende in
   assert.ok(after.connected('apps','APP-034',{type:'apps'}).some(x=>x.otherId==='APP-ZZZ'));
   assert.equal(before.count('apps'),69);
 });
+test('Volledig registratie-ID zoekt exact in een register, ook bij overlappende auditgegevens',()=>{
+  const built=index.build(state(),{catalog});
+  const controls=built.records('aiControls'),options={exactId:true,excludeMetadata:true};
+  assert.ok(controls.length>1);
+  for(const row of controls){
+    assert.deepEqual(controls.filter(r=>index.matchesRecord(r,row.id,options)).map(r=>r.id),[row.id]);
+    assert.deepEqual(controls.filter(r=>index.matchesRecord(r,' '+row.id.toLowerCase()+' ',options)).map(r=>r.id),[row.id]);
+  }
+  assert.equal(controls.filter(r=>index.matchesRecord(r,'B-999999',options)).length,0);
+  assert.equal(controls.filter(r=>index.matchesRecord(r,'',options)).length,controls.length);
+  assert.ok(controls.some(r=>index.matchesRecord(r,'Teams Classwork',options)));
+  const sample={id:'B-02',name:'Instellingen Teams',auditTrail:[{recordId:'B-01',note:'uniekehistorischeterm'}]};
+  assert.ok(index.matchesRecord(sample,'B-01'),'Algemeen zoeken mag verwijzingen blijven vinden');
+  assert.ok(!index.matchesRecord(sample,'B-01',options));
+  assert.ok(!index.matchesRecord(sample,'uniekehistorischeterm',options));
+  assert.ok(index.matchesRecord(sample,'Instellingen Teams',options));
+  assert.ok(index.matchesRecord(sample,' b - 02 ',options));
+});

@@ -401,10 +401,10 @@
     const assignments=[];
     for(const item of ai)for(const phase of IctScanTaxonomy.chartPhases(item))assignments.push({phase});
     showChart('phaseChart',assignments,'phase',choice.phase,state.phase,value=>{
-      state.phase=state.phase===value?'':value;renderAi();
+      state.aiMode='klas';state.aiStatusFilter='';el('aiSearch').value='';state.phase=state.phase===value?'':value;renderAi();
     });
     showChart('aiProducts',ai,'product',choice.aiProduct,state.aiProduct,value=>{
-      state.aiProduct=state.aiProduct===value?'':value;renderAi();
+      state.aiMode='klas';state.aiStatusFilter='';el('aiSearch').value='';state.aiProduct=state.aiProduct===value?'':value;renderAi();
     });
     el('aiProductsCaption').textContent=fmt(ai.length)+' beschreven onderwijsfuncties. Dit zijn geen zelfstandige toepassingen en niet automatisch ingeschakelde functies.';
   };

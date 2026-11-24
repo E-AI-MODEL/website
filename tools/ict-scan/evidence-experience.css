@@ -194,3 +194,91 @@
 .workspace.monitor-layout #viewOverviewScene0 #overviewQuickActions{order:1;padding-top:12px;border-top:1px solid #dce5ed}
 .workspace.monitor-layout #viewOverviewScene0 #kpiGrid{order:0}
 @media(min-width:1000px){.workspace.monitor-layout #viewOverviewScene0 #kpiGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.workspace.monitor-layout #viewOverviewScene0 .overview-category.kpi{min-height:92px;padding:20px}.workspace.monitor-layout #viewOverviewScene0 .overview-category strong{font-size:16px}}
+
+/* AI workspace: one school-wide status view; separate scope and filters for functions. */
+.workspace.monitor-layout #viewAi .scene-frame{padding-right:4px}
+.workspace.monitor-layout #viewAi .scene-navigation{margin:5px 0 16px}
+.workspace.monitor-layout #viewAi .ai-progress-panel{background:transparent;border:0;box-shadow:none;padding:0}
+.workspace.monitor-layout #aiProgress{display:grid;gap:16px;color:#263e5c}
+.workspace.monitor-layout #viewAi .ai-summary-head,.workspace.monitor-layout #viewAi .ai-browser-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.workspace.monitor-layout #viewAi :is(.ai-summary-head,.ai-followup-head,.ai-browser-head) h2{font-size:19px;line-height:1.25;letter-spacing:-.025em;color:#263e60;margin:0 0 5px}
+.workspace.monitor-layout #viewAi :is(.ai-summary-head,.ai-followup-head,.ai-browser-head) p{font-size:12px;color:#5d7188;line-height:1.5;margin:0}
+.workspace.monitor-layout #viewAi .ai-text-action{border:1px solid #d6e0ea;border-radius:7px;background:#fff;color:#36577d;padding:8px 12px;font-size:12px;font-weight:650;cursor:pointer;text-align:left;line-height:1.4}
+.workspace.monitor-layout #viewAi .ai-text-action:hover{background:#edf4fa;border-color:#a8bfd6}
+.workspace.monitor-layout #viewAi .ai-text-action:disabled{opacity:.5;cursor:default}
+.workspace.monitor-layout #viewAi .ai-coverage{padding:19px 21px;background:#fff;border:1px solid #dce5ee;border-radius:12px}
+.workspace.monitor-layout #viewAi .ai-coverage-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
+.workspace.monitor-layout #viewAi .ai-coverage-head h3{font-size:14px;color:#304765;line-height:1.4;margin:0;font-weight:700}
+.workspace.monitor-layout #viewAi .ai-population{font-size:11px;color:#566c86;font-weight:650}
+.workspace.monitor-layout #viewAi .ai-coverage-measures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
+.workspace.monitor-layout #viewAi .ai-coverage-metric{display:grid;text-align:left;gap:9px;min-width:0;border:0;background:transparent;padding:3px 0;color:#344b69;font:inherit;cursor:pointer}
+.workspace.monitor-layout #viewAi .ai-measure-line{display:flex;justify-content:space-between;align-items:baseline;gap:8px;line-height:1.4}
+.workspace.monitor-layout #viewAi .ai-measure-line strong{font-size:13px;font-weight:660}
+.workspace.monitor-layout #viewAi .ai-measure-number{font-size:17px;letter-spacing:-.02em;font-weight:720;font-variant-numeric:tabular-nums;white-space:nowrap}
+.workspace.monitor-layout #viewAi .ai-measure-track{display:block;background:#eef2f6;height:8px;overflow:hidden;border-radius:20px}
+.workspace.monitor-layout #viewAi .ai-measure-fill{height:100%;display:block;border-radius:20px;background:#728fae}
+.workspace.monitor-layout #viewAi [data-ai-inspect="risk"] .ai-measure-fill{background:#bd914d}
+.workspace.monitor-layout #viewAi .ai-measure-foot{display:flex;justify-content:space-between;gap:10px;color:#61758c;font-size:11px;line-height:1.5}
+.workspace.monitor-layout #viewAi .ai-measure-arrow{color:#315b87;font-weight:650;white-space:nowrap}
+.workspace.monitor-layout #viewAi .ai-coverage-metric:hover .ai-measure-arrow{text-decoration:underline}
+.workspace.monitor-layout #viewAi .ai-evidence-note{font-size:11px;color:#64768c;line-height:1.55;margin:12px 0 0}
+.workspace.monitor-layout #viewAi .ai-followup-head{margin:5px 0 -5px}
+.workspace.monitor-layout #viewAi .ai-progress-grid{gap:14px;align-items:start}
+.workspace.monitor-layout #viewAi .ai-progress-group{border:1px solid #dce5ed;border-radius:12px;background:#fff;box-shadow:0 2px 7px #24385208;overflow:hidden}
+.workspace.monitor-layout #viewAi .ai-group-head{padding:15px 16px 12px;border-bottom:1px solid #e6edf3}
+.workspace.monitor-layout #viewAi .ai-group-title{display:flex;align-items:center;gap:8px}
+.workspace.monitor-layout #viewAi .ai-progress-group .ai-group-title h3{flex:1;font-size:14px;font-weight:720;color:#2d4667;line-height:1.35;margin:0;border:0;padding:0;background:none}
+.workspace.monitor-layout #viewAi .ai-group-dot{width:8px;height:8px;background:#8a9db4;border-radius:50%;flex:0 0 8px}
+.workspace.monitor-layout #viewAi [data-progress="good"] .ai-group-dot{background:#518778}
+.workspace.monitor-layout #viewAi [data-progress="open"] .ai-group-dot{background:#bd914d}
+.workspace.monitor-layout #viewAi .ai-group-count{font-size:12px;font-weight:700;color:#62768f;padding:3px 7px;background:#f1f5f8;border-radius:5px;font-variant-numeric:tabular-nums}
+.workspace.monitor-layout #viewAi .ai-group-head p{margin:7px 0 0;color:#60758b;font-size:11px;line-height:1.45}
+.workspace.monitor-layout #viewAi .ai-progress-rows{display:grid}
+.workspace.monitor-layout #viewAi .ai-progress-row{display:grid;min-width:0;gap:5px;padding:13px 16px;border:0;border-bottom:1px solid #edf1f5;border-radius:0;background:#fff;color:#354c68}
+.workspace.monitor-layout #viewAi .ai-progress-row:last-child{border-bottom:0}
+.workspace.monitor-layout #viewAi .ai-progress-row:hover{background:#f5f8fc}
+.workspace.monitor-layout #viewAi .ai-row-title{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.workspace.monitor-layout #viewAi .ai-row-title strong{font-size:13px;line-height:1.35;font-weight:690;color:#293f60;overflow-wrap:anywhere}
+.workspace.monitor-layout #viewAi .ai-row-arrow{font-size:19px;line-height:1;color:#6f8aa7}
+.workspace.monitor-layout #viewAi .ai-row-status{color:#536b86;font-size:10px;line-height:1.4;font-weight:650;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.workspace.monitor-layout #viewAi .ai-row-next{font-size:11px;line-height:1.5;color:#5b7088;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.workspace.monitor-layout #viewAi .ai-group-more{border-top:1px solid #e5ecf3}
+.workspace.monitor-layout #viewAi .ai-group-more summary{font-size:11px;font-weight:680;color:#355c85;padding:11px 16px;cursor:pointer;background:#f8fafc}
+.workspace.monitor-layout #viewAi .ai-function-browser{display:grid;gap:14px}
+.workspace.monitor-layout #viewAi .ai-browser-head .result-count{flex:0 0 auto;font-size:12px;color:#566d87;font-variant-numeric:tabular-nums}
+.workspace.monitor-layout #viewAi .ai-domain-tabs{align-self:start;width:fit-content;max-width:100%;padding:4px;background:#edf2f7;border:1px solid #e0e7ef;border-radius:8px;display:flex;gap:4px;flex-wrap:wrap}
+.workspace.monitor-layout #viewAi .ai-domain-tabs .mode-button{min-height:34px;padding:6px 13px;font-size:12px;background:transparent;border-color:transparent;color:#405b77}
+.workspace.monitor-layout #viewAi .ai-domain-tabs .mode-button.is-active{background:#fff;color:#243e62;border-color:#d4e0ed;box-shadow:0 1px 4px #243a5a10}
+.workspace.monitor-layout #viewAi .ai-function-filters{display:grid;grid-template-columns:minmax(180px,1.35fr) repeat(3,minmax(125px,1fr)) auto;align-items:end;gap:10px;padding:13px;background:#fff;border:1px solid #dce5ed;border-radius:9px}
+.workspace.monitor-layout #viewAi .ai-function-filters label,.workspace.monitor-layout #viewAi .ai-management-search label{display:grid;gap:5px;font-size:11px;font-weight:650;color:#49617c;min-width:0}
+.workspace.monitor-layout #viewAi .ai-function-filters label[hidden]{display:none!important}
+.workspace.monitor-layout #viewAi :is(.ai-function-filters,.ai-management-search) :is(input,select){width:100%;min-width:0;height:38px;border:1px solid #d9e2ec;border-radius:6px;background:#fff;color:#324c69;padding:0 10px;font-size:12px;font:inherit}
+.workspace.monitor-layout #viewAi .ai-function-filters .ai-text-action{height:38px;white-space:nowrap}
+.workspace.monitor-layout #viewAi #aiList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.workspace.monitor-layout #viewAi #aiList .item-card{min-width:0;margin:0;background:#fff;border:1px solid #dce5ee;border-radius:8px;box-shadow:none}
+.workspace.monitor-layout #viewAi #aiList .item-summary{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 9px;padding:13px;min-width:0;width:100%;align-items:start}
+.workspace.monitor-layout #viewAi #aiList .item-summary .id-pill{grid-column:1;align-self:start}
+.workspace.monitor-layout #viewAi #aiList .item-summary .item-end{grid-column:2;display:flex;justify-content:space-between;min-width:0}
+.workspace.monitor-layout #viewAi #aiList .item-name{font-size:13px;font-weight:650;overflow-wrap:anywhere;white-space:normal}
+.workspace.monitor-layout #viewAi #aiList .item-sub{font-size:11px;line-height:1.45;color:#61778d;overflow-wrap:anywhere;white-space:normal}
+.workspace.monitor-layout #viewAi #aiList .chip{font-size:10px;white-space:normal}
+.workspace.monitor-layout #viewAi #aiList .no-results{grid-column:1/-1}
+.workspace.monitor-layout #viewAi #aiSchoolPanels .ai-school-guide{margin:0;padding:10px 14px;box-shadow:none}
+.workspace.monitor-layout #viewAi .ai-management-panel{display:grid;gap:15px;box-shadow:none}
+.workspace.monitor-layout #viewAi .ai-management-search{display:grid;gap:6px;max-width:560px}
+.workspace.monitor-layout #viewAi .ai-management-search>div{display:flex;gap:8px;align-items:center}
+.workspace.monitor-layout #viewAi .ai-management-panel .ai-evidence-note{margin:0}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-group{border:1px solid #dbe5ee;border-radius:9px;margin:0 0 8px}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-group[hidden],.workspace.monitor-layout #viewAi #privacyControls .evidence-row[hidden]{display:none!important}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-group>summary{background:white;padding:12px 16px;min-height:48px}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-group>summary:before{content:'›';font-size:18px;color:#718da8;line-height:1}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-group[open]>summary:before{transform:rotate(90deg)}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-group>summary strong{flex:1;font-size:13px;color:#304a68}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-row>summary{padding:11px 13px}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-row summary strong{font-size:12px;line-height:1.4}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-row-body{grid-template-columns:minmax(0,1fr)}
+.workspace.monitor-layout #viewAi #privacyControls .evidence-fact span{font-size:12px}
+.workspace.monitor-layout #viewAi :is(button,input,select,summary):focus-visible{outline:2px solid #3c6e9f;outline-offset:2px}
+@media(max-width:1100px){.workspace.monitor-layout #viewAi .ai-function-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace.monitor-layout #viewAi .ai-function-filters .ai-text-action{justify-self:start}.workspace.monitor-layout #viewAi #aiList{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:950px){.workspace.monitor-layout #viewAi .ai-progress-grid{grid-template-columns:minmax(0,1fr)}.workspace.monitor-layout #viewAi .ai-coverage-measures{grid-template-columns:minmax(0,1fr);gap:16px}.workspace.monitor-layout #viewAi .ai-group-head{padding:12px 14px}.workspace.monitor-layout #viewAi .ai-progress-row{padding:11px 14px}}
+@media(max-width:650px){.workspace.monitor-layout #viewAi .scene-navigation{margin:5px 0 11px}.workspace.monitor-layout #viewAi .ai-summary-head,.workspace.monitor-layout #viewAi .ai-browser-head{flex-direction:column;gap:8px}.workspace.monitor-layout #viewAi .ai-coverage{padding:13px}.workspace.monitor-layout #viewAi .ai-coverage-head{align-items:flex-start;flex-direction:column;gap:4px}.workspace.monitor-layout #viewAi .ai-coverage-head h3{font-size:13px}.workspace.monitor-layout #viewAi .ai-function-filters{padding:10px;gap:8px}.workspace.monitor-layout #viewAi .ai-search-field{grid-column:1/-1}.workspace.monitor-layout #viewAi .ai-domain-tabs .mode-button{font-size:11px;padding:5px 8px}.workspace.monitor-layout #viewAi .ai-management-panel{padding:13px}.workspace.monitor-layout #viewAi .ai-measure-foot{font-size:10.5px}}

@@ -147,7 +147,7 @@ function scopedWorkbook(scope){
 // PDF, Excel and report JSON are projections of the same selected model.
 function indexedReportWorkbook(model){
   const current=generateReportSheets;
-  const names=model.sections.map((s,i)=>(String(i+1).padStart(2,'0')+' '+s.title).replace(/[\\[\\]:*?/\\\\]/g,' ').slice(0,31));
+  const names=model.sections.map((s,i)=>(String(i+1).padStart(2,'0')+' '+s.title).replace(/[\[\]:*?\/\\]/g,' ').slice(0,31));
   const heading=(sheet,title,subtitle)=>{let n=rr(sheet,[title],'title',{height:45});rm(sheet,n,1,10);n=rr(sheet,[subtitle],'subtitle',{height:60});rm(sheet,n,1,10);};
   generateReportSheets=()=>{
     const overview=reportSheet('Rapport');heading(overview,model.title,model.audience+' · '+model.date);
@@ -198,7 +198,7 @@ function exportScopedPdf(scope){
 }
 function openRecord(view,id){
   state.area='';state.type='';state.phase='';state.aiProduct='';
-  if(view==='ai'){const r=state.ai.get(id);if(r)state.aiMode=isClassroomAi(r)?'klas':'school';}
+  if(view==='ai'){state.aiStatusFilter='';const r=state.ai.get(id);state.aiMode=r?(isClassroomAi(r)?'klas':IctScanTaxonomy.isSchoolAi(r)?'school':'all'):'all';}
   const searches={apps:'appsSearch',ai:'aiSearch',connections:'connectionsSearch',findings:'findingsSearch'};
   const selectId=searches[view];if(selectId){$(selectId).value=id;}
   selectView(view);
