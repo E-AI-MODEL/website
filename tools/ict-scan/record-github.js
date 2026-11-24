@@ -219,6 +219,116 @@
   function sourceScope(profile,sources){
     try{assertSourceMatches(profile,sources);return window.AssuranceProfile.scopeKey(profile);}catch(_){return null;}
   }
+  // Shared design settings, not a sixth school dataset. No rows, filters,
+  // source IDs, source values or access credentials may enter this file.
+  function validateDashboardDesign(value,allowedData,allowedComponents){
+    const exact=(v,keys)=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join('|')===keys.slice().sort().join('|');
+    const unique=(a,allowed)=>Array.isArray(a)&&a.length>0&&new Set(a).size===a.length&&a.every(x=>allowed.includes(x));
+    if(!exact(value,['format','version','title','content','components','layout','variant','primary','visuals'])||
+      value.format!=='emmaus-dashboard-layout'||value.version!==1||
+      typeof value.title!=='string'||!value.title.trim()||value.title.length>90||
+      !unique(value.content,allowedData)||!unique(value.components,allowedComponents)||
+      !value.content.includes(value.primary)||!['balanced','editorial','focus','compact'].includes(value.layout)||
+      !Number.isInteger(value.variant)||value.variant<0||value.variant>8||
+      !exact(value.visuals,['distribution','matrix'])||
+      !['lines','bars','donut','treemap','table'].includes(value.visuals.distribution)||
+      !['matrix','table'].includes(value.visuals.matrix))fail('Ongeldige dashboardindeling. Kies ten minste één gegevensgroep en grafiek.');
+    assertNoSecrets(value);
+    return clone(value);
+  }
+  const DESIGN_PATH='tools/ict-scan/dashboard-layouts/layouts.json';
+  function validateDesignFile(value,validate){
+    if(!value||value.schema!=='eai-ict-dashboard-designs-v1'||Object.keys(value).sort().join('|')!=='designs|schema'||
+      !value.designs||typeof value.designs!=='object'||Array.isArray(value.designs)||Object.keys(value.designs).length>15)fail('Onbekend formaat van gedeelde dashboardontwerpen.');
+    const designs=Object.create(null);
+    for(const [key,raw] of Object.entries(value.designs)){
+      const design=validate(raw);
+      if(key!==design.primary||!/^[A-Za-z][A-Za-z0-9]{0,39}$/.test(key))fail('Dashboard is niet gekoppeld aan het gekozen register.');
+      designs[key]=design;
+    }
+    return {schema:value.schema,designs};
+  }
+  function designStudio(){const studio=window.EmmausDashboardStudio;if(!studio)fail('Dashboardmaker niet geladen.');return studio;}
+  async function designProfile(){
+    if(window.top!==window.self)fail('Open de ICT-scan rechtstreeks.');
+    const profile=await window.IctOrganisation.ready;
+    if(profile.source.repository!=='E-AI-MODEL/website'||profile.source.baseRef!=='main'||profile.source.sourceDir!=='tools/ict-scan/bronnen')fail('Dit organisatieprofiel heeft geen gedeelde dashboardmap.');
+    if(state.sourceMode!=='github'||!state.githubVerification?.commit||window.IctGitHubSync?.isBusy())fail('Synchroniseer eerst de officiële GitHub-bron.');
+    assertSourceMatches(profile,state.sources);
+    return profile;
+  }
+  function publicRead(profile){return async(method,path)=>{
+    if(method!=='GET')fail('Deze route kan alleen lezen.');
+    const response=await fetch(apiTarget(path,profile),{method:'GET',headers:{Accept:'application/vnd.github+json'},cache:'no-store',credentials:'omit',redirect:'error'});
+    if(!response.ok)fail('Gedeeld ontwerp niet beschikbaar ('+response.status+').');
+    return response.json();
+  };}
+  async function readDesigns(request,profile){
+    const head=await request('GET','/git/ref/heads/'+encodeURIComponent(profile.source.baseRef));
+    const baseSha=head?.object?.sha;if(!/^[a-f0-9]{40}$/.test(baseSha||''))fail('GitHub-versie ontbreekt.');
+    const file=await repositoryFile(request,DESIGN_PATH,baseSha);
+    return {baseSha,sha:file.sha,data:validateDesignFile(JSON.parse(file.text),designStudio().validateDesign)};
+  }
+  let pendingDesign=null,designBusy=false;
+  function designStatus(message){const status=el('dsSharedStatus');if(status)status.textContent=message;}
+  async function loadSharedDesign(){
+    if(designBusy)return;designBusy=true;
+    try{
+      const profile=await designProfile(),studio=designStudio(),key=studio.currentDesign().primary;
+      const file=await readDesigns(publicRead(profile),profile);
+      const design=file.data.designs[key];if(!design)fail('Voor dit register is nog geen gedeeld ontwerp gepubliceerd.');
+      if(!confirm('De huidige indeling vervangen door het gedeelde ontwerp? Gegevens blijven ongewijzigd.'))return;
+      studio.applyDesign(design);designStatus('Gedeeld ontwerp geopend. Gegevens blijven afkomstig uit de geladen index.');
+    }catch(error){designStatus(safeMessage(error.message,''));}finally{designBusy=false;}
+  }
+  async function prepareDesign(){
+    if(designBusy)return;designBusy=true;
+    try{
+      const profile=await designProfile(),studio=designStudio(),design=studio.validateDesign(studio.currentDesign());
+      if(!await window.EmmausEditGate.request())return;
+      const baseline=await readDesigns(publicRead(profile),profile);
+      const old=baseline.data.designs[design.primary]||null;
+      if(equals(old,design))fail('De indeling is al gepubliceerd.');
+      pendingDesign={design,baseline};
+      el('dsSharedDiff').textContent=(old?'Bestaand ontwerp vervangen':'Nieuw ontwerp')+' · '+design.primary+' · '+design.components.length+' onderdelen';
+      el('dsSharedPreview').textContent=safeJson(design);
+      el('dsSharedTarget').textContent=profile.source.repository+' / '+DESIGN_PATH;
+      el('dsSharedReason').value='';el('dsSharedToken').value='';el('dsSharedConsent').checked=false;
+      el('dsSharedFeedback').textContent='';el('dsSharedSubmit').disabled=false;
+      el('dsSharedDialog').showModal();
+    }catch(error){designStatus(safeMessage(error.message,''));}finally{designBusy=false;}
+  }
+  async function publishDesign(){
+    if(designBusy||!pendingDesign)return;designBusy=true;
+    const token=el('dsSharedToken').value.trim(),reason=el('dsSharedReason').value.trim(),feedback=el('dsSharedFeedback'),button=el('dsSharedSubmit');
+    button.disabled=true;
+    let branch=null;
+    try{
+      const profile=await designProfile(),{design,baseline}=pendingDesign;
+      if(!token||reason.length<8||!el('dsSharedConsent').checked)fail('Vul een toelichting en token in en bevestig de publicatie van dit ontwerp.');
+      const normalized=designStudio().validateDesign(design);
+      assertNoSecrets({normalized,reason},token);
+      const request=api(token,profile),current=await readDesigns(request,profile);
+      if(current.sha!==baseline.sha)fail('De gedeelde ontwerpen zijn intussen gewijzigd. Sluit dit venster en open het opnieuw.');
+      const next=validateDesignFile({schema:current.data.schema,designs:{...current.data.designs,[normalized.primary]:normalized}},designStudio().validateDesign);
+      assertNoSecrets({next,reason},token);
+      feedback.textContent='Wijzigingsvoorstel aanmaken…';
+      branch='applicatielandschap/ontwerp-'+new Date().toISOString().slice(0,10)+'-'+crypto.randomUUID().slice(0,8);
+      await request('POST','/git/refs',{ref:'refs/heads/'+branch,sha:current.baseSha});
+      await request('PUT','/contents/'+DESIGN_PATH,{message:'Dashboardontwerp: '+reason.slice(0,110),branch,sha:current.sha,content:base64Utf8(safeJson(next))});
+      const pr=await request('POST','/pulls',{title:'ICT-scan: gedeeld dashboardontwerp '+normalized.primary,head:branch,base:profile.source.baseRef,body:'Wijziging van de dashboardindeling (geen schoolregisters).\n\n'+reason});
+      if(!Number.isInteger(pr.number)||pr.html_url!=='https://github.com/'+profile.source.repository+'/pull/'+pr.number)fail('Geen geldige PR-link ontvangen.');
+      feedback.replaceChildren(document.createTextNode('Voorstel gemaakt: '));
+      const a=document.createElement('a');a.href=pr.html_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='PR #'+pr.number;feedback.append(a);
+      pendingDesign=null;designStatus('Wijzigingsvoorstel gemaakt. Nog niet gepubliceerd.');
+    }catch(error){feedback.textContent=(branch?'Controleer ook branch '+branch+'. ':'')+safeMessage(error.message,token);button.disabled=false;}
+    finally{el('dsSharedToken').value='';designBusy=false;}
+  }
+  el('dsSharedLoad')?.addEventListener('click',()=>void loadSharedDesign());
+  el('dsSharedPublish')?.addEventListener('click',()=>void prepareDesign());
+  el('dsSharedSubmit')?.addEventListener('click',()=>void publishDesign());
+  el('dsSharedClose')?.addEventListener('click',()=>{if(!designBusy){el('dsSharedToken').value='';pendingDesign=null;el('dsSharedDialog').close();}});
+  el('dsSharedDialog')?.addEventListener('cancel',event=>{if(designBusy)event.preventDefault();else{el('dsSharedToken').value='';pendingDesign=null;}});
   async function post(){
     const cards=window.EmmausRecordCards,button=el('cardCreatePR');
     if(!cards)return;
@@ -307,5 +417,5 @@
   }
   el('cardCreatePR').addEventListener('click',()=>void post());
   // Expose pure validation helpers for deterministic tests, never token or write access.
-  window.EmmausCardGitLogic=Object.freeze({applyDrafts,checkGraph,equals,assertSourceMatches,sourceScope,assertNoSecrets,apiTarget});
+  window.EmmausCardGitLogic=Object.freeze({applyDrafts,checkGraph,equals,assertSourceMatches,sourceScope,assertNoSecrets,apiTarget,validateDashboardDesign,validateDesignFile});
 })();

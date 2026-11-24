@@ -149,3 +149,16 @@ test('AI-tussenstand gebruikt uitsluitend de index en de bestaande kaarten',()=>
   assert.ok(read('tools/ict-scan/app.js').includes('ix.aiProgress()'));
   assert.ok(read('tools/ict-scan/scene-navigation.js').includes("['Tussenstand',1]"));
 });
+
+test('Gedeelde dashboardontwerpen accepteren alleen de bestaande layoutkeuzes, geen brondata',()=>{
+  const design={format:'emmaus-dashboard-layout',version:1,title:'ICT-overzicht',content:['apps'],components:['numbers'],layout:'balanced',variant:0,primary:'apps',visuals:{distribution:'lines',matrix:'matrix'}};
+  const validate=value=>logic.validateDashboardDesign(value,['apps','ai'],['numbers','distribution']);
+  assert.deepEqual(clone(validate(design)),design);
+  for(const bad of [{...design,rows:[{id:'APP-001'}]},{...design,filter:{value:'privé'}},{...design,primary:'ai'},{...design,content:['apps','apps']},{...design,components:['invented']},{...design,visuals:{...design.visuals,records:[]}},{...design,title:'ghp_'+'a'.repeat(25)}])
+    assert.throws(()=>validate(bad));
+  const file=logic.validateDesignFile({schema:'eai-ict-dashboard-designs-v1',designs:{apps:design}},validate);
+  assert.deepEqual(clone(file.designs.apps),design);
+  assert.throws(()=>logic.validateDesignFile({schema:'eai-ict-dashboard-designs-v1',designs:{ai:design}},validate));
+  assert.throws(()=>logic.validateDesignFile({schema:'eai-ict-dashboard-designs-v1',designs:{apps:design},sourceData:[]},validate));
+  for(const id of ['dsSharedLoad','dsSharedPublish','dsSharedDialog','dsSharedToken','dsSharedConsent','dsSharedSubmit'])assert.ok(html.includes('id="'+id+'"'));
+});

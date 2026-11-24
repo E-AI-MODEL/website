@@ -542,8 +542,15 @@
     if(keys.includes('checks')||keys.includes('candidates')||keys.includes('aiControls'))parts.splice(-1,0,'actions');
     config.parts=[...new Set(parts)];config.filter=null;refresh();
   }
+  function currentDesign(){return {format:'emmaus-dashboard-layout',version:1,title:config.title,content:config.data.slice(),components:config.parts.slice(),layout:config.layout,variant:config.variant,primary:config.primary,visuals:{...config.visuals}};}
+  function validateDesign(value){return window.EmmausCardGitLogic.validateDashboardDesign(value,DATA.map(d=>d.key),PARTS.map(p=>p.id));}
+  function applyDesign(value){
+    const design=validateDesign(value);
+    Object.assign(config,{data:design.content.slice(),parts:design.components.slice(),title:design.title,layout:design.layout,variant:design.variant,primary:design.primary,visuals:{...design.visuals},filter:null,focusApp:'APP-034'});
+    refresh();
+  }
   function exportDesign(){
-    const output={format:'emmaus-dashboard-layout',version:1,title:config.title,content:config.data,components:config.parts,layout:config.layout,variant:config.variant,primary:config.primary,visuals:{...config.visuals}};
+    const output=currentDesign();
     const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob);
     const link=document.createElement('a');link.href=url;link.download='Emmaus-dashboard-ontwerp.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),600);
     showMessage('Ontwerp gedownload. Er zijn geen leerling- of applicatiegegevens opgenomen.');
@@ -572,6 +579,6 @@
   state.view='overview';selectView('overview');
   window.EmmausDashboardStudio=Object.freeze({
     config:()=>({data:config.data.slice(),parts:config.parts.slice(),layout:config.layout,primary:config.primary,visuals:{...config.visuals}}),
-    build:refresh
+    build:refresh,currentDesign,validateDesign,applyDesign
   });
 })();

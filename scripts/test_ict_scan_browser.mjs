@@ -33,8 +33,8 @@ const server=spawn('python3',['-m','http.server','8797','--bind','127.0.0.1','--
 let browser;
 const cors={
  'access-control-allow-origin':'*',
- 'access-control-allow-methods':'GET,OPTIONS',
- 'access-control-allow-headers':'accept,x-github-api-version,authorization',
+ 'access-control-allow-methods':'GET,POST,PUT,OPTIONS',
+ 'access-control-allow-headers':'accept,x-github-api-version,authorization,content-type',
  'content-type':'application/json'
 };
 try {
@@ -45,7 +45,7 @@ try {
  mkdirSync('test-results',{recursive:true});
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
-  const errors=[],network=[];
+  const errors=[],network=[],designWrites=[];
   let initialSyncDelayed=false;
   const secondaryViews=new Set(['studio','connections','devices','privacy','reports','sources']);
   const navigate=async view=>{
@@ -64,6 +64,31 @@ try {
    const url=new URL(route.request().url());
    if(route.request().method()==='OPTIONS'){await route.fulfill({status:204,headers:cors});return;}
    let data;
+   const method=route.request().method();
+   if(url.pathname.endsWith('/git/ref/heads/main'))data={object:{sha:'d'.repeat(40)}};
+   else if(url.pathname.endsWith('/contents/tools/ict-scan/dashboard-layouts/layouts.json')&&method==='GET'){
+     assert.equal(url.searchParams.get('ref'),'d'.repeat(40));
+     const bytes=readFileSync('tools/ict-scan/dashboard-layouts/layouts.json');
+     const sha=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+     data={type:'file',encoding:'base64',content:bytes.toString('base64'),size:bytes.length,sha};
+   }else if(method!=='GET'){
+     const payload=route.request().postDataJSON();
+     assert.equal(route.request().headers().authorization,'Bearer browser-test-design-token');
+     if(url.pathname.endsWith('/git/refs')&&method==='POST'){
+       assert.match(payload.ref,/^refs\/heads\/applicatielandschap\/ontwerp-/);assert.equal(payload.sha,'d'.repeat(40));data={ref:payload.ref};
+     }else if(url.pathname.endsWith('/contents/tools/ict-scan/dashboard-layouts/layouts.json')&&method==='PUT'){
+       assert.match(payload.branch,/^applicatielandschap\/ontwerp-/);
+       const file=JSON.parse(Buffer.from(payload.content,'base64').toString('utf8'));
+       assert.equal(file.schema,'eai-ict-dashboard-designs-v1');
+       for(const item of Object.values(file.designs))assert.deepEqual(Object.keys(item).sort(),['components','content','format','layout','primary','title','variant','version','visuals']);
+       assert(!JSON.stringify(file).includes('APP-034'));assert(!JSON.stringify(file).includes('browser-test-design-token'));
+       data={content:{sha:'e'.repeat(40)}};
+     }else if(url.pathname.endsWith('/pulls')&&method==='POST'){
+       assert.equal(payload.base,'main');assert.match(payload.head,/^applicatielandschap\/ontwerp-/);data={number:9999,html_url:'https://github.com/E-AI-MODEL/website/pull/9999'};
+     }else throw Error('Onverwachte schrijfroute '+url.pathname);
+     designWrites.push({method,path:url.pathname});
+   }
+   if(data!==undefined){await route.fulfill({status:200,headers:cors,body:JSON.stringify(data)});return;}
    if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen')&&width<700&&!initialSyncDelayed){
      initialSyncDelayed=true;
      await new Promise(done=>setTimeout(done,1100));
@@ -74,6 +99,11 @@ try {
     const sha=url.pathname.split('/').pop();
     assert(sources.has(sha),'Onverwachte GitHub SHA: '+sha);
     data={encoding:'base64',content:sources.get(sha).toString('base64')};
+   }else if(url.pathname.includes('/contents/tools/ict-scan/docs/')){
+    assert.equal(url.searchParams.get('ref'),'d'.repeat(40));
+    const path=url.pathname.split('/contents/')[1];
+    const bytes=readFileSync(path);const sha=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+    data={type:'file',encoding:'base64',content:bytes.toString('base64'),size:bytes.length,sha};
    }else throw Error('Onverwachte GitHub-route '+url.pathname);
    await route.fulfill({status:200,headers:cors,body:JSON.stringify(data)});
   });
@@ -125,6 +155,19 @@ try {
   await page.locator('#overviewQuickActions button').filter({hasText:'Gegevens aanpassen'}).click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
   await page.locator('#cardEditorClose').click();
+  // Exercise the real reader against the exact repository blobs, with no remote school data.
+  await page.evaluate(()=>window.EmmausDocs.open('AIACT'));
+  await page.locator('#docDialog').waitFor({state:'visible'});
+  await page.waitForFunction(()=>document.getElementById('docReaderStatus').textContent.includes('Volledige bronmomentopname'));
+  assert.match(await page.locator('#docReaderTitle').textContent(),/AI-verordening/);
+  assert((await page.locator('#docArticleJump option').count())>100,'Artikelnavigatie ontbreekt');
+  await page.locator('#docArticleSearch').fill('AI-geletterdheid');
+  assert((await page.locator('.doc-law-section:visible').count())>0,'Zoeken in wetstekst levert geen resultaat');
+  await page.locator('#docDialogClose').click();
+  await page.evaluate(()=>window.EmmausDocs.open('IBP'));
+  await page.waitForFunction(()=>document.getElementById('docReaderStatus').textContent.includes('geen herpublicatie'));
+  assert.equal(await page.locator('#docLocalChoice').isVisible(),true);
+  await page.locator('#docDialogClose').click();
   if(width<700){
     const dock=await page.locator('.sidebar.icon-rail').boundingBox();
     assert(dock&&dock.x>=-1&&dock.width>=width-2&&dock.x+dock.width<=width+1,'Mobiele navigatie is geen volledige balk: '+JSON.stringify(dock));
@@ -478,6 +521,33 @@ try {
     await page.locator('#railDrawerClose').click();
     await navigate('findings');
     assert.equal(await page.locator('#sectionTitle').textContent(),'Controles');
+  }
+  // The shared design is the same native layout schema, not a second data source.
+  if(width>=700){
+    await navigate('studio');
+    await page.locator('[data-ds-preset="school"]').click();
+    const sourceBefore=await page.evaluate(()=>JSON.stringify([...state.apps.values()]));
+    await page.locator('#dsSharedLoad').click();
+    await page.waitForFunction(()=>document.getElementById('dsSharedStatus').textContent.includes('Gedeeld ontwerp geopend'));
+    assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
+    await page.locator('#dsLayout').selectOption('editorial');
+    await page.locator('#dsSharedPublish').click();
+    await page.locator('#dsSharedDialog').waitFor({state:'visible'});
+    assert.equal(designWrites.length,0,'Openen van de pop-up mag niets schrijven');
+    await page.locator('#dsSharedReason').fill('Browserproef gedeelde indeling');
+    await page.locator('#dsSharedToken').fill('browser-test-design-token');
+    await page.locator('#dsSharedSubmit').click();
+    await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('bevestig'));
+    assert.equal(designWrites.length,0,'Zonder toestemming wordt niets geschreven');
+    await page.locator('#dsSharedToken').fill('browser-test-design-token');
+    await page.locator('#dsSharedConsent').check();
+    await page.locator('#dsSharedSubmit').click();
+    await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('PR #9999'));
+    assert.equal(designWrites.length,3,'Uitsluitend een branch, layoutbestand en pull request');
+    assert.equal(await page.locator('#dsSharedToken').inputValue(),'');
+    await page.locator('#dsSharedClose').click();
+    assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
+    await page.locator('#dsLayout').selectOption('balanced');
   }
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
