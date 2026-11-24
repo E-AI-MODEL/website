@@ -1,3 +1,13 @@
+## Update 24 november 2026: GitHub is leidend
+
+De ICT-scan heeft vier hoofdonderdelen: Overzicht, Register, AI en Acties. Zoeken staat bovenaan. In Register is ieder bestaand register direct bereikbaar; het menu bevat Dashboard op maat, Entra, apparaten, FG, rapporten en bronbeheer. De bestaande kaarten, ID's, taxonomie en vier bronbestanden zijn behouden.
+
+Bij iedere opening controleert de scanner de GitHub-bron die in het organisatieprofiel is vastgelegd. De branch wordt eerst naar één commit vertaald. De manifestbestanden en alle registertellingen, Git-blob-SHA's, ID's, geïmporteerde velden en indexrelaties worden gecontroleerd voordat een nieuwe bronstand als actueel geldt. Een ontbrekend, gewijzigd of niet ingedeeld bronbestand blokkeert deze status. De bovenbalk vermeldt of de GitHub-gegevens zijn gecontroleerd. Een lokale momentopname of een andere import wordt niet als actuele schoolbron getoond. Bij een privérepository is een leestoken nodig; deze wordt nooit opgeslagen.
+
+Alle vijftien registers zijn vanuit de gedeelde index doorzoekbaar, inclusief gekoppelde bronvelden en overige JSON-velden. De dashboardmaker kan dezelfde vijftien registers gebruiken. Er is geen tweede gegevensregister. Een gevonden registratie kan rechtstreeks in de bestaande kaart worden geopend. Conceptwijzigingen worden nog steeds via de bestaande PR-route gepubliceerd.
+
+De tussenstand onder AI is afgeleid van bestaande AI Act-verwijzingen en opvolgstatussen. Het interview van 24 november is als bron toegevoegd. De juridische beoordeling en technische tenantcontrole blijven afzonderlijke stappen. De huidige bronstand bevat 583 registraties in vier JSON-bestanden. Aantallen in de tests worden afgeleid van de gecontroleerde manifestversie; historische minimumsets en inhoudelijke controles blijven behouden.
+
 ## Gedeelde index en bronaanvulling (23 november 2026)
 
 De vier bronbestanden blijven de enige gegevensbasis. `inventory-index.js` maakt daaruit een tijdelijke index met getypeerde inkomende en uitgaande relaties. Kaarten, relatievisualisaties, dashboard en vraagantwoorden gebruiken dezelfde index. Geen vijfde bronbestand.
@@ -8,7 +18,7 @@ Microsoft-productvermeldingen bewijzen geen daadwerkelijke activering, leerlingt
 
 De publieke gegevenskaart heeft geen tab Herkomst. Excel-rijverwijzingen blijven beschikbaar voor de interne controle maar worden niet in de gewone kaart weergegeven. De vraagengine mag nooit een totaal licentiecontrolepunten verwarren met daadwerkelijk toegewezen licenties. Persoonsgebonden accountlijsten en financiële details zijn niet in de openbare GitHub-repo toegevoegd.
 
-Alle wijzigingen staan voorlopig alleen in concept-PR #376. De livewebsite gebruikt nog `main`. Samenvoegen pas na groene CI en browsertests.
+De wijzigingen van 23 november zijn via PR #376 verwerkt. De volgende wijzigingen doorlopen opnieuw de bestaande CI- en browsertests.
 
 
 ### Microsoft 365: A5/A3 en klasTeams (23 november 2026)

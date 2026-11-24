@@ -62,7 +62,7 @@
     assertNotCancelled(signal);
     return data;
   }
-  async function listFiles(cfg,token,signal) {
+  async function listFiles(cfg,token,signal,strict=false) {
     const files=[];
     let manifest=null;
     const recurse=async (folder,depth)=>{
@@ -76,7 +76,7 @@
       for(const entry of sorted){
         assertNotCancelled(signal);
         if(entry.type==='dir') {
-          if(entry.name.startsWith('.') || /^(?:node_modules|archief|archive|old|backup)$/i.test(entry.name))continue;
+          if(!strict&&(entry.name.startsWith('.') || /^(?:node_modules|archief|archive|old|backup)$/i.test(entry.name)))continue;
           await recurse(entry.path,depth+1);
         } else if(entry.type==='file'&&entry.name.toLowerCase()==='manifest.json'&&folder===cfg.folder){
           manifest={name:entry.name,path:entry.path,sha:entry.sha,size:entry.size};
@@ -84,7 +84,7 @@
           if(entry.size>MAX_FILE_BYTES)throw Error(entry.path+': bestand groter dan 35 MB.');
           files.push({name:entry.name,path:entry.path,sha:entry.sha,size:entry.size});
           if(files.length>MAX_FILES)throw Error('Meer dan '+MAX_FILES+' bestanden gevonden. Kies een kleinere map.');
-        }
+        }else if(strict){throw Error('Niet-ingedeeld bestand in de verplichte bronmap: '+entry.path+'. Leg het vast in het bronpakket of verplaats het naar de juiste locatie.');}
       }
     };
     await recurse(cfg.folder,0);
@@ -235,7 +235,7 @@
       // Pin one commit before listing or reading any source file.
       let revision=cfg.ref;
       if(canonical){const commit=await githubJson(endpoint(cfg,'commits/'+encodeURIComponent(cfg.ref)),token,abort.signal);if(!/^[a-f0-9]{40}$/.test(commit.sha||''))throw Error('GitHub geeft geen geldige commitversie.');revision=commit.sha;}
-      const entries=await listFiles({...cfg,ref:revision},token,abort.signal);
+      const entries=await listFiles({...cfg,ref:revision},token,abort.signal,canonical);
       assertNotCancelled(abort.signal);
       let manifestMetadata=null,manifestSpec=null;
       if(entries.manifest){const manifestFile=await downloadFile(cfg,entries.manifest,token,abort.signal,canonical);const manifest=JSON.parse(await manifestFile.text());assertNotCancelled(abort.signal);if(manifest.schema!=='eai-school-ict-manifest-v1'||!manifest.metadata||typeof manifest.metadata!=='object')throw Error('Ongeldig metadata-bestand in GitHub.');manifestMetadata=manifest.metadata;manifestSpec=verifyManifest(entries,manifest,cfg);}

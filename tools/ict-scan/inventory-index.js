@@ -137,11 +137,14 @@
       }
     }
     function get(type,id){return nodes.get(key(type,id))||null;}
+    const searchTextCache=new Map();
+    function findById(query){const q=normalize(query);return [...nodes.values()].filter(node=>!node.derived&&normalize(node.id)===q);}
     function searchRecords(query,{type}={}){
-      const q=normalize(query),matches=[];
+      const q=normalize(query),terms=q.split(' '),matches=[];
       for(const node of nodes.values()){
         if(node.derived||(type&&node.type!==equalType(type)))continue;
-        if(!matchesRecord(node.record,q))continue;
+        if(!searchTextCache.has(node))searchTextCache.set(node,normalize(recordText(node.record)));
+        if(q&&!terms.every(term=>searchTextCache.get(node).includes(term)))continue;
         const id=normalize(node.id),name=normalize(node.record.name),score=id===q?1000:name===q?500:name.includes(q)?100:q.split(' ').filter(t=>name.includes(t)).length*10;
         matches.push({type:node.type,id:node.id,record:node.record,score});
       }
@@ -236,7 +239,7 @@
     }
     return Object.freeze({
       version:VERSION,nodes,edges,errors,sourceCoverage,
-      get,records,connected,descendants,sourcesFor,aiProgress,searchRecords,
+      get,records,connected,descendants,sourcesFor,aiProgress,searchRecords,findById,
       count:type=>records(type).length,
       countLinked:(type,id,targetType)=>new Set(connected(type,id,{type:targetType}).map(x=>x.otherId)).size
     });

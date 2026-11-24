@@ -27,7 +27,7 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
   const sha=profile?blobSha(content):'a'.repeat(40);
   const manifestContent=Buffer.from(JSON.stringify({schema:'eai-school-ict-manifest-v1',metadata:{firstInventoryStarted:'2026-08-10',compiledBy:'Hans Visser'},dataFiles:[{path:'school.json',sha:shaMismatch?'c'.repeat(40):sha,recordCounts:{apps:badCounts?2:1,...(withSources?{sourceRegister:badSourceCounts?2:1}:{}),...(unknownRegister?{invented:0}:{})}}]}));
   const manifestSha=profile?blobSha(manifestContent):'b'.repeat(40);
-  const context={window:profile?{IctOrganisation:{ready:Promise.resolve(profile)},IctInventoryIndex:inventory}:{},crypto:webcrypto,TextEncoder,
+  const context={window:profile?{IctOrganisation:{ready:Promise.resolve(profile)},IctInventoryIndex:inventory}:{},crypto:webcrypto,TextEncoder,Map,
     document:{getElementById:id=>fields[id],addEventListener(event,handler){this.events??={};this.events[event]=handler;}}, state,
     URL, AbortController, File, atob,
     Date, Error, Uint8Array, console,
@@ -222,7 +222,7 @@ test('GitHub wordt bij opening opnieuw gelezen ondanks een lokale momentopname',
   x.state.ready=true;x.state.sourceMode='snapshot';x.state.apps.set('LOCAL',{id:'LOCAL',name:'Oud'});
   x.fields.githubReplace.checked=false;
   await x.events['ict-scan:local-restored']();
-  assert.equal(x.state.apps.has('LOCAL'),false);
+  assert.equal(x.state.apps.has('LOCAL'),false,x.fields.githubSyncStatus.textContent);
   assert.equal(x.state.githubVerification.records,2);
   assert.equal(x.state.githubVerification.registers,2);
   assert.equal(x.state.githubVerification.commit,'d'.repeat(40));

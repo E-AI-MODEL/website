@@ -281,7 +281,7 @@
       dpia:dataset.dpia||[],licenseReview:dataset.licenseReview||[],workActions:dataset.workActions||[],devices:dataset.devices||[],hardwareGroups:dataset.hardwareGroups||[],checks:dataset.checks||[],aiControls:dataset.aiControls||[],softwareReview:dataset.softwareReview||[],sourceRegister:dataset.sourceRegister||[],index:dataset.index||null};
     if(data.index){for(const type of Object.keys(label)){if(type==='additionalCandidates')continue;data[type]=data.index.records(type);}}
     if(q.length<2)return result('empty','');
-    const exact=data.index?.searchRecords(q).filter(x=>norm(x.id)===q)||[];
+    const exact=data.index?.findById(q)||[];
     if(exact.length)return result('record',exact.length===1?exact[0].record.name+' is geregistreerd. Open de kaart voor alle gegevens.':exact.length+' registraties hebben deze ID.',exact.map(x=>entry(x.type,x.record)),'Registratie-ID',[],question);
     const faq=exactFaq(q,data.faqs);
     if(faq)return result('faq',faq.answer,[entry('faqs',faq)],faq.status||'Vast antwoord',faq.sources||[],question);
@@ -463,7 +463,7 @@
     const q=input.value.trim();
     const data=snapshot();
     options=predict(q,data);
-    if(q&&data.index?.searchRecords(q).some(x=>norm(x.id)===norm(q))){answer(q);return [];}
+    if(q&&data.index?.findById(q).length){answer(q);return [];}
     active=-1;input.removeAttribute('aria-activedescendant');
     host.replaceChildren();
     if(!options.length){
