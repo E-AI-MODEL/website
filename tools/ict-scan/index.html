@@ -34,8 +34,10 @@
 <script defer src="./assurance/record-contract.js?v=20261121b"></script>
 <script defer src="./record-taxonomy.js?v=20261121a"></script>
 <script defer src="./inventory-index.js?v=20261124ux3"></script>
-<script defer src="./app.js?v=20261124ux3"></script>
-<script defer src="./enhancements.js?v=20261124ux3"></script>
+<link rel="stylesheet" href="./report-print.css?v=20261124r1">
+<script defer src="./report-print.js?v=20261124r1"></script>
+<script defer src="./app.js?v=20261124r1"></script>
+<script defer src="./enhancements.js?v=20261124r1"></script>
 <script defer src="./document-library.js?v=20261124a"></script>
 <link rel="stylesheet" href="./document-library.css?v=20261124a">
 <script defer src="./visual-explorer.js?v=20261124a"></script>
@@ -47,10 +49,10 @@
 <script defer src="./answer-engine.js?v=20261124ux4"></script>
 <script defer src="./scene-navigation.js?v=20261124ux3"></script>
 <script defer src="./evidence-experience.js?v=20261124a"></script>
-<script defer src="./role-modes.js?v=20261124b"></script>
+<script defer src="./role-modes.js?v=20261124r1"></script>
 <script defer src="./dashboard-composer.js?v=20261124shared1"></script>
 <script defer src="./composer-resize.js?v=20261123a"></script>
-<script defer src="./assurance-ui.js?v=20261124a"></script>
+<script defer src="./assurance-ui.js?v=20261124r1"></script>
 <link rel="stylesheet" href="./relationship-atlas.css?v=20261124c">
 <script defer src="./relationship-atlas.js?v=20261124c"></script>
 </head>
@@ -239,6 +241,8 @@
       <section id="viewReports" class="view" hidden>
         <div class="report-intro"><div><p class="panel-kicker">RAPPORTAGES</p><h2>Rapport kiezen</h2><p>Het rapport gebruikt de ingelezen gegevens, ook wanneer er op een ander scherm filters actief zijn.</p></div><span class="report-datetime" id="reportStamp">Laatste overzicht: nog geen data</span></div>
         <div class="report-picker" id="reportPicker" role="group" aria-label="Rapport kiezen">
+<button type="button" data-report="ict" class="report-tile"><span class="report-category">ICT</span><strong>ICT-beheer en inrichting</strong><small>Toegang, hardware, licenties en vervolgacties</small></button>
+<button type="button" data-report="aiGovernance" class="report-tile"><span class="report-category">AI</span><strong>AI-beleid en uitvoering</strong><small>Instellingen, AI Act, scholing en opvolging</small></button>
           <button type="button" data-report="all" class="report-tile selected"><span class="report-category">01</span><strong>Alle gegevens</strong><small>Registerinformatie, waaronder externe privacybronnen. Geen FG-oordeel.</small></button>
           <button type="button" data-report="schoolbreed" class="report-tile"><span class="report-category">02</span><strong>Applicatielandschap</strong><small>Toepassingen, soorten voorzieningen en samenhang</small></button>
           <button type="button" data-report="koppelingen" class="report-tile"><span class="report-category">03</span><strong>Entra & toegang</strong><small>Koppelingen en te verifiëren instellingen</small></button>
