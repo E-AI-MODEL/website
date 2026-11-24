@@ -1,6 +1,5 @@
 'use strict';
-/* GitHub proposals: reviewable branch and pull request. Never write to main.
-   Token lives only in the input and this one asynchronous click handler. */
+/* GitHub proposals through the password-authenticated server. Never write to main. */
 (function(){
   const el=id=>document.getElementById(id);
   function configuredProfile(input){return window.AssuranceProfile.validate(input||window.IctOrganisation?.profile);}
@@ -32,18 +31,8 @@
     if(url.origin!=='https://api.github.com'||url.username||url.password||url.hash||(url.pathname!=='/user'&&!url.pathname.startsWith(prefix+'/')))fail('GitHub-verzoek valt buiten de ingestelde repository.');
     return url.href;
   }
-  function api(token,profile){
-    return async function(method,path,payload){
-      const headers={'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28'};
-      if(payload!==undefined)headers['Content-Type']='application/json';
-      const resp=await fetch(apiTarget(path,profile),{method,headers,body:payload===undefined?undefined:JSON.stringify(payload),cache:'no-store',credentials:'omit',redirect:'error'});
-      const data=await resp.json().catch(()=>({message:'Geen geldig JSON-antwoord'}));
-      if(!resp.ok){
-        const status=resp.status,reason=String(data.message||'Onbekende GitHub-fout');
-        tokenFail('GitHub ('+status+'): '+reason,token);
-      }
-      return data;
-    };
+  function api(profile){
+    return (method,path,payload)=>window.EmmausEditGate.githubRequest(apiTarget(path,profile),method,payload);
   }
   async function repositoryFile(request,path,baseSha){
     const encodedPath=path.split('/').map(encodeURIComponent).join('/');
@@ -293,25 +282,25 @@
       el('dsSharedDiff').textContent=(old?'Bestaand ontwerp vervangen':'Nieuw ontwerp')+' · '+design.primary+' · '+design.components.length+' onderdelen';
       el('dsSharedPreview').textContent=safeJson(design);
       el('dsSharedTarget').textContent=profile.source.repository+' / '+DESIGN_PATH;
-      el('dsSharedReason').value='';el('dsSharedToken').value='';el('dsSharedConsent').checked=false;
+      el('dsSharedReason').value='';
       el('dsSharedFeedback').textContent='';el('dsSharedSubmit').disabled=false;
       el('dsSharedDialog').showModal();
     }catch(error){designStatus(safeMessage(error.message,''));}finally{designBusy=false;}
   }
   async function publishDesign(){
     if(designBusy||!pendingDesign)return;designBusy=true;
-    const token=el('dsSharedToken').value.trim(),reason=el('dsSharedReason').value.trim(),feedback=el('dsSharedFeedback'),button=el('dsSharedSubmit');
+    const reason=el('dsSharedReason').value.trim()||'Handmatige wijziging van dashboardindeling',feedback=el('dsSharedFeedback'),button=el('dsSharedSubmit');
     button.disabled=true;
     let branch=null;
     try{
       const profile=await designProfile(),{design,baseline}=pendingDesign;
-      if(!token||reason.length<8||!el('dsSharedConsent').checked)fail('Vul een toelichting en token in en bevestig de publicatie van dit ontwerp.');
+      if(!await window.EmmausEditGate.request())return;
       const normalized=designStudio().validateDesign(design);
-      assertNoSecrets({normalized,reason},token);
-      const request=api(token,profile),current=await readDesigns(request,profile);
+      assertNoSecrets({normalized,reason});
+      const request=api(profile),current=await readDesigns(request,profile);
       if(current.sha!==baseline.sha)fail('De gedeelde ontwerpen zijn intussen gewijzigd. Sluit dit venster en open het opnieuw.');
       const next=validateDesignFile({schema:current.data.schema,designs:{...current.data.designs,[normalized.primary]:normalized}},designStudio().validateDesign);
-      assertNoSecrets({next,reason},token);
+      assertNoSecrets({next,reason});
       feedback.textContent='Wijzigingsvoorstel aanmaken…';
       branch='applicatielandschap/ontwerp-'+new Date().toISOString().slice(0,10)+'-'+crypto.randomUUID().slice(0,8);
       await request('POST','/git/refs',{ref:'refs/heads/'+branch,sha:current.baseSha});
@@ -321,33 +310,34 @@
       feedback.replaceChildren(document.createTextNode('Voorstel gemaakt: '));
       const a=document.createElement('a');a.href=pr.html_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='PR #'+pr.number;feedback.append(a);
       pendingDesign=null;designStatus('Wijzigingsvoorstel gemaakt. Nog niet gepubliceerd.');
-    }catch(error){feedback.textContent=(branch?'Controleer ook branch '+branch+'. ':'')+safeMessage(error.message,token);button.disabled=false;}
-    finally{el('dsSharedToken').value='';designBusy=false;}
+    }catch(error){feedback.textContent=(branch?'Controleer ook branch '+branch+'. ':'')+safeMessage(error.message,'');button.disabled=false;}
+    finally{button.disabled=false;designBusy=false;}
   }
   el('dsSharedLoad')?.addEventListener('click',()=>void loadSharedDesign());
   el('dsSharedPublish')?.addEventListener('click',()=>void prepareDesign());
   el('dsSharedSubmit')?.addEventListener('click',()=>void publishDesign());
-  el('dsSharedClose')?.addEventListener('click',()=>{if(!designBusy){el('dsSharedToken').value='';pendingDesign=null;el('dsSharedDialog').close();}});
-  el('dsSharedDialog')?.addEventListener('cancel',event=>{if(designBusy)event.preventDefault();else{el('dsSharedToken').value='';pendingDesign=null;}});
+  el('dsSharedClose')?.addEventListener('click',()=>{if(!designBusy){pendingDesign=null;el('dsSharedDialog').close();}});
+  el('dsSharedDialog')?.addEventListener('cancel',event=>{if(designBusy)event.preventDefault();else{pendingDesign=null;}});
+  let saving=false;
   async function post(){
     const cards=window.EmmausRecordCards,button=el('cardCreatePR');
     if(!cards)return;
+    if(saving)return false;
     const drafts=cards.drafts();
-    const token=el('cardGithubToken').value.trim();
-    const message=el('cardCommitMessage').value.trim()||'Bijwerken Applicatielandschap 2026';
-    const consent=el('cardConfirmPublic').checked;
+    if(!drafts.length)return false;
+    const message=drafts.length===1?'Bijwerken '+drafts[0].after.name:'Bijwerken '+drafts.length+' registraties';
+    saving=true;button.disabled=true;
     try{
-      if(window.top!==window.self)fail('Open het dashboard rechtstreeks om wijzigingen voor te stellen.');
+      if(window.top!==window.self)fail('Open het dashboard rechtstreeks om wijzigingen op te slaan.');
       const profile=await window.IctOrganisation.ready;
       const SOURCE_DIR=profile.source.sourceDir+'/',baseRef=profile.source.baseRef;
-      if(!consent)fail('Bevestig eerst dat deze gegevens in de ingestelde repository mogen worden opgeslagen.');
-      if(!token)fail('Vul een GitHub-token met beperkte schrijfrechten in.');
-      assertNoSecrets({drafts,message},token);
+      assertNoSecrets({drafts,message});
       assertSourceMatches(profile,state.sources);
       assertPublicSafe(drafts,profile);
+      if(!await window.EmmausEditGate.request())return false;
       const configuration=configurationFor(profile,cards.catalog?.());
       button.disabled=true;button.textContent='GitHub controleren…';
-      const request=api(token,profile);
+      const request=api(profile);
       const [user,head]=await Promise.all([
         request('GET','https://api.github.com/user'),
         request('GET','/git/ref/heads/'+encodeURIComponent(baseRef))
@@ -371,7 +361,7 @@
       }
       button.textContent='Wijzigingen controleren…';
       const changed=applyDrafts(docs,drafts,user.login,new Date().toISOString(),profile,configuration.catalog);
-      assertNoSecrets({documents:docs,manifest,message},token);
+      assertNoSecrets({documents:docs,manifest,message});
       if(!changed.size)fail('Er zijn geen gewijzigde bestanden.');
       const branch='applicatielandschap/kaart-'+new Date().toISOString().slice(0,10)+'-'+crypto.randomUUID().slice(0,8);
       button.textContent='GitHub-branch maken…';
@@ -402,20 +392,22 @@
         if(!pr.html_url||!/^https:\/\/github\.com\//.test(pr.html_url))fail('GitHub heeft geen PR-link teruggegeven.');
         const remaining=cards.clearPublished(drafts)?.remaining||0;
         const p=el('cardFeedback');p.replaceChildren();
-        p.append(document.createTextNode('Wijzigingsvoorstel aangemaakt: '));
+        p.append(document.createTextNode('Opgeslagen als wijzigingsvoorstel: '));
         const link=document.createElement('a');link.href=pr.html_url;link.textContent='Pull request #'+pr.number;link.target='_blank';link.rel='noopener noreferrer';
         p.append(link);
         if(remaining)p.append(document.createTextNode('. '+remaining+' nieuwe conceptwijziging'+(remaining===1?' blijft':'en blijven')+' bewaard.'));
+        return true;
       }catch(error){
-        cards.feedback('Wijzigingsvoorstel niet afgerond. De branch '+branch+' kan gedeeltelijke commits bevatten. '+safeMessage(error.message,token),true);
-        return;
+        cards.feedback('Wijzigingsvoorstel niet afgerond. De branch '+branch+' kan gedeeltelijke commits bevatten. '+safeMessage(error.message,''),true);
+        return false;
       }
-    }catch(error){cards.feedback(safeMessage(error.message,token),true);}
+    }catch(error){cards.feedback(safeMessage(error.message,''),true);return false;}
     finally{
-      el('cardGithubToken').value='';button.disabled=false;button.textContent='Wijzigingsvoorstel maken';
+      saving=false;button.disabled=false;button.textContent='Opslaan';
     }
   }
   el('cardCreatePR').addEventListener('click',()=>void post());
+  window.EmmausCardPublisher=Object.freeze({submit:post});
   // Expose pure validation helpers for deterministic tests, never token or write access.
   window.EmmausCardGitLogic=Object.freeze({applyDrafts,checkGraph,equals,assertSourceMatches,sourceScope,assertNoSecrets,apiTarget,validateDashboardDesign,validateDesignFile});
 })();

@@ -536,7 +536,7 @@
     const extraSource=text('label','card-field'),sourceTitle=text('span','card-field-label','Nieuwe bronverwijzing (bestaande blijven behouden)'),sourceInput=text('input','');
     sourceInput.name='newSourceReference';sourceInput.placeholder='Bestand, document, URL of registratie-ID';sourceInput.autocomplete='off';extraSource.append(sourceTitle,sourceInput);evidence.append(extraSource);
     const reason=text('label','card-field'),title=text('span','card-field-label','Toelichting bij deze wijziging'),textarea=text('textarea','');
-    textarea.name='changeReason';textarea.rows=3;textarea.required=true;textarea.placeholder='Wat is aangepast, waarom en op basis van welke bron?';
+    textarea.name='changeReason';textarea.rows=3;textarea.required=false;textarea.placeholder='Optioneel: waarom en op basis van welke bron?';
     textarea.value=model.drafts.get(key(model.current.type,r.id))?.reason||'';
     reason.append(title,textarea);evidence.append(reason);
     const frozen=text('details','card-details');frozen.append(text('summary','','Oorspronkelijke bronvelden (ongewijzigd)'));
@@ -582,7 +582,7 @@
     const recordMeta={...(r.recordMeta||{})};
     for(const input of $c('cardFormFields').querySelectorAll('[name^="recordMeta."]')){const field=input.name.slice(11);if(input.value.trim())recordMeta[field]=input.value.trim();else delete recordMeta[field];}
     if(Object.keys(recordMeta).length||Object.prototype.hasOwnProperty.call(r,'recordMeta'))r.recordMeta=recordMeta;
-    const reason=$c('cardFormFields').querySelector('[name="changeReason"]').value.trim();
+    const reason=$c('cardFormFields').querySelector('[name="changeReason"]').value.trim()||'Handmatige wijziging; geen toelichting opgegeven.';
     if(!r.name?.trim())throw Error('Naam is verplicht.');
     if(!reason||reason.length<8)throw Error('Beschrijf de wijziging en de herkomst in minimaal acht tekens.');
     if(r.recordMeta?.referenceDate&&!window.AssuranceRecord.validDate(r.recordMeta.referenceDate))throw Error('Peildatum moet een bestaande datum zijn (jjjj-mm-dd).');
@@ -641,13 +641,13 @@
       const previous=model.drafts.get(key(type,id));
       const base=previous?previous.before:(model.adding?null:copy(model.original));
       const changed=diff(base,result.after);
-      if(!changed.length){model.drafts.delete(key(type,id));feedback('Geen wijzigingen om te bewaren.');model.editing=false;model.working=null;showPane();return;}
+      if(!changed.length){model.drafts.delete(key(type,id));feedback('Geen wijzigingen om te bewaren.');model.editing=false;model.working=null;showPane();return false;}
       const sourceScope=previous?previous.sourceScope:model.editSourceScope;
       model.drafts.set(key(type,id),{type,id,after:result.after,before:base,changed,reason:result.reason,sourceScope,stagedAt:new Date().toISOString()});
       model.editing=false;model.working=null;
       feedback('Concept bewaard. De gepubliceerde inventaris is nog niet gewijzigd.');
-      showList();showPane();
-    }catch(error){feedback(error.message,true);}
+      showList();showPane();return true;
+    }catch(error){feedback(error.message,true);return false;}
   }
   function feedback(msg,bad=false){const el=$c('cardFeedback');el.textContent=msg;el.dataset.error=bad?'true':'false';if(msg)$c('cardPendingPanel').hidden=false;}
   function showPending(){
@@ -710,7 +710,7 @@
   function close(){
     if(model.editing&&!confirm('Niet-bewaarde invoer sluiten?'))return;
     model.editing=false;model.working=null;$c('cardEditor').hidden=true;$c('cardScrim').hidden=true;
-    document.body.classList.remove('record-card-open');$c('cardGithubToken').value='';
+    document.body.classList.remove('record-card-open');
     if(model.returnFocus?.isConnected)model.returnFocus.focus();else $c('cardOpen').focus();model.returnFocus=null;
   }
   function undo(){
@@ -803,11 +803,11 @@
     if(model.adding&&!entry(model.current.type,model.current.id)&&!model.drafts.has(key(model.current.type,model.current.id)))model.current=null;
     model.editing=false;model.working=null;showList();showPane();
   });
-  $c('cardForm').addEventListener('submit',event=>{event.preventDefault();saveDraft();});
+  $c('cardForm').addEventListener('submit',event=>{event.preventDefault();if(saveDraft())void window.EmmausCardPublisher.submit();});
+  $c('cardKeepDraft').addEventListener('click',()=>saveDraft());
   $c('cardUndo').addEventListener('click',undo);
   $c('cardPublishToggle').addEventListener('click',()=>{
-    $c('cardGithubPanel').hidden=!$c('cardGithubPanel').hidden;
-    if(!$c('cardGithubPanel').hidden)$c('cardCommitMessage').focus();
+    void window.EmmausCardPublisher.submit();
   });
   $c('cardCopyJson').addEventListener('click',async()=>{
     try{await navigator.clipboard.writeText($c('cardJson').textContent);feedback('JSON gekopieerd.');}

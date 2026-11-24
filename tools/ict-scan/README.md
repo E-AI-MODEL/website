@@ -259,3 +259,11 @@ keuze wordt in de browser bewaard naast de indeling; de bron-JSON verandert niet
 Op mobiel worden onderdelen in de gewone documentstroom onder elkaar geplaatst,
 met een afzonderlijk scrollbaar dashboardvlak. De laadillustratie blijft in
 haar eigen ruimte. De afzonderlijke Builder uit PR #358 is hier niet inbegrepen.
+
+## Bewerken met één wachtwoord (Theory7)
+
+De knop Opslaan maakt via `edit-api.php` een wijzigingsvoorstel in de bestaande GitHub-repository. Geen GitHub-token of tweede aanmelding in de browser. De controle op bronversie, bronvelden, relaties, beoordelingen en manifest blijft bestaan. Na goedkeuring en publicatie wordt de officiële bron bijgewerkt. Het gedeelde bewerkwachtwoord identificeert geen individuele medewerker; het logboek gebruikt `ICT-scan-editor`.
+
+Eenmalige serverconfiguratie (niet in GitHub of in een publiek bestand): configureer `ICT_SCAN_EDITOR_PASSWORD_HASH` (PHP password_hash) en `ICT_SCAN_GITHUB_TOKEN` (fine-grained, uitsluitend E-AI-MODEL/website, Contents en Pull requests read/write). Alternatief: maak buiten de documentroot de map `.eai-ict-scan` (0700) met `editor.json` (0600) met de velden `passwordHash` en `githubToken`. De oude browsercode bevatte het oude wachtwoord openbaar; gebruik een nieuw wachtwoord. Verifieer dat de map niet via HTTP bereikbaar is. De service weigert opslag zolang de configuratie ontbreekt. Gebruik de Theory7-versie; GitHub Pages voert geen PHP uit.
+
+De server geeft alleen toegang tot de vaste bronbestanden en de gedeelde layoutmap, maakt eigen wijzigingsbranches en weigert directe schrijfacties op main. Sessiecookies zijn Secure, HttpOnly en SameSite=Strict; origin en CSRF worden gecontroleerd. De sessie verloopt na 30 minuten inactiviteit of vier uur. In de UI wordt geen wachtwoord of GitHub-sleutel bewaard. De authenticatielaag geeft geen nieuwe garantie over vertrouwelijkheid van de reeds beschikbare registergegevens.
