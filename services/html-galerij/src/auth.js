@@ -112,7 +112,7 @@ function sameOrigin(request) {
   const path = new URL(request.url).pathname;
   return origin === 'null' &&
     request.method === 'POST' &&
-    (path === '/auth/login' || path === '/auth/logout') &&
+    (path === '/auth/login' || path === '/auth/logout' || path === '/ict-editor/open') &&
     request.headers.get('Sec-Fetch-Site') === 'same-origin' &&
     request.headers.get('Sec-Fetch-Mode') === 'navigate' &&
     request.headers.get('Sec-Fetch-Dest') === 'document';

@@ -14,7 +14,7 @@ export async function ictEditor(request, env, user, path) {
     const session = await sha256(env.GALLERY_PASSWORD_HASH + ':' + cookieToken(request));
     await env.DB.batch([
       env.DB.prepare('DELETE FROM ict_editor_grants WHERE expires_at <= ?').bind(now),
-      env.DB.prepare('INSERT INTO ict_editor_grants(grant_hash,session_hash,expires_at) VALUES(?,?,?)').bind(await sha256(code),session,now+90)
+      env.DB.prepare('INSERT INTO ict_editor_grants(grant_hash,session_hash,expires_at) VALUES(?,?,?)').bind(await sha256(env.GALLERY_PASSWORD_HASH+':code:'+code),session,now+90)
     ]);
     const nonce = random();
     const html = '<!doctype html><html lang="nl"><meta charset="utf-8"><title>ICT-scan openen</title><form method="post" action="'+callback+'"><input type="hidden" name="code" value="'+code+'"><button>Open de ICT-scan</button></form><script nonce="'+nonce+'">document.forms[0].submit()</script></html>';
@@ -22,10 +22,11 @@ export async function ictEditor(request, env, user, path) {
   }
   const bearer = request.headers.get('Authorization') || '';
   if (!/^Bearer [a-f0-9]{64}$/.test(bearer)) return reject();
-  const hash = await sha256(bearer.slice(7));
+
   const live = 'session_hash IN (SELECT token_hash FROM gallery_sessions WHERE expires_at > ? AND email = ?)';
   const owner = env.GALLERY_ADMIN_EMAIL.toLowerCase();
   if (path === '/ict-editor/redeem') {
+    const hash = await sha256(env.GALLERY_PASSWORD_HASH+':code:'+bearer.slice(7));
     const token = random();
     const row = await env.DB.prepare('UPDATE ict_editor_grants SET grant_hash=?, redeemed=1, expires_at=? WHERE grant_hash=? AND redeemed=0 AND expires_at>? AND '+live+' RETURNING session_hash').bind(await sha256(env.GALLERY_PASSWORD_HASH+":"+token),now+14400,hash,now,now,owner).first();
     return row ? Response.json({token},{headers}) : reject();
