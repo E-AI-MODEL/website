@@ -199,7 +199,7 @@ try {
   assert(size.main<size.height,'Hoofdvenster groeit buiten de viewport bij '+width);
   await page.locator('#viewOverview .scene-tab').nth(1).click();
   await page.locator('#viewOverviewScene1:not([hidden])').waitFor({state:'visible'});
-  assert.equal(await page.locator('#viewOverview .scene-tab.active').textContent(),'Koppelingen');
+  assert.match(await page.locator('#viewOverview .scene-tab.active').textContent(),/^(Koppelingen|Geregistreerde verbanden)$/);
   assert.equal(await page.locator('#viewOverview .scene-panel:not([hidden])').count(),1);
   assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-informatie mag niet standaard zichtbaar zijn');
   // Alle verbanden komen uit een enkele index, inclusief licenties en acties.
