@@ -232,9 +232,9 @@
     return [
       {label:'AI-functies',key:'ai',card:'ai',
         rows:window.EmmausRoles?.isEnabled('ai')===false?[]:ai,note:'Beschreven functies, niet automatisch lokaal ingeschakeld'},
-      {label:'Entra-matches',key:'connections',card:'connections',
+      {label:'Entra-koppelingen',key:'connections',card:'connections',
         rows:index.connected('apps',app.id,{type:'connections'}).map(link=>link.other),
-        note:'Mogelijke Entra-matches. Een registratie is geen actieve koppeling.'},
+        note:'Koppelingen vanuit Entra. Actueel gebruik nog niet altijd bevestigd.'},
       {label:'Onderdelen',key:'parts',card:'parts',
         rows:index.connected('apps',app.id,{type:'parts',relationType:'part_of'}).map(link=>link.other),
         note:'Onderdelen en modules uit de gezamenlijke index, niet automatisch ingeschakeld'},
@@ -357,7 +357,7 @@
       }
       list.append(body);
       const scroll=text('div',undefined,'ds-table-wrap');scroll.append(list);root.append(scroll);
-      root.append(text('p','Alle '+fmt(apps.length)+' basisregistraties. Selecteer een aantal om op het gebruiksgebied te filteren.','ds-note'));
+      root.append(text('p','Alle '+fmt(apps.length)+' applicaties. Selecteer een vak om op gebruiksgebied te filteren.','ds-note'));
       return;
     }
     const table=text('table',undefined,'ds-matrix');const thead=text('thead');const tr=text('tr');
@@ -377,7 +377,7 @@
     }
     const foot=text('tr');foot.append(text('th','Totaal'));for(const kind of kinds)foot.append(text('th',fmt(apps.filter(x=>category(x.kind)===kind).length)));foot.append(text('th',fmt(apps.length)));body.append(foot);
     table.append(body);const viewport=text('div',undefined,'ds-table-wrap');viewport.append(table);root.append(viewport);
-    root.append(text('p','De rij- en kolomsommen tellen elk op tot '+fmt(apps.length)+' basisregistraties.','ds-note'));
+    root.append(text('p','De totalen per rij en kolom tellen elk op tot '+fmt(apps.length)+' applicaties.','ds-note'));
   }
   function drawRecords(root){
     const d=activeSource();if(!d){root.append(text('p','Selecteer een register.','ds-component-hint'));return;}
@@ -401,12 +401,12 @@
     const strip=text('div',undefined,'ds-hardware-strip');
     for(const [value,cls] of [[yes,'true'],[no,'false'],[missing,'missing']]){const part=text('span');part.className='ds-hardware-'+cls;part.style.width=(value/n*100)+'%';strip.append(part);}
     root.append(strip);
-    const legend=text('div',undefined,'ds-hardware-legend');for(const [name,value,cls] of [['True',yes,'true'],['False',no,'false'],['Niet ingevuld',missing,'missing']]){const item=text('div',undefined,'ds-hardware-key');item.append(text('i',undefined,cls),text('span',name),text('strong',fmt(value)));legend.append(item);}root.append(legend);
+    const legend=text('div',undefined,'ds-hardware-legend');for(const [name,value,cls] of [['Voldoet (Entra)',yes,'true'],['Voldoet niet (Entra)',no,'false'],['Niet ingevuld',missing,'missing']]){const item=text('div',undefined,'ds-hardware-key');item.append(text('i',undefined,cls),text('span',name),text('strong',fmt(value)));legend.append(item);}root.append(legend);
     root.append(text('p','De compliancewaarden staan in de export. Dit is geen volledig apparaatbeheer- of veiligheidsbeeld.','ds-note'));
   }
   function drawActions(root){
     const d=availableData().find(x=>['checks','candidates','aiControls'].includes(x.key));
-    if(!d){root.append(text('p','Kies Controles, Kandidaten of AI-beheer om werkpunten te tonen.','ds-component-hint'));return;}
+    if(!d){root.append(text('p','Kies Controles, Overige software of AI-beheer om openstaande punten te zien.','ds-component-hint'));return;}
     const rows=filtered(d),slice=rows.slice(0,9);const list=text('div',undefined,'ds-actions');
     for(const r of slice){const b=button('','ds-action-row',()=>openCard(d,r));
       b.append(text('strong',r.name||r.id),text('span',clean(r.status)||clean(r.action)||clean(r.local)||'Status niet vastgesteld'));
