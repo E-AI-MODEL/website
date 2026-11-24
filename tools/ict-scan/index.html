@@ -36,11 +36,13 @@
 <script defer src="./inventory-index.js?v=20261124ux3"></script>
 <script defer src="./app.js?v=20261124ux3"></script>
 <script defer src="./enhancements.js?v=20261124ux3"></script>
+<script defer src="./document-library.js?v=20261124a"></script>
+<link rel="stylesheet" href="./document-library.css?v=20261124a">
 <script defer src="./visual-explorer.js?v=20261124a"></script>
 <script defer src="./github-sync.js?v=20261124ux3"></script>
 <script defer src="./rail-drawer.js?v=20261124ux3"></script>
 <script defer src="./edit-gate.js?v=20261123a"></script>
-<script defer src="./record-cards.js?v=20261124ux3"></script>
+<script defer src="./record-cards.js?v=20261124docs1"></script>
 <script defer src="./record-github.js?v=20261121e"></script>
 <script defer src="./answer-engine.js?v=20261124ux4"></script>
 <script defer src="./scene-navigation.js?v=20261124ux3"></script>
@@ -219,7 +221,7 @@
   <div class="privacy-summary" id="privacySummary"></div>
   <article class="panel privacy-evidence-panel"><div class="panel-head"><div><p class="panel-kicker">EXTERNE BRON EN LOKALE STATUS</p><h2>DPIA-bronvermeldingen</h2></div><span class="scope-label">Per brononderwerp</span></div><p class="explain">We tonen wat in de aangeleverde bronnen staat. De FG adviseert en ziet onafhankelijk toe. Een extern rapport is geen beoordeling van de lokale inrichting.</p><div id="privacyDpia" class="record-notes"></div></article>
   
-  <article class="panel"><div class="panel-head"><div><p class="panel-kicker">JURIDISCHE EN SECTORALE BRONNEN</p><h2>Wetgeving en privacy</h2></div></div><p class="explain">Een normverwijzing helpt om te toetsen, maar vormt op zichzelf geen bewijs dat een maatregel is uitgevoerd.</p><div id="privacyLegal" class="legal-list"></div></article>
+  <article class="panel"><div class="panel-head"><div><p class="panel-kicker">JURIDISCHE EN SECTORALE BRONNEN</p><h2>Wetgeving en privacy</h2></div></div><p class="explain">Een normverwijzing helpt om te toetsen, maar vormt op zichzelf geen bewijs dat een maatregel is uitgevoerd.</p><div id="privacyLegal" class="legal-list"></div><button type="button" class="monitor-button subtle" id="docOpenFromPrivacy">Wetsteksten en documenten lezen</button></article>
 </section>
       <section id="viewFindings" class="view" hidden><article class="panel assurance-panel" id="assurancePanel" aria-labelledby="assuranceTitle">
   <div class="assurance-header"><div><p class="panel-kicker">CONTROLES</p><h2 id="assuranceTitle">Gegevens en opvolging</h2><p id="assuranceStamp">Nog geen controle uitgevoerd.</p></div><span id="assuranceSummary" class="assurance-summary" data-status="not_run" role="status" aria-live="polite">Niet uitgevoerd</span></div>
@@ -271,12 +273,32 @@
         <details class="panel license-panel" id="licensePanel"><summary><strong>Licentiecontrole 2026</strong><small><span id="licenseTotal">0</span> registraties, actuele contractstatus apart controleren</small></summary><div class="candidate-content"><div class="list-tools"><input type="search" id="licenseSearch" aria-label="Zoek licentiecontrole" placeholder="Zoek in licentieregistraties"></div><div class="item-list" id="licenseList"></div>
           <h3 class="section-mini-title">Softwarecontroles uit het werkregister (<span id="softwareReviewTotal">0</span>)</h3>
           <div class="list-tools"><input type="search" id="softwareReviewSearch" placeholder="Zoek softwarecontrole" aria-label="Zoek softwarecontroles"></div><div id="softwareReviewList" class="item-list"></div></div></details>
-        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">BELEID EN PROCEDURES</p><h2>Aangetroffen documenten</h2></div></div><div id="policyDocs" class="source-list"></div></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">TOETSINGSKADERS</p><h2>Privacy en AI</h2></div></div><p class="explain">Deze bronnen helpen bij de beoordeling. De aanwezigheid van een document is geen bewijs dat de school aan alle vereisten voldoet. Wetgeving en rapportversies moeten bij een besluit opnieuw worden gecontroleerd.</p><div id="legalList" class="legal-list"></div></article>
+        <article class="panel"><div class="panel-head"><div><p class="panel-kicker">BELEID EN PROCEDURES</p><h2>Aangetroffen documenten</h2></div></div><div id="policyDocs" class="source-list"></div></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">TOETSINGSKADERS</p><h2>Privacy en AI</h2></div></div><p class="explain">Deze bronnen helpen bij de beoordeling. De aanwezigheid van een document is geen bewijs dat de school aan alle vereisten voldoet. Wetgeving en rapportversies moeten bij een besluit opnieuw worden gecontroleerd.</p><div id="legalList" class="legal-list"></div></article><article class="panel doc-library-panel" aria-labelledby="docLibraryTitle">
+  <div class="panel-head"><div><p class="panel-kicker">BRONDOCUMENTEN · WETTEN · NORMEN</p><h2 id="docLibraryTitle">Documentbibliotheek</h2></div><button type="button" id="docLibraryOpen" class="monitor-button subtle">Documenten lezen</button></div>
+  <p class="explain">Volledige Nederlandstalige wetsteksten staan als gecontroleerde momentopname in de repository. Kennisnet-voorbeelden blijven bij Kennisnet; een eigen exemplaar kun je uitsluitend in deze browser lezen. Een verwijzing bewijst geen naleving of vaststelling.</p>
+  <div class="doc-library-controls"><label><span class="visually-hidden">Zoek in documentnamen</span><input id="docLibrarySearch" type="search" placeholder="Zoek wet, norm, beleidsdocument of onderwerp" aria-label="Zoek in documentenregister"></label><label><span class="visually-hidden">Filter documentsoort</span><select id="docLibraryType" aria-label="Filter documentsoort"><option value="">Alle documenten</option><option value="Wetgeving">Wetgeving</option><option value="Normenkaders">Normenkaders</option><option value="Voorbeelddocumenten">Voorbeelddocumenten</option></select></label><small id="docLibraryCount"></small></div>
+  <p id="docLibraryStatus" class="viz-caption" role="status" aria-live="polite">Klik op ‘Documenten lezen’ of gebruik de zoekfunctie om de bibliotheek uit GitHub te openen.</p>
+  <div id="docLibraryList" class="doc-catalog-list" aria-live="polite"></div>
+</article>
       </section>
       <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
     </main>
   </div>
 </div>
+<div id="docScrim" class="doc-reader-scrim" hidden></div>
+<section id="docDialog" class="doc-reader-dialog" role="dialog" aria-modal="true" aria-labelledby="docReaderTitle" hidden>
+  <header class="doc-reader-header"><div><small>DOCUMENTBIBLIOTHEEK · BRONTEKST</small><h2 id="docReaderTitle">Documenten</h2><p id="docReaderMeta"></p></div><button type="button" id="docDialogClose" aria-label="Document sluiten" class="doc-reader-close">Sluiten</button></header>
+  <div class="doc-reader-toolbar">
+    <label><span class="visually-hidden">Zoek in document</span><input id="docArticleSearch" type="search" aria-label="Doorzoek documenttekst" placeholder="Zoek in de volledige tekst"></label>
+    <label><span class="visually-hidden">Spring naar artikel</span><select id="docArticleJump" aria-label="Spring naar artikel"><option value="">Kies artikel</option></select></label>
+    <a id="docOfficialUrl" href="https://eur-lex.europa.eu/" target="_blank" rel="noopener noreferrer">Officiële bron openen</a>
+    <button type="button" id="docLocalChoice" class="monitor-button subtle" hidden>Eigen bestand lezen</button>
+    <input id="docLocalFile" type="file" accept=".docx,.pdf,.txt,.md" hidden>
+  </div>
+  <p id="docReaderStatus" class="doc-reader-status" role="status" aria-live="polite"></p>
+  <div class="doc-reader-stat-row"><span id="docArticleStats"></span><span>Documenttekst is geen automatische juridische beoordeling</span></div>
+  <div id="docArticleScroll" class="doc-reader-scroll" tabindex="0" aria-label="Documenttekst"><div id="docSections"></div></div>
+</section>
   <div id="cardScrim" class="card-scrim" hidden></div>
   <section id="cardEditor" class="card-editor" role="dialog" aria-modal="true" aria-labelledby="cardEditorTitle" hidden>
     <div class="card-editor-heading">

@@ -257,6 +257,18 @@
         x.followUpOwner&&'Actiehouder: '+x.followUpOwner,
         x.followUpStatus&&'Opvolging: '+x.followUpStatus].filter(Boolean).join(' · ')])
       :[['Beoordelingen','Nog niet beoordeeld']]);
+    // Alleen bekende normverwijzingen openen hun eigen brondocument.
+    const documentShelf=text('div','card-document-links');
+    const documentButton=(label,frameworkId)=>{
+      const button=text('button','card-button card-doc-open',label);
+      button.type='button';
+      button.addEventListener('click',()=>void window.EmmausDocs?.open(frameworkId));
+      documentShelf.append(button);
+    };
+    for(const id of new Set(references.map(x=>x.frameworkId).filter(x=>catalog.has(x))))
+      documentButton('Lees bron: '+catalog.get(id).name,id);
+    if(!documentShelf.children.length)documentButton('Open documentbibliotheek','');
+    links.append(documentShelf);
     // Bronverwijzingen blijven in het bronregister en worden niet in deze
     // publiek zichtbare kaart uitgegeven. Zij blijven onderdeel van de review.
     function activate(key){

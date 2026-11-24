@@ -1,0 +1,219 @@
+{
+  "schema": "eai-ict-document-catalog-v1",
+  "version": "2026-11-22",
+  "repo": "E-AI-MODEL/website",
+  "baseDir": "tools/ict-scan/docs",
+  "note": "Documentbibliotheek voor raadpleging. Het koppelen of tonen van een bron is geen besluit over toepasselijkheid of naleving.",
+  "documents": [
+    {
+      "id": "AVG",
+      "frameworkId": "AVG",
+      "title": "Algemene verordening gegevensbescherming",
+      "group": "Wetgeving",
+      "type": "EU-verordening",
+      "version": "Geconsolideerde Nederlandse tekst, 4 mei 2016, met rectificaties",
+      "snapshotAt": "2026-11-22",
+      "availability": "bundled",
+      "path": "tools/ict-scan/docs/avg-2016-679-nl.txt",
+      "blobSha": "9003203cf40de621f6fae1fa2c18ffea0e942423",
+      "url": "https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:02016R0679-20160504",
+      "publisher": "EUR-Lex",
+      "rights": "Herbruikbare EU-wetgeving met bronvermelding",
+      "note": "Geconsolideerde versie is een documentatiehulpmiddel, niet de authentieke bekendmaking. Voor formele besluiten de actuele officiële tekst raadplegen.",
+      "tags": [
+        "privacy",
+        "persoonsgegevens",
+        "artikel 5",
+        "artikel 6",
+        "artikel 28",
+        "artikel 32",
+        "artikel 35",
+        "dpia"
+      ]
+    },
+    {
+      "id": "UAVG",
+      "frameworkId": "UAVG",
+      "title": "Uitvoeringswet AVG",
+      "group": "Wetgeving",
+      "type": "Nederlandse wet",
+      "version": "Getoonde versie geldig vanaf 1 september 2026",
+      "snapshotAt": "2026-11-22",
+      "availability": "bundled",
+      "path": "tools/ict-scan/docs/uavg-bwbr0040940-2026-nl.txt",
+      "blobSha": "9501c119cafb136d65f0c902eb8e853ccb0f79b8",
+      "url": "https://wetten.overheid.nl/BWBR0040940",
+      "publisher": "Wetten.nl",
+      "rights": "Officiële Nederlandse wetstekst",
+      "note": "Historische momentopname. Voor een besluit de geldende versie van Wetten.nl openen.",
+      "tags": [
+        "avg",
+        "nederland",
+        "wet",
+        "bijzondere persoonsgegevens"
+      ]
+    },
+    {
+      "id": "AIACT",
+      "frameworkId": "AIACT",
+      "title": "AI-verordening (EU) 2024/1689",
+      "group": "Wetgeving",
+      "type": "EU-verordening",
+      "version": "Oorspronkelijke Nederlandse bekendmaking 2024, inclusief bijlagen",
+      "snapshotAt": "2026-11-22",
+      "availability": "bundled",
+      "path": "tools/ict-scan/docs/ai-verordening-2024-1689-nl.txt",
+      "blobSha": "0889f933be48b27bd684c969884e19d8fd2d1a97",
+      "url": "https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:32024R1689",
+      "publisher": "EUR-Lex",
+      "rights": "Herbruikbare EU-wetgeving met bronvermelding",
+      "note": "Oorspronkelijke tekst, niet als actuele geconsolideerde versie presenteren; wijzigingen vanaf 2024 afzonderlijk raadplegen.",
+      "tags": [
+        "ai act",
+        "onderwijs",
+        "hoog risico",
+        "artikel 4",
+        "artikel 26",
+        "artikel 50",
+        "bijlage"
+      ]
+    },
+    {
+      "id": "IBP",
+      "frameworkId": "IBP",
+      "title": "Normenkader IBP voor het onderwijs",
+      "group": "Normenkaders",
+      "type": "Sectorkader",
+      "version": "Actuele versie op de website van Kennisnet",
+      "availability": "external",
+      "url": "https://normenkaderibp.kennisnet.nl/",
+      "publisher": "Kennisnet en sectorpartners",
+      "rights": "Publicatie en hergebruik van volledige documenten niet zonder toestemming vastgesteld",
+      "note": "69 informatiebeveiligingsnormen en 25 privacynormen. De tekst is auteursrechtelijk beschermd en wordt hier niet opnieuw gepubliceerd.",
+      "tags": [
+        "ibp",
+        "69 normen",
+        "25 normen",
+        "privacy",
+        "informatiebeveiliging",
+        "volwassenheid"
+      ]
+    },
+    {
+      "id": "IBP-IAM",
+      "frameworkId": "IBP",
+      "title": "Identiteits- en toegangsbeheerbeleid (voorbeelddocument)",
+      "group": "Voorbeelddocumenten",
+      "type": "Wordvoorbeeld",
+      "version": "Juni 2025",
+      "availability": "external",
+      "url": "https://normenkaderibp.kennisnet.nl/app/uploads/Identiteits-en-toegangsbeheerbeleid-Voorbeelddocument.docx",
+      "publisher": "Kennisnet",
+      "rights": "Download van Kennisnet; herpublicatie vraagt toestemming",
+      "note": "Aangeleverd door de gebruiker, maar niet zonder publicatierechten in de openbare repository opgenomen. Niet hetzelfde als vastgesteld schoolbeleid.",
+      "tags": [
+        "identiteit",
+        "entra",
+        "iam",
+        "account",
+        "autorisatie",
+        "beleid"
+      ]
+    },
+    {
+      "id": "IBP-LOGICAL",
+      "frameworkId": "IBP",
+      "title": "Proces logische toegang (voorbeelddocument)",
+      "group": "Voorbeelddocumenten",
+      "type": "Wordvoorbeeld",
+      "version": "Juni 2025",
+      "availability": "external",
+      "url": "https://normenkaderibp.kennisnet.nl/app/uploads/Proces-logische-toegang-Voorbeelddocument.docx",
+      "publisher": "Kennisnet",
+      "rights": "Download van Kennisnet; herpublicatie vraagt toestemming",
+      "note": "Aangeleverd door de gebruiker, niet vastgesteld als schoolprocedure. De originele Wordversie is bij Kennisnet beschikbaar.",
+      "tags": [
+        "toegangsrechten",
+        "rollen",
+        "identiteit",
+        "logische toegang",
+        "proces"
+      ]
+    },
+    {
+      "id": "IBP-EMERGENCY",
+      "frameworkId": "IBP",
+      "title": "Noodtoegangsproces (voorbeelddocument)",
+      "group": "Voorbeelddocumenten",
+      "type": "Wordvoorbeeld",
+      "version": "Juni 2025",
+      "availability": "external",
+      "url": "https://normenkaderibp.kennisnet.nl/app/uploads/Noodtoegangsproces-Voorbeelddocument.docx",
+      "publisher": "Kennisnet",
+      "rights": "Download van Kennisnet; herpublicatie vraagt toestemming",
+      "note": "Aangeleverd door de gebruiker, niet vastgesteld als schoolprocedure. Geen bewijs van daadwerkelijk ingericht noodtoegangsbeheer.",
+      "tags": [
+        "noodtoegang",
+        "break glass",
+        "entra",
+        "beleid",
+        "toegang"
+      ]
+    },
+    {
+      "id": "EN18286",
+      "frameworkId": "EN18286",
+      "title": "EN 18286:2026 kwaliteitsmanagement hoogrisico-AI",
+      "group": "Normenkaders",
+      "type": "Europese norm",
+      "version": "EN 18286:2026",
+      "availability": "external",
+      "url": "https://www.nen.nl/nen-en-18286-2026-en-354718",
+      "publisher": "CEN/CENELEC via NEN",
+      "rights": "Normtekst niet openbaar herpubliceren zonder gebruiksrechten",
+      "note": "Volledige normtekst niet meegeleverd. Een verwijzing bewijst geen toepasselijkheid of naleving.",
+      "tags": [
+        "kwaliteitsmanagement",
+        "hoogrisico",
+        "ai"
+      ]
+    },
+    {
+      "id": "WVO2020",
+      "frameworkId": "WVO2020",
+      "title": "Wet voortgezet onderwijs 2020",
+      "group": "Wetgeving",
+      "type": "Nederlandse wet",
+      "version": "Actuele tekst op Wetten.nl",
+      "availability": "external",
+      "url": "https://wetten.overheid.nl/BWBR0044212",
+      "publisher": "Wetten.nl",
+      "rights": "Officiële Nederlandse wetstekst",
+      "note": "Nog geen gecontroleerde lokale documentmomentopname. Via de officiële bron lezen.",
+      "tags": [
+        "vo",
+        "onderwijs",
+        "wvo"
+      ]
+    },
+    {
+      "id": "IBP-DOCS",
+      "frameworkId": "IBP",
+      "title": "Overzicht Kennisnet-voorbeelddocumenten",
+      "group": "Voorbeelddocumenten",
+      "type": "Documentenoverzicht",
+      "version": "Actuele publicatie",
+      "availability": "external",
+      "url": "https://normenkaderibp.kennisnet.nl/voorbeelddocumenten/",
+      "publisher": "Kennisnet",
+      "rights": "Rechtstreeks openen bij de bron; downloads niet opnieuw publiceren",
+      "note": "Originele voorbeelden voor IBP-beleid, autorisatie, continuïteit en incidenten.",
+      "tags": [
+        "ibp",
+        "voorbeeld",
+        "beleid",
+        "procedure"
+      ]
+    }
+  ]
+}
