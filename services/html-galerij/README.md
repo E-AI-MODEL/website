@@ -99,3 +99,8 @@ Microsoft Entra ID kan via Cloudflare Access worden gekoppeld zodra Access in de
 Officiële handleidingen:
 - https://developers.cloudflare.com/cloudflare-one/integrations/identity-providers/entra-id/
 - https://developers.cloudflare.com/workers/configuration/cloudflare-access/
+
+
+## Verificatie 24 november 2026
+
+De zes JavaScript-modules in `src/` zijn exact vergeleken met de actieve Cloudflare Worker (100% verkeer op versie `8981fbe2-3edb-4372-ab74-f8478afc89fb`). Alle zes komen overeen. De D1-tabellen, sessies, auditregistratie en de tijdelijke blokkadetrigger zijn aanwezig; vereiste secret-namen zijn gecontroleerd zonder waarden op te vragen. De Worker is bereikbaar geconfigureerd via workers.dev; de HTTP-proef vanuit de huidige omgeving kon niet worden uitgevoerd. Een geldige persoonlijke aanmelding en een gecontroleerde hide/restore-proef zijn nog vereist. De tijdelijke blokkade is niet verwijderd en er zijn geen Cloudflare-instellingen of secrets gewijzigd. De websitebouw voert zowel de galerij- als de beheertests verplicht uit.

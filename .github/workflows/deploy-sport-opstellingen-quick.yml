@@ -1,14 +1,11 @@
 name: Publish Sport en Bewegen
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-sport-opstellingen-quick.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
 concurrency:
-  group: sport-opstellingen-targeted-publication
+  group: theory7-production
   cancel-in-progress: false
 jobs:
   publish:

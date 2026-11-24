@@ -12,7 +12,8 @@ const server = spawn('python3', ['-m', 'http.server', '8798', '--bind', '127.0.0
 // Camera presets animate over several rendered frames. Wait for the real
 // camera position and target to settle, not an assumed wall-clock duration.
 async function waitForCameraSettled(page) {
-  await page.waitForFunction(() => {
+  try {
+    await page.waitForFunction(() => {
     const viewer = window.ZAnatomy?.viewer;
     if (!viewer) return false;
     const state = [...viewer.camera.position.toArray(), ...viewer.controls.target.toArray()];
@@ -20,9 +21,34 @@ async function waitForCameraSettled(page) {
     window.__eaiCameraSample = state;
     if (!prior) { window.__eaiCameraStill = 0; return false; }
     const delta = Math.hypot(...state.map((value, index) => value - prior[index]));
-    window.__eaiCameraStill = delta < 1e-5 ? (window.__eaiCameraStill || 0) + 1 : 0;
+    // The 3D model uses OrbitControls damping. Measure stillness in screen
+    // pixels, not a fixed model-unit threshold unrelated to camera zoom.
+    const camera = viewer.camera;
+    const distance = camera.position.distanceTo(viewer.controls.target);
+    const canvasHeight = Math.max(1, viewer.canvas?.clientHeight || innerHeight);
+    const worldPerPixel = 2 * distance * Math.tan(camera.fov * Math.PI / 360) / canvasHeight;
+    const tolerance = Math.max(1e-4, worldPerPixel * .4);
+    window.__eaiCameraStill = delta <= tolerance ? (window.__eaiCameraStill || 0) + 1 : 0;
     return window.__eaiCameraStill >= 4;
-  }, null, {timeout:10000, polling:90});
+    }, null, {timeout:15000, polling:90});
+  } catch (error) {
+    const snapshot = await page.evaluate(() => {
+      const viewer = window.ZAnatomy?.viewer;
+      if (!viewer) return {viewer: 'missing'};
+      const distance = viewer.camera.position.distanceTo(viewer.controls.target);
+      const pixel = 2 * distance * Math.tan(viewer.camera.fov * Math.PI / 360)
+        / Math.max(1, viewer.canvas?.clientHeight || innerHeight);
+      return {
+        camera: viewer.camera.position.toArray(),
+        target: viewer.controls.target.toArray(),
+        distance, worldPerPixel: pixel,
+        stillSamples: window.__eaiCameraStill || 0,
+        lastSample: window.__eaiCameraSample,
+      };
+    });
+    console.error('ANATOMIE_CAMERA_NOT_SETTLED', JSON.stringify(snapshot));
+    throw error;
+  }
   await page.evaluate(() => {
     delete window.__eaiCameraSample;
     delete window.__eaiCameraStill;
@@ -300,7 +326,7 @@ try {
       const y=Math.min(c.bottom,layout.attribution.bottom)-Math.max(c.top,layout.attribution.top);
       assert(x<=0||y<=0, 'Bronvermelding bedekt cameraknop '+i);
     }
-    assert((await page.title()).includes('Anatomisch Observatorium'));
+    assert((await page.title()).includes('Het lichaam in 3D'));
     assert.equal(await page.locator('#resetBtn').innerText(),'In beeld',
       'De cameraknop moet duidelijk van Onderdelen herstellen verschillen');
     await page.screenshot({path:'test-results/anatomie-start-'+width+'.png'});

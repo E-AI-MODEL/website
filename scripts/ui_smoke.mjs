@@ -51,19 +51,21 @@ try {
       await page.locator('.eai-site-group').nth(1).locator(':scope > summary').click();
       await page.locator('.eai-site-group').nth(3).locator(':scope > summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 1, 'Only one theme may be open');
-      const topics = page.locator('.eai-site-group').nth(3).locator('.eai-site-topic');
-      assert.equal(await topics.count(), 6, 'All six model areas stay reachable');
-      await topics.first().locator(':scope > summary').click();
-      const mechanics = topics.first().locator('.eai-site-cluster').first();
-      await mechanics.locator(':scope > summary').click();
-      assert.equal(await mechanics.locator('a[href*="/labs/natuurkunde/#"]').count(), 18, 'All mechanics experiments are listed');
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/science-observatory/labs/natuurkunde/#lever"]').count(), 1);
+      // Compact thematic menu; the full experiment/workform catalog lives in search.
+      assert.equal(await page.locator('.eai-site-topic').count(), 0, 'No duplicate model catalogue');
+      assert.equal(await page.locator('.eai-site-group').nth(3).locator('a[href="/nl/publicaties/"],a[href="/en/publications/"]').count(), 1);
       await page.locator('.eai-site-group').nth(4).locator(':scope > summary').click();
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/eaistudio/"]').count(), 1);
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/eaimesh/"]').count(), 1);
-      assert.equal(await page.locator('.eai-site-menu-panel a[href="/tools/wihtml/bibliotheek/"]').count(), 1);
+      assert.equal(await page.locator('.eai-site-group').nth(4).locator('a[href="/nl/tools/"], a[href="/en/tools/"]').count(), 1, 'One entry to the eight subject choices');
+      for (const deep of ['/tools/science-observatory/', '/tools/anatomie/', '/tools/eaistudio/', '/tools/wihtml/']) {
+        assert.equal(await page.locator('.eai-site-menu-panel a[href="'+deep+'"]').count(), 0, 'Application links live in the subject overview: '+deep);
+      }
+      assert((await page.locator('.eai-site-menu-panel a[href]').count()) <= 28, 'Keep menu short');
       if (width === 390 && path === '/') {
+        assert(!(await page.locator('.eai-site-search').isVisible()), 'Search is not forced into the menu');
+        await page.locator('.eai-site-search-trigger').click();
         const search = page.locator('#eai-site-search-input');
+        assert(await search.isVisible(), 'Search button reveals search');
+        assert(await search.evaluate(el => document.activeElement === el), 'Search is focused');
         await search.fill('hefboom');
         await page.locator('#eai-site-search-results a[href="/tools/science-observatory/labs/natuurkunde/#lever"]').waitFor();
         assert.equal(await page.locator('.eai-site-search-results').count(), 1);
@@ -77,6 +79,8 @@ try {
         const choices = page.locator('#eai-site-search-results a[href="/werkvormen/justification-mapping/"]');
         await choices.waitFor();
         assert.match(await choices.locator('.eai-site-search-hit-description').innerText(), /AI-bijdrage/, 'Zoekresultaat laat de inhoud van de werkvorm zien');
+        await search.fill('EAImesh');
+        await page.locator('#eai-site-search-results a[href="/tools/eaimesh/"]').waitFor();
         await search.fill('taakdichtheid');
         await page.locator('#eai-site-search-results a[href="/nl/begrippen/#task-density"]').waitFor();
         await search.fill('');
@@ -84,7 +88,9 @@ try {
       }
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.eai-site-menu').getAttribute('open'), null);
-      assert(await page.locator('.eai-site-menu>summary').evaluate(e => e === document.activeElement));
+      const expectedFocus = width === 390 && path === '/' ? '.eai-site-search-trigger' : '.eai-site-menu>summary';
+      const activeFocus = await page.evaluate(() => ({ tag:document.activeElement?.tagName, label:document.activeElement?.getAttribute('aria-label'), className:document.activeElement?.getAttribute('class'), menuOpen:document.querySelector('.eai-site-menu')?.open, searchHidden:document.querySelector('.eai-site-search')?.hidden }));
+      assert(await page.locator(expectedFocus).evaluate(e => e === document.activeElement), `Focus expected ${expectedFocus} at ${path}/${width}: ${JSON.stringify(activeFocus)}`);
       await page.locator('.eai-site-menu>summary').click();
       assert.equal(await page.locator('.eai-site-group[open]').count(), 0, 'Reopening resets themes');
       await page.keyboard.press('Escape');
@@ -128,6 +134,15 @@ try {
   await page.goto(base + '/nl/tools/', { waitUntil: 'load' });
   assert.equal(await page.locator('.eai-site-language a[lang="en"]').getAttribute('href'), '/en/tools/');
   assert.equal(await page.locator('.eai-site-language a[lang="nl"]').getAttribute('href'), '/nl/tools/');
+  assert.equal(await page.locator('.eai-explore-choice').count(), 8, 'Eight direct subject choices');
+  await page.locator('.eai-explore-choice[href="#vak-natuurkunde"]').click();
+  assert(await page.locator('#vak-natuurkunde').isVisible(), 'Natuurkunde has its own view');
+  assert.equal(await page.locator('#vak-natuurkunde .eai-explore-physics-group a[href^="/tools/science-observatory/labs/natuurkunde/#"]').count(), 53, 'The 53 subjects remain directly accessible');
+  assert(!(await page.locator('.eai-explore-choices').isVisible()), 'The overview steps aside for the selected subject');
+  await page.locator('#vak-natuurkunde .eai-explore-back').click();
+  assert(await page.locator('.eai-explore-choices').isVisible(), 'Back returns to all subjects');
+  await page.locator('.eai-explore-choice[href="#vak-oceanografie"]').click();
+  assert(await page.locator('#vak-oceanografie a[href="/tools/abyss/"]').isVisible(), 'Oceanography has a working direct entry');
   // WiHTML: van de rustige landingspagina via elke keuze naar een echte offline HTML-les.
   const wiContext = await browser.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
   const wiPage = await wiContext.newPage();
@@ -311,11 +326,12 @@ try {
   await fallback.locator('.eai-site-group').nth(4).locator(':scope > summary').click();
   assert.equal(await fallback.locator('.eai-site-group[open]').count(), 1, 'Native accordion must be exclusive');
   const fallbackTools = fallback.locator('.eai-site-group').nth(4);
-  assert.equal(await fallbackTools.locator('.eai-site-cluster').count(), 3, 'Tool categories work without JavaScript');
-  await fallbackTools.locator('.eai-site-cluster').first().locator(':scope > summary').click();
-  assert((await fallbackTools.locator('.eai-site-cluster').first().locator('a:visible').count()) >= 5, 'No-JS creation menu is incomplete');
-  assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/eaistudio/"]').count(), 1);
-  assert.equal(await fallback.locator('.eai-site-menu-panel a[href="/tools/eaimesh/"]').count(), 1);
+  assert.equal(await fallbackTools.locator('a[href="/nl/tools/"]').count(), 1, 'No-JS navigation goes through one subject overview');
+  await fallbackTools.locator('a[href="/nl/tools/"]').click();
+  assert.equal(await fallback.locator('main .eai-explore-choice').count(), 8, 'Eight subject choices are plain links, even without scripts');
+  assert.equal(await fallback.locator('main a[href="/tools/eaistudio/"]').count(), 1, 'EAIstudio remains available without JavaScript');
+  assert.equal(await fallback.locator('main a[href="/tools/science-observatory/"]').count(), 1, 'Subject catalogue remains available without JavaScript');
+  assert.equal(await fallback.locator('main a[href="/tools/abyss/"]').count(), 1, 'Oceanography remains available without JavaScript');
   await noJS.close();
   assert.deepEqual(errors, []);
   writeFileSync('test-results/ui-report.json', JSON.stringify({ results, noJavaScriptMenu: true, homeRoutes: true, languageLinks: true, errors }, null, 2));

@@ -3,6 +3,7 @@ from __future__ import annotations
 # v2 editorial build: two pillars -> workforms -> practice -> publications
 
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -2549,7 +2550,7 @@ def build(sources: Path, out: Path) -> None:
 <p class="profile-lede">Conrector op het Emmauscollege in Rotterdam. Daarnaast actief als AI-adviseur en spreker rond AI, leren en onderwijsontwerp.</p>
 <p>Ik wil eerst weten wat een leerling moet leren, waar hij zich in dat leren bevindt en aan welke stap hij zelf inhoudelijke betekenis moet geven. Daarna kijk ik wat AI op die plek doet. Dat helpt mij preciezer te beslissen welke hulp past.</p>
 <p>Die vragen kwamen terug in lessen, studiedagen, gesprekken met docenten en experimenten met AI. Daaruit groeide EAI: een werkwijze om samen een concrete onderwijssituatie te onderzoeken en afspraken over de rol van AI te maken.</p>
-<div class="button-row"><a class="button" href="{LINKEDIN}" target="_blank" rel="noopener">Volg of neem contact op via LinkedIn ↗</a><a class="button secondary" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener">Onderwijs AI-profiel</a></div><details class="quiet-contact"><summary>Andere contactmogelijkheid</summary><p><a href="mailto:{EMAIL}">Stuur een e-mail</a></p></details>
+<div class="button-row"><a class="button" href="{LINKEDIN}" target="_blank" rel="noopener">Volg of neem contact op via LinkedIn ↗</a><a class="button secondary" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener">Onderwijs AI-profiel</a></div><details class="quiet-contact"><summary>Andere contactmogelijkheid</summary><p><!--email_off--><a href="mailto:{EMAIL}">Stuur een e-mail</a><!--/email_off--></p></details>
 <p class="source-note">Foto: Onderwijs AI.</p>
 </div></div></div></section>
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Wat EAI probeert te voorkomen</div><div><h2>Een goed product aanzien voor bewijs van leren.</h2><p>AI kan een sterke tekst, uitleg, diagnose of aanbeveling produceren. EAI onderzoekt wat iemand zelf begrijpt en afweegt. Zichtbaar iets aanpassen of toevoegen geeft daar nog geen uitsluitsel over.</p></div></div>
@@ -2634,6 +2635,11 @@ def build(sources: Path, out: Path) -> None:
     if not eaiwork_dashboard.is_file():
         raise SystemExit("EAIwork dashboard source missing")
     write(out, "tools/eaiwork/index.html", eaiwork_dashboard.read_text(encoding="utf-8"))
+    # Separate public entry. Real execution remains on the protected local backend.
+    workspace_entry = Path(__file__).resolve().parent.parent / "work" / "index.html"
+    if not workspace_entry.is_file():
+        raise FileNotFoundError(f"EAIwork entry missing: {workspace_entry}")
+    write(out, "work/index.html", workspace_entry.read_text(encoding="utf-8"))
     # Observatory pages belong under investigating, not under AI instruction design.
     tools_soup = BeautifulSoup(tools_body, "html.parser")
     design_section = next((section for section in tools_soup.select("section.section")
@@ -2782,6 +2788,7 @@ def build(sources: Path, out: Path) -> None:
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
     urls = ["/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/tools/eaigame/", "/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/lo-aanvalslab/", "/tools/sport-en-bewegen/", "/tools/sport-en-bewegen/opstellingen/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/labs/hartslag/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaiwork/", "/tools/html-galerij/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/statistieken/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls.append('/topo/')
     # The bilingual redesign is maintained in nl/ and en/. Preserve it during
     # the legacy article/tool build, including its current home and assets.
     repo_root = Path(__file__).resolve().parent.parent
@@ -2791,11 +2798,18 @@ def build(sources: Path, out: Path) -> None:
             shutil.copytree(language_source, out / language, dirs_exist_ok=True)
             urls.extend("/" + str(page.relative_to(repo_root).parent) + "/"
                         for page in language_source.rglob("index.html"))
+    # These model pages are materialized during the subsequent UI preparation.
+    # They belong in the public sitemap even though they are not source index.html files.
+    urls.extend(["/nl/model/", "/en/model/"])
+    # EAIgit is a public tool with three indexable entry pages.
+    urls.extend(["/tools/eaigit/", "/tools/eaigit/hulp/", "/tools/eaigit/prompts/"])
     # Current redesigned aliases are also maintained as page sources. Older
     # article and toolbox pages continue to come from their content/generator.
     for page in repo_root.rglob("*.html"):
         relative = page.relative_to(repo_root)
-        if relative.parts[0] in {"content", "nl", "en", "site-build"}:
+        # TOPO has its own complete publication path; the generic site build must not copy
+        # an isolated TOPO landing page without its settings, map and data files.
+        if relative.parts[0] in {"content", "nl", "en", "site-build", "topo"}:
             continue
         # tools/index.html is generated above from the current Tools catalogue.
         # The old refreshed output must not overwrite that newly built page.
@@ -2829,6 +2843,56 @@ def build(sources: Path, out: Path) -> None:
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
+    # EAIgit is a separate browser wizard: publish only its four intended pages.
+    # Do not let the general site generator rewrite their UI or JavaScript.
+    eai_routes = (
+        "tools/eaigit/index.html",
+        "tools/eaigit/hulp/index.html",
+        "tools/eaigit/prompts/index.html",
+        "tools/projecthulp/index.html",
+    )
+    for relative in eai_routes:
+        source = repo_root / relative
+        if not source.is_file():
+            raise FileNotFoundError(f"Missing EAIgit page: {source}")
+        destination = out / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+    for relative in (
+        "assets/eaigit/wizard.mjs",
+        "assets/projecthulp/analyse.mjs",
+        "assets/projecthulp/inhoudscontrole.mjs",
+        "assets/projecthulp/onderzoek-worker.mjs",
+    ):
+        if not (out / relative).is_file():
+            raise FileNotFoundError(f"Missing EAIgit browser asset: {relative}")
+    # Publish only the explicit app asset allowlist. Never copy sources/
+    # (tools/ict-scan/bronnen), which stay readable through GitHub only.
+    ict_scan_source = repo_root / "tools" / "ict-scan"
+    for filename in ("index.html", "style.css", "monitor.css", "record-taxonomy.js", "inventory-index.js", "report-print.js", "report-print.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js", "ux-clarity.css", "studio-interface.css", "relationship-orbit.css", "relationship-atlas.js", "relationship-atlas.css", "document-library.js", "document-library.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", ".htaccess", "README.md"):
+        source_file = ict_scan_source / filename
+        if not source_file.is_file():
+            raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")
+        destination_file = out / "tools" / "ict-scan" / filename
+        destination_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source_file, destination_file)
+
+    # A cached older validator cannot read newer registerFiles keys. Bind the
+    # browser's profile validator URL to its actual published contents.
+    ict_path = out / "tools" / "ict-scan"
+    profile_hash = hashlib.sha256((ict_path / "assurance" / "profile.js").read_bytes()).hexdigest()[:16]
+    ict_html_file = ict_path / "index.html"
+    ict_html = ict_html_file.read_text(encoding="utf-8")
+    ict_html, replaced = re.subn(
+        r'(src="\./assurance/profile\.js\?v=)[^"]+(")',
+        lambda match: match.group(1) + profile_hash + match.group(2),
+        ict_html,
+        count=1,
+    )
+    if replaced != 1:
+        raise ValueError("ICT-scan: de versiegebonden organisatieprofielvalidator ontbreekt")
+    ict_html_file.write_text(ict_html, encoding="utf-8")
+
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.
     leif_source = repo_root / "leif"
@@ -2857,6 +2921,10 @@ EAI_FIRST_PARTY_TRACKER = '<script defer src="/assets/site-analytics.js"></scrip
 # These are reviewed standalone HTML files whose publication tests require exact bytes.
 # They may get RUM later through an explicit, separately tested source change.
 CLOUDFLARE_EXACT_SOURCE_ROUTES = {
+    # EAIgit analyses potentially private ZIPs locally; no site analytics.
+    "/tools/eaigit/",
+    "/tools/eaigit/hulp/",
+    "/tools/eaigit/prompts/",
     "/tools/wihtml/studio/",
     "/tools/wihtml/voorbeeld/",
     "/tools/abyss/",

@@ -13,9 +13,13 @@ class UploadNavigationTests(unittest.TestCase):
         self.assertIn("HTML uploaden", source)
         self.assertIn("Upload HTML", source)
         self.assertIn('class="eai-site-upload"', source)
-        # Desktop behoudt de snelkoppeling; mobiel gebruikt Tools.
-        self.assertIn("('HTML uploaden', '/tools/html-galerij/')", source)
-        self.assertIn("('Upload HTML', '/tools/html-galerij/')", source)
+        # Desktop retains the button. On mobile the central tools landing
+        # exposes the HTML gallery without duplicating it in the menu.
+        self.assertIn("('Kies een vakgebied of hulpmiddel', '/nl/tools/')", source)
+        self.assertIn("('Explore and create', '/en/tools/')", source)
+        for path in ('nl/tools/index.html', 'en/tools/index.html'):
+            self.assertIn('href="/tools/html-galerij/"',
+                          (ROOT / path).read_text(encoding='utf-8'), path)
 
     def test_small_screen_label_stays_accessible(self):
         css = (ROOT / "assets/site-redesign.css").read_text(encoding="utf-8")

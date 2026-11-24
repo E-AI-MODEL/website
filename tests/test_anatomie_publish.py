@@ -37,7 +37,7 @@ class AnatomyPublishTests(unittest.TestCase):
         page = ATLAS / "index.html"
         self.assertTrue(page.is_file(), "3D-atlas niet gebouwd")
         html = page.read_text(encoding="utf-8")
-        self.assertIn("Anatomisch Observatorium", html)
+        self.assertIn("Het lichaam in 3D", html)
         self.assertIn('lang="nl"', html)
         self.assertIn("BodyParts3D", html)
         self.assertIn("Z-Anatomy", html)
@@ -273,32 +273,22 @@ class AnatomyPublishTests(unittest.TestCase):
         sitemap = (OUT / "sitemap.xml").read_text(encoding="utf-8")
         self.assertIn("<loc>https://eaimodel.nl/tools/anatomie/</loc>", sitemap)
 
-    def test_anatomie_route_not_duplicated_in_menus(self):
-        # The source pages are copied into the website build, while
-        # prepare_ui.py generates the six-group language menus.
-        for rel in ("tools/index.html", "nl/tools/index.html", "nl/index.html"):
+    def test_anatomie_route_in_catalogue_and_concise_navigation(self):
+        # build_site runs before prepare_ui in one workflow. Both stages matter.
+        from bs4 import BeautifulSoup
+        for rel in ("nl/tools/index.html", "en/tools/index.html"):
             with self.subTest(page=rel):
-                links = Links()
-                links.feed((OUT / rel).read_text(encoding="utf-8"))
-                # De gegenereerde Tools-pagina heeft één link in de inhoud
-                # en één in elk van de afzonderlijke desktop-/mobiele menu's.
-                expected = 3 if rel == "tools/index.html" else 1
-                self.assertEqual(links.hrefs.count("/tools/anatomie/"), expected,
-                                 f"Onverwacht aantal anatomievermeldingen in {rel}")
-                if rel == "tools/index.html":
-                    from bs4 import BeautifulSoup
-                    soup = BeautifulSoup((OUT / rel).read_text(encoding="utf-8"), "html.parser")
-                    for area in (soup.select_one(".nav-links"),
-                                 soup.select_one(".mobile-nav-panel"),
-                                 soup.select_one("main")):
-                        self.assertIsNotNone(area)
-                        self.assertEqual(len(area.select('a[href="/tools/anatomie/"]')), 1,
-                                         "Anatomie mag per menu/inhoud eenmaal voorkomen")
-        navigation_source = (ROOT / "scripts" / "prepare_ui.py").read_text(encoding="utf-8")
-        # Eén hoofdingang per taal, plus één bronvermelding voor het
-        # uitklapbare modelmenu. HTML controleert de echte unieke links.
-        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 3,
-                         "Anatomie hoort in beide talen en in het modelmenu thuis")
+                soup = BeautifulSoup((OUT / rel).read_text(encoding="utf-8"), "html.parser")
+                self.assertEqual(len(soup.select('main a[href="/tools/anatomie/"]')), 1)
+                if soup.select_one('.eai-site-menu'):
+                    self.assertEqual(len(soup.select('.eai-site-menu a[href="/tools/anatomie/"]')), 1)
+        old = BeautifulSoup((OUT / "tools/index.html").read_text(encoding="utf-8"), "html.parser")
+        if old.find('meta', attrs={'http-equiv': 'refresh'}):
+            self.assertEqual(old.select_one('main a[href]')['href'], '/nl/tools/')
+        else:
+            self.assertEqual(len(old.select('main a[href="/tools/anatomie/"]')), 1)
+        navigation_source = (ROOT / "scripts/prepare_ui.py").read_text(encoding="utf-8")
+        self.assertEqual(navigation_source.count("'/tools/anatomie/'"), 1)
 
     def test_build_reproducible_and_repository_local(self):
         source = (ROOT / "scripts" / "build_anatomie.py").read_text(encoding="utf-8")

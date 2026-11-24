@@ -4,17 +4,17 @@ import { readFileSync } from 'node:fs';
 
 const load = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 
-test('Startpagina groepeert onderzoeksruimtes in zes herkenbare onderwerpen', () => {
+test('Vakinhoud toont de afgesproken namen en een publieke Melkweg-ingang', () => {
   const html = load('content/science-observatory/landing.html');
-  for (const title of ['Natuurkunde', 'Wiskunde', 'Galactisch Observatorium', 'Anatomie van de mens', 'Hoe werkt AI?', 'Sport en bewegen']) {
+  for (const title of ['Natuurkunde', 'Wiskunde', 'De Melkweg', 'Het lichaam in 3D', 'Hoe werkt een taalmodel?', 'Sport en bewegen', 'Oceanografie']) {
     assert.ok(html.includes('<h3>' + title + '</h3>'), title);
   }
-  assert.equal((html.match(/class="so-card"/g) || []).length, 6);
+  assert.equal((html.match(/class="so-card"/g) || []).length, 7);
   assert.match(html, /\/tools\/melkweg-lab\//);
   assert.match(html, /\/tools\/science-observatory\/labs\/melkweg\//);
   assert.match(html, /\/tools\/anatomie\/labs\/hartslag\//);
   assert.match(html, /\/tools\/lo-aanvalslab\//);
-  assert.doesNotMatch(html, /ABYSS|href="\/tools\/abyss\//);
+  assert.match(html, /href="\/tools\/abyss\//);
   assert.doesNotMatch(html, /53 proeven|NF \/ 01|Nieuwe proefversie/);
   assert.match(html, /niet alle natuurkundige modellen/i);
 });
@@ -40,7 +40,7 @@ test('Natuurkunde is een herkenbare zelfstandige proefversie', () => {
   for (const id of ['labSection', 'experimentTree', 'stage', 'plot', 'comparisonRows', 'controls']) {
     assert.match(html, new RegExp('id="' + id + '"'));
   }
-  assert.match(html, /NATUURKUNDE · PROEFVERSIE/);
+  assert.match(html, /Natuurkunde in 53 onderwerpen/);
   assert.match(html, /href="\/tools\/science-observatory\/"/);
 });
 
@@ -48,11 +48,14 @@ test('Nederlands en Engels tonen observatoria apart van ontwerptools', () => {
   const nl = load('nl/tools/index.html');
   const en = load('en/tools/index.html');
   const nav = load('assets/site-refresh.js');
-  assert.match(nl, /id="observatoria"/);
-  assert.match(nl, /id="ontwerpen"/);
-  assert.match(en, /Subject knowledge and interactive models/);
-  assert.match(nav, /Natuurkunde/);
-  assert.match(nav, /Physics \(Dutch\)/);
+  assert.match(nl, /href="#vak-natuurkunde"/);
+  assert.match(nl, /href="#vak-oceanografie"/);
+  assert.match(nl, /href="\/tools\/abyss\/"/);
+  assert.match(en, /href="#vak-oceanografie"/);
+  assert.match(en, /href="#vak-lessen-en-presentaties"/);
+  assert.match(nav, /\['Zelf aan de slag'/);
+  assert.match(nav, /\['Explore & create'/);
+  assert.doesNotMatch(nav, /Galactisch Observatorium|LLM Observatorium/);
 });
 
 test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek', () => {
@@ -62,16 +65,17 @@ test('Websitegenerator gebruikt de bronbestanden en aparte observatoriarubriek',
   assert.match(script, /"observatoria", "Observatoria"/);
 });
 
-test('Publieke menu bevat de afzonderlijke experimenten en behoudt alle adressen', () => {
+test('Compact hoofdmenu behoudt de volledige proefcatalogus in zoeken', () => {
   const source = load('scripts/prepare_ui.py');
-  assert.match(source, /'Vakinhoud'/);
-  assert.match(source, /'Subject knowledge'/);
-  assert.match(source, /'Onderzoek & publicaties'/);
+  assert.match(source, /'Zelf aan de slag'/);
+  assert.match(source, /'Explore & create'/);
+  assert.match(source, /'Artikelen'/);
   assert.match(source, /'Natuurkunde'/);
-  assert.match(source, /'Wiskunde A'/);
-  assert.match(source, /'Wiskunde B'/);
-  assert.match(source, /'Anatomie van de mens'/);
-  assert.match(source, /'Galactisch Observatorium'/);
+  assert.match(source, /maths\.append\(/);
+  assert.match(source, /Wiskunde ' \+ variant.upper/);
+  assert.match(source, /'Menselijk lichaam'/);
+  assert.match(source, /\/tools\/melkweg-lab\/#/);
+  assert.match(source, /populate_physics_topics/);
   assert.match(source, /'LLMscan'/);
   assert.match(source, /site_search_records/);
   const script = load('assets/site-navigation.js');

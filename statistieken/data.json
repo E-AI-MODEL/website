@@ -1,44 +1,14 @@
 {
   "schema": 1,
   "source": "Cloudflare Web Analytics (RUM)",
-  "updated_at": "2026-11-15T18:57:11+00:00",
+  "updated_at": "2026-11-21T07:23:14+00:00",
   "period": {
-    "from": "2026-10-17",
-    "through": "2026-11-15"
+    "from": "2026-10-23",
+    "through": "2026-11-21"
   },
-  "views": 50,
-  "visits": 30,
+  "views": 400,
+  "visits": 250,
   "daily": [
-    {
-      "date": "2026-10-17",
-      "views": 0,
-      "visits": 0
-    },
-    {
-      "date": "2026-10-18",
-      "views": 0,
-      "visits": 0
-    },
-    {
-      "date": "2026-10-19",
-      "views": 0,
-      "visits": 0
-    },
-    {
-      "date": "2026-10-20",
-      "views": 0,
-      "visits": 0
-    },
-    {
-      "date": "2026-10-21",
-      "views": 0,
-      "visits": 0
-    },
-    {
-      "date": "2026-10-22",
-      "views": 0,
-      "visits": 0
-    },
     {
       "date": "2026-10-23",
       "views": 0,
@@ -156,20 +126,75 @@
     },
     {
       "date": "2026-11-15",
-      "views": 30,
-      "visits": 10
+      "views": 90,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-16",
+      "views": 50,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-17",
+      "views": 60,
+      "visits": 60
+    },
+    {
+      "date": "2026-11-18",
+      "views": 50,
+      "visits": 30
+    },
+    {
+      "date": "2026-11-19",
+      "views": 90,
+      "visits": 80
+    },
+    {
+      "date": "2026-11-20",
+      "views": 40,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-21",
+      "views": 0,
+      "visits": 0
     }
   ],
   "pages": [
     {
-      "path": "/tools/science-observatory/",
-      "views": 10,
+      "path": "/nl/model-monitor/",
+      "views": 70,
+      "visits": 60
+    },
+    {
+      "path": "/",
+      "views": 60,
+      "visits": 60
+    },
+    {
+      "path": "/nl/tools/",
+      "views": 50,
       "visits": 0
     },
     {
       "path": "/nl/onderzoek/zhang-genai-taal/",
-      "views": 10,
+      "views": 20,
       "visits": 10
+    },
+    {
+      "path": "/tools/science-observatory/",
+      "views": 20,
+      "visits": 0
+    },
+    {
+      "path": "/nl/model/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/en/",
+      "views": 10,
+      "visits": 0
     },
     {
       "path": "/statistieken/",
@@ -182,15 +207,35 @@
       "visits": 0
     },
     {
-      "path": "/",
+      "path": "/nl/llmscan/",
       "views": 10,
       "visits": 10
+    },
+    {
+      "path": "/en/glossary/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/twee-pijlers/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/nl/",
+      "views": 10,
+      "visits": 10
+    },
+    {
+      "path": "/publicaties/ai-balans/",
+      "views": 10,
+      "visits": 0
     }
   ],
   "referrers": [
     {
       "host": "Sociale media",
-      "views": 10
+      "views": 20
     }
   ],
   "notes": [

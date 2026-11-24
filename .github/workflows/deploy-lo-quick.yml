@@ -1,20 +1,14 @@
 name: Publiceer alleen LO Aanvalslab
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'tools/lo-aanvalslab/index.html'
-      - 'tools/lo-aanvalslab/onderbouwing/index.html'
-      - '.github/workflows/deploy-lo-quick.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: lo-quick-publish
-  cancel-in-progress: true
+  group: theory7-production
+  cancel-in-progress: false
 
 jobs:
   publish-lo:

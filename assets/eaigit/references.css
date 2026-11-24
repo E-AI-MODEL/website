@@ -1,0 +1,163 @@
+/* EAIgit naslag en prompts. De wizard blijft de korte route. */
+.eg-ref-nav{display:flex;align-items:center;gap:19px}
+.eg-ref-nav a{font-size:13px;color:#526c75;text-decoration:none}
+.eg-ref-nav a:hover,.eg-ref-nav a:focus-visible{text-decoration:underline;text-underline-offset:4px}
+.eg-ref-shell{width:min(1100px,calc(100% - 40px));margin:39px auto 65px}
+.eg-ref-intro{max-width:760px;margin:0 0 32px}
+.eg-ref-eyebrow{font-size:11px;font-weight:720;letter-spacing:.13em;text-transform:uppercase;color:#63838a}
+.eg-ref-intro h1{font:500 clamp(2.05rem,4.7vw,3.35rem)/1.13 Georgia,serif;letter-spacing:-.035em;color:#153039;margin:9px 0 13px}
+.eg-ref-intro p{font-size:15px;line-height:1.73;color:#557079;max-width:690px;margin:0}
+.eg-tool-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:24px 0 36px}
+.eg-tool-cards article{min-width:0;background:#fff;border:1px solid #dfe9e9;border-radius:12px;padding:25px;box-shadow:0 5px 24px rgba(13,40,48,.025)}
+.eg-tool-icon{display:flex;align-items:center;justify-content:center;width:39px;height:39px;border:1px solid #b5e3e8;border-radius:9px;background:#eefafb;color:#187f9c;font-size:12px;font-weight:800;margin:0 0 17px}
+.eg-tool-cards h2{font:500 1.4rem/1.2 Georgia,serif;margin:0 0 13px;color:#16353e}
+.eg-tool-cards p{font-size:13px;line-height:1.7;color:#5d7378;margin:0 0 12px}
+.eg-tool-cards strong{color:#335963}
+.eg-tool-cards a,.eg-note a,.eg-help-links a{font-weight:620;font-size:13px;color:#196e91;text-decoration:underline;text-underline-offset:3px}
+.eg-tool-cards a{display:inline-block;margin-top:3px}
+.eg-decision{background:#fff;border:1px solid #dfe9e9;border-radius:12px;padding:27px;margin:0 0 38px}
+.eg-decision h2,.eg-ref-topics h2,.eg-next-panel h2,.eg-prompt-library h2{font:500 clamp(1.43rem,2.7vw,1.83rem)/1.2 Georgia,serif;letter-spacing:-.018em;color:#193842;margin:0 0 19px}
+.eg-decision-grid>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:25px;padding:11px 0;border-bottom:1px solid #ecf1f0;font-size:13px}
+.eg-decision-grid strong{color:#385961;font-weight:650}
+.eg-decision-grid span{color:#557179}
+.eg-note{font-size:12px;line-height:1.75;color:#667d81;margin:17px 0 0}
+.eg-section-heading{margin:0 0 19px}
+.eg-section-heading h2{margin-bottom:6px}
+.eg-section-heading p{font-size:13px;color:#667c80;margin:0}
+.eg-help-group{background:#fff;border:1px solid #dfe9e9;border-radius:12px;padding:24px 28px;margin:0 0 15px}
+.eg-help-group h3{font-size:15px;color:#2c5360;font-weight:690;margin:0 0 10px}
+.eg-help-topic{border-bottom:1px solid #e9eeee;padding:13px 0}
+.eg-help-topic:last-child{border-bottom:0}
+.eg-help-topic summary{cursor:pointer;color:#2e505b;font-size:14px;font-weight:590;line-height:1.5}
+.eg-help-topic summary:hover{color:#167395}
+.eg-help-content{padding:9px 0 10px 16px;max-width:790px}
+.eg-help-content p{color:#526a72;font-size:13px;line-height:1.7;margin:0 0 12px}
+.eg-help-content ol{margin:0;padding:0 0 0 20px}
+.eg-help-content li{font-size:13px;line-height:1.7;color:#526a72;margin-bottom:7px;padding-left:3px}
+.eg-help-links{display:flex;gap:13px;flex-wrap:wrap;margin-top:15px}
+.eg-next-panel{background:#eef6f5;border:1px solid #d7e9e6;border-radius:13px;padding:28px;margin:32px 0 13px}
+.eg-next-panel h2{margin-bottom:10px}
+.eg-next-panel p{font-size:13px;line-height:1.7;color:#587178;max-width:600px;margin:0 0 21px}
+.eg-ref-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.eg-ref-small{font-size:12px;color:#71868b}
+.eg-prompt-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;background:white;border:1px solid #dfe9e9;border-radius:12px;padding:19px;margin-bottom:32px}
+.eg-prompt-settings label{display:block;font-size:13px;color:#365760;font-weight:640;margin-bottom:8px}
+.eg-prompt-settings label span{color:#849397;font-size:11px;font-weight:400}
+.eg-prompt-filters{display:flex;flex-wrap:wrap;gap:8px;margin:19px 0 12px}
+.eg-filter{font:600 12px/1.4 system-ui,sans-serif;color:#41616a;cursor:pointer;padding:9px 13px;background:white;border:1px solid #d7e6e6;border-radius:7px}
+.eg-filter:hover{background:#eff8f8;border-color:#8abfc5}
+.eg-filter.active{background:#0a3749;color:#fff;border-color:#0a3749}
+.eg-filter:focus-visible,.eg-prompt-card:focus-visible{outline:2px solid #1884ab;outline-offset:3px}
+.eg-count{font-size:12px;color:#758a90;margin:0 0 17px}
+.eg-prompt-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.eg-prompt-card{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-height:173px;text-align:left;background:#fff;border:1px solid #dce8e7;border-radius:11px;padding:20px;cursor:pointer;color:#244954}
+.eg-prompt-card:hover,.eg-prompt-card.selected{border-color:#66aab5;background:#fafdfe}
+.eg-prompt-phase{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#65858b;font-weight:730}
+.eg-prompt-card strong{font-size:14px;font-weight:690;line-height:1.4;color:#23414b}
+.eg-prompt-for{font-size:12px;color:#5b757b;line-height:1.6;flex:1}
+.eg-prompt-next{font-size:12px;color:#18748d;font-weight:670}
+.eg-prompt-choice{scroll-margin-top:30px;background:#fff;border:1px solid #b7d5d8;border-radius:13px;padding:25px;margin:29px 0}
+.eg-prompt-choice-head{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.eg-prompt-choice h2{font:500 clamp(1.4rem,2.6vw,2rem)/1.17 Georgia,serif;margin:12px 0 8px}
+.eg-muted{font-size:13px;color:#6d8185;line-height:1.6}
+.eg-prompt-choice label{display:block;font-size:12px;font-weight:670;color:#385965;margin:21px 0 9px}
+.eg-prompt-text{width:100%;font:12.5px/1.72 ui-monospace,SFMono-Regular,Consolas,monospace;min-height:260px;resize:vertical}
+.eg-prompt-choice .eg-ref-actions{margin-top:14px}
+@media(max-width:890px){.eg-prompt-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){
+ .eg-ref-shell{width:calc(100% - 24px);margin:20px auto 40px}
+ .eg-ref-nav{gap:11px}
+ .eg-ref-nav a{font-size:11px}
+ .eg-tool-cards{grid-template-columns:1fr;gap:9px}
+ .eg-tool-cards article{padding:19px}
+ .eg-decision,.eg-help-group,.eg-next-panel{padding:21px 19px}
+ .eg-decision-grid>div{grid-template-columns:1fr;gap:4px}
+ .eg-prompt-settings{grid-template-columns:1fr;padding:15px}
+ .eg-prompt-list{grid-template-columns:1fr}
+ .eg-prompt-card{min-height:0}
+ .eg-prompt-choice{padding:19px 15px}
+ .eg-ref-actions>*{flex:1 1 auto}
+}
+
+
+/* EAIgit-hulp krijgt dezelfde vormgeving als de wizard en de opdrachtenpagina.
+   Geen invloed op de afzonderlijke promptwerkruimte. */
+body.eg-reference-page:not(.eg-prompt-dashboard){
+ background:#f7f9f6;color:#263f35;
+ font:15px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-shell{
+ width:min(1060px,calc(100% - 40px));margin:36px auto 65px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-eyebrow{
+ color:#27836f;letter-spacing:.085em;font-weight:760;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-intro h1{
+ font:770 clamp(31px,4.6vw,43px)/1.14 system-ui,-apple-system,"Segoe UI",sans-serif;
+ letter-spacing:-.04em;color:#263e34;margin:11px 0 13px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-intro p{
+ font-size:15px;color:#5b7565;line-height:1.67;max-width:61ch;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards article,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-group,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-decision{
+ border:1px solid #dce8df;border-radius:9px;box-shadow:none;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards article{
+ padding:24px;background:#fff;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-icon{
+ width:36px;height:36px;background:#eff6f1;
+ border-color:#c9e1d3;color:#217b66;border-radius:7px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards h2{
+ font:740 19px/1.25 system-ui,-apple-system,"Segoe UI",sans-serif;
+ letter-spacing:-.025em;color:#2c4639;margin:0 0 10px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-decision h2,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-topics h2,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-next-panel h2{
+ font:750 clamp(22px,2.5vw,27px)/1.25 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:#2b4539;letter-spacing:-.03em;margin-bottom:16px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards p,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-decision-grid,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-content p,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-content li{
+ color:#536d5e;font-size:13px;line-height:1.68;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards a,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-note a,
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-links a{
+ color:#166f5d;text-underline-offset:3px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-group h3{
+ color:#2a4e3f;font-size:15px;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-topic summary{
+ color:#305544;font-weight:620;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-help-topic summary:hover{
+ color:#0f7968;
+}
+.eg-reference-page:not(.eg-prompt-dashboard) .eg-next-panel{
+ background:#eff7f1;border:1px solid #d8e8db;border-radius:9px;
+}
+@media(max-width:700px){
+ .eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-shell{
+  width:calc(100% - 24px);margin:22px auto 40px;
+ }
+ .eg-reference-page:not(.eg-prompt-dashboard) .eg-ref-intro h1{
+  font-size:30px;line-height:1.14;
+ }
+ .eg-reference-page:not(.eg-prompt-dashboard) .eg-tool-cards article{padding:19px}
+}
+
+/* Extra koppelhandleiding staat standaard ingeklapt en vraagt geen invoer. */
+.eg-connection-guide{margin-top:-20px;margin-bottom:38px}
+.eg-connection-guide>summary{cursor:pointer;color:#2e505b;font-size:14px;font-weight:650;line-height:1.55}
+.eg-connection-guide>summary:hover{color:#167395}
+.eg-connection-guide[open]>summary{margin-bottom:14px}
+.eg-connection-guide .eg-help-content{padding:0;max-width:830px}
+.eg-connection-guide .eg-help-content strong{color:#335963}

@@ -113,6 +113,14 @@ assert.equal(await statusOf(req('/api/uploads')), 401);
 assert.equal(await statusOf(req('/view/' + itemId)), 401);
 assert.equal(await statusOf(req('/api/admin/uploads/' + itemId, 'DELETE', { origin: BASE })), 401);
 assert.equal(uploads.get(itemId).status, 'published');
+for (const path of ['/api/admin/overview', '/api/admin/traffic', '/api/admin/health', '/api/admin/deploy', '/api/admin/files', '/api/admin/audit']) {
+  assert.equal(await statusOf(req(path)), 401, path);
+}
+assert.equal(await statusOf(req('/api/admin/uploads/' + itemId + '/restore', 'POST', { origin: BASE })), 401);
+assert.equal(await statusOf(req('/api/admin/sessions/revoke', 'POST', { origin: BASE })), 401);
+assert.equal(uploads.get(itemId).status, 'published');
+assert.equal(auditActions.length, 0);
+
 let response = await worker.fetch(req('/'), env);
 assert.equal(response.status, 200);
 assert.match(await response.text(), /Inloggen bij EAI Beheer/);
@@ -138,6 +146,14 @@ for (const token of ['Secure', 'HttpOnly', 'SameSite=Strict', 'Path=/']) {
 }
 const cookie = setCookie.split(';')[0];
 assert.equal(sessions.size, 1);
+const savedSession = [...sessions.values()][0];
+const originalExpiry = savedSession.expires_at;
+savedSession.expires_at = 0;
+assert.equal(await statusOf(req('/api/uploads', 'GET', { cookie })), 401);
+assert.equal(await statusOf(req('/api/admin/uploads/' + itemId, 'DELETE', { cookie, origin: BASE })), 401);
+assert.equal(uploads.get(itemId).status, 'published');
+savedSession.expires_at = originalExpiry;
+
 assert.equal(await statusOf(req('/api/uploads', 'GET', { cookie })), 200);
 assert.equal(await statusOf(req('/view/' + itemId, 'GET', { cookie })), 200);
 response = await worker.fetch(req('/', 'GET', { cookie }), env);

@@ -1,0 +1,61 @@
+/* Emmauscollege ICT-scan: fixed scenes, restrained movement and robust controls. */
+.workspace.monitor-layout{color-scheme:light;--scene-ease:cubic-bezier(.22,.74,.22,1)}
+.workspace.monitor-layout :is(input,select,textarea,button){font-family:inherit}
+.workspace.monitor-layout .main-shell{background:linear-gradient(125deg,#f9fbfd,#f5f7fa 75%,#fafbfd)}
+.workspace.monitor-layout .main-content{display:flex;flex-direction:column;overflow:hidden;scroll-behavior:auto;padding-bottom:12px;background:transparent}
+.workspace.monitor-layout .main-content>.page-head{flex:0 0 auto;border-bottom:1px solid #e7ebf0;padding-bottom:13px;margin-bottom:9px}
+.workspace.monitor-layout .main-content>.view:not([hidden]){flex:1 1 0;min-height:0;max-width:none;width:100%;overflow:hidden;display:flex;flex-direction:column;gap:0;animation:sceneViewIn 300ms var(--scene-ease) both}
+.workspace.monitor-layout #emptyState:not([hidden]){overflow-y:auto;flex:1;min-height:0}
+.workspace.monitor-layout .scene-navigation{align-self:flex-start;flex:0 0 auto;display:flex;align-items:center;gap:3px;max-width:100%;padding:5px;margin:5px 0 12px;overflow-x:auto;scrollbar-width:none;border:1px solid #e6eaf0;border-radius:12px;background:#ffffffdb;box-shadow:0 5px 22px #162c4b0a;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.workspace.monitor-layout .scene-navigation::-webkit-scrollbar{display:none}
+.workspace.monitor-layout .scene-tab{flex:0 0 auto;min-height:35px;border:1px solid transparent;border-radius:9px;background:transparent;padding:8px 17px;color:#64748a;font-size:11px;font-weight:660;white-space:nowrap;transition:background .25s ease,color .25s ease,box-shadow .25s ease,border-color .25s ease}
+.workspace.monitor-layout .scene-tab:hover{background:#f4f6fa;color:#2b3e68}
+.workspace.monitor-layout .scene-tab.active{background:#fff;color:#283a66;border-color:#e2e7ef;box-shadow:0 2px 10px #172b4a14,inset 0 -2px 0 #de9526}
+.workspace.monitor-layout .scene-frame{flex:1 1 0;min-height:0;min-width:0;overflow:auto;scroll-behavior:auto;overscroll-behavior:contain;scrollbar-color:#c5cfdd transparent;scrollbar-width:thin;padding:0 4px 20px 0}
+.workspace.monitor-layout .scene-panel:not([hidden]){display:grid;gap:14px;align-content:start;min-width:0}
+.workspace.monitor-layout .scene-panel>*{min-width:0}
+.workspace.monitor-layout .scene-panel.scene-entering{animation:sceneEnter 380ms var(--scene-ease) both}
+.workspace.monitor-layout .scene-panel.scene-leaving{animation:sceneExit 110ms ease-in both;pointer-events:none}
+.workspace.monitor-layout .scene-panel .list-tools{position:sticky;top:0;z-index:5;margin-top:-1px;padding:9px 0;background:#f7f9fced;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.workspace.monitor-layout .scene-panel .panel,.workspace.monitor-layout .scene-panel .kpi,.workspace.monitor-layout .scene-panel .data-card{box-shadow:0 6px 30px #1e365112;transition:transform .32s var(--scene-ease),box-shadow .32s ease,border-color .32s ease}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){.workspace.monitor-layout .scene-panel .panel:hover{transform:translateY(-1px);box-shadow:0 10px 34px #1e365119;border-color:#d5dfe9}}
+.workspace.monitor-layout .topbar.monitor-topbar{box-shadow:0 2px 18px #152b4909}
+.workspace.monitor-layout .github-sync-panel{min-width:0}
+.workspace.monitor-layout .github-sync-panel .github-sync-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding-top:8px}
+.workspace.monitor-layout .github-sync-panel .github-sync-grid label{display:flex;flex-direction:column;align-items:stretch;gap:7px;min-width:0;color:#5b6c86;font-size:11px;font-weight:650}
+.workspace.monitor-layout .github-sync-panel .github-sync-grid input{display:block;width:100%;min-width:0;height:40px;padding:10px 12px;color:#263956;background:#f9fafc;border:1px solid #d8e0ea;border-radius:8px;font-size:12px;box-shadow:none;appearance:none;-webkit-appearance:none;color-scheme:light}
+.workspace.monitor-layout .github-sync-panel .github-sync-grid input:focus{background:#fff;outline:2px solid #e2a646;outline-offset:1px}
+.workspace.monitor-layout .github-sync-toolbar{align-items:flex-end;gap:15px}
+.workspace.monitor-layout .github-sync-status{border-radius:8px;font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+.workspace.monitor-layout .github-sync-status[data-mode="error"]{background:#fff2ee;border:1px solid #f0c9bd;color:#974a35;padding:12px 14px}
+.workspace.monitor-layout .github-sync-status[data-mode="success"]{background:#edf7f3;border:1px solid #c6e2d6;color:#346c58;padding:12px 14px}
+.workspace.monitor-layout .github-sync-status[data-mode="warning"]{background:#fff9ed;border:1px solid #ebd9b8;color:#805f29;padding:12px 14px}
+.workspace.monitor-layout .rail-button.active{box-shadow:0 3px 14px #101c3b26}
+.workspace.monitor-layout .scene-panel .item-card:hover{border-color:#d5dfe9;box-shadow:0 4px 20px #1e36510d}
+.workspace.monitor-layout .empty-state{max-width:880px;margin:auto;border-radius:15px}
+.workspace.monitor-layout .scene-panel .report-picker{margin-top:0}
+.workspace.monitor-layout .scene-panel .report-workbench-actions{flex-wrap:wrap}
+/* Popover is moved to body in order not to be clipped by the fixed icon rail. */
+body>.rail-drawer:not([hidden]){position:fixed;left:74px;right:auto;bottom:14px;top:auto;z-index:350;width:min(355px,calc(100vw - 92px));max-height:calc(100dvh - 28px);overflow-y:auto;overflow-x:hidden;color-scheme:light;background:#ffffffed;border:1px solid #e4e9f1;border-radius:14px;box-shadow:0 23px 78px #172c4a36;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+body>.rail-drawer .global-search-wrap input{color-scheme:light;color:#233957;background:#f5f7fa}
+body>.rail-drawer .global-results{position:relative;left:auto;right:auto;top:3px;max-height:28dvh;box-shadow:none}
+body>.rail-drawer .rail-drawer-section{min-width:0}
+@keyframes sceneViewIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sceneEnter{from{opacity:0;filter:blur(3px);transform:translateY(9px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
+@keyframes sceneExit{from{opacity:1;filter:blur(0)}to{opacity:0;filter:blur(2px)}}
+@media(max-width:920px){.workspace.monitor-layout .github-sync-panel .github-sync-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){
+ .workspace.monitor-layout .main-content{padding:13px 11px 8px}
+ .workspace.monitor-layout .main-content>.page-head{padding-bottom:9px;margin-bottom:6px}
+ .workspace.monitor-layout .main-content>.page-head .page-intro{display:none}
+ .workspace.monitor-layout .scene-navigation{align-self:stretch;padding:4px;margin:4px 0 10px;gap:2px}
+ .workspace.monitor-layout .scene-tab{padding:7px 12px;min-height:33px;font-size:10px}
+ .workspace.monitor-layout .scene-frame{padding-right:1px}
+ .workspace.monitor-layout .scene-panel:not([hidden]){gap:10px}
+ .workspace.monitor-layout .github-sync-panel .github-sync-grid{grid-template-columns:1fr;gap:12px}
+ .workspace.monitor-layout .github-sync-toolbar{align-items:stretch;flex-direction:column}
+ body>.rail-drawer:not([hidden]){left:9px;right:9px;width:auto;bottom:68px;max-height:calc(100dvh - 88px);border-radius:14px}
+}
+@media(max-height:660px){.workspace.monitor-layout .main-content>.page-head .page-intro{display:none}.workspace.monitor-layout .scene-navigation{margin-bottom:8px}}
+@media(prefers-reduced-motion:reduce){.workspace.monitor-layout .main-content>.view:not([hidden]),.workspace.monitor-layout .scene-panel.scene-entering,.workspace.monitor-layout .scene-panel.scene-leaving{animation:none!important}.workspace.monitor-layout .scene-tab,.workspace.monitor-layout .scene-panel .panel{transition:none!important}}
+@media print{.workspace.monitor-layout .scene-frame{overflow:visible!important}}

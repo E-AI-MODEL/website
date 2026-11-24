@@ -6,7 +6,6 @@ on:
       - 'content/science-observatory/labs/schuine-worp.html'
       - 'content/science-observatory/labs/natuurkunde.html'
       - 'scripts/test_schuine_worp_studio.mjs'
-      - 'scripts/build_site.py'
       - '.github/workflows/science-studio-webkit.yml'
   push:
     branches: [main]

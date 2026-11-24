@@ -14,10 +14,22 @@ from bs4 import BeautifulSoup
 from editorial_ui import apply_editorial
 from archive_review import review as review_archive
 from home_model import materialize as materialize_home_model
+from home_continuity import enhance as enhance_home_continuity, ROUTES as CONTINUITY_PATHS
 
-ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-redesign.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'home-model.js', 'site-story-cards.css', 'site-story-cards.js')
-SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'leif', 'site-build'}
+ASSETS = ('site.css', 'site-refresh.js', 'site-ui.css', 'site-responsive.css', 'site-redesign.css', 'site-editorial.css', 'site-archive.css', 'site-navigation.js', 'home-model.css', 'home-model.js', 'site-story-cards.css', 'site-story-cards.js', 'site-dashboard-cards.css', 'site-dashboard-cards.js', 'site-header.css')
+SKIP = {'.git', '.github', 'content', 'scripts', 'tests', 'assets', 'handoff', 'houseoftalents', 'onderwijsin', 'leif', 'topo', 'site-build'}
 ALIASES = {'/': '/nl/', '/tools/': '/nl/tools/', '/publicaties/': '/nl/publicaties/', '/over/': '/nl/over/', '/onderwijs/': '/nl/onderwijs/', '/toepassingen/': '/nl/toepassingen/', '/kennis/': '/nl/onderzoek/', '/model-monitor/': '/nl/model-monitor/', '/llmscan/': '/nl/llmscan/'}
+# These are former index pages, not the many child routes underneath them.
+# Keep the root homepage and independent monitor/tools unchanged.
+LEGACY_HUB_REDIRECTS = {
+    '/onderwijs/': '/nl/onderwijs/',
+    '/kennis/': '/nl/onderzoek/',
+    '/publicaties/': '/nl/publicaties/',
+    '/toepassingen/': '/nl/toepassingen/',
+    '/over/': '/nl/over/',
+    '/tools/': '/nl/tools/',
+}
+
 # Editorial-only enhancement. Not loaded in interactive labs or article bodies.
 STORY_PATHS = {
     '/nl/onderwijs/', '/en/education/',
@@ -26,7 +38,11 @@ STORY_PATHS = {
     '/nl/toepassingen/', '/en/applications/',
     '/nl/tools/', '/en/tools/',
     '/nl/over/', '/en/about/',
+    '/nl/blog/', '/nl/blog/wat-ons-werk-ons-werk-maakt/',
+    '/nl/onderzoek/leermiddelen/', '/en/research/teaching-tools/',
+    '/nl/onderzoek/zhang-genai-taal/', '/en/research/zhang-genai-language/',
 }
+DASH_CARD_PATHS = {'/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/publicaties/', '/en/publications/'}
 INDEX_PATHS = {'/nl/', '/en/', '/nl/model/', '/en/model/', '/nl/tools/', '/en/tools/', '/nl/onderwijs/', '/en/education/', '/nl/onderzoek/', '/en/research/', '/nl/toepassingen/', '/en/applications/', '/nl/over/', '/en/about/'}
 
 def canonical(path: str) -> str:
@@ -36,22 +52,31 @@ def canonical(path: str) -> str:
 
 @lru_cache(maxsize=2)
 def groups(en: bool):
-    """Publieke hoofdroutes, gescheiden van alle onderliggende proeven."""
+    """One short public route per purpose; deep links stay in search and catalogs."""
     if en:
         return [
-            ('Understand EAI', [('The EAI model', '/en/model/'), ('EAI Dictionary', '/en/glossary/'), ('Applications', '/en/applications/'), ('Research and evidence', '/en/research/')]),
-            ('Teaching', [('Lessons and workforms', '/en/education/'), ('All workforms', '/werkvormen/')]),
-            ('Research & publications', [('All publications', '/en/publications/'), ('Research and sources', '/en/research/')]),
-            ('Subject knowledge', [('All subject areas', '/tools/science-observatory/'), ('Physics', '/tools/science-observatory/labs/natuurkunde/'), ('Mathematics A', '/tools/science-observatory/labs/wiskunde-a/'), ('Mathematics B', '/tools/science-observatory/labs/wiskunde-b/'), ('Human anatomy', '/tools/anatomie/'), ('Galactic Observatory', '/tools/science-observatory/labs/melkweg/'), ('LLM Observatory', '/tools/llm-observatorium/'), ('Sport and movement', '/tools/sport-en-bewegen/')]),
-            ('Tools', [('All tools', '/en/tools/'), ('Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Studio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('Upload HTML', '/tools/html-galerij/'), ('Process to prompt', '/tools/van-proces-naar-prompt/'), ('Model Monitor', '/en/model-monitor/'), ('LLMscan', '/en/llmscan/')]),
+            ('The model', [('Explore the EAI model', '/en/model/'), ('Glossary', '/en/glossary/'),
+                           ('The two pillars', '/twee-pijlers/')]),
+            ('Education', [('Begin with a learning question', '/en/education/'),
+                           ('EAI workforms', '/werkvormen/'), ('Language activities (Dutch)', '/taalwerkvormen/')]),
+            ('Research', [('Research and evidence', '/en/research/'), ('Source register', '/bronnen/'),
+                          ('Teaching tools research', '/en/research/teaching-tools/')]),
+            ('Articles', [('Publications and media', '/en/publications/'),
+                          ('The Act of Learning', '/publicaties/the-act-of-learning/'),
+                          ('Research reviews', '/en/research/zhang-genai-language/')]),
+            ('Explore & create', [('Explore and create', '/en/tools/')]),
             ('About EAI', [('About EAI', '/en/about/'), ('Site insights', '/en/insights/')]),
         ]
     return [
-        ('EAI begrijpen', [('Het EAI-model', '/nl/model/'), ('Begrippen en definities', '/nl/begrippen/'), ('Toepassingen', '/nl/toepassingen/'), ('Kennis en onderbouwing', '/kennis/')]),
-        ('Lespraktijk', [('Lessen en werkvormen', '/nl/onderwijs/'), ('Alle werkvormen', '/werkvormen/')]),
-        ('Onderzoek & publicaties', [('Alle publicaties', '/nl/publicaties/'), ('Onderzoek en bronnen', '/nl/onderzoek/'), ('Blog', '/nl/blog/'), ('Bronnenregister', '/bronnen/')]),
-        ('Vakinhoud', [('Alle vakgebieden', '/tools/science-observatory/'), ('Natuurkunde', '/tools/science-observatory/labs/natuurkunde/'), ('Wiskunde A', '/tools/science-observatory/labs/wiskunde-a/'), ('Wiskunde B', '/tools/science-observatory/labs/wiskunde-b/'), ('Anatomie van de mens', '/tools/anatomie/'), ('Galactisch Observatorium', '/tools/science-observatory/labs/melkweg/'), ('Hoe werkt AI?', '/tools/llm-observatorium/'), ('Sport en bewegen', '/tools/sport-en-bewegen/')]),
-        ('Hulpmiddelen', [('Alle hulpmiddelen', '/nl/tools/'), ('EAI Prompt Framework', '/tools/prompt-framework/'), ('WiHTML Docentstudio', '/tools/wihtml/'), ('EAIstudio', '/tools/eaistudio/'), ('EAImesh', '/tools/eaimesh/'), ('HTML uploaden', '/tools/html-galerij/'), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/'), ('AI Model Monitor', '/nl/model-monitor/'), ('LLMscan', '/nl/llmscan/')]),
+        ('Het model', [('Het EAI-model', '/nl/model/'), ('Begrippen en definities', '/nl/begrippen/'),
+                       ('Twee pijlers', '/twee-pijlers/')]),
+        ('Onderwijs', [('Begin bij je lesvraag', '/nl/onderwijs/'), ('EAI Toolbox', '/werkvormen/'),
+                        ('TAALwerkvormen', '/taalwerkvormen/')]),
+        ('Onderzoek', [('Onderzoek en onderbouwing', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/'),
+                        ('Onderzoek leermiddelen', '/nl/onderzoek/leermiddelen/')]),
+        ('Artikelen', [('Artikelen en publicaties', '/nl/publicaties/'), ('Blog', '/nl/blog/'),
+                       ('De vraag die we vergeten', '/publicaties/de-vraag-die-we-vergeten/')]),
+        ('Zelf aan de slag', [('Kies een vakgebied of hulpmiddel', '/nl/tools/')]),
         ('Over EAI', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
 
@@ -114,10 +139,11 @@ def experiment_sections(en: bool):
     return [
         ('Physics' if en else 'Natuurkunde', [(name, links) for name, links in physics_groups.items()]),
         ('Mathematics' if en else 'Wiskunde', maths),
-        ('Human anatomy' if en else 'Menselijk lichaam', [('Anatomy and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', 'Hartslaglab hartslag hartkleppen bloedstroom hartcyclus')])]),
-        ('Space and astronomy' if en else 'Heelal en ruimtevaart', [('Original Observatory' if en else 'Oorspronkelijk observatorium', modes), ('Guided discovery' if en else 'Ontdekken met uitleg', [('Galactic Observatory: guided' if en else 'Melkweg met uitleg', '/tools/melkweg-lab/', '')] + guided_modes), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
-        ('How AI works' if en else 'Hoe werkt AI?', [('AI' if en else 'AI onderzoeken', [('LLM Observatory' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')] + llm_modes)]),
-        ('Sport and tactics' if en else 'Sport en tactiek', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van sportproeven', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
+        ('Human body' if en else 'Menselijk lichaam', [('Body and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', 'hartslag hartkleppen bloedstroom hartcyclus')])]),
+        ('Space' if en else 'Heelal', [('The Milky Way' if en else 'De Melkweg', guided_modes), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
+        ('Oceanography' if en else 'Oceanografie', [('Oceanography' if en else 'Oceanografie', [('Oceanography (Dutch)' if en else 'Oceanografie', '/tools/abyss/', 'Zeebodem, aardbevingen, plaattektoniek, stromingen en meetgegevens')])]),
+        ('Sport and movement' if en else 'Sport en bewegen', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van aanvallen en verdedigen', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
+        ('AI', [('Language models' if en else 'Taalmodellen', [('How does a language model work?' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')] + llm_modes)]),
     ]
 
 
@@ -244,6 +270,14 @@ def menu_topic_html(en: bool) -> str:
         'Human anatomy': 'Explore the body in 3D and a beating heart.',
         'Heelal en ruimtevaart': 'Verander banen en onderzoek de Melkweg en planeten.',
         'Space and astronomy': 'Explore the Milky Way, orbits and planets.',
+        'Heelal': 'De Melkweg, sterren en satellietbanen.',
+        'Space': 'The Milky Way, stars and satellite orbits.',
+        'Oceanografie': 'Zeebodem, aardbevingen, plaattektoniek en stromingen.',
+        'Oceanography': 'Seafloor, earthquakes, plate tectonics and currents.',
+        'Sport en bewegen': 'Aanvallen, verdedigen en opstellingen.',
+        'Sport and movement': 'Attack, defence and lineups.',
+        'AI': 'Onderzoek taalmodellen en de werking van AI.',
+        'Human body': 'Explore the body in 3D and a beating heart.',
         'Hoe werkt AI?': 'Volg tokens, aandacht en tekstgeneratie in een taalmodel.',
         'How AI works': 'Explore tokens, attention and text generation.',
         'Sport en tactiek': 'Verander opstellingen en onderzoek keuzes in het spel.',
@@ -261,10 +295,40 @@ def menu_topic_html(en: bool) -> str:
     return '<a class="eai-site-overview" href="/tools/science-observatory/">' + ('Explore all subjects' if en else 'Alle vakgebieden') + '</a>' + ''.join(blocks)
 
 
+
+def populate_physics_topics(soup: BeautifulSoup, en: bool) -> None:
+    """Render links from the tested 53-item model catalog; no second manual list."""
+    holder = soup.select_one('[data-eai-physics-list]')
+    if holder is None:
+        return
+    for title, links in experiment_sections(en)[0][1]:
+        section = soup.new_tag('section', attrs={'class': 'eai-explore-physics-group'})
+        heading = soup.new_tag('h3')
+        heading.string = title
+        section.append(heading)
+        listing = soup.new_tag('ul')
+        for label, url, _ in links:
+            item = soup.new_tag('li')
+            anchor = soup.new_tag('a', href=url)
+            anchor.string = label
+            item.append(anchor)
+            listing.append(item)
+        section.append(listing)
+        holder.append(section)
+
+
 def site_search_records(root: Path) -> list:
     """Build a public, local search index from published paths and real module IDs."""
     records = {}
+    register = json.loads((Path(__file__).resolve().parent.parent / 'catalog' / 'website-register.json').read_text(encoding='utf-8'))
+    titles = {page['url']: page['public_title_nl'] for page in register['pages'] if page.get('public_title_nl')}
+    excluded = {page['url'] for page in register['pages'] if page.get('search_scope') in ('via_verwijzing', 'intern', 'niet_indexeren')}
     def add(title, url, category, description=''):
+        if url.split('#', 1)[0] in excluded:
+            return
+        title = titles.get(url, title)
+        if url in LEGACY_HUB_REDIRECTS:
+            return
         if not title or not url.startswith('/'):
             return
         description = str(description or '').strip()[:240]
@@ -280,6 +344,13 @@ def site_search_records(root: Path) -> list:
                     current['category'] = category
             return
         records[url] = {'title': str(title).strip(), 'url': url, 'category': category, 'description': description}
+    # Only explicitly approved public page titles are added from the register.
+    # All other internal entries remain in their original application or library.
+    taxonomy = json.loads((Path(__file__).resolve().parent.parent / 'catalog' / 'taxonomie.json').read_text(encoding='utf-8'))
+    family_names = {family['id']: family['nl'] for family in taxonomy['families']}
+    for page in register['pages']:
+        if page.get('public_title_nl') and page.get('search_scope') == 'algemeen':
+            add(page['public_title_nl'], page['url'], family_names.get(page['family'], 'Hulpmiddelen'))
     for en in (False, True):
         for name, links in groups(en):
             for label, url in links:
@@ -342,29 +413,25 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         target = target or '/' + language + '/'
         current = ' aria-current="true"' if language == ('en' if en else 'nl') else ''
         language_links.append(f'<a href="{html.escape(target, quote=True)}" lang="{language}" hreflang="{language}"{current} data-preserve-hash>{language.upper()}</a>')
+    # Compact menu: the full 57-workform and 53-physics catalogs are reachable
+    # through their own pages and site-wide search, not duplicated in the menu.
     menu = []
     for title, entries in groups(en):
-        active = any((path_here == canonical(target) or path_here.startswith(canonical(target))) and canonical(target) not in ('/nl/', '/en/') for _, target in entries)
-        active_cls = ' is-current' if active else ''
-        model_group = title in ('Vakinhoud', 'Subject knowledge')
-        if model_group:
-            links = menu_topic_html(en)
-        elif title in ('Tools', 'Hulpmiddelen'):
-            links = menu_named_sections(en, tool_sections(en), ('All tools' if en else 'Alle hulpmiddelen', '/en/tools/' if en else '/nl/tools/'))
-        elif title in ('Teaching', 'Lespraktijk'):
-            links = menu_named_sections(en, education_sections(en), ('All education resources' if en else 'Alle onderwijsactiviteiten', '/en/education/' if en else '/nl/onderwijs/'))
-        elif title in ('Onderzoek & publicaties', 'Research & publications'):
-            links = menu_named_sections(en, reading_sections(en), ('All research and publications' if en else 'Alle onderzoeksdossiers en publicaties', '/en/publications/' if en else '/nl/publicaties/'))
-        else:
-            links = ''.join(f'<a href="{html.escape(target, quote=True)}"' + (' aria-current="page"' if path_here == canonical(target) else '') + f'>{html.escape(label)}</a>' for label, target in entries)
-            if title in ('EAI begrijpen', 'Understand EAI'):
-                purpose = 'Wat betekent het model, en welke woorden gebruiken we precies?' if not en else 'What does the model mean, and which terms do we use?'
-                links = '<p class="eai-site-topic-intro">' + html.escape(purpose) + '</p>' + links
-        menu.append(f'<details class="eai-site-group{active_cls}" name="eai-navigation-theme"><summary>{html.escape(title)}</summary><div class="eai-site-group-links{" eai-site-model-links" if model_group else ""}">{links}</div></details>')
+        active = any(path_here == canonical(target) or
+                     (canonical(target) not in ('/nl/', '/en/') and path_here.startswith(canonical(target)))
+                     for _, target in entries)
+        links = ''.join(
+            f'<a href="{html.escape(target, quote=True)}"' +
+            (' aria-current="page"' if path_here == canonical(target) else '') +
+            f'>{html.escape(label)}</a>'
+            for label, target in entries
+        )
+        menu.append(f'<details class="eai-site-group{" is-current" if active else ""}" name="eai-navigation-theme">'
+                    f'<summary>{html.escape(title)}</summary><div class="eai-site-group-links">{links}</div></details>')
     primary = []
     for title, entries in groups(en):
         # About/Over blijft beschikbaar in Meer en in de voettekst.
-        # Zo houdt de brede navigatie zes korte, inhoudelijke bestemmingen.
+        # De vijf directe routes blijven kort; achtergrondinformatie staat in Meer.
         if title in ('About EAI', 'Over EAI'):
             continue
         target = entries[0][1]
@@ -372,19 +439,26 @@ def navigation(soup: BeautifulSoup, path: str, en: bool) -> str:
         primary.append(f'<a href="{html.escape(target, quote=True)}"{current}>{html.escape(title)}</a>')
     nav_label = 'Main navigation' if en else 'Hoofdnavigatie'
     lang_label = 'Choose language' if en else 'Kies taal'
-    menu_heading = 'Navigate' if en else 'Ga naar'
-    more_label = 'More' if en else 'Meer'
+    more_label = 'Menu'
+    home_label = 'EAI home' if en else 'EAI startpagina'
     upload_label = "Upload HTML" if en else "HTML uploaden"
     upload_button = ('<a class="eai-site-upload" href="/tools/html-galerij/" aria-label="' + upload_label + '">'
                      '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>'
                      '<span>' + upload_label + '</span></a>')
-    search_label = 'Search by subject or title' if en else 'Zoek op onderwerp of naam'
+    search_trigger = ('<button type="button" class="eai-site-search-trigger"'
+                      f' aria-label="{("Search" if en else "Zoeken")}"'
+                      ' aria-controls="eai-site-menu-panel" aria-expanded="false">'
+                      '<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none"'
+                      ' stroke="currentColor" stroke-width="1.7" stroke-linecap="round">'
+                      '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.6 15.6 5 5"/></svg>'
+                      '</button>')
+    search_label = 'Search this site' if en else 'Zoek op de website'
     result_label = 'Search results' if en else 'Zoekresultaten'
-    search_box = (f'<div class="eai-site-search"><label for="eai-site-search-input">{search_label}</label>'
+    search_box = (f'<div class="eai-site-search" hidden><label for="eai-site-search-input">{search_label}</label>'
                   f'<input id="eai-site-search-input" type="search" autocomplete="off" enterkeyhint="search"'
-                  f' placeholder="{("e.g. feedback or gravity" if en else "Bijv. feedback of zwaartekracht")}" aria-controls="eai-site-search-results"></div>'
+                  f' placeholder="{("Search articles, tools and terms" if en else "Zoek artikelen, tools en begrippen")}" aria-controls="eai-site-search-results"></div>'
                   f'<div class="eai-site-search-results" id="eai-site-search-results" aria-label="{result_label}" hidden></div>')
-    return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="EAI home"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls">{upload_button}<div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel">{search_box}<div class="eai-site-menu-sections"><span class="eai-menu-heading">{menu_heading}</span>{"".join(menu)}</div></div></details></div></nav></header>'
+    return f'<header class="eai-masthead" data-eai-static-nav><nav class="eai-site-nav" aria-label="{nav_label}"><a class="eai-site-brand" href="{home}" aria-label="{home_label}"><img src="/assets/eai-logo.svg?v=20261117" width="32" height="32" alt=""><span class="eai-site-brand-name">EAI<span class="eai-site-brand-detail">model</span></span></a><div class="eai-site-primary" aria-label="{nav_label}">{"".join(primary)}</div><div class="eai-site-controls">{upload_button}{search_trigger}<div class="eai-site-language" role="group" aria-label="{lang_label}">{"".join(language_links)}</div><details class="eai-site-menu"><summary aria-controls="eai-site-menu-panel" aria-label="{more_label}"><svg aria-hidden="true" viewBox="0 0 20 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 3h18M1 9h18M1 15h18"/></svg><span>{more_label}</span></summary><div class="eai-site-menu-panel" id="eai-site-menu-panel">{search_box}<div class="eai-site-menu-sections">{"".join(menu)}</div></div></details></div></nav></header>'
 
 
 def footer(en: bool) -> str:
@@ -392,7 +466,7 @@ def footer(en: bool) -> str:
     links = [('Blog', '/en/publications/'), ('Research', '/en/research/'), ('Tools', '/en/tools/'), ('About', '/en/about/')] if en else [('Model', '/nl/model/'), ('Onderwijs', '/nl/onderwijs/'), ('Blog', '/nl/blog/'), ('Onderzoek', '/nl/onderzoek/'), ('Tools', '/nl/tools/'), ('Over', '/nl/over/')]
     rendered = ''.join(f'<a href="{u}">{t}</a>' for t, u in links)
     rendered += '<a href="https://nl.linkedin.com/in/hans-visser-92531a105" target="_blank" rel="noopener noreferrer">LinkedIn</a>'
-    return f'<footer class="eai-site-footer"><div class="eai-site-footer-inner"><div><a class="eai-site-brand" href="{home}"><img src="/assets/eai-logo.svg" width="32" height="32" alt=""><span>EAI</span></a><p>Hans Visser</p></div><nav aria-label="Footer">{rendered}</nav></div></footer>'
+    return f'<footer class="eai-site-footer"><div class="eai-site-footer-inner"><div><a class="eai-site-brand" href="{home}"><img src="/assets/eai-logo.svg?v=20261117" width="32" height="32" alt=""><span class="eai-site-brand-name">EAI<span class="eai-site-brand-detail">model</span></span></a><p>Hans Visser</p></div><nav aria-label="Footer">{rendered}</nav></div></footer>'
 
 def prepare(root: Path) -> dict:
     materialize_home_model(root)
@@ -421,8 +495,33 @@ def prepare(root: Path) -> dict:
         relative = page.relative_to(root)
         if relative.as_posix() != 'onderwijsin/index.html' and any(part in SKIP for part in relative.parts):
             continue
+        old_route = '/' + relative.as_posix().removesuffix('index.html')
+        destination = LEGACY_HUB_REDIRECTS.get(old_route)
+        if destination:
+            # Static HTML handoff avoids two drifting catalogues. The query and
+            # anchor are retained for existing bookmarks by the small script.
+            # The visible link and meta refresh still work without JavaScript.
+            title = 'Deze pagina is verhuisd'
+            safe_url = html.escape(destination, quote=True)
+            new_document = (
+                '<!doctype html><html lang="nl"><head><meta charset="utf-8">'
+                '<meta name="viewport" content="width=device-width,initial-scale=1">'
+                f'<meta http-equiv="refresh" content="0;url={safe_url}">'
+                f'<link rel="canonical" href="https://eaimodel.nl{safe_url}">'
+                f'<title>{title} | EAI</title></head>'
+                f'<body><main><h1>{title}</h1><p>Bekijk de actuele pagina: '
+                f'<a href="{safe_url}">{safe_url}</a>.</p></main>'
+                '<script>location.replace(' + json.dumps(destination) +
+                ' + location.search + location.hash);</script></body></html>\n'
+            )
+            if page.read_text(encoding='utf-8') != new_document:
+                page.write_text(new_document, encoding='utf-8')
+                changed.append(relative.as_posix())
+            continue
         original = page.read_text(encoding='utf-8')
         soup = BeautifulSoup(original, 'html.parser')
+        if canonical('/' + relative.as_posix()) in ('/nl/tools/', '/en/tools/'):
+            populate_physics_topics(soup, soup.html.get('lang', '').startswith('en'))
         body = soup.body
         path = '/' + relative.as_posix()
         if not body or not review_archive(soup, canonical(path)):
@@ -430,6 +529,7 @@ def prepare(root: Path) -> dict:
         en = soup.html.get('lang', '').startswith('en')
         if not body.get('data-home-model-layout'):
             apply_editorial(soup, canonical(path), en)
+        enhance_home_continuity(soup, canonical(path), en)
         before_content = soup.main.decode() if soup.main else None
         header = soup.select_one('header.eai-masthead, header.site-header, header.eai-site-nav')
         if header is None:
@@ -438,25 +538,35 @@ def prepare(root: Path) -> dict:
         old_footer = soup.select_one('footer.eai-site-footer, footer.site-footer')
         if old_footer:
             old_footer.replace_with(BeautifulSoup(footer(en), 'html.parser').footer)
-        classes = [c for c in body.get('class', []) if c not in ('eai-ui', 'eai-index-page')]
+        classes = [c for c in body.get('class', []) if c not in ('eai-ui', 'eai-index-page', 'eai-dash-page', 'eai-card-index')]
         classes.append('eai-ui')
         if canonical(path) in INDEX_PATHS:
             classes.append('eai-index-page')
+        dashboard_home = canonical(path) in ('/nl/', '/en/') and bool(soup.select_one('main.eai-dashboard-home'))
+        if dashboard_home:
+            classes.append('eai-dash-page')
+            body['data-eai-dashboard-layout'] = 'cards-v1'
+        if canonical(path) in DASH_CARD_PATHS:
+            classes.append('eai-card-index')
         story_enabled = canonical(path) in STORY_PATHS
         if story_enabled:
             classes.append('eai-story-page')
-            body['data-eai-story-layout'] = '20261115a'
+            body['data-eai-story-layout'] = 'homepage-continuity-v1'
         body['class'] = classes
         body['data-ui-version'] = revision
-        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-redesign|site-editorial|site-archive|home-model|site-story-cards)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
+        css_pattern = re.compile(r'^/assets/(?:site|site-ui|site-responsive|site-redesign|site-editorial|site-archive|home-model|site-story-cards|site-dashboard-cards)(?:\.[a-f0-9]{12})?\.css(?:\?.*)?$')
         for tag in list(soup.find_all('link', href=True)):
             if css_pattern.match(tag['href']):
                 tag.decompose()
         for name in ('site.css', 'site-ui.css', 'site-responsive.css', 'site-editorial.css', 'site-archive.css', 'home-model.css', 'site-redesign.css'):
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest[name]['url']))
+        if dashboard_home or canonical(path) in DASH_CARD_PATHS:
+            soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest['site-dashboard-cards.css']['url']))
+        # Keep the homepage-like editorial layer last, including over older
+        # index/dashboard styles. The interactive labs never load this CSS.
         if story_enabled:
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest['site-story-cards.css']['url']))
-        js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation|home-model|site-story-cards)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
+        js_pattern = re.compile(r'^/assets/(?:site-refresh|site-navigation|home-model|site-story-cards|site-dashboard-cards)(?:\.[a-f0-9]{12})?\.js(?:\?.*)?$')
         for tag in list(soup.find_all('script', src=True)):
             if js_pattern.match(tag['src']):
                 tag.decompose()
@@ -468,6 +578,12 @@ def prepare(root: Path) -> dict:
             tag = soup.new_tag('script', src=manifest['site-story-cards.js']['url'])
             tag['defer'] = ''
             soup.head.append(tag)
+        if dashboard_home:
+            tag = soup.new_tag('script', src=manifest['site-dashboard-cards.js']['url'])
+            tag['defer'] = ''
+            soup.head.append(tag)
+        # Keep header rules after all editorial and dashboard CSS.
+        soup.head.append(soup.new_tag('link', rel='stylesheet', href=manifest['site-header.css']['url']))
         if soup.main and soup.main.decode() != before_content:
             raise AssertionError(f'Unexpected main-content edit: {relative}')
         if canonical(path) in ('/nl/tools/', '/en/tools/'):

@@ -78,9 +78,10 @@ class ObservatoryPublicationTests(unittest.TestCase):
 
     def test_names_and_model_limits_are_visible_without_internal_labels(self):
         catalog = (PUBLISHED / "index.html").read_text(encoding="utf-8")
-        self.assertIn("Galactisch Observatorium", catalog)
+        self.assertIn("<h3>De Melkweg</h3>", catalog)
         self.assertIn("Gravitatie en satellietbanen", catalog)
-        self.assertIn("Anatomie van de mens", catalog)
+        self.assertIn("<h3>Het lichaam in 3D</h3>", catalog)
+        self.assertIn("<h3>Oceanografie</h3>", catalog)
         self.assertIn("niet alle natuurkundige modellen", catalog.lower())
         self.assertIn("vereenvoudigde modellen", catalog)
         self.assertNotIn("NF / 01", catalog)

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fcf6df">
+<meta name="robots" content="noindex,follow">
+<title>Instellingen | Let's go TOPO!</title>
+<meta name="description" content="Kies een gebied en maak je eigen TOPO!-ronde.">
+<style>
+:root{--ink:#182b34;--cream:#fcf6df;--pink:#ffa7bc;--orange:#ffae60;--lime:#d6ef8d;--cyan:#a4dded;--muted:#50666d;--stroke:3px solid var(--ink)}
+*{box-sizing:border-box}html{background:var(--cream)}body{margin:0;color:var(--ink);background:var(--cream);font-family:ui-rounded,'Trebuchet MS',system-ui,sans-serif;font-weight:750}
+button,a{font:inherit}button{cursor:pointer;touch-action:manipulation;color:inherit}button:focus-visible,a:focus-visible{outline:4px solid #e76851;outline-offset:4px}
+header{width:min(1430px,100%);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(16px,3vw,40px)}
+.logo{color:var(--ink);font-size:clamp(25px,3.2vw,39px);letter-spacing:-.055em;font-weight:1000;text-decoration:none;white-space:nowrap;transform:rotate(-2deg)}.logo span{color:#f06457}
+.back{background:#fff;text-decoration:none;color:var(--ink);border:var(--stroke);padding:11px 17px;border-radius:16px;box-shadow:0 5px 0 var(--ink);font-weight:1000;white-space:nowrap}
+.wrap{width:min(1430px,100%);padding:8px clamp(16px,3vw,40px) 32px;margin:auto}
+.intro{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:20px}
+.sticker{background:var(--pink);font-size:13px;display:inline-block;border:var(--stroke);box-shadow:4px 5px 0 var(--ink);border-radius:9px;transform:rotate(-3deg);padding:7px 12px;letter-spacing:.09em;font-weight:1000}
+h1{font-weight:1000;font-size:clamp(52px,7.5vw,105px);letter-spacing:-.055em;line-height:.95;margin:12px 0 4px;transform:rotate(-1deg)}
+.intro p{font-size:clamp(16px,1.8vw,22px);margin:8px 0;font-weight:900}
+.board{border:var(--stroke);background:white;border-radius:30px;box-shadow:11px 12px 0 var(--ink);padding:clamp(15px,2.3vw,29px)}
+.layout{display:grid;grid-template-columns:minmax(175px,220px) minmax(0,1fr);gap:clamp(16px,3vw,30px)}
+.tabs{display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:8px 0}
+.tab{border:var(--stroke);border-radius:17px;background:var(--cream);box-shadow:4px 5px 0 var(--ink);font-size:clamp(19px,2.5vw,27px);font-weight:1000;letter-spacing:-.025em;text-align:left;padding:17px 15px;transform:rotate(var(--turn,0deg))}
+.tab:nth-child(1){--turn:-2deg}.tab:nth-child(2){--turn:1deg}.tab:nth-child(3){--turn:-1deg}
+.tab[aria-selected=true]{background:var(--lime)}.tab .n{font-size:13px;margin-right:5px}
+.panel{min-height:435px;border-left:2px dashed #bcc9c6;padding-left:clamp(14px,2.5vw,32px)}
+.panel[hidden]{display:none}
+h2{font-size:clamp(30px,4vw,48px);font-weight:1000;letter-spacing:-.05em;margin:1px 0 7px}
+.hint{font-size:16px;line-height:1.35;color:var(--muted);margin:0 0 19px}
+.zonepick{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+.zone{padding:12px 17px;border:var(--stroke);border-radius:16px;background:var(--cream);box-shadow:3px 4px 0 var(--ink);font-weight:1000;font-size:clamp(16px,1.7vw,20px)}
+.zone[aria-pressed=true]{background:var(--orange)}
+.sheet-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.province{position:relative;min-height:83px;border:var(--stroke);border-radius:17px;background:var(--cream);padding:14px 9px;display:flex;align-items:center;justify-content:center;text-align:center;word-break:normal;font-size:clamp(13px,1.45vw,19px);font-weight:1000;letter-spacing:-.025em;box-shadow:4px 5px 0 var(--ink);transform:rotate(var(--rot,0deg));transition:transform .14s,background .14s}
+.province:nth-child(5n+1){--rot:-2deg}.province:nth-child(5n+3){--rot:2deg}.province:nth-child(4n){--rot:-1deg}
+.province[aria-pressed=true]{background:var(--lime);transform:rotate(var(--rot,0deg)) translateY(-2px)}
+.province:active,.zone:active,.tab:active{box-shadow:0 1px 0 var(--ink);transform:translateY(3px)}
+.province .tick{position:absolute;top:3px;right:8px;font-size:13px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:2px solid var(--ink);background:var(--cream);padding:12px 14px;font-size:16px;border-radius:999px;font-weight:1000;min-height:44px}
+.pill[aria-pressed=true]{background:var(--lime)}
+.area-note{border:2px dashed #b0beb7;border-radius:15px;padding:13px;margin-top:17px;background:#f8faef;font-size:14px;font-weight:800;line-height:1.4}
+.group{margin-bottom:24px}.group h3{font-weight:1000;font-size:21px;letter-spacing:-.025em;margin:0 0 12px}
+.group p{margin:7px 0;color:var(--muted);font-size:14px}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:16px 2px 0}
+.summary{font-weight:900;font-size:clamp(15px,1.6vw,19px);max-width:52ch;line-height:1.3}
+.summary small{display:block;font-size:13px;color:var(--muted);margin-top:5px}
+.actions{display:flex;gap:11px;align-items:center;flex-wrap:wrap}
+.go{background:var(--orange);border:var(--stroke);border-radius:21px;font-size:clamp(22px,2.8vw,31px);font-weight:1000;box-shadow:0 6px 0 var(--ink);padding:15px 29px;text-decoration:none;color:var(--ink);transform:rotate(-2deg);white-space:nowrap}
+.go[aria-disabled=true]{background:#dddcd3;color:#596c71;cursor:not-allowed;box-shadow:0 4px 0 #7b8e8a}
+.info{font-size:14px;color:var(--muted);max-width:310px}
+.modalback{position:fixed;inset:0;background:#0e2735b8;display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modalback[hidden]{display:none}
+.modal{background:var(--cream);border:var(--stroke);box-shadow:9px 11px 0 var(--ink);border-radius:27px;padding:28px;width:min(100%,480px)}
+.modal h2{font-size:39px}.modal p{line-height:1.45}.modal button{border:var(--stroke);border-radius:15px;padding:12px 20px;font-weight:1000;background:var(--lime);font-size:21px}
+@media(max-width:850px){.layout{grid-template-columns:1fr;gap:9px}.tabs{flex-direction:row;padding:0 0 11px;gap:8px}.tab{flex:1;text-align:center;font-size:clamp(14px,3.6vw,21px);padding:11px 3px;min-width:0;border-radius:13px}.tab .n{display:none}.panel{padding:12px 0 0;border-left:0;border-top:2px dashed #bcc9c6;min-height:0}.sheet-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.province{min-height:77px}header{padding-top:calc(env(safe-area-inset-top,0px) + 10px)}.wrap{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 25px)}}
+@media(max-width:450px){h1{font-size:clamp(45px,12vw,61px)}header .logo{font-size:22px}.back{font-size:13px;padding:8px 11px;box-shadow:0 3px 0 var(--ink)}.intro{margin-bottom:16px}.intro p{font-size:15px}.board{padding:13px;border-radius:22px;box-shadow:6px 7px 0 var(--ink)}.sheet-grid{gap:8px}.province{min-height:75px;padding:9px 5px;font-size:14px;box-shadow:2px 3px 0 var(--ink)}h2{font-size:31px}.hint{font-size:14px;margin-bottom:14px}.zone{font-size:15px;padding:10px 12px}.bottom{padding-top:21px}.go{width:100%;text-align:center}.actions{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+</style><style id="liveNationalOptions">.pill:disabled{opacity:.38;cursor:not-allowed;box-shadow:none;text-decoration:line-through}.go:disabled{opacity:.5;cursor:not-allowed}.go:disabled:active{transform:none}#topicNote{max-width:60ch}</style><style id="settings-fixed-viewport">
+html,body{height:var(--settings-h,100dvh);max-height:var(--settings-h,100dvh);overflow:hidden;overscroll-behavior:none}
+body{display:flex;flex-direction:column;min-height:0}
+body>header{flex:0 0 auto;width:min(1430px,100%);padding-top:12px;padding-bottom:12px}
+.wrap{flex:1 1 0;min-height:0;width:min(1430px,100%);padding-top:5px;padding-bottom:14px;display:flex;flex-direction:column;overflow:hidden}
+.intro{flex:0 0 auto;margin-bottom:12px}
+.intro h1{font-size:clamp(42px,6.5vw,85px);margin:8px 0 3px}
+.intro p{margin:3px 0}
+.board{flex:1 1 0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.layout{flex:1 1 0;min-height:0;overflow:hidden}
+.layout>div:last-child{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.tabs{min-height:0}.panel{min-height:0}
+.bottom{flex:0 0 auto;min-height:0;padding-top:11px;gap:10px}
+@media(max-width:850px){
+ .wrap{padding-bottom:12px}.board{padding:12px 14px}
+ .layout{display:flex;flex-direction:column;gap:4px}
+ .tabs{flex:0 0 auto;flex-direction:row;padding:0 0 9px}
+ .tab{padding:9px 3px;min-height:47px}
+ .layout>div:last-child{flex:1 1 0;min-height:0;overflow-y:auto}
+ .panel{padding:10px 0 0}
+ .bottom{border-top:2px dashed #bcc9c6;padding:10px 2px 0}
+ .summary{font-size:13px;line-height:1.2;flex:1 1 130px}
+ .summary small{font-size:11px;margin-top:3px}
+ .actions{flex:0 0 auto;width:auto}
+ .go{font-size:clamp(17px,4vw,23px);padding:10px 16px;width:auto;border-radius:15px}
+}
+@media(max-width:480px){
+ body>header{padding:9px 16px 8px}.wrap{padding:3px 15px 11px}
+ .intro{margin-bottom:7px}.intro h1{font-size:clamp(34px,9vw,45px);margin:7px 0 2px}
+ .intro p{font-size:13px}.sticker{font-size:10px;padding:4px 8px}
+ .board{border-radius:23px;padding:10px 12px 12px;box-shadow:6px 7px 0 var(--ink)}
+ .tab{font-size:14px;min-height:43px;border-radius:11px}
+ h2{font-size:27px;margin:0 0 5px}.hint{font-size:13px;margin-bottom:9px;line-height:1.2}
+ .zonepick{gap:6px;margin:0 0 10px}.zone{font-size:13px;padding:8px 9px;border-radius:12px;min-height:37px}
+ .sheet-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .province{min-width:0;min-height:61px;font-size:clamp(10px,2.9vw,13px);line-height:1.1;padding:9px 2px;border-radius:12px;border-width:2px;box-shadow:2px 3px 0 var(--ink);overflow-wrap:anywhere}
+ .province .tick{top:1px;right:4px;font-size:11px}
+ .area-note{font-size:11px;padding:7px 9px;margin-top:10px;border-radius:10px}
+ .group{margin-bottom:14px}.group h3{font-size:17px;margin:0 0 8px}
+ .pill{font-size:13px;padding:8px 11px;min-height:39px}
+ .bottom{gap:5px}.summary{font-size:12px;max-width:185px}
+ .go{font-size:16px;padding:10px 12px;white-space:nowrap}
+}
+@media(max-height:620px){
+ .intro .sticker,.intro p{display:none}.intro h1{font-size:34px;margin:1px 0}
+ .intro{margin-bottom:5px}.wrap{padding-bottom:7px}
+ .board{padding-top:8px;padding-bottom:8px}.bottom{padding-top:5px}
+}
+</style>
+<style id="topo-shuffle-setting">
+#types .pill[data-value="shuffle"]{background:var(--pink);border:3px solid var(--ink);box-shadow:4px 5px 0 var(--ink);font-weight:1000;transform:rotate(-2deg)}
+#types .pill[data-value="shuffle"][aria-pressed="true"]{background:var(--lime)}
+#shuffleNote{font-weight:850;max-width:54ch;line-height:1.38}
+</style></head>
+<body>
+<header><a class="logo" href="/topo/">Let’s go <span>TOPO!</span></a><a class="back" href="/topo/">← Terug</a></header>
+<main class="wrap">
+<div class="intro"><div><span class="sticker">JOUW SPEL</span><h1>Instellingen!</h1><p>Wat wil jij oefenen?</p></div></div>
+<div class="board">
+<div class="layout">
+<nav class="tabs" aria-label="Instellingen">
+<button class="tab" role="tab" aria-selected="true" aria-controls="panel-area" id="tab-area" data-tab="area"><span class="n">01</span> Gebied</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="panel-practice" id="tab-practice" data-tab="practice"><span class="n">02</span> Oefenen</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="panel-game" id="tab-game" data-tab="game"><span class="n">03</span> Spel</button>
+</nav>
+<div>
+<section class="panel" id="panel-area" role="tabpanel" aria-labelledby="tab-area">
+<h2>Waar spelen we?</h2><p class="hint">Kies een gebied. Je kunt ook provincies aantikken.</p>
+<div class="zonepick" id="zones">
+<button class="zone" data-zone="north" aria-pressed="true">Noord-Nederland</button>
+<button class="zone" data-zone="all" aria-pressed="false">Heel Nederland</button>
+<button class="zone" data-zone="own" aria-pressed="false">Zelf kiezen</button>
+</div>
+<div class="sheet-grid" id="provinces" aria-label="Provincies"></div>
+<div class="area-note" id="regionNote">Kies Noord-Nederland of een van de twaalf provincies.</div>
+</section>
+<section class="panel" id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" hidden>
+<h2>Wat ga je zoeken?</h2><p class="hint">Kies je vragen. Of gooi alles door elkaar.</p>
+<div class="group"><h3>Onderwerpen</h3><div class="controls" id="topics"></div><p id="topicNote">Noord-Nederland heeft alle onderwerpen. Voor heel Nederland zijn provincies, hoofdsteden en steden klaar.</p></div>
+<div class="group"><h3>Hoe wil je oefenen?</h3><div class="controls" id="types"></div><p id="shuffleNote">Kies hoe je wilt spelen.</p></div>
+</section>
+<section class="panel" id="panel-game" role="tabpanel" aria-labelledby="tab-game" hidden>
+<h2>Hoe lang spelen?</h2>
+<div class="group"><h3>Aantal vragen</h3><div class="controls" id="rounds"></div></div>
+<div class="group"><h3>Hulp</h3><div class="controls" id="assist"></div><p>Foute plekken komen later opnieuw terug.</p></div>
+<div class="group"><h3>Manier van oefenen</h3><div class="controls" id="difficulty"></div></div>
+</section>
+</div>
+</div>
+<div class="bottom">
+<div class="summary" id="summary" aria-live="polite">Noord-Nederland · Alles oefenen<small>Huidige speelversie</small></div>
+<div class="actions"><button type="button" class="go" id="go">SPELEN! ↗</button></div>
+</div>
+</div>
+</main>
+<div class="modalback" id="notReady" hidden role="dialog" aria-modal="true" aria-labelledby="notReadyTitle"><div class="modal"><span class="sticker">KOMT NOG!</span><h2 id="notReadyTitle">Nog even niet!</h2><p>Kies eerst minstens één provincie en een onderwerp dat klaar is.</p><button type="button" id="closeModal">OKÉ!</button></div></div>
+<script>
+const provinces=['Groningen','Friesland','Drenthe','Overijssel','Flevoland','Gelderland','Utrecht','Noord-Holland','Zuid-Holland','Zeeland','Noord-Brabant','Limburg'];
+const north=['Groningen','Friesland','Drenthe'];
+const options={
+ topics:[['provinces','Provincies'],['cities','Steden'],['capitals','Hoofdsteden'],['waters','Wateren'],['islands','Eilanden'],['landmark','Bijzondere plekken']],
+ types:[['mix','Lekker afwisselen'],['shuffle','TOPO SHUFFLE!'],['point','Aanwijzen'],['type','Typen'],['choice','Kiezen'],['missing','Wat mist er?']],
+ rounds:[['5','5'],['8','8'],['10','10'],['20','20'],['all','Alles']],
+ assist:[['help','Met hulp'],['none','Zonder hulp']],
+ difficulty:[['normal','Gewoon oefenen'],['challenge','Extra uitdaging']]
+};
+const state={areas:new Set(north),zone:'north',topics:new Set(options.topics.map(x=>x[0])),types:'mix',rounds:'8',assist:'help',difficulty:'normal'};
+const nationalTopics=new Set(['provinces','cities','capitals']);
+function hasNorthOnly(){return state.zone==='north'&&state.areas.size===3&&north.every(n=>state.areas.has(n))}
+function readyTopics(){return [...state.topics].filter(t=>nationalTopics.has(t))}
+function playable(){return isDefaultPlayable()||(state.areas.size>0&&readyTopics().length>0)}
+
+const $=id=>document.getElementById(id);
+function renderProvinces(){
+ $('provinces').innerHTML=provinces.map(p=>'<button class="province" type="button" data-province="'+p+'" aria-pressed="'+state.areas.has(p)+'">'+p+(state.areas.has(p)?'<span class="tick">✓</span>':'')+'</button>').join('');
+}
+function renderZones(){
+ document.querySelectorAll('[data-zone]').forEach(b=>b.setAttribute('aria-pressed',String(state.zone===b.dataset.zone)));
+}
+function renderOptions(id){
+ const multi=id==='topics',national=!hasNorthOnly();
+ $(id).innerHTML=options[id].map(x=>{
+  const unavailable=multi&&national&&!nationalTopics.has(x[0]);
+  return '<button type="button" class="pill" data-group="'+id+'" data-value="'+x[0]+'" aria-pressed="'+(multi?state.topics.has(x[0]):state[id]===x[0])+'" '+(unavailable?'disabled aria-label="'+x[1]+' (komt nog)"':'')+'>'+x[1]+(unavailable?' · later':'')+'</button>';
+ }).join('');
+}
+function isDefaultPlayable(){
+ return state.areas.size===3 && north.every(n=>state.areas.has(n)) && state.types==='mix' && state.rounds==='8' && state.assist==='help' && state.difficulty==='normal' && state.topics.size===6 && options.topics.every(x=>state.topics.has(x[0]));
+}
+function update(){
+ renderProvinces();renderZones();Object.keys(options).forEach(renderOptions);
+ const national=!hasNorthOnly(),selected=Array.from(state.areas),ok=playable();
+ $('topicNote').textContent=state.types==='shuffle'
+  ?'In TOPO SHUFFLE komen ook watervragen voor. Los oefenen met wateren volgt later.'
+  :national?'Voor heel Nederland zijn provincies, hoofdsteden en steden speelbaar. De andere onderwerpen volgen.':'Noord-Nederland heeft alle onderwerpen.';
+ $('shuffleNote').textContent=state.types==='shuffle'
+  ?'Alles door elkaar: steden, provincies, water, vragen zonder kaart en flink ingezoomde plekken.'
+  :'Kies een vraagvorm, of laat de vragen afwisselen.';
+ $('regionNote').textContent=national?'Kies je provincies. De landelijke kaart heeft de provinciegrenzen van 2026.':'Met deze keuze kun je de bestaande Noord-Nederland-versie spelen.';
+ $('summary').textContent=state.types==='shuffle'?'TOPO SHUFFLE · heel Nederland':(selected.length===12?'Heel Nederland':selected.length===3&&north.every(x=>state.areas.has(x))?'Noord-Nederland':selected.length+' provincies')+' · '+(national?readyTopics().length:state.topics.size)+' onderwerpen';
+ const small=document.createElement('small');small.textContent=ok?'Klaar om te spelen':'Kies minstens één provincie en een onderwerp.';$('summary').appendChild(small);
+ $('go').textContent=state.types==='shuffle'?'TOPO SHUFFLE! ↗':'SPELEN! ↗';$('go').disabled=!ok;
+}
+function launch(){
+ if(!playable()){$('notReady').hidden=false;return;}
+ if(isDefaultPlayable()){location.href='/topo/';return;}
+ const p=new URLSearchParams();
+ p.set('prov',[...state.areas].join(','));
+ p.set('topics',readyTopics().join(','));
+ p.set('questions',state.rounds);
+ p.set('mode',state.types);
+ p.set('assist',state.assist);
+ p.set('difficulty',state.difficulty);
+ location.href='/topo/nederland/?'+p.toString();
+}
+document.querySelectorAll('[data-tab]').forEach(tab=>tab.onclick=()=>{
+ const key=tab.dataset.tab;document.querySelectorAll('[data-tab]').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.tab===key)));
+ ['area','practice','game'].forEach(x=>$('panel-'+x).hidden=x!==key);
+});
+$('zones').onclick=e=>{
+ const b=e.target.closest('[data-zone]');if(!b)return;
+ state.zone=b.dataset.zone;
+ if(state.zone==='north'){state.areas=new Set(north);state.topics=new Set(options.topics.map(x=>x[0]));}
+ if(state.zone==='all'){state.areas=new Set(provinces);state.topics=new Set(readyTopics().length?readyTopics():[...nationalTopics]);}
+ if(state.zone==='own'){state.areas=new Set();state.topics=new Set(readyTopics().length?readyTopics():[...nationalTopics]);}
+ if(state.zone!=='all'&&state.types==='shuffle')state.types='mix';
+ update();
+};
+$('provinces').onclick=e=>{
+ const b=e.target.closest('[data-province]');if(!b)return;
+ const p=b.dataset.province;state.areas.has(p)?state.areas.delete(p):state.areas.add(p);
+ state.zone=state.areas.size===12?'all':state.areas.size===3&&north.every(n=>state.areas.has(n))?'north':'own';if(!hasNorthOnly())state.topics=new Set(readyTopics().length?readyTopics():[...nationalTopics]);if(state.zone!=='all'&&state.types==='shuffle')state.types='mix';update();
+};
+document.querySelectorAll('.controls').forEach(el=>el.onclick=e=>{
+ const b=e.target.closest('[data-group]');if(!b)return;
+ const group=b.dataset.group,v=b.dataset.value;
+ if(group==='topics'){if(!hasNorthOnly()&&!nationalTopics.has(v))return;state.topics.has(v)?state.topics.delete(v):state.topics.add(v)}
+ else if(group==='types'){
+  state.types=v;
+  if(v==='shuffle'){state.areas=new Set(provinces);state.zone='all';state.topics=new Set(nationalTopics);}
+ }else state[group]=v;
+ update();
+});
+$('go').onclick=launch;
+$('closeModal').onclick=()=>{$('notReady').hidden=true;$('go').focus()};
+$('notReady').onclick=e=>{if(e.target.id==='notReady')$('notReady').hidden=true};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('notReady').hidden=true});
+function fitSettingsViewport(){
+ document.documentElement.style.setProperty('--settings-h',Math.round(window.visualViewport?.height||window.innerHeight)+'px');
+}
+window.visualViewport?.addEventListener('resize',fitSettingsViewport);
+window.addEventListener('resize',fitSettingsViewport);
+fitSettingsViewport();
+update();
+</script></body></html>
