@@ -64,7 +64,7 @@
   const ro=new ResizeObserver(()=>{[W,H]=resize(scene,c);[CW,CH]=resize(chart,g);invalidate()});ro.observe(scene);ro.observe(chart);
   const opt=(id,title)=>'<option value="'+id+'">'+title+'</option>';
   const starsOptions=M.stars.map(v=>opt(v.id,v.name)).join("");
-  function setStar(id){if(!byId.has(id))return;s.star=id;if(s.other===id)s.other=M.stars.find(v=>v.id!==id).id;s.sigma=0;updateInspector();buildControls();updateText();invalidate()}
+  function setStar(id){if(!byId.has(id))return;if(s.view==="near"&&byId.get(id).d>250){s.view="space";s.zoom=1;$("zoom").value=1;syncCamera()}s.star=id;if(s.other===id)s.other=M.stars.find(v=>v.id!==id).id;s.sigma=0;updateInspector();buildControls();updateText();invalidate()}
   function setMode(mode,hash=true){if(!modes.some(m=>m[0]===mode))mode="hemel";s.mode=mode;s.spin=false;s.zoom=1;s.yaw=1.12;s.pitch=.19;s.anim=null;s.view=mode==="ruimte"||mode==="meten"?"space":"earth";s.sigma=0;$("zoom").value=1;$("answer").open=false;if(hash)history.replaceState(null,"","#"+mode);
     document.querySelectorAll("[data-mode]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===mode)));
     const m=modes.find(m=>m[0]===mode);setText("modeLabel",String(modes.indexOf(m)+1).padStart(2,"0")+" / "+m[1]);setText("modeTitle",m[2]);setText("modeDesc",m[3]);setText("modeTag",mode==="beweging"?"LINEAIR MODEL":mode==="waarnemen"?"GEOMETRISCHE HORIZON":"LEO · "+(mode==="parallax"?"METING":"J2000"));
@@ -110,7 +110,7 @@
     }[s.mode];
     ["chartTitle","chartUnit","chartNote","formula","status"].forEach((id,i)=>setText(id,text[i]));
     setText("canvasBadge",s.mode==="parallax"?"SCHEMATISCHE GEOMETRIE":s.mode==="waarnemen"?"N = 0° · O = 90°":s.mode==="beweging"?"Δt = "+n(s.years)+" jaar":spatial()?(s.view==="near"?"BINNEN 250 LJ":"LINEAIRE SCHAAL"):"NOORD BOVEN · OOST LINKS");
-    setText("canvasNote",s.mode==="parallax"?"Hoeken uitvergroot · niet op schaal":s.mode==="waarnemen"?"Boven de horizon binnen de cirkel · geen zichtbaarheidsvoorspelling":spatial()?"Sleep om te draaien · scroll of zoom · tik op een ster":"Tik op een ster · zoom voor detail");
+    setText("canvasNote",s.mode==="parallax"?"Hoeken uitvergroot · niet op schaal":s.mode==="waarnemen"?"Boven de horizon binnen de cirkel · alle sterren in de lijst":spatial()?"Sleep om te draaien · scroll of zoom · tik op een ster":"Tik op een ster · zoom voor detail");
   }
   function line(ctx,a,b,color,width=1,dash=[]){ctx.beginPath();ctx.setLineDash(dash);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();ctx.setLineDash([])}
   function text(ctx,str,x,y,col="#c9d9e8",size=11,align="left"){ctx.font=size+"px system-ui,sans-serif";ctx.textAlign=align;ctx.textBaseline="middle";ctx.fillStyle=col;ctx.fillText(str,x,y)}
@@ -140,12 +140,12 @@
     const bright=Math.min(...active.map(a=>s.mode==="licht"&&s.light==="absolute"?a.abs:a.mag));
     s.points=[];for(const a of active.slice().sort((a,b)=>pos.get(a.id)[2]-pos.get(b.id)[2])){const [x,y]=pos.get(a.id),mag=s.mode==="licht"&&s.light==="absolute"?a.abs:a.mag,r=2.1+5.2*Math.pow(M.flux(mag,bright),.22);if(x<-30||x>W+30||y<-30||y>H+30)continue;glow(x,y,r,a.color,a.id===s.star);s.points.push({star:a,x,y})}labelPoints(s.points);
   }
-  function parallaxScene(){const a=selected(),p=a.p+s.sigma*a.e,dist=M.distance(p),cx=W*.5,top=H*.18,earth=H*.75,base=Math.min(W*.33,180),offset=Math.min(base*.8,12+Math.log1p(p)*11);const star=[cx,top],sun=[cx,earth],left=[cx-base,earth],right=[cx+base,earth];
+  function parallaxScene(){const a=selected(),p=a.p+s.sigma*a.e,dist=M.distance(p),cx=W*.5,earth=H*.73,base=Math.min(W*.30,145),fraction=M.clamp((Math.log(p)-Math.log(.5))/(Math.log(120)-Math.log(.5)),0,1),top=H*(.13+.36*fraction),offset=Math.min(base*.8,12+Math.log1p(p)*11);const star=[cx,top],sun=[cx,earth],left=[cx-base,earth],right=[cx+base,earth];
     line(c,left,right,"#748fa4",1.2);line(c,sun,star,"#8de0e5",1,[4,5]);line(c,left,star,"#f1c58e",1.5);line(c,right,star,"#7299b2",1.2);
     glow(star[0],star[1],5,a.color,true);glow(sun[0],sun[1],5,"#ffd293");glow(left[0],left[1],3.5,"#a4d5f4");glow(right[0],right[1],3.5,"#a4d5f4");
     text(c,a.name,cx,top-17,"#e9f7ff",12,"center");text(c,"Zon",cx,earth+17,"#f1c58e",11,"center");text(c,"Aarde A",left[0],earth+17,"#bad5e8",11,"center");text(c,"Aarde B",right[0],earth+17,"#bad5e8",11,"center");text(c,"1 AU",cx-base/2,earth+4,"#a5bace",10,"center");text(c,"1 AU",cx+base/2,earth+4,"#a5bace",10,"center");
     const theta=Math.atan2(base,earth-top),r=Math.min(58,Math.max(30,offset));c.beginPath();c.arc(cx,top,r,Math.PI/2,Math.PI/2+theta);c.strokeStyle="#f1c58e";c.lineWidth=2;c.stroke();text(c,"p = "+n(p,3)+" mas",cx-12,top+r+12,"#f1c58e",12,"right");text(c,"≈ "+n(dist)+" lj",cx+10,(top+earth)/2,"#a9e1e7",13);
-    text(c,"De meetbasis is 1 AU; 2p is de maximale jaarlijkse uitslag.",cx,H*.91,"#a2b9cc",10,"center");s.points=[];
+    text(c,"1 AU meetbasis; schematische hoek, niet op schaal.",cx,H*.91,"#a2b9cc",10,"center");s.points=[];
   }
   function horizonScene(){const R=Math.min(W,H)*.39,cx=W*.5,cy=H*.49,ms=Date.parse(s.date+"Z"),hs=new Map(),point=h=>{const r=R*(90-h.alt)/90,a=h.az*M.D;return [cx+Math.sin(a)*r,cy-Math.cos(a)*r]};
     for(let d=0;d<=60;d+=30){ring(c,cx,cy,R*(90-d)/90,d===0?"#88a9bb":"#3b5269",d===0?1.3:.8);text(c,d+"°",cx+5,cy-R*(90-d)/90+9,"#7895aa",9)}
@@ -197,7 +197,7 @@
     const tr=document.createElement("tr");tr.innerHTML=[a.name+" / "+a.id,a.rah,a.dech,a.p+" ± "+a.e,n(a.d,1),a.mag,a.pmra+" / "+a.pmdec,a.rv,a.source].map((v,i)=>"<td>"+(i===0?'<a href="https://simbad.cds.unistra.fr/simbad/sim-id?Ident='+encodeURIComponent(a.ident)+'" target="_blank" rel="noopener">'+v+"</a>":v)+"</td>").join("");$("dataRows").append(tr)}
   function download(){const rows=[D.columns,...D.stars],csv=rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\n");const url=URL.createObjectURL(new Blob(["\ufeff",csv],{type:"text/csv;charset=utf-8"})),a=document.createElement("a");a.href=url;a.download="leo-figuursterren-simbad-2026-11-24.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}$("download").onclick=download;$("downloadBottom").onclick=download;
   // Read-only snapshot of the same state the UI uses; supports reproducible browser checks.
-  window.LEO_STATE=()=>({mode:s.mode,view:s.view,star:s.star,other:s.other,zoom:s.zoom,years:s.years,sigma:s.sigma,light:s.light,points:s.points.length,angle:M.angle(selected().r,other().r),separation:M.separation(selected().r,other().r),distance:M.distance(selected().p+s.sigma*selected().e),heading:$("headline").textContent});
+  window.LEO_STATE=()=>({mode:s.mode,view:s.view,star:s.star,other:s.other,zoom:s.zoom,yaw:s.yaw,pitch:s.pitch,years:s.years,sigma:s.sigma,light:s.light,points:s.points.length,angle:M.angle(selected().r,other().r),separation:M.separation(selected().r,other().r),distance:M.distance(selected().p+s.sigma*selected().e),heading:$("headline").textContent});
   setMode(modes.some(m=>m[0]===location.hash.slice(1))?location.hash.slice(1):"hemel",false);
 })();</script>
 </body></html>
