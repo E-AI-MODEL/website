@@ -2568,6 +2568,21 @@
       "family": "onderwijs",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/tools/science-observatory/labs/leeuw/",
+      "url": "/tools/science-observatory/labs/leeuw/",
+      "file": "tools/science-observatory/labs/leeuw/index.html",
+      "title": "Leeuw in 3D",
+      "kind": "toepassing",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "review": "brondata_en_modelbeschrijving_opgenomen",
+      "parent": "page:/tools/science-observatory/",
+      "family": "heelal",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "public_title_nl": "Leeuw in 3D",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
     }
   ],
   "embedded_items": [
@@ -7018,6 +7033,104 @@
       "link": "verzamelpagina",
       "review": "titel_uit_bronbestand",
       "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#hemel",
+      "url": "/tools/science-observatory/labs/leeuw/#hemel",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Hemelkaart",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Bekijk de negen figuursterren vanaf de aarde.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#ruimte",
+      "url": "/tools/science-observatory/labs/leeuw/#ruimte",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Ruimte in 3D",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Draai de sterren en vergelijk hun gemeten afstanden.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#meten",
+      "url": "/tools/science-observatory/labs/leeuw/#meten",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Afstanden meten",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Vergelijk hoekafstand en onderlinge afstand in lichtjaren.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#parallax",
+      "url": "/tools/science-observatory/labs/leeuw/#parallax",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Parallax",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Verander de parallax en onderzoek de afstandsonzekerheid.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#licht",
+      "url": "/tools/science-observatory/labs/leeuw/#licht",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Sterrenlicht",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Vergelijk schijnbare en absolute V-magnitude.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#beweging",
+      "url": "/tools/science-observatory/labs/leeuw/#beweging",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Eigenbeweging",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Verander de tijd in een model met constante snelheid.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#waarnemen",
+      "url": "/tools/science-observatory/labs/leeuw/#waarnemen",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Waarnemen",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Kies plaats en tijd en onderzoek de geometrische horizon.",
+      "search_scope": "binnen_toepassing"
     }
   ],
   "html_sources": [
@@ -7140,13 +7253,16 @@
     },
     {
       "path": "content/wihtml/verdubbelen-halveren-v9.html"
+    },
+    {
+      "path": "content/science-observatory/labs/leeuw.html"
     }
   ],
   "audit": {
-    "tracked_html_files": 219,
-    "public_page_files": 179,
+    "tracked_html_files": 221,
+    "public_page_files": 180,
     "generated_pages": 2,
-    "search_index_entries": 289,
+    "search_index_entries": 290,
     "embedded_items_in_search": 144,
     "taalwerkvormen": 15,
     "llmscan_products": 51,
@@ -7187,14 +7303,14 @@
       "/verdieping/"
     ],
     "orphan_items": [],
-    "additional_html_files": 40,
-    "all_html_files": 219,
+    "additional_html_files": 41,
+    "all_html_files": 221,
     "pages_not_in_public_search": 36,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
     "collections": 5,
     "wihtml_examples": 2,
-    "last_structural_review": "2026-11-16",
+    "last_structural_review": "2026-11-24",
     "additional_verified_sections": {
       "abyss": 6,
       "gravity": 6,
@@ -7203,7 +7319,8 @@
       "melkweg_variants": 2,
       "melkweg_shared_topics": 6,
       "verified_redirects": 9,
-      "noindex_pages_checked": 8
+      "noindex_pages_checked": 8,
+      "leeuw": 7
     },
     "new_embedded_items": 18,
     "dynamic_function_review_pending": [],
@@ -7232,7 +7349,7 @@
     },
     "sitemap_from_main": {
       "source": "sitemap.xml",
-      "registered_urls": 148,
+      "registered_urls": 149,
       "registered_missing": 31,
       "examples_not_in_sitemap": [
         "/eai-blog/",
