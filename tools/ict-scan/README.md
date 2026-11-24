@@ -260,10 +260,8 @@ Op mobiel worden onderdelen in de gewone documentstroom onder elkaar geplaatst,
 met een afzonderlijk scrollbaar dashboardvlak. De laadillustratie blijft in
 haar eigen ruimte. De afzonderlijke Builder uit PR #358 is hier niet inbegrepen.
 
-## Bewerken met één wachtwoord (Theory7)
+## Bewerken vanuit EAI Beheer
 
-De knop Opslaan maakt via `edit-api.php` een wijzigingsvoorstel in de bestaande GitHub-repository. Geen GitHub-token of tweede aanmelding in de browser. De controle op bronversie, bronvelden, relaties, beoordelingen en manifest blijft bestaan. Na goedkeuring en publicatie wordt de officiële bron bijgewerkt. Het gedeelde bewerkwachtwoord identificeert geen individuele medewerker; het logboek gebruikt `ICT-scan-editor`.
+Kies na het inloggen op het beheerportaal **ICT-scan bewerken**. De scan opent op eaimodel.nl. Een eenmalige code is 90 seconden geldig. De server controleert bij iedere schrijfactie of de oorspronkelijke beheersessie nog geldig is. Afmelden op het portaal trekt daarmee ook de bewerktoegang in.
 
-Eenmalige serverconfiguratie (niet in GitHub of in een publiek bestand): configureer `ICT_SCAN_EDITOR_PASSWORD_HASH` (PHP password_hash) en `ICT_SCAN_GITHUB_TOKEN` (fine-grained, uitsluitend E-AI-MODEL/website, Contents en Pull requests read/write). Alternatief: maak buiten de documentroot de map `.eai-ict-scan` (0700) met `editor.json` (0600) met de velden `passwordHash` en `githubToken`. De oude browsercode bevatte het oude wachtwoord openbaar; gebruik een nieuw wachtwoord. Verifieer dat de map niet via HTTP bereikbaar is. De service weigert opslag zolang de configuratie ontbreekt. Gebruik de Theory7-versie; GitHub Pages voert geen PHP uit.
-
-De server geeft alleen toegang tot de vaste bronbestanden en de gedeelde layoutmap, maakt eigen wijzigingsbranches en weigert directe schrijfacties op main. Sessiecookies zijn Secure, HttpOnly en SameSite=Strict; origin en CSRF worden gecontroleerd. De sessie verloopt na 30 minuten inactiviteit of vier uur. In de UI wordt geen wachtwoord of GitHub-sleutel bewaard. De authenticatielaag geeft geen nieuwe garantie over vertrouwelijkheid van de reeds beschikbare registergegevens.
+Pas voor ingebruikname het aanvullende schema in services/html-galerij/schema.sql toe en publiceer de Worker met de nieuwe routes. Configureer op Theory7 uitsluitend ICT_SCAN_GITHUB_TOKEN, of zet githubToken in .eai-ict-scan/editor.json buiten de documentroot. Gebruik alleen toegang tot Contents en Pull requests in E-AI-MODEL/website. De browser ontvangt deze sleutel niet. Opslaan maakt een wijzigingsvoorstel.

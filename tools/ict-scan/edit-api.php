@@ -27,12 +27,10 @@ function ict_config(string $dir): array {
     $raw = @file_get_contents($dir . '/editor.json', false, null, 0, 16384);
     $file = is_string($raw) ? json_decode($raw, true) : [];
     if (!is_array($file)) $file = [];
-    $hash = getenv('ICT_SCAN_EDITOR_PASSWORD_HASH') ?: ($file['passwordHash'] ?? '');
     $token = getenv('ICT_SCAN_GITHUB_TOKEN') ?: ($file['githubToken'] ?? '');
-    if (!is_string($hash) || password_get_info($hash)['algoName'] === 'unknown' ||
-        !is_string($token) || strlen($token) < 20 || strlen($token) > 512 ||
+    if (!is_string($token) || strlen($token) < 20 || strlen($token) > 512 ||
         !function_exists('curl_init')) ict_fail('Opslaan op GitHub is nog niet ingericht op de server.', 503);
-    return ['hash'=>$hash, 'token'=>$token, 'actor'=>'ICT-scan-editor'];
+    return ['token'=>$token, 'actor'=>'ICT-scan-editor'];
 }
 function ict_policy_files(array $profile): array {
     $src = $profile['source'] ?? [];
@@ -53,7 +51,7 @@ function ict_policy_files(array $profile): array {
     return ['data'=>array_keys($data), 'read'=>array_merge(array_keys($data), [ICT_MANIFEST, ICT_LAYOUT], $config)];
 }
 function ict_no_secrets(string $value, array $cfg): void {
-    if (str_contains($value, $cfg['token']) || str_contains($value, $cfg['hash']) ||
+    if (str_contains($value, $cfg['token']) ||
         preg_match('/(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{15,}|sk-(?:proj-)?[A-Za-z0-9_-]{20,})/', $value))
         ict_fail('Verwijder toegangssleutels uit de gegevens.');
 }
@@ -144,7 +142,7 @@ function ict_upstream(string $method, string $path, ?array $body, array $cfg): a
     $data = json_decode($result, true);
     if (!is_array($data)) ict_fail('GitHub gaf geen geldig antwoord.', 502);
     // Do not forward an upstream response containing the server's own secret.
-    if (str_contains($result, $cfg['token']) || str_contains($result, $cfg['hash'])) ict_fail('GitHub-antwoord afgeschermd.', 502);
+    if (str_contains($result, $cfg['token'])) ict_fail('GitHub-antwoord afgeschermd.', 502);
     return $data;
 }
 function ict_record_result(array $route, array $data, array &$state): void {
@@ -164,24 +162,16 @@ function ict_record_result(array $route, array $data, array &$state): void {
             unset($state['branches'][$route['branch']]); break;
     }
 }
-function ict_rate_limit(string $dir, array $cfg): void {
-    // Store only a keyed network identifier, not raw addresses.
-    $key = hash_hmac('sha256', (string)($_SERVER['REMOTE_ADDR'] ?? 'unknown'), $cfg['hash']);
-    $path = $dir . '/login-' . $key;
-    $f = @fopen($path, 'c+');
-    if (!$f) ict_fail('Aanmelden tijdelijk niet beschikbaar.', 503);
-    @chmod($path, 0600);
-    try {
-        if (!flock($f, LOCK_EX)) ict_fail('Aanmelden tijdelijk niet beschikbaar.', 503);
-        $old = json_decode(stream_get_contents($f, 4096) ?: '[]', true);
-        $now = time(); $attempts = array_values(array_filter(is_array($old) ? $old : [], fn($t)=>is_int($t) && $t > $now-900));
-        if (count($attempts) >= 6) ict_fail('Te veel pogingen. Probeer later opnieuw.', 429);
-        $attempts[] = $now;
-        rewind($f); ftruncate($f, 0); fwrite($f, json_encode($attempts)); fflush($f);
-    } finally { fclose($f); }
-    if (random_int(1, 32) === 1) foreach (glob($dir . '/login-*') ?: [] as $p) {
-        if (is_file($p) && filemtime($p) < time()-86400) @unlink($p);
-    }
+const ICT_PORTAL = 'https://eai-html-galerij.vis-c9d.workers.dev';
+function ict_portal(string $action, string $token): array {
+    if (!preg_match('/^[a-f0-9]{64}$/D', $token)) ict_fail('Open de ICT-scan via EAI Beheer.',401);
+    $h = curl_init(ICT_PORTAL . '/ict-editor/' . $action);
+    curl_setopt_array($h,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>'',CURLOPT_HTTPHEADER=>['Authorization: Bearer '.$token],
+        CURLOPT_RETURNTRANSFER=>true,CURLOPT_FOLLOWLOCATION=>false,CURLOPT_CONNECTTIMEOUT=>5,CURLOPT_TIMEOUT=>10]);
+    $raw = curl_exec($h); $status = curl_getinfo($h,CURLINFO_RESPONSE_CODE); curl_close($h);
+    if ($status === 403) ict_fail('Open de ICT-scan opnieuw via EAI Beheer.',401);
+    if ($status !== 200 || !is_array($result=json_decode((string)$raw,true))) ict_fail('EAI Beheer is tijdelijk onbereikbaar.',503);
+    return $result;
 }
 function ict_respond(int $status, array $data): void {
     http_response_code($status);
@@ -197,38 +187,44 @@ function ict_run(): void {
     try {
         $host = strtolower((string)($_SERVER['HTTP_HOST'] ?? ''));
         if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') ict_fail('Alleen POST toegestaan.', 405);
-        if (!in_array($host, ['eaimodel.nl','www.eaimodel.nl'], true) ||
-            ($_SERVER['HTTP_ORIGIN'] ?? '') !== 'https://' . $host) ict_fail('Herkomst niet toegestaan.', 403);
-        if (!str_starts_with(strtolower((string)($_SERVER['CONTENT_TYPE'] ?? '')), 'application/json') ||
-            (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 2200000) ict_fail('Ongeldig verzoek.');
-        $input = json_decode(file_get_contents('php://input', false, null, 0, 2200001) ?: '', true);
-        if (!is_array($input)) ict_fail('Ongeldig verzoek.');
-        $dir = ict_private_dir(); $cfg = ict_config($dir);
+        if (!in_array($host,['eaimodel.nl','www.eaimodel.nl'],true)) ict_fail('Ongeldige website.',403);
+        $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+        $callback = $host === 'eaimodel.nl' && $origin === ICT_PORTAL &&
+            ($_SERVER['CONTENT_TYPE'] ?? '') === 'application/x-www-form-urlencoded';
+        if (!$callback && $origin !== 'https://'.$host) ict_fail('Herkomst niet toegestaan.',403);
+        if (!$callback && !str_starts_with(strtolower($_SERVER['CONTENT_TYPE'] ?? ''),'application/json')) ict_fail('Ongeldig verzoek.');
+        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0)>2200000) ict_fail('Te groot verzoek.');
         ini_set('session.use_strict_mode','1'); ini_set('session.use_only_cookies','1');
         session_name('ICTSCANEDITOR'); session_set_cookie_params(['lifetime'=>0, 'path'=>'/tools/ict-scan/', 'secure'=>true, 'httponly'=>true, 'samesite'=>'Strict']);
         if (!session_start()) ict_fail('Bewerksessie niet beschikbaar.', 503);
         $now = time();
-        $active = isset($_SESSION['csrf'], $_SESSION['issued'], $_SESSION['last'], $_SESSION['config']) &&
-            $_SESSION['issued'] + 14400 > $now && $_SESSION['last'] + 1800 > $now &&
-            hash_equals(hash('sha256',$cfg['hash']),$_SESSION['config']);
-        if (!$active) $_SESSION = [];
-        $action = $input['action'] ?? '';
-        if ($action === 'status') {
-            if ($active) $_SESSION['last']=$now;
-            ict_respond(200, ['unlocked'=>$active, 'csrf'=>$active?$_SESSION['csrf']:null]);
+        if ($callback) {
+            $grant = ict_portal('redeem',(string)($_POST['code'] ?? ''));
+            if (!is_string($grant['token'] ?? null) || !preg_match('/^[a-f0-9]{64}$/D',$grant['token'])) ict_fail('Aanmelding mislukt.',401);
+            if (!session_regenerate_id(true)) ict_fail('Sessie niet beschikbaar.',503);
+            $_SESSION = ['grant'=>$grant['token'],'csrf'=>bin2hex(random_bytes(32)),'issued'=>$now,'last'=>$now,'branches'=>[]];
+            header('Cache-Control: no-store'); header('Referrer-Policy: no-referrer');
+            header('Location: /tools/ict-scan/#beheer',true,303); exit;
         }
-        if ($action === 'login') {
-            ict_rate_limit($dir, $cfg);
-            $password = $input['password'] ?? '';
-            if (!is_string($password) || strlen($password)>512 || !password_verify($password,$cfg['hash'])) ict_fail('Het wachtwoord klopt niet.', 401);
-            session_regenerate_id(true);
-            $_SESSION = ['csrf'=>bin2hex(random_bytes(32)), 'issued'=>$now, 'last'=>$now, 'config'=>hash('sha256',$cfg['hash']), 'branches'=>[]];
-            ict_respond(200, ['unlocked'=>true,'csrf'=>$_SESSION['csrf']]);
+        $input=json_decode(file_get_contents('php://input',false,null,0,2200001) ?: '',true);
+        if (!is_array($input)) ict_fail('Ongeldig verzoek.');
+        $active = isset($_SESSION['grant'],$_SESSION['csrf'],$_SESSION['issued'],$_SESSION['last']) &&
+            $_SESSION['issued']+14400>$now && $_SESSION['last']+1800>$now;
+        if (!$active) $_SESSION=[];
+        $action=$input['action'] ?? '';
+        if ($active && $action !== 'logout') {
+            $check=ict_portal('check',$_SESSION['grant']);
+            if (($check['active'] ?? false)!==true) ict_fail('Aanmelding verlopen.',401);
+        }
+        if ($action==='status') {
+            if ($active) $_SESSION['last']=$now;
+            ict_respond(200,['unlocked'=>$active,'csrf'=>$active?$_SESSION['csrf']:null]);
         }
         if (!$active || !hash_equals($_SESSION['csrf'],(string)($_SERVER['HTTP_X_ICT_CSRF'] ?? ''))) ict_fail('Bewerksessie verlopen. Ontgrendel opnieuw.', 401);
         $_SESSION['last']=$now;
         if ($action === 'logout') { $_SESSION=[]; session_destroy(); ict_respond(200,['unlocked'=>false]); }
         if ($action !== 'github') ict_fail('Onbekende handeling.', 403);
+        $cfg = ict_config(ict_private_dir());
         $profile = json_decode(file_get_contents(__DIR__.'/assurance/profiles/emmauscollege.json'),true);
         if (!is_array($profile)) ict_fail('Organisatieprofiel ontbreekt.',503);
         $method = $input['method'] ?? ''; $url = $input['url'] ?? ''; $body = $input['payload'] ?? [];

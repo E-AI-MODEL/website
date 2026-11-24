@@ -85,6 +85,8 @@ class PublicMenuTests(unittest.TestCase):
         self.assertIn('/tools/science-observatory/labs/wiskunde-a/#binom', addresses)
         self.assertIn('/tools/melkweg-lab/#dynamics', addresses)
         self.assertIn('/tools/html-galerij/', addresses)
+        self.assertNotIn('/beheer/', addresses)
+        self.assertNotIn('/leif/beheer/', addresses)
         self.assertIn('/tools/abyss/', addresses)
         self.assertNotIn('/tools/science-observatory/labs/melkweg/', addresses)
         self.assertNotIn('/tools/science-observatory/labs/melkweg/#dynamics', addresses)

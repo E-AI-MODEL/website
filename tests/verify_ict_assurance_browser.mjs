@@ -131,8 +131,6 @@ async function exerciseBoundApprovals(target){
   await target.locator('#cardEditor').waitFor({state:'visible'});
   await target.locator('#cardTypeFilter').selectOption('sourceRegister');
   await target.locator('#cardNew').click();
-  await target.locator('#cardGatePassword').fill('test-editor-password');
-  await target.locator('.card-edit-gate [data-unlock]').click();
   await target.locator('#cardForm').waitFor({state:'visible'});
   assert.equal(await target.locator('#cardRecordId').innerText(),'SRC-99002','Een nieuwe bronkaart moet een geldig bron-ID met minimaal vijf cijfers krijgen');
   assert.equal(await target.locator('#cardFormFields [data-field="owner"]').inputValue(),'');
@@ -272,13 +270,12 @@ try {
   browser=await chromium.launch({headless:true});
   summary.browserVersion=browser.version();summary.playwrightVersion=packageInfo.version;
   context=await browser.newContext({viewport:{width:1440,height:960},acceptDownloads:true,reducedMotion:'reduce'});
-  let editorUnlocked=false;
+  const editorUnlocked=true;
   await context.route('**/*',async route=>{
     const request=route.request(),url=new URL(request.url());
     if(url.origin===origin&&url.pathname.endsWith('/edit-api.php')){
       const body=request.postDataJSON();let response;
       if(body.action==='status')response={unlocked:editorUnlocked,csrf:editorUnlocked?'fixture-csrf':null};
-      else if(body.action==='login'){assert.equal(body.password,'test-editor-password');editorUnlocked=true;response={unlocked:true,csrf:'fixture-csrf'};}
       else throw Error('Onverwachte schrijfroute in lokale conceptproef');
       await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(response)});return;
     }
