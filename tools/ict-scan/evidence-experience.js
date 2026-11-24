@@ -67,6 +67,27 @@
       host.append(box);
     }
   }
+  function filterAiControls(){
+    const query=byId('aiControlSearch')?.value||'',host=byId('privacyControls');
+    if(!host)return;
+    let shown=0;
+    for(const group of host.querySelectorAll('.evidence-group')){
+      let count=0;
+      for(const row of group.querySelectorAll('.evidence-row')){
+        const id=row.querySelector('[data-card-id]')?.dataset.cardId,record=state.aiControls.get(id);
+        const visible=!!record&&IctInventoryIndex.matchesRecord(record,query);
+        row.hidden=!visible;if(visible)count++;
+      }
+      group.hidden=!count;shown+=count;
+      if(query.trim()){group.open=count>0;group.dataset.searchOpened='true';}
+      else if(group.dataset.searchOpened){group.open=false;delete group.dataset.searchOpened;}
+      const label=group.querySelector('summary > span');if(label)label.textContent=fmt(count)+' beheerpunten';
+    }
+    const status=byId('aiControlCount');if(status)status.textContent=fmt(shown)+' van '+fmt(state.aiControls.size)+' beheerpunten';
+    if(byId('aiControlEmpty'))byId('aiControlEmpty').hidden=shown>0||state.aiControls.size===0;
+  }
+  byId('aiControlSearch')?.addEventListener('input',filterAiControls);
+  byId('aiControlClear')?.addEventListener('click',()=>{byId('aiControlSearch').value='';filterAiControls();byId('aiControlSearch').focus();});
   const priorPrivacy=renderPrivacy;
   renderPrivacy=function(){
     priorPrivacy();
@@ -81,7 +102,7 @@
     const grouped=new Map();
     for(const record of controls){const group=record.domain||'Overige beheerpunten';if(!grouped.has(group))grouped.set(group,[]);grouped.get(group).push(record);}
     byId('privacyControls').innerHTML=[...grouped].map(([name,records],i)=>
-      '<details class="evidence-group" '+(i===0?'open':'')+'><summary><strong>'+safe(name)+'</strong><span>'+fmt(records.length)+' beheerpunten</span></summary><div class="evidence-group-list">'+
+      '<details class="evidence-group"><summary><strong>'+safe(name)+'</strong><span>'+fmt(records.length)+' beheerpunten</span></summary><div class="evidence-group-list">'+
       records.map(r=>'<details class="evidence-row"><summary><span><small>'+safe(r.id)+'</small><strong>'+safe(r.name)+'</strong></span><span class="evidence-chevron">Toelichting</span></summary><div class="evidence-row-body">'+
         note('Advies',r.advice)+note('Waar wordt dit beheerd?',r.managementLocation)+note('Wat moet worden nagegaan?',r.action)+note('Uitvoering',r.execution)+note('Nuance',r.nuance)+note('Bron',Array.isArray(r.sources)?r.sources.join('; '):'')+
         '<button class="evidence-record-open" type="button" data-card-type="aiControls" data-card-id="'+safe(r.id)+'">Open volledige gegevenskaart</button></div></details>').join('')+
@@ -93,6 +114,7 @@
         note('Wat is beoordeeld?',r.description)+note('Aandachtspunt volgens aangeleverde bron',r.local)+note('Status van de bronvermelding',r.evidence)+note('Bronpeildatum',r.sourceDate)+note('Bron',Array.isArray(r.sources)?r.sources.join('; '):'')+
         '<button class="evidence-record-open" type="button" data-card-type="dpia" data-card-id="'+safe(r.id)+'">Open volledige gegevenskaart</button></div></details>';
     }).join('')||'<div class="no-results">Geen DPIA-onderwerpen gevonden.</div>';
+    filterAiControls();
     for(const node of document.querySelectorAll('#privacyDpia [data-card-id],#privacyControls [data-card-id]')){
       node.addEventListener('click',()=>openCard(node.dataset.cardType,node.dataset.cardId));
     }
@@ -254,7 +276,7 @@
   selectView=function(view){beforeSelect(view);if(view==='devices')renderDevices();if(viewNames[view])updatePath(view);};
   document.addEventListener('click',e=>{
     const tab=e.target.closest('.scene-tab');
-    if(tab)queueMicrotask(()=>updatePath(state.view));
+    if(tab||e.target.closest('[data-ai-inspect],.ai-summary-head button'))queueMicrotask(()=>updatePath(state.view));
     const deviceLink=e.target.closest('#viewDevices [data-open]');
     if(deviceLink){e.preventDefault();selectView(deviceLink.dataset.open);}
   });

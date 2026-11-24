@@ -233,9 +233,11 @@
           groups[bucket].push({type,id:record.id,name:record.name,note,followUp,status:status||links[0].followUpStatus||'Open'});
         }
       }
-      const features=records('ai');
-      return {groups,featureCount:features.length,unknownCount:features.filter(record=>unknown(record.local)).length,
-        possibleHighRisk:features.filter(record=>/mogelijk hoog risico/i.test(record.aiAct||'')).map(record=>({id:record.id,name:record.name,product:record.product,local:record.local}))};
+      const features=records('ai').filter(record=>!get('ai',record.id)?.derived);
+      const feature=record=>({id:record.id,name:record.name,product:record.product,local:record.local});
+      const unknownLocal=features.filter(record=>unknown(record.local)).map(feature);
+      return {groups,featureCount:features.length,unknownCount:unknownLocal.length,unknownLocal,
+        possibleHighRisk:features.filter(record=>/mogelijk hoog risico/i.test(record.aiAct||'')).map(feature)};
     }
     return Object.freeze({
       version:VERSION,nodes,edges,errors,sourceCoverage,

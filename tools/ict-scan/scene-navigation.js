@@ -7,13 +7,13 @@
     apps:[['Applicaties zoeken',3]],
     connections:[['Koppelingen in cijfers',2],['Koppelingen zoeken',3]],
     devices:[['Apparaten in cijfers',3],['Meetgegevens',1]],
-    ai:[['Tussenstand',1],['AI per lesfase',2],['AI-functies',2],['AI-instellingen en beheer',1]],
+    ai:[['Stand van zaken',1],['AI per lesfase',1],['AI-functies',1],['Instellingen en beheer',1]],
     privacy:[['Privacyonderzoeken',3],['Wet- en regelgeving',1]],
     findings:[['Controle-uitkomsten',3],['Controles en acties',4]],
     reports:[['Rapport kiezen',2],['Rapport downloaden',2]],
     sources:[['Bronbestanden ophalen',3],['Bestanden en wijzigingen',3],['Broninformatie',2]]
   };
-  const leading={ai:2,apps:1};
+  const leading={apps:1};
   const scenes=new Map();
   const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
   function show(view,index,animate=true){
@@ -94,10 +94,7 @@
     if(searches[view]&&document.getElementById(searches[view])?.value.trim())show(view,view==='ai'?2:1,false);
     scenes.get(view).frame.scrollTop=0;
   };
-  // The school AI mode has no analytical chart yet: show the actual records,
-  // rather than a nearly empty introductory screen.
-  document.getElementById('aiModeSchool')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',2)));
-  document.getElementById('aiModeKlas')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',1)));
+  // Scope controls belong to the function browser; the other three scenes retain their own population.
   // Open the record list rather than leaving a filtered graph on screen.
   for(const [chart,view] of [['connectionChart','connections'],['phaseChart','ai'],['aiProducts','ai'],['findingsChart','findings']]){
     document.getElementById(chart)?.addEventListener('click',e=>{

@@ -1,10 +1,10 @@
 'use strict';
 /* Parsing and reporting run locally. Explicit user actions can save a snapshot or propose GitHub changes. */
 const $ = (id) => document.getElementById(id);
-const state = {apps:new Map(),ai:new Map(),connections:new Map(),checks:new Map(),devices:new Map(),hardwareGroups:new Map(),parts:new Map(),dpia:new Map(),aiControls:new Map(),policyDocs:new Map(),signals:new Map(),candidates:new Map(),licenseReview:new Map(),workActions:new Map(),softwareReview:new Map(),faqs:new Map(),sourceRegister:new Map(),sourceRegisterLoaded:false,sources:[],docs:[],view:'overview',findingMode:'registered',aiMode:'klas',area:'',type:'',phase:'',aiProduct:'',ready:false,metadata:null};
+const state = {apps:new Map(),ai:new Map(),connections:new Map(),checks:new Map(),devices:new Map(),hardwareGroups:new Map(),parts:new Map(),dpia:new Map(),aiControls:new Map(),policyDocs:new Map(),signals:new Map(),candidates:new Map(),licenseReview:new Map(),workActions:new Map(),softwareReview:new Map(),faqs:new Map(),sourceRegister:new Map(),sourceRegisterLoaded:false,sources:[],docs:[],view:'overview',findingMode:'registered',aiMode:'all',aiStatusFilter:'',area:'',type:'',phase:'',aiProduct:'',ready:false,metadata:null};
 const viewNames={overview:'Overzicht',apps:'Applicaties',connections:'Koppelingen vanuit Entra',ai:'AI-functies',findings:'Controles',sources:'Bronnen'};
 const viewTitles={overview:'ICT-overzicht',apps:'Applicaties en diensten',connections:'Koppelingen vanuit Entra',ai:'AI-functies',findings:'Controles',sources:'Gegevensbronnen'};
-const sectionTexts={overview:'Applicaties, koppelingen, apparaten en AI-functies van de school.',apps:'Applicaties, gebruik, verantwoordelijken en licenties.',connections:'Geregistreerde koppelingen vanuit Microsoft Entra. Actief gebruik is niet altijd bevestigd.',ai:'AI-functies in het onderwijs en de schoolorganisatie.',findings:'Controlepunten, ontbrekende gegevens en openstaande acties.',sources:'Bronbestanden ophalen, importeren en controleren.'};
+const sectionTexts={overview:'Applicaties, koppelingen, apparaten en AI-functies van de school.',apps:'Applicaties, gebruik, verantwoordelijken en licenties.',connections:'Geregistreerde koppelingen vanuit Microsoft Entra. Actief gebruik is niet altijd bevestigd.',ai:'Bekijk de schoolbrede stand van zaken, AI-functies en instellingen.',findings:'Controlepunten, ontbrekende gegevens en openstaande acties.',sources:'Bronbestanden ophalen, importeren en controleren.'};
 const inventoryMetadata=Object.freeze({title:'Applicatielandschap Emmauscollege',firstInventoryStarted:'2026-08-10',compiledBy:'Hans Visser'});
 const legalSources=[
  {name:'Kennisnet | IBP-normenkader',url:'https://normenkaderibp.kennisnet.nl/',description:'Informatiebeveiliging, privacy, verantwoordelijken en schoolafspraken.'},
@@ -223,47 +223,93 @@ function renderAiProgress(){
  const root=$('aiProgress');if(!root)return;
  root.replaceChildren();
  const ix=window.IctInventoryIndex?.build(state);
- if(!ix?.aiProgress){root.textContent='De tussenstand is nog niet beschikbaar.';return;}
+ if(!ix?.aiProgress){root.textContent='De stand van zaken is nog niet beschikbaar.';return;}
  const report=ix.aiProgress();
- const textEl=(tag,cls,value)=>{const el=document.createElement(tag);if(cls)el.className=cls;el.textContent=value;return el;};
+ const el=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=value;return n;};
+ const button=(label,cls,fn)=>{const b=el('button',cls,label);b.type='button';b.addEventListener('click',fn);return b;};
  const openCard=(type,id)=>window.EmmausRecordCards?.open(type,id);
- const metrics=document.createElement('div');metrics.className='ai-progress-metrics';
- for(const [value,label] of [[report.featureCount,'Beschreven AI-functies'],[report.unknownCount,'Lokale status niet vastgesteld'],[report.possibleHighRisk.length,'Mogelijk hoog risico (indicatie)']]){
-   const el=document.createElement('div');el.className='ai-progress-metric';el.append(textEl('strong','',String(value)),textEl('span','',label));metrics.append(el);
+ const inspect=status=>{
+   state.aiMode='all';state.aiStatusFilter=status;state.phase='';state.aiProduct='';$('aiSearch').value='';
+   renderAi();window.EmmausScenes?.show('ai',2,false);$('aiSearch').focus({preventScroll:true});
+ };
+ const header=el('div','ai-summary-head');
+ const title=el('div');title.append(el('h2','','Stand van zaken'),el('p','','Schoolbreed · registraties uit alle gebruiksgebieden'));
+ header.append(title,button('Bekijk alle AI-functies  ›','ai-text-action',()=>inspect('')));root.append(header);
+ const coverage=el('section','ai-coverage');
+ const heading=el('div','ai-coverage-head');
+ heading.append(el('h3','','Wat weten we over de AI-functies?'),el('span','ai-population',report.featureCount+' beschreven functies'));
+ coverage.append(heading);
+ const measurements=el('div','ai-coverage-measures');
+ for(const [key,value,label,description] of [
+   ['unknown',report.unknownCount,'Lokale status onbekend','Nog niet vastgesteld of en hoe de functie op school beschikbaar is.'],
+   ['risk',report.possibleHighRisk.length,'Mogelijk hoog risico','Indicatie uit de registratie; geen juridische risicoclassificatie.']
+ ]){
+   const row=button(undefined,'ai-coverage-metric',()=>inspect(key));row.dataset.aiInspect=key;
+   const line=el('span','ai-measure-line');line.append(el('strong','',label),el('span','ai-measure-number',value+' / '+report.featureCount));
+   const track=el('span','ai-measure-track');track.setAttribute('aria-hidden','true');
+   const fill=el('span','ai-measure-fill');fill.style.width=(report.featureCount?100*value/report.featureCount:0)+'%';track.append(fill);
+   const foot=el('span','ai-measure-foot');foot.append(el('span','',description),el('span','ai-measure-arrow','Bekijk ›'));
+   row.append(line,track,foot);measurements.append(row);
  }
- root.append(metrics);
- const grid=document.createElement('div');grid.className='ai-progress-grid';
- for(const [key,title] of [['good','Wat gaat goed'],['open','Waar moet nog naar gekeken worden'],['unknown','Waar is nog geen zicht op']]){
-   const panel=document.createElement('section');panel.className='ai-progress-group';panel.dataset.progress=key;
-   panel.append(textEl('h3','',title));
-   const entries=report.groups[key];
-   if(!entries.length)panel.append(textEl('p','ai-progress-empty','Geen beoordeelde punten in deze selectie.'));
-   for(const item of entries){
-     const button=document.createElement('button');button.type='button';button.className='ai-progress-row';
-     button.append(textEl('strong','',item.name),textEl('span','',item.note||item.status));
-     if(item.followUp&&item.followUp!==item.note)button.append(textEl('small','','Vervolg: '+item.followUp));
-     button.addEventListener('click',()=>openCard(item.type,item.id));panel.append(button);
-   }
+ coverage.append(measurements,el('p','ai-evidence-note','De groepen kunnen overlappen. Een beschreven functie is niet automatisch ingeschakeld.'));
+ root.append(coverage);
+ const heading2=el('div','ai-followup-head');heading2.append(el('h2','','Maatregelen en vervolgacties'),el('p','','Open een registratie voor de volledige toelichting, bronnen en bewerkknop. De indeling volgt de vastgelegde statussen.'));
+ root.append(heading2);
+ const grid=el('div','ai-progress-grid');
+ for(const [key,name,caption] of [
+   ['good','Maatregelen gemeld','Afgerond of in uitvoering volgens de registratie.'],
+   ['open','Nog te controleren','Beoordeling of vervolgactie staat nog open.'],
+   ['unknown','Informatie ontbreekt','Status volgens de registratie niet inzichtelijk.']
+ ]){
+   const panel=el('section','ai-progress-group');panel.dataset.progress=key;
+   const entries=report.groups[key],head=el('header','ai-group-head'),line=el('div','ai-group-title');
+   line.append(el('span','ai-group-dot'),el('h3','',name),el('span','ai-group-count',String(entries.length)));
+   head.append(line,el('p','',caption));panel.append(head);
+   const makeRow=item=>{
+     const row=button(undefined,'ai-progress-row',()=>openCard(item.type,item.id));
+     row.dataset.recordId=item.id;row.dataset.recordType=item.type;
+     row.setAttribute('aria-label','Open registratie '+item.name);
+     const rowTitle=el('span','ai-row-title');rowTitle.append(el('strong','',item.name),el('span','ai-row-arrow','›'));
+     row.append(rowTitle);
+     if(item.status)row.append(el('span','ai-row-status',item.status));
+     if(item.followUp&&item.followUp!==item.note)row.append(el('span','ai-row-next','Vervolg: '+item.followUp));
+     else if(item.note)row.append(el('span','ai-row-next',item.note));
+     return row;
+   };
+   if(!entries.length)panel.append(el('p','ai-progress-empty','Geen registraties in deze groep.'));
+   const list=el('div','ai-progress-rows');entries.slice(0,3).forEach(item=>list.append(makeRow(item)));panel.append(list);
+   if(entries.length>3){const details=el('details','ai-group-more');details.append(el('summary','','Toon overige '+(entries.length-3)+' registraties'));const more=el('div','ai-progress-rows');entries.slice(3).forEach(item=>more.append(makeRow(item)));details.append(more);panel.append(details);}
    grid.append(panel);
  }
- root.append(grid);
- const details=document.createElement('details');details.className='ai-progress-risk';
- details.append(textEl('summary','',report.possibleHighRisk.length+' functies met een indicatie mogelijk hoog risico'));
- for(const item of report.possibleHighRisk){
-   const button=document.createElement('button');button.type='button';button.className='ai-progress-row';
-   button.append(textEl('strong','',[item.product,item.name].filter(Boolean).join(' · ')),textEl('span','',item.local||'Lokale status niet vastgesteld'));
-   button.addEventListener('click',()=>openCard('ai',item.id));details.append(button);
- }
- root.append(details);
+ root.append(grid,el('p','ai-evidence-note','Gemelde maatregelen zijn geen formele goedkeuring. De drie kolommen tellen registraties met AI Act-verwijzingen, niet AI-functies.'));
 }
 function renderAi(){const ai=array(state.ai).filter(isClassroomAi);const phaseMap=new Map();for(const item of ai)for(const phase of IctScanTaxonomy.chartPhases(item))phaseMap.set(phase,(phaseMap.get(phase)||0)+1);
- barChart('phaseChart',[...phaseMap.entries()],12,label=>{state.phase=state.phase===label?'':label;renderAiList();});const counts=new Map();for(const x of ai){const p=x.product||'Onbekend';counts.set(p,(counts.get(p)||0)+1);}barChart('aiProducts',[...counts.entries()],11,label=>{state.aiProduct=state.aiProduct===label?'':label;renderAiList();});
- $('aiClassPanels').hidden=state.aiMode!=='klas';$('aiSchoolPanels').hidden=state.aiMode!=='school';
- $('aiModeKlas').classList.toggle('is-active',state.aiMode==='klas');$('aiModeSchool').classList.toggle('is-active',state.aiMode==='school');
- $('aiDescription').textContent=state.aiMode==='klas'?'Concrete AI-handelingen bij het voorbereiden, uitvoeren en evalueren van onderwijs. Lesfasen en didactische toelichtingen zijn uit de bron overgenomen.':'Beschreven AI-functies voor de schoolorganisatie. Beheerpunten staan apart; FG-bronnen vallen niet onder deze inventarisatie.';
+ barChart('phaseChart',[...phaseMap.entries()],12,label=>{state.aiMode='klas';state.aiStatusFilter='';$('aiSearch').value='';state.phase=state.phase===label?'':label;renderAiList();});const counts=new Map();for(const x of ai){const p=x.product||'Onbekend';counts.set(p,(counts.get(p)||0)+1);}barChart('aiProducts',[...counts.entries()],11,label=>{state.aiMode='klas';state.aiStatusFilter='';$('aiSearch').value='';state.aiProduct=state.aiProduct===label?'':label;renderAiList();});
+ $('aiClassPanels').hidden=false;
  renderAiProgress();renderAiCompliance();renderAiList();}
 function renderAiCompliance(){const notes=(id,items,columns)=>{const element=$(id);element.innerHTML=items.length?items.map(x=>'<details class="record-note"><summary>'+esc(x.name)+' <span class="note-tag">'+esc(x.id)+'</span></summary><p><strong>'+esc(columns[0])+': </strong>'+esc(x[columns[1]]||'Nog niet vastgesteld')+'</p><p><strong>Beoordeling / status: </strong>'+esc(x.assessment||x.local||'Nog te controleren')+'</p></details>').join(''):'<div class="no-results">Geen brongegevens gevonden.</div>';};notes('dpiaList',array(state.dpia),['Wat is vastgesteld','description']);notes('aiAdminList',array(state.aiControls),['Wat doet dit','description']);}
-function renderAiList(){const q=normalize($('aiSearch').value);const list=array(state.ai).filter(x=>(state.aiMode==='klas'?isClassroomAi(x):IctScanTaxonomy.isSchoolAi(x))&&(!q||normalize([x.id,x.name,x.product,x.action,x.phase,x.learning,x.attention,x.unknown].join(' ')).includes(q))&&(!state.phase||IctScanTaxonomy.phases(x).includes(state.phase))&&(!state.aiProduct||x.product===state.aiProduct)).sort((a,b)=>a.id.localeCompare(b.id,'nl'));$('aiCount').textContent=list.length+' functies';renderList('aiList',list,'ai',115);}
+function renderAiList(){
+ const ix=IctInventoryIndex.build(state),report=ix.aiProgress();
+ const all=ix.records('ai').filter(x=>!ix.get('ai',x.id)?.derived);
+ const scope=all.filter(x=>state.aiMode==='all'||(state.aiMode==='klas'?isClassroomAi(x):IctScanTaxonomy.isSchoolAi(x)));
+ for(const [id,mode] of [['aiModeAll','all'],['aiModeKlas','klas'],['aiModeSchool','school']]){
+   const active=state.aiMode===mode;$(id).classList.toggle('is-active',active);$(id).setAttribute('aria-pressed',String(active));
+ }
+ $('aiSchoolPanels').hidden=state.aiMode!=='school';
+ $('aiDescription').textContent=state.aiMode==='all'?'Alle beschreven functies, ook zonder bevestigde lokale inzet.':state.aiMode==='klas'?'Functies binnen het onderwijsleerproces.':'Functies voor de schoolorganisatie, buiten het onderwijsleerproces.';
+ const products=[...new Set(scope.map(x=>x.product||'Onbekend'))],phases=[...new Set(scope.flatMap(x=>IctScanTaxonomy.chartPhases(x)))];
+ if(!products.includes(state.aiProduct))state.aiProduct='';
+ if(!phases.includes(state.phase))state.phase='';
+ fillSelect('aiFilterProduct',products,state.aiProduct);fillSelect('aiFilterPhase',phases,state.phase);
+ $('aiPhaseFilterField').hidden=!phases.length;$('aiStatusFilter').value=state.aiStatusFilter||'';
+ const ids=new Set((state.aiStatusFilter==='unknown'?report.unknownLocal:state.aiStatusFilter==='risk'?report.possibleHighRisk:[]).map(x=>x.id));
+ const q=$('aiSearch').value;
+ const list=scope.filter(x=>IctInventoryIndex.matchesRecord(x,q)&&(!state.phase||IctScanTaxonomy.chartPhases(x).includes(state.phase))&&(!state.aiProduct||(x.product||'Onbekend')===state.aiProduct)&&(!state.aiStatusFilter||ids.has(x.id))).sort((a,b)=>(a.product||'').localeCompare(b.product||'','nl')||a.name.localeCompare(b.name,'nl')||a.id.localeCompare(b.id,'nl'));
+ $('aiCount').textContent=list.length+' van '+scope.length+' functies';
+ $('aiClearFilters').disabled=!(q.trim()||state.phase||state.aiProduct||state.aiStatusFilter);
+ renderList('aiList',list,'ai',Math.max(115,list.length));
+}
+
 function allFindings(){return array(state.checks).map(x=>({...x,source:(x.sources||[]).join('; ')}));}
 function renderFindings(){renderWorkActions();const registered=allFindings(),generated=state.derived,all=state.findingMode==='registered'?registered:generated;const rawSources=state.sources.filter(x=>x.kind==='controles'),sourceRows=rawSources.reduce((n,x)=>n+x.rows,0);$('findingsSummary').innerHTML='<span class="finding-chip"><strong>'+registered.length+'</strong>vastgelegde controlepunten</span><span class="finding-chip"><strong>'+generated.length+'</strong>automatische signalen</span>'+(rawSources.length?'<span class="finding-chip"><strong>'+sourceRows+'</strong>ruwe controleregels (tabelimport)</span>':'<span class="finding-chip">Oorspronkelijk aantal controleregels niet beschikbaar in de ingelezen registratie.</span>');$('modeRegistered').classList.toggle('is-active',state.findingMode==='registered');$('modeSignals').classList.toggle('is-active',state.findingMode==='signals');const counts=groupCounts(all,'category');fillSelect('findingsFilter',counts.map(x=>x[0]));const q=normalize($('findingsSearch').value),filter=$('findingsFilter').value;const found=all.filter(x=>(!q||normalize([x.name,x.category,x.explanation].join(' ')).includes(q))&&(!filter||x.category===filter));$('findingsCount').textContent=found.length+(state.findingMode==='registered'?' controles':' signalen');renderList('findingsList',found,'check',140);}
 function renderSources(){const meta={...inventoryMetadata,...(state.metadata||{})};const info=$('inventoryInfo');if(info){const date=/^\d{4}-\d{2}-\d{2}$/.test(meta.firstInventoryStarted||'')?new Date(meta.firstInventoryStarted+'T00:00:00').toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'}):String(meta.firstInventoryStarted||'');info.textContent='Eerste inventarisatie gestart: '+date+' · Samenstelling: '+meta.compiledBy+'.';}const wrap=$('sourceList');wrap.innerHTML=state.sources.length?state.sources.map(s=>'<div class="source-row"><div><strong>'+esc(s.kind==='financieel'?'ICT-registratie 2026':s.name)+'</strong><small>'+esc(s.info||'')+'</small></div><span class="chip">'+esc(s.kind)+'</span><span class="result-count">'+s.rows+' rijen</span></div>').join(''):'<div class="no-results">Nog geen bronnen toegevoegd.</div>';$('policyDocs').innerHTML=array(state.policyDocs).length?array(state.policyDocs).map(x=>'<div class="source-row"><div><strong>'+esc(x.name)+'</strong><small>'+esc(x.purpose||'')+'</small></div><span class="chip caution">'+esc(short(x.status||'Niet vastgesteld',42))+'</span></div>').join(''):'<div class="no-results">Geen beleidstukken in de bronnen gevonden.</div>';const legal=$('legalList');legal.innerHTML=legalSources.map(x=>'<div class="legal-item"><div><strong>'+esc(x.name)+'</strong><p>'+esc(x.description)+'</p></div><a href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer">Bron bekijken &#8594;</a></div>').join('');}
@@ -424,7 +470,8 @@ function installEvents(){
    if(now-lastKey<650){lastKey=0;openWorkspace();}
    else lastKey=now;
  });
- const choose=()=>$('fileInput').click();for(const id of ['topImport','emptyImport','sourcesImport'])$(id).addEventListener('click',choose);$('fileInput').addEventListener('change',async e=>{const files=Array.from(e.target.files||[]);e.target.value='';await handleFiles(files);});for(const el of document.querySelectorAll('[data-view]'))el.addEventListener('click',()=>selectView(el.dataset.view));for(const el of document.querySelectorAll('[data-open]'))el.addEventListener('click',()=>selectView(el.dataset.open));$('candidatesSearch').addEventListener('input',renderCandidates);$('licenseSearch').addEventListener('input',renderLicenseReview);$('workSearch').addEventListener('input',renderWorkActions);$('softwareReviewSearch').addEventListener('input',renderSoftwareReview);for(const id of ['appsSearch','connectionsSearch','aiSearch','findingsSearch'])$(id).addEventListener('input',()=>({appsSearch:renderApps,connectionsSearch:renderConnections,aiSearch:renderAiList,findingsSearch:renderFindings}[id])());for(const [id,mode] of [['aiModeKlas','klas'],['aiModeSchool','school']])$(id).addEventListener('click',()=>{state.aiMode=mode;state.phase='';state.aiProduct='';renderAi();});
+ const choose=()=>$('fileInput').click();for(const id of ['topImport','emptyImport','sourcesImport'])$(id).addEventListener('click',choose);$('fileInput').addEventListener('change',async e=>{const files=Array.from(e.target.files||[]);e.target.value='';await handleFiles(files);});for(const el of document.querySelectorAll('[data-view]'))el.addEventListener('click',()=>selectView(el.dataset.view));for(const el of document.querySelectorAll('[data-open]'))el.addEventListener('click',()=>selectView(el.dataset.open));$('candidatesSearch').addEventListener('input',renderCandidates);$('licenseSearch').addEventListener('input',renderLicenseReview);$('workSearch').addEventListener('input',renderWorkActions);$('softwareReviewSearch').addEventListener('input',renderSoftwareReview);for(const id of ['appsSearch','connectionsSearch','aiSearch','findingsSearch'])$(id).addEventListener('input',()=>({appsSearch:renderApps,connectionsSearch:renderConnections,aiSearch:renderAiList,findingsSearch:renderFindings}[id])());for(const [id,mode] of [['aiModeAll','all'],['aiModeKlas','klas'],['aiModeSchool','school']])$(id).addEventListener('click',()=>{state.aiMode=mode;state.phase='';state.aiProduct='';state.aiStatusFilter='';renderAi();});
+ for(const [id,key] of [['aiFilterProduct','aiProduct'],['aiFilterPhase','phase'],['aiStatusFilter','aiStatusFilter']])$(id).addEventListener('change',()=>{state[key]=$(id).value;renderAi();});$('aiClearFilters').addEventListener('click',()=>{state.phase='';state.aiProduct='';state.aiStatusFilter='';$('aiSearch').value='';renderAi();$('aiSearch').focus();});
  $('modeRegistered').addEventListener('click',()=>{state.findingMode='registered';$('findingsFilter').value='';renderFindings();});$('modeSignals').addEventListener('click',()=>{state.findingMode='signals';$('findingsFilter').value='';renderFindings();});for(const id of ['appsArea','appsType'])$(id).addEventListener('change',()=>{state.area=$('appsArea').value;state.type=$('appsType').value;renderApps();});$('findingsFilter').addEventListener('change',renderFindings);
  $('topPdf').addEventListener('click',exportPdf);$('exportPdf').addEventListener('click',exportPdf);$('exportExcel').addEventListener('click',exportWorkbook);$('exportJson').addEventListener('click',exportJson);const zone=$('dropzone');for(const event of ['dragenter','dragover'])zone.addEventListener(event,e=>{e.preventDefault();zone.classList.add('dragging');});for(const event of ['dragleave','drop'])zone.addEventListener(event,e=>{e.preventDefault();zone.classList.remove('dragging');});zone.addEventListener('drop',async e=>{await handleFiles(Array.from(e.dataTransfer?.files||[]));});}
 $('reportDate').textContent=new Date().toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'});installEvents();renderSources();
