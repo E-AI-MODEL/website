@@ -104,7 +104,7 @@ test('Leeuw: bronrecords, publicatieroute, zeven standen en onafhankelijke reken
   assert.equal(data.stars.length, 9);
   assert.equal(new Set(data.stars.map(s=>s[0])).size, 9);
   assert.ok(data.paths.flat().every(id=>data.stars.some(s=>s[0]===id)));
-  assert.equal((html.match(/class="nav-btn" data-mode=/g)||[]).length,7);
+  assert.equal((html.match(/class="nav-btn(?: active)?" data-mode=/g)||[]).length,7);
   const ctx = {window:{},document:{getElementById:()=>({textContent:JSON.stringify(data)})}};
   const script=html.match(/<script id="leo-model">([^]*?)<\/script>/)[1];
   new Function('window','document',script)(ctx.window,ctx.document);
@@ -124,4 +124,15 @@ test('Leeuw: bronrecords, publicatieroute, zeven standen en onafhankelijke reken
   assert.ok(Math.abs(m.gmst(Date.UTC(2000,0,1,12))-280.46061837)<1e-8);
   const h=m.horizon({ra:0,dec:0},Date.UTC(2000,0,1,12),0,-280.46061837);
   assert.ok(Math.abs(h.alt-90)<1e-6);
+});
+
+test('Leeuw gebruikt vaste Melkweg-console en behoudt de projectiebediening', () => {
+  const html=load('content/science-observatory/labs/leeuw.html');
+  for(const id of ['app','navigation','stage','scene','quickRange','labDock','graphToggle','spin','chart','panelClose']) assert.match(html,new RegExp('id="'+id+'"'));
+  assert.match(html,/height:100dvh/);
+  assert.match(html,/position:fixed;inset:0/);
+  assert.match(html,/function startIntro\(/);
+  assert.match(html,/s\.blend=s\.anim\.from\+/);
+  assert.match(html,/Math\.min\(2\.5,r\)/);
+  assert.match(html,/line\(c,a,b,"#9ab9cf8c",\.65\)/);
 });
