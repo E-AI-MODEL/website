@@ -81,7 +81,7 @@
       group.hidden=!count;shown+=count;
       if(query.trim()){group.open=count>0;group.dataset.searchOpened='true';}
       else if(group.dataset.searchOpened){group.open=false;delete group.dataset.searchOpened;}
-      const label=group.querySelector('summary > span');if(label)label.textContent=fmt(count)+' beheerpunten';
+      const label=group.querySelector('summary > span');if(label)label.textContent=fmt(count)+(count===1?' beheerpunt':' beheerpunten');
     }
     const status=byId('aiControlCount');if(status)status.textContent=fmt(shown)+' van '+fmt(state.aiControls.size)+' beheerpunten';
     if(byId('aiControlEmpty'))byId('aiControlEmpty').hidden=shown>0||state.aiControls.size===0;

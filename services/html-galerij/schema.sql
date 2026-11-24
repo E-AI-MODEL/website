@@ -14,3 +14,27 @@ CREATE TABLE IF NOT EXISTS upload_limits (
   count INTEGER NOT NULL DEFAULT 1,
   PRIMARY KEY (visitor_hash, hour)
 );
+
+-- Login attempts are counted per hashed client and globally in fixed 15-minute windows.
+CREATE TABLE IF NOT EXISTS gallery_login_attempts (
+  bucket TEXT NOT NULL,
+  window INTEGER NOT NULL,
+  count INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (bucket, window)
+);
+CREATE TABLE IF NOT EXISTS gallery_sessions (
+  token_hash TEXT PRIMARY KEY,
+  email TEXT NOT NULL,
+  expires_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_gallery_sessions_expiry ON gallery_sessions(expires_at);
+
+-- Auditable administration. Never include passwords, cookie tokens, IPs, or uploaded HTML.
+CREATE TABLE IF NOT EXISTS site_admin_audit (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  actor TEXT NOT NULL,
+  action TEXT NOT NULL,
+  target TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_site_admin_audit_created ON site_admin_audit(created_at DESC);

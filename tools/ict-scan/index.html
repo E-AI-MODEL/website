@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="./dashboard-composer.css?v=20261124view1">
 <link rel="stylesheet" href="./composer-resize.css?v=20261123a">
 <link rel="stylesheet" href="./relationship-orbit.css?v=20261121a">
-<link rel="stylesheet" href="./ux-clarity.css?v=20261124view2">
+<link rel="stylesheet" href="./ux-clarity.css?v=20261124fixed1">
 <script defer src="./assurance/profile.js?v=20261123h"></script>
 <script defer src="./organisation.js?v=20261121b" data-profile="./assurance/profiles/emmauscollege.json"></script>
 <script defer src="./assurance/source-register.js?v=20261121d"></script>
@@ -36,7 +36,7 @@
 <script defer src="./inventory-index.js?v=20261124aiux2"></script>
 <link rel="stylesheet" href="./report-print.css?v=20261124view2">
 <script defer src="./report-print.js?v=20261124view1"></script>
-<script defer src="./app.js?v=20261124aiux2"></script>
+<script defer src="./app.js?v=20261124fixed1"></script>
 <script defer src="./enhancements.js?v=20261124aiux1"></script>
 <script defer src="./document-library.js?v=20261124a"></script>
 <link rel="stylesheet" href="./document-library.css?v=20261124a">
@@ -47,8 +47,8 @@
 <script defer src="./record-cards.js?v=20261124explorer3"></script>
 <script defer src="./record-github.js?v=20261124shared1"></script>
 <script defer src="./answer-engine.js?v=20261124ux4"></script>
-<script defer src="./scene-navigation.js?v=20261124aiux1"></script>
-<script defer src="./evidence-experience.js?v=20261124aiux2"></script>
+<script defer src="./scene-navigation.js?v=20261124fixed1"></script>
+<script defer src="./evidence-experience.js?v=20261124fixed1"></script>
 <script defer src="./role-modes.js?v=20261124r1"></script>
 <script defer src="./dashboard-composer.js?v=20261124view2"></script>
 <script defer src="./composer-resize.js?v=20261123a"></script>
@@ -245,9 +245,9 @@
   <div id="assuranceChecks" class="assurance-checks" aria-label="Uitkomsten van de controles"></div>
   <div class="assurance-actions"><button type="button" class="monitor-button subtle" id="assuranceRun">Opnieuw controleren</button><button type="button" class="monitor-button subtle" id="assuranceExport" disabled>Download controleverslag (JSON)</button></div>
   <p class="panel-foot">De uitslag geldt voor de gecontroleerde registraties. Het is geen goedkeuring van een systeem of organisatie.</p>
-  <details id="assuranceDetails" class="assurance-details"><summary>Bekijk aandachtspunten</summary><div id="assuranceFindings"></div></details>
+  <div id="assuranceDetailArea">  <details id="assuranceDetails" class="assurance-details"><summary>Bekijk aandachtspunten</summary><div id="assuranceFindings"></div></details>
   <details class="assurance-details"><summary>Vergelijken met een eerdere stand</summary><p id="assuranceBaselineNote" class="assurance-baseline-note">Nog geen vergelijkingsstand gekozen.</p><div class="assurance-actions"><button type="button" class="monitor-button subtle" id="assuranceSaveBaseline" disabled>Gebruik deze stand als vergelijking</button><button type="button" class="monitor-button subtle" id="assuranceExportBaseline" disabled>Bewaar vergelijkingsbestand</button><button type="button" class="monitor-button subtle" id="assuranceClearBaseline" disabled>Vergelijking verwijderen</button></div><label class="assurance-baseline-note" for="assuranceBaselineInput">Open een bewaard vergelijkingsbestand</label><input class="assurance-baseline-input" id="assuranceBaselineInput" type="file" accept=".json,application/json"><p class="assurance-baseline-note">Bewaar het bestand om deze vergelijking later opnieuw te gebruiken.</p></details>
-  <details class="assurance-distribution"><summary>Open punten per onderwerp</summary><div id="findingsChart" class="bars"></div></details>
+  <details class="assurance-distribution"><summary>Open punten per onderwerp</summary><div id="findingsChart" class="bars"></div></details></div>
 </article><article class="panel intro-panel"><h2>Controlepunten</h2><p>Een open punt is geen vastgestelde fout. Je ziet welke informatie nodig is om iets te kunnen bevestigen.</p></article><div id="findingsSummary" class="finding-chips"></div><div class="mode-tabs"><button type="button" id="modeRegistered" class="mode-button is-active">Vastgelegde controles</button><button type="button" id="modeSignals" class="mode-button">Aanvullende signalen</button></div><div class="list-tools"><input id="findingsSearch" type="search" placeholder="Zoek controlepunt" aria-label="Zoek controlepunt"><select id="findingsFilter" aria-label="Categorie controles"><option value="">Alle onderwerpen</option></select><span id="findingsCount" class="result-count"></span></div><div id="findingsList" class="item-list"></div>
         <details class="panel candidates-panel" id="workPanel"><summary><strong>Openstaande acties uit het werkregister</strong><small><span id="workTotal">0</span> acties</small></summary><div class="candidate-content"><div class="list-tools"><input id="workSearch" type="search" placeholder="Zoek openstaande actie" aria-label="Zoek openstaande acties"></div><div id="workList" class="item-list"></div></div></details>
       </section>
@@ -272,19 +272,22 @@
         <article class="panel github-sync-panel" id="githubSyncPanel">
           <div class="panel-head"><div><p class="panel-kicker">BRONNEN BEHEREN</p><h2>Nieuwste bronbestanden ophalen uit GitHub</h2></div><span class="github-readonly">Alleen lezen</span></div>
           <p class="github-sync-intro">Haal de nieuwste bronbestanden op uit een GitHub-map. De scanner verwerkt ze hier in de browser; er worden geen schoolbestanden teruggestuurd.</p>
-          <div class="github-sync-grid">
+          <details id="githubSyncOptions" class="github-sync-options"><summary>Broninstellingen</summary>          <div class="github-sync-grid">
             <label>Repository <input id="githubRepo" type="text" value="E-AI-MODEL/website" spellcheck="false" autocomplete="off" placeholder="E-AI-MODEL/website"></label>
             <label>Map met bronbestanden <input id="githubFolder" type="text" value="tools/ict-scan/bronnen" spellcheck="false" autocomplete="off" placeholder="tools/ict-scan/bronnen"></label>
             <label>Branch of tag <input id="githubRef" type="text" value="main" spellcheck="false" autocomplete="off"></label>
             <label>GitHub-token, alleen voor privé-repo <input id="githubToken" type="password" spellcheck="false" autocomplete="new-password" placeholder="Niet opslaan, alleen Contents: Read"></label>
           </div>
-          <div class="github-sync-toolbar">
+          <div class="github-sync-advanced-replace">
             <label class="github-sync-replace"><input id="githubReplace" type="checkbox" checked> Andere bron: huidige gegevens vervangen na geslaagde download (schoolbron wordt altijd volledig vervangen)</label>
+          </div>
+          <p class="github-sync-note">Een privé-repository vraagt een GitHub-token met uitsluitend leesrechten voor bestanden. De token wordt niet opgeslagen of geëxporteerd. De standaardmap tools/ict-scan/bronnen moet bestaan en bronbestanden bevatten.</p></details>
+          <div class="github-sync-toolbar">
             <div class="github-sync-actions"><button type="button" class="monitor-button primary" id="githubSyncStart">Vernieuwen vanuit GitHub</button><button type="button" class="monitor-button subtle" id="githubSyncCancel" hidden>Annuleren</button></div>
           </div>
           <div id="githubSyncStatus" class="github-sync-status" role="status" aria-live="polite">Bij iedere opening wordt de actuele GitHub-versie gecontroleerd. Voor een privérepository is een leestoken nodig.</div>
           <div id="githubSyncSummary" class="github-sync-summary" hidden></div>
-          <p class="github-sync-note">Een privé-repository vraagt een GitHub-token met uitsluitend leesrechten voor bestanden. De token wordt niet opgeslagen of geëxporteerd. De standaardmap tools/ict-scan/bronnen moet bestaan en bronbestanden bevatten.</p>
+
         </article>
         <div class="two-col gap-lg"><article class="panel upload-panel" id="dropzone"><div class="upload-mark">&#8682;</div><h2>Bestanden toevoegen</h2><p>Sleep bestanden hierheen of selecteer ze. De gegevens worden uitsluitend in deze browser verwerkt.</p><button class="button primary" id="sourcesImport">Bestanden selecteren</button><small>Excel, CSV, JSON, DOCX en PDF. Handmatige import maakt een lokale, niet-gecontroleerde gegevensstand. GitHub blijft de officiële bron.</small></article><article class="panel"><div class="panel-head"><div><p class="panel-kicker">RAPPORTAGE</p><h2>Exporteer het overzicht</h2></div></div><div class="export-actions"><button id="exportExcel" class="export-option"><span class="export-icon green">X</span><span><strong>Excel</strong><small>Vier leesbare bladen: schoolbreed, AI in de klas, AI in de school en controles</small></span><span>&#8594;</span></button><button id="exportPdf" class="export-option"><span class="export-icon dark">P</span><span><strong>PDF</strong><small>Leesbaar overzicht via Afdrukken / Bewaar als PDF</small></span><span>&#8594;</span></button><button id="exportJson" class="export-option"><span class="export-icon blue">J</span><span><strong>JSON</strong><small>Gecontroleerde data voor een volgende sessie</small></span><span>&#8594;</span></button></div><p class="panel-foot">Bedragen, boekingsnummers en persoonlijke accountgegevens zijn uitgesloten van de exports.</p></article></div>
         <article class="panel"><div class="panel-head"><div><p class="panel-kicker">HERKOMST</p><h2>Gebruikte bestanden</h2></div></div><div id="sourceList" class="source-list"></div></article>
