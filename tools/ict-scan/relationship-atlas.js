@@ -300,8 +300,35 @@
       }
       const points=ids.map(i=>shown[i]),xs=points.map(p=>p.x),ys=points.map(p=>p.y);
       const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
-      const spanX=maxX-minX,spanY=maxY-minY,scale=Math.min((w-2*pad)/Math.max(1,spanX),(h-2*pad)/Math.max(1,spanY),m===2?Math.min(w,h)*.32:Infinity);
-      for(const p of points){p.x=x+w/2+(p.x-(minX+maxX)/2)*scale;p.y=y+h/2+(p.y-(minY+maxY)/2)*scale;p.component=ids[0];p.radius=Math.min(3.3+Math.sqrt(p.degree)*1.65,11,Math.max(2.8,Math.min(w,h)*.11));}
+      const spanX=maxX-minX,spanY=maxY-minY;
+      const sx=(w-2*pad)/Math.max(1,spanX),sy=(h-2*pad)/Math.max(1,spanY);
+      const uniform=Math.min(sx,sy,m===2?Math.min(w,h)*.32:Infinity);
+      // Layout distances carry no measurement meaning. Give the main group
+      // the width and height assigned to it rather than compressing it into a strip.
+      const scaleX=m>8?sx:uniform,scaleY=m>8?sy:uniform;
+      for(const p of points){
+        p.x=x+w/2+(p.x-(minX+maxX)/2)*scaleX;p.y=y+h/2+(p.y-(minY+maxY)/2)*scaleY;
+        p.component=ids[0];p.radius=Math.min(3.1+Math.sqrt(p.degree)*1.4,10.5,Math.max(2.8,Math.min(w,h)*.1));
+        p.ax=p.x;p.ay=p.y;
+      }
+      // Resolve collisions between actual rendered node circles. The gentle
+      // anchor keeps local connectivity readable; no global border attraction.
+      if(m>4)for(let pass=0;pass<36;pass++){
+        for(let i=0;i<m;i++)for(let j=i+1;j<m;j++){
+          const a=points[i],b=points[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.max(.001,Math.hypot(dx,dy)),min=a.radius+b.radius+3;
+          if(d>=min)continue;
+          const ux=d<.002?Math.cos((i+j)*2.4):dx/d,uy=d<.002?Math.sin((i+j)*2.4):dy/d;
+          const push=(min-d)*.49;a.x-=ux*push;a.y-=uy*push;b.x+=ux*push;b.y+=uy*push;
+        }
+        for(const p of points){p.x+=(p.ax-p.x)*.018;p.y+=(p.ay-p.y)*.018;}
+      }
+      // A final translation/fitting operation keeps every circle inside its
+      // allotted space without pinning many unrelated nodes to the same edge.
+      const left=Math.min(...points.map(p=>p.x-p.radius)),right=Math.max(...points.map(p=>p.x+p.radius));
+      const top=Math.min(...points.map(p=>p.y-p.radius)),bottom=Math.max(...points.map(p=>p.y+p.radius));
+      const f=Math.min(1,(w-6)/Math.max(1,right-left),(h-6)/Math.max(1,bottom-top));
+      for(const p of points){p.x=x+w/2+(p.x-(left+right)/2)*f;p.y=y+h/2+(p.y-(top+bottom)/2)*f;p.radius*=f;}
+
     };
     const weight=ids=>Math.max(4,ids.length);
     const pack=(groups,x,y,w,h)=>{
@@ -321,25 +348,38 @@
     }
     svg.append(layer);
     const labelBoxes=[];
-    function clearHighlight(){svg.classList.remove('ra-network-active');for(const o of edgeEls)o.line.classList.remove('is-connected');for(const node of nodeEls)node.classList.remove('is-connected');}
+    function clearHighlight(){svg.classList.remove('ra-network-active');for(const o of edgeEls)o.line.classList.remove('is-connected');for(const node of nodeEls)node.classList.remove('is-connected');svg.querySelectorAll('.ra-network-label.is-connected').forEach(l=>l.classList.remove('is-connected'));}
     function highlight(i){
       clearHighlight();svg.classList.add('ra-network-active');
       nodeEls[i]?.classList.add('is-connected');
       for(const j of adj[i])nodeEls[j]?.classList.add('is-connected');
-      for(const o of edgeEls)if(o.a===i||o.b===i)o.line.classList.add('is-connected');
+      for(const o of edgeEls)if(o.a===i||o.b===i)o.line.classList.add('is-connected');for(const l of svg.querySelectorAll('.ra-network-label[data-label-for]'))if(+l.getAttribute('data-label-for')===i||adj[i].has(+l.getAttribute('data-label-for')))l.classList.add('is-connected');
     }
     for(const [i,p] of shown.entries()){
       const group=svgNode('g',{class:'ra-network-node','data-record-id':p.id,'data-record-type':p.type,'data-component':p.component,'aria-label':fullName(p.type,p.id)+', '+label(p.type)+', '+p.degree+' verbanden'});
       const radius=p.radius;
       group.append(svgNode('circle',{cx:p.x,cy:p.y,r:radius,fill:colors.get(p.type),stroke:'#fff','stroke-width':1.3}));
       group.append(svgNode('title',{},fullName(p.type,p.id)+' · '+p.id+' · '+p.degree+' verbanden'));
-      if(i<18||n<25){
-        const name=shorten(fullName(p.type,p.id),26),width=name.length*5.5,ly=p.y-radius-5,box={l:p.x-width/2,r:p.x+width/2,t:ly-12,b:ly+2};
-        if(box.l>6&&box.r<994&&box.t>1&&!labelBoxes.some(b=>box.l<b.r&&box.r>b.l&&box.t<b.b&&box.b>b.t)){group.append(svgText(p.x,ly,name,'ra-network-label'));labelBoxes.push(box);}
-      }
       clickNode(group,()=>selection(p.type,p.id));group.addEventListener('mouseenter',()=>highlight(i));group.addEventListener('mouseleave',clearHighlight);group.addEventListener('focus',()=>highlight(i));group.addEventListener('blur',clearHighlight);
       nodeEls.push(group);svg.append(group);
     }
+    // Prefer recognizable application names. Test several label positions
+    // against both nearby circles and the labels already placed.
+    const labelsLayer=svgNode('g',{class:'ra-network-labels','aria-hidden':'true'});
+    const candidates=shown.map((p,i)=>({p,i})).filter(({p,i})=>n<25||p.type==='apps'&&p.degree>=3||i<10)
+      .sort((a,b)=>(b.p.type==='apps')-(a.p.type==='apps')||b.p.degree-a.p.degree||a.i-b.i).slice(0,n<25?25:20);
+    for(const {p,i} of candidates){
+      const name=shorten(fullName(p.type,p.id),26),w=name.length*5.9,r=p.radius+5;
+      const options=[[p.x,p.y-r,'middle'],[p.x+r,p.y+4,'start'],[p.x,p.y+r+11,'middle'],[p.x-r,p.y+4,'end']];
+      for(const [tx,ty,anchor] of options){
+        const l=anchor==='middle'?tx-w/2:anchor==='start'?tx:tx-w,box={l,r:l+w,t:ty-11,b:ty+2};
+        if(box.l<4||box.r>996||box.t<2||box.b>598)continue;
+        if(labelBoxes.some(b=>box.l<b.r+3&&box.r>b.l-3&&box.t<b.b+2&&box.b>b.t-2))continue;
+        if(shown.some(q=>{const nx=Math.max(box.l,Math.min(box.r,q.x)),ny=Math.max(box.t,Math.min(box.b,q.y));return Math.hypot(nx-q.x,ny-q.y)<q.radius+2;}))continue;
+        labelsLayer.append(svgNode('text',{x:tx,y:ty,'text-anchor':anchor,class:'ra-network-label','data-label-for':i},name));labelBoxes.push(box);break;
+      }
+    }
+    svg.append(labelsLayer);
     for(const type of types)mobileGraph.append(button(label(type)+' · '+fmt(shown.filter(p=>p.type===type).length)+' registraties','ra-mobile-group',()=>{typeSelect.value=type;mode='groups';graphMode.value=mode;render();}));
     graphNote.textContent=fmt(shown.length)+' van '+fmt(ordered.length)+' verbonden registraties, verdeeld over '+components.length+' groepen. '+fmt(pairs.length)+' van '+fmt(edges.length)+' verbanden getoond. Wijs een punt aan om de directe lijnen uit te lichten. De afstand tussen punten heeft geen betekenis.';
   }

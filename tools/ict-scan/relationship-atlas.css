@@ -165,3 +165,9 @@
 @media(max-width:650px){.relation-atlas-dialog .ra-header{top:-15px}.relation-atlas-dialog .ra-stat strong{font-size:16px}.relation-atlas-dialog .ra-graph-mode{max-width:150px}}
 
 @media(max-width:650px){.relation-atlas-dialog .ra-graph-controls{display:flex;margin-left:0}.relation-atlas-dialog .ra-graph-controls .ra-zoom,.relation-atlas-dialog .ra-graph-controls .ra-zoom-label{display:none}}
+
+.relation-atlas-dialog .ra-network-labels{pointer-events:none}
+.relation-atlas-dialog .ra-network-active .ra-network-label:not(.is-connected){opacity:.17}
+.relation-atlas-dialog .ra-network-label{font-size:11px;font-weight:600;stroke-width:3px}
+.relation-atlas-dialog .ra-network-edge{stroke:#9fb2c5;opacity:.67}
+.relation-atlas-dialog .ra-network-edge.ra-probable{stroke:#b98542;opacity:.83}

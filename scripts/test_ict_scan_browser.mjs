@@ -131,11 +131,12 @@ try {
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.equal(await page.locator('#globalSearch').isVisible(),true,'Zoekfunctie moet direct zichtbaar zijn');
-  assert.match(await page.locator('#githubLiveStatus').textContent(),new RegExp(String(nodeCount)));
+  assert.equal(await page.locator('#githubLiveStatus').textContent(),'GitHub · gesynchroniseerd');
+  assert.match(await page.locator('#githubLiveStatus').getAttribute('title'),new RegExp(String(nodeCount)));
   assert.equal(await page.locator('#githubLiveStatus').getAttribute('data-mode'),'success');
   assert.equal(await page.locator('#sections .rail-button:visible').count(),4);
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
-  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 applicaties'));
+  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent==='Brongegevens ingelezen');
   await page.locator('#viewOverview:not([hidden])').waitFor();
   assert.equal(await page.locator('#sectionTitle').textContent(),'ICT-overzicht');
   assert.match(await page.locator('#evidencePath').textContent(),/^Overzicht/);
@@ -358,7 +359,7 @@ try {
   if(width===1440)await page.screenshot({path:'test-results/ict-scan-overview-populations.png'});
   await page.locator('#viewOverview .scene-tab').first().click();
   await page.locator('#viewOverviewScene0:not([hidden])').waitFor({state:'visible'});
-  if(width===1440)await page.screenshot({path:'test-results/ict-scan-overview-categories.png'});
+  if(width===1440){await page.locator('#viewOverviewScene0').evaluate(el=>Promise.all(el.getAnimations({subtree:true}).map(a=>a.finished.catch(()=>{}))));await page.screenshot({path:'test-results/ict-scan-overview-categories.png'});}
   assert.equal(await page.locator('#viewOverview .scene-tab').count(),4,'Schoolbreed, relaties, broncontrole en toepassingen moeten afzonderlijk toegankelijk zijn');
   const size=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,height:innerHeight,main:document.querySelector('.main-content').getBoundingClientRect().height,cardWidth:document.querySelector('.panel')?.getBoundingClientRect().width}));
   assert(size.scrollWidth<=size.clientWidth+1,'Horizontale overflow bij '+width+': '+JSON.stringify(size));

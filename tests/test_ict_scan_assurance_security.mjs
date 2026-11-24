@@ -30,7 +30,6 @@ function dom() {
     set textContent(value) {this._text = String(value ?? ''); this.children = [];}
     get textContent() {return this._text + this.children.map(child => child.textContent ?? '').join('');}
     append(...values) {for (const value of values) {const child = typeof value === 'object' ? value : {textContent: String(value), children: []}; child.parentElement = this; this.children.push(child);}}
-    prepend(...nodes) {for(const node of nodes)node.parentElement=this;this.children.unshift(...nodes);}
     replaceChildren(...values) {this._text = ''; this.children = []; this.append(...values);}
     setAttribute(name, value) {this.attributes[name] = String(value);}
     addEventListener(name, handler) {(this.events[name] ??= []).push(handler);}
@@ -43,7 +42,6 @@ function dom() {
   const document = {
     events: {}, created,
     createElement: tag => new Element(tag),
-    createElementNS: (_namespace, tag) => new Element(tag),
     createTextNode: text => ({textContent: String(text), children: []}),
     getElementById(id) {if (!elements.has(id)) {const node = new Element('div'); node.id = id; elements.set(id, node);} return elements.get(id);},
     addEventListener(name, handler) {(this.events[name] ??= []).push(handler);},

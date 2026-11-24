@@ -123,10 +123,7 @@
     return grouped.size>1?[...grouped].sort((a,b)=>a[0].localeCompare(b[0],'nl')):[['',items]];
   }
   function folderIcon(kind){
-    const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
-    svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');svg.setAttribute('class','card-tree-icon '+kind);svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.6');svg.setAttribute('stroke-linejoin','round');
-    const path=document.createElementNS(ns,'path');
-    path.setAttribute('d',kind==='folder'?'M3 5h7l2 3h9v12H3z M3 10h18':'M6 3h8l4 4v14H6z M14 3v5h4 M9 12h6 M9 16h6');svg.append(path);return svg;
+    const icon=text('span','card-tree-icon '+kind);icon.setAttribute('aria-hidden','true');return icon;
   }
   function chooseFolder(type,group=null,collapse=false){
     if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
@@ -148,6 +145,7 @@
     const type=$c('cardTypeFilter').value,query=$c('cardSearch').value.trim().toLocaleLowerCase('nl-NL');
     const list=$c('cardBrowserList'),scroll=list.scrollTop;list.replaceChildren();
     const available=new Set(Object.keys(window.IctOrganisation.profile?.source?.registerFiles||{}));
+    const searchCount=query?text('p','card-tree-search-count'):null;if(searchCount)list.append(searchCount);
     const matches=r=>window.IctInventoryIndex?.matchesRecord(r,query)??String(r.name||'').toLocaleLowerCase('nl-NL').includes(query);
     let matchCount=0;
     for(const [heading,keys] of TREE_SECTIONS){
@@ -190,7 +188,7 @@
       if(visible)list.append(section);
     }
     if(query){
-      const result=text('p','card-tree-search-count',matchCount+' gevonden registraties');list.prepend(result);
+      searchCount.textContent=matchCount+' gevonden registraties';
       if(!matchCount)list.append(text('p','card-empty','Geen registraties bij deze zoekterm.'));
     }
     list.scrollTop=scroll;

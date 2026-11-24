@@ -295,7 +295,7 @@
       button.addEventListener('click',action);
       actions.append(button);
     }
-    overview.insertBefore(actions,overview.querySelector('.scene-navigation')||overview.firstChild);
+    const start=byId('viewOverviewScene0');if(start)start.append(actions);else overview.insertBefore(actions,overview.firstChild);
   }
   // Rapporten blijven bereikbaar via de navigatie en de overzichtsactie.
   // Het submenu hoeft dezelfde downloadmogelijkheden niet opnieuw te tonen.

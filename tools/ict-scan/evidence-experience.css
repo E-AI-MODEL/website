@@ -188,3 +188,9 @@
  .workspace.monitor-layout .overview-count-row{grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px}
  .workspace.monitor-layout .overview-count-detail{grid-column:1/-1}
 }
+
+.workspace.monitor-layout #viewOverviewScene0{gap:16px}
+.workspace.monitor-layout #viewOverviewScene0 .inventory-line{order:2}
+.workspace.monitor-layout #viewOverviewScene0 #overviewQuickActions{order:1;padding-top:12px;border-top:1px solid #dce5ed}
+.workspace.monitor-layout #viewOverviewScene0 #kpiGrid{order:0}
+@media(min-width:1000px){.workspace.monitor-layout #viewOverviewScene0 #kpiGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.workspace.monitor-layout #viewOverviewScene0 .overview-category.kpi{min-height:92px;padding:20px}.workspace.monitor-layout #viewOverviewScene0 .overview-category strong{font-size:16px}}
