@@ -124,3 +124,14 @@
   .relation-atlas-dialog *{scroll-behavior:auto!important;transition:none!important}
 }
 @media print{.relation-atlas-dialog{display:none!important}}
+.relation-atlas-dialog .ra-graph-mode{min-width:130px;max-width:100%;font-size:12px}
+.relation-atlas-dialog .ra-network-legend{display:flex;align-items:center;flex-wrap:wrap;gap:7px 12px;padding:8px 14px;background:#fff;border-bottom:1px solid #e5ebf3}
+.relation-atlas-dialog .ra-network-legend:empty{display:none}
+.relation-atlas-dialog .ra-legend-item{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:#415b7a}
+.relation-atlas-dialog .ra-legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%}
+.relation-atlas-dialog .ra-network-edge{stroke:#a9b9c9;stroke-width:1;opacity:.68}
+.relation-atlas-dialog .ra-network-edge.ra-probable{stroke:#b98646;stroke-dasharray:4 3;opacity:.9}
+.relation-atlas-dialog .ra-network-node{cursor:pointer}
+.relation-atlas-dialog .ra-network-node:focus-visible circle,.relation-atlas-dialog .ra-network-node:hover circle{stroke:#223e62;stroke-width:2.8}
+.relation-atlas-dialog .ra-network-label{font-size:10px;font-weight:600;fill:#324f70;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+@media(min-width:651px){.relation-atlas-dialog:has(.ra-network-node) .ra-graph{height:480px;background:#fff}}

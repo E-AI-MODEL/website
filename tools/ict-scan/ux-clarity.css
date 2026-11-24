@@ -147,3 +147,27 @@ body>.rail-drawer .rail-drawer-view-list{display:grid;grid-template-columns:repe
 body>.rail-drawer .rail-drawer-view{min-width:0;white-space:normal;overflow-wrap:anywhere;min-height:39px;padding:8px 9px;border:1px solid #e3e8ef;background:#f6f8fa;border-radius:7px}
 body>.rail-drawer .rail-drawer-view[hidden]{display:none!important}
 body>.rail-drawer .rail-drawer-view.active{background:#eaf1f8;border-color:#b9ccdf;color:#304f76}
+
+/* Read and explore first; edit layout only on explicit request. */
+.workspace.monitor-layout #viewStudio .ds-mobile-compose{display:inline-flex!important;border:1px solid #bacbdd;border-radius:7px;background:#fff;color:#28466e;font-size:12px;font-weight:700;padding:8px 12px}
+.workspace.monitor-layout #viewStudio:not(.ds-controls-open) .ds-panel,
+.workspace.monitor-layout #viewStudio:not(.ds-controls-open) .ds-resizer,
+.workspace.monitor-layout #viewStudio:not(.ds-controls-open) .ds-component-remove{display:none!important}
+@media(min-width:901px){
+ .workspace.monitor-layout #viewStudio:not(.ds-controls-open) .ds-shell{grid-template-columns:minmax(0,1fr)}
+ .workspace.monitor-layout #viewStudio .ds-panel-close{display:block;float:right;border:1px solid #c6d4e2;background:white;border-radius:6px;padding:6px 9px;font:inherit;cursor:pointer;color:#29446a}
+}
+.workspace.monitor-layout #viewStudio .ds-edit-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;margin-bottom:16px}
+.workspace.monitor-layout #viewStudio .ds-edit-actions .ds-icon-action{justify-content:flex-start;background:#fff;border:1px solid #d3dfea;border-radius:6px;min-height:34px}
+.workspace.monitor-layout #viewStudio .ds-edit-actions .ds-action-text{display:inline!important}
+.workspace.monitor-layout #viewStudio .ds-edit-actions .ds-visual-select{display:grid;gap:4px}
+.workspace.monitor-layout #viewStudio .ds-edit-actions select{width:100%;max-width:none}
+.workspace.monitor-layout #viewStudio .ds-option .ds-option-description{font-size:11px;line-height:1.45;color:#526984}
+.workspace.monitor-layout #viewStudio .ds-component-label>h3{font-size:13px;color:#253e63}
+.workspace.monitor-layout #viewStudio .ds-canvas{gap:16px}
+.workspace.monitor-layout #viewStudio .ds-component{border:1px solid #dce5ed;border-radius:10px;background:#fff;padding:12px}
+.workspace.monitor-layout .overview-quick-action.overview-edit-action{border-style:dashed;color:#5a6170}
+.workspace.monitor-layout .overview-quick-action.overview-layout-action{background:#eef4fa;border-color:#b8cce0}
+.workspace.monitor-layout #viewOverviewScene0 .dashboard-tools{display:none}
+.workspace.monitor-layout #viewOverviewScene0 .inventory-population{font-size:11px;color:#697b92}
+@media(max-width:610px){.workspace.monitor-layout #viewStudio .ds-mobile-compose{font-size:11px;padding:7px 8px}.workspace.monitor-layout #viewStudio .ds-component{padding:9px}}

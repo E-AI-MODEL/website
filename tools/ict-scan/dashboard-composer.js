@@ -24,12 +24,12 @@
     {key:'sourceRegister',store:'sourceRegister',card:'sourceRegister',label:'Bronregister',help:'Bronidentiteiten en beoordelingsstatus.',unit:'bronnen',field:'approvalStatus',fieldLabel:'Beoordeling',fields:['owner','version','rightsStatus']}
   ];
   const PARTS=[
-    {id:'numbers',name:'Aantallen per onderdeel',eyebrow:'AANTALLEN',caption:'Aantallen uit de gekozen gegevensgroepen.',span:12},
-    {id:'distribution',name:'Verdeling',eyebrow:'VERDELING',caption:'Kies een categorie om te filteren.',span:6},
-    {id:'relations',name:'Koppelingen tussen systemen',eyebrow:'KOPPELINGEN',caption:'Geregistreerde relaties. Actuele werking is niet altijd bevestigd.',span:8,needs:'apps'},
-    {id:'coverage',name:'Volledigheid gegevens',eyebrow:'GEGEVENS',caption:'Ingevulde en ontbrekende informatie.',span:4},
-    {id:'matrix',name:'Applicaties per gebruiksgebied',eyebrow:'VERDELING',caption:'Verdeling naar gebruiksgebied en type applicatie.',span:6,needs:'apps'},
-    {id:'records',name:'Applicaties en gegevens',eyebrow:'GEGEVENS',caption:'Open een kaart voor gegevens en bewerken.',span:6},
+    {id:'numbers',name:'Aantallen per onderdeel',eyebrow:'AANTALLEN',caption:'Klik op een cijfer om de bijbehorende registraties te bekijken.',span:12},
+    {id:'distribution',name:'Verdeling',eyebrow:'VERDELING',caption:'Vergelijk categorieën; klik op een balk of rij om te filteren.',span:6},
+    {id:'relations',name:'Koppelingen tussen systemen',eyebrow:'KOPPELINGEN',caption:'Bekijk welke registraties verbonden zijn. De bronstatus blijft zichtbaar.',span:8,needs:'apps'},
+    {id:'coverage',name:'Volledigheid gegevens',eyebrow:'GEGEVENS',caption:'Zie per veld hoeveel registraties een bekende waarde hebben. Geen inhoudelijke goedkeuring.',span:4},
+    {id:'matrix',name:'Applicaties per gebruiksgebied',eyebrow:'VERDELING',caption:'Bekijk in een kruistabel welke soorten applicaties per gebruiksgebied voorkomen.',span:6,needs:'apps'},
+    {id:'records',name:'Applicaties en gegevens',eyebrow:'GEGEVENS',caption:'Zoek een registratie en open de kaart om gegevens te lezen.',span:6},
     {id:'hardware',name:'Apparaatmetingen',eyebrow:'APPARATEN',caption:'Meetwaarden, datum en beperkingen.',span:5,needs:'devices'},
     {id:'actions',name:'Controles en acties',eyebrow:'CONTROLES',caption:'Openstaande controles en vervolgacties.',span:5,needsAny:['checks','candidates','aiControls']},
     {id:'sources',name:'Bronbestanden',eyebrow:'BRONNEN',caption:'Bestanden waarop dit overzicht is gebaseerd.',span:4}
@@ -154,7 +154,7 @@
   }
   function drawDistribution(root){
     const d=activeSource();
-    if(!d){root.append(text('p','Kies eerst inhoud.','ds-component-hint'));return;}
+    if(!d){root.append(text('p','Kies via Dashboard aanpassen welke gegevens je wilt tonen.','ds-component-hint'));return;}
     const all=source(d),rows=filtered(d),groups=countMap(rows,d.field);
     const top=text('div',undefined,'ds-inline-head');
     const info=text('p',d.label+' · '+d.fieldLabel,'ds-inline-label');top.append(info);
@@ -224,7 +224,7 @@
     usageConfirmed:'Gebruik bevestigd',measurementDate:'Meetdatum',quantity:'Aantal',
     limitation:'Beperkingen',status:'Status',evidence:'Broninformatie',
     action:'Actie',confirmed:'Bevestigd',execution:'Uitvoering',
-    managementLocation:'Beheeromgeving',sourceDate:'Datum bron'
+    managementLocation:'Beheeromgeving',sourceDate:'Datum bron',parent:'Bovenliggende toepassing',accessStatus:'Status van toegang',license2026:'Licentie 2026',localAI:'AI-instelling op school',involvedRoles:'Betrokken functies',known:'Wat bekend is',answer:'Antwoord',reviewedAt:'Beoordelingsdatum',version:'Bronversie',rightsStatus:'Gebruiksrecht'
   });
   function drawCoverage(root){
     const d=activeSource();if(!d){root.append(text('p','Kies een bron voor deze meting.','ds-component-hint'));return;}
@@ -510,7 +510,7 @@
       const empty=text('div',undefined,'ds-empty');const svg=svgEl('svg',{viewBox:'0 0 480 220','aria-hidden':'true'});
       for(let i=0;i<4;i++){svg.append(svgEl('line',{x1:55,y1:38+i*49,x2:423,y2:38+i*49,class:'ds-empty-line'}));}
       for(let i=0;i<7;i++){const x=67+i*53;svg.append(svgEl('circle',{cx:x,cy:36+((i*i+3)%4)*49,r:3,class:'ds-empty-dot'}));}
-      empty.append(svg,text('h3','Geen grafieken gekozen'),text('p','Kies links hoe je de geselecteerde gegevens wilt bekijken.'));
+      empty.append(svg,text('h3','Geen grafieken gekozen'),text('p','Open Dashboard aanpassen om gegevens en grafieken te kiezen.'));
       const b=button('Kies passende grafieken','ds-empty-action',()=>suggest());empty.append(b);stage.append(empty);return;
     }
     for(const [i,p] of items.entries()){
@@ -558,7 +558,7 @@
   viewNames.studio='Dashboard op maat';viewTitles.studio='Dashboard op maat';
   sectionTexts.studio='Kies de gegevens en grafieken voor je eigen overzicht.';
   const originalSelectView=selectView;
-  selectView=function(view){originalSelectView(view);if(view==='studio'&&state.ready)refresh();};
+  selectView=function(view){originalSelectView(view);if(view==='studio'&&state.ready)refresh();else setEditing(false);};
   const originalRenderAll=renderAll;
   renderAll=function(){originalRenderAll();if(state.ready)refresh();};
   document.querySelectorAll('[data-ds-preset]').forEach(b=>b.addEventListener('click',()=>usePreset(b.dataset.dsPreset)));
@@ -570,15 +570,22 @@
   $('dsSave').addEventListener('click',()=>{showMessage(persist()?'Ontwerp bewaard in deze browser.':'Bewaren is hier niet toegestaan.');});
   $('dsExport').addEventListener('click',exportDesign);
   for(const role of ['AI','FG'])$('roleMode'+role)?.addEventListener('change',()=>queueMicrotask(refresh));
-  $('dsCloseControls')?.addEventListener('click',()=>{const shell=$('viewStudio');shell.classList.remove('ds-controls-open');$('dsToggleControls')?.setAttribute('aria-expanded','false');});
-  const rbutton=$('dsToggleControls');rbutton?.addEventListener('click',()=>{
-    const shell=$('viewStudio');shell.classList.toggle('ds-controls-open');rbutton.setAttribute('aria-expanded',String(shell.classList.contains('ds-controls-open')));
-  });
+  function setEditing(on){
+    const view=$('viewStudio'),toggle=$('dsToggleControls'),panel=view.querySelector('.ds-panel');
+    view.classList.toggle('ds-controls-open',Boolean(on));
+    toggle.setAttribute('aria-expanded',String(Boolean(on)));
+    toggle.textContent=on?'Klaar met aanpassen':'Dashboard aanpassen';
+    panel.inert=!on;
+    panel.setAttribute('aria-hidden',String(!on));
+  }
+  $('dsCloseControls').addEventListener('click',()=>{setEditing(false);$('dsToggleControls').focus();});
+  $('dsToggleControls').addEventListener('click',()=>setEditing(!$('viewStudio').classList.contains('ds-controls-open')));
+  setEditing(false);
   // Start with the school overview. The dashboard composer remains available
   // through the navigation for people who want to build their own view.
   state.view='overview';selectView('overview');
   window.EmmausDashboardStudio=Object.freeze({
     config:()=>({data:config.data.slice(),parts:config.parts.slice(),layout:config.layout,primary:config.primary,visuals:{...config.visuals}}),
-    build:refresh,currentDesign,validateDesign,applyDesign
+    build:refresh,currentDesign,validateDesign,applyDesign,setEditing
   });
 })();

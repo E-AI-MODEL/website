@@ -190,7 +190,7 @@
     nav.setAttribute('aria-label','Inhoud van de registratie');
     const panes=new Map(),tabs=new Map();
     const sections=[
-      ['overview','Overzicht'],['details','Gegevens'],['links','Koppelingen en controles']
+      ['overview','In het kort'],['details','Alle gegevens'],['links','Verbanden en controles']
     ];
     for(const [id,name] of sections){
       const panel=text('section','card-tab-panel');
@@ -204,7 +204,7 @@
       nav.append(button);panes.set(id,panel);tabs.set(id,button);
     }
     const overview=panes.get('overview');
-    lines(overview,'',first.map(k=>[label(k,r),r[k]]),spec.key==='sourceRegister');
+    lines(overview,'Belangrijkste gegevens',first.map(k=>[label(k,r),r[k]]),spec.key==='sourceRegister');
     if(spec.key==='sourceRegister')lines(overview,'Bronbeoordeling',[['Goedkeuringsstatus',sourceApprovalState(r)]]);
     if((spec.key==='apps'||spec.key==='parts')&&r.defaultPolicy){
       const p=r.defaultPolicy;

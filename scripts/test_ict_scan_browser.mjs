@@ -139,7 +139,7 @@ try {
   await page.locator('#viewOverview:not([hidden])').waitFor();
   assert.equal(await page.locator('#sectionTitle').textContent(),'ICT-overzicht');
   assert.match(await page.locator('#evidencePath').textContent(),/^Overzicht/);
-  assert.equal(await page.locator('#overviewQuickActions button').count(),4,'De vier gebruikerstaken ontbreken');
+  assert.equal(await page.locator('#overviewQuickActions button').count(),6,'De zes gebruikerstaken ontbreken');
   await page.locator('#overviewQuickActions button').filter({hasText:'Applicatie zoeken'}).click();
   assert.equal(await page.locator('#sectionTitle').textContent(),'Applicaties en diensten');
   assert.equal(await page.locator('#appsSearch').evaluate(el=>el===document.activeElement),true,'Zoeken opent direct het zoekveld');
@@ -175,6 +175,7 @@ try {
           });
           const example=IctPrintReports.build(synthetic,{scope,taxonomy:IctScanTaxonomy,date:'24-11-2026',sourceLabel:'SYNTHETISCHE TESTGEGEVENS'});
           document.getElementById('printReport').innerHTML=IctPrintReports.render(example);
+          return document.querySelector('#printReport .print-logo').decode().catch(()=>{});
         },scope);
         const pdf=await page.pdf({path:'test-results/ict-scan-report-'+scope+'.pdf',format:'A4',preferCSSPageSize:true,printBackground:true});
         assert.equal(pdf.subarray(0,5).toString(),'%PDF-');
@@ -184,7 +185,7 @@ try {
     await page.evaluate(()=>{document.getElementById('printReport').replaceChildren();});
   }
   await navigate('overview');
-  await page.locator('#overviewQuickActions button').filter({hasText:'Gegevens aanpassen'}).click();
+  await page.locator('#overviewQuickActions button').filter({hasText:'Registratie bewerken'}).click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
   await page.locator('#cardEditorClose').click();
   // Exercise the real reader against the exact repository blobs, with no remote school data.
@@ -252,15 +253,16 @@ try {
     assert(await page.locator('#dsCanvas [data-component="distribution"] '+selector).count()>0,'Visualisatie '+mode+' ontbreekt');
     if(width<700)await assertNoComponentOverlap('verdelen '+mode);
   }
-  if(width<700){await page.locator('#dsToggleControls').click();assert.equal(await page.locator('#viewStudio.ds-controls-open').count(),1);}
+  assert.equal(await page.locator('#viewStudio .ds-panel').isVisible(),false,'De bewerkvelden horen standaard gesloten te zijn');
+  await page.locator('#dsToggleControls').click();assert.equal(await page.locator('#viewStudio.ds-controls-open').count(),1);
   await page.locator('#dsBlank').click();
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),0,'Leeg beginnen moet echt een leeg werkvlak tonen');
   await page.locator('#dsPartOptions button').first().click();
   assert.equal(await page.locator('#dsCanvas .ds-numbers').count(),1,'Een klik moet het gekozen onderdeel meteen plaatsen');
   await page.locator('#dsSuggest').click();
   assert((await page.locator('#dsCanvas .ds-component').count())>=4,'Automatische samenstelling moet meerdere bruikbare onderdelen kiezen');
-  if(width<700)await page.locator('#dsCloseControls').click();
   await page.locator('#dsLayout').selectOption('editorial');
+  await page.locator('#dsCloseControls').click();
   assert.equal(await page.locator('#dsCanvas').getAttribute('data-layout'),'editorial');
   await page.locator('#dsPrimary').selectOption('ai');
   assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-label').textContent(),/AI-functies/);
@@ -271,11 +273,11 @@ try {
   await activeLine.first().click();
   assert.match(await page.locator('#dsCanvas .ds-distribution .ds-inline-link').textContent(),/wissen/);
   await page.locator('#dsCanvas .ds-distribution .ds-inline-link').click();
-  if(width<700)await page.locator('#dsToggleControls').click();
+  await page.locator('#dsToggleControls').click();
   await page.locator('[data-ds-preset="technology"]').click();
   assert.equal(await page.locator('#dsCanvas .ds-hardware').count(),1,'Hardware moet als afzonderlijk onderdeel te kiezen zijn');
   assert.match(await page.locator('#dsCanvas .ds-hardware').textContent(),/161/);
-  if(width<700)await page.locator('#dsCloseControls').click();
+  await page.locator('#dsCloseControls').click();
   const matrixMode=page.locator('#dsCanvas [data-component="matrix"] select.ds-chart-mode');
   assert.deepEqual(await matrixMode.locator('option').allTextContents(),['Matrix','Tabel']);
   await matrixMode.selectOption('table');
@@ -284,7 +286,9 @@ try {
   await matrixMode.selectOption('matrix');
   assert((await page.locator('#dsCanvas [data-component="matrix"] .ds-matrix:not(.ds-matrix-list)').count())===1);
   if(width<700)await assertNoComponentOverlap('matrix');
+  await page.locator('#dsToggleControls').click();
   await page.locator('#dsSave').click();
+  await page.locator('#dsCloseControls').click();
   const savedVisuals=await page.evaluate(()=>JSON.parse(localStorage.getItem('emmaus-ict-dashboard-studio-v1')||'{}').visuals);
   assert.deepEqual(savedVisuals,{distribution:'lines',matrix:'matrix'},'Visualisatiekeuzes ontbreken bij bewaren');
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-dashboard-studio-v1')),/"layout":"editorial"/);
@@ -314,6 +318,14 @@ try {
   assert.match(await atlas.locator('#relationAtlasStats').textContent(),new RegExp(String(edgeCount)));
   assert.equal(await atlas.locator('.ra-link-row').count(),edgeCount,'Niet alle bronverbanden staan in de lijst');
   assert((await atlas.locator('.ra-mobile-group').count())>=8,'De categorieën zijn niet volledig opgebouwd');
+  if(width===1440){
+    await atlas.locator('select[aria-label="Netwerkweergave"]').selectOption('network');
+    const endpoints=new Set(expectedIndex.edges.flatMap(e=>[JSON.stringify([e.fromType,e.fromId]),JSON.stringify([e.toType,e.toId])]));
+    assert.equal(await atlas.locator('.ra-network-node').count(),endpoints.size);
+    assert.equal(await atlas.locator('.ra-network-edge').count(),edgeCount);
+    await page.screenshot({path:'test-results/ict-scan-1440-network.png'});
+    await atlas.locator('select[aria-label="Netwerkweergave"]').selectOption('groups');
+  }
   const assertAtlasLayout=async w=>{
     const mobile=w<=650;
     assert.equal(await atlas.locator('.ra-mobile-graph').isVisible(),mobile,'Onjuiste mobiele atlasweergave bij '+w);

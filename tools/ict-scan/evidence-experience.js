@@ -204,7 +204,7 @@
       b.addEventListener('click',()=>selectView(view));grid.append(b);
     }
     const sub=byId('inventoryPopulation');
-    if(sub)sub.textContent=fmt(state.apps.size)+' applicaties · '+fmt(state.ai.size)+' AI-functies · '+fmt(state.connections.size)+' koppelingen vanuit Entra · '+fmt(state.candidates.size)+' overige softwarevermeldingen · '+(d.amount?fmt(d.amount)+' apparaatrecords':'aantal apparaatrecords onbekend')+' · aantallen zijn niet optelbaar';
+    if(sub)sub.textContent='De cijfers tellen verschillende soorten registraties. Ze zijn niet optelbaar.';
   }
   renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
   const oldCandidates=renderCandidates;
@@ -252,7 +252,9 @@
     const destinations=[
       ['Applicatie zoeken',()=>{selectView('apps');byId('appsSearch')?.focus();}],
       ['Controles bekijken',()=>{selectView('findings');window.EmmausScenes?.show('findings',1,false);}],
-      ['Gegevens aanpassen',()=>window.EmmausRecordCards?.launch()],
+      ['Verbanden onderzoeken',()=>window.EmmausRelationAtlas?.openNetwork()],
+      ['Dashboard aanpassen',()=>{selectView('studio');window.EmmausDashboardStudio?.setEditing(true);}],
+      ['Registratie bewerken',()=>window.EmmausRecordCards?.launch()],
       ['Rapport maken',()=>{selectView('reports');window.EmmausScenes?.show('reports',0,false);}]
     ];
     for(const [label,action] of destinations){
@@ -260,6 +262,8 @@
       button.type='button';
       button.className='overview-quick-action';
       button.textContent=label;
+      if(label==='Registratie bewerken')button.classList.add('overview-edit-action');
+      if(label==='Dashboard aanpassen')button.classList.add('overview-layout-action');
       button.addEventListener('click',action);
       actions.append(button);
     }
