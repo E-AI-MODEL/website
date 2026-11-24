@@ -140,19 +140,24 @@
     for(const [name,value] of items){
       const missing=value===undefined||value===null||(typeof value==='string'&&!value.trim())||(Array.isArray(value)&&!value.length);
       if(missing&&!showUnknown)continue;
-      // Alleen een weergavelabel. Een onbekend bronveld blijft leeg in de JSON en in de controles.
-      // Geen ruwe JSON of machinewaarden in een gewone gegevenskaart.
-      // De oorspronkelijke structuur blijft leesbaar onder Technische gegevens.
-      let shown=missing?'Onbekend':value;
-      if(!missing&&typeof value==='boolean')shown=value?'Ja':'Nee';
-      if(!missing&&Array.isArray(value)){
-        shown=value.every(item=>item===null||typeof item!=='object')
-          ?value.join(', ')
-          :value.map(item=>item&&typeof item==='object'?(item.name||item.title||item.label||''):String(item)).filter(Boolean).join(', ')||value.length+' gekoppelde gegevens';
-      }else if(!missing&&typeof value==='object'){
-        shown='Zie technische gegevens';
-      }
-      const dt=text('dt','',name),dd=text('dd','',shown);
+      // Leesbare weergave zonder ruwe JSON. De brongegevens worden niet aangepast.
+      const describe=input=>{
+        if(input===undefined||input===null||input==='')return 'Onbekend';
+        if(typeof input==='boolean')return input?'Ja':'Nee';
+        if(Array.isArray(input))return input.map(item=>item&&typeof item==='object'?(item.name||item.title||item.label||describe(item)):describe(item)).join(', ')||'Geen waarden';
+        if(typeof input==='object')return Object.entries(input).map(([key,part])=>
+          (labels[key]||key.replace(/([a-z])([A-Z])/g,'$1 $2'))+': '+(part&&typeof part==='object'?'Aanvullende gegevens':describe(part))).join(' · ')||'Geen waarden';
+        return String(input);
+      };
+      const dt=text('dt','',name),dd=text('dd','');
+      if(!missing&&value&&typeof value==='object'&&!Array.isArray(value)){
+        const details=text('details','card-details'),summary=text('summary','','Gegevens bekijken');
+        const fields=text('dl','card-read-grid');
+        for(const [key,part] of Object.entries(value)){
+          fields.append(text('dt','',labels[key]||key.replace(/([a-z])([A-Z])/g,'$1 $2')),text('dd','',describe(part)));
+        }
+        details.append(summary,fields);dd.append(details);
+      }else dd.textContent=missing?'Onbekend':describe(value);
       dl.append(dt,dd);
     }
     if(dl.children.length){group.append(dl);container.append(group);}
