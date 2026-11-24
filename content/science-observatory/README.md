@@ -130,3 +130,7 @@ Voor een vakdocent staat een [controlelijst voor alle 53 proeven](vakdocent-cont
 ### Leeuw-console v2
 
 De Leeuw gebruikt de CSS en instrumentindeling van het oorspronkelijke Galactisch Observatorium (`labs/melkweg.html`), met eigen scène en zeven ongewijzigde onderzoeksstanden. De hoofdpagina vult de viewport zonder scroll. Grafieken en metingen zijn op kleine schermen afzonderlijke panelen. De 3D-stand begint met een geanimeerde overgang uit de hemelprojectie en kan worden gepauzeerd, met de hand verschoven of gedraaid. De gegevens en rekenfunctie blijven dezelfde. `scripts/test_leeuw_console.mjs` controleert op echte Chromium- en WebKit-viewports de beschikbare scène, zichtbare knoppen, overgang, rotatie, pauze, metingen, grafiek en verminderde beweging. De gewone productiecontrole gebruikt dezelfde Chromium-test.
+
+### Leeuw: ruimtereis (v3)
+
+De bestaande route opent standaard een zelfstandige film van 96 seconden in vijf hoofdstukken. De camera gebruikt een perspectiefprojectie van de negen gemeten sterposities uit dezelfde JSON-data. De achtergrondsterren en diffuse lichtwolken zijn illustratief, evenals de lichtpuntgrootte; dit staat in beeld. De onderzoeksconsole blijft bereikbaar via `#hemel`, `#ruimte` en de andere bestaande hashes. De film is te pauzeren, te verschuiven en per hoofdstuk te bekijken; de voorkeursinstelling voor verminderde beweging wordt gerespecteerd. De gedeelde browsertest controleert ook de film op 320, 390 en 1440 pixels, maakt beelden van alle vijf scènes en controleert de overgang naar de bestaande console.
