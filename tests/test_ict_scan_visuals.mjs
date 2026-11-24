@@ -86,3 +86,39 @@ test('Elke kaart heeft eigen weergavekeuze en het 404-menu en de zijbalk blijven
   assert.ok(html.includes('href="./visual-explorer.css'));
   assert.ok(html.includes('src="./visual-explorer.js'));
 });
+
+
+test('Relatieatlas bevat alle 579 registraties en 273 getypeerde verbanden',async()=>{
+  const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
+  const sourceNames=['2026-applicatielandschap.json','2026-werkregister.json','2026-faq.json','2026-bronnenregister.json'];
+  const sources=sourceNames.map(name=>JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/'+name),'utf8')));
+  const state={};
+  for(const [type,store] of Object.entries(inventory.STORES)){
+    const records=sources.flatMap(s=>s[type]||[]);
+    state[store]=new Map(records.map(row=>[row.id,row]));
+  }
+  const full=inventory.build(state);
+  assert.equal(full.nodes.size,579);
+  assert.equal(full.edges.length,273);
+  assert.deepEqual(full.errors,[]);
+  assert.equal(full.edges.filter(x=>x.status==='Vermoedelijk').length,37);
+  assert.equal(full.edges.filter(x=>x.status==='Geregistreerd').length,236);
+  for(const edge of full.edges){
+    assert.ok(full.get(edge.fromType,edge.fromId),'Bron ontbreekt '+edge.fromId);
+    assert.ok(full.get(edge.toType,edge.toId),'Doel ontbreekt '+edge.toId);
+  }
+});
+test('De volledige relatieatlas is een eigen visual zonder dubbel gegevensbestand',()=>{
+  const atlas=readFileSync(resolve('tools/ict-scan/relationship-atlas.js'),'utf8');
+  const atlasStyle=readFileSync(resolve('tools/ict-scan/relationship-atlas.css'),'utf8');
+  assert.match(html,/src="\.[/]relationship-atlas\.js\?v=/);
+  assert.match(html,/href="\.[/]relationship-atlas\.css\?v=/);
+  assert.match(atlas,/window\.IctInventoryIndex\?\.build/);
+  assert.match(atlas,/for\(const edge of currentEdges\)/,'Geen afkap van de volledige relatielijst');
+  assert.match(atlas,/filterEdges\(/);
+  assert.match(atlas,/exportCsv\(/);
+  assert.match(atlas,/csvSafe\(/);
+  assert.match(atlas,/relationAtlasDialog/);
+  assert.match(atlasStyle,/@media\(max-width:650px\)/);
+  assert.doesNotMatch(atlas,/const links=\[[^]*?APP-034/,'Geen handmatig ingevulde relatielijnen');
+});
