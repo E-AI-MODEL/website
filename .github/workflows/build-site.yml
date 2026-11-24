@@ -70,9 +70,11 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
 
       - name: Test ICT scan Excel reports and AI categorization
+        if: ${{ steps.scope.outputs.ictscan == 'true' }}
         run: node tests/test_ict_scan_export.mjs
 
       - name: Controleer de brondata en JSON-import van Applicatielandschap 2026
+        if: ${{ steps.scope.outputs.ictscan == 'true' }}
         run: |
           node --check tools/ict-scan/app.js
           node --check tools/ict-scan/enhancements.js
