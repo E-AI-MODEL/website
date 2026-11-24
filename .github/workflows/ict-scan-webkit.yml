@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-24.04
     # Browser and system libraries are preinstalled; no apt download in CI.
     container:
-      image: mcr.microsoft.com/playwright/python:v1.56.1-noble
+      image: mcr.microsoft.com/playwright/python:v1.56.0-noble
     timeout-minutes: 14
     steps:
       - name: Checkout zonder opgeslagen credentials
@@ -46,7 +46,7 @@ jobs:
       - name: Bouw bestaande ICT-scan zonder externe gegevens
         run: python3 scripts/build_site.py --sources content/legacy --out site-build
       - name: Gebruik bij de container passende Playwright
-        run: npm install --no-save --package-lock=false --ignore-scripts playwright@1.56.1
+        run: npm install --no-save --package-lock=false --ignore-scripts playwright@1.56.0
       - name: Test dashboard in echte WebKit-renderer
         run: node scripts/test_ict_scan_browser.mjs site-build webkit
       - name: Bewaar screenshots van WebKit-test
