@@ -30,12 +30,13 @@ function secret(prompt) {
     process.stdin.on('data', onData);
   });
 }
-const pass = await secret('Kies een wachtwoord (minimaal 16 tekens): ');
-if (pass.length < 16 || pass.length > 1024) throw new Error('Gebruik een wachtwoord van 16 tot 1024 tekens.');
+console.log('Gebruik een uniek, willekeurig wachtwoord uit je wachtwoordmanager (minimaal 24 tekens).');
+const pass = await secret('Kies een wachtwoord (minimaal 24 tekens): ');
+if (pass.length < 24 || pass.length > 1024) throw new Error('Gebruik een wachtwoord van 24 tot 1024 tekens.');
 const again = await secret('Herhaal het wachtwoord: ');
 if (again !== pass) throw new Error('De wachtwoorden komen niet overeen.');
 const salt = randomBytes(24);
-const hash = pbkdf2Sync(pass, salt, 310000, 32, 'sha256');
+const hash = pbkdf2Sync(pass, salt, 100000, 32, 'sha256');
 console.log('\nPlaats deze volledige regel als Cloudflare Worker secret GALLERY_PASSWORD_HASH:');
-console.log('pbkdf2_sha256$310000$' + salt.toString('base64') + '$' + hash.toString('base64'));
+console.log('pbkdf2_sha256$100000$' + salt.toString('base64') + '$' + hash.toString('base64'));
 console.log('\nBewaar het gekozen wachtwoord in een wachtwoordmanager en niet in GitHub.');

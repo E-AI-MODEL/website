@@ -5,12 +5,20 @@ import { privatePage } from '../services/html-galerij/src/ui.js';
 import { readFileSync } from 'node:fs';
 
 globalThis.crypto ||= webcrypto;
+// Reproduce the production runtime's PBKDF2 ceiling even when Node accepts higher values.
+const deriveBits = crypto.subtle.deriveBits.bind(crypto.subtle);
+Object.defineProperty(crypto.subtle, 'deriveBits', { configurable: true, value(algorithm, ...args) {
+  if (algorithm.name === 'PBKDF2' && algorithm.iterations > 100000) {
+    return Promise.reject(new DOMException('PBKDF2 iteration limit', 'NotSupportedError'));
+  }
+  return deriveBits(algorithm, ...args);
+}});
 const BASE = 'https://eai-html-galerij.vis-c9d.workers.dev';
 const EMAIL = 'beheer@example.test';
 const PASSWORD = 'A deliberately long test password 7.%@!';
 const salt = randomBytes(24);
-const hash = 'pbkdf2_sha256$310000$' + salt.toString('base64') + '$' +
-  pbkdf2Sync(PASSWORD, salt, 310000, 32, 'sha256').toString('base64');
+const hash = 'pbkdf2_sha256$100000$' + salt.toString('base64') + '$' +
+  pbkdf2Sync(PASSWORD, salt, 100000, 32, 'sha256').toString('base64');
 const itemId = '1762800000000-11111111-1111-4111-8111-111111111111';
 const sessions = new Map();
 const auditActions=[];
@@ -133,6 +141,13 @@ const loginForm = (email, password) => {
   data.set('password', password);
   return req('/auth/login', 'POST', { origin: BASE, body: data });
 };
+// An unavailable KDF or malformed verifier must not masquerade as an incorrect password.
+const legacy = 'pbkdf2_sha256$310000$' + salt.toString('base64') + '$' +
+  pbkdf2Sync(PASSWORD, salt, 310000, 32, 'sha256').toString('base64');
+assert.equal(await statusOf(loginForm(EMAIL, PASSWORD), {...env, GALLERY_PASSWORD_HASH:legacy}), 503);
+assert.equal(await statusOf(loginForm(EMAIL, PASSWORD), {...env, GALLERY_PASSWORD_HASH:'invalid'}), 503);
+assert.equal(sessions.size, 0);
+attempts.clear();
 response = await worker.fetch(loginForm(EMAIL, 'wrong password'), env);
 assert.equal(response.status, 401);
 assert.equal(sessions.size, 0);

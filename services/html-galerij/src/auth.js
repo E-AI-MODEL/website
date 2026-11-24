@@ -27,22 +27,23 @@ async function sha256(value) {
   const digest = await crypto.subtle.digest('SHA-256', encoder.encode(value));
   return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
 }
+// Cloudflare Workers caps native PBKDF2 at 100,000 iterations on the
+// standard runtime. The 310,000 format is retained for legacy hashes only
+// where the runtime supports it. Never report a failed KDF as a bad password.
 async function passwordMatches(password, spec) {
-  try {
-    if (typeof password !== 'string' || password.length > 1024 || typeof spec !== 'string') return false;
-    const [type, iter, saltText, hashText, extra] = spec.split('$');
-    if (extra !== undefined || type !== 'pbkdf2_sha256' || iter !== '310000') return false;
-    const salt = decodeBase64(saltText);
-    const expected = decodeBase64(hashText);
-    if (salt.length !== 24 || expected.length !== 32) return false;
-    const key = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveBits']);
-    const actual = new Uint8Array(await crypto.subtle.deriveBits({
-      name: 'PBKDF2', hash: 'SHA-256', salt, iterations: 310000
-    }, key, 256));
-    return constantTimeEqual(actual, expected);
-  } catch {
-    return false;
-  }
+  if (typeof password !== 'string' || password.length > 1024) return false;
+  if (typeof spec !== 'string') throw new Error('Credential configuration');
+  const [type, iter, saltText, hashText, extra] = spec.split('$');
+  if (extra !== undefined || type !== 'pbkdf2_sha256' ||
+      !['100000', '310000'].includes(iter)) throw new Error('Credential configuration');
+  const salt = decodeBase64(saltText);
+  const expected = decodeBase64(hashText);
+  if (salt.length !== 24 || expected.length !== 32) throw new Error('Credential configuration');
+  const key = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveBits']);
+  const actual = new Uint8Array(await crypto.subtle.deriveBits({
+    name: 'PBKDF2', hash: 'SHA-256', salt, iterations: Number(iter)
+  }, key, 256));
+  return constantTimeEqual(actual, expected);
 }
 async function rateLimited(request, env) {
   // Both per-client and global limits to constrain credential guessing.
@@ -127,7 +128,13 @@ async function login(request, env) {
   try {
     const blocked = await rateLimited(request, env);
     if (blocked) return loginResponse('Te veel pogingen. Probeer het over vijftien minuten opnieuw.', 429);
-    const valid = await passwordMatches(password, env.GALLERY_PASSWORD_HASH);
+    let valid;
+    try {
+      valid = await passwordMatches(password, env.GALLERY_PASSWORD_HASH);
+    } catch {
+      console.error('EAI_GALLERY_PASSWORD_VERIFICATION_UNAVAILABLE');
+      return loginResponse('De wachtwoordcontrole is tijdelijk niet beschikbaar. Controleer de beheerinstellingen.', 503);
+    }
     if (email !== env.GALLERY_ADMIN_EMAIL.toLowerCase() || !valid) return loginResponse('E-mailadres of wachtwoord onjuist.', 401);
     const random = crypto.getRandomValues(new Uint8Array(32));
     const token = Array.from(random, x => x.toString(16).padStart(2, '0')).join('');

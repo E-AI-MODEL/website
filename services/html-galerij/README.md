@@ -8,7 +8,7 @@ Er is **geen openbare registratie** en er is geen verborgen beheerstand. Alleen 
 
 De Worker controleert elke API-aanvraag en elke rechtstreekse `/view/{id}`-link server-side. Een geverifieerde sessie verloopt uiterlijk na acht uur, is opgeslagen als een SHA-256-hash in D1 en wordt in de browser bewaard als `Secure; HttpOnly; SameSite=Strict`-cookie met `__Host-`-prefix. Afmelden verwijdert de sessie direct uit D1. Aanmeldpogingen hebben een limiet per client en een extra globale limiet, beide per vijftien minuten.
 
-Het wachtwoord wordt **niet** in GitHub of de website opgeslagen. De Worker ontvangt alleen een met PBKDF2-SHA-256 en 310.000 iteraties berekende, gezouten hash via een geheim in Cloudflare.
+Het wachtwoord wordt **niet** in GitHub of de website opgeslagen. Voor deze afzonderlijke beheerlogin gebruikt de Worker PBKDF2-SHA-256 met 100.000 iteraties, een willekeurige salt van 24 bytes en een hash van 32 bytes, opgeslagen als Cloudflare Secret. Cloudflare beperkt de standaardruntime tot 100.000 iteraties; gebruik daarom uitsluitend een uniek, willekeurig wachtwoord van ten minste 24 tekens uit een wachtwoordmanager. Deze instelling is niet geschikt als algemeen advies voor gebruikersgekozen wachtwoorden. Oude hashes met 310.000 iteraties moeten opnieuw worden berekend op runtimes waar die waarde niet wordt ondersteund. Een fout in de wachtwoordcontrole geeft een aparte 503-melding; een verkeerd wachtwoord geeft 401. De inloglimieten blijven ongewijzigd.
 
 ## Uitrolstatus op 15 november 2026
 
