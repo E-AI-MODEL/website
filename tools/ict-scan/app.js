@@ -219,12 +219,49 @@ function renderWorkActions(){const all=array(state.workActions);if($('workTotal'
 function renderSoftwareReview(){const all=array(state.softwareReview);if($('softwareReviewTotal'))$('softwareReviewTotal').textContent=all.length;const q=normalize($('softwareReviewSearch')?.value||'');const entries=all.filter(x=>!q||normalize([x.name,x.known,x.action].join(' ')).includes(q));if($('softwareReviewList'))renderList('softwareReviewList',entries,'softwarereview',140);}
 function renderConnections(){let all=array(state.connections),q=normalize($('connectionsSearch').value),filtered=all.filter(x=>!q||normalize([x.id,x.name,x.matched].join(' ')).includes(q)).sort((a,b)=>a.name.localeCompare(b.name,'nl'));$('connectionsCount').textContent=filtered.length+' van '+all.length+' koppelingen';renderList('connectionsList',filtered,'connection',120);}
 function isClassroomAi(item){return IctScanTaxonomy.isClassroomAi(item);}
+function renderAiProgress(){
+ const root=$('aiProgress');if(!root)return;
+ root.replaceChildren();
+ const ix=window.IctInventoryIndex?.build(state);
+ if(!ix?.aiProgress){root.textContent='De tussenstand is nog niet beschikbaar.';return;}
+ const report=ix.aiProgress();
+ const textEl=(tag,cls,value)=>{const el=document.createElement(tag);if(cls)el.className=cls;el.textContent=value;return el;};
+ const openCard=(type,id)=>window.EmmausRecordCards?.open(type,id);
+ const metrics=document.createElement('div');metrics.className='ai-progress-metrics';
+ for(const [value,label] of [[report.featureCount,'Beschreven AI-functies'],[report.unknownCount,'Lokale status niet vastgesteld'],[report.possibleHighRisk.length,'Mogelijk hoog risico (indicatie)']]){
+   const el=document.createElement('div');el.className='ai-progress-metric';el.append(textEl('strong','',String(value)),textEl('span','',label));metrics.append(el);
+ }
+ root.append(metrics);
+ const grid=document.createElement('div');grid.className='ai-progress-grid';
+ for(const [key,title] of [['good','Wat gaat goed'],['open','Waar moet nog naar gekeken worden'],['unknown','Waar is nog geen zicht op']]){
+   const panel=document.createElement('section');panel.className='ai-progress-group';panel.dataset.progress=key;
+   panel.append(textEl('h3','',title));
+   const entries=report.groups[key];
+   if(!entries.length)panel.append(textEl('p','ai-progress-empty','Geen beoordeelde punten in deze selectie.'));
+   for(const item of entries){
+     const button=document.createElement('button');button.type='button';button.className='ai-progress-row';
+     button.append(textEl('strong','',item.name),textEl('span','',item.note||item.status));
+     if(item.followUp&&item.followUp!==item.note)button.append(textEl('small','','Vervolg: '+item.followUp));
+     button.addEventListener('click',()=>openCard(item.type,item.id));panel.append(button);
+   }
+   grid.append(panel);
+ }
+ root.append(grid);
+ const details=document.createElement('details');details.className='ai-progress-risk';
+ details.append(textEl('summary','',report.possibleHighRisk.length+' functies met een indicatie mogelijk hoog risico'));
+ for(const item of report.possibleHighRisk){
+   const button=document.createElement('button');button.type='button';button.className='ai-progress-row';
+   button.append(textEl('strong','',[item.product,item.name].filter(Boolean).join(' · ')),textEl('span','',item.local||'Lokale status niet vastgesteld'));
+   button.addEventListener('click',()=>openCard('ai',item.id));details.append(button);
+ }
+ root.append(details);
+}
 function renderAi(){const ai=array(state.ai).filter(isClassroomAi);const phaseMap=new Map();for(const item of ai)for(const phase of IctScanTaxonomy.chartPhases(item))phaseMap.set(phase,(phaseMap.get(phase)||0)+1);
  barChart('phaseChart',[...phaseMap.entries()],12,label=>{state.phase=state.phase===label?'':label;renderAiList();});const counts=new Map();for(const x of ai){const p=x.product||'Onbekend';counts.set(p,(counts.get(p)||0)+1);}barChart('aiProducts',[...counts.entries()],11,label=>{state.aiProduct=state.aiProduct===label?'':label;renderAiList();});
  $('aiClassPanels').hidden=state.aiMode!=='klas';$('aiSchoolPanels').hidden=state.aiMode!=='school';
  $('aiModeKlas').classList.toggle('is-active',state.aiMode==='klas');$('aiModeSchool').classList.toggle('is-active',state.aiMode==='school');
  $('aiDescription').textContent=state.aiMode==='klas'?'Concrete AI-handelingen bij het voorbereiden, uitvoeren en evalueren van onderwijs. Lesfasen en didactische toelichtingen zijn uit de bron overgenomen.':'Beschreven AI-functies voor de schoolorganisatie. Beheerpunten staan apart; FG-bronnen vallen niet onder deze inventarisatie.';
- renderAiCompliance();renderAiList();}
+ renderAiProgress();renderAiCompliance();renderAiList();}
 function renderAiCompliance(){const notes=(id,items,columns)=>{const element=$(id);element.innerHTML=items.length?items.map(x=>'<details class="record-note"><summary>'+esc(x.name)+' <span class="note-tag">'+esc(x.id)+'</span></summary><p><strong>'+esc(columns[0])+': </strong>'+esc(x[columns[1]]||'Nog niet vastgesteld')+'</p><p><strong>Beoordeling / status: </strong>'+esc(x.assessment||x.local||'Nog te controleren')+'</p></details>').join(''):'<div class="no-results">Geen brongegevens gevonden.</div>';};notes('dpiaList',array(state.dpia),['Wat is vastgesteld','description']);notes('aiAdminList',array(state.aiControls),['Wat doet dit','description']);}
 function renderAiList(){const q=normalize($('aiSearch').value);const list=array(state.ai).filter(x=>(state.aiMode==='klas'?isClassroomAi(x):IctScanTaxonomy.isSchoolAi(x))&&(!q||normalize([x.id,x.name,x.product,x.action,x.phase,x.learning,x.attention,x.unknown].join(' ')).includes(q))&&(!state.phase||IctScanTaxonomy.phases(x).includes(state.phase))&&(!state.aiProduct||x.product===state.aiProduct)).sort((a,b)=>a.id.localeCompare(b.id,'nl'));$('aiCount').textContent=list.length+' functies';renderList('aiList',list,'ai',115);}
 function allFindings(){return array(state.checks).map(x=>({...x,source:(x.sources||[]).join('; ')}));}
