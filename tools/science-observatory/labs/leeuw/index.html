@@ -89,7 +89,7 @@ body{position:fixed;inset:0;background:#050914}
 <header class="voyage-top"><a class="voyage-mark" href="/nl/tools/#vak-heelal" title="Naar de sterrenkunde"><svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="20" cy="20" r="15" stroke="#65879d" stroke-width=".9"/><ellipse cx="20" cy="20" rx="22" ry="7" transform="rotate(-37 20 20)" stroke="#a2cbce" stroke-width=".9"/><circle cx="20" cy="20" r="2" fill="#e8dbba"/></svg><span><strong>EAI / ASTRONOMIE</strong><small>LEEUW · LEO</small></span></a><a class="voyage-lab" href="#hemel" id="openLab">Onderzoek zelf <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a></header>
 <div class="voyage-scene-label" id="voyageSceneLabel">VANAF DE AARDE</div>
 <div class="voyage-copy" id="voyageCopy"><div class="voyage-kicker" id="voyageKicker">01 / 05 · De nacht</div><h2 id="voyageTitle">Leeuw</h2><p id="voyageText"></p><div class="voyage-fact" id="voyageFact" hidden><strong id="voyageNumber"></strong><span id="voyageUnit"></span></div></div>
-<div class="voyage-footer"><nav class="voyage-chapters" id="voyageChapters" aria-label="Hoofdstukken van de reis"></nav><div class="voyage-player"><button id="voyagePrev" class="voyage-button" title="Vorig hoofdstuk" aria-label="Vorig hoofdstuk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5 8 12l10 7M6 5v14"/></svg></button><button id="voyagePlay" class="voyage-button primary" aria-label="Pauzeren" title="Afspelen of pauzeren"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14m6-14v14"/></svg></button><button id="voyageNext" class="voyage-button" title="Volgend hoofdstuk" aria-label="Volgend hoofdstuk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 10 7-10 7M18 5v14"/></svg></button><input id="voyageSeek" class="voyage-seek" type="range" min="0" max="96" step=".1" value="0" aria-label="Positie in de reis"><span id="voyageTime" class="voyage-time">0:00 / 1:36</span></div><div class="voyage-meta"><span>Gemeten figuursterren · illustratief sterrenveld · geen schaal voor sterdiameters</span><a href="#hemel" id="voyageSources">Bronnen &amp; metingen</a></div></div><div id="voyageLive" class="voyage-caption-live" aria-live="polite"></div>
+<div class="voyage-footer"><nav class="voyage-chapters" id="voyageChapters" aria-label="Hoofdstukken van de reis"></nav><div class="voyage-player"><button id="voyagePrev" class="voyage-button" title="Vorig hoofdstuk" aria-label="Vorig hoofdstuk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5 8 12l10 7M6 5v14"/></svg></button><button id="voyagePlay" class="voyage-button primary" aria-label="Pauzeren" title="Afspelen of pauzeren"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14m6-14v14"/></svg></button><button id="voyageNext" class="voyage-button" title="Volgend hoofdstuk" aria-label="Volgend hoofdstuk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 10 7-10 7M18 5v14"/></svg></button><input id="voyageSeek" class="voyage-seek" type="range" min="0" max="96" step=".1" value="0" aria-label="Positie in de reis"><span id="voyageTime" class="voyage-time">0:00 / 1:36</span></div><div class="voyage-meta"><span>Sterposities uit metingen · sterrenveld en detailbeeld illustratief</span><a href="#bronnen" id="voyageSources">Bronnen &amp; metingen</a></div></div><div id="voyageLive" class="voyage-caption-live" aria-live="polite"></div>
 </section>
 <div id="app" data-console-version="leo-3" hidden><aside class="sidebar" aria-label="Onderzoeken"><div class="brand"><div class="brandmark" aria-hidden="true"><b></b></div><div class="brandtext"><h1>Leeuw in 3D</h1><small>STERREN EN AFSTANDEN</small></div></div><div class="s-label">ONDERWERPEN</div><nav id="navigation" class="navlist" aria-label="Kies een onderzoek"><button class="nav-btn" data-mode="hemel" aria-label="Hemelkaart" title="Hemelkaart" aria-pressed="false"><span class="nav-icon" aria-hidden="true">◎</span><span class="navcopy"><b>Hemelkaart</b><small>Richting / ICRS</small></span><span class="navnum">01</span></button>
 <button class="nav-btn active" data-mode="ruimte" aria-label="Ruimte in 3D" title="Ruimte in 3D" aria-pressed="true"><span class="nav-icon" aria-hidden="true">◈</span><span class="navcopy"><b>Ruimte in 3D</b><small>Afstanden / projectie</small></span><span class="navnum">02</span></button>
@@ -449,13 +449,13 @@ const $=id=>document.getElementById(id), M=window.LEO_MODEL,D=window.LEO_DATA,ca
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const chapters=[
  {start:0,end:17,short:"De nacht",title:"Leeuw",text:"Op een heldere lenteavond kun je de Leeuw aan de hemel vinden. Begin bij Regulus, de helderste ster van de figuur. De gebogen rij sterren erboven vormt de kop.",label:"VANAF DE AARDE",fact:"",unit:""},
- {start:17,end:36,short:"Van opzij",title:"Kijk eens van opzij.",text:"Denebola staat op ongeveer 36 lichtjaar van de zon. Chertan, die je ernaast zag, op 161 lichtjaar. Terwijl we opzij bewegen, valt de bekende figuur uiteen.",label:"DE STERREN IN DE RUIMTE",fact:"36",unit:"lichtjaar tot Denebola"},
- {start:36,end:55,short:"Regulus",title:"79 jaar onderweg",text:"Het licht dat je van Regulus ziet, vertrok ongeveer 79 jaar geleden. De ster staat zo ver weg dat je haar ziet zoals ze tientallen jaren geleden was.",label:"REGULUS · α LEONIS",fact:"79",unit:"lichtjaar tot Regulus"},
+ {start:17,end:36,short:"Van opzij",title:"Kijk eens van opzij",text:"Denebola staat op ongeveer 36 lichtjaar van de zon. Chertan, die je ernaast zag, op 161 lichtjaar. Terwijl we opzij bewegen, valt de bekende figuur uiteen.",label:"DE STERREN IN DE RUIMTE",fact:"36",unit:"lichtjaar tot Denebola"},
+ {start:36,end:55,short:"Regulus",title:"79 jaar onderweg",text:"Het licht dat je nu van Regulus ziet, verliet de ster ongeveer 79 jaar geleden. Ook de andere sterren van Leeuw zien we zoals ze tientallen of honderden jaren geleden waren.",label:"REGULUS · α LEONIS",fact:"79",unit:"lichtjaar tot Regulus"},
  {start:55,end:76,short:"De verre ster",title:"Ver achter de rest",text:"Aan de hemel staat Eta Leonis vlak bij Regulus. In de ruimte ligt zij naar schatting op zo'n 1.800 lichtjaar van ons. De precieze afstand is minder goed bekend.",label:"ETA LEONIS · η LEONIS",fact:"≈ 1.800",unit:"lichtjaar tot Eta Leonis"},
  {start:76,end:96,short:"Terug naar huis",title:"Weer dezelfde Leeuw",text:"Vanaf de aarde vallen de sterren opnieuw op hun vertrouwde plaats in de figuur. Kijk in het voorjaar zelf eens omhoog. Achter die paar lichtpuntjes liggen honderden lichtjaren ruimte.",label:"TERUG NAAR DE AARDE",fact:"",unit:""}
 ];
 const keys=[
- [0,[0,0,0],[0,0,150],44],[8,[0,0,0],[0,0,150],42],[17,[0,0,0],[0,0,150],42],
+ [0,[0,0,0],[0,0,150],66],[8,[0,0,0],[0,0,150],42],[17,[0,0,0],[0,0,150],42],
  [23,[-68,28,20],[2,0,125],52],[30,[-238,78,118],[5,0,120],48],[36,[-260,85,135],[6,0,125],46],
  [42,[-64,17,30],[12,-9,78],44],[50,[-20,-1,45],[12,-9,78],38],[55,[-32,7,50],[12,-9,78],43],
  [62,[-480,155,390],[77,-5,530],60],[70,[-1450,380,850],[120,-20,910],68],[76,[-1510,290,940],[120,-20,920],69],
@@ -474,6 +474,12 @@ for(let i=0;i<4900;i++){const u=direction();sky.push({p:u,r:.30+Math.pow(rng(),9
 // Subdued diffuse light is a visual backdrop, not a survey image or a measured nebula.
 const haze=[];
 for(let i=0;i<210;i++){const a=rng()*Math.PI*2,b=(rng()-.5)*.42;const p=unit([Math.cos(a),b*.95+Math.sin(a)*.30,Math.sin(a)]);haze.push({p,size:.035+rng()*.11,opacity:.008+rng()*.012,tint:i%3})}
+// Several thousand dim points add depth and texture to the explicitly illustrative sky.
+for(let i=0;i<3300;i++){
+ const a=rng()*Math.PI*2,b=(rng()+rng()+rng()-1.5)*.28+.21*Math.sin(a*1.7+.3);
+ const p=unit([Math.cos(a)*Math.cos(b),Math.sin(b),Math.sin(a)*Math.cos(b)]);
+ sky.push({p,r:.22+Math.pow(rng(),8)*.78,a:.045+Math.pow(rng(),2.2)*.34,c:palette[Math.floor(rng()*palette.length)],phase:rng()*6.28});
+}
 const space=[];
 for(let i=0;i<1600;i++){const p=[(rng()-.5)*3900,(rng()-.5)*1800,(rng()-.14)*3800];space.push({p,r:.32+Math.pow(rng(),7)*.8,a:.07+Math.pow(rng(),3)*.38,c:palette[Math.floor(rng()*palette.length)]})}
 function sprite(color){
@@ -481,8 +487,33 @@ function sprite(color){
  r.addColorStop(0,color+"ef");r.addColorStop(.025,color+"b5");r.addColorStop(.12,color+"50");r.addColorStop(.32,color+"17");r.addColorStop(1,color+"00");g.fillStyle=r;g.fillRect(0,0,96,96);return el;
 }
 const glows=new Map([...palette,...new Set(measured.map(o=>o.color)),"#fff0cd","#d6e9ff"].map(c=>[c,sprite(c)]));
-const clouds=["#31557a","#637696","#816b6c"].map(color=>{const el=document.createElement("canvas");el.width=128;el.height=128;const g=el.getContext("2d"),r=g.createRadialGradient(64,64,0,64,64,64);r.addColorStop(0,color+"be");r.addColorStop(.35,color+"60");r.addColorStop(1,color+"00");g.fillStyle=r;g.fillRect(0,0,128,128);return el});
-let W=1,H=1,t=0,playing=!reduce,visible=false,frame=0,raf=0,last=0,chapter=-1,yawOffset=0,pitchOffset=0,drag=null,painted=0,projected=[],lastUI=-1;
+function noise(x,y){
+ const i=Math.floor(x),j=Math.floor(y),a=smooth(x-i),b=smooth(y-j);
+ const hash=(u,v)=>{let n=Math.imul(u+213,374761393)+Math.imul(v+971,668265263);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295};
+ return mix(mix(hash(i,j),hash(i+1,j),a),mix(hash(i,j+1),hash(i+1,j+1),a),b);
+}
+function fbm(x,y){return noise(x,y)*.55+noise(x*2.1+13,y*2.1+5)*.27+noise(x*4.3+51,y*4.3+17)*.13+noise(x*9+23,y*9+8)*.05}
+const clouds=[[73,106,150],[117,137,163],[152,119,103]].map(([r,g,b],i)=>{
+ const el=document.createElement("canvas"),N=180;el.width=el.height=N;const c=el.getContext("2d"),im=c.createImageData(N,N);
+ for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+  const u=(x-N/2)/(N/2),v=(y-N/2)/(N/2),radius=Math.hypot(u,v),warp=fbm(u*3+i*8,v*3+2);
+  const w=fbm(u*4.8+warp*3+i*19,v*8.5-warp*4+5),fall=Math.pow(Math.max(0,1-radius),1.6),a=clamp(fall*(w-.2)*1.6,0,.9);
+  const k=(y*N+x)*4;im.data[k]=r;im.data[k+1]=g;im.data[k+2]=b;im.data[k+3]=Math.round(a*255);
+ }c.putImageData(im,0,0);return el;
+});
+// An illustrative B-type photosphere: no surface map or physical radius is inferred.
+const starDisk=(()=>{
+ const N=384,el=document.createElement("canvas");el.width=el.height=N;const g=el.getContext("2d"),im=g.createImageData(N,N);
+ for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+  const u=(x-N/2)/(N/2-2),v=(y-N/2)/(N/2-2),rr=u*u+v*v,k=(y*N+x)*4;if(rr>=1)continue;
+  const z=Math.sqrt(1-rr),lon=Math.atan2(u,z),lat=Math.asin(v),wx=fbm(lon*4+19,lat*4+2),wy=fbm(lon*5+41,lat*5+9);
+  const cell=fbm(lon*25+wx*8,lat*25+wy*8),fine=noise(lon*88+4,lat*88+9),
+    lum=clamp((.69+.26*cell+.11*fine)*(.50+.50*Math.pow(z,.25)),0,1);
+  im.data[k]=Math.min(255,Math.round(102+161*lum));im.data[k+1]=Math.min(255,Math.round(148+119*lum));im.data[k+2]=Math.min(255,Math.round(211+57*lum));im.data[k+3]=Math.round(clamp((1-rr)*N*.40,0,1)*255);
+ }g.putImageData(im,0,0);return el;
+})();
+const chapterStills=[9,31,48,72,94];
+let W=1,H=1,t=reduce?chapterStills[0]:0,playing=!reduce,visible=false,frame=0,raf=0,last=0,chapter=-1,yawOffset=0,pitchOffset=0,drag=null,painted=0,projected=[],lastUI=-1;
 function resize(){const r=canvas.getBoundingClientRect();if(r.width<1||r.height<1)return;const d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.round(W*d);canvas.height=Math.round(H*d);ctx.setTransform(d,0,0,d,0,0);if(visible)request()}
 new ResizeObserver(resize).observe(canvas);
 function poseAt(time){
@@ -494,7 +525,12 @@ function poseAt(time){
  const aperture=mobile&&!short?Math.min(W*.96,H*.70):Math.min(W*.91,H*.89);
  return {pos,f,right,up,center,focal:aperture/(2*Math.tan(fov*Math.PI/360)),fov};
 }
-function project(v,p,infinite=false){const q=infinite?v:sub(v,p.pos),z=dot(q,p.f);if(z<.003)return null;return {x:p.center[0]+p.focal*dot(q,p.right)/z,y:p.center[1]-p.focal*dot(q,p.up)/z,z,d:len(q)}}
+function project(v,p,infinite=false){
+ const x=v[0]-(infinite?0:p.pos[0]),y=v[1]-(infinite?0:p.pos[1]),q=v[2]-(infinite?0:p.pos[2]),
+ z=x*p.f[0]+y*p.f[1]+q*p.f[2];if(z<.003)return null;
+ return {x:p.center[0]+p.focal*(x*p.right[0]+y*p.right[1]+q*p.right[2])/z,
+ y:p.center[1]-p.focal*(x*p.up[0]+y*p.up[1]+q*p.up[2])/z,z,d:infinite?1:Math.hypot(x,y,q)};
+}
 function onScreen(p,pad=8){return p&&p.x>=-pad&&p.x<=W+pad&&p.y>=-pad&&p.y<=H+pad}
 function line(a,b,color,width=.65,dash=[]){if(!a||!b)return;ctx.beginPath();ctx.setLineDash(dash);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.setLineDash([])}
 function circle(x,y,r,fill){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
@@ -507,12 +543,39 @@ function glow(q,r,color,amount=1,flare=false){
 function background(p,time){
  const grad=ctx.createRadialGradient(p.center[0],p.center[1],0,p.center[0],p.center[1],Math.hypot(W,H)*.74);grad.addColorStop(0,"#091424");grad.addColorStop(.43,"#050c17");grad.addColorStop(1,"#010308");ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
  ctx.globalCompositeOperation="screen";
- for(const v of haze){const q=project(v.p,p,true);if(!onScreen(q,p.focal*.25))continue;const r=p.focal*v.size/q.z;ctx.globalAlpha=v.opacity;ctx.drawImage(clouds[v.tint],q.x-r,q.y-r,r*2,r*2)}
+ for(const v of haze){const q=project(v.p,p,true);if(!onScreen(q,p.focal*.25))continue;const r=p.focal*v.size/q.z;ctx.globalAlpha=v.opacity*4.5;ctx.drawImage(clouds[v.tint],q.x-r,q.y-r,r*2,r*2)}
  ctx.globalAlpha=1;ctx.globalCompositeOperation="source-over";
  for(const v of sky){const q=project(v.p,p,true);if(!onScreen(q))continue;ctx.globalAlpha=v.a*(reduce?1:.93+.07*Math.sin(time*.65+v.phase));if(v.r>1.15){const r=v.r*4;ctx.drawImage(glows.get(v.c),q.x-r,q.y-r,r*2,r*2)}circle(q.x,q.y,v.r,v.c)}
  const motion=ease(time,17,27)*(1-ease(time,84,93));
  if(motion>.01)for(const v of space){const q=project(v.p,p);if(!onScreen(q,2)||q.d<5)continue;ctx.globalAlpha=v.a*motion*clamp(q.d/45,0,1);const r=clamp(v.r*(1+110/(q.d+50)),.25,1.45);circle(q.x,q.y,r,v.c)}
  ctx.globalAlpha=1;
+}
+function limb(time){
+ const opacity=(1-ease(time,6,15))*.65;
+ if(opacity<=0)return;
+ const x=W*(W<850?.58:.72),y=H*1.43,r=H*.69;
+ ctx.save();ctx.globalAlpha=opacity;
+ const g=ctx.createRadialGradient(x,y,r*.84,x,y,r+H*.018);
+ g.addColorStop(0,"#02070d");g.addColorStop(.78,"#071625");g.addColorStop(.91,"#18364b");g.addColorStop(.946,"#426e8d");g.addColorStop(.972,"#7db0c7");g.addColorStop(.986,"#34698966");g.addColorStop(1,"#15375500");
+ circle(x,y,r+H*.018,g);ctx.restore();
+}
+function portrait(q,time){
+ const opacity=ease(time,42,46)*(1-ease(time,51.5,55));
+ if(opacity<.001||!q)return 0;
+ const r=Math.min(W*(W<850?.205:.15),H*.157,167),x=q.x,y=q.y;
+ ctx.save();ctx.globalAlpha=opacity;
+ const halo=ctx.createRadialGradient(x,y,r*.72,x,y,r*2.45);
+ halo.addColorStop(0,"#d3e8ff65");halo.addColorStop(.23,"#a0c9fd42");halo.addColorStop(.43,"#648dce22");halo.addColorStop(1,"#4473c200");
+ ctx.globalCompositeOperation="screen";circle(x,y,r*2.45,halo);
+ ctx.globalCompositeOperation="source-over";ctx.translate(x,y);ctx.rotate((time-46)*.025);
+ ctx.drawImage(starDisk,-r,-r,r*2,r*2);
+ ctx.rotate(-(time-46)*.025);
+ const sheen=ctx.createRadialGradient(-r*.22,-r*.27,0,0,0,r);
+ sheen.addColorStop(0,"#ffffff29");sheen.addColorStop(.70,"#b7dfff09");sheen.addColorStop(1,"#72a7e328");circle(0,0,r,sheen);
+ ctx.globalCompositeOperation="screen";
+ const rim=ctx.createRadialGradient(0,0,r*.93,0,0,r*1.12);
+ rim.addColorStop(0,"#afd2ff00");rim.addColorStop(.35,"#d2e6ff65");rim.addColorStop(1,"#79a6eb00");circle(0,0,r*1.12,rim);
+ ctx.restore();return opacity;
 }
 function label(q,title,sub,accent,occupied){
  if(!onScreen(q,0))return;
@@ -523,7 +586,7 @@ function label(q,title,sub,accent,occupied){
  }
 }
 function render(time){
- const p=poseAt(time);background(p,time);
+ const p=poseAt(time);background(p,time);limb(time);
  const qs=new Map(measured.map(o=>[o.star.id,project(o.p,p)])),sun=project([0,0,0],p);
  const skyAlpha=Math.max(1-ease(time,17,28),ease(time,85,92)),reveal=ease(time,1.0,6.5),connect=skyAlpha*Math.max(reveal,ease(time,88,94));
  let seg=0,total=D.paths.reduce((a,path)=>a+path.length-1,0);
@@ -550,11 +613,12 @@ function render(time){
    }
    projected.push({id:o.star.id,x:o.q.x,y:o.q.y});
  }
+ const portraitOpacity=portrait(qs.get(49669),time);
  const occupied=[];
  const nam=(id,sub="",accent=false)=>{const o=byId.get(id),q=qs.get(id);if(o)label(q,o.star.name,sub,accent,occupied)};
  if(time<17){if(time>3.5)nam(49669,"",true);if(time>7.5){nam(57632);nam(50583)}}
  else if(time<36){if(time>25){nam(57632,"36 lj",true);nam(54879,"161 lj");nam(49669,"79 lj");if(sun)label(sun,"Zon","",false,occupied)}}
- else if(time<55){nam(49669,"79 lichtjaar",true)}
+ else if(time<55){if(portraitOpacity<.25)nam(49669,"79 lichtjaar",true)}
  else if(time<76){if(time>64){nam(49583,"ca. 1.800 lj",true);nam(49669,"79 lj");if(sun)label(sun,"Zon","",false,occupied)}}
  else if(time>90){nam(49669,"",true);nam(57632)}
  painted=projected.length;frame++;
@@ -571,17 +635,18 @@ function updateUI(force=false){
  document.querySelectorAll(".chapter-fill").forEach((el,i)=>{const ch=chapters[i];el.style.width=clamp((t-ch.start)/(ch.end-ch.start)*100,0,100)+"%"});
  $("voyagePlay").setAttribute("aria-label",playing?"Pauzeren":t>=96?"Opnieuw afspelen":"Afspelen");
  $("voyagePlay").innerHTML=playing?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14m6-14v14"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z"/></svg>';
- lastUI=t;
+ $("voyageSceneLabel").textContent=chapter===2&&t>43&&t<54?"REGULUS · ILLUSTRATIEF DETAILBEELD":ch.label;lastUI=t;
 }
 function request(){if(!raf&&visible)raf=requestAnimationFrame(tick)}
 function tick(now){raf=0;if(!visible)return;const dt=last?Math.min(.10,(now-last)/1000):0;last=now;if(playing){t=Math.min(96,t+dt);if(t>=96)playing=false}render(t);if(Math.abs(t-lastUI)>.12||!playing)updateUI();if(playing)request()}
 function seek(v,chapterOnly=false){t=clamp(Number(v),0,96);yawOffset=pitchOffset=0;last=0;updateUI(true);request()}
 function play(){if(t>=96){t=0;last=0}playing=!playing;last=0;updateUI();request()}
+function seekChapter(i){const idx=clamp(i,0,4);seek(reduce?chapterStills[idx]:chapters[idx].start)}
 $("voyagePlay").onclick=play;
-$("voyagePrev").onclick=()=>seek(chapters[Math.max(0,chapter-1)].start);
-$("voyageNext").onclick=()=>seek(chapters[Math.min(4,chapter+1)].start);
+$("voyagePrev").onclick=()=>seekChapter(chapter-1);
+$("voyageNext").onclick=()=>seekChapter(chapter+1);
 $("voyageSeek").oninput=e=>seek(e.target.value);
-for(const [i,ch] of chapters.entries()){const el=document.createElement("button");el.className="voyage-chapter";el.type="button";el.setAttribute("aria-label",ch.short);el.innerHTML='<span class="chapter-track"><span class="chapter-fill"></span></span><span class="chapter-name">'+ch.short+'</span>';el.onclick=()=>seek(ch.start);$("voyageChapters").append(el)}
+for(const [i,ch] of chapters.entries()){const el=document.createElement("button");el.className="voyage-chapter";el.type="button";el.setAttribute("aria-label",ch.short);el.innerHTML='<span class="chapter-track"><span class="chapter-fill"></span></span><span class="chapter-name">'+ch.short+'</span>';el.onclick=()=>seekChapter(i);$("voyageChapters").append(el)}
 canvas.addEventListener("pointerdown",e=>{if(reduce)return;playing=false;canvas.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY};updateUI();request()});
 canvas.addEventListener("pointermove",e=>{if(!drag)return;yawOffset=clamp(yawOffset-(e.clientX-drag.x)*.002,-.5,.5);pitchOffset=clamp(pitchOffset+(e.clientY-drag.y)*.002,-.35,.35);drag={x:e.clientX,y:e.clientY};request()});
 canvas.addEventListener("pointerup",()=>drag=null);canvas.addEventListener("pointercancel",()=>drag=null);
@@ -589,11 +654,11 @@ canvas.addEventListener("keydown",e=>{if(e.key===" "){e.preventDefault();play()}
 function route(){
  const hash=location.hash.slice(1),lab=window.LEO_MODES.some(m=>m[0]===hash)||hash==="bronnen";
  visible=!lab;$("voyage").hidden=!visible;$("app").hidden=visible;
- if(visible){document.title="Leeuw | EAI Astronomie";resize();last=0;updateUI(true);request()}else{playing=false;if(raf)cancelAnimationFrame(raf);raf=0;document.title="Leeuw in 3D | EAI Observatorium"}
+ if(visible){document.title="Leeuw | EAI Astronomie";resize();last=0;updateUI(true);request()}else{playing=false;if(raf)cancelAnimationFrame(raf);raf=0;document.title="Leeuw in 3D | EAI Observatorium";if(hash==="bronnen"){requestAnimationFrame(()=>{const el=$("bronnen"),body=el.closest(".panel-body");document.body.classList.add("panel-open");document.body.classList.remove("graph-open");$("labDock").setAttribute("aria-expanded","true");$("graphToggle").setAttribute("aria-expanded","false");el.querySelector("details").open=true;body.scrollTop=body.scrollTop+el.getBoundingClientRect().top-body.getBoundingClientRect().top;})}}
 }
 window.addEventListener("hashchange",route);
 document.addEventListener("visibilitychange",()=>{if(document.hidden){last=0;if(raf)cancelAnimationFrame(raf);raf=0}else request()});
-window.LEO_VOYAGE_STATE=()=>({visible,time:t,playing,chapter,frame,projected:painted,focus:chapter===2?49669:chapter===3?49583:null,position:poseAt(t).pos.slice(),width:W,height:H});
+window.LEO_VOYAGE_STATE=()=>({visible,time:t,playing,chapter,frame,projected:painted,focus:chapter===2?49669:chapter===3?49583:null,portrait:ease(t,42,46)*(1-ease(t,51.5,55)),position:poseAt(t).pos.slice(),width:W,height:H});
 route();
 })();</script>
 </body></html>
