@@ -209,6 +209,16 @@ try {
   assert.match(await atlas.locator('#relationAtlasStats').textContent(),/579/);
   assert.match(await atlas.locator('#relationAtlasStats').textContent(),/273/);
   assert.equal(await atlas.locator('.ra-link-row').count(),273,'Niet alle bronverbanden staan in de lijst');
+  assert((await atlas.locator('.ra-mobile-group').count())>=8,'De categorieën zijn niet volledig opgebouwd');
+  if(width<700){
+    assert(await atlas.locator('.ra-mobile-graph').isVisible(),'Op mobiel ontbreken de klikbare groepen');
+    assert(!(await atlas.locator('.ra-graph-scroll').isVisible()),'Op mobiel blijft het afgesneden netwerkdiagram zichtbaar');
+  }else{
+    assert(await atlas.locator('.ra-graph-scroll').isVisible(),'De desktopvisual ontbreekt');
+    const chart=await atlas.locator('.ra-graph').boundingBox();
+    const frame=await atlas.locator('.ra-graph-wrap').boundingBox();
+    assert(chart&&frame&&chart.bottom<=frame.bottom+2,'Het netwerkdiagram wordt onderaan afgesneden');
+  }
   await page.screenshot({path:'test-results/ict-scan-'+width+'-relatieatlas.png'});
   const downloadPromise=page.waitForEvent('download');
   await atlas.locator('button').filter({hasText:'CSV downloaden'}).click();
