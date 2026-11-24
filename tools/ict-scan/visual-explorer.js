@@ -80,7 +80,7 @@
     const ring=dom('div','viz-donut-ring');
     ring.style.background='conic-gradient('+slices.join(',')+')';
     ring.setAttribute('role','img');
-    const unit=root.id==='phaseChart'?'lesfasevermeldingen':(root.id==='aiProducts'?'AI-functies':'registraties');
+    const unit=root.dataset.unit||(root.id==='phaseChart'?'lesfasevermeldingen':(root.id==='aiProducts'?'AI-functies':'registraties'));
     ring.setAttribute('aria-label',fmt(total)+' '+unit+' verdeeld over '+entries.length+' categorieën');
     const center=dom('div','viz-donut-center');
     center.append(dom('strong','',fmt(total)),dom('span','',unit));ring.append(center);
@@ -123,14 +123,30 @@
     }
     table.append(body);shell.append(table);root.append(shell);
   }
-  function showChart(id,rows,field,mode,selected,select){
-    const root=el(id);root.className='viz-stage';
-    root.replaceChildren();const entries=tally(rows,field),total=sum(entries);
+  function showEntries(root,entries,mode,selected,select){
+    root.classList.add('viz-stage');
+    root.replaceChildren();
+    const total=sum(entries);
     if(!total){subtitle(root,'Geen registraties bij deze combinatie. Wis een filter.');return;}
     if(mode==='donut')renderDonut(root,entries,total,selected,select);
     else if(mode==='treemap')renderTiles(root,entries,total,selected,select);
     else if(mode==='table')renderTable(root,entries,total,selected,select);
     else renderBars(root,entries,total,selected,select);
+  }
+  // The dashboard composer reuses these exact, already verified chart renderers.
+  // The existing view code remains the owner of all source-specific definitions.
+  window.EmmausChartViews=Object.freeze({
+    modes:Object.freeze(['bars','donut','treemap','table']),
+    render(root,entries,mode,selected,select,unit){
+      if(!root||!Array.isArray(entries)||!this.modes.includes(mode))throw Error('Ongeldige visualisatiekeuze');
+      if(unit)root.dataset.unit=unit;
+      showEntries(root,entries,mode,selected,select);
+    }
+  });
+  function showChart(id,rows,field,mode,selected,select){
+    const root=el(id);root.className='viz-stage';
+    const entries=tally(rows,field);
+    showEntries(root,entries,mode,selected,select);
     // Every mode includes all categories. No silent top-N truncation.
     if(sum(entries)!==rows.length)throw Error('De telling per '+field+' sluit niet op de bron aan.');
   }
@@ -147,8 +163,8 @@
     const date=String(meta.firstInventoryStarted||'').match(/^\d{4}-\d{2}-\d{2}$/)
       ?new Date(meta.firstInventoryStarted+'T00:00:00').toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'}) : 'onbekend';
     const cutoff=String(meta.evidenceCutoff||'');
-    el('inventoryMetaLine').textContent='Eerste inventarisatie '+date+(cutoff?' · bronpeildatum '+new Date(cutoff+'T00:00:00').toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'}):'')+' · '+String(meta.compiledBy||'');
-    el('inventoryPopulation').textContent=fmt(apps)+' basis · '+fmt(ai)+' AI-functies · '+fmt(entra)+' Entra · '+fmt(candidates)+' kandidaten';
+    el('inventoryMetaLine').textContent='Eerste inventarisatie '+date+(cutoff?' · Peildatum '+new Date(cutoff+'T00:00:00').toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'}):'')+' · '+String(meta.compiledBy||'');
+    el('inventoryPopulation').textContent=fmt(apps)+' applicaties · '+fmt(ai)+' AI-functies · '+fmt(entra)+' koppelingen vanuit Entra · '+fmt(candidates)+' overige softwarevermeldingen';
   }
   function renderTrustMetrics(selected){
     const all=array(state.apps),ai=array(state.ai),entra=array(state.connections);
@@ -160,10 +176,10 @@
       const box=dom('div','kpi trust-kpi');box.append(dom('span','kpi-label',label),dom('strong','kpi-value',fmt(value)),dom('span','kpi-desc',detail));return box;
     }
     const kpiRoot=el('kpiGrid');kpiRoot.replaceChildren(
-      tile('Basisregistraties',selected.length,(selected.length===all.length?'':fmt(all.length)+' totaal · ')+'actueel gebruik niet overal bevestigd'),
+      tile('Applicaties',selected.length,(selected.length===all.length?'':fmt(all.length)+' totaal · ')+'actueel gebruik niet overal bevestigd'),
       tile('Met beschreven AI',aiAppIds.size,'Van '+fmt(selected.length)+' geselecteerde toepassingen'),
       tile('AI-functies',relevantAi.length,fmt(ai.length)+' beschreven in totaal; niet automatisch actief'),
-      tile('Mogelijke Entra-match',possibleMatches.length,'Van '+fmt(entra.length)+' registraties; geen bewijs van werking')
+      tile('Mogelijke Entra-koppelingen',possibleMatches.length,'Van '+fmt(entra.length)+' registraties; geen bewijs van werking')
     );
   }
   function renderCoverage(selected){
@@ -193,7 +209,7 @@
     const joint=new Map(pairs(apps).map(x=>[JSON.stringify([x.area,x.kind]),x.count]));
     const total=apps.length,observed=[...joint.values()].reduce((n,x)=>n+x,0);
     const result=el('crossMatrix');result.replaceChildren();result.className='cross-matrix';
-    el('matrixContext').textContent=fmt(total)+' basisregistraties · de cellen tellen samen op tot '+fmt(observed)+'. Selecteer een vak om toepassingen te filteren.';
+    el('matrixContext').textContent=fmt(total)+' applicaties. De verdeling bevat '+fmt(observed)+' vermeldingen. Kies een vak om te filteren.';
     if(total!==observed){subtitle(result,'De matrix kan niet worden weergegeven: de aantallen sluiten niet aan.');return;}
     if(choice.matrix==='table'){
       const table=dom('table','viz-data-table'),thead=dom('thead'),tr=dom('tr');
@@ -249,72 +265,61 @@
     foot.append(dom('th','',fmt(total)));body.append(foot);
     table.append(body);shell.append(table);result.append(shell);
   }
-  function recordedConnections(app){
-    const groups=[['apps','apps'],['ai','ai'],['connections','connections'],['parts','parts'],['additionalCandidates','candidates'],['checks','checks'],['dpia','dpia'],['aiControls','aiControls'],['devices','devices'],['licenseReview','licenseReview'],['workActions','workActions'],['softwareReview','softwareReview'],['faqs','faqs']];
-    const lookup=Object.fromEntries(groups.map(([type,store])=>[type,state[store]]));
-    const linked=[],seen=new Set();
-    for(const [type,store] of groups){
-      for(const current of state[store]?.values()||[]){
-        for(const relation of current.relations||[]){
-          const outgoing=type==='apps'&&current.id===app.id;
-          const incoming=relation.targetType==='apps'&&relation.targetId===app.id;
-          if(!outgoing&&!incoming)continue;
-          const target=outgoing?lookup[relation.targetType]?.get(relation.targetId):current;
-          const otherType=outgoing?relation.targetType:type;
-          if(!target)continue;
-          const id=type+'/'+current.id+'/'+relation.relationType+'/'+relation.targetType+'/'+relation.targetId;
-          if(seen.has(id))continue;seen.add(id);
-          linked.push({
-            id:target.id,name:target.name||target.id,cardType:otherType,
-            description:relation.relationType+' · '+(relation.status||'Status onbekend')+
-              (relation.evidence?' · Bron: '+relation.evidence:' · Bron nog niet vastgelegd')+
-              (relation.note?' · '+relation.note:'')
-          });
-        }
-      }
-    }
-    return linked;
+  function recordedConnections(app,index){
+    return index.connected('apps',app.id).filter(x=>x.origin==='declared').map(link=>({
+      id:link.otherId,name:link.other?.name||link.otherId,
+      cardType:link.otherType,
+      description:link.relationType+' · '+link.status+(link.note?' · '+link.note:'')
+    }));
   }
   function applicableRules(app){
     return (app.frameworkLinks||[]).map(link=>({
       id:link.frameworkId+' '+link.article,
       name:link.frameworkId+' · '+link.article,
-      description:(link.status||'Nog te beoordelen')+
-        (link.evidence?' · Bron: '+link.evidence:' · Bewijs ontbreekt')+
-        (link.note?' · '+link.note:'')
+      description:(link.status||'Nog te beoordelen')+(link.note?' · '+link.note:'')
     }));
   }
-  function matchingFamily(app){
-    const key=normalize(app.name);
+  function matchingFamily(app,index){
+    const related=index.connected('apps',app.id);
+    const entries=(type,predicate=()=>true)=>related.filter(x=>x.otherType===type&&predicate(x)).map(x=>x.other);
+    const unique=items=>[...new Map(items.map(x=>[x.id,x])).values()];
     return [
-      {key:'child',title:'Onderliggende toepassingen',entries:array(state.apps).filter(x=>x.id!==app.id&&(x.parent===app.id||normalize(x.parent||'')===key)),view:'apps'},
-      {key:'part',title:'Technische registraties',entries:array(state.parts).filter(x=>x.parent===app.id),view:''},
-      {key:'ai',title:'Beschreven AI-functies',entries:array(state.ai).filter(x=>x.parentId===app.id),view:'ai'},
-      {key:'entra',title:'Mogelijke Entra-matches',entries:array(state.connections).filter(x=>x.matchedId===app.id),view:'connections'},
-      {key:'recorded',title:'Beoordeelde verbanden',entries:recordedConnections(app),view:''},
-      {key:'legal',title:'Gekoppelde normen en wetten',entries:applicableRules(app),view:''}
+      {key:'child',title:'Onderliggende toepassingen',
+        entries:unique(entries('apps',x=>x.relationType==='part_of'&&x.direction==='incoming')),view:'apps'},
+      {key:'part',title:'Technische onderdelen en M365-modules',
+        entries:unique(entries('parts',x=>x.relationType==='part_of')),view:''},
+      {key:'ai',title:'Beschreven AI-functies',entries:unique(entries('ai')),view:'ai'},
+      {key:'entra',title:'Koppelingen vanuit Entra',entries:unique(entries('connections')),view:'connections'},
+      {key:'recorded',title:'Vastgelegde verbanden',entries:recordedConnections(app,index),view:''},
+      {key:'hardware',title:'Apparatuur en beheer',
+        entries:unique(entries('hardwareGroups')).map(x=>({
+          id:x.id,name:x.name,description:(x.owner||'Verantwoordelijke onbekend')+' · '+(x.status||'Nog te controleren')+' · '+(x.note||x.description||'')
+        })),view:''},
+      {key:'legal',title:'Normbeoordelingen',entries:applicableRules(app),view:''}
     ].filter(g=>g.entries.length>0);
   }
-  function familyScore(app){return matchingFamily(app).reduce((n,g)=>n+g.entries.length,0);}
+  function familyScore(app,index){return matchingFamily(app,index).reduce((n,g)=>n+g.entries.length,0);}
   function renderFamily(){
+    const ix=window.IctInventoryIndex?.build(state);
     const apps=array(state.apps),select=el('familyApp'),panel=el('familyVisual');panel.replaceChildren();
-    const families=apps.slice().sort((a,b)=>familyScore(b)-familyScore(a)||a.name.localeCompare(b.name,'nl'));
+    if(!ix){subtitle(panel,'Index niet beschikbaar.');return;}
+    const families=apps.slice().sort((a,b)=>familyScore(b,ix)-familyScore(a,ix)||a.name.localeCompare(b.name,'nl'));
     if(!families.length){subtitle(panel,'Er zijn nog geen relaties beschreven.');el('familyContext').textContent='Geen relaties verzonnen uit productnamen.';return;}
     const active=focusedFamily&&families.some(x=>x.id===focusedFamily)?focusedFamily:families[0].id;
     if(select.options.length!==families.length||select.value!==active){
-      select.replaceChildren();for(const app of families){const opt=dom('option','',app.name+' · '+familyScore(app));opt.value=app.id;select.append(opt);}
+      select.replaceChildren();for(const app of families){const opt=dom('option','',app.name+' · '+familyScore(app,ix));opt.value=app.id;select.append(opt);}
     }
     select.value=active;focusedFamily=active;
     const app=state.apps.get(active);if(!app)return;
-    const groups=matchingFamily(app),size=groups.reduce((n,g)=>n+g.entries.length,0);
+    const groups=matchingFamily(app,ix),size=groups.reduce((n,g)=>n+g.entries.length,0);
     const root=dom('div','family-main');
     const label=dom('span','family-main-label',app.id+' · '+category(app.kind));
     root.append(label,dom('strong','family-main-name',app.name));
     if(app.description)root.append(dom('p','family-main-desc',app.description));
-    const open=dom('button','family-open','Toepassing openen');
+    const open=dom('button','family-open','Applicatie openen');
     open.type='button';open.addEventListener('click',()=>openRecord('apps',app.id));root.append(open);
     panel.append(root);
-    if(!groups.length)panel.append(dom('p','family-no-links','Er zijn voor deze toepassing nog geen onderdelen, AI-functies of Entra-matches vastgelegd.'));
+    if(!groups.length)panel.append(dom('p','family-no-links','Voor deze applicatie zijn nog geen onderdelen, AI-functies of koppelingen vanuit Entra vastgelegd.'));
     if(choice.family==='list'){
       const list=dom('div','family-list');
       for(const group of groups){
@@ -394,12 +399,7 @@
     if(!state.ready)return;
     const ai=array(state.ai).filter(isClassroomAi);
     const assignments=[];
-    for(const item of ai){
-      const phases=(item.phase||'Niet ingedeeld').split(/[\/,;]/).map(s=>s.trim()).filter(Boolean);
-      for(const phase of new Set(phases.length?phases:['Niet ingedeeld'])){
-        if(!/beheer|organisatie/i.test(phase))assignments.push({phase});
-      }
-    }
+    for(const item of ai)for(const phase of IctScanTaxonomy.chartPhases(item))assignments.push({phase});
     showChart('phaseChart',assignments,'phase',choice.phase,state.phase,value=>{
       state.phase=state.phase===value?'':value;renderAi();
     });

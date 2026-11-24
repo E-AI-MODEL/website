@@ -41,3 +41,9 @@
 .monitor-layout .rail-drawer .global-search-wrap.has-answer>input{flex:none;height:40px;width:100%}
 .monitor-layout .rail-drawer .global-search-wrap.has-answer>.answer-results:not([hidden]){position:relative;left:auto;right:auto;top:auto;max-height:min(315px,40dvh);width:100%;margin-top:7px;z-index:auto;box-shadow:none;border-color:#e4eaf2;overflow:auto}
 @media(max-width:720px){.monitor-layout .rail-drawer .global-search-wrap.has-answer>.answer-results:not([hidden]){max-height:min(250px,32dvh)}}
+
+.workspace.monitor-layout .top-search .answer-results:not([hidden]){display:block;position:absolute;top:43px;left:0;right:0;z-index:400;max-height:min(580px,62dvh);overflow-y:auto;overscroll-behavior:contain;padding:0;background:#fff;border:1px solid #dbe4ed;border-radius:8px;box-shadow:0 12px 32px #253b5930}
+.workspace.monitor-layout .top-search .answer-body{font-size:13px;line-height:1.55}
+.workspace.monitor-layout .top-search .answer-record strong{font-size:12px}
+.workspace.monitor-layout .top-search .answer-record small{white-space:normal;text-align:right}
+.workspace.monitor-layout .top-search .answer-record{min-width:0}

@@ -4,7 +4,12 @@ import vm from 'node:vm';
 const source = fs.readFileSync(new URL('../tools/ict-scan/app.js', import.meta.url),'utf8').replace(/\$\('reportDate'\)\.textContent[\s\S]*$/, '');
 const ctx = {Blob, TextDecoder, TextEncoder, console};
 vm.createContext(ctx);
-vm.runInContext(source + '\nglobalThis.scanTest={state,createReportWorkbook,generateReportSheets,isClassroomAi};',ctx);
+vm.runInContext(fs.readFileSync(new URL('../tools/ict-scan/record-taxonomy.js',import.meta.url),'utf8'),ctx);
+vm.runInContext(source,ctx);
+// Evalueer de browsercode eerst volledig. Voeg de testtoegang pas na de
+// declaraties toe: een aangeplakte opdracht kan anders midden in de
+// initialisatie belanden en een onterechte ReferenceError geven.
+vm.runInContext('globalThis.scanTest={state,createReportWorkbook,generateReportSheets,isClassroomAi};',ctx);
 const state = ctx.scanTest.state;
 state.apps.set('APP-001',{id:'APP-001',name:'Schoolsoftware',kind:'Applicatie',area:'Onderwijs & leren',description:'Een begrijpelijke omschrijving met concrete schoolfunctie.',local:'?',owner:'?',links:'?',data:'?',sources:['Voorbeeld']});
 state.ai.set('AI-001',{id:'AI-001',name:'Oefenkaarten',product:'Schoolsoftware',domain:'Onderwijsleerproces',phase:'Oefenen',action:'Maakt oefenvragen',input:'Docent geeft tekst',teacher:'Docent leest mee',student:'Leerling beantwoordt vragen',learning:'Ophaaloefening en herhalen',attention:'Denk aan de leerdoelen',unknown:'De selectie van vragen is onbekend',local:'? Onbekend',sources:['Voorbeeld']});

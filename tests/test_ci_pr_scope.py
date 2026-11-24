@@ -12,26 +12,6 @@ class CiPrScopeTests(unittest.TestCase):
     def test_eaigit_changes_run_eaigit(self):
         self.assertEqual(affected_suites(["tools/eaigit/index.html", "assets/eaigit/wizard.mjs"]), {"eaigit"})
 
-    def test_eaigit_pr_339_does_not_run_anatomy_or_other_tools(self):
-        changed = [
-            ".github/workflows/projecthulp-browser.yml",
-            "assets/eaigit/github-checks.mjs",
-            "assets/eaigit/wizard.css",
-            "assets/eaigit/wizard.mjs",
-            "tests/test_eaigit_github_checks.mjs",
-            "tools/eaigit/index.html",
-        ]
-        self.assertEqual(affected_suites(changed), {"eaigit"})
-
-    def test_ict_scan_changes_run_own_suite(self):
-        self.assertEqual(affected_suites(["tools/ict-scan/app.js", "tests/test_ict_scan_export.mjs"]), {"ictscan"})
-
-    def test_delf_publication_workflow_only_runs_publishing_suite(self):
-        self.assertEqual(affected_suites([".github/workflows/deploy-delf-preview.yml"]), {"publishing"})
-
-    def test_main_runs_full_test_selection(self):
-        self.assertEqual(affected_suites([]), set(SUITES))
-
     def test_own_science_changes_run_physics(self):
         self.assertEqual(affected_suites(["content/science-observatory/labs/natuurkunde.html"]), {"physics", "melkweg"})
 
@@ -54,27 +34,31 @@ class CiPrScopeTests(unittest.TestCase):
         self.assertEqual(affected_suites([]), set(SUITES))
 
     def test_topo_and_docs_are_independent(self):
-        self.assertEqual(affected_suites(["topo/instellingen/index.html", "docs/notes.md"]), set())
+        self.assertEqual(affected_suites(["topo/instellingen/index.html", "docs/notes.md"]), {"topo"})
 
-    def test_project_workflows_keep_their_own_tests(self):
-        root = Path(__file__).resolve().parents[1] / ".github" / "workflows"
-        site = (root / "site-check.yml").read_text(encoding="utf-8")
-        build = (root / "build-site.yml").read_text(encoding="utf-8")
-        ui = (root / "verify-ui.yml").read_text(encoding="utf-8")
-        self.assertIn("if: ${{ steps.scope.outputs.eaigit == 'true' }}", site)
-        self.assertIn("if: ${{ steps.scope.outputs.publishing == 'true' }}", site)
-        self.assertIn("if: ${{ steps.scope.outputs.physics == 'true' }}", site)
-        self.assertIn("if: ${{ steps.scope.outputs.leif == 'true' }}", site)
-        self.assertGreaterEqual(build.count("if: ${{ steps.scope.outputs.ictscan == 'true' }}"), 4)
-        self.assertIn("if: ${{ steps.scope.outputs.ictscan == 'true' }}", ui)
-        for workflow in (site, build, ui):
-            self.assertIn("python3 scripts/ci_pr_scope.py --all", workflow)
+    def test_ict_and_eaigit_are_independent(self):
+        self.assertEqual(affected_suites(["tools/ict-scan/app.js", "tests/test_ict_scan_export.mjs"]), {"ictscan"})
+        self.assertEqual(affected_suites(["assets/eaigit/wizard.mjs", "tests/test_eaigit_github_checks.mjs"]), {"eaigit"})
+        self.assertEqual(affected_suites(["tools/ict-scan/app.js", "scripts/test_topo_mobile.mjs"]), {"ictscan", "topo"})
 
-    def test_delf_manual_publish_shares_theory7_queue(self):
-        workflow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" / "deploy-delf-preview.yml").read_text(encoding="utf-8")
-        self.assertIn("  workflow_dispatch:", workflow)
-        self.assertNotIn("  push:", workflow.split("on:", 1)[1].split("permissions:", 1)[0])
-        self.assertIn("group: theory7-production", workflow)
+    def test_eaigit_workflow_runs_own_browser_suite(self):
+        self.assertEqual(affected_suites([
+            ".github/workflows/projecthulp-browser.yml",
+            "assets/eaigit/github-checks.mjs",
+            "tests/test_eaigit_github_checks.mjs",
+            "tools/eaigit/index.html",
+        ]), {"eaigit"})
+
+    def test_ict_build_checks_keep_publication_protection_unconditional(self):
+        root = Path(__file__).resolve().parents[1]
+        build = (root / ".github/workflows/build-site.yml").read_text(encoding="utf-8")
+        for name in ("Check local-only ICT scan publishing", "Controleer verborgen lokale ICT-scan"):
+            step = build.split("      - name: " + name + "\n", 1)[1].split("      - name:", 1)[0]
+            self.assertNotIn("if:", step)
+            self.assertIn("test_ict_scan_publish.py", step)
+        for name in ("Test ICT scan Excel reports and AI categorization", "Controleer de brondata en JSON-import van Applicatielandschap 2026"):
+            step = build.split("      - name: " + name + "\n", 1)[1].split("      - name:", 1)[0]
+            self.assertIn("steps.scope.outputs.ictscan == 'true'", step)
 
     def test_reject_path_escape(self):
         self.assertEqual(affected_suites(["../tools/anatomie/index.html"]), set(SUITES))

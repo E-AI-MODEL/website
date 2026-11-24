@@ -1,5 +1,6 @@
 name: Publish DELF MacBook and mobile tests
 
+# Alleen handmatige herstelpublicatie, naast de automatische algemene sitepublicatie.
 on:
   workflow_dispatch:
 
@@ -13,6 +14,7 @@ concurrency:
 
 jobs:
   publish:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -38,33 +40,7 @@ jobs:
           test -d tools/delf-live/dist/assets
           grep -q 'DELF scolaire' tools/delf-live/dist/index.html
 
-      - name: Wait until main-site deployment is finished
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python - <<'PY'
-          import json, os, time
-          from urllib.request import Request, urlopen
-          api = 'https://api.github.com/repos/' + os.environ['GITHUB_REPOSITORY'] + '/actions/workflows/deploy-theory7.yml/runs?per_page=35'
-          pending = {'queued', 'pending', 'in_progress', 'waiting', 'requested'}
-          for attempt in range(38):
-              req = Request(api, headers={
-                  'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
-                  'Accept': 'application/vnd.github+json',
-                  'User-Agent': 'DELF-cloud-publisher'
-              })
-              with urlopen(req, timeout=20) as response:
-                  data = json.load(response)
-              active = [str(r['id']) for r in data['workflow_runs'] if r['status'] in pending]
-              if not active:
-                  print('Full website publishing is finished; DELF preview can now upload.')
-                  break
-              print('Waiting for full website publisher:', ', '.join(active), flush=True)
-              time.sleep(15)
-          else:
-              raise RuntimeError('Main publisher remained busy; no partial DELF upload attempted.')
-          PY
+      # De gedeelde concurrency-groep serialiseert de publicatie al.
 
       - name: Install FTPS client
         run: |

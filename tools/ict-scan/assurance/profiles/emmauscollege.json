@@ -1,0 +1,46 @@
+{
+  "schema": "eai-ict-assurance-profile-v1",
+  "profileVersion": "1.3.0",
+  "organisation": {
+    "id": "emmauscollege",
+    "name": "Emmauscollege Rotterdam",
+    "locale": "nl-NL"
+  },
+  "source": {
+    "repository": "E-AI-MODEL/website",
+    "baseRef": "main",
+    "sourceDir": "tools/ict-scan/bronnen",
+    "scopeId": "ict-inventory-2026",
+    "registerFiles": {
+      "apps": "2026-applicatielandschap.json",
+      "ai": "2026-applicatielandschap.json",
+      "connections": "2026-applicatielandschap.json",
+      "parts": "2026-applicatielandschap.json",
+      "additionalCandidates": "2026-applicatielandschap.json",
+      "checks": "2026-applicatielandschap.json",
+      "dpia": "2026-applicatielandschap.json",
+      "aiControls": "2026-applicatielandschap.json",
+      "devices": "2026-applicatielandschap.json",
+      "licenseReview": "2026-applicatielandschap.json",
+      "workActions": "2026-werkregister.json",
+      "softwareReview": "2026-werkregister.json",
+      "faqs": "2026-faq.json",
+      "sourceRegister": "2026-bronnenregister.json",
+      "hardwareGroups": "2026-applicatielandschap.json"
+    },
+    "configurationFiles": {
+      "profile": "tools/ict-scan/assurance/profiles/emmauscollege.json",
+      "catalog": "tools/ict-scan/frameworks.json",
+      "engine": "tools/ict-scan/assurance/engine.js",
+      "sourceRegister": "tools/ict-scan/assurance/source-register.js"
+    }
+  },
+  "policy": {
+    "id": "ict-record-review",
+    "version": "1.0.0",
+    "reviewMaxAgeDays": 365,
+    "basis": "project-default",
+    "description": "Projectinstelling voor signalering: een beoordeling ouder dan 365 dagen vraagt aandacht. Dit is geen wettelijke termijn en geen vastgelegd beleidsbesluit van de organisatie. Een expliciete volgende beoordelingsdatum blijft afzonderlijk van belang."
+  },
+  "synthetic": false
+}
