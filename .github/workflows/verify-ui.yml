@@ -43,6 +43,8 @@ jobs:
       - run: pip install beautifulsoup4
       - run: python scripts/build_site.py --sources content/legacy --out site-build
       - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
+      - name: Controleer anatomie vóór de algemene navigatiebewerking
+        run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
       - run: python scripts/prepare_ui.py --root site-build
       - name: Verify one canonical hub per subject and legacy redirects
         run: python -m unittest discover -s tests -p 'test_hub_structure.py' -v
@@ -136,12 +138,11 @@ jobs:
           name: public-ui-check
           path: test-results/
 
-      - name: Leg de gecontroleerde productiebuild vast
-        if: ${{ inputs.release_artifact == true }}
+      - name: Leg de gecontroleerde build vast en toets de bestandsintegriteit
         run: |
-          python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
           python scripts/verify_ui.py --root site-build
           python scripts/release_artifact.py create --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
+          python scripts/release_artifact.py verify --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
       - name: Bewaar exact de geteste sitebuild
         if: ${{ inputs.release_artifact == true }}
         uses: actions/upload-artifact@v4

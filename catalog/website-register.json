@@ -1437,8 +1437,8 @@
       "robots_noindex_in_html": true,
       "page_status": "niet_voor_zoekmachines",
       "in_committed_sitemap": true,
-      "search_scope": "niet_indexeren",
-      "note": "Statische inlogpagina. Server-side rechtencontrole via de Cloudflare Worker; uploads en beheerdata staan niet in Git.",
+      "search_scope": "algemeen",
+      "note": "Openbare inlogpagina, vindbaar via het EAI-menu en de interne zoekfunctie; niet bedoeld voor externe zoekmachines. De Worker controleert toegang server-side. Uploads en beheerdata staan niet in Git of in de publieke zoekindex.",
       "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository"
     },
     {
