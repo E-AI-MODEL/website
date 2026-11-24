@@ -5,6 +5,8 @@ on:
     paths:
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_admin.mjs'
+      - 'tests/test_html_gallery_sqlite.mjs'
+      - 'tests/test_html_gallery_live.mjs'
       - 'tests/test_eai_site_admin.mjs'
       - 'tools/html-galerij/index.html'
       - '.github/workflows/test-html-gallery-auth.yml'
@@ -13,6 +15,8 @@ on:
     paths:
       - 'services/html-galerij/**'
       - 'tests/test_html_galerij_admin.mjs'
+      - 'tests/test_html_gallery_sqlite.mjs'
+      - 'tests/test_html_gallery_live.mjs'
       - 'tools/html-galerij/index.html'
       - '.github/workflows/test-html-gallery-auth.yml'
   workflow_dispatch:
@@ -42,3 +46,16 @@ jobs:
         run: node tests/test_html_galerij_admin.mjs
       - name: Test website management sources, access boundaries and audit actions
         run: node tests/test_eai_site_admin.mjs
+
+      - name: Test the complete gallery with a real SQLite transaction
+        run: node tests/test_html_gallery_sqlite.mjs
+  live-anonymous:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check anonymous production requests without real files or credentials
+        run: node tests/test_html_gallery_live.mjs

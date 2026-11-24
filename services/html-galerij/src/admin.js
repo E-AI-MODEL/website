@@ -155,54 +155,67 @@ async function health() {
   });
 }
 async function deployment() {
-  // Public GitHub metadata only. No token and no write capability.
+  // Read only public metadata; a job is evidence only for its exact run and commit.
   const headers = { "User-Agent": "EAI-beheer/1.0", "X-GitHub-Api-Version": "2022-11-28" };
-  const [commit, workflow, checks] = await Promise.allSettled([
+  const [commit, workflow] = await Promise.allSettled([
     requestJson(GITHUB + "/commits/main", 4500, headers),
-    requestJson(GITHUB + "/actions/workflows/deploy-theory7.yml/runs?branch=main&per_page=1", 4500, headers),
-    requestJson(GITHUB + "/actions/runs?branch=main&per_page=50", 4500, headers)
+    requestJson(GITHUB + "/actions/workflows/deploy-theory7.yml/runs?branch=main&per_page=20", 4500, headers)
   ]);
-  if (commit.status !== "fulfilled" && workflow.status !== "fulfilled" && checks.status !== "fulfilled") {
+  if (commit.status !== "fulfilled" && workflow.status !== "fulfilled") {
     return fail("GitHub-publicatiestatus is tijdelijk niet bereikbaar.");
   }
   const c = commit.status === "fulfilled" ? commit.value : null;
-  const rawRun = workflow.status === "fulfilled" ? workflow.value?.workflow_runs?.[0] : null;
-  const checkedWorkflows = ["Check website", "Build EAI Site", "Verify public UI"];
-  const pipeline = [];
-  const available = checks.status === "fulfilled" && Array.isArray(checks.value?.workflow_runs)
-    ? checks.value.workflow_runs : [];
-  for (const name of checkedWorkflows) {
-    const entry = available.find(item => item && item.name === name && Number.isSafeInteger(item.id));
-    if (!entry) continue;
-    pipeline.push({
-      name, status: ["queued", "in_progress", "completed", "waiting", "pending"].includes(entry.status)
-        ? entry.status : "unknown",
-      conclusion: typeof entry.conclusion === "string" ? entry.conclusion : null,
-      createdAt: entry.created_at || null,
-      url: "https://github.com/E-AI-MODEL/website/actions/runs/" + entry.id
-    });
-  }
-  const run = rawRun && Number.isSafeInteger(rawRun.id) ? {
-    id: rawRun.id,
-    status: ["queued", "in_progress", "completed", "waiting", "pending"].includes(rawRun.status) ? rawRun.status : "unknown",
-    conclusion: typeof rawRun.conclusion === "string" ? rawRun.conclusion : null,
-    createdAt: rawRun.created_at || null,
-    updatedAt: rawRun.updated_at || null,
-    commit: typeof rawRun.head_sha === "string" ? rawRun.head_sha.slice(0, 12) : null,
-    url: "https://github.com/E-AI-MODEL/website/actions/runs/" + rawRun.id
+  const sha = c && /^[a-f0-9]{40}$/.test(c.sha) ? c.sha : null;
+  const runs = workflow.status === "fulfilled" && Array.isArray(workflow.value?.workflow_runs)
+    ? workflow.value.workflow_runs.filter(x => Number.isSafeInteger(x?.id) && x.id > 0 && /^[a-f0-9]{40}$/.test(x.head_sha)) : [];
+  // Prefer the current commit. Do not present older successful runs as current.
+  const rawRun = runs.find(x => sha && x.head_sha === sha) || runs[0] || null;
+  const status = value => ["queued", "in_progress", "completed", "waiting", "pending", "requested"].includes(value) ? value : "unknown";
+  const conclusion = value => typeof value === "string" ? value : null;
+  const run = rawRun ? {
+    id: rawRun.id, status: status(rawRun.status), conclusion: conclusion(rawRun.conclusion),
+    createdAt: rawRun.created_at || null, updatedAt: rawRun.updated_at || null,
+    commit: rawRun.head_sha.slice(0, 12), matchesMain: sha ? rawRun.head_sha === sha : null,
+    url: "https://github.com/E-AI-MODEL/website/actions/runs/" + rawRun.id,
+    publishJob: null, gate: null, verifiedCurrent: false
   } : null;
+  let checksAvailable = false;
+  let pipeline = [];
+  if (run) {
+    try {
+      const data = await requestJson(GITHUB + "/actions/runs/" + run.id + "/jobs?filter=latest&per_page=100", 4500, headers);
+      if (!Array.isArray(data?.jobs) || !Number.isSafeInteger(data.total_count) || data.total_count !== data.jobs.length ||
+          data.jobs.some(j => !Number.isSafeInteger(j?.id) || j.id <= 0 || j.head_sha !== rawRun.head_sha || typeof j.name !== "string")) {
+        throw new Error("Incomplete or mismatched job data");
+      }
+      checksAvailable = true;
+      const rows = data.jobs.map(j => ({
+        name: j.name.replace(/^release-check \/ /, ""), status: status(j.status),
+        conclusion: conclusion(j.conclusion), createdAt: j.started_at || null,
+        commit: run.commit, url: run.url + "/job/" + j.id
+      }));
+      const gates = rows.filter(x => x.name === "static-checks");
+      const publishers = rows.filter(x => x.name === "deploy");
+      run.gate = gates.length === 1 ? gates[0] : null;
+      run.publishJob = publishers.length === 1 ? publishers[0] : null;
+      pipeline = rows.filter(x => x.name !== "deploy");
+      run.verifiedCurrent = run.matchesMain === true && run.status === "completed" &&
+        run.conclusion === "success" && run.gate?.conclusion === "success" &&
+        run.publishJob?.conclusion === "success";
+    } catch {
+      // Missing job information must remain unknown, even for a green run.
+      checksAvailable = false;
+    }
+  }
   return json({
     source: "GitHub · openbare repository E-AI-MODEL/website",
     checkedAt: new Date().toISOString(),
-    main: c && typeof c.sha === "string" ? {
-      commit: c.sha.slice(0, 12),
-      message: String(c.commit?.message || "").split("\n")[0].slice(0, 180),
-      url: "https://github.com/E-AI-MODEL/website/commit/" + c.sha.slice(0, 40)
+    main: sha ? {
+      commit: sha.slice(0, 12), message: String(c.commit?.message || "").split("\n")[0].slice(0, 180),
+      url: "https://github.com/E-AI-MODEL/website/commit/" + sha
     } : null,
-    deploy: run,
-    checks: pipeline,
-    checksAvailable: checks.status === "fulfilled",
-    note: "Een commit op main of geslaagde CI is niet op zichzelf bewijs dat alle productiepagina's bijgewerkt zijn."
+    deploy: run, checks: pipeline, checksAvailable,
+    note: "De publicatierun en de controles horen bij dezelfde commit. Een geslaagde run met livecontroles is geen bewijs dat iedere afzonderlijke pagina of functie werkt."
   });
 }
 async function files(env, url) {

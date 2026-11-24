@@ -18,9 +18,9 @@ Op 15 november is de nieuwe, beveiligde Worker met de zes ES-modules in Cloudfla
 
 **Live zonder aanmelding gecontroleerd:** de inlogpagina laadt; de lijst `/api/uploads`, het beheeroverzicht `/api/admin/overview` en een rechtstreekse `/view/{id}`-link geven zonder sessie `Aanmelden vereist` terug. De gerichte authenticatietests en websitebuild zijn geslaagd.
 
-**Nog niet gecontroleerd:** een echte login met het persoonlijke wachtwoord. Het wachtwoord wordt niet aan ChatGPT verstrekt en de ingestelde hash kan niet worden teruggelezen. De tijdelijke D1-trigger `eai_gallery_block_public_hide` blijft aanwezig, zodat bestanden verbergen nog niet werkt totdat de aangemelde beheerder de login heeft bevestigd.
+**24 november:** persoonlijke aanmelding is bevestigd door de beheerder en een geldige sessie in D1. De PBKDF2-reparatie is actief. De ingestelde verifier is teruggezet van gewone variabele naar Secret, zonder de waarde te wijzigen. De tijdelijke D1-trigger blijft staan tot de productiecontrole op anonieme toegang slaagt.
 
-**Vervolg:** de beheerder meldt zich aan en controleert het overzicht en de HTML-galerij. Daarna de tijdelijke trigger verwijderen (`DROP TRIGGER IF EXISTS eai_gallery_block_public_hide;`), offline halen en terugzetten testen, en pas na die proef de publieke ingang `/beheer/` en aangepaste `/tools/html-galerij/` via de Theory7-siteworkflow publiceren. De algemene websitecontroles hebben nog twee oudere, niet aan deze Worker gerelateerde fouten.
+**Vervolg:** test anonieme productieverzoeken en het volledige bestandsbeheer met een afzonderlijke SQLite-testdatabase. Verwijder de tijdelijke trigger pas na geslaagde controles en verifieer daarna verbergen en herstellen op een proefbestand. De persoonlijke browsersessie blijft bij de beheerder. De statische ingangen worden via Theory7 gepubliceerd na de vereiste PR-controles.
 
 ## Eenmalig activeren
 
@@ -74,7 +74,7 @@ Elke mutatie gebruikt een server-side sessie, een juiste `Origin` en een SQL-tra
 
 ### Extra databasevoorbereiding
 
-De tabel `site_admin_audit` en de index zijn op 15 november 2026 in de bestaande D1-database toegevoegd en staan tevens in `schema.sql`. De eerder genoemde tijdelijke blokkade `eai_gallery_block_public_hide` blijft aanwezig totdat de nieuwe beveiligde Worker volledig werkt en de anonieme toegang getest is.
+De tabel `site_admin_audit` en de index zijn op 15 november 2026 in de bestaande D1-database toegevoegd en staan tevens in `schema.sql`. De tijdelijke blokkade `eai_gallery_block_public_hide` mag pas worden opgeheven na controle van de actieve Worker, de persoonlijke aanmelding en anonieme toegang.
 
 De Worker en dashboardmodule moeten samen gedeployed worden. Alleen bestanden uit de websitebuild op Theory7 publiceren is niet voldoende.
 
@@ -103,4 +103,8 @@ Officiële handleidingen:
 
 ## Verificatie 24 november 2026
 
-De zes JavaScript-modules in `src/` zijn exact vergeleken met de actieve Cloudflare Worker (100% verkeer op versie `8981fbe2-3edb-4372-ab74-f8478afc89fb`). Alle zes komen overeen. De D1-tabellen, sessies, auditregistratie en de tijdelijke blokkadetrigger zijn aanwezig; vereiste secret-namen zijn gecontroleerd zonder waarden op te vragen. De Worker is bereikbaar geconfigureerd via workers.dev; de HTTP-proef vanuit de huidige omgeving kon niet worden uitgevoerd. Een geldige persoonlijke aanmelding en een gecontroleerde hide/restore-proef zijn nog vereist. De tijdelijke blokkade is niet verwijderd en er zijn geen Cloudflare-instellingen of secrets gewijzigd. De websitebouw voert zowel de galerij- als de beheertests verplicht uit.
+- De actieve Worker heeft de zes JavaScript-modules van commit `6a330185`. De persoonlijke login is bevestigd; de D1-database bevatte één geldige sessie.
+- Versie `ea714a56-94eb-4170-8ee4-ce7b399cf40e` is actief met dezelfde code, dezelfde D1-binding en de bestaande wachtwoordhash als Secret. De wachtwoordwaarde en andere bindings zijn niet gewijzigd.
+- Theory7-run [45420474355](https://github.com/E-AI-MODEL/website/actions/runs/45420474355) is geslaagd voor hoofdcommit `003d46f`, inclusief productiecontroles.
+- Het vernieuwde publicatiedashboard leest jobs van één Theory7-run, kiest de huidige hoofdcommit wanneer die beschikbaar is, en toont nooit een oudere geslaagde run als bevestiging voor een nieuwere commit. Onvolledige jobs blijven onbekend. Dit is nog een PR-wijziging tot de volgende Worker-uitrol.
+- Nieuwe SQLite-integratietest met synthetische gegevens: inloggen, uploaden, afgeschermd bekijken, verbergen, herstellen, terugrollen bij een SQL-fout, logboek en afmelden. De aparte anonieme productietest gebruikt geen echte bestands-ID's of inloggegevens. Beide tests moeten nog draaien voor deze wijziging.

@@ -113,6 +113,8 @@ assert.equal((await handleAdmin(req('/api/admin/nope'),env,USER)).status,404);
 
 // External network responses are mocked ONLY in this test, never as production values.
 const originalFetch=globalThis.fetch;
+let runMode='older';
+let jobsMode='complete';
 globalThis.fetch=async (url,opts)=>{
  const target=String(url);
  if(target.includes('eai-site-insights?days=30')){
@@ -128,14 +130,18 @@ globalThis.fetch=async (url,opts)=>{
   return Response.json({sha:'ab'.repeat(20),commit:{message:'Update site\nbody'}});
  }
  if(target.includes('api.github.com/repos/E-AI-MODEL/website/actions/workflows/deploy-theory7.yml/runs')){
-  return Response.json({workflow_runs:[{id:123456,status:'completed',conclusion:'failure',created_at:'2026-11-15T10:00:00Z',updated_at:'2026-11-15T10:01:00Z',head_sha:'de'.repeat(20)}]});
+  const old={id:123456,status:'completed',conclusion:'success',created_at:'2026-11-15T10:00:00Z',updated_at:'2026-11-15T10:01:00Z',head_sha:'de'.repeat(20)};
+  const current={...old,id:123457,head_sha:'ab'.repeat(20)};
+  return Response.json({workflow_runs:runMode==='current'?[old,current]:runMode==='none'?[]:[old]});
  }
- if(target.includes('api.github.com/repos/E-AI-MODEL/website/actions/runs?branch=main')){
-  return Response.json({workflow_runs:[
-   {id:123500,name:'Check website',status:'completed',conclusion:'failure',created_at:'2026-11-15T12:00:00Z'},
-   {id:123501,name:'Build EAI Site',status:'completed',conclusion:'success',created_at:'2026-11-15T12:00:00Z'},
-   {id:123502,name:'Verify public UI',status:'in_progress',conclusion:null,created_at:'2026-11-15T12:00:00Z'}
-  ]});
+ if(target.includes('/actions/runs/123456/jobs')||target.includes('/actions/runs/123457/jobs')){
+  const head=target.includes('/123457/')?'ab'.repeat(20):'de'.repeat(20);
+  const row=(id,name,conclusion)=>({id,name,conclusion,status:'completed',head_sha:head,started_at:'2026-11-15T12:00:00Z'});
+  if(jobsMode==='failure')return Response.json({}, {status:403});
+  const jobs=[row(1,'release-check / static-checks','success'),row(2,'release-check / build-check / build','success'),row(3,'release-check / topo-check','skipped'),row(4,'deploy','success')];
+  if(jobsMode==='mismatch')jobs[0].head_sha='ff'.repeat(20);
+  if(jobsMode==='blocked')jobs[0].conclusion='failure';
+  return Response.json({total_count:jobsMode==='partial'?jobs.length+1:jobs.length,jobs});
  }
  if(target.startsWith('https://eaimodel.nl/')){
   if(target.endsWith('/tools/anatomie/'))return Response.json({}, {status:503});
@@ -163,11 +169,30 @@ try{
  response=await handleAdmin(req('/api/admin/deploy'),env,USER);
  body=await data(response);
  assert.equal(body.main.commit,'ab'.repeat(6));
- assert.equal(body.deploy.conclusion,'failure');
+ assert.equal(body.deploy.conclusion,'success');
+ assert.equal(body.deploy.matchesMain,false);
+ assert.equal(body.deploy.verifiedCurrent,false);
  assert.equal(body.checks.length,3);
- assert.equal(body.checks.find(x=>x.name==='Check website').conclusion,'failure');
+ assert.equal(body.checks.find(x=>x.name==='topo-check').conclusion,'skipped');
  assert.ok(body.checksAvailable);
- assert.match(body.note,/niet op zichzelf bewijs/i);
+ runMode='current';
+ const release=async()=>data(await handleAdmin(req('/api/admin/deploy'),env,USER));
+ body=await release();
+ assert.equal(body.deploy.id,123457);
+ assert.equal(body.deploy.matchesMain,true);
+ assert.equal(body.deploy.verifiedCurrent,true);
+ assert.equal(body.deploy.publishJob.name,'deploy');
+ for(const mode of ['failure','mismatch','partial']){
+  jobsMode=mode;body=await release();
+  assert.equal(body.checksAvailable,false);
+  assert.equal(body.deploy.verifiedCurrent,false);
+  assert.deepEqual(body.checks,[]);
+ }
+ jobsMode='blocked';body=await release();
+ assert.equal(body.deploy.verifiedCurrent,false);
+ runMode='none';body=await release();
+ assert.equal(body.deploy,null);
+ assert.equal(body.checksAvailable,false);
 }finally{
  globalThis.fetch=originalFetch;
 }
