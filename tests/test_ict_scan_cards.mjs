@@ -163,5 +163,6 @@ test('Gedeelde dashboardontwerpen accepteren alleen de bestaande layoutkeuzes, g
   assert.deepEqual(clone(file.designs.apps),design);
   assert.throws(()=>logic.validateDesignFile({schema:'eai-ict-dashboard-designs-v1',designs:{ai:design}},validate));
   assert.throws(()=>logic.validateDesignFile({schema:'eai-ict-dashboard-designs-v1',designs:{apps:design},sourceData:[]},validate));
-  for(const id of ['dsSharedLoad','dsSharedPublish','dsSharedDialog','dsSharedToken','dsSharedConsent','dsSharedSubmit'])assert.ok(html.includes('id="'+id+'"'));
+  for(const id of ['dsSharedLoad','dsSharedPublish','dsSharedDialog','dsSharedSubmit','cardKeepDraft'])assert.ok(html.includes('id="'+id+'"'));
+  assert.ok(!html.includes('id="cardGithubToken"'));assert.ok(!html.includes('id="dsSharedToken"'));
 });

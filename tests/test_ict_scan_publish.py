@@ -23,10 +23,11 @@ class ICTScanTests(unittest.TestCase):
     def test_composer_and_edit_gate_assets_published(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
-        for filename in ("composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js"):
+        for filename in ("composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js", "edit-api.php"):
             self.assertTrue((TOOL / filename).is_file(), filename)
             self.assertIn(f'"{filename}"', builder, f"{filename} must be shipped")
-            self.assertIn(f'./{filename}', html, f"{filename} must be referenced")
+            consumer = (TOOL / 'edit-gate.js').read_text() if filename == 'edit-api.php' else html
+            self.assertIn(f'./{filename}', consumer, f"{filename} must be referenced")
         app = (TOOL / "app.js").read_text(encoding="utf-8")
         cards = (TOOL / "record-cards.js").read_text(encoding="utf-8")
         self.assertIn("signalTarget.type,signalTarget.id,true", app)

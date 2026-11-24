@@ -1,3 +1,4 @@
+import { ictEditor } from './ict-editor.js';
 // Private HTML gallery. The Worker is the only host for data and administration.
 import { configured, currentUser, login, logout, loginResponse, sameOrigin } from './auth.js';
 import { privatePage } from './ui.js';
@@ -114,6 +115,7 @@ export default {
       return error('De galerij is nog niet ingericht.', 503);
     }
     const user = await currentUser(request, env);
+    if (path.startsWith('/ict-editor/')) return ictEditor(request, env, user, path);
     if (path === '/' || path === '/auth/login' || path === '/gallery') {
       if (request.method !== 'GET') return error('Methode niet toegestaan.', 405);
       if (!user) return loginResponse();

@@ -38,3 +38,10 @@ CREATE TABLE IF NOT EXISTS site_admin_audit (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_site_admin_audit_created ON site_admin_audit(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS ict_editor_grants (
+  grant_hash TEXT PRIMARY KEY,
+  session_hash TEXT NOT NULL,
+  expires_at INTEGER NOT NULL,
+  redeemed INTEGER NOT NULL DEFAULT 0
+);

@@ -112,7 +112,7 @@ function sameOrigin(request) {
   const path = new URL(request.url).pathname;
   return origin === 'null' &&
     request.method === 'POST' &&
-    (path === '/auth/login' || path === '/auth/logout') &&
+    (path === '/auth/login' || path === '/auth/logout' || path === '/ict-editor/open') &&
     request.headers.get('Sec-Fetch-Site') === 'same-origin' &&
     request.headers.get('Sec-Fetch-Mode') === 'navigate' &&
     request.headers.get('Sec-Fetch-Dest') === 'document';
@@ -161,4 +161,4 @@ async function logout(request, env) {
     'Set-Cookie': COOKIE + '=; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=0'
   });
 }
-export { configured, currentUser, login, logout, loginResponse, sameOrigin };
+export { cookieToken, sha256, configured, currentUser, login, logout, loginResponse, sameOrigin };

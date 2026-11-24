@@ -466,6 +466,11 @@ function installEvents(){
    document.dispatchEvent(new Event('ict-scan:opened'));
  };
  // Alleen dubbelklikken op de middelste 0. Een enkele klik doet niets.
+ if(location.hash==='#beheer'){
+   window.addEventListener('load',async()=>{
+     if(await window.EmmausEditGate.request()){history.replaceState(null,'',location.pathname+location.search);openWorkspace();}
+   },{once:true});
+ }
  zero.addEventListener('dblclick',e=>{e.preventDefault();openWorkspace();});
  // Dubbel tikken op touchscreens, zonder zichtbare toegangsknop.
  let lastTouch=0;
