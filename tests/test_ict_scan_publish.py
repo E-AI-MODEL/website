@@ -188,13 +188,18 @@ class ICTScanTests(unittest.TestCase):
         self.assertEqual(workflow.count('HOST: web0102.theory7.net'), 2, 'FTPS preflight and upload must use the certified server name')
         self.assertNotIn('HOST: ftp.eaimodel.nl', workflow)
         checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
-        self.assertEqual(checks.count("- '.github/workflows/deploy-theory7.yml'"), 2)
+        self.assertIn("workflow_call:", checks)
 
     def test_deployment_requires_the_same_ict_checks_including_browser_validation(self):
         deploy = (ROOT / '.github' / 'workflows' / 'deploy-theory7.yml').read_text(encoding='utf-8')
         checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
-        self.assertIn('  ict-controls:\n    uses: ./.github/workflows/check-ict-assurance.yml\n', deploy)
-        self.assertIn('  deploy:\n    needs: ict-controls\n', deploy)
+        gate = (ROOT / '.github' / 'workflows' / 'site-check.yml').read_text(encoding='utf-8')
+        self.assertIn('uses: ./.github/workflows/site-check.yml', deploy)
+        self.assertIn('needs: release-check', deploy)
+        self.assertIn('uses: ./.github/workflows/check-ict-assurance.yml', gate)
+        self.assertIn('uses: ./.github/workflows/ict-scan-webkit.yml', gate)
+        self.assertIn('ict-check, ict-webkit', gate)
+        self.assertIn('scripts/check_release_gate.py', gate)
         self.assertIn('  workflow_call:\n', checks)
         self.assertIn('node tests/verify_ict_assurance_browser.mjs', checks)
         self.assertIn('group: ict-assurance-${{ github.workflow }}-${{ github.ref }}', checks,

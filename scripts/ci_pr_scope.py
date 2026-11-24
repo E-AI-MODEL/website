@@ -11,7 +11,7 @@ from pathlib import Path
 
 SUITES = (
     "anatomy", "eaigit", "eaigame", "physics", "eaiwork",
-    "llm", "melkweg", "leif", "home",
+    "llm", "melkweg", "leif", "home", "ictscan", "topo",
 )
 
 # Changes to these standalone areas do not affect shared site components.
@@ -47,7 +47,21 @@ AREAS = (
     ("scripts/test_melkweg", ("melkweg",)),
     ("leif/", ("leif",)),
     ("scripts/test_leif_", ("leif",)),
-    ("topo/", ()),
+    ("topo/", ("topo",)),
+    ("scripts/test_topo_mobile.mjs", ("topo",)),
+    ("scripts/validate_topo_content.mjs", ("topo",)),
+    ("tools/ict-scan/", ("ictscan",)),
+    ("scripts/test_ict_scan_browser.mjs", ("ictscan",)),
+    ("scripts/check_ict_assurance.mjs", ("ictscan",)),
+    ("tests/test_ict_scan_", ("ictscan",)),
+    ("tests/verify_ict_assurance_browser.mjs", ("ictscan",)),
+    ("tests/test_eaigit_", ("eaigit",)),
+    ("tests/test_projecthulp", ("eaigit",)),
+    ("tests/test_static_audit.mjs", ("eaigit",)),
+    ("tests/test_audit_advice.mjs", ("eaigit",)),
+    ("scripts/anatomie_", ("anatomy",)),
+    ("scripts/audit_anatomie", ("anatomy",)),
+    ("scripts/audit_hart_glb", ("anatomy",)),
     ("docs/", ()),
     ("README.md", ()),
 )
