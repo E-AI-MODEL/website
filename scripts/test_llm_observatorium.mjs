@@ -88,11 +88,18 @@ try{
   assert.equal(await page.locator('.ai-trace-token-step').count(),4,
     'De hele gemeten tokenreeks is direct bereikbaar');
   const firstLayerValues=await page.locator('.ai-trace-bar strong').allInnerTexts();
+  // A tokenizer can finish asynchronously while the optional recording is open.
+  // The same-step redraw must not close the measurement or fetch it again.
+  await page.evaluate(()=>guideRender());
+  assert.equal(await page.locator('.ai-trace-toggle').getAttribute('aria-expanded'),'true');
+  assert.deepEqual(await page.locator('.ai-trace-bar strong').allInnerTexts(),firstLayerValues);
+  assert.equal(measuredRequests.length,1);
   await page.locator('.ai-trace-head-btn').last().click();
   const differentLayerValues=await page.locator('.ai-trace-bar strong').allInnerTexts();
   assert.notDeepEqual(firstLayerValues,differentLayerValues,
     'Echte eerste en laatste attentionlaag geven verschillende gewichten');
   await page.locator('.ai-trace-token-step').nth(1).click();
+  await page.evaluate(()=>guideRender());
   assert.match(await page.locator('.ai-trace-selected').innerText(),/was/);
   assert.equal(await page.locator('.ai-trace-bar').count(),6,
     'Na het eerste gegenereerde token groeit de tekst waarop attention is berekend');
