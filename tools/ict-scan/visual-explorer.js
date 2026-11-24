@@ -163,8 +163,8 @@
     const date=String(meta.firstInventoryStarted||'').match(/^\d{4}-\d{2}-\d{2}$/)
       ?new Date(meta.firstInventoryStarted+'T00:00:00').toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'}) : 'onbekend';
     const cutoff=String(meta.evidenceCutoff||'');
-    el('inventoryMetaLine').textContent='Eerste inventarisatie '+date+(cutoff?' · bronpeildatum '+new Date(cutoff+'T00:00:00').toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'}):'')+' · '+String(meta.compiledBy||'');
-    el('inventoryPopulation').textContent=fmt(apps)+' basis · '+fmt(ai)+' AI-functies · '+fmt(entra)+' Entra · '+fmt(candidates)+' kandidaten';
+    el('inventoryMetaLine').textContent='Eerste inventarisatie '+date+(cutoff?' · Peildatum '+new Date(cutoff+'T00:00:00').toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'}):'')+' · '+String(meta.compiledBy||'');
+    el('inventoryPopulation').textContent=fmt(apps)+' applicaties · '+fmt(ai)+' AI-functies · '+fmt(entra)+' koppelingen vanuit Entra · '+fmt(candidates)+' overige softwarevermeldingen';
   }
   function renderTrustMetrics(selected){
     const all=array(state.apps),ai=array(state.ai),entra=array(state.connections);
@@ -176,10 +176,10 @@
       const box=dom('div','kpi trust-kpi');box.append(dom('span','kpi-label',label),dom('strong','kpi-value',fmt(value)),dom('span','kpi-desc',detail));return box;
     }
     const kpiRoot=el('kpiGrid');kpiRoot.replaceChildren(
-      tile('Basisregistraties',selected.length,(selected.length===all.length?'':fmt(all.length)+' totaal · ')+'actueel gebruik niet overal bevestigd'),
+      tile('Applicaties',selected.length,(selected.length===all.length?'':fmt(all.length)+' totaal · ')+'actueel gebruik niet overal bevestigd'),
       tile('Met beschreven AI',aiAppIds.size,'Van '+fmt(selected.length)+' geselecteerde toepassingen'),
       tile('AI-functies',relevantAi.length,fmt(ai.length)+' beschreven in totaal; niet automatisch actief'),
-      tile('Mogelijke Entra-match',possibleMatches.length,'Van '+fmt(entra.length)+' registraties; geen bewijs van werking')
+      tile('Mogelijke Entra-koppelingen',possibleMatches.length,'Van '+fmt(entra.length)+' registraties; geen bewijs van werking')
     );
   }
   function renderCoverage(selected){
@@ -209,7 +209,7 @@
     const joint=new Map(pairs(apps).map(x=>[JSON.stringify([x.area,x.kind]),x.count]));
     const total=apps.length,observed=[...joint.values()].reduce((n,x)=>n+x,0);
     const result=el('crossMatrix');result.replaceChildren();result.className='cross-matrix';
-    el('matrixContext').textContent=fmt(total)+' basisregistraties · de cellen tellen samen op tot '+fmt(observed)+'. Selecteer een vak om toepassingen te filteren.';
+    el('matrixContext').textContent=fmt(total)+' applicaties. De verdeling bevat '+fmt(observed)+' vermeldingen. Kies een vak om te filteren.';
     if(total!==observed){subtitle(result,'De matrix kan niet worden weergegeven: de aantallen sluiten niet aan.');return;}
     if(choice.matrix==='table'){
       const table=dom('table','viz-data-table'),thead=dom('thead'),tr=dom('tr');
@@ -289,7 +289,7 @@
       {key:'part',title:'Technische onderdelen en M365-modules',
         entries:unique(entries('parts',x=>x.relationType==='part_of')),view:''},
       {key:'ai',title:'Beschreven AI-functies',entries:unique(entries('ai')),view:'ai'},
-      {key:'entra',title:'Mogelijke Entra-matches',entries:unique(entries('connections')),view:'connections'},
+      {key:'entra',title:'Koppelingen vanuit Entra',entries:unique(entries('connections')),view:'connections'},
       {key:'recorded',title:'Vastgelegde verbanden',entries:recordedConnections(app,index),view:''},
       {key:'hardware',title:'Apparatuur en beheer',
         entries:unique(entries('hardwareGroups')).map(x=>({
@@ -316,10 +316,10 @@
     const label=dom('span','family-main-label',app.id+' · '+category(app.kind));
     root.append(label,dom('strong','family-main-name',app.name));
     if(app.description)root.append(dom('p','family-main-desc',app.description));
-    const open=dom('button','family-open','Toepassing openen');
+    const open=dom('button','family-open','Applicatie openen');
     open.type='button';open.addEventListener('click',()=>openRecord('apps',app.id));root.append(open);
     panel.append(root);
-    if(!groups.length)panel.append(dom('p','family-no-links','Er zijn voor deze toepassing nog geen onderdelen, AI-functies of Entra-matches vastgelegd.'));
+    if(!groups.length)panel.append(dom('p','family-no-links','Voor deze applicatie zijn nog geen onderdelen, AI-functies of koppelingen vanuit Entra vastgelegd.'));
     if(choice.family==='list'){
       const list=dom('div','family-list');
       for(const group of groups){
