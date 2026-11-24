@@ -28,6 +28,14 @@ class LiveRedirectContractTests(unittest.TestCase):
         with self.assertRaises(AssertionError):
             assert_live_ui_contract('/kennis/', bad, 'abcdef123456')
 
+    def test_redirect_must_keep_visible_fallback_link(self):
+        missing_fallback = BeautifulSoup('''<html><head>
+            <link rel="canonical" href="https://eaimodel.nl/nl/onderzoek/">
+            <meta http-equiv="refresh" content="0;url=/nl/onderzoek/">
+            </head><body></body></html>''', 'html.parser')
+        with self.assertRaises(AssertionError):
+            assert_live_ui_contract('/kennis/', missing_fallback, 'abcdef123456')
+
     def test_full_page_requires_correct_version_and_menu(self):
         valid = BeautifulSoup('''<html><body data-ui-version="abcdef123456">
             <header><details class="eai-site-menu"><summary>Meer</summary></details></header>
