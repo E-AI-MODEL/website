@@ -108,7 +108,7 @@
     for(const r of items){
       const button=text('button','card-browser-item');button.type='button';
       if(model.current?.type===type&&model.current?.id===r.id)button.classList.add('active');
-      button.append(text('small','',r.id),text('strong','',r.name||'Zonder naam'));
+      button.append(text('small','',r.id),text('strong','',window.IctScanViewName?.(r.name)||r.name||'Zonder naam'));
       if(model.drafts.has(key(type,r.id)))button.append(text('em','','Concept'));
       button.addEventListener('click',()=>open(type,r.id,false,'manager'));
       list.append(button);
@@ -118,7 +118,7 @@
   function showPane(){
     const recordObj=model.working|| (model.current?record(model.current.type,model.current.id):null);
     $c('cardRecordId').textContent=recordObj?.id||'';
-    $c('cardRecordName').textContent=recordObj?.name||'Kies een registratie';
+    $c('cardRecordName').textContent=(recordObj?.name?window.IctScanViewName?.(recordObj.name)||recordObj.name:null)||'Kies een onderwerp';
     $c('cardRecordContext').textContent=model.current?specFor(model.current.type).label:'';
     $c('cardEditButton').hidden=!recordObj||model.editing;
     $c('cardNewFromRecord').hidden=!recordObj||model.editing;
@@ -238,7 +238,7 @@
     const relationNames=new Map((model.catalog?.relationTypes||[]).map(x=>[x.id,x.label]));
     lines(links,'Verbanden ('+relations.length+')',relations.length
       ?relations.map(x=>[
-        (relationNames.get(x.relationType)||'Verband')+' · '+(x.other?.name||'Naam onbekend'),
+        (relationNames.get(x.relationType)||'Verband')+' · '+(x.other?.name?window.IctScanViewName?.(x.other.name)||x.other.name:'Naam onbekend'),
         (x.status||'Niet vastgesteld')+(x.note?' · '+x.note:'')
       ])
       :[['Verbanden','Geen vastgelegde relatie in de ingelezen index']]);
