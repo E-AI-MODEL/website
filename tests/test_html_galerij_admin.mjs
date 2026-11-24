@@ -116,7 +116,7 @@ assert.equal(uploads.get(itemId).status, 'published');
 for (const path of ['/api/admin/overview', '/api/admin/traffic', '/api/admin/health', '/api/admin/deploy', '/api/admin/files', '/api/admin/audit']) {
   assert.equal(await statusOf(req(path)), 401, path);
 }
-assert.equal(await statusOf(req('/api/admin/uploads/' + itemId + '/restore', 'POST', { origin: BASE })), 401);
+assert.equal(await statusOf(req('/api/admin/files/' + itemId + '/restore', 'POST', { origin: BASE })), 401);
 assert.equal(await statusOf(req('/api/admin/sessions/revoke', 'POST', { origin: BASE })), 401);
 assert.equal(uploads.get(itemId).status, 'published');
 assert.equal(auditActions.length, 0);
