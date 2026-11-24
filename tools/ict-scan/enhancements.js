@@ -141,7 +141,7 @@ function exportScopedPdf(scope){
 }
 function openRecord(view,id){
   state.area='';state.type='';state.phase='';state.aiProduct='';
-  if(view==='ai'){const r=state.ai.get(id);if(r)state.aiMode=isClassroomAi(r)?'klas':'school';}
+  if(view==='ai'){state.aiStatusFilter='';const r=state.ai.get(id);state.aiMode=r?(isClassroomAi(r)?'klas':IctScanTaxonomy.isSchoolAi(r)?'school':'all'):'all';}
   const searches={apps:'appsSearch',ai:'aiSearch',connections:'connectionsSearch',findings:'findingsSearch'};
   const selectId=searches[view];if(selectId){$(selectId).value=id;}
   selectView(view);
