@@ -7,7 +7,7 @@
     apps:[['Applicaties zoeken',3]],
     connections:[['Koppelingen in cijfers',2],['Koppelingen zoeken',3]],
     devices:[['Apparaten in cijfers',3],['Meetgegevens',1]],
-    ai:[['AI per lesfase',2],['AI-functies',2],['AI-instellingen en beheer',1]],
+    ai:[['Tussenstand',1],['AI per lesfase',2],['AI-functies',2],['AI-instellingen en beheer',1]],
     privacy:[['Privacyonderzoeken',3],['Wet- en regelgeving',1]],
     findings:[['Controle-uitkomsten',3],['Controles en acties',4]],
     reports:[['Rapport kiezen',2],['Rapport downloaden',2]],
@@ -91,17 +91,17 @@
     previousSelect(view);
     if(!scenes.has(view))return;
     const searches={connections:'connectionsSearch',ai:'aiSearch',findings:'findingsSearch'};
-    if(searches[view]&&document.getElementById(searches[view])?.value.trim())show(view,1,false);
+    if(searches[view]&&document.getElementById(searches[view])?.value.trim())show(view,view==='ai'?2:1,false);
     scenes.get(view).frame.scrollTop=0;
   };
   // The school AI mode has no analytical chart yet: show the actual records,
   // rather than a nearly empty introductory screen.
-  document.getElementById('aiModeSchool')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',1)));
-  document.getElementById('aiModeKlas')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',0)));
+  document.getElementById('aiModeSchool')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',2)));
+  document.getElementById('aiModeKlas')?.addEventListener('click',()=>queueMicrotask(()=>show('ai',1)));
   // Open the record list rather than leaving a filtered graph on screen.
   for(const [chart,view] of [['connectionChart','connections'],['phaseChart','ai'],['aiProducts','ai'],['findingsChart','findings']]){
     document.getElementById(chart)?.addEventListener('click',e=>{
-      if(e.target.closest('button,[role="button"]'))queueMicrotask(()=>show(view,1));
+      if(e.target.closest('button,[role="button"]'))queueMicrotask(()=>show(view,view==='ai'?2:1));
     });
   }
   document.getElementById('reportPicker')?.addEventListener('click',e=>{
