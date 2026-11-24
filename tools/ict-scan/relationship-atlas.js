@@ -95,8 +95,10 @@
   const graphScroll=el('div','ra-graph-scroll');
   const svg=svgNode('svg',{viewBox:'0 0 1000 600',class:'ra-graph',role:'img','aria-label':'Relaties tussen registraties'});
   graphScroll.append(svg);
+  const mobileGraph=el('div','ra-mobile-graph');
+  mobileGraph.setAttribute('aria-label','Relaties per onderdeel');
   const graphNote=el('p','ra-footnote');
-  graphWrap.append(graphTitle,graphScroll,graphNote);
+  graphWrap.append(graphTitle,graphScroll,mobileGraph,graphNote);
   const detail=el('aside','ra-detail');
   detail.setAttribute('aria-label','Geselecteerde registratie');
   area.append(graphWrap,detail);
@@ -219,6 +221,9 @@
     svg.append(edgeLayer);
     const degree=new Map();
     for(const e of edges){degree.set(e.fromType,(degree.get(e.fromType)||0)+1);if(e.fromType!==e.toType)degree.set(e.toType,(degree.get(e.toType)||0)+1);}
+    for(const type of types){
+      mobileGraph.append(button(label(type)+' · '+fmt(degree.get(type)||0),'ra-mobile-group',()=>{typeSelect.value=type;focused=null;render();}));
+    }
     for(const [type,p] of coords){
       const group=svgNode('g',{class:'ra-type-group','aria-label':label(type)+', '+(degree.get(type)||0)+' verbanden'});
       group.append(svgNode('circle',{cx:p.x,cy:p.y,r:34,class:'ra-type-circle'}));
@@ -244,6 +249,9 @@
       return [key(t,id),{type:t,id,edge:e}];
     })).values()].sort((a,b)=>label(a.type).localeCompare(label(b.type),'nl')||fullName(a.type,a.id).localeCompare(fullName(b.type,b.id),'nl'));
     const shown=direct.slice(0,22);
+    for(const item of direct){
+      mobileGraph.append(button(label(item.type)+' · '+fullName(item.type,item.id),'ra-mobile-group',()=>selection(item.type,item.id)));
+    }
     const center={x:500,y:288};
     if(!shown.length){
       svg.append(svgText(500,180,'Geen directe verbanden bij deze selectie','ra-empty-text'));
@@ -355,6 +363,7 @@
     addStat('Vermoedelijk',fmt(allStatus.Vermoedelijk||0),'Nog niet bevestigd');
     addStat('Zonder vastgelegd verband',fmt(index.nodes.size-connected.size),'Niet automatisch ongebruikt');
     svg.replaceChildren();
+    mobileGraph.replaceChildren();
     if(focused)drawFocusGraph(currentEdges);else drawGroupGraph(currentEdges);
     describeSelection();renderMatches();renderList();setZoom(zoom);
   }
