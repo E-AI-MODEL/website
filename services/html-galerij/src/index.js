@@ -1,124 +1,158 @@
-// Cloudflare Worker: public HTML gallery, isolated from the primary website.
+// Private HTML gallery. The Worker is the only host for data and administration.
+import { configured, currentUser, login, logout, loginResponse, sameOrigin } from './auth.js';
+import { privatePage } from './ui.js';
+import { dashboardPage } from './dashboard.js';
+import { adminClientJs } from './admin-client.js';
+import { handleAdmin, auditStatement } from './admin.js';
+
 const MAX_BYTES = 1024 * 1024;
 const MAX_ITEMS = 100;
 const headers = {
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'no-referrer',
+  'X-Robots-Tag': 'noindex, nofollow, noarchive',
   'Cache-Control': 'no-store',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
 };
-function json(data, status = 200, extra = {}) {
-  return new Response(JSON.stringify(data), { status, headers: { ...headers, 'Content-Type': 'application/json; charset=utf-8', ...extra } });
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status, headers: { ...headers, 'Content-Type': 'application/json; charset=utf-8' }
+  });
 }
-function cors(origin, env) {
-  const permitted = [env.ALLOWED_ORIGIN || 'https://eaimodel.nl', 'https://www.eaimodel.nl'];
-  return permitted.includes(origin) ? { 'Access-Control-Allow-Origin': origin, 'Vary': 'Origin' } : {};
-}
-function error(text, status, extra) { return json({ error: text }, status, extra); }
-function validText(input, max) {
-  return typeof input === 'string' && input.trim().length >= 2 && input.trim().length <= max && !/[\u0000-\u001f\u007f]/.test(input);
+function error(message, status) { return json({ error: message }, status); }
+function validText(value, max) {
+  return typeof value === 'string' && value.trim().length >= 2 &&
+    value.trim().length <= max && !/[\u0000-\u001f\u007f]/.test(value);
 }
 function validId(id) { return /^[0-9]{13}-[a-f0-9-]{36}$/.test(id); }
 function htmlHeaders() {
   return {
     ...headers,
     'Content-Type': 'text/html; charset=utf-8',
-    'Content-Security-Policy': "sandbox allow-scripts allow-forms allow-modals allow-downloads; default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src *; img-src * data: blob:; media-src * data: blob:; frame-ancestors https://eaimodel.nl https://www.eaimodel.nl; base-uri 'none'; form-action *",
-    'Cross-Origin-Resource-Policy': 'cross-origin',
-    'Cache-Control': 'no-store', // Verborgen uploads mogen niet als HTML in een browsercache blijven staan.
+    // Untrusted uploaded scripts run in an opaque sandboxed origin, not with session access.
+    'Content-Security-Policy': "sandbox allow-scripts allow-forms allow-modals allow-downloads; default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src *; img-src * data: blob:; media-src * data: blob:; frame-ancestors 'self'; base-uri 'none'; form-action *",
+    'Cross-Origin-Resource-Policy': 'same-origin'
+  };
+}
+function dashboardHeaders() {
+  return {
+    ...headers,
+    'Content-Type': 'text/html; charset=utf-8',
+    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
   };
 }
 async function visitorKey(request, env) {
-  const ip = request.headers.get('CF-Connecting-IP') || '';
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode((env.RATE_LIMIT_SALT || '') + ':' + ip));
-  return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('');
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(env.RATE_LIMIT_SALT + ':' + ip));
+  return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
 }
-async function verifyTurnstile(token, request, env) {
-  if (!env.TURNSTILE_SECRET || !env.TURNSTILE_SITE_KEY) return false;
-  const body = new FormData();
-  body.set('secret', env.TURNSTILE_SECRET);
-  body.set('response', token);
-  const ip = request.headers.get('CF-Connecting-IP');
-  if (ip) body.set('remoteip', ip);
-  const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
-  if (!res.ok) return false;
-  const result = await res.json();
-  return result.success === true;
-}
-async function publish(request, env, extra) {
-  if (request.headers.get('Origin') !== (extra['Access-Control-Allow-Origin'] || '')) return error('Deze aanvraag is niet toegestaan.', 403, extra);
-  if (!env.DB) return error('Opslag is niet ingesteld.', 503, extra);
+async function publish(request, env) {
+  if (!sameOrigin(request)) return error('Niet toegestaan.', 403);
   const type = request.headers.get('content-type') || '';
-  const size = Number(request.headers.get('content-length') || 0);
-  if (!type.startsWith('multipart/form-data') || size > MAX_BYTES + 12000) return error('Ongeldig of te groot bestand.', 413, extra);
+  const length = Number(request.headers.get('content-length') || 0);
+  if (!type.startsWith('multipart/form-data') || length > MAX_BYTES + 12000)
+    return error('Ongeldig of te groot bestand.', 413);
   let data;
-  try { data = await request.formData(); } catch { return error('Upload kon niet worden gelezen.', 400, extra); }
+  try { data = await request.formData(); }
+  catch { return error('Bestand kon niet worden gelezen.', 400); }
   const title = data.get('title');
   const author = data.get('author');
   const file = data.get('file');
-  const token = data.get('turnstileToken');
-  if (!validText(title, 120) || !validText(author, 80)) return error('Vul een geldige naam en titel in.', 400, extra);
-  if (!(file instanceof File) || !/\.html?$/i.test(file.name) || file.size < 10 || file.size > MAX_BYTES) return error('Upload een .html-bestand van maximaal 1 MB.', 400, extra);
-  if (typeof token !== 'string' || !await verifyTurnstile(token, request, env)) return error('Controle tegen automatische uploads mislukt.', 403, extra);
+  if (!validText(title, 120) || !validText(author, 80))
+    return error('Vul een geldige naam en titel in.', 400);
+  if (!(file instanceof File) || !/\.html?$/i.test(file.name) || file.size < 10 || file.size > MAX_BYTES)
+    return error('Upload een HTML-bestand van maximaal 1 MB.', 400);
   let content;
   try { content = new TextDecoder('utf-8', { fatal: true }).decode(await file.arrayBuffer()); }
-  catch { return error('Bewaar je bestand als UTF-8 HTML.', 400, extra); }
-  const preview = content.slice(0, 2048);
-  if (!/(<!doctype\s+html|<html[\s>]|<head[\s>]|<body[\s>])/i.test(preview)) return error('Dit lijkt geen volledig HTML-document.', 400, extra);
+  catch { return error('Bewaar je bestand als UTF-8 HTML.', 400); }
+  if (!/(<!doctype\s+html|<html[\s>]|<head[\s>]|<body[\s>])/i.test(content.slice(0, 2048)))
+    return error('Dit lijkt geen volledig HTML-document.', 400);
   const hash = await visitorKey(request, env);
   const hour = new Date().toISOString().slice(0, 13);
-  const rate = await env.DB.prepare('INSERT INTO upload_limits(visitor_hash, hour, count) VALUES (?, ?, 1) ON CONFLICT(visitor_hash, hour) DO UPDATE SET count = count + 1 RETURNING count').bind(hash, hour).first();
-  if ((rate?.count || 0) > 5) return error('Je kunt maximaal vijf bestanden per uur uploaden.', 429, extra);
-  const id = Date.now().toString().padStart(13, '0') + '-' + crypto.randomUUID();
   try {
-    await env.DB.prepare('INSERT INTO uploads (id, title, author, filename, html_content) VALUES (?, ?, ?, ?, ?)').bind(id, title.trim(), author.trim(), file.name.slice(0, 180), content).run();
+    const rate = await env.DB.prepare(
+      'INSERT INTO upload_limits(visitor_hash, hour, count) VALUES (?, ?, 1) ' +
+      'ON CONFLICT(visitor_hash, hour) DO UPDATE SET count = count + 1 RETURNING count'
+    ).bind(hash, hour).first();
+    if ((rate?.count || 0) > 5) return error('Maximaal vijf bestanden per uur.', 429);
+    const id = Date.now().toString().padStart(13, '0') + '-' + crypto.randomUUID();
+    await env.DB.batch([
+      env.DB.prepare('INSERT INTO uploads (id, title, author, filename, html_content) VALUES (?, ?, ?, ?, ?)')
+        .bind(id, title.trim(), author.trim(), file.name.slice(0, 180), content),
+      auditStatement(env, env.GALLERY_ADMIN_EMAIL.toLowerCase(), 'upload.published', id)
+    ]);
+    return json({ id, url: '/view/' + id }, 201);
   } catch (err) {
-    console.error('Gallery upload failed', err);
-    return error('Het opslaan is mislukt.', 500, extra);
+    console.error('Gallery save failed', err);
+    return error('Opslaan is tijdelijk niet beschikbaar.', 503);
   }
-  return json({ id, url: '/view/' + id }, 201, extra);
 }
-
-// De verborgen beheerstand gebruikt bewust geen beheersleutel.
-// De bezoeker bevestigt het verbergen via de website; de URL kan ook
-// rechtstreeks worden aangeroepen. Iedereen kan deze route gebruiken.
-async function hideUpload(request, env, extra, id) {
-  if (request.headers.get('Origin') !== extra['Access-Control-Allow-Origin'])
-    return error('Niet toegestaan.',403,extra);
-  if (!env.DB) return error('Galerij niet beschikbaar.',503,extra);
-  if (!validId(id)) return error('Ongeldige pagina.',400,extra);
-  const result=await env.DB.prepare(
-    "UPDATE uploads SET status = 'hidden' WHERE id = ? AND status = 'published'"
-  ).bind(id).run();
-  if ((result.meta?.changes || 0)!==1) return error('Pagina niet gevonden.',404,extra);
-  return json({ok:true},200,extra);
+async function hideUpload(request, env, id) {
+  if (!sameOrigin(request)) return error('Niet toegestaan.', 403);
+  if (!validId(id)) return error('Ongeldige pagina.', 400);
+  try {
+    const [, result] = await env.DB.batch([
+      env.DB.prepare(
+        "INSERT INTO site_admin_audit(actor, action, target) " +
+        "SELECT ?,?,? WHERE EXISTS (SELECT 1 FROM uploads WHERE id=? AND status='published')"
+      ).bind(env.GALLERY_ADMIN_EMAIL.toLowerCase(), 'upload.hidden', id, id),
+      env.DB.prepare("UPDATE uploads SET status = 'hidden' WHERE id = ? AND status = 'published'").bind(id)
+    ]);
+    if ((result.meta?.changes || 0) !== 1) return error('Pagina niet gevonden.', 404);
+    return json({ ok: true });
+  } catch { return error('Beheer is tijdelijk niet beschikbaar.', 503); }
 }
-
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const origin = request.headers.get('Origin') || '';
-    const extra = cors(origin, env);
-    if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
-      if (!extra['Access-Control-Allow-Origin']) return error('Niet toegestaan.', 403);
-      return new Response(null, { status: 204, headers: { ...headers, ...extra, 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '600' } });
+    const path = url.pathname;
+    if (path === '/auth/login' && request.method === 'POST') return login(request, env);
+    if (path === '/auth/logout' && request.method === 'POST') return logout(request, env);
+
+    if (!configured(env)) {
+      if (path === '/' || path === '/auth/login') return loginResponse('Aanmelden is nog niet ingesteld.', 503);
+      return error('De galerij is nog niet ingericht.', 503);
     }
-    const remove = url.pathname.match(/^\/api\/admin\/uploads\/([^/]+)$/);
-    if (request.method === 'DELETE' && remove) return hideUpload(request,env,extra,remove[1]);
-    if (request.method === 'GET' && url.pathname === '/api/config') return json({ turnstileSiteKey: env.TURNSTILE_SITE_KEY || null }, 200, extra);
-    if (request.method === 'GET' && url.pathname === '/api/uploads') {
-      if (!env.DB) return error('Galerij niet beschikbaar.', 503, extra);
-      const result = await env.DB.prepare("SELECT id, title, author, filename, created_at FROM uploads WHERE status = 'published' ORDER BY created_at DESC LIMIT ?").bind(MAX_ITEMS).all();
-      return json({ items: result.results }, 200, extra);
+    const user = await currentUser(request, env);
+    if (path === '/' || path === '/auth/login' || path === '/gallery') {
+      if (request.method !== 'GET') return error('Methode niet toegestaan.', 405);
+      if (!user) return loginResponse();
+      if (path === '/auth/login') return new Response(null, { status: 303, headers: { ...headers, Location: '/' } });
+      if (path === '/gallery') return new Response(privatePage(user), { status: 200, headers: dashboardHeaders() });
+      return new Response(dashboardPage(user), { status: 200, headers: dashboardHeaders() });
     }
-    if (request.method === 'POST' && url.pathname === '/api/uploads') return publish(request, env, extra);
-    const match = url.pathname.match(/^\/view\/([^/]+)$/);
-    if (request.method === 'GET' && match) {
-      if (!validId(match[1])) return error('Niet gevonden.', 404);
-      if (!env.DB) return error('Galerij niet beschikbaar.', 503);
-      const record = await env.DB.prepare("SELECT html_content FROM uploads WHERE id = ? AND status = 'published'").bind(match[1]).first();
-      if (!record) return error('Niet gevonden.', 404);
-      return new Response(record.html_content, { headers: htmlHeaders() });
+    if (!user) return error('Aanmelden vereist.', 401);
+    if (request.method === 'GET' && path === '/admin-client.js') return new Response(adminClientJs, {
+      status: 200, headers: { ...headers, 'Content-Type': 'application/javascript; charset=utf-8' }
+    });
+    const remove = path.match(/^\/api\/admin\/uploads\/([^/]+)$/);
+    if (request.method === 'DELETE' && remove) return hideUpload(request, env, remove[1]);
+    if (path.startsWith('/api/admin/')) {
+      const adminResponse = await handleAdmin(request, env, user);
+      if (adminResponse) return adminResponse;
     }
-    return error('Niet gevonden.', 404, extra);
-  },
+    if (request.method === 'GET' && path === '/api/me') return json({ email: user });
+    if (request.method === 'GET' && path === '/api/uploads') {
+      try {
+        const records = await env.DB.prepare(
+          "SELECT id, title, author, filename, created_at FROM uploads WHERE status = 'published' " +
+          'ORDER BY created_at DESC LIMIT ?'
+        ).bind(MAX_ITEMS).all();
+        return json({ items: records.results || [] });
+      } catch { return error('De galerij is tijdelijk niet beschikbaar.', 503); }
+    }
+    if (request.method === 'POST' && path === '/api/uploads') return publish(request, env);
+    const view = path.match(/^\/view\/([^/]+)$/);
+    if (request.method === 'GET' && view) {
+      if (!validId(view[1])) return error('Niet gevonden.', 404);
+      try {
+        const record = await env.DB.prepare(
+          "SELECT html_content FROM uploads WHERE id = ? AND status = 'published'"
+        ).bind(view[1]).first();
+        if (!record) return error('Niet gevonden.', 404);
+        return new Response(record.html_content, { status: 200, headers: htmlHeaders() });
+      } catch { return error('Voorbeeld is tijdelijk niet beschikbaar.', 503); }
+    }
+    return error('Niet gevonden.', 404);
+  }
 };
