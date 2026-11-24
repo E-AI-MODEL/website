@@ -1,7 +1,7 @@
 {
   "schema": "eai-school-ict-v1",
   "metadata": {
-    "faqVersion": "2026-11-23",
+    "faqVersion": "2026-11-24",
     "faqEditorialStatus": "Werkversie. Voor externe publicatie of juridische status zijn bronbeoordelingen per vraag nodig.",
     "firstInventoryStarted": "2026-08-10",
     "compiledBy": "Hans Visser"
@@ -230,7 +230,7 @@
     {
       "id": "FAQ-011",
       "name": "Hoe voeg ik een nieuwe toepassing toe?",
-      "answer": "Open de extra functies in de zijbalk, kies 'JSON-kaarten beheren', selecteer 'Toepassingen en diensten' en maak een nieuwe kaart. Voeg beschrijving en bron toe. Een concept verandert het dashboard pas na beoordeling en publicatie via GitHub.",
+      "answer": "Open Register, kies Applicaties en diensten en klik op Open register. Maak in de bestaande kaarteditor een nieuwe kaart, voeg de gegevens en bron toe en bewaar het concept. Een concept verandert de officiële gegevens pas na beoordeling en publicatie via GitHub.",
       "aliases": "applicatie toevoegen|hoe registreer ik software|nieuwe json kaart maken",
       "topic": "Beheer",
       "reference": "JSON-kaart",
@@ -247,7 +247,20 @@
       "recordMeta": {
         "sourceSystem": "Applicatielandschap 2026",
         "referenceDate": "2026-11-20"
-      }
+      },
+      "auditTrail": [
+        {
+          "timestamp": "2026-11-24T11:31:00+01:00",
+          "actor": "ChatGPT",
+          "action": "aangepast",
+          "fields": [
+            "answer"
+          ],
+          "reason": "Verwijzing naar de vereenvoudigde navigatie en de bestaande kaarteditor.",
+          "method": "GitHub-pull-request",
+          "source": "Applicatielandschap 2026 / JSON-kaart"
+        }
+      ]
     },
     {
       "id": "FAQ-012",

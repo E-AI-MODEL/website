@@ -20,9 +20,15 @@ for(const source of manifest.dataFiles){
  listing.push({type:'file',name:source.path,path,sha,size:content.length});
 }
 const manifestContent=readFileSync('tools/ict-scan/bronnen/manifest.json');
-const manifestSha='f'.repeat(40);
+const manifestSha=createHash('sha1').update('blob '+manifestContent.length+'\0').update(manifestContent).digest('hex');
 sources.set(manifestSha,manifestContent);
 listing.push({type:'file',name:'manifest.json',path:'tools/ict-scan/bronnen/manifest.json',sha:manifestSha,size:manifestContent.length});
+const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
+const fixture=manifest.dataFiles.map(f=>JSON.parse(readFileSync('tools/ict-scan/bronnen/'+f.path,'utf8')));
+const fixtureState=Object.fromEntries(Object.entries(inventory.STORES).map(([type,store])=>[store,fixture.flatMap(f=>f[type]||[])]));
+const expectedIndex=inventory.build(fixtureState);
+const edgeCount=expectedIndex.edges.length,nodeCount=expectedIndex.nodes.size;
+const countStatus=status=>expectedIndex.edges.filter(e=>e.status===status).length;
 const server=spawn('python3',['-m','http.server','8797','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
 let browser;
 const cors={
@@ -41,9 +47,9 @@ try {
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
   const errors=[],network=[];
   let initialSyncDelayed=false;
-  const secondaryMobile=new Set(['connections','devices','privacy','findings','reports']);
+  const secondaryViews=new Set(['studio','connections','devices','privacy','reports','sources']);
   const navigate=async view=>{
-    if(width<700&&secondaryMobile.has(view)){
+    if(secondaryViews.has(view)){
       await page.locator('#railMore').click();
       await page.locator('[data-drawer-view="'+view+'"]').click();
     }else{
@@ -62,7 +68,8 @@ try {
      initialSyncDelayed=true;
      await new Promise(done=>setTimeout(done,1100));
    }
-   if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen'))data=listing;
+   if(url.pathname.endsWith('/commits/main'))data={sha:'d'.repeat(40)};
+   else if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen')){assert.equal(url.searchParams.get('ref'),'d'.repeat(40));data=listing;}
    else if(url.pathname.includes('/git/blobs/')){
     const sha=url.pathname.split('/').pop();
     assert(sources.has(sha),'Onverwachte GitHub SHA: '+sha);
@@ -93,6 +100,10 @@ try {
   try{await page.waitForFunction(()=>/geslaagd|niet gelukt/i.test(document.getElementById('githubSyncStatus')?.textContent||''),null,{timeout:15000});}
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
+  assert.equal(await page.locator('#globalSearch').isVisible(),true,'Zoekfunctie moet direct zichtbaar zijn');
+  assert.match(await page.locator('#githubLiveStatus').textContent(),new RegExp(String(nodeCount)));
+  assert.equal(await page.locator('#githubLiveStatus').getAttribute('data-mode'),'success');
+  assert.equal(await page.locator('#sections .rail-button:visible').count(),4);
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
   await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 applicaties'));
   await page.locator('#viewOverview:not([hidden])').waitFor();
@@ -117,7 +128,7 @@ try {
   if(width<700){
     const dock=await page.locator('.sidebar.icon-rail').boundingBox();
     assert(dock&&dock.x>=-1&&dock.width>=width-2&&dock.x+dock.width<=width+1,'Mobiele navigatie is geen volledige balk: '+JSON.stringify(dock));
-    for(const view of ['studio','overview','apps','ai','sources']){
+    for(const view of ['overview','apps','ai','findings']){
       assert(await page.locator('.rail-button[data-view="'+view+'"]').isVisible(),'Primair onderdeel niet bereikbaar: '+view);
     }
     assert.equal(await page.locator('.rail-button[data-view="connections"]').isVisible(),false,'Secundaire onderdelen horen onder Meer');
@@ -130,8 +141,8 @@ try {
   await page.locator('#viewStudio:not([hidden])').waitFor();
   assert.equal(await page.locator('#viewStudio .ds-panel-head h2').textContent(),'Gegevens en grafieken');
   assert.equal(await page.locator('.rail-button[data-view="studio"] .rail-label').textContent(),'Op maat');
-  assert.equal(await page.locator('#dsDataOptions .ds-option').count(),8,'Gegevenskeuze moet alle acht beschikbare bronsoorten bevatten');
-  assert.equal(await page.locator('#dsDataOptions .ds-option-description').count(),8,'Een gegevensgroep moet direct vertellen waarvoor die dient');
+  assert.equal(await page.locator('#dsDataOptions .ds-option').count(),Object.keys(inventory.STORES).length,'Gegevenskeuze moet alle registers bevatten');
+  assert.equal(await page.locator('#dsDataOptions .ds-option-description').count(),Object.keys(inventory.STORES).length,'Een gegevensgroep moet direct vertellen waarvoor die dient');
   assert.equal(await page.locator('#dsPartOptions .ds-option-description').count(),9,'Elk dashboardonderdeel moet zijn werking uitleggen');
   assert.equal(await page.locator('#dsPartOptions .ds-part').count(),9,'Er ontbreken vrij kiesbare dashboardonderdelen');
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),5,'Het startdashboard moet direct bruikbaar zijn');
@@ -224,9 +235,9 @@ try {
   await page.locator('#relationAtlasOpen').click();
   const atlas=page.locator('#relationAtlasDialog');
   await atlas.waitFor({state:'visible'});
-  assert.match(await atlas.locator('#relationAtlasStats').textContent(),/579/);
-  assert.match(await atlas.locator('#relationAtlasStats').textContent(),/273/);
-  assert.equal(await atlas.locator('.ra-link-row').count(),273,'Niet alle bronverbanden staan in de lijst');
+  assert.match(await atlas.locator('#relationAtlasStats').textContent(),new RegExp(String(nodeCount)));
+  assert.match(await atlas.locator('#relationAtlasStats').textContent(),new RegExp(String(edgeCount)));
+  assert.equal(await atlas.locator('.ra-link-row').count(),edgeCount,'Niet alle bronverbanden staan in de lijst');
   assert((await atlas.locator('.ra-mobile-group').count())>=8,'De categorieën zijn niet volledig opgebouwd');
   const assertAtlasLayout=async w=>{
     const mobile=w<=650;
@@ -279,19 +290,15 @@ try {
     assert(records.every(r=>r.length===10&&r.slice(0,8).every(Boolean)),'CSV bevat onvolledige verbanden');
     return records;
   };
-  const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
-  const fixture=manifest.dataFiles.map(f=>JSON.parse(readFileSync('tools/ict-scan/bronnen/'+f.path,'utf8')));
-  const fixtureState=Object.fromEntries(Object.entries(inventory.STORES).map(([type,store])=>[store,fixture.flatMap(f=>f[type]||[])]));
-  const expectedIndex=inventory.build(fixtureState);
   const safeValue=v=>/^[\s]*[=+\-@\t\r]/.test(v)?"'"+v:v;
   const expectedRows=edges=>edges.map(e=>JSON.stringify([e.fromId,e.toId,e.status,safeValue(e.evidence||''),safeValue(e.note||'')])).sort();
   const actualRows=rows=>rows.map(r=>JSON.stringify([r[0],r[3],r[7],r[8],r[9]])).sort();
   const records=await readAtlasCsv();
-  assert.equal(records.length,273);
+  assert.equal(records.length,edgeCount);
   assert.deepEqual(actualRows(records),expectedRows(expectedIndex.edges),'CSV wijkt af van de volledige index');
-  assert.equal(records.filter(r=>r[7]==='Geregistreerd').length,236);
-  assert.equal(records.filter(r=>r[7]==='Vermoedelijk').length,37);
-  assert.equal(await atlas.locator('.ra-link-proof').count(),273);
+  assert.equal(records.filter(r=>r[7]==='Geregistreerd').length,countStatus('Geregistreerd'));
+  assert.equal(records.filter(r=>r[7]==='Vermoedelijk').length,countStatus('Vermoedelijk'));
+  assert.equal(await atlas.locator('.ra-link-proof').count(),edgeCount);
   const proof=atlas.locator('.ra-link-proof').first();
   await proof.locator('summary').click();
   assert(await proof.locator('p').nth(1).isVisible(),'Broninformatie niet zichtbaar');
@@ -300,10 +307,10 @@ try {
   await proof.locator('summary').click();
   await atlas.locator('.ra-shell').evaluate(shell=>{shell.scrollTop=0;});
   await atlas.locator('select[aria-label="Filter status van het verband"]').selectOption('Vermoedelijk');
-  assert.equal(await atlas.locator('.ra-link-row').count(),37,'Vermoedelijke verbanden onjuist geteld');
+  assert.equal(await atlas.locator('.ra-link-row').count(),countStatus('Vermoedelijk'),'Vermoedelijke verbanden onjuist geteld');
   assert.deepEqual(actualRows(await readAtlasCsv()),expectedRows(expectedIndex.edges.filter(e=>e.status==='Vermoedelijk')),'Gefilterde CSV bevat verkeerde verbanden');
   await atlas.locator('select[aria-label="Filter status van het verband"]').selectOption('Geregistreerd');
-  assert.equal(await atlas.locator('.ra-link-row').count(),236,'Geregistreerde verbanden onjuist geteld');
+  assert.equal(await atlas.locator('.ra-link-row').count(),countStatus('Geregistreerd'),'Geregistreerde verbanden onjuist geteld');
   await atlas.locator('button.ra-reset').click();
   await atlas.locator('select[aria-label="Filter onderdeel"]').selectOption('licenseReview');
   assert.equal(await atlas.locator('.ra-link-row').count(),26,'Licentierelaties ontbreken');
@@ -316,7 +323,7 @@ try {
   assert.equal(await atlas.locator('.ra-link-row').count(),selectedEdges.length,'Gerichte verbanden niet volledig');
   assert.match(await atlas.locator('.ra-detail').textContent(),/APP-034/);
   assert.match(await atlas.locator('.ra-sources').textContent(),/Bronverwijzingen/);
-  console.log('Relatieatlas '+browserType.name()+' '+width+'px: 579 registraties, 273 verbanden (236 geregistreerd, 37 vermoedelijk), CSV-inhoud, bronstatus, filters, zoekfunctie en bereikbaarheid gecontroleerd');
+  console.log('Relatieatlas '+browserType.name()+' '+width+'px: '+nodeCount+' registraties, '+edgeCount+' verbanden, CSV-inhoud, bronstatus, filters, zoekfunctie en bereikbaarheid gecontroleerd');
   await atlas.locator('button.ra-close').click();
   await atlas.waitFor({state:'hidden'});
   assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false,'FG-modus moet standaard uit staan');
@@ -342,6 +349,17 @@ try {
   assert.match(await page.locator('#privacySummary').textContent(),/Niet aangeleverd/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-privacy.png'});
   await navigate('apps');
+  assert.equal(await page.locator('#registerPicker option').count(),Object.keys(inventory.STORES).length);
+  await page.locator('#registerPicker').selectOption('hardwareGroups');
+  await page.locator('#registerOpen').click();
+  assert.equal(await page.locator('#cardTypeFilter').inputValue(),'hardwareGroups');
+  assert.equal(await page.locator('#cardBrowserList .card-browser-item').count(),expectedIndex.count('hardwareGroups'));
+  await page.locator('#cardEditorClose').click();
+  await page.locator('#globalSearch').fill('WRK-014');
+  await page.locator('#globalSearch').press('Enter');
+  await page.locator('#globalResults [data-result-id="WRK-014"]').click();
+  assert.equal(await page.locator('#cardRecordId').textContent(),'WRK-014');
+  await page.locator('#cardEditorClose').click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),false,'Kandidaten zijn niet gescheiden van basisregistraties');
   // One compact inspector, not nested Excel/JSON/read-card duplicates.
   await page.locator('#appsList .item-card-direct .item-summary').first().click();
@@ -398,13 +416,13 @@ try {
   assert.match(await page.locator('#reportPreviewTitle').textContent(),/Apparaten/);
   await navigate('ai');
   await page.locator('#aiModeSchool').click();
-  await page.locator('#viewAiScene1').waitFor({state:'visible'});
+  await page.locator('#viewAiScene2').waitFor({state:'visible'});
   assert((await page.locator('#aiList .item-card-direct').count())>0,'AI in de school mag geen lege introductie tonen');
   assert.equal(await page.locator('#dpiaList').isVisible(),false,'DPIA wordt dubbel getoond binnen AI');
-  await page.locator('#viewAi .scene-tab').nth(2).click();
-  assert.equal(await page.locator('#viewAi .scene-tab').count(),3,'AI-beheer moet onder AI staan');
+  await page.locator('#viewAi .scene-tab').nth(3).click();
+  assert.equal(await page.locator('#viewAi .scene-tab').count(),4,'AI-beheer moet onder AI staan');
   assert((await page.locator('#privacyControls .evidence-group').count())>=4,'Beheerpunten zijn niet gegroepeerd');
-  await page.locator('#viewAiScene2').waitFor({state:'visible'});
+  await page.locator('#viewAiScene3').waitFor({state:'visible'});
   await page.locator('#railMore').click();
   await page.locator('#roleModeAI').uncheck();
   assert.equal(await page.locator('.rail-button[data-view="ai"]').isVisible(),false);
@@ -457,7 +475,8 @@ try {
     await page.locator('#railMore').click();
     const menu=await page.locator('#railDrawer').boundingBox();
     assert(menu&&menu.x>=0&&menu.x+menu.width<=321,'Menu valt buiten 320px viewport: '+JSON.stringify(menu));
-    await page.locator('[data-drawer-view="findings"]').click();
+    await page.locator('#railDrawerClose').click();
+    await navigate('findings');
     assert.equal(await page.locator('#sectionTitle').textContent(),'Controles');
   }
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));

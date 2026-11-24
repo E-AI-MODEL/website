@@ -57,10 +57,10 @@ test('Een wijziging blijft gekoppeld aan ID, originele tekst, bewijs en auteur',
   assert.deepEqual(clone(after.sourceFields),before.sourceFields);
   assert.deepEqual(clone(after.provenance),before.provenance);
   assert.deepEqual(clone(after.sources),before.sources);
-  assert.equal(after.auditTrail.length,1);
-  assert.equal(after.auditTrail[0].actor,'test-reviewer');
-  assert.equal(after.auditTrail[0].reason,edit.reason);
-  assert.deepEqual(Array.from(after.auditTrail[0].fields),['description']);
+  assert.equal(after.auditTrail.length,(before.auditTrail||[]).length+1);
+  assert.equal(after.auditTrail.at(-1).actor,'test-reviewer');
+  assert.equal(after.auditTrail.at(-1).reason,edit.reason);
+  assert.deepEqual(Array.from(after.auditTrail.at(-1).fields),['description']);
 });
 test('Nieuwe bronverwijzingen worden toegevoegd zonder originele bronnen te vervangen',()=>{
   const all=docs(),original=all['2026-applicatielandschap.json'].apps[0];
@@ -96,7 +96,7 @@ test('Nieuwe kaart wijzigt alleen het juiste register en de telling',()=>{
   logic.applyDrafts(all,[newItem],'reviewer','2026-11-20T15:00:00Z');
   assert.equal(all['2026-applicatielandschap.json'].apps.length,70);
   assert.equal(all['2026-applicatielandschap.json'].metadata.counts.apps,70);
-  assert.equal(all['2026-werkregister.json'].workActions.length,13);
+  assert.equal(all['2026-werkregister.json'].workActions.length,work.workActions.length);
   assert.equal(all['2026-applicatielandschap.json'].apps.at(-1).auditTrail[0].action,'toegevoegd');
 });
 test('Gelijktijdige wijzigingen en dubbele IDs stoppen publicatie',()=>{
@@ -127,4 +127,25 @@ test('Geen rechtstreekse overschrijving van main',()=>{
   assert.ok(html.includes('src="./record-cards.js'));
   assert.ok(html.includes('src="./record-github.js'));
   assert.ok(html.includes('href="./record-cards.css'));
+});
+
+test('AI-tussenstand gebruikt uitsluitend de index en de bestaande kaarten',()=>{
+  const ixContext={};
+  vm.runInNewContext(read('tools/ict-scan/inventory-index.js'),ixContext);
+  const records={...main,...work,...faq,...sourceRegister,candidates:main.additionalCandidates};
+  const index=ixContext.IctInventoryIndex.build(records,{catalog});
+  assert.deepEqual(Array.from(index.errors),[]);
+  const summary=index.aiProgress();
+  assert.equal(summary.featureCount,main.ai.length);
+  assert.equal(summary.possibleHighRisk.length,main.ai.filter(x=>/mogelijk hoog risico/i.test(x.aiAct)).length);
+  for(const [group,ids] of Object.entries({good:['APP-012','WRK-010','WRK-012','SWR-005'],open:['WRK-001','WRK-008','WRK-014','WRK-016'],unknown:['WRK-003','WRK-015','SWR-004','C-07']})){
+    for(const id of ids)assert.ok(summary.groups[group].some(x=>x.id===id),group+' '+id);
+  }
+  for(const row of Object.values(summary.groups).flat())assert.ok(index.get(row.type,row.id));
+  const adjusted=clone(records);
+  adjusted.workActions.find(x=>x.id==='WRK-010').status='Niet inzichtelijk';
+  assert.ok(ixContext.IctInventoryIndex.build(adjusted).aiProgress().groups.unknown.some(x=>x.id==='WRK-010'));
+  assert.ok(html.includes('id="aiProgress"'));
+  assert.ok(read('tools/ict-scan/app.js').includes('ix.aiProgress()'));
+  assert.ok(read('tools/ict-scan/scene-navigation.js').includes("['Tussenstand',1]"));
 });

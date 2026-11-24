@@ -7,9 +7,9 @@
     "firstInventoryStarted": "2026-08-10",
     "compiledBy": "Hans Visser",
     "referencePeriod": "november 2026",
-    "evidenceCutoff": "2026-11-23",
-    "dataVersion": "2026-11-23-m365-standaardinstellingen-en-dv-v1",
-    "faqDataVersion": "2026-11-23",
+    "evidenceCutoff": "2026-11-24",
+    "dataVersion": "2026-11-24-ai-tussenstand",
+    "faqDataVersion": "2026-11-24",
     "indexContractVersion": "1.0.0"
   },
   "dataFiles": [
@@ -29,17 +29,17 @@
         "licenseReview": 40,
         "hardwareGroups": 15
       },
-      "sha": "a1971a7c49b1889ea23a73e619df0633ed5567a0",
+      "sha": "ffd92033b9595bb5db986cf910e7fa22e6e9f289",
       "verified": true
     },
     {
       "path": "2026-werkregister.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "workActions": 13,
+        "workActions": 16,
         "softwareReview": 12
       },
-      "sha": "8f017f556ec029419e24eec78c13741edc23e8cb",
+      "sha": "b868edc2ffa67498676618b470ef488184936da5",
       "verified": true
     },
     {
@@ -48,16 +48,16 @@
       "recordCounts": {
         "faqs": 17
       },
-      "sha": "faf91bb13091fb88b765c463a105fabaa88c98ca",
+      "sha": "ca586ccf928a3edd1000a2a6b3f76f31ddaff455",
       "verified": true
     },
     {
       "path": "2026-bronnenregister.json",
       "schema": "eai-school-ict-v1",
       "recordCounts": {
-        "sourceRegister": 63
+        "sourceRegister": 64
       },
-      "sha": "13dd30ccf5898b9c2b9f01908d9a5734426becf8",
+      "sha": "495f77e27897e181b183dfce04700cd6a8669dcc",
       "verified": true
     }
   ],
@@ -69,7 +69,8 @@
     "69 basisapplicaties, waaronder acht aanvullende regels waarvoor schoolgebruik nog moet worden geverifieerd; telt niet als 69 actieve applicaties.",
     "15 schoolbrede hardwaregroepen, 53 onderdelen (13 Entra-registraties en 40 Microsoft 365-productvermeldingen), zonder extra Entra-apparaatmeting.",
     "Één afgeleide index verbindt de vier gecontroleerde bronbestanden, geen vijfde bronbestand.",
-    "63 bronnen in het bronnenregister, waaronder vijf nieuwe openbare bronnen voor Microsoft Education-standaarden en de Kennisnet-verwerkersovereenkomstprocedure. Alle nieuwe bronnen blijven inhoudelijk te beoordelen.",
-    "17 FAQ-kaarten, waaronder standaard M365-instellingen en de eHerkenning-route. Geen automatische goedkeuring van verwerkersovereenkomsten, tenanttoegang of individuele licentietoewijzing."
+    "64 bronnen in het bronnenregister, waaronder vijf nieuwe openbare bronnen voor Microsoft Education-standaarden en de Kennisnet-verwerkersovereenkomstprocedure. Alle nieuwe bronnen blijven inhoudelijk te beoordelen.",
+    "17 FAQ-kaarten, waaronder standaard M365-instellingen en de eHerkenning-route. Geen automatische goedkeuring van verwerkersovereenkomsten, tenanttoegang of individuele licentietoewijzing.",
+    "Interview schoolleiding 24 november 2026 verwerkt in bestaande kaarten; lokale status en bronbewijs blijven gescheiden."
   ]
 }

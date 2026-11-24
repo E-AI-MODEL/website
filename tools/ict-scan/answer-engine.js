@@ -5,11 +5,11 @@
   const stop=new Set(['de','het','een','en','of','in','op','met','voor','van','tot','bij','aan','wat','wie','waar','hoe','welke','welk','zijn','is','hebben','heeft','we','wij','er','deze','die','ons','onze','dit','ik','nog','kan','kun','moet','doet','over']);
   function norm(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');}
   function words(value){return norm(value).split(' ').filter(w=>w&&!stop.has(w));}
-  function unknown(value){const v=norm(value);return String(value??'').trim().startsWith('?')||!v||v.startsWith('nog ')||v.startsWith('niet vastgesteld')||v.startsWith('onbekend')||v.startsWith('schoolgebruik nog niet')||v.startsWith('afhankelijk van')||v.startsWith('standaard volgens leverancier');}
-  const label={apps:'Applicatie',ai:'AI-functie',connections:'Koppeling vanuit Entra',candidates:'Overige software',faqs:'FAQ',parts:'Technisch onderdeel'};
-  const result=(kind,answer,records=[],status='Brongebonden',sources=[],question='')=>({kind,answer,status,records:records.slice(0,12),sources:[...new Set(sources.filter(Boolean))].slice(0,5),question});
+  function unknown(value){const v=norm(value);return String(value??'').trim().startsWith('?')||!v||v.startsWith('nog ')||v.startsWith('niet vastgesteld')||v.startsWith('niet inzichtelijk')||v.startsWith('onbekend')||v.startsWith('schoolgebruik nog niet')||v.startsWith('afhankelijk van')||v.startsWith('standaard volgens leverancier');}
+  const label={apps:'Applicatie',ai:'AI-functie',connections:'Koppeling vanuit Entra',candidates:'Overige software',additionalCandidates:'Overige software',faqs:'FAQ',parts:'Technisch onderdeel',checks:'Controle',dpia:'DPIA',aiControls:'AI-beheer',devices:'Apparaatmeting',hardwareGroups:'Hardwaregroep',licenseReview:'Licentiecontrole',workActions:'Actie',softwareReview:'Softwarecontrole',sourceRegister:'Bron'};
+  const result=(kind,answer,records=[],status='Brongebonden',sources=[],question='')=>({kind,answer,status,records:[...new Map(records.map(row=>[row.type+':'+row.id,row])).values()],sources:[...new Set(sources.filter(Boolean))],question});
   function entry(type,x){return {type,id:x.id,name:x.name||x.question||x.id,detail:type==='apps'?(x.description||''):type==='ai'?(x.product||''):type==='connections'?(x.matched||''):type==='faqs'?(x.topic||''):(x.kind||'')};}
-  function recordSources(items){return items.flatMap(x=>Array.isArray(x.sources)?x.sources:[]).slice(0,5);}
+  function recordSources(items){return items.flatMap(x=>Array.isArray(x.sources)?x.sources:[]);}
   function candidateAnswer(value,yes,no){return unknown(value)?no:yes+String(value).trim();}
   function exactFaq(q,faqs){
     return faqs.find(f=>[f.name,...String(f.aliases||'').split('|')].some(v=>norm(v)===q))||null;
@@ -105,7 +105,7 @@
       const linked=ix?ix.connected('apps',app.id).filter(x=>['integration','sso','possible_match','registered_as'].includes(x.relationType)):[];
       if(linked.length){
         return result('relations','Voor '+own+' zijn '+linked.length+' mogelijke technische verbanden geregistreerd, waaronder '+shortList(linked.map(x=>x.other))+
-          '. De actieve werking is niet aangetoond.',base.concat(linked.slice(0,8).map(x=>entry(x.otherType,x.other))),
+          '. De actieve werking is niet aangetoond.',base.concat(linked.map(x=>entry(x.otherType,x.other))),
           'Mogelijke verbindingen',src);
       }
       return result('field',candidateAnswer(app.links,'Bij '+own+' staat over koppelingen: ','Voor '+own+' is de feitelijke gegevensuitwisseling nog niet vastgesteld.'),base,unknown(app.links)?'Niet vastgesteld':'Geregistreerd',src);
@@ -134,8 +134,17 @@
         'In de gedeelde index zijn nog geen Microsoft 365-productonderdelen vastgelegd. ';
       return result('relations',description+
         'Dit is geen bevestiging dat ieder onderdeel is geactiveerd of dat '+audience+' werkelijk toegang hebben. Licenties, leeftijdsinstellingen en rechten moeten afzonderlijk worden gecontroleerd.',
-        (relevant.length?relevant:modules).slice(0,12).map(x=>entry('parts',x)).concat(base),
+        (relevant.length?relevant:modules).map(x=>entry('parts',x)).concat(base),
         'Productcatalogus; daadwerkelijke toegang niet vastgesteld',src);
+    }
+    const aiAsked=/\b(ai|copilot|kunstmatige)\b/.test(q);
+    const localAsked=/\b(status|actief|ingeschakeld|uitgeschakeld|gebruiken|gebruikt|gebruik|ingezet|inzet)\b/.test(q)||/\b(staat|staan)\b.*\b(aan|uit)\b/.test(q);
+    const listAsked=/\b(welke|lijst|hoeveel|aantal)\b/.test(q);
+    if(/\bstatus\b/.test(q)||(aiAsked&&localAsked&&!listAsked)){
+      const extra=aiAsked?[...related('licenseReview').map(x=>entry('licenseReview',x)),...related('softwareReview').map(x=>entry('softwareReview',x)),...ai.map(x=>entry('ai',x))]:[];
+      const local=String(app.local||'').trim();
+      const registered=local&&!local.startsWith('?')?'Bij '+own+' staat als lokale status: '+local.replace(/[.]+$/,'')+'.':'De lokale status van '+own+' is nog niet vastgesteld.';
+      return result('usage',registered,base.concat(extra),unknown(local)?'Niet vastgesteld':'Geregistreerde schoolstatus',src);
     }
     if(/\b(ai|copilot|kunstmatige|functie|functies)\b/.test(q)){
       if(!ai.length)return result('relations','Aan '+own+' zijn in het AI-register geen AI-functies gekoppeld. Dat bewijst niet dat de leverancier geen AI-functies aanbiedt.',base,'Geen bronkoppeling',src);
@@ -147,7 +156,7 @@
     }
     if(/\b(gebruiken|gebruikt|gebruik|actief|ingeschakeld|aanwezig|hebben|heeft|installatie)\b/.test(q)){
       if(unknown(app.local))return result('usage',own+' is geregistreerd in het applicatieregister ('+app.id+'). Het daadwerkelijke schoolgebruik is nog niet bevestigd.',base,'Niet vastgesteld',src);
-      return result('usage','Bij '+own+' staat als lokale gebruiksstatus: '+app.local+'.',base,'Geregistreerde status',src);
+      return result('usage','Bij '+own+' staat als lokale gebruiksstatus: '+String(app.local).replace(/[.]+$/,'')+'.',base,'Geregistreerde status',src);
     }
     if(/\b(wat|waarvoor|functie|beschrijving|doel)\b/.test(q)){
       return result('description',own+' is geregistreerd met de omschrijving: '+(app.description||'Geen beschrijving aanwezig')+'.'+(unknown(app.local)?' Het daadwerkelijke schoolgebruik is nog niet bevestigd.':''),base,unknown(app.local)?'Gebruik niet vastgesteld':'Bronbeschrijving',src);
@@ -179,7 +188,7 @@
       const related=data.index.connected('apps',mentioned.id,{type:'ai'});
       const unique=[...new Map(related.map(link=>[link.otherId,link.other])).values()];
       return result('count','Bij '+mentioned.name+' zijn '+unique.length+' AI-functies beschreven. Dit bewijst niet dat deze functies op school zijn ingeschakeld.',
-        [entry('apps',mentioned),...unique.slice(0,12).map(x=>entry('ai',x))],
+        [entry('apps',mentioned),...unique.map(x=>entry('ai',x))],
         'Beschreven AI-functies; gebruik niet vastgesteld',recordSources([mentioned]));
     }
     if(mentioned&&/\b(entra|sso)\b/.test(q)&&
@@ -189,7 +198,7 @@
       const related=data.index.connected('apps',mentioned.id,{type:'connections'});
       const unique=[...new Map(related.map(link=>[link.otherId,link.other])).values()];
       return result('count','Bij '+mentioned.name+' staan '+unique.length+' mogelijke koppelingen vanuit Entra. Actueel gebruik is niet bevestigd.',
-        [entry('apps',mentioned),...unique.slice(0,12).map(x=>entry('connections',x))],
+        [entry('apps',mentioned),...unique.map(x=>entry('connections',x))],
         'Koppelingen vanuit Entra; gebruik niet vastgesteld',recordSources([mentioned]));
     }
     if(mentioned?.id==='APP-034'&&
@@ -203,14 +212,20 @@
         'Dit is een telling van productvermeldingen, geen bewijs van activatie of licentietoewijzing.':
         'Hoeveel daarvan voor '+audience+' op school toegankelijk zijn, is niet geverifieerd.';
       return result('count','De broncatalogus bevat '+modules.length+' Microsoft 365-productonderdelen. '+note,
-        [entry('apps',mentioned),...modules.slice(0,12).map(x=>entry('parts',x))],
+        [entry('apps',mentioned),...modules.map(x=>entry('parts',x))],
         'Productcatalogus; toegang niet vastgesteld',recordSources([mentioned]));
     }
     if(/\b(ai|kunstmatige|copilot)\b/.test(q)&&/\b(applicaties|toepassingen|apps|diensten)\b/.test(q)){
       const ids=new Set(apps.map(x=>x.id)),withAi=new Set(ai.filter(x=>ids.has(x.parentId)).map(x=>x.parentId));
-      return result('count',withAi.size+' van '+apps.length+' applicaties hebben ten minste één beschreven AI-functie. Het gebruik op school is niet voor alle functies vastgesteld.',apps.filter(x=>withAi.has(x.id)).slice(0,12).map(x=>entry('apps',x)),'Afgeleide telling',recordSources(apps));
+      return result('count',withAi.size+' van '+apps.length+' applicaties hebben ten minste één beschreven AI-functie. Het gebruik op school is niet voor alle functies vastgesteld.',apps.filter(x=>withAi.has(x.id)).map(x=>entry('apps',x)),'Afgeleide telling',recordSources(apps));
     }
     const categories=[
+      {rx:/\b(hardwaregroepen|apparaatgroepen)\b/,rows:data.hardwareGroups,name:'geregistreerde hardwaregroepen',type:'hardwareGroups'},
+      {rx:/\b(bronnen|bronregister|bronregistraties)\b/,rows:data.sourceRegister,name:'bronregistraties',type:'sourceRegister'},
+      {rx:/\b(softwarecontroles)\b/,rows:data.softwareReview,name:'softwarecontroles',type:'softwareReview'},
+      {rx:/\b(ai beheer|beheerpunten)\b/,rows:data.aiControls,name:'AI-beheerpunten',type:'aiControls'},
+      {rx:/\b(controles|controlepunten)\b/,rows:data.checks,name:'controlepunten',type:'checks'},
+      {rx:/\b(onderdelen|modules)\b/,rows:data.parts,name:'geregistreerde onderdelen',type:'parts'},
       {rx:/\b(eigenaar|verantwoordelijke|beheerder|beheert)\b/,rows:apps.filter(x=>unknown(x.owner)),name:'applicaties zonder vastgestelde verantwoordelijke',type:'apps'},
       {rx:/\b(ai|copilot|ai functies)\b/,rows:ai,name:'beschreven AI-functies',type:'ai'},
       {rx:/\b(entra|sso)\b/,rows:data.connections,name:'koppelingen vanuit Entra',type:'connections'},
@@ -218,13 +233,13 @@
       {rx:/\b(dpia|privacychecks)\b/,rows:data.dpia,name:'DPIA-registraties',type:'dpia'},
       {rx:/\b(licenties|licentie)\b/,rows:data.licenseReview,name:'licentieregistraties ter controle',type:'licenseReview'},
       {rx:/\b(faq|veelgestelde|vragen)\b/,rows:data.faqs,name:'vaste FAQ-antwoorden',type:'faqs'},
-      {rx:/\b(werkacties|werkregister|acties)\b/,rows:data.workActions,name:'openstaande acties',type:'workActions'},
+      {rx:/\b(werkacties|werkregister|acties)\b/,rows:/\b(open|openstaande)\b/.test(q)?data.workActions.filter(x=>!['Afgerond','Niet van toepassing'].includes(x.status)):data.workActions,name:'werkacties in deze selectie',type:'workActions'},
       {rx:/\b(apparaten|apparaatmetingen|hardware)\b/,rows:data.devices,name:'apparaatmetingen, geen volledige hardwarelijst',type:'devices'},
       {rx:/\b(applicatie|applicaties|toepassing|toepassingen|software|diensten|apps)\b/,rows:apps,name:'geregistreerde applicaties en diensten; de lijst is mogelijk nog niet volledig',type:'apps'}
     ];
     const match=categories.find(x=>x.rx.test(q));
     if(!match)return null;
-    return result('count',match.rows.length+' '+match.name+'.',match.rows.slice(0,10).map(x=>entry(match.type,x)),'Telling per register',recordSources(match.rows));
+    return result('count',match.rows.length+' '+match.name+'.',match.rows.map(x=>entry(match.type,x)),'Telling per register',recordSources(match.rows));
   }
   function listQuery(q,data){
     if(!/\b(welke|toon|lijst|overzicht|zoek|vinden|geef|voor)\b/.test(q))return null;
@@ -252,27 +267,31 @@
       return result('list',rows.length+' applicaties hebben een mogelijke koppeling vanuit Entra: '+shortList(rows)+'. Een match is geen bevestiging van een actieve koppeling.',rows.map(x=>entry('apps',x)),'Mogelijke koppelingen',recordSources(rows));
     }
     if(/\b(applicatie|applicaties|toepassing|toepassingen|software|apps|diensten)\b/.test(q)){
-      return result('list','Er staan '+apps.length+' applicaties in het overzicht: '+shortList(apps)+'. De inventarisatie is nog niet als volledig vastgesteld.',apps.slice(0,12).map(x=>entry('apps',x)),'Basisinventaris',recordSources(apps));
+      return result('list','Er staan '+apps.length+' applicaties in het overzicht: '+shortList(apps)+'. De inventarisatie is nog niet als volledig vastgesteld.',apps.map(x=>entry('apps',x)),'Basisinventaris',recordSources(apps));
     }
     return null;
   }
   function ranked(q,data){
     const tokens=words(q).filter(t=>t.length>=3);
     if(!tokens.length)return[];
-    const defs=[['apps',data.apps],['ai',data.ai],['connections',data.connections],['faqs',data.faqs]];
+    if(data.index?.searchRecords)return data.index.searchRecords(tokens.join(' ')).map(x=>entry(x.type,x.record));
+    const defs=Object.keys(label).filter(type=>type!=='additionalCandidates').map(type=>[type,data[type]||[]]);
     return defs.flatMap(([type,rows])=>rows.map(r=>{
       const name=norm(r.name),extra=norm([r.description,r.product,r.answer,r.aliases,r.matched,r.action].join(' '));
       let score=0;
       for(const token of tokens){if(name.split(' ').includes(token))score+=7;else if(name.includes(token))score+=3;if(extra.includes(token))score+=1;}
       if(name.includes(q))score+=15;
       return {type,row:r,score};
-    })).filter(x=>x.score>=3).sort((a,b)=>b.score-a.score||a.row.name.localeCompare(b.row.name,'nl')).slice(0,8).map(x=>entry(x.type,x.row));
+    })).filter(x=>x.score>=3).sort((a,b)=>b.score-a.score||a.row.name.localeCompare(b.row.name,'nl')).map(x=>entry(x.type,x.row));
   }
   function search(question,dataset){
     const q=norm(question);
     const data={apps:dataset.apps||[],ai:dataset.ai||[],connections:dataset.connections||[],parts:dataset.parts||[],candidates:dataset.candidates||[],faqs:dataset.faqs||[],
-      dpia:dataset.dpia||[],licenseReview:dataset.licenseReview||[],workActions:dataset.workActions||[],devices:dataset.devices||[],index:dataset.index||null};
+      dpia:dataset.dpia||[],licenseReview:dataset.licenseReview||[],workActions:dataset.workActions||[],devices:dataset.devices||[],hardwareGroups:dataset.hardwareGroups||[],checks:dataset.checks||[],aiControls:dataset.aiControls||[],softwareReview:dataset.softwareReview||[],sourceRegister:dataset.sourceRegister||[],index:dataset.index||null};
+    if(data.index){for(const type of Object.keys(label)){if(type==='additionalCandidates')continue;data[type]=data.index.records(type);}}
     if(q.length<2)return result('empty','');
+    const exact=data.index?.findById(q)||[];
+    if(exact.length)return result('record',exact.length===1?exact[0].record.name+' is geregistreerd. Open de kaart voor alle gegevens.':exact.length+' registraties hebben deze ID.',exact.map(x=>entry(x.type,x.record)),'Registratie-ID',[],question);
     const faq=exactFaq(q,data.faqs);
     if(faq)return result('faq',faq.answer,[entry('faqs',faq)],faq.status||'Vast antwoord',faq.sources||[],question);
     // Een vraag naar aantallen moet vóór de naamherkenning worden afgehandeld:
@@ -377,10 +396,7 @@
   function snapshot(){
     const ix=window.IctInventoryIndex?.build(state);
     const from=name=>ix?ix.records(name):(state[name] instanceof Map?[...state[name].values()]:[]);
-    return {index:ix,apps:from('apps'),ai:from('ai'),connections:from('connections'),
-      parts:from('parts'),candidates:from('additionalCandidates'),faqs:from('faqs'),
-      dpia:from('dpia'),licenseReview:from('licenseReview'),workActions:from('workActions'),
-      devices:from('devices'),hardwareGroups:from('hardwareGroups')};
+    return {index:ix,...Object.fromEntries(Object.keys(label).map(type=>[type,from(type==='candidates'?'additionalCandidates':type)]))};
   }
   function show(){
     host.hidden=false;wrap?.classList.add('has-answer');input.setAttribute('aria-expanded','true');
@@ -404,7 +420,9 @@
     if(norm(q).length<2){hide();return;}
     input.value=q;options=[];active=-1;mode='answer';
     input.removeAttribute('aria-activedescendant');
-    const found=search(q,snapshot());
+    const data=snapshot(),found=search(q,data);
+    const allMatches=data.index?.searchRecords(q).map(x=>entry(x.type,x.record))||[];
+    const extraMatches=allMatches.filter(item=>!found.records.some(r=>r.id===item.id&&(r.type===item.type||r.type==='candidates'&&item.type==='additionalCandidates')));
     host.replaceChildren();show();
     const card=make('section','answer-result');
     card.append(make('p','answer-kicker',found.kind==='faq'?'Vast antwoord':found.kind==='suggestions'?'Mogelijke resultaten':'Antwoord uit de gegevens'));
@@ -413,14 +431,18 @@
     card.append(make('p','answer-status',found.status));
     if(found.records.length){
       const list=make('div','answer-records');
-      for(const record of found.records.slice(0,8)){
+      for(const record of found.records){
         const button=make('button','answer-record');
         button.type='button';button.dataset.resultKind=record.type;button.dataset.resultId=record.id;
         button.append(make('strong','',record.name),make('small','',record.id));
         button.addEventListener('click',()=>openResult(record));list.append(button);
       }
       card.append(list);
-      if(found.records.length>8)card.append(make('p','answer-foot','Bekijk de overige resultaten in het register.'));
+      if(found.records.length>8)card.append(make('p','answer-foot',found.records.length+' registraties bij dit antwoord.'));
+    }
+    if(extraMatches.length){
+      const more=make('details','answer-evidence');more.append(make('summary','',extraMatches.length+' andere treffers in alle registers'));
+      const list=make('div','answer-records');for(const item of extraMatches){const button=make('button','answer-record');button.type='button';button.append(make('strong','',item.name),make('small','',item.id+' · '+(label[item.type]||item.type)));button.addEventListener('click',()=>openResult(item));list.append(button);}more.append(list);card.append(more);
     }
     if(found.kind==='none'||found.kind==='suggestions')card.append(make('p','answer-foot','Er is geen controleerbaar antwoord gevonden.'));
     // Herkomst blijft in de bronregistratie, niet in openbare zoekresultaten.
@@ -448,7 +470,9 @@
   }
   function suggest(){
     const q=input.value.trim();
-    options=predict(q,snapshot());
+    const data=snapshot();
+    options=predict(q,data);
+    if(q&&data.index?.findById(q).length){answer(q);return [];}
     active=-1;input.removeAttribute('aria-activedescendant');
     host.replaceChildren();
     if(!options.length){

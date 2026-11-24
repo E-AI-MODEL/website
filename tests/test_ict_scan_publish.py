@@ -214,7 +214,10 @@ class ICTScanTests(unittest.TestCase):
             self.assertEqual(html.count(f'id="{control}"'), 1, control)
         self.assertIn("event.key==='Escape'", js)
         self.assertIn("event.key!=='/'", js)
-        self.assertIn("openDrawer(true)", js)
+        self.assertIn("search.focus()", js)
+        self.assertRegex(html, r'class="top-search"[^>]*>.*id="globalSearch"')
+        for label in ("studio","connections","devices","privacy","reports","sources"):
+            self.assertIn(f'data-drawer-view="{label}"', html)
         self.assertIn('.icon-rail .rail-more', css)
         self.assertIn('@media(max-width:720px)', css)
 

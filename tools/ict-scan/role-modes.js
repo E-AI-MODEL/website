@@ -59,7 +59,7 @@
   byId('jumpAiBeheer')?.addEventListener('click',()=>{
     if(!roles.ai)return;
     selectView('ai');
-    window.EmmausScenes?.show('ai',2);
+    window.EmmausScenes?.show('ai',3);
   });
   apply();
 })();

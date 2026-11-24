@@ -45,7 +45,7 @@ const tasks=[
   ['Wat is een verwerkersovereenkomst?','faq',/verwerkingsverantwoordelijke/i,'FAQ-007'],
   ['Wat is het IBP-normenkader?','faq',/informatiebeveiliging en privacy/i,'FAQ-008'],
   ['Hoe worden wijzigingen vastgelegd?','faq',/pull-request/i,'FAQ-010'],
-  ['Hoe voeg ik een nieuwe toepassing toe?','faq',/JSON-kaarten beheren/i,'FAQ-011'],
+  ['Hoe voeg ik een nieuwe toepassing toe?','faq',/Register.*Open register/i,'FAQ-011'],
   ['Wat betekent niet vastgesteld?','faq',/onvoldoende informatie/i,'FAQ-004'],
   ['Wat is de status van de inventarisatie 2026?','faq',/10 augustus 2026/i,'FAQ-014'],
   ['Wat zijn de AI Act verplichtingen van 3CX?','legal',/nog geen concrete wets- of normbeoordeling/i,'APP-033'],
@@ -249,4 +249,28 @@ test('Bestaande zijbalk en eenvoudige bronverwijzingen blijven intact',()=>{
   const app=read('tools/ict-scan/app.js');
   assert.ok(app.includes('faqs:new Map()'));
   assert.ok(app.includes("faqs:'faqs'"),'De native JSON-import moet FAQ-registraties blijven inlezen.');
+});
+
+test('Elke bestaande registratie is rechtstreeks vindbaar op ID, met volledige bronvelden',()=>{
+  const data=indexedDataset();
+  for(const [type] of Object.entries(inventoryIndex.STORES)){
+    for(const row of data.index.records(type)){
+      const matches=data.index.searchRecords(row.id);
+      assert.ok(matches.some(x=>x.type===type&&x.id===row.id),type+'/'+row.id);
+      assert.ok(query(row.id,data).records.some(x=>x.type===type&&x.id===row.id),type+'/'+row.id+' antwoord');
+    }
+  }
+  const nested={id:'H-test',name:'Voorbeeld',extension:{inner:['uniekevindterm']}};
+  const index=inventoryIndex.build({hardwareGroups:[nested]});
+  assert.deepEqual(index.searchRecords('uniekevindterm').map(x=>x.id),['H-test']);
+  assert.equal(index.searchRecords('H-test')[0].record,nested);
+});
+
+test('Vragen naar daadwerkelijk AI-gebruik geven de schoolstatus en geen leverancierscatalogus',()=>{
+  const data=indexedDataset();
+  for(const [q,rx,id] of [['Wat is de status van AFAS?',/niet inzichtelijk/i,'APP-056'],['Staat AI aan in Showbie?',/uitgeschakeld/i,'APP-012'],['Gebruiken we JoJoSchool?',/licentie beëindigd/i,'APP-006'],['Wordt AI gebruikt in ToetsPers?',/playground/i,'APP-016']]){
+    const out=query(q,data);
+    assert.match(out.answer,rx,q);
+    assert.ok(out.records.some(r=>r.id===id),q);
+  }
 });

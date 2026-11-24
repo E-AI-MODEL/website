@@ -22,6 +22,17 @@
   const rows=value=>value instanceof Map?[...value.values()]:Array.isArray(value)?value:[];
   const filled=value=>typeof value==='string'&&value.trim().length>0;
   const equalType=type=>ALIASES[type]||type;
+  const normalize=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+  function recordText(value){
+    if(Array.isArray(value))return value.map(recordText).join(' ');
+    if(value&&typeof value==='object')return Object.values(value).map(recordText).join(' ');
+    return value===null||value===undefined?'':String(value);
+  }
+  function matchesRecord(record,query){
+    const q=normalize(query);if(!q)return true;
+    const haystack=normalize(recordText(record));
+    return q.split(' ').every(term=>haystack.includes(term));
+  }
   function build(state,options={}){
     const nodes=new Map(),groups=new Map(),outgoing=new Map(),incoming=new Map();
     const edges=[],errors=[],sourceAliases=new Map(),sourceIds=new Set(),registeredKeys=new Set();
@@ -126,6 +137,19 @@
       }
     }
     function get(type,id){return nodes.get(key(type,id))||null;}
+    const searchTextCache=new Map();
+    function findById(query){const q=normalize(query);return [...nodes.values()].filter(node=>!node.derived&&normalize(node.id)===q);}
+    function searchRecords(query,{type}={}){
+      const q=normalize(query),terms=q.split(' '),matches=[];
+      for(const node of nodes.values()){
+        if(node.derived||(type&&node.type!==equalType(type)))continue;
+        if(!searchTextCache.has(node))searchTextCache.set(node,normalize(recordText(node.record)));
+        if(q&&!terms.every(term=>searchTextCache.get(node).includes(term)))continue;
+        const id=normalize(node.id),name=normalize(node.record.name),score=id===q?1000:name===q?500:name.includes(q)?100:q.split(' ').filter(t=>name.includes(t)).length*10;
+        matches.push({type:node.type,id:node.id,record:node.record,score});
+      }
+      return matches.sort((a,b)=>b.score-a.score||String(a.record.name||a.id).localeCompare(String(b.record.name||b.id),'nl')||a.id.localeCompare(b.id));
+    }
     function records(type){return [...(groups.get(equalType(type))||new Map()).values()];}
     function connected(type,id,options={}){
       const nodeKey=key(type,id),direction=options.direction||'both';
@@ -192,12 +216,33 @@
       for(const edge of edges)if(!valid.has(edge.relationType))
         errors.push({code:'UNKNOWN_RELATION_TYPE',relationType:edge.relationType});
     }
+    // The AI overview is a projection of the registered cards, not another dataset.
+    function aiProgress(){
+      const groups={good:[],open:[],unknown:[]};
+      const unknown=value=>!String(value||'').trim()||/^\?|niet inzichtelijk|onbekend|niet vastgesteld|niet gecontroleerd|niet bekend/i.test(String(value));
+      for(const type of TYPES){
+        if(type==='sourceRegister')continue;
+        for(const record of records(type)){
+          const links=(record.frameworkLinks||[]).filter(link=>link.frameworkId==='AIACT');
+          if(!links.length)continue;
+          const status=String(record.status||record.local||'').trim();
+          const bucket=/niet inzichtelijk|onbekend/i.test(status)?'unknown':
+            links.every(link=>['Afgerond','In uitvoering'].includes(link.followUpStatus))?'good':'open';
+          const note=[...new Set(links.map(link=>link.note).filter(Boolean))].join(' ');
+          const followUp=[...new Set(links.filter(link=>link.followUpStatus!=='Afgerond').map(link=>link.followUp).filter(Boolean))].join(' ');
+          groups[bucket].push({type,id:record.id,name:record.name,note,followUp,status:status||links[0].followUpStatus||'Open'});
+        }
+      }
+      const features=records('ai');
+      return {groups,featureCount:features.length,unknownCount:features.filter(record=>unknown(record.local)).length,
+        possibleHighRisk:features.filter(record=>/mogelijk hoog risico/i.test(record.aiAct||'')).map(record=>({id:record.id,name:record.name,product:record.product,local:record.local}))};
+    }
     return Object.freeze({
       version:VERSION,nodes,edges,errors,sourceCoverage,
-      get,records,connected,descendants,sourcesFor,
+      get,records,connected,descendants,sourcesFor,aiProgress,searchRecords,findById,
       count:type=>records(type).length,
       countLinked:(type,id,targetType)=>new Set(connected(type,id,{type:targetType}).map(x=>x.otherId)).size
     });
   }
-  return Object.freeze({VERSION,STORES,TYPES,STATUSES,key,build});
+  return Object.freeze({VERSION,STORES,TYPES,STATUSES,key,build,matchesRecord});
 });

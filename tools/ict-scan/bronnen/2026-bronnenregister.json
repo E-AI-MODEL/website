@@ -16,8 +16,8 @@
         ],
         "identityField": "provenance.file",
         "groupingRule": "Alleen een exact gelijk provenance.file of die exacte bestandsnaam gevolgd door de letterlijke scheiding \" / \" koppelt een verwijzing aan een bestandsidentiteit. Overige verwijzingen blijven afzonderlijk.",
-        "referenceCount": 517,
-        "recordCount": 63,
+        "referenceCount": 530,
+        "recordCount": 64,
         "groupedFileCount": 2,
         "previousRecordCount": 51,
         "notes": []
@@ -1752,6 +1752,30 @@
         "classification": "Openbare leveranciersinformatie / procesbron",
         "asOf": "2026-11-23",
         "note": "Beschikbaarheid en proces beschreven; schooltoepassing en gebruiksrecht niet formeel beoordeeld."
+      }
+    },
+    {
+      "id": "SRC-00064",
+      "name": "Interview schoolleiding Emmauscollege, 24 november 2026",
+      "referenceKeys": [
+        "Interview schoolleiding Emmauscollege, 24 november 2026"
+      ],
+      "owner": "Hans Visser (schoolleiding)",
+      "version": "2026-11-24",
+      "rightsStatus": "Onbekend",
+      "rightsBasis": "",
+      "allowedUse": "",
+      "scope": "Schoolinterview over AI-inzet, beheer en scholing",
+      "retention": "",
+      "approvalStatus": "Nog te beoordelen",
+      "approvedBy": "",
+      "approvedAt": "",
+      "approvalEvidence": "",
+      "nextReviewAt": "",
+      "provenance": {
+        "classification": "Schoolinterview",
+        "asOf": "2026-11-24",
+        "note": "Door schoolleiding gemelde feiten; geen technische tenantmeting of formele juridische beoordeling."
       }
     }
   ]
