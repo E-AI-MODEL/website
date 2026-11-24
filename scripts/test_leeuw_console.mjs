@@ -140,7 +140,7 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const server=spawn('python3',['-m','http.server','8797','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
   let browser;
   try{
-    let ready=false;for(let i=0;i<60;i++){try{ready=(await fetch(base+path)).ok}catch{}if(ready)break;await new Promise(r=>setTimeout(r,100))}
+    let ready=false;for(let i=0;i<60;i++){try{ready=(await fetch(base+path,{method:'HEAD'})).ok}catch{}if(ready)break;await new Promise(r=>setTimeout(r,100))}
     assert.ok(ready,'Leeuw ontbreekt');
     browser=await (engine==='webkit'?webkit:chromium).launch({headless:true});await runLeeuwConsoleChecks(browser,base,engine);
   }finally{if(browser)await browser.close();server.kill()}
