@@ -115,7 +115,8 @@ class ICTScanTests(unittest.TestCase):
         self.assertNotIn('<h2>DPIA-beoordelingen</h2>', html)
         self.assertIn('data-view="devices"', html)
         self.assertIn('id="deviceCoverage"', html)
-        self.assertIn('data-report="devices"', html)
+        self.assertIn('id="reportPicker"', html)
+        self.assertIn('"devices":[', (TOOL / "report-print.js").read_text(encoding="utf-8"))
         self.assertIn('PDF-inhoud is niet beoordeeld', (TOOL / 'app.js').read_text(encoding='utf-8'))
 
     def test_github_sync_is_read_only_and_credentials_not_persisted(self):

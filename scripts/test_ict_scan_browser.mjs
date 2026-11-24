@@ -239,7 +239,18 @@ try {
   if(width===1440){
     await page.evaluate(()=>{window.print=()=>{};});
     const reports=await page.evaluate(()=>Object.keys(window.IctPrintReports.titles));
-    assert.equal(reports.length,9);
+    const scoped=await page.evaluate(()=>['bestuur','ibp','aiAct','aiLiteracy','processing'].map(scope=>{
+      const m=indexedReport(scope);return {scope,title:m.title,limit:m.limit,kpis:m.kpis,sections:m.sections.map(s=>s.title),body:JSON.stringify(m),workbookSize:(()=>{const b=indexedReportWorkbook(m);return b.size??b.byteLength??b.length;})()};
+    }));
+    for(const report of scoped){assert(report.limit);assert(report.sections.length>=2);assert(report.workbookSize>1000);}
+    const aiActReport=scoped.find(r=>r.scope==='aiAct');
+    assert.match(aiActReport.body,/2 december 2027/);
+    assert.match(aiActReport.body,/geen automatische|Geen juridische/);
+    assert(scoped.find(r=>r.scope==='aiLiteracy').sections.includes('AI-geletterdheid: maatregelen en bewijs'));
+    assert.match(scoped.find(r=>r.scope==='processing').body,/geen verwerkingsactiviteit|geen afzonderlijk register/);
+    await page.screenshot({path:'test-results/ict-scan-report-picker.png'});
+
+    assert.equal(reports.length,14);
     for(const scope of reports){
       const model=await page.evaluate(scope=>indexedReport(scope),scope);
       assert(model.sections.length>1);
@@ -249,14 +260,14 @@ try {
       assert.equal(await page.locator('#printReport .report-chapter').count(),model.sections.length);
       assert.equal(await page.locator('#printReport script').count(),0);
       // Do not export the actual school register as a public CI artifact.
-      if(browserType===chromium&&['ict','privacy','aiGovernance'].includes(scope)){
+      if(browserType===chromium&&['ict','privacy','aiGovernance','bestuur','ibp','aiAct','aiLiteracy','processing'].includes(scope)){
         await page.evaluate(scope=>{
           const synthetic=IctInventoryIndex.build({
             apps:[{id:'TEST-APP',name:'Voorbeeldapplicatie',kind:'Applicatie',area:'Onderwijs',description:'Fictieve applicatie voor de PDF-proef.',local:'Onbekend',data:'Fictieve gegevens'}],
             ai:[{id:'TEST-AI',name:'Voorbeeldfunctie',product:'Voorbeeldapplicatie',domain:'Onderwijs',local:'Onbekend',action:'Fictieve functie'}],
             checks:[{id:'TEST-CHECK',name:'Voorbeeldcontrole',category:'Toegang',explanation:'Controleer de fictieve rolverdeling.',status:'Open'}],
             dpia:[{id:'TEST-DPIA',name:'Voorbeeldonderzoek',assessment:'Nog niet beoordeeld',evidence:'Niet vastgesteld'}],
-            workActions:[{id:'TEST-WORK',name:'Voorbeeldactie',action:'Controleer de fictieve instellingen.',status:'Open'}]
+            workActions:[{id:'TEST-WORK',name:'Voorbeeldactie',action:'Controleer de fictieve instellingen.',status:'Open',frameworkLinks:[{frameworkId:'AIACT',article:'art. 4',status:'Nog te beoordelen',followUp:'Synthetische scholingsactie',followUpStatus:'In uitvoering'}]}]
           });
           const example=IctPrintReports.build(synthetic,{scope,taxonomy:IctScanTaxonomy,date:'24-11-2026',sourceLabel:'SYNTHETISCHE TESTGEGEVENS'});
           document.getElementById('printReport').innerHTML=IctPrintReports.render(example);
@@ -664,7 +675,9 @@ try {
   assert.equal(await page.locator('#candidatePanel').isVisible(),true);
   assert(!/76\s+aanwijzingen/.test(await page.locator('#candidateInfo').textContent()),'Dezelfde 76 wordt dubbel getoond');
   await navigate('reports');
-  assert.equal(await page.locator('#reportPicker [data-report]').count(),9);
+  assert.equal(await page.locator('#reportPicker [data-report]').count(),14);
+  assert.equal(await page.locator('#reportPicker .report-purpose-group').count(),5);
+  assert.equal(await page.locator('[data-report="privacy"]').count(),1);
   await page.locator('[data-report="devices"]').click();
   assert.match(await page.locator('#reportPreviewTitle').textContent(),/Apparaten/);
   await navigate('ai');
@@ -745,7 +758,7 @@ try {
   assert.equal(await page.locator('.rail-button[data-view="ai"]').isVisible(),true);
   await page.locator('#roleModeFG').uncheck();
   assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false);
-  assert.equal(await page.locator('#reportPicker [data-report="privacy"]').isVisible(),false);
+  assert.equal(await page.locator('#reportPicker [data-report="privacy"]').evaluate(el=>el.hidden),false,'FG-rapport blijft beschikbaar wanneer de functieweergave uit staat');
   await page.locator('#roleModeFG').check();
   await page.locator('#railDrawerClose').click();
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-scan-visible-roles-v1')),/"fg":true/);
