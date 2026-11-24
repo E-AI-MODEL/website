@@ -211,13 +211,21 @@
     const infoLine=groups.length>8?'Acht grootste categorieën en een samengevoegde restgroep. ':''; 
     root.append(text('p',infoLine+fmt(rows.length)+' van '+fmt(all.length)+' '+d.unit+'. Elke registratie telt eenmaal.','ds-note'));
   }
+  const COVERAGE_LABELS=Object.freeze({
+    owner:'Verantwoordelijke',local:'Gebruik op school',kind:'Soort applicatie',
+    product:'Product',parentId:'Bijbehorende applicatie',matchedId:'Gekoppelde applicatie',
+    usageConfirmed:'Gebruik bevestigd',measurementDate:'Meetdatum',quantity:'Aantal',
+    limitation:'Beperkingen',status:'Status',evidence:'Broninformatie',
+    action:'Actie',confirmed:'Bevestigd',execution:'Uitvoering',
+    managementLocation:'Beheeromgeving',sourceDate:'Datum bron'
+  });
   function drawCoverage(root){
     const d=activeSource();if(!d){root.append(text('p','Kies een bron voor deze meting.','ds-component-hint'));return;}
     const rows=filtered(d);root.append(text('p','Ingevulde velden bij '+d.label+'. Dit is geen inhoudelijke goedkeuring.','ds-component-hint'));
     for(const field of d.fields){
       const value=rows.filter(r=>known(r[field])).length,total=rows.length;
       const line=text('div',undefined,'ds-coverage-row');
-      const head=text('div',undefined,'ds-coverage-head');head.append(text('span',field.replace(/([A-Z])/g,' $1')),text('strong',fmt(value)+' / '+fmt(total)));
+      const head=text('div',undefined,'ds-coverage-head');head.append(text('span',COVERAGE_LABELS[field]||field.replace(/([A-Z])/g,' $1')),text('strong',fmt(value)+' / '+fmt(total)));
       const meter=text('div',undefined,'ds-coverage-meter');const fill=text('span');fill.style.width=(total?100*value/total:0).toFixed(2)+'%';meter.append(fill);
       line.append(head,meter);root.append(line);
     }
