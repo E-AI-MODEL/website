@@ -36,19 +36,19 @@
       byId('deviceRecords').replaceChildren();return;
     }
     const period=d.total?.measurementDate||'Periode nog onbekend';
-    byId('deviceStamp').textContent='Bronpeildatum '+period;
+    byId('deviceStamp').textContent='Peildatum '+period;
     cardRoot.innerHTML=[
-      ['Entra-apparaatrecords',d.amount?fmt(d.amount):'Onbekend','Geen schoolbreed totaal'],
-      ['Compliance ingevuld',d.complete?fmt(d.yes+d.no):'Onbekend','Niet hetzelfde als aantoonbaar veilig'],
-      ['Compliance ontbreekt',d.complete?fmt(d.missing):'Onbekend','Geen waarde in de export'],
-      ['Mac-records',d.macs?String(d.macs.quantity):'Onbekend','Aantal records in deze export']
+      ['Apparaten in Entra',d.amount?fmt(d.amount):'Onbekend','Niet het totaal aantal apparaten op school'],
+      ['Status apparaatbeleid bekend',d.complete?fmt(d.yes+d.no):'Onbekend','Volgens de beschikbare export'],
+      ['Status apparaatbeleid ontbreekt',d.complete?fmt(d.missing):'Onbekend','Geen status in de export'],
+      ['Mac-registraties',d.macs?String(d.macs.quantity):'Onbekend','Aantal volgens de bron']
     ].map(([label,num,sub])=>'<div class="evidence-stat"><small>'+safe(label)+'</small><strong>'+safe(num)+'</strong><span>'+safe(sub)+'</span></div>').join('');
     if(d.complete){
-      const parts=[{n:d.yes,label:'True',cls:'yes'},{n:d.no,label:'False',cls:'no'},{n:d.missing,label:'Niet ingevuld',cls:'missing'}];
+      const parts=[{n:d.yes,label:'Voldoet (Entra)',cls:'yes'},{n:d.no,label:'Voldoet niet (Entra)',cls:'no'},{n:d.missing,label:'Niet ingevuld',cls:'missing'}];
       bars.innerHTML='<div class="device-headline"><strong>'+fmt(d.yes+d.no)+' / '+fmt(d.amount)+'</strong><span>records met een ingevulde waarde</span></div>'+
         '<div class="device-meter" role="img" aria-label="'+parts.map(p=>p.n+' '+p.label).join(', ')+'">'+parts.filter(p=>p.n).map(p=>'<span class="device-meter-'+p.cls+'" style="width:'+(p.n/d.amount*100).toFixed(3)+'%"></span>').join('')+'</div>'+
         '<div class="device-legend">'+parts.map(p=>'<div><i class="device-dot '+p.cls+'"></i><span>'+p.label+'</span><strong>'+fmt(p.n)+'</strong><small>'+Math.round(p.n/d.amount*100)+'%</small></div>').join('')+'</div>';
-      byId('deviceCoverageNote').textContent='De 28 True en 64 False zijn waarden in de bronexport, geen oordeel over alle apparaten. De 69 ontbrekende waarden tellen niet als False.';
+      byId('deviceCoverageNote').textContent=fmt(d.yes)+' voldoen en '+fmt(d.no)+' voldoen niet volgens de export. Bij '+fmt(d.missing)+' ontbreekt de status. Dit is geen volledige beveiligingsbeoordeling.';
     }else{
       bars.innerHTML='<div class="no-results">De totalen van deze bron sluiten niet op elkaar aan. Geen verdeling getoond.</div>';
       byId('deviceCoverageNote').textContent='Controleer de bronwaarden voordat percentages worden gebruikt.';
@@ -56,8 +56,8 @@
     byId('deviceGaps').innerHTML=[
       ['Actuele schoolpopulatie','De export uit september bevestigt niet hoeveel fysieke apparaten er nu zijn.'],
       ['Eigenaar en gebruik','Voor iedere apparaatgroep ontbreken hier volledige rol-, locatie- en gebruiksgegevens.'],
-      ['Beheer en beveiliging','Een True/False-veld is onvoldoende voor een complete MDM-, Intune- of beveiligingscontrole.'],
-      ['Aanvullende meting','Controleer aantallen per type en de actuele beheerstatus in de juiste bronsystemen.']
+      ['Beheer en beveiliging','De exportstatus alleen is onvoldoende om de beveiliging te beoordelen.'],
+      ['Actuele gegevens','Controleer de aantallen en beheerstatus in de systemen van de school.']
     ].map(([name,desc])=>'<div class="device-gap"><span class="device-gap-line"></span><strong>'+safe(name)+'</strong><p>'+safe(desc)+'</p></div>').join('');
     const host=byId('deviceRecords');host.replaceChildren();
     for(const row of d.rows){
@@ -74,7 +74,7 @@
     const external=dpia.filter(x=>/bevestigd/i.test(x.evidence||'')).length;
     byId('privacySummary').innerHTML=[
       ['DPIA-bronitems',dpia.length,'Geen uitgevoerde DPIAs of FG-oordelen'],
-      ['Externe bronstatus',external,'Verwijzingen met bevestigde externe onderbouwing'],
+      ['Externe bronstatus',external,'Bronnen met vastgelegde externe onderbouwing'],
       ['FG-advies','Niet aangeleverd','Niet opgenomen in deze inventarisatie'],
       ['Besluit bevoegd gezag','Niet aangeleverd','Geen besluit in de aangeleverde bronnen']
     ].map(([name,n,caption])=>'<div class="evidence-stat"><small>'+safe(name)+'</small><strong>'+(typeof n==='number'?fmt(n):safe(n))+'</strong><span>'+safe(caption)+'</span></div>').join('');
