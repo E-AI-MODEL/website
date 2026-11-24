@@ -42,6 +42,8 @@ test("A malicious control URL is dropped, and user strings are plain text",()=>{
  assert.equal(changed.runs[0].name,"bad name");
  assert.equal(changed.runs[0].url,null);
  assert.equal(githubChecksView({...base,url:"javascript:alert(1)"}).visible,false);
+ const oversized=githubChecksView({...base,actionChecks:{...base.actionChecks,runs:[{...base.actionChecks.runs[0],name:"x".repeat(500)}]}});
+ assert.equal(oversized.runs[0].name.length,120,"GitHub-checknamen moeten begrensd blijven");
 });
 test("Existing mobile page includes optional controls, not an upload requirement",()=>{
  const html=readFileSync(new URL("../tools/eaigit/index.html",import.meta.url),"utf8");
