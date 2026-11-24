@@ -90,7 +90,9 @@
   zoomOut.setAttribute('aria-label','Verklein diagram');
   zoomIn.setAttribute('aria-label','Vergroot diagram');
   const zoomReset=button('100%','ra-zoom-label',()=>setZoom(1));
+  const graphMode=el('select','ra-select ra-graph-mode');graphMode.setAttribute('aria-label','Netwerkweergave');for(const [v,t] of [['groups','Groepen'],['network','Netwerk van registraties']]){const opt=el('option','',t);opt.value=v;graphMode.append(opt);}graphMode.addEventListener('change',()=>{mode=graphMode.value;focused=null;zoom=1;render();});
   graphControls.append(zoomOut,zoomReset,zoomIn);
+  graphTitle.append(graphMode);
   graphTitle.append(graphControls);
   const graphScroll=el('div','ra-graph-scroll');
   const svg=svgNode('svg',{viewBox:'0 0 1000 600',class:'ra-graph',role:'img','aria-label':'Relaties tussen registraties'});
@@ -98,7 +100,7 @@
   const mobileGraph=el('div','ra-mobile-graph');
   mobileGraph.setAttribute('aria-label','Relaties per onderdeel');
   const graphNote=el('p','ra-footnote');
-  graphWrap.append(graphTitle,graphScroll,mobileGraph,graphNote);
+  const legend=el('div','ra-network-legend');graphWrap.append(graphTitle,legend,graphScroll,mobileGraph,graphNote);
   const detail=el('aside','ra-detail');
   detail.setAttribute('aria-label','Geselecteerde registratie');
   area.append(graphWrap,detail);
@@ -239,6 +241,55 @@
     }
     graphNote.textContent=fmt(edges.length)+' afzonderlijke verbanden samengevat per soort. Kies een groep of zoek een registratie. De volledige lijst staat onder het diagram.';
   }
+  // Deterministic graph of the actual indexed endpoints. Node positions encode
+  // no measured distance, direction of traffic or technical dependency.
+  const palette=['#355f91','#c77c35','#409082','#756ab0','#a95369','#708a45','#60768c','#bd9740','#4383a9','#936eac','#668bb9','#8f7971','#287b8c','#668150','#b76f49'];
+  function drawNetworkGraph(edges){
+    graphHeadline.textContent='Netwerk van registraties';
+    graphSub.textContent='Klik op een knooppunt voor de directe verbanden';
+    const all=new Map();
+    for(const edge of edges)for(const [type,id] of endpoints(edge)){
+      const k=key(type,id);
+      if(!all.has(k))all.set(k,{k,type,id,degree:0});
+      all.get(k).degree++;
+    }
+    const ordered=[...all.values()].sort((a,b)=>b.degree-a.degree||a.k.localeCompare(b.k));
+    const shown=ordered.slice(0,400);
+    const lookup=new Map(shown.map((n,i)=>[n.k,i]));
+    const pairs=edges.map(e=>({a:lookup.get(key(e.fromType,e.fromId)),b:lookup.get(key(e.toType,e.toId)),edge:e})).filter(e=>e.a!==undefined&&e.b!==undefined);
+    if(!shown.length){svg.append(svgText(500,270,'Geen verbanden in deze selectie','ra-empty-text'));graphNote.textContent='Wis de filters om het netwerk te bekijken.';return;}
+    const types=[...new Set(shown.map(n=>n.type))].sort();
+    const colors=new Map(types.map(t=>[t,palette[Math.max(0,Object.keys(TYPE_NAMES).indexOf(t))%palette.length]]));
+    for(const type of types){const swatch=el('i','ra-legend-dot');swatch.style.background=colors.get(type);const item=el('span','ra-legend-item');item.append(swatch,el('span','',label(type)));legend.append(item);}
+    legend.append(el('span','ra-legend-item','Gestippeld: vermoedelijk · Doorgetrokken: geregistreerd/bevestigd · Dun grijs: historisch'));
+    // Compact initial spiral; a bounded force relaxation makes shared endpoints
+    // cluster without inventing any links. Deterministic, no external library.
+    const n=shown.length,scale=Math.min(1,Math.sqrt(n/150));
+    shown.forEach((p,i)=>{const a=i*2.399963229728653,r=Math.sqrt((i+.5)/n);p.x=500+400*r*Math.cos(a);p.y=300+245*r*Math.sin(a);p.dx=0;p.dy=0;});
+    for(let step=0;step<90;step++){
+      const cooling=1-step/100;
+      for(const p of shown){p.dx=(500-p.x)*.004;p.dy=(300-p.y)*.004;}
+      for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){
+        const a=shown[i],b=shown[j],x=a.x-b.x,y=a.y-b.y,dist=Math.max(9,Math.hypot(x,y)),f=(115+100*scale)/(dist*dist);
+        a.dx+=x*f;a.dy+=y*f;b.dx-=x*f;b.dy-=y*f;
+      }
+      for(const {a:i,b:j} of pairs){if(i===j)continue;const a=shown[i],b=shown[j],x=b.x-a.x,y=b.y-a.y,d=Math.max(1,Math.hypot(x,y)),f=(d-50)*.022/d;a.dx+=x*f;a.dy+=y*f;b.dx-=x*f;b.dy-=y*f;}
+      for(const p of shown){p.x=Math.max(28,Math.min(972,p.x+Math.max(-12,Math.min(12,p.dx))*cooling));p.y=Math.max(28,Math.min(572,p.y+Math.max(-12,Math.min(12,p.dy))*cooling));}
+    }
+    const layer=svgNode('g',{class:'ra-network-edges'});
+    for(const {a,b,edge} of pairs){const p=shown[a],q=shown[b];const line=svgNode('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,class:'ra-network-edge'+(edge.status==='Vermoedelijk'?' ra-probable':edge.status==='Historisch'?' ra-historic':edge.status==='Bevestigd'?' ra-confirmed':''),'data-status':edge.status});line.append(svgNode('title',{},edgeName(edge)+' · '+relationName(edge.relationType)+' · '+edge.status));layer.append(line);}
+    svg.append(layer);
+    for(const [i,p] of shown.entries()){
+      const group=svgNode('g',{class:'ra-network-node','data-record-id':p.id,'data-record-type':p.type,'aria-label':fullName(p.type,p.id)+', '+label(p.type)+', '+p.degree+' verbanden'});
+      const radius=4+Math.min(12,Math.sqrt(p.degree)*2);
+      group.append(svgNode('circle',{cx:p.x,cy:p.y,r:radius,fill:colors.get(p.type),stroke:'#fff','stroke-width':1.5}));
+      group.append(svgNode('title',{},fullName(p.type,p.id)+' · '+p.id+' · '+p.degree+' verbanden'));
+      if(i<12||n<25)group.append(svgText(p.x,p.y-radius-4,shorten(fullName(p.type,p.id),24),'ra-network-label'));
+      clickNode(group,()=>selection(p.type,p.id));svg.append(group);
+    }
+    for(const type of types)mobileGraph.append(button(label(type)+' · '+fmt(shown.filter(p=>p.type===type).length)+' registraties','ra-mobile-group',()=>{typeSelect.value=type;mode='groups';graphMode.value=mode;render();}));
+    graphNote.textContent=fmt(shown.length)+' van '+fmt(ordered.length)+' verbonden registraties · '+fmt(pairs.length)+' van '+fmt(edges.length)+' verbanden. Posities zijn alleen bedoeld om het netwerk leesbaar te maken. Alle geselecteerde verbanden staan in de lijst hieronder.';
+  }
   function drawFocusGraph(edges){
     const selected=node(focused.type,focused.id);
     if(!selected){focused=null;drawGroupGraph(edges);return;}
@@ -362,9 +413,9 @@
     addStat('Verbanden',fmt(index.edges.length),'In de gegevensindex');
     addStat('Vermoedelijk',fmt(allStatus.Vermoedelijk||0),'Nog niet bevestigd');
     addStat('Zonder vastgelegd verband',fmt(index.nodes.size-connected.size),'Niet automatisch ongebruikt');
-    svg.replaceChildren();
-    mobileGraph.replaceChildren();
-    if(focused)drawFocusGraph(currentEdges);else drawGroupGraph(currentEdges);
+    svg.replaceChildren();legend.replaceChildren();
+    mobileGraph.replaceChildren();graphMode.value=mode;
+    if(focused)drawFocusGraph(currentEdges);else if(mode==='network')drawNetworkGraph(currentEdges);else drawGroupGraph(currentEdges);
     describeSelection();renderMatches();renderList();setZoom(zoom);
   }
   function resetFilters(){
@@ -383,14 +434,14 @@
     const url=URL.createObjectURL(blob),a=el('a');
     a.href=url;a.download='ict-scan-verbanden.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
-  function open(event){
+  function open(event,initialMode='groups'){
     opener=event?.currentTarget||document.activeElement;
     if(!ensureIndex()){
       // No false graph when data have not loaded.
       if(typeof toast==='function')toast('De gegevens zijn nog niet ingelezen.');
       return;
     }
-    initFilters();resetFilters();
+    mode=initialMode;graphMode.value=mode;initFilters();resetFilters();
     if(typeof dialog.showModal==='function')dialog.showModal();
     else dialog.setAttribute('open','');
     openState=true;
@@ -421,7 +472,7 @@
     studioActions.append(studioLink);
   }
   window.EmmausRelationAtlas=Object.freeze({
-    open,close,refresh:()=>{if(openState&&ensureIndex()){initFilters();render();}},
+    open,openNetwork:()=>open(null,'network'),close,refresh:()=>{if(openState&&ensureIndex()){initFilters();render();}},
     counts:()=>index?({registrations:index.nodes.size,links:index.edges.length,visible:currentEdges.length}):null
   });
 })();

@@ -7,7 +7,7 @@
  #printReport .report-cover{break-after:page}
  #printReport .report-brand{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d7dce5;padding-bottom:5mm;margin-bottom:9mm}
  #printReport .report-brand .print-logo{width:43mm;max-height:17mm;object-fit:contain;object-position:left;margin:0}
- #printReport .report-brand span,#printReport .report-eyebrow,#printReport .report-chapter-label{font-size:8pt;font-weight:bold;letter-spacing:1px;color:#68758b}
+ #printReport .report-logo-wrap{display:flex;align-items:center;gap:3mm;color:#212d5c;font-size:9pt} #printReport .report-logo-wrap strong{font-weight:600} #printReport .report-brand span,#printReport .report-eyebrow,#printReport .report-chapter-label{font-size:8pt;font-weight:bold;letter-spacing:1px;color:#68758b}
  #printReport .report-cover-title{border-left:4px solid #de9526;padding:2mm 0 2mm 5mm;margin:0 0 6mm}
  #printReport h1{font-size:29pt;line-height:1.08;color:#212d5c;margin:3mm 0;overflow-wrap:anywhere}
  #printReport h2{font-size:17pt;line-height:1.2;color:#212d5c;margin:5mm 0 3mm;break-after:avoid}
