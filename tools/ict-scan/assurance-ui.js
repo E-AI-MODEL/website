@@ -57,7 +57,7 @@
       button.addEventListener('click',()=>{byId('assuranceDetails').open=true;byId('assuranceFinding-'+check.id).focus();});cards.append(button);
       const section=node('section',undefined,'assurance-finding-group');section.id='assuranceFinding-'+check.id;section.tabIndex=-1;
       section.append(node('h3',(labels[check.id]||check.title)+' · '+(states[check.status]||'Niet uitgevoerd')));
-      if(!check.findings.length)section.append(node('p',check.id==='evaluation'?(check.coverage.executedCases||0)+' testgevallen geslaagd.':'Geen aandachtspunten binnen deze controle.'));
+      if(!check.findings.length)section.append(node('p',check.id==='evaluation'?(check.coverage.executedCases||0)+' interne testgevallen geslaagd. Dit test de controleregels, niet de schoolomgeving.':'Geen aandachtspunten binnen deze controle.'));
       else{
         const groups=new Map();
         for(const finding of check.findings){
@@ -66,7 +66,7 @@
           if(!groups.has(key))groups.set(key,{message,items:[]});
           groups.get(key).items.push(finding);
         }
-        section.append(node('p',check.findings.length+' meldingen in '+groups.size+' verschillende categorieën. Eén registratie kan meerdere meldingen hebben.'));
+        section.append(node('p',check.findings.length+' meldingen in '+groups.size+' soorten meldingen. Eén registratie kan meerdere meldingen hebben.'));
         for(const group of [...groups.values()].sort((a,b)=>b.items.length-a.items.length||a.message.localeCompare(b.message,'nl'))){
           const bucket=node('details',undefined,'assurance-finding-bucket');
           const title=node('summary',group.message);
@@ -76,9 +76,9 @@
           for(const finding of group.items){
             const match=String(finding.path||'').match(/^\/records\/(\d+)/);
             const record=match?lastInput?.records?.[Number(match[1])]:null;
-            const type=finding.recordType||(finding.sourceId?'sourceRegister':record?.type);
-            const id=finding.recordId||finding.sourceId||record?.id;
-            const item=node('li');item.append(node('span',[id,record?.id===id?record?.data?.name:''].filter(Boolean).join(' · ')||finding.path||'Algemene controle'));
+            const type=finding.recordType||record?.type||(finding.sourceId?'sourceRegister':null);
+            const id=finding.recordId||record?.id||finding.sourceId;
+            const item=node('li');item.append(node('span',[id,record?.id===id?record?.data?.name:'',finding.sourceId&&finding.sourceId!==id?'Bron: '+finding.sourceId:''].filter(Boolean).join(' · ')||finding.path||'Algemene controle'));
             if(type&&id&&window.EmmausRecordCards){const open=node('button','Open registratie','assurance-link');open.type='button';open.addEventListener('click',()=>window.EmmausRecordCards.open(type,id));item.append(open);}
             list.append(item);
           }

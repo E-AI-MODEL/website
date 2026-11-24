@@ -34,10 +34,10 @@
 <script defer src="./assurance/record-contract.js?v=20261121b"></script>
 <script defer src="./record-taxonomy.js?v=20261121a"></script>
 <script defer src="./inventory-index.js?v=20261124ux3"></script>
-<link rel="stylesheet" href="./report-print.css?v=20261124r1">
-<script defer src="./report-print.js?v=20261124r1"></script>
-<script defer src="./app.js?v=20261124r1"></script>
-<script defer src="./enhancements.js?v=20261124r1"></script>
+<link rel="stylesheet" href="./report-print.css?v=20261124r2">
+<script defer src="./report-print.js?v=20261124r2"></script>
+<script defer src="./app.js?v=20261124r2"></script>
+<script defer src="./enhancements.js?v=20261124r2"></script>
 <script defer src="./document-library.js?v=20261124a"></script>
 <link rel="stylesheet" href="./document-library.css?v=20261124a">
 <script defer src="./visual-explorer.js?v=20261124a"></script>
@@ -52,7 +52,7 @@
 <script defer src="./role-modes.js?v=20261124r1"></script>
 <script defer src="./dashboard-composer.js?v=20261124shared1"></script>
 <script defer src="./composer-resize.js?v=20261123a"></script>
-<script defer src="./assurance-ui.js?v=20261124r1"></script>
+<script defer src="./assurance-ui.js?v=20261124r2"></script>
 <link rel="stylesheet" href="./relationship-atlas.css?v=20261124c">
 <script defer src="./relationship-atlas.js?v=20261124c"></script>
 </head>
@@ -230,7 +230,7 @@
       <section id="viewFindings" class="view" hidden><article class="panel assurance-panel" id="assurancePanel" aria-labelledby="assuranceTitle">
   <div class="assurance-header"><div><p class="panel-kicker">CONTROLES</p><h2 id="assuranceTitle">Gegevens en opvolging</h2><p id="assuranceStamp">Nog geen controle uitgevoerd.</p></div><span id="assuranceSummary" class="assurance-summary" data-status="not_run" role="status" aria-live="polite">Niet uitgevoerd</span></div>
   <div id="assuranceChecks" class="assurance-checks" aria-label="Uitkomsten van de controles"></div>
-  <div class="assurance-actions"><button type="button" class="monitor-button subtle" id="assuranceRun">Opnieuw controleren</button><button type="button" class="monitor-button subtle" id="assuranceExport" disabled>Download controleverslag</button></div>
+  <div class="assurance-actions"><button type="button" class="monitor-button subtle" id="assuranceRun">Opnieuw controleren</button><button type="button" class="monitor-button subtle" id="assuranceExport" disabled>Download controleverslag (JSON)</button></div>
   <p class="panel-foot">De uitslag geldt voor de gecontroleerde registraties. Het is geen goedkeuring van een systeem of organisatie.</p>
   <details id="assuranceDetails" class="assurance-details"><summary>Bekijk aandachtspunten</summary><div id="assuranceFindings"></div></details>
   <details class="assurance-details"><summary>Vergelijken met een eerdere stand</summary><p id="assuranceBaselineNote" class="assurance-baseline-note">Nog geen vergelijkingsstand gekozen.</p><div class="assurance-actions"><button type="button" class="monitor-button subtle" id="assuranceSaveBaseline" disabled>Gebruik deze stand als vergelijking</button><button type="button" class="monitor-button subtle" id="assuranceExportBaseline" disabled>Bewaar vergelijkingsbestand</button><button type="button" class="monitor-button subtle" id="assuranceClearBaseline" disabled>Vergelijking verwijderen</button></div><label class="assurance-baseline-note" for="assuranceBaselineInput">Open een bewaard vergelijkingsbestand</label><input class="assurance-baseline-input" id="assuranceBaselineInput" type="file" accept=".json,application/json"><p class="assurance-baseline-note">Bewaar het bestand om deze vergelijking later opnieuw te gebruiken.</p></details>
@@ -248,7 +248,7 @@
           <button type="button" data-report="koppelingen" class="report-tile"><span class="report-category">03</span><strong>Entra & toegang</strong><small>Koppelingen en te verifiëren instellingen</small></button>
           <button type="button" data-report="ai" class="report-tile"><span class="report-category">04</span><strong>AI in onderwijs</strong><small>Lesfasen, functies, docentrol en instelbaarheid</small></button>
           <button type="button" data-report="devices" class="report-tile"><span class="report-category">05</span><strong>Apparaten en beheer</strong><small>Meetwaarden, ontbrekende gegevens en bronpeildatum</small></button>
-          <button type="button" data-report="privacy" class="report-tile"><span class="report-category">06</span><strong>FG | DPIA-bronnen</strong><small>Bronverwijzingen voor onafhankelijk advies en toezicht, geen FG-oordeel</small></button>
+          <button type="button" data-report="privacy" class="report-tile"><span class="report-category">06</span><strong>FG | Privacy en toezicht</strong><small>DPIA-bronnen, gegevensstromen, bewijs en vervolgacties</small></button>
           <button type="button" data-report="controles" class="report-tile"><span class="report-category">07</span><strong>Onderzoekspunten</strong><small>Open controles, dubbelingen en bewijsstatus</small></button>
         </div>
         <article class="panel report-workbench"><div class="report-workbench-text"><p class="panel-kicker">GESELECTEERD RAPPORT</p><h2 id="reportPreviewTitle">Alle gegevens</h2><p id="reportPreviewDescription">Overzicht van de volledige digitale omgeving, inclusief de beschikbare onderbouwing.</p><div id="reportPreviewMeta" class="report-preview-meta"></div></div><div class="report-workbench-actions"><button type="button" id="reportExcel" class="monitor-button primary">Excelrapport</button><button type="button" id="reportPdf" class="monitor-button subtle">PDF-rapport</button><button type="button" id="reportJson" class="monitor-button subtle">Gegevensbestand (JSON)</button></div></article>

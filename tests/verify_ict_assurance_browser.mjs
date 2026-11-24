@@ -294,6 +294,7 @@ try {
   await page.locator('#assurancePanel').waitFor({state:'visible'});
   await waitForChecks(page,expectedRecords);
   assert.equal(await page.locator('#assuranceChecks .assurance-check').count(),5);
+  assert((await page.locator('#assuranceFindings .assurance-finding-bucket').count())>0,'Meldingen moeten gegroepeerd worden');
   const initial=await downloadJson(page,'#assuranceExport','initial-report.json');
   assert.equal(initial.checks.find(check=>check.id==='structure').coverage.records,expectedRecords);
   assert.equal(initial.checks.find(check=>check.id==='structure').coverage.inventoryRecords,expectedInventoryRecords);

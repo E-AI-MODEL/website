@@ -21,9 +21,9 @@
  #printReport .report-toc{columns:2;column-gap:8mm;margin:0;padding-left:6mm;font-size:9pt}
  #printReport .report-toc li{break-inside:avoid;margin-bottom:1.5mm}
  #printReport .report-note{background:#f4f5f8;border-left:3px solid #de9526;padding:2.5mm 3mm;font-size:9pt;overflow-wrap:anywhere}
- #printReport .report-chapter{break-before:page}
+ #printReport .report-chapter{margin:8mm 0 0} #printReport .report-chapter-label{break-after:avoid} #printReport .report-chapter>h2{break-after:avoid} #printReport .report-intro-text{break-after:avoid}
  #printReport .report-intro-text{color:#526076;margin-bottom:5mm}
- #printReport .report-record{margin:0 0 4mm;border-top:1px solid #bfc8d8}
+ #printReport .report-record{margin:0 0 4mm;border-top:1px solid #bfc8d8;break-inside:avoid}
  #printReport .report-record header{display:flex;align-items:baseline;gap:3mm;background:#f2f4f8;padding:2.5mm 3mm;break-after:avoid}
  #printReport .report-id{font-size:8pt;color:#596981;flex-shrink:0}
  #printReport .report-record dl{margin:0;padding:1mm 3mm 0}
