@@ -9,7 +9,7 @@
   const node=(tag,text,cls)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;};
   // Toon herkenbare rubrieken. Technische registernamen blijven in het controledossier.
   const registerNames={apps:'Applicaties',ai:'AI-functies',connections:'Koppelingen vanuit Entra',parts:'Onderdelen',additionalCandidates:'Overige software',hardwareGroups:'Apparaatgroepen',sourceRegister:'Bronnen',checks:'Controles',workActions:'Acties',licenseReview:'Licenties',dpia:'Privacybronnen',aiControls:'AI-beheer',devices:'Apparaatmetingen'};
-  const readableFinding=value=>String(value||'').replace(/Register ontbreekt in het dashboard:\\s*(\\w+)/g,(_,type)=>
+  const readableFinding=value=>String(value||'').replace(/Register ontbreekt in het dashboard:\s*(\w+)/g,(_,type)=>
     (registerNames[type]||'Gegevensgroep '+type)+' ontbreken in de ingelezen gegevens.');
 
   const day=()=>new Date().toISOString().slice(0,10);
