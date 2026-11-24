@@ -324,3 +324,24 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,su
 .ai-progress-risk summary{padding:12px;cursor:pointer;font-size:.9rem;font-weight:600}
 @media(max-width:900px){.ai-progress-grid{grid-template-columns:1fr}}
 @media(max-width:480px){.ai-progress-metrics{grid-template-columns:1fr}.ai-progress-metric{flex-direction:row;align-items:center;gap:10px}}
+
+/* Report choice is organized by purpose rather than by source file. */
+.workspace.monitor-layout .report-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+.workspace.monitor-layout .report-purpose-group{min-width:0;border:1px solid #dce5ef;border-radius:10px;background:#fff;padding:12px}
+.workspace.monitor-layout .report-purpose-group h3{margin:0 0 9px;font-size:13px;font-weight:750;color:#526781}
+.workspace.monitor-layout .report-purpose-list{display:grid;gap:5px}
+.workspace.monitor-layout .report-tile{min-height:0;width:100%;padding:10px 13px;gap:3px;border-radius:6px;background:#f8fafc;border:1px solid #e3eaf1;cursor:pointer}
+.workspace.monitor-layout .report-tile strong{font-size:13px;color:#263e65}
+.workspace.monitor-layout .report-tile .report-audience{font-size:10px;font-weight:600;color:#687c95;overflow-wrap:anywhere}
+.workspace.monitor-layout .report-tile small{max-width:none;font-size:11px;color:#526780;line-height:1.5;overflow-wrap:anywhere}
+.workspace.monitor-layout .report-tile.selected{border-color:#bc965a;background:#fffbf2;box-shadow:inset 3px 0 #cf9b43}
+.workspace.monitor-layout .report-workbench{align-items:flex-start;min-width:0;gap:24px}
+.workspace.monitor-layout .report-workbench-actions{display:grid;grid-template-columns:minmax(0,1fr);flex:0 1 230px;gap:8px}
+.workspace.monitor-layout .report-workbench-actions p{font-size:11px;line-height:1.5;color:#64768d;margin:4px 0}
+.workspace.monitor-layout .report-workbench .report-preview-audience{font-weight:650;color:#4e6380}
+.workspace.monitor-layout .report-limit{margin:14px 0;background:#f1f5fa;border-left:3px solid #9bafc5;border-radius:3px;padding:10px 12px;color:#405772}
+.workspace.monitor-layout .report-limit strong{font-size:11px}
+.workspace.monitor-layout .report-limit p{font-size:12px;line-height:1.5;margin:4px 0 0}
+.workspace.monitor-layout .report-chapters h3{font-size:13px;margin:12px 0 7px;color:#334d70}
+.workspace.monitor-layout .report-chapters ul{display:grid;gap:6px;padding-left:18px;margin:0;font-size:12px;color:#50647e}
+@media(max-width:700px){.workspace.monitor-layout .report-picker{grid-template-columns:minmax(0,1fr);gap:8px}.workspace.monitor-layout .report-purpose-group{padding:9px}.workspace.monitor-layout .report-workbench{display:block}.workspace.monitor-layout .report-workbench-actions{margin-top:15px;max-width:none}}

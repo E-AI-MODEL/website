@@ -5,11 +5,11 @@ viewNames.reports='Rapporten';
 viewTitles.privacy='Privacybronnen';
 viewTitles.reports='Rapporten';
 sectionTexts.privacy='Aangeleverde bronnen voor het onafhankelijke advies en toezicht van de FG. Geen FG-oordeel of DPIA van deze scan.';
-sectionTexts.reports='Kies het onderwerp en het bestandsformaat.';
+sectionTexts.reports='Kies waarvoor je een rapport nodig hebt.';
 state.overviewArea='';
 state.overviewKind='';
 state.chartMode='bars';
-state.reportScope='all';
+state.reportScope='bestuur';
 
 function ringChart(target, entries, selected, onSelect){
   const parent=$(target); if(!parent)return;
@@ -69,17 +69,39 @@ function renderPrivacy(){
   $('privacyControls').innerHTML=admin.length?admin.map(x=>governanceRow(x,'control')).join(''):'<div class="no-results">Nog geen AI-beheerregistratie ingelezen.</div>';
   $('privacyLegal').innerHTML=legalSources.map(x=>'<div class="legal-item"><div><strong>'+esc(x.name)+'</strong><p>'+esc(x.description)+'</p></div><a target="_blank" rel="noopener noreferrer" href="'+esc(x.url)+'">Bron openen</a></div>').join('');
 }
-const reportNames={ict:['ICT-beheer en inrichting','Toegang, hardware, licenties en technische opvolging.'],aiGovernance:['AI-beleid en uitvoering','AI-instellingen, AI Act, scholing en opvolging.'],all:['Alle gegevens','Alle ingelezen registraties, inclusief de bronverwijzingen.'],schoolbreed:['Applicaties en diensten','Applicaties, onderdelen en apparaatmetingen.'],koppelingen:['Koppelingen vanuit Entra','Geregistreerde koppelingen en hun status.'],ai:['AI-functies','AI in het onderwijs en de schoolorganisatie.'],privacy:['Privacy en toezicht (FG)','Externe DPIA-bronnen, gegevensstromen, bronbeoordeling en vervolgacties; geen FG-oordeel.'],controles:['Controles en acties','Openstaande controles, signalen en vervolgacties.'],devices:['Apparaten','Apparaatmetingen en de volledigheid van de gegevens.']};
+const reportCatalog=window.IctPrintReports.catalog;
+const reportNames=Object.fromEntries(reportCatalog.map(d=>[d.id,[d.title,d.purpose]]));
+function buildReportPicker(){
+  const picker=$('reportPicker');picker.replaceChildren();
+  for(const group of new Set(reportCatalog.map(d=>d.group))){
+    const panel=document.createElement('section');panel.className='report-purpose-group';
+    const title=document.createElement('h3');title.textContent=group;panel.append(title);
+    const list=document.createElement('div');list.className='report-purpose-list';
+    for(const d of reportCatalog.filter(x=>x.group===group)){
+      const btn=document.createElement('button');btn.type='button';btn.className='report-tile';btn.dataset.report=d.id;
+      btn.setAttribute('aria-pressed','false');
+      const name=document.createElement('strong');name.textContent=d.title;
+      const audience=document.createElement('span');audience.className='report-audience';audience.textContent=d.audience;
+      const purpose=document.createElement('small');purpose.textContent=d.purpose;
+      btn.append(name,audience,purpose);list.append(btn);
+    }
+    panel.append(list);picker.append(panel);
+  }
+}
 function renderReports(){
-  document.querySelectorAll('[data-report]').forEach(b=>{const selected=b.dataset.report===state.reportScope;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',selected?'true':'false');});
-  const [title,desc]=reportNames[state.reportScope]||reportNames.all;
-  $('reportPreviewTitle').textContent=title;
-  $('reportPreviewDescription').textContent=desc;
-  const counts={ict:[['Applicaties',state.apps.size],['Entra',state.connections.size],['Hardwaregroepen',state.hardwareGroups.size]],aiGovernance:[['AI-functies',state.ai.size],['AI-beheerpunten',state.aiControls.size],['Werkacties',state.workActions.size]],all:[['Toepassingen',state.apps.size],['AI-functies',state.ai.size],['Entra-koppelingen',state.connections.size],['Controles',state.checks.size]],schoolbreed:[['Toepassingen',state.apps.size],['Onderdelen',state.parts.size],['Apparaatmetingen',state.devices.size]],koppelingen:[['Entra-koppelingen',state.connections.size],['Zonder toegewezen applicatie',array(state.connections).filter(x=>!x.matched).length]],ai:[['AI-functies',state.ai.size],['Onderwijs',array(state.ai).filter(isClassroomAi).length],['Beheer',state.aiControls.size]],privacy:[['DPIA-onderwerpen',state.dpia.size],['AI-beheer',state.aiControls.size],['Toetsingsbronnen',legalSources.length]],devices:[['Apparaatmetingen',state.devices.size],['Entra-records',Number(String([...state.devices.values()].find(x=>/Entra apparaatrecords/i.test(x.name))?.quantity||'').match(/\d+/)?.[0]||0)],['Meetperiode','september 2026']],controles:[['Unieke controles',state.checks.size],['Aanvullende signalen',state.derived.length],['Bronregels',state.sources.filter(x=>x.kind==='controles').reduce((n,x)=>n+x.rows,0)]]};
-  $('reportPreviewMeta').innerHTML=(counts[state.reportScope]||[]).map(([label,count])=>'<span><b>'+count+'</b> '+esc(label)+'</span>').join('');
+  const selected=reportCatalog.find(d=>d.id===state.reportScope)||reportCatalog[0];
+  document.querySelectorAll('[data-report]').forEach(b=>{const on=b.dataset.report===selected.id;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on));});
+  $('reportPreviewTitle').textContent=selected.title;
+  $('reportPreviewDescription').textContent=selected.purpose;
+  $('reportPreviewAudience').textContent=selected.audience;
+  $('reportPreviewLimit').textContent=selected.limit;
+  const model=state.ready?indexedReport(selected.id):null;
+  $('reportPreviewMeta').innerHTML=(model?.kpis||[]).map(([label,count])=>'<span><b>'+esc(count)+'</b> '+esc(label)+'</span>').join('');
+  const chapters=$('reportPreviewChapters');chapters.replaceChildren();
+  for(const section of model?.sections||[]){const item=document.createElement('li');item.textContent=section.title;chapters.append(item);}
+  if(!model){const item=document.createElement('li');item.textContent='Lees de bronbestanden in voor de inhoudsopgave.';chapters.append(item);}
   $('reportStamp').textContent=state.sources.length?reportStatusText():'Nog geen bronbestanden ingelezen';
-  for(const id of ['reportExcel','reportPdf','reportJson'])$(id).disabled=!state.ready;
-  $('saveLocal').disabled=!state.ready;
+  for(const id of ['reportExcel','reportPdf','reportJson','reportInventoryJson','saveLocal'])$(id).disabled=!state.ready;
 }
 function scopedSheet(name,lead){const s=reportSheet(name);rtitle(s,'EMMAUSCOLLEGE  /  '+name.toUpperCase(),lead);return s;}
 const baselineGenerateSheets=generateReportSheets;
@@ -122,7 +144,42 @@ function scopedWorkbook(scope){
   generateReportSheets=()=>sheetsForScope(scope);
   try{return createReportWorkbook();}finally{generateReportSheets=current;}
 }
-function exportScopedExcel(scope){if(['ict','privacy','aiGovernance'].includes(scope)){if(!state.ready)return toast('Voeg eerst bronbestanden toe.');const model=indexedReport(scope);const current=generateReportSheets;generateReportSheets=()=>model.sections.map((section,i)=>{const sheet=reportSheet((String(i+1).padStart(2,'0')+' '+section.title).slice(0,31));rtitle(sheet,section.title,section.lead);for(const b of section.blocks){if(b.kind==='table'){rtableHeader(sheet,b.headers);for(const row of b.rows)rline(sheet,row,65);}else if(b.kind==='cards'){for(const item of b.items){rgroup(sheet,item.id,item.name,'');for(const [k,v] of item.fields)rdetail(sheet,k,v,false);}}else if(b.kind==='bars'){rsection(sheet,b.label);rbar(sheet,b.entries,b.entries.length);}else if(b.kind==='note')rsource(sheet,b.text);}return sheet;});try{download('Emmauscollege_'+scope+'_'+new Date().toISOString().slice(0,10)+'.xlsx',createReportWorkbook());}finally{generateReportSheets=current;}return;}if(!state.ready){toast('Voeg eerst bronbestanden toe.');return;}const name=scope==='all'?'nulmeting':scope;download('Emmauscollege_'+name+'_'+new Date().toISOString().slice(0,10)+'.xlsx',scopedWorkbook(scope));toast(reportNames[scope][0]+' als Excel gemaakt.');}
+// PDF, Excel and report JSON are projections of the same selected model.
+function indexedReportWorkbook(model){
+  const current=generateReportSheets;
+  const names=model.sections.map((s,i)=>(String(i+1).padStart(2,'0')+' '+s.title).replace(/[\\[\\]:*?/\\\\]/g,' ').slice(0,31));
+  const heading=(sheet,title,subtitle)=>{let n=rr(sheet,[title],'title',{height:45});rm(sheet,n,1,10);n=rr(sheet,[subtitle],'subtitle',{height:60});rm(sheet,n,1,10);};
+  generateReportSheets=()=>{
+    const overview=reportSheet('Rapport');heading(overview,model.title,model.audience+' · '+model.date);
+    rsection(overview,'In één oogopslag');rsource(overview,model.summary);rsource(overview,model.limit);rsource(overview,'Gegevensbasis: '+model.sourceLabel);
+    rtableHeader(overview,['Onderwerp','Aantal']);for(const row of model.kpis)rline(overview,row,40);
+    rsection(overview,'Inhoud');for(const [i,name] of names.entries()){const n=rr(overview,[model.sections[i].title],'nav',{height:28});rm(overview,n,1,10);overview.links.push({r:n,c:1,location:"'"+name.replace(/'/g,"''")+"'!A1"});}
+    return [overview,...model.sections.map((section,i)=>{
+      const sheet=reportSheet(names[i]);heading(sheet,section.title,section.lead);
+      const nav=rr(sheet,['Terug naar rapport'],'nav',{height:25});rm(sheet,nav,1,10);sheet.links.push({r:nav,c:1,location:"'Rapport'!A1"});
+      for(const b of section.blocks){
+        if(b.kind==='table'){rtableHeader(sheet,b.headers);for(const row of b.rows)rline(sheet,row,Math.min(240,Math.max(44,Math.ceil(Math.max(...row.map(v=>String(v??'').length),0)/35)*15)));}
+        else if(b.kind==='cards'){for(const item of b.items){rgroup(sheet,item.id,item.name,'',true);for(const [k,v] of item.fields)rdetail(sheet,k,v,false);}}
+        else if(b.kind==='bars'){rsection(sheet,b.label);rbar(sheet,b.entries,b.entries.length);rtableHeader(sheet,['Categorie','Aantal']);for(const row of b.entries)rline(sheet,row,32);}
+        else if(b.kind==='note'){rsource(sheet,b.text);}
+      }
+      return sheet;
+    })];
+  };
+  try{return createReportWorkbook();}finally{generateReportSheets=current;}
+}
+function exportScopedExcel(scope){
+  if(!state.ready)return toast('Voeg eerst bronbestanden toe.');
+  const model=indexedReport(scope);
+  download('Emmauscollege_'+scope+'_'+new Date().toISOString().slice(0,10)+'.xlsx',indexedReportWorkbook(model));
+  toast(model.title+' als Excel gemaakt.');
+}
+function exportScopedReportJson(scope){
+  if(!state.ready)return toast('Voeg eerst bronbestanden toe.');
+  const model=indexedReport(scope);
+  download('Emmauscollege_'+scope+'_'+new Date().toISOString().slice(0,10)+'.json',new Blob([JSON.stringify({schema:'eai-ict-report-v1',...model},null,2)],{type:'application/json'}));
+  toast('Rapportgegevens gedownload.');
+}
 const baselinePdf=exportPdf;
 function exportScopedPdf(scope){
   if(window.IctPrintReports)return printIndexedReport(scope);
@@ -228,10 +285,12 @@ function enhancementEvents(){
   $('connectionsStatus').addEventListener('change',renderConnections);
   $('overviewClear').addEventListener('click',()=>{state.overviewArea='';state.overviewKind='';renderOverview();});
   // Chart choices are bound per visual, not as a single global switch.
-  document.querySelectorAll('[data-report]').forEach(btn=>btn.addEventListener('click',()=>{state.reportScope=btn.dataset.report;renderReports();}));
+  buildReportPicker();
+  $('reportPicker').addEventListener('click',event=>{const btn=event.target.closest('[data-report]');if(!btn)return;state.reportScope=btn.dataset.report;renderReports();});
   $('reportExcel').addEventListener('click',()=>exportScopedExcel(state.reportScope));
   $('reportPdf').addEventListener('click',()=>exportScopedPdf(state.reportScope));
-  $('reportJson').addEventListener('click',exportJson);
+  $('reportJson').addEventListener('click',()=>exportScopedReportJson(state.reportScope));
+  $('reportInventoryJson').addEventListener('click',exportJson);
   $('saveLocal').addEventListener('click',saveSnapshot);$('deleteLocal').addEventListener('click',clearSnapshot);
   $('downloadLegacyLocal').addEventListener('click',downloadLegacySnapshot);
   $('globalSearch').addEventListener('input',renderGlobalSuggestions);
