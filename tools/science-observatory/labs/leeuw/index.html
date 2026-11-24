@@ -64,7 +64,7 @@ body{position:fixed;inset:0;background:#050914}
 .voyage-kicker{font:10px ui-monospace,monospace;letter-spacing:.19em;color:#a8d9dd;display:flex;align-items:center;gap:9px;text-transform:uppercase}.voyage-kicker:before{content:"";width:21px;height:1px;background:#94ccd2}
 .voyage-copy h2{font-size:clamp(34px,4.6vw,72px);line-height:1.02;letter-spacing:-.055em;font-weight:550;margin:16px 0 17px;max-width:100%;color:#f4f4f0}
 .voyage-copy p{font-size:clamp(14px,1.18vw,18px);line-height:1.65;margin:0;max-width:410px;color:#d0d9df;font-weight:400}
-.voyage-copy.reveal{animation:leo-caption-in .65s ease-out both}@keyframes leo-caption-in{from{opacity:.15;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.voyage-copy.reveal{animation:leo-caption-in .36s ease-out both}@keyframes leo-caption-in{from{opacity:.80;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .voyage-fact{margin-top:20px;display:flex;align-items:baseline;gap:8px;color:#d5e9ec}.voyage-fact strong{font:400 clamp(25px,3vw,43px)/1.05 ui-monospace,monospace;letter-spacing:-.065em}.voyage-fact span{font:10px/1.45 ui-monospace,monospace;color:#9eb7c9;max-width:150px;text-transform:uppercase;letter-spacing:.06em}
 .voyage-footer{position:absolute;z-index:4;left:clamp(18px,4.2vw,64px);right:clamp(18px,4.2vw,64px);bottom:max(17px,env(safe-area-inset-bottom));display:grid;gap:11px}
 .voyage-chapters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.voyage-chapter{appearance:none;border:0;background:none;color:#8497aa;text-align:left;padding:0;min-width:0;cursor:pointer;display:grid;gap:7px;font-size:11px;line-height:1.2}.voyage-chapter .chapter-track{position:relative;width:100%;height:2px;background:#788da944;overflow:hidden}.voyage-chapter .chapter-fill{display:block;height:100%;width:0;background:#9edbe0}.voyage-chapter[aria-current=true]{color:#edf5f5}.voyage-chapter[aria-current=true] .chapter-track{background:#a5c9d04b}.chapter-name{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
@@ -449,10 +449,10 @@ const $=id=>document.getElementById(id), M=window.LEO_MODEL,D=window.LEO_DATA,ca
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const chapters=[
  {start:0,end:17,short:"De nacht",title:"Leeuw",text:"Op een heldere lenteavond kun je de Leeuw aan de hemel vinden. Begin bij Regulus, de helderste ster van de figuur. De gebogen rij sterren erboven vormt de kop.",label:"VANAF DE AARDE",fact:"",unit:""},
- {start:17,end:36,short:"Van opzij",title:"Kijk eens van opzij",text:"Denebola staat op ongeveer 36 lichtjaar van de zon. Chertan, die je ernaast zag, op 161 lichtjaar. Terwijl we opzij bewegen, valt de bekende figuur uiteen.",label:"DE STERREN IN DE RUIMTE",fact:"36",unit:"lichtjaar tot Denebola"},
- {start:36,end:55,short:"Regulus",title:"79 jaar onderweg",text:"Het licht dat je nu van Regulus ziet, verliet de ster ongeveer 79 jaar geleden. Ook de andere sterren van Leeuw zien we zoals ze tientallen of honderden jaren geleden waren.",label:"REGULUS · α LEONIS",fact:"79",unit:"lichtjaar tot Regulus"},
+ {start:17,end:36,short:"Van opzij",title:"Kijk eens van opzij",text:"Denebola staat op ongeveer 36 lichtjaar van de zon. Chertan lijkt ernaast te staan, maar ligt op 161 lichtjaar. Vanuit een ander standpunt is de Leeuw nauwelijks te herkennen.",label:"DE STERREN IN DE RUIMTE",fact:"36",unit:"lichtjaar tot Denebola"},
+ {start:36,end:55,short:"Regulus",title:"79 jaar onderweg",text:"Het licht dat je van Regulus ziet, is ongeveer 79 jaar geleden vertrokken. Wat er vandaag bij de ster gebeurt, kunnen we pas over 79 jaar zien.",label:"REGULUS · α LEONIS",fact:"79",unit:"lichtjaar tot Regulus"},
  {start:55,end:76,short:"De verre ster",title:"Ver achter de rest",text:"Aan de hemel staat Eta Leonis vlak bij Regulus. In de ruimte ligt zij naar schatting op zo'n 1.800 lichtjaar van ons. De precieze afstand is minder goed bekend.",label:"ETA LEONIS · η LEONIS",fact:"≈ 1.800",unit:"lichtjaar tot Eta Leonis"},
- {start:76,end:96,short:"Terug naar huis",title:"Weer dezelfde Leeuw",text:"Vanaf de aarde vallen de sterren opnieuw op hun vertrouwde plaats in de figuur. Kijk in het voorjaar zelf eens omhoog. Achter die paar lichtpuntjes liggen honderden lichtjaren ruimte.",label:"TERUG NAAR DE AARDE",fact:"",unit:""}
+ {start:76,end:96,short:"Terug naar huis",title:"Weer dezelfde Leeuw",text:"Vanaf de aarde vallen dezelfde sterren weer op hun plaats. In het voorjaar kun je de Leeuw zelf terugvinden. De figuur vertelt waar je moet kijken; de ruimte tussen de sterren zie je niet.",label:"TERUG NAAR DE AARDE",fact:"",unit:""}
 ];
 const keys=[
  [0,[0,0,0],[0,0,150],66],[8,[0,0,0],[0,0,150],42],[17,[0,0,0],[0,0,150],42],
@@ -516,9 +516,17 @@ const chapterStills=[9,31,48,72,94];
 let W=1,H=1,t=reduce?chapterStills[0]:0,playing=!reduce,visible=false,frame=0,raf=0,last=0,chapter=-1,yawOffset=0,pitchOffset=0,drag=null,painted=0,projected=[],lastUI=-1;
 function resize(){const r=canvas.getBoundingClientRect();if(r.width<1||r.height<1)return;const d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.round(W*d);canvas.height=Math.round(H*d);ctx.setTransform(d,0,0,d,0,0);if(visible)request()}
 new ResizeObserver(resize).observe(canvas);
+// Time-aware monotone cubic interpolation keeps the camera moving through
+// adjacent waypoints, without overshooting or stopping at each one.
+function interpolate(i,u,get){
+ const a=keys[i],b=keys[i+1],dt=b[0]-a[0],va=get(a),vb=get(b),d=(vb-va)/dt;
+ const prev=keys[i-1],next=keys[i+2],left=prev?(va-get(prev))/(a[0]-prev[0]):0,right=next?(get(next)-vb)/(next[0]-b[0]):0;
+ const tangent=(x,y)=>x*y>0?2*x*y/(x+y):0,m0=tangent(left,d),m1=tangent(d,right),u2=u*u,u3=u2*u;
+ return (2*u3-3*u2+1)*va+(u3-2*u2+u)*dt*m0+(-2*u3+3*u2)*vb+(u3-u2)*dt*m1;
+}
 function poseAt(time){
- let i=0;while(i<keys.length-2&&time>keys[i+1][0])i++;const a=keys[i],b=keys[i+1],u=smooth(clamp((time-a[0])/(b[0]-a[0]),0,1));
- const pos=vecmix(a[1],b[1],u),target=vecmix(a[2],b[2],u),fov=mix(a[3],b[3],u);
+ let i=0;while(i<keys.length-2&&time>keys[i+1][0])i++;const a=keys[i],b=keys[i+1],u=clamp((time-a[0])/(b[0]-a[0]),0,1);
+ const pos=[0,1,2].map(j=>interpolate(i,u,k=>k[1][j])),target=[0,1,2].map(j=>interpolate(i,u,k=>k[2][j])),fov=interpolate(i,u,k=>k[3]);
  let f=unit(sub(target,pos)),right=unit(cross([0,1,0],f)),up=unit(cross(f,right));
  if(yawOffset||pitchOffset){f=unit(add(add(f,scale(right,Math.tan(yawOffset))),scale(up,Math.tan(pitchOffset))));right=unit(cross([0,1,0],f));up=unit(cross(f,right))}
  const mobile=W<850,short=H<510,center=[mobile&&!short?W*.5:W*.67,mobile&&!short?H*.345:H*.47];
@@ -626,9 +634,9 @@ function render(time){
 function chapterAt(time){return Math.min(chapters.length-1,Math.max(0,chapters.findIndex(ch=>time<ch.end)===-1?chapters.length-1:chapters.findIndex(ch=>time<ch.end)))}
 const timeText=x=>Math.floor(x/60)+":"+String(Math.floor(x%60)).padStart(2,"0");
 function updateUI(force=false){
- const idx=chapterAt(t),ch=chapters[idx];
- if(chapter!==idx||force){chapter=idx;$("voyageKicker").textContent=String(idx+1).padStart(2,"0")+" / 05 · "+ch.short;$("voyageTitle").textContent=ch.title;$("voyageText").textContent=ch.text;$("voyageSceneLabel").textContent=ch.label;$("voyageFact").hidden=!ch.fact;$("voyageNumber").textContent=ch.fact;$("voyageUnit").textContent=ch.unit;$("voyageLive").textContent=ch.title+". "+ch.text;
- const copy=$("voyageCopy");copy.classList.remove("reveal");void copy.offsetWidth;if(!reduce)copy.classList.add("reveal");
+ const idx=chapterAt(t),ch=chapters[idx],changed=chapter!==idx;
+ if(changed||force){chapter=idx;$("voyageKicker").textContent=String(idx+1).padStart(2,"0")+" / 05 · "+ch.short;$("voyageTitle").textContent=ch.title;$("voyageText").textContent=ch.text;$("voyageSceneLabel").textContent=ch.label;$("voyageFact").hidden=!ch.fact;$("voyageNumber").textContent=ch.fact;$("voyageUnit").textContent=ch.unit;$("voyageLive").textContent=ch.title+". "+ch.text;
+ const copy=$("voyageCopy");if(changed){copy.classList.remove("reveal");void copy.offsetWidth;if(!reduce)copy.classList.add("reveal")}
  document.querySelectorAll(".voyage-chapter").forEach((el,i)=>el.setAttribute("aria-current",String(i===idx)));
  }
  $("voyageSeek").value=t;$("voyageTime").textContent=timeText(t)+" / 1:36";$("voyagePrev").disabled=idx===0&&t<.1;$("voyageNext").disabled=idx===4;
@@ -639,7 +647,7 @@ function updateUI(force=false){
 }
 function request(){if(!raf&&visible)raf=requestAnimationFrame(tick)}
 function tick(now){raf=0;if(!visible)return;const dt=last?Math.min(.10,(now-last)/1000):0;last=now;if(playing){t=Math.min(96,t+dt);if(t>=96)playing=false}render(t);if(Math.abs(t-lastUI)>.12||!playing)updateUI();if(playing)request()}
-function seek(v,chapterOnly=false){t=clamp(Number(v),0,96);yawOffset=pitchOffset=0;last=0;updateUI(true);request()}
+function seek(v){t=clamp(Number(v),0,96);yawOffset=pitchOffset=0;last=0;updateUI(true);request()}
 function play(){if(t>=96){t=0;last=0}playing=!playing;last=0;updateUI();request()}
 function seekChapter(i){const idx=clamp(i,0,4);seek(reduce?chapterStills[idx]:chapters[idx].start)}
 $("voyagePlay").onclick=play;
