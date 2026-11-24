@@ -137,6 +137,7 @@ try{
     });
     console.log('TOPO NORTH '+height+' '+stage+' '+JSON.stringify(sizes));
     assert.ok(sizes.cardOverflow<=3,'North card scrolls and hides content: '+stage);
+     assert.ok(sizes.prompt.bottom<=sizes.card.bottom-3,'North question text clipped: '+stage);
     assert.ok(sizes.links.bottom<=sizes.card.bottom-3,'North help actions clipped: '+stage);
     assert.ok(sizes.map.bottom<=sizes.viewport+3,'North map clipped: '+stage);
     assert.ok(sizes.map.height>=120,'North map collapsed: '+stage);
