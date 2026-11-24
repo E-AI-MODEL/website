@@ -1,0 +1,29 @@
+name: LO tactische brongegevens
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/lo-aanvalslab/calibratie/tactics/**'
+      - '.github/workflows/lo-tactics-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  open-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test de gegevensparser zonder netwerk
+        run: python tools/lo-aanvalslab/calibratie/tactics/test_analyze_open_tactics.py
+      - name: Test ruimtemeting uit StatsBomb 360 zonder netwerk
+        run: python tools/lo-aanvalslab/calibratie/tactics/test_analyze_open_football.py
+      - name: Meet passlijnen uit echte voetbalmomenten
+        run: python tools/lo-aanvalslab/calibratie/tactics/analyze_open_football.py
+      - name: Lees echte gelabelde handbalbezitten uit Zenodo
+        run: python tools/lo-aanvalslab/calibratie/tactics/analyze_open_tactics.py

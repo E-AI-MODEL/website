@@ -129,14 +129,41 @@ Dezelfde inhoud mag niet op meerdere plekken als volwaardig hoofdonderdeel worde
 
 - **/werkvormen/** is de EAI Toolbox. TAALwerkvormen wordt daar alleen als verwante aparte verzameling genoemd.
 - **/taalwerkvormen/** is eigenaar van de complete TAALwerkvormen.
+## Publieke indeling vanaf november 2026
+
+De gedeelde navigatie heeft vijf directe ingangen: **Het model**, **Onderwijs**,
+**Onderzoek**, **Artikelen** en **Zelf aan de slag**. De zesde groep, **Over EAI**,
+staat onder *Meer* en in de voettekst. De Engelstalige site heeft dezelfde
+structuur. Een zelfstandige leeromgeving mag zijn eigen stijl en bediening houden.
+
+Elke ingangsroute heeft precies één eigenaar:
+- `/nl/model/` geeft uitleg over het model en verwijst naar de begrippen;
+- `/nl/onderwijs/` brengt de bezoeker rechtstreeks naar een lesvraag;
+- `/nl/onderzoek/` bundelt onderbouwing en verifieerbare bronreviews;
+- `/nl/publicaties/` toont recente artikelen én het bestaande archief;
+- `/nl/tools/` is de complete publieke catalogus, met de vakproeven als een
+  zelfstandige subcatalogus onder `/tools/science-observatory/`.
+
+De Engelse routes zijn `/en/model/`, `/en/education/`, `/en/research/`,
+`/en/publications/` en `/en/tools/`. De oude Nederlandse indexadressen
+`/onderwijs/`, `/kennis/`, `/publicaties/`, `/toepassingen/`, `/over/`
+en `/tools/` blijven als doorstuurpagina's bestaan; hun **subpagina's** behouden
+hun eigen URL. Er is geen automatische doorsturing van individuele proeven,
+onderzoeken of artikelen.
+
+De tientallen werkvormen en de 53 afzonderlijke natuurkundeonderwerpen staan in hun
+eigen doorzoekbare omgeving én de volledige sitezoekindex. Het algemene
+menu herhaalt die verzameling niet. Een algemene hoofdpagina is een bruikbare
+keuze of overzicht van nieuwe inhoud, geen extra inhoudsopgave.
+
 - **/praktijk/** bevat werkende demonstrators en prototypes. Geen toolcatalogus en geen losse werkvormen.
-- **/tools/** bevat interactieve hulpmiddelen voor analyse en ontwerp. Geen conceptuele modellen en geen demonstratorcatalogus.
+- **/nl/tools/** is de algemene catalogus voor interactieve hulpmiddelen; de zelfstandige werkruimtes onder **/tools/.../** houden hun bestaande URL en interface.
 - **/tools/prompt-framework/** is een zelfstandig kernproduct en mag daarom rechtstreeks in de hoofdnavigatie staan, naast de bredere Tools-verzameling.
 - **/model-monitor/** is de EAI-presentatielaag voor de publieke AI (Act) Model Monitor. De monitor zelf blijft de enige bron voor dashboard, modellen, landen, developers, usage, incidents, education, AI Act en sources; de EAI-site embedt en deeplinkt alleen naar die views.
-- **/kennis/** is de ingang voor onderbouwing, bronnen, publicaties, verwante modellen en verdere verdieping.
-- **/publicaties/** is het register van eigen publicaties, externe bijdragen, podcasts en media.
-- **/over/** beschrijft EAI, de ontwikkelaar en de ontstaanscontext. Publiek werk wordt daar alleen doorgelinkt.
-- **/toepassingen/** bevat echte cases. Kaarten van hetzelfde type leiden naar hetzelfde type bestemming.
+- **/nl/onderzoek/** is de ingang voor onderbouwing, bronreviews en verdere verdieping.
+- **/nl/publicaties/** is het register van eigen publicaties, externe bijdragen, podcasts en media. De bestaande artikel-URL\u2019s onder **/publicaties/.../** blijven geldig.
+- **/nl/over/** beschrijft EAI, de ontwikkelaar en de ontstaanscontext. Publiek werk wordt daar alleen doorgelinkt.
+- **/nl/toepassingen/** bevat echte cases. Kaarten van hetzelfde type leiden naar hetzelfde type bestemming.
 - **/bronnen/** onderscheidt externe bronnen, bronmodellen en eigen ontwerpdocumentatie. Eigen EAI-output wordt niet als externe bron gelabeld.
 
 ### Componentregel
@@ -146,3 +173,23 @@ Een componentvorm heeft één betekenis. Twee kaarten die er hetzelfde uitzien, 
 ### Technische laag
 
 Technische koppelingen, adapters, registry-termen en implementatiedetails staan achter een disclosure of in technische documentatie. Ze mogen de eerste docent- of bezoekerslaag niet domineren.
+
+## Publieke vaknamen en zoekresultaten (november 2026)
+
+De pagina `/nl/tools/` geeft acht directe keuzes: Natuurkunde, Wiskunde,
+Menselijk lichaam, Heelal, Oceanografie, Sport en bewegen, AI, Lessen en
+presentaties. De keuze opent het bijbehorende overzicht met directe links.
+Het algemene menu toont niet alle losse onderwerpen.
+
+De openbare namen zijn: De Melkweg, Het lichaam in 3D, Hart en bloedsomloop,
+Aanvallen en verdedigen, Hoe werkt een taalmodel?, Oceanografie en Natuurkunde
+en wiskunde. Bestaande technisch geadresseerde URL's blijven staan.
+
+De Melkweg heeft één primaire openbare ingang: `/tools/melkweg-lab/`.
+De tweede uitvoering onder `/tools/science-observatory/labs/melkweg/` blijft
+rechtstreeks bereikbaar en wordt alleen als alternatief bij De Melkweg genoemd.
+De 53 natuurkundeonderwerpen blijven vindbaar via de oorspronkelijke ankers.
+
+`search_scope` in het inhoudsregister maakt onderscheid tussen algemene
+vindbaarheid, inhoud binnen een toepassing, onderdelen in de eigen bibliotheek
+en interne schermen. Niet elke registratie wordt een algemeen zoekresultaat.

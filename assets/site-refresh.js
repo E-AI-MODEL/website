@@ -16,8 +16,8 @@
     });
   });
   // Language links follow the current page, including legacy Dutch routes.
-  var englishRoutes={"/":"/en/","/nl/":"/en/","/toepassingen/":"/en/applications/","/nl/toepassingen/":"/en/applications/","/onderwijs/":"/en/education/","/nl/onderwijs/":"/en/education/","/kennis/":"/en/research/","/nl/onderzoek/":"/en/research/","/publicaties/":"/en/publications/","/nl/publicaties/":"/en/publications/","/tools/":"/en/tools/","/nl/tools/":"/en/tools/","/model-monitor/":"/en/model-monitor/","/nl/model-monitor/":"/en/model-monitor/","/over/":"/en/about/","/nl/over/":"/en/about/","/nl/onderzoek/leermiddelen/":"/en/research/teaching-tools/"};
-  var dutchRoutes={"/en/":"/nl/","/en/applications/":"/nl/toepassingen/","/en/education/":"/nl/onderwijs/","/en/research/":"/nl/onderzoek/","/en/publications/":"/nl/publicaties/","/en/tools/":"/nl/tools/","/en/model-monitor/":"/nl/model-monitor/","/en/about/":"/nl/over/","/en/research/teaching-tools/":"/nl/onderzoek/leermiddelen/"};
+  var englishRoutes={"/":"/en/","/nl/":"/en/","/toepassingen/":"/en/applications/","/nl/toepassingen/":"/en/applications/","/onderwijs/":"/en/education/","/nl/onderwijs/":"/en/education/","/kennis/":"/en/research/","/nl/onderzoek/":"/en/research/","/publicaties/":"/en/publications/","/nl/publicaties/":"/en/publications/","/tools/":"/en/tools/","/nl/tools/":"/en/tools/","/model-monitor/":"/en/model-monitor/","/nl/model-monitor/":"/en/model-monitor/","/over/":"/en/about/","/nl/over/":"/en/about/","/nl/onderzoek/leermiddelen/":"/en/research/teaching-tools/","/nl/onderzoek/zhang-genai-taal/":"/en/research/zhang-genai-language/"};
+  var dutchRoutes={"/en/":"/nl/","/en/applications/":"/nl/toepassingen/","/en/education/":"/nl/onderwijs/","/en/research/":"/nl/onderzoek/","/en/publications/":"/nl/publicaties/","/en/tools/":"/nl/tools/","/en/model-monitor/":"/nl/model-monitor/","/en/about/":"/nl/over/","/en/research/teaching-tools/":"/nl/onderzoek/leermiddelen/","/en/research/zhang-genai-language/":"/nl/onderzoek/zhang-genai-taal/"};
   var currentPath=window.location.pathname.replace(/index\.html$/,'').replace(/\/+$/,'/');
   if (!currentPath.endsWith('/')) currentPath+='/';
   document.querySelectorAll('.eai-lang a').forEach(function(link){
@@ -41,14 +41,16 @@
       ['Explore',[['The EAI model','/en/#model'],['Education','/en/education/']]],
       ['Applications',[['All applications','/en/applications/'],['Education','/en/education/']]],
       ['Research',[['Research','/en/research/'],['Publications','/en/publications/']]],
-      ['Tools',[['All tools','/en/tools/'],['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
-      ['About EAI',[['About EAI and Hans Visser','/en/about/']]]
+      ['Explore & create',[['Choose a subject or tool','/en/tools/']]],
+      ['Tools & monitors',[['Model Monitor','/en/model-monitor/'],['LLMscan','/en/llmscan/']]],
+      ['About EAI',[['About EAI','/en/about/'],['Site insights','/en/insights/']]]
     ]:[
       ['Ontdekken',[['Het EAI-model','/nl/#model'],['EAI in het onderwijs','/nl/onderwijs/']]],
       ['Toepassingen',[['Alle toepassingen','/nl/toepassingen/'],['Onderwijs in','/onderwijsin/']]],
       ['Onderzoek',[['Onderzoek','/nl/onderzoek/'],['Publicaties','/nl/publicaties/']]],
-      ['Tools',[['Alle tools','/nl/tools/'],['Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
-      ['Over EAI',[['Over EAI en Hans Visser','/nl/over/']]]
+      ['Zelf aan de slag',[['Kies een vakgebied of hulpmiddel','/nl/tools/']]],
+      ['Tools & monitoren',[['AI Model Monitor','/nl/model-monitor/'],['LLMscan','/nl/llmscan/']]],
+      ['Over EAI',[['Over EAI en Hans Visser','/nl/over/'],['EAI Insights · websitegebruik','/nl/insights/']]]
     ];
     var links=header.querySelector('.eai-links');
     var mobile=header.querySelector('.eai-mobile .mobile-nav-panel');
@@ -127,4 +129,11 @@
   document.addEventListener('keydown',function(event){
     if(event.key==='Escape')document.querySelectorAll('.eai-mobile[open]').forEach(function(menu){menu.open=false;});
   });
+})();
+// Count page use in the refreshed public site; private LEIF pages are excluded.
+(function(){
+  if(/^\/(leif|houseoftalents|admin)(\/|$)/i.test(location.pathname))return;
+  if(!/\/(nl|en)\/insights\//.test(location.pathname)){
+    var script=document.createElement('script');script.src='/assets/site-insights.js';script.defer=true;document.head.appendChild(script);
+  }
 })();

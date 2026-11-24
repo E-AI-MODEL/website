@@ -14,7 +14,7 @@ for (const language of ['en', 'nl']) {
   visit(join(root, language));
 }
 // Deze routes worden door scripts/build_site.py gemaakt en apart getest.
-const generatedRoutes = new Set(["/tools/wihtml/", "/tools/wihtml/studio/"]);
+const generatedRoutes = new Set(["/nl/model/", "/en/model/", "/tools/eaimesh/", "/tools/eaistudio/", "/tools/wihtml/", "/tools/wihtml/studio/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/", "/tools/llm-observatorium/", "/tools/abyss/"]);
 let errors = 0;
 for (const path of paths) {
   const html = readFileSync(join(root, path), 'utf8');
@@ -24,7 +24,21 @@ for (const path of paths) {
   if (!/<link\s+rel="canonical"/.test(html)) fail('missing canonical');
   // The legacy header uses .eai-lang; the refreshed header uses .eai-site-language.
   // Both are containers. Never require this class on an individual language link.
-  if (!/<(?:div|nav)\b[^>]*class="[^"]*\b(?:eai-lang|eai-site-language)\b[^"]*"/.test(html)) fail('missing NL/EN selector');
+  const hasNavLanguage = /<(?:div|nav)\b[^>]*class="[^"]*\b(?:eai-lang|eai-site-language)\b[^"]*"/.test(html);
+  const dictionaryPartner = path === 'nl/begrippen/index.html' ? '/en/glossary/' :
+    path === 'en/glossary/index.html' ? '/nl/begrippen/' : null;
+  // De woordenboekpagina's gebruiken een taalwissel in hun introductie.
+  const hasDictionaryLanguage = Boolean(dictionaryPartner) &&
+    [...html.matchAll(/<a\b[^>]*>/gi)].some(match => {
+      const anchor = match[0];
+      return /\bclass="[^"]*\beai-dictionary-switch\b[^"]*"/.test(anchor) &&
+        anchor.includes('href="' + dictionaryPartner + '"');
+    }) &&
+    /<link\b[^>]*\bhreflang="nl"/i.test(html) &&
+    /<link\b[^>]*\bhreflang="en"/i.test(html);
+  // De Rotterdamse regiopagina heeft nog geen EN-tegenhanger. Geen valse taalwissel tonen.
+  const isDutchRegion = path === 'nl/onderwijsregio-proef/index.html';
+  if (!hasNavLanguage && !hasDictionaryLanguage && !isDutchRegion) fail('missing NL/EN selector');
   if ((html.match(/<h1\b/gi) || []).length !== 1) fail('expected exactly one H1');
   const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(x => x[1]);
   for (const id of new Set(ids.filter((x, i) => ids.indexOf(x) !== i))) fail('duplicate id: ' + id);

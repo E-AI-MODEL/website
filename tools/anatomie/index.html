@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Onderzoek het menselijk lichaam in een interactieve, zelfstandig gehoste 3D-atlas.">
+  <title>Het lichaam in 3D | EAI</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/eai-logo.svg">
+  <script type="module" crossorigin src="/tools/anatomie/assets/index-BIwJJE-F.js"></script>
+  <link rel="stylesheet" crossorigin href="/tools/anatomie/assets/index-DbmIM8Rt.css">
+<script defer src="/assets/site-analytics.js"></script></head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <a class="eai-brand" href="/nl/tools/" aria-label="EAI, naar alle tools">EAI</a>
+        <span class="eai-brand-divider" aria-hidden="true">/</span>
+        <h1 class="logo">Anatomisch observatorium</h1>
+      </div>
+      <div class="header-center">
+        <div class="search-container">
+          <label class="eai-screenreader" for="searchInput">Zoek een anatomische structuur</label>
+          <input type="search" id="searchInput" class="search-input"
+                 placeholder="Zoek bot, spier of orgaan…" autocomplete="off">
+          <div id="searchResults" class="search-results"></div>
+        </div>
+      </div>
+      <div class="header-right">
+        <a class="eai-lab-link" href="/tools/anatomie/labs/hartslag/?v=8619a741a891" aria-label="Open Hartslaglab: bewegend hart en bloedstroom">Hartslaglab <span aria-hidden="true">↗</span></a>
+        <button id="systemsOpen" class="eai-header-button drawer-open" type="button"
+                aria-label="Lichaamsstelsels kiezen" aria-controls="systemsSidebar"
+                aria-expanded="false" title="Lichaamsstelsels kiezen">
+          <svg aria-hidden="true" viewBox="0 0 20 20" width="17" height="17"
+               fill="none" stroke="currentColor" stroke-width="1.3">
+            <path d="M3 5h14M3 10h14M3 15h14"/><circle cx="7" cy="5" r="2" fill="var(--bg-secondary)"/>
+            <circle cx="13" cy="10" r="2" fill="var(--bg-secondary)"/>
+          </svg>
+          <span>Stelsels</span>
+        </button>
+        <button id="searchOpen" class="eai-icon-button drawer-open" type="button"
+                aria-label="Zoeken" aria-expanded="false" title="Zoeken">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 5 5"/>
+          </svg>
+        </button>
+        <button id="infoOpen" class="eai-icon-button" type="button"
+                aria-label="Informatie bij gekozen structuur" title="Informatie bij gekozen structuur">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/>
+          </svg>
+        </button>
+        <button id="helpBtn" class="eai-icon-button" type="button"
+                aria-label="Uitleg bediening" title="Uitleg bediening">?</button>
+        <a class="eai-back" href="/nl/tools/">Alle tools</a>
+      </div>
+    </header>
+
+    <!-- Main layout -->
+    <main class="main-layout">
+      <!-- Sidebar - Systems -->
+      <aside class="sidebar sidebar-systems" id="systemsSidebar">
+        <div class="sidebar-header">
+          <h2>Lichaamsstelsels</h2>
+          <button class="sidebar-toggle" id="systemsToggle" aria-label="Stelsels sluiten">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="sidebar-content" id="systemsList"></div>
+      </aside>
+
+      <!-- 3D Viewer -->
+      <section class="viewer-section">
+        <div id="viewerContainer" class="viewer-container"><div class="eai-stage-intro" aria-hidden="true"><span class="eai-stage-kicker">ANATOMIE / 3D-ATLAS</span><h2>Menselijke anatomie</h2><p>Draai, zoom en onderzoek ieder onderdeel zelf.</p></div>
+          <canvas id="threeCanvas" tabindex="0" role="application"
+                  aria-label="Interactief driedimensionaal menselijk lichaam. Slepen om te draaien, scrollen om te zoomen, klikken om een onderdeel te kiezen."></canvas>
+          <div id="loadingOverlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <span class="loading-text">Anatomisch model laden...</span>
+          </div>
+
+          <!-- Preset views float over the canvas; per-structure actions live on
+               the callout and in the bottom bar, not duplicated here. -->
+          <div class="viewer-controls" id="viewerControls">
+            <button class="control-btn" id="frontViewBtn" title="Vooraanzicht">Voor</button>
+            <button class="control-btn" id="sideViewBtn" title="Zijaanzicht">Zij</button>
+            <button class="control-btn" id="backViewBtn" title="Achteraanzicht">Achter</button>
+            <button class="control-btn" id="topViewBtn" title="Bovenaanzicht">Boven</button>
+            <button class="control-btn" id="resetBtn" title="Beginweergave">Herstel</button>
+          </div>
+        <div class="eai-attribution" aria-label="Modelbronnen">Modellen: BodyParts3D · Z-Anatomy <a href="NOTICE.txt">Bronvermelding</a> <a href="LICENSE.txt">Licentie</a></div></div>
+      </section>
+
+      <!-- Sidebar - Info Panel -->
+      <aside class="sidebar sidebar-info" id="infoSidebar">
+        <div class="sidebar-header">
+          <h2>Informatie</h2>
+          <button class="sidebar-toggle" id="infoToggle" aria-label="Informatie sluiten">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="sidebar-content" id="infoContent">
+          <div class="info-placeholder">
+            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <p>Kies een anatomische structuur</p>
+            <span class="hint">Klik op een lichaamsdeel voor de details</span>
+          </div>
+          <div id="structureInfo" class="structure-info hidden"></div>
+        </div>
+      </aside>
+    </main>
+
+    
+
+    <!-- Hulp is pas zichtbaar nadat de bezoeker op ? klikt. -->
+    <div class="modal hidden" id="helpModal" role="dialog" aria-labelledby="helpTitle" aria-modal="true">
+      <div class="modal-overlay"></div>
+      <div class="modal-content eai-help-modal">
+        <div class="modal-header">
+          <h3 id="helpTitle">Zo werkt de atlas</h3>
+          <button class="modal-close" id="helpClose" aria-label="Sluiten">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Draaien</strong> met de muis of één vinger.</p>
+          <p><strong>Zoomen</strong> door te scrollen of twee vingers uit elkaar te bewegen.</p>
+          <p><strong>Onderzoeken</strong> door een lichaamsdeel aan te klikken of via zoeken te vinden.</p>
+          <p><strong>Stelsels</strong> open je via de knop bovenaan. Daar kun je botten, organen, spieren en andere stelsels tonen.</p>
+          <p class="eai-help-note">De modellen zijn bedoeld voor onderwijs en onderzoek, niet voor medische diagnose.
+            Anatomische benamingen uit de oorspronkelijke bron kunnen Engelstalig zijn.</p>
+          <p class="eai-help-sources"><a href="/tools/anatomie/NOTICE.txt">Alle modelbronnen</a>
+            <a href="/tools/anatomie/LICENSE.txt">Licentievoorwaarden</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+name: Daily LLMscan source discovery
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 19 * * *'
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch recent Crossref and arXiv candidates
+        run: python scripts/llmscan_discover.py --days 7
+      - name: Propose discoveries without automatic publication
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: content/llmscan-discovery-candidates.json
+          commit-message: 'LLMscan: collect new primary-source candidates'
+          branch: bot/llmscan-discovery
+          delete-branch: true
+          title: 'LLMscan: nieuwe onderzoekskandidaten voor broncontrole'
+          body: |
+            Dit bestand bevat nog geen beoordeelde onderzoeken. Controleer de oorspronkelijke publicaties, vergelijk DOI's met nl/llmscan/updates.js en leg het bewijs en de beperkingen vast. Neem alleen gecontroleerde, unieke bronnen op in het gepubliceerde overzicht.

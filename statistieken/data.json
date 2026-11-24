@@ -1,0 +1,247 @@
+{
+  "schema": 1,
+  "source": "Cloudflare Web Analytics (RUM)",
+  "updated_at": "2026-11-21T07:23:14+00:00",
+  "period": {
+    "from": "2026-10-23",
+    "through": "2026-11-21"
+  },
+  "views": 400,
+  "visits": 250,
+  "daily": [
+    {
+      "date": "2026-10-23",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-10-24",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-10-25",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-10-26",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-10-27",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-10-28",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-10-29",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-10-30",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-10-31",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-01",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-02",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-03",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-04",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-05",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-06",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-07",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-08",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-09",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-10",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-11",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-12",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-13",
+      "views": 0,
+      "visits": 0
+    },
+    {
+      "date": "2026-11-14",
+      "views": 20,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-15",
+      "views": 90,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-16",
+      "views": 50,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-17",
+      "views": 60,
+      "visits": 60
+    },
+    {
+      "date": "2026-11-18",
+      "views": 50,
+      "visits": 30
+    },
+    {
+      "date": "2026-11-19",
+      "views": 90,
+      "visits": 80
+    },
+    {
+      "date": "2026-11-20",
+      "views": 40,
+      "visits": 20
+    },
+    {
+      "date": "2026-11-21",
+      "views": 0,
+      "visits": 0
+    }
+  ],
+  "pages": [
+    {
+      "path": "/nl/model-monitor/",
+      "views": 70,
+      "visits": 60
+    },
+    {
+      "path": "/",
+      "views": 60,
+      "visits": 60
+    },
+    {
+      "path": "/nl/tools/",
+      "views": 50,
+      "visits": 0
+    },
+    {
+      "path": "/nl/onderzoek/zhang-genai-taal/",
+      "views": 20,
+      "visits": 10
+    },
+    {
+      "path": "/tools/science-observatory/",
+      "views": 20,
+      "visits": 0
+    },
+    {
+      "path": "/nl/model/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/en/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/statistieken/",
+      "views": 10,
+      "visits": 10
+    },
+    {
+      "path": "/tools/sport-en-bewegen/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/nl/llmscan/",
+      "views": 10,
+      "visits": 10
+    },
+    {
+      "path": "/en/glossary/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/twee-pijlers/",
+      "views": 10,
+      "visits": 0
+    },
+    {
+      "path": "/nl/",
+      "views": 10,
+      "visits": 10
+    },
+    {
+      "path": "/publicaties/ai-balans/",
+      "views": 10,
+      "visits": 0
+    }
+  ],
+  "referrers": [
+    {
+      "host": "Sociale media",
+      "views": 20
+    }
+  ],
+  "notes": [
+    "Bezoeken zijn geen unieke personen.",
+    "Cloudflare Web Analytics meet geladen pagina's in browsers met JavaScript; cijfers kunnen door steekproeven afwijken.",
+    "Bouncepercentage en interacties binnen een simulatie worden hier niet gemeten.",
+    "Verwijzers zijn samengevoegd tot brede categorieën en tellen alleen bezoeken met een bekende verwijzer."
+  ]
+}

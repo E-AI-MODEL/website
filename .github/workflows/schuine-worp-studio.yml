@@ -1,0 +1,42 @@
+name: Test compacte schuine worp
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'content/science-observatory/labs/schuine-worp.html'
+      - 'content/science-observatory/labs/natuurkunde.html'
+      - 'scripts/test_schuine_worp_studio.mjs'
+      - '.github/workflows/schuine-worp-studio.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/science-observatory/labs/schuine-worp.html'
+      - 'scripts/test_schuine_worp_studio.mjs'
+      - '.github/workflows/schuine-worp-studio.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install beautifulsoup4
+      - name: Bouw de compacte natuurkundestudio
+        run: python scripts/build_site.py --sources content/legacy --out site-build
+      - run: npm install --no-save playwright@1.56.1
+      - name: Installeer Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test op telefoon en desktop in Chromium
+        run: node scripts/test_schuine_worp_studio.mjs site-build chromium
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: schuine-worp-studio-screenshots
+          path: test-results/worp-studio-*.png

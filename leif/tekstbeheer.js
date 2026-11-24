@@ -34,7 +34,8 @@ function inspect(node){
  if(original.length<3||original.length>6000||!/[A-Za-zÀ-ÿ]/.test(original))return null;
  if(!node.parentElement.closest('h1,h2,h3,h4,p,span,small,button,a,label,strong,summary,li,dt,dd'))return null;
  if(registered.has(node))return registered.get(node);
- const key=hash(page+'|'+locationOf(node)+'|'+original);
+ const stable=page+'|'+locationOf(node);
+ const key=window.LeifTextKeys?.[stable]||hash(stable+'|'+original);
  const field={key,page,node,original,raw};
  registered.set(node,field);known.set(key,field);
  return field;
@@ -45,7 +46,8 @@ function inspectAttribute(element,attribute){
  if(original.length<3||original.length>6000||!/[A-Za-zÀ-ÿ]/.test(original))return null;
  const saved=attributeNodes.get(element)||{};
  if(saved[attribute])return saved[attribute];
- const key=hash(page+'|'+locationOf({parentElement:element})+'|@'+attribute+'|'+original);
+ const stable=page+'|'+locationOf({parentElement:element})+'|@'+attribute;
+ const key=window.LeifTextKeys?.[stable]||hash(stable+'|'+original);
  const field={key,page,element,attribute,original,raw};
  saved[attribute]=field;attributeNodes.set(element,saved);known.set(key,field);
  return field;

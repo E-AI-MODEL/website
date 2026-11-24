@@ -17,7 +17,7 @@ function request(action,extra={}){
  return host.request(action,{tenant_id:tenant.id,page:page(),...extra});
 }
 function dirty(){return !!current&&editor.value!==(store.get(current.key)?.draft_text??current.original)}
-function confirmLeave(){return !dirty()||confirm('Deze tekst is nog niet bewaard. Wil je de wijziging laten vervallen?')}
+function confirmLeave(){if(inFlight){tell('Het opslaan loopt nog. Wacht even voordat je verdergaat.');return false}return !dirty()||confirm('Deze tekst is nog niet bewaard. Wil je de wijziging laten vervallen?')}
 function state(){return current?store.get(current.key):null}
 function previewUpdate(key,txt){
  if(typeof txt!=='string')return;
@@ -73,22 +73,22 @@ async function loadHistory(){
 }
 async function change(action,extra={}){
  if(!current||inFlight)return;
- if(action!=='site_save'&&dirty()){tell('Bewaar eerst het aangepaste concept.');return}
+ if(!['site_save','site_apply'].includes(action)&&dirty()){tell('Bewaar eerst het aangepaste concept.');return}
  const key=current.key,original=current.original,existing=state();
- inFlight=true;
- for(const id of ['siteSave','sitePublish','siteUnpublish'])$(id).disabled=true;
- tell(action==='site_save'?'Concept bewaren...':'Wijziging verwerken...');
+ inFlight=true;editor.disabled=true;$('sitePage').disabled=true;
+ for(const id of ['siteApply','siteSave','sitePublish','siteUnpublish'])$(id).disabled=true;
+ tell(action==='site_apply'?'Opslaan voor iedereen...':action==='site_save'?'Concept bewaren...':'Wijziging verwerken...');
  try{
   const result=await request(action,{field_key:key,revision:existing?.revision||0,original,...extra});
   if(!result.ok||!result.item)throw Error('invalid_result');
   store.set(key,result.item);editor.value=result.item.draft_text;
-  if(action==='site_publish')previewUpdate(key,result.item.published_text);
+  if(action==='site_publish'||action==='site_apply')previewUpdate(key,result.item.published_text);
   if(action==='site_unpublish')previewUpdate(key,original);
   if(action==='site_save'||action==='site_restore')previewUpdate(key,result.item.draft_text);
-  tell(action==='site_save'?'Concept bewaard.':action==='site_publish'?'Tekst gepubliceerd.':action==='site_unpublish'?'Publicatie teruggenomen.':'Eerdere versie als concept bewaard.');
+  tell(action==='site_apply'?'Opgeslagen. Deze tekst geldt nu voor iedereen.':action==='site_save'?'Concept bewaard.':action==='site_publish'?'Tekst gepubliceerd.':action==='site_unpublish'?'Publicatie teruggenomen.':'Eerdere versie als concept bewaard.');
   renderCatalog();await loadHistory();
  }catch(e){tell(e.status===409?'Deze tekst is ergens anders gewijzigd. Laad de pagina opnieuw voordat je verdergaat.':'De wijziging kon niet worden bewaard.')}
- finally{inFlight=false;for(const id of ['siteSave','sitePublish','siteUnpublish'])$(id).disabled=false}
+ finally{inFlight=false;editor.disabled=false;$('sitePage').disabled=false;for(const id of ['siteApply','siteSave','sitePublish','siteUnpublish'])$(id).disabled=false}
 }
 function choosePage(){
  if(!confirmLeave()){$('sitePage').value=activeChoice;return false}
@@ -119,6 +119,7 @@ $('siteMode').onclick=()=>{
  preview.contentWindow?.postMessage({source:'leif-editor',action:'edit',enabled:selecting},location.origin);
  tell(selecting?'Klik op de tekst die je wilt aanpassen.':'Je kunt nu door de voorbeeldpagina bladeren. Klik nogmaals om tekst te kiezen.');
 };
+$('siteApply').onclick=()=>change('site_apply',{text:editor.value});
 $('siteSave').onclick=()=>change('site_save',{text:editor.value});
 $('sitePublish').onclick=()=>{if(confirm('Deze tekst zichtbaar maken op LEIF?'))change('site_publish')};
 $('siteUnpublish').onclick=()=>{if(confirm('De oorspronkelijke tekst weer zichtbaar maken?'))change('site_unpublish')};

@@ -24,23 +24,19 @@ test('LIS opent Kars via uitsluitend de gemarkeerde demo-alias',()=>{
  assert.match(server,/body\.code==="lis"/);
  assert.match(server,/test_alias=eq\.LIS&is_demo=eq\.true/);
  assert.match(server,/member\.state!=="active"/);
- assert.match(personal,/id="demoLabel"/);
+ assert.doesNotMatch(personal,/id="demoLabel"/);
+ assert.match(personal,/screen='start';/);
+ assert.match(personal,/De LEIF-beheerder van jouw groep kan je antwoorden en verslagen inzien/);
 });
-test('VIS opent een wachtwoordlogin zonder verplichte e-maillink',()=>{
- assert.match(main,/id="adminPasswordGroup" hidden/);
- assert.match(main,/id="adminPassword" type="password"/);
- assert.doesNotMatch(main,/id="adminEmail"/);
- assert.doesNotMatch(main,/action:'request_magic_link'/);
- assert.match(main,/action:'login',email:'vis@emmauscollege.nl',password/);
- assert.match(main,/showAdminPassword\(\)/);
- assert.match(main,/codeInput\.required=false/);
- assert.match(main,/codeInput\.required=true/);
+test('VIS biedt een beheerlogin en behoudt de bestaande inloglink',()=>{
+ assert.doesNotMatch(main,/id="adminEmail"|id="adminPassword"/);
+ assert.match(main,/action:'request_magic_link'/);
  assert.match(main,/action:'session'/);
  assert.match(main,/completeAdminLink/);
  assert.match(main,/t\.slug==='leif'&&t\.role==='manager'/);
- assert.match(main,/leif-admin-session-v1/);
+ assert.match(main,/LeifAdminSession/);
  assert.match(main,/quickClicks===3/);
- assert.match(beheer,/request\('refresh'/);
+ assert.match(beheer,/adminSession\.resume\(\)/);
  assert.doesNotMatch(beheer,/id="password"|id="email"/);
 });
 test('geen tweede zichtbaar inlogformulier',()=>{

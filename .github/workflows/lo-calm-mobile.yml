@@ -1,0 +1,35 @@
+name: LO rustige mobiele bediening
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/lo-aanvalslab/index.html'
+      - 'scripts/test_lo_calm_mobile.py'
+      - '.github/workflows/lo-calm-mobile.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobiel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installeer Chromium en WebKit
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium webkit
+      - name: Controleer mobiele spelbediening
+        run: python scripts/test_lo_calm_mobile.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lo-rustige-mobiele-schermen
+          path: artifacts/lo-calm-mobile/*.png
+          if-no-files-found: ignore

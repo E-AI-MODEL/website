@@ -41,31 +41,44 @@ class HomeModelTests(unittest.TestCase):
     def test_no_js_content_and_preserved_deep_links(self):
         materialize(self.root)
         soup = BeautifulSoup((self.root / 'nl/index.html').read_text(), 'html.parser')
-        for anchor in ('model', 'voorbeeld', 'verhaal', 'verder-lezen', 'beginnen'):
-            self.assertIsNotNone(soup.find(id=anchor))
-        cases = soup.select('details.eh-case-source')
-        self.assertEqual(
-            [case['id'] for case in cases],
-            ['schoolafspraken', 'dagelijks-werk', 'leren-en-toetsen',
-             'toepassing-kiezen', 'ai-begrijpen'],
-        )
-        # Zonder JavaScript blijven alle vijf uitlegkaarten bereikbaar.
-        self.assertTrue(all(case.find('summary') is not None for case in cases))
-        self.assertTrue(all(not case.has_attr('hidden') for case in cases))
-        self.assertEqual(
-            [case['id'] for case in cases if case.has_attr('open')],
-            ['schoolafspraken'],
-        )
-        controls = soup.select_one('.eh-case-controls')
-        output = soup.select_one('.eh-case-output')
-        self.assertIsNotNone(controls)
-        self.assertIsNotNone(output)
-        self.assertTrue(controls.has_attr('hidden'))
-        self.assertTrue(output.has_attr('hidden'))
+        for anchor in ('model', 'voorbeeld', 'verhaal', 'verder-lezen', 'beginnen', 'schoolafspraken', 'leren-en-toetsen'):
+            self.assertIsNotNone(soup.find(id=anchor), anchor)
+        self.assertEqual(soup.select_one('h1#eh-home-title').get_text(' ', strip=True), 'Wat ons werk ons werk maakt')
+        self.assertEqual(len(soup.select('.eai-landing-route')), 4)
+        self.assertEqual(len(soup.select('.eai-landing-reading-grid a')), 3)
+        self.assertIsNotNone(soup.select_one('a[href="/nl/blog/wat-ons-werk-ons-werk-maakt/"]'))
+        self.assertIsNone(soup.select_one('.eh-case-output'))
+        self.assertIsNone(soup.select_one('details.eh-case-source'))
+        self.assertNotIn('✎', soup.main.get_text())
+        # Actual emoji glyphs are banned from editorial and navigation surfaces.
+        import re
+        glyphs = re.compile('[' + chr(0x1F300) + '-' + chr(0x1FAFF) + chr(0x2600) + '-' + chr(0x27BF) + ']')
+        for rel in ('nl/blog/index.html', 'nl/blog/wat-ons-werk-ons-werk-maakt/index.html'):
+            text = (Path(__file__).resolve().parents[1] / rel).read_text(encoding='utf-8')
+            self.assertIsNone(glyphs.search(BeautifulSoup(text, 'html.parser').get_text(' ', strip=True)), rel)
+        self.assertIsNone(glyphs.search(soup.main.get_text(' ', strip=True)), 'homepage')
+
         model = (self.root / 'nl/model/index.html').read_text()
         self.assertIn('Aan welke stap moet de leerling in deze fase zelf inhoudelijke betekenis geven om tot leren te komen?', model)
         self.assertIn('zonder dat er een nieuw product ontstaat', model)
         self.assertNotIn('\u2014', soup.main.get_text())
+
+    def test_blog_pages_and_home_entry(self):
+        root = Path(__file__).resolve().parents[1]
+        landing = BeautifulSoup((root / 'nl/blog/index.html').read_text(encoding='utf-8'), 'html.parser')
+        article = BeautifulSoup((root / 'nl/blog/wat-ons-werk-ons-werk-maakt/index.html').read_text(encoding='utf-8'), 'html.parser')
+        self.assertEqual(landing.h1.get_text(' ', strip=True), 'Wat moeten we samen bespreken over AI?')
+        self.assertEqual(article.h1.get_text(' ', strip=True), 'Wat ons werk ons werk maakt')
+        self.assertIsNotNone(landing.select_one('a[href="/nl/blog/wat-ons-werk-ons-werk-maakt/"]'))
+        self.assertIn('efficiënt', article.get_text(' ', strip=True).lower())
+        self.assertEqual(len(article.select('.eai-story-example')), 3)
+        self.assertEqual(len(article.select('.eai-story-phase-grid li')), 4)
+        self.assertEqual(len(article.select('.eai-story-mail-card')), 2)
+        self.assertEqual(len(article.select('.eai-story-questions li')), 4)
+        self.assertEqual(len(article.select('figure')), 4)
+        self.assertEqual(len(article.select('main h1')), 1)
+        self.assertIn('/assets/site-editorial.css', [a.get('href') for a in article.select('link[rel=stylesheet]')])
+        self.assertNotIn('—', article.main.get_text())
 
     def test_repeatable_render(self):
         materialize(self.root)

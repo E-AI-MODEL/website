@@ -3,6 +3,7 @@ from __future__ import annotations
 # v2 editorial build: two pillars -> workforms -> practice -> publications
 
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -2072,6 +2073,22 @@ NAV_GROUPS = [
         ("/taalwerkvormen/", "TAALwerkvormen"),
         ("/werkvormen/#didactisch-model", "Didactische modellen"),
     ]),
+    ("observatoria", "Observatoria", [
+        ("/tools/science-observatory/", "Science Observatory"),
+        ("/tools/science-observatory/labs/natuurkunde/", "Natuurkunde · 53 interactieve modellen"),
+        ("/tools/anatomie/", "Anatomisch Observatorium"),
+        ("/tools/anatomie/labs/hartslag/", "Hartslaglab · hartcyclus"),
+        ("/tools/llm-observatorium/", "LLM Observatorium"),
+        ("/tools/abyss/", "ABYSS"),
+        ("/tools/melkweg-lab/", "Melkweg Lab"),
+    ]),
+    ("tools", "Tools", [
+        ("/tools/", "Alle tools"),
+        ("/tools/wihtml/", "WiHTML Docentstudio"),
+        ("/tools/prompt-framework/", "EAI Prompt Framework"),
+        ("/model-monitor/", "AI Model Monitor"),
+        ("/nl/insights/", "Website-inzichten"),
+    ]),
     ("kennis", "Kennis", [
         ("/kennis/", "Overzicht kennis"),
         ("/onderbouwing/", "Onderbouwing"),
@@ -2088,8 +2105,10 @@ def nav(active: str = "") -> str:
         active_key = "toepassingen"
     elif active in {"werkvormen", "taal", "workshop"}:
         active_key = "onderwijs"
-    elif active in {"verdieping", "onderbouwing", "bronnen", "publicaties", "tools", "pijlers"}:
+    elif active in {"verdieping", "onderbouwing", "bronnen", "publicaties", "pijlers"}:
         active_key = "kennis"
+    elif active in {"prompt-framework", "model-monitor"}:
+        active_key = "tools"
 
     desktop_groups = []
     mobile_groups = []
@@ -2113,15 +2132,11 @@ def nav(active: str = "") -> str:
         f'<header class="site-header"><nav class="nav" aria-label="Hoofdnavigatie">'
         f'<a class="brand" href="/" aria-label="EAI home"><img src="/assets/eai-logo.svg" alt="EAI"></a>'
         f'<div class="nav-links"><a href="/"{home_current}>EAI</a>{"".join(desktop_groups)}'
-        f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
-        f'<a href="/model-monitor/"{monitor_current}>Model Monitor</a>'
         f'<a href="/onderwijsin/">Onderwijs in</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a class="nav-cta" href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div>'
         f'<details class="mobile-nav"><summary>Menu</summary><div class="mobile-nav-panel">'
         f'<a href="/"{home_current}>EAI</a>{"".join(mobile_groups)}'
-        f'<a href="/tools/prompt-framework/"{prompt_current}>Prompt Framework</a>'
-        f'<a href="/model-monitor/"{monitor_current}>Model Monitor</a>'
         f'<a href="/onderwijsin/">Onderwijs in</a>'
         f'<a href="/over/"{over_current}>Over</a>'
         f'<a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a></div></details>'
@@ -2143,7 +2158,7 @@ def doc(title: str, body: str, canonical_path: str, active: str = "", descriptio
     desc = description or "EAI — Educational AI, leren en eigenaarschap."
     canonical = f"{BASE_URL}{canonical_path}"
     body = body.replace("<main", '<main id="main-content"', 1)
-    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a>{nav(active)}{body}{footer()}</body></html>'
+    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · EAI</title><meta name="description" content="{esc(desc)}"><link rel="canonical" href="{esc(canonical)}"><link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip-link" href="#main-content">Ga naar de inhoud</a>{nav(active)}{body}{footer()}<script defer src="/assets/site-insights.js"></script></body></html>'
 
 def render_article_fragment(fragment: Path, title: str, canonical_path: str, description: str) -> str:
     body = fragment.read_text(encoding="utf-8")
@@ -2535,7 +2550,7 @@ def build(sources: Path, out: Path) -> None:
 <p class="profile-lede">Conrector op het Emmauscollege in Rotterdam. Daarnaast actief als AI-adviseur en spreker rond AI, leren en onderwijsontwerp.</p>
 <p>Ik wil eerst weten wat een leerling moet leren, waar hij zich in dat leren bevindt en aan welke stap hij zelf inhoudelijke betekenis moet geven. Daarna kijk ik wat AI op die plek doet. Dat helpt mij preciezer te beslissen welke hulp past.</p>
 <p>Die vragen kwamen terug in lessen, studiedagen, gesprekken met docenten en experimenten met AI. Daaruit groeide EAI: een werkwijze om samen een concrete onderwijssituatie te onderzoeken en afspraken over de rol van AI te maken.</p>
-<div class="button-row"><a class="button" href="{LINKEDIN}" target="_blank" rel="noopener">Volg of neem contact op via LinkedIn ↗</a><a class="button secondary" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener">Onderwijs AI-profiel</a></div><details class="quiet-contact"><summary>Andere contactmogelijkheid</summary><p><a href="mailto:{EMAIL}">Stuur een e-mail</a></p></details>
+<div class="button-row"><a class="button" href="{LINKEDIN}" target="_blank" rel="noopener">Volg of neem contact op via LinkedIn ↗</a><a class="button secondary" href="https://onderwijs-ai.nl/over-ons/team/hans-visser" target="_blank" rel="noopener">Onderwijs AI-profiel</a></div><details class="quiet-contact"><summary>Andere contactmogelijkheid</summary><p><!--email_off--><a href="mailto:{EMAIL}">Stuur een e-mail</a><!--/email_off--></p></details>
 <p class="source-note">Foto: Onderwijs AI.</p>
 </div></div></div></section>
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Wat EAI probeert te voorkomen</div><div><h2>Een goed product aanzien voor bewijs van leren.</h2><p>AI kan een sterke tekst, uitleg, diagnose of aanbeveling produceren. EAI onderzoekt wat iemand zelf begrijpt en afweegt. Zichtbaar iets aanpassen of toevoegen geeft daar nog geen uitsluitsel over.</p></div></div>
@@ -2595,11 +2610,121 @@ def build(sources: Path, out: Path) -> None:
     write(out, "publicaties/index.html", doc("Publicaties", pubs_body, "/publicaties/", "publicaties", "Artikelen en analyses van EAI over AI, leren en professioneel handelen."))
     write(out, "eai-blog/index.html", redirect("/publicaties/"))
 
+    # EAI Dictionary: both language pages share exactly the same thirty concepts.
+    # These are editorial review pages; the original URLs stay untouched.
+    for locale, source_name, destination, canonical_path, summary in (
+        ("nl", "eai-dictionary-nl.html", "nl/begrippen/index.html", "/nl/begrippen/",
+         "EAI-begrippen over AI, leren en betekenis geven, met definities en een praktijkvoorbeeld."),
+        ("en", "eai-dictionary-en.html", "en/glossary/index.html", "/en/glossary/",
+         "Definitions of thirty EAI concepts for learning, human action and AI."),
+    ):
+        body = (Path("content") / source_name).read_text(encoding="utf-8")
+        page = doc("EAI Dictionary", body, canonical_path, "kennis", summary)
+        page = page.replace('<html lang="nl">', f'<html lang="{locale}">', 1)
+        page = page.replace('</head>',
+            '<link rel="alternate" hreflang="nl" href="https://eaimodel.nl/nl/begrippen/">'
+            '<link rel="alternate" hreflang="en" href="https://eaimodel.nl/en/glossary/"></head>', 1)
+        write(out, destination, page)
+
     tools_body = f'''<main><section class="page-hero"><div class="wrap"><div class="eyebrow">Tools</div><h1>Kies een hulpmiddel bij je vraag.</h1><p class="lede">Bepaal wat je wilt bereiken en welke stap, keuze of verantwoordelijkheid bij de mens moet blijven. Met deze tools kun je de taakverdeling onderzoeken en de AI-instructie uitwerken.</p></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Begrijpen & analyseren</div><div><h2>Wat gebeurt er met het denkwerk?</h2><p>Gebruik deze toepassingen om een bestaande taak of AI-interactie vanuit het leerproces te bekijken.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Analyse</div><h2>EAI Toolanalyse</h2><p>Bekijk een AI-toepassing op leerwaarde en didactische invloed. Gebruik de uitkomst als start van een professionele afweging, niet als automatisch oordeel.</p><a href="https://subtle-churros-4d44d5.netlify.app" target="_blank" rel="noopener">Open EAI Toolanalyse ↗</a></article><article class="tool-card"><div class="kicker">Interactief</div><h2>Act of Learning Game</h2><p>Verken de vraag wie in een concrete situatie het relevante denkwerk uitvoert.</p><a href="https://rainbow-tarsier-a88e9b.netlify.app/" target="_blank" rel="noopener">Open Act of Learning Game ↗</a></article></div></div></section>
-<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Ontwerpen</div><div><h2>Wat wil je dat AI hier doet?</h2><p>Leg vast welke hulp AI mag geven, wat het moet overlaten en hoe je de uitkomst controleert.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Wiskunde · Les maken</div><h2>WiHTML Docentstudio</h2><p>Maak je eigen interactieve wiskundeles. Kies wat leerlingen zelf doen, ontwerp een HTML-sjabloon en download een presentatie die je ook zonder deze website kunt gebruiken.</p><a href="/tools/wihtml/">Maak een HTML-les →</a></article><article class="tool-card tool-card--featured"><div class="kicker">EAI · Instructieontwerp</div><h2>EAI Prompt Framework</h2><p>Leg doel, centrale menselijke stap, toegestane AI-hulp, grenzen, bronnen en een eventuele zelfstandige herneming vast. De tool bouwt daar direct een complete AI-instructie van. Voor onderwijs én andere professionele contexten.</p><a href="/tools/prompt-framework/">Gebruik EAI Prompt Framework →</a></article><article class="tool-card"><div class="kicker">Taal & systeem</div><h2>Prompt Builder · Sturen met taal</h2><p>Bekijk hoe de woorden in een prompt, de meegegeven informatie en de grenzen rond het systeem samen bepalen wat AI uiteindelijk doet. In de tool vind je ook uitleg van de technische termen.</p><a href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Open Prompt Builder →</a></article><article class="tool-card"><div class="kicker">Lesontwerp</div><h2>EAI What-If Machine</h2><p>Verken hoe een andere keuze in taak of AI-inzet het ontwerp verandert.</p><a href="https://what-if-lesson-designer.lovable.app/" target="_blank" rel="noopener">Open EAI What-If Machine ↗</a></article></div></div></section>
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Begrijpen & analyseren</div><div><h2>Wat gebeurt er met het denkwerk?</h2><p>Gebruik deze toepassingen om een bestaande taak of AI-interactie vanuit het leerproces te bekijken.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Analyse</div><h2>EAI Toolanalyse</h2><p>Bekijk een AI-toepassing op leerwaarde en didactische invloed. Gebruik de uitkomst als start van een professionele afweging, niet als automatisch oordeel.</p><a href="https://subtle-churros-4d44d5.netlify.app" target="_blank" rel="noopener">Open EAI Toolanalyse ↗</a></article><article class="tool-card"><div class="kicker">Interactief</div><h2>Act of Learning Game</h2><p>Verken de vraag wie in een concrete situatie het relevante denkwerk uitvoert.</p><a href="https://rainbow-tarsier-a88e9b.netlify.app/" target="_blank" rel="noopener">Open Act of Learning Game ↗</a></article><article class="tool-card"><div class="kicker">Educatief spel · onderbouw</div><h2>EAIgame · De Expeditie</h2><p>Geen gewoon bordspel. Reis door een interactieve 3D-wereld, kies routes en herstel zes gebieden met vragen op vmbo-, havo- of vwo-niveau.</p><a href="/tools/eaigame/">Speel EAIgame →</a></article></div></div></section>
+<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Ontwerpen</div><div><h2>Wat wil je dat AI hier doet?</h2><p>Leg vast welke hulp AI mag geven, wat het moet overlaten en hoe je de uitkomst controleert.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">3D · Taalmodellen</div><h2>LLM Observatorium</h2><p>Onderzoek hoe taalmodellen werken. Volg tokens, experts en attention in 3D. Verander zelf de instellingen voor context, generatie, redenering en tokenkosten. De expertroutes zijn rekenvoorbeelden.</p><a href="/tools/llm-observatorium/">Open LLM Observatorium →</a></article><article class="tool-card"><div class="kicker">Vanaf 10 jaar · Ontdekkend leren</div><h2>Galactisch Observatorium: met uitleg</h2><p>Draai de Melkweg, reis naar de planeten en onderzoek zelf wat er gebeurt. Klik, schuif en probeer. Zonder account.</p><a href="/tools/melkweg-lab/">Ontdek de Melkweg met uitleg →</a></article><article class="tool-card"><div class="kicker">3D · Menselijk lichaam</div><h2>Anatomie van de mens</h2><p>Draai het menselijk lichaam en onderzoek botten, spieren, organen, bloedvaten en zenuwen in hun onderlinge positie. De modellen zijn afkomstig uit BodyParts3D en Z-Anatomy.</p><a href="/tools/anatomie/">Onderzoek het menselijk lichaam →</a><a href="/tools/anatomie/labs/hartslag/">Onderzoek een bewegende hartslag →</a></article><article class="tool-card"><div class="kicker">Vwo · Onderzoeken</div><h2>Interactief onderzoeken</h2><p>Verken natuurkunde en wiskunde A/B met interactieve modellen, grafieken en onderzoeksvragen. Je vindt er natuurkunde, wiskunde, de Melkweg, anatomie en meer.</p><a href="/tools/science-observatory/">Bekijk alle onderzoeken →</a></article><article class="tool-card"><div class="kicker">Wiskunde · Les maken</div><h2>WiHTML Docentstudio</h2><p>Maak je eigen interactieve wiskundeles. Kies wat leerlingen zelf doen, ontwerp een HTML-sjabloon en download een presentatie die je ook zonder deze website kunt gebruiken.</p><a href="/tools/wihtml/">Maak een HTML-les →</a></article><article class="tool-card tool-card--featured"><div class="kicker">EAI · Instructieontwerp</div><h2>EAI Prompt Framework</h2><p>Leg doel, centrale menselijke stap, toegestane AI-hulp, grenzen, bronnen en een eventuele zelfstandige herneming vast. De tool bouwt daar direct een complete AI-instructie van. Voor onderwijs én andere professionele contexten.</p><a href="/tools/prompt-framework/">Gebruik EAI Prompt Framework →</a></article><article class="tool-card"><div class="kicker">Taal & systeem</div><h2>Prompt Builder · Sturen met taal</h2><p>Bekijk hoe de woorden in een prompt, de meegegeven informatie en de grenzen rond het systeem samen bepalen wat AI uiteindelijk doet. In de tool vind je ook uitleg van de technische termen.</p><a href="https://eai-prompt.lovable.app/" target="_blank" rel="noopener">Open Prompt Builder →</a></article><article class="tool-card"><div class="kicker">Lesontwerp</div><h2>EAI What-If Machine</h2><p>Verken hoe een andere keuze in taak of AI-inzet het ontwerp verandert.</p><a href="https://what-if-lesson-designer.lovable.app/" target="_blank" rel="noopener">Open EAI What-If Machine ↗</a></article></div></div></section>
 <section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Verdiepen</div><div><h2>Werk verder vanuit de publicaties.</h2><p>Deze toolkits horen bij eerdere EAI-publicaties en blijven bruikbaar als verdieping.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Toolkit</div><h2>Beyond Explainability</h2><p>Werk praktisch met de ideeën achter Didactic Controllability en Task Density.</p><a href="/tools/beyond-explainability/">Open Beyond Explainability →</a></article><article class="tool-card"><div class="kicker">Toolkit · English</div><h2>The Act of Learning</h2><p>Engelstalige toolkit bij de publicatie over Reverse Scaffolding en zichtbaar leren.</p><a href="https://effortless-fenglisu-71cd58.netlify.app/" target="_blank" rel="noopener">Open The Act of Learning toolkit ↗</a></article></div></div></section></main>'''
+    tools_body = tools_body.replace("</main>", '<section class="section"><div class="wrap"><div class="section-head"><div class="kicker">Maken en bekijken</div><div><h2>Werk met je eigen materiaal.</h2><p>Maak een les of presentatie, of bekijk de opbouw van een repository.</p></div></div><div class="tool-grid"><article class="tool-card"><div class="kicker">Presentaties</div><h2>EAIstudio</h2><p>Bouw dia’s met tekst, beeld, animatie en interactie. Pas de huisstijl aan en bepaal wat vanzelf gaat en wat op jouw klik wacht. Je kunt de presentatie als zelfstandige HTML downloaden.</p><a href="/tools/eaistudio/">Open EAIstudio →</a></article><article class="tool-card"><div class="kicker">HTML delen</div><h2>HTML-galerij</h2><p>Deel een eigen interactieve HTML-pagina. Vul je naam en de titel in, upload het bestand en laat anderen ermee werken.</p><a href="/tools/html-galerij/">Bekijk de HTML-galerij →</a></article><article class="tool-card"><div class="kicker">Software · Openbare demonstratie</div><h2>EAIwork</h2><p>Bekijk de productielijn, opdrachten, workers en controlepunten in een interactieve demonstratie. Echte uitvoering draait alleen met een eigen lokale EAIwork-server.</p><a href="/tools/eaiwork/">Open EAIwork-dashboard →</a></article><article class="tool-card"><div class="kicker">Code bekijken</div><h2>EAImesh</h2><p>EAImesh leest een openbare GitHub-repository en maakt de bestanden en hun samenhang zichtbaar. Kies wat je wilt bekijken en hoeveel detail je nodig hebt.</p><a href="/tools/eaimesh/">Open EAImesh →</a></article></div></div></section>' + "</main>")
+    eaiwork_dashboard = Path("content/eaiwork-dashboard.html")
+    if not eaiwork_dashboard.is_file():
+        raise SystemExit("EAIwork dashboard source missing")
+    write(out, "tools/eaiwork/index.html", eaiwork_dashboard.read_text(encoding="utf-8"))
+    # Separate public entry. Real execution remains on the protected local backend.
+    workspace_entry = Path(__file__).resolve().parent.parent / "work" / "index.html"
+    if not workspace_entry.is_file():
+        raise FileNotFoundError(f"EAIwork entry missing: {workspace_entry}")
+    write(out, "work/index.html", workspace_entry.read_text(encoding="utf-8"))
+    # Observatory pages belong under investigating, not under AI instruction design.
+    tools_soup = BeautifulSoup(tools_body, "html.parser")
+    design_section = next((section for section in tools_soup.select("section.section")
+                           if (heading := section.select_one(".section-head h2"))
+                           and heading.get_text(" ", strip=True) == "Wat wil je dat AI hier doet?"), None)
+    if design_section is None:
+        raise ValueError("Ontwerpen-sectie ontbreekt in Tools")
+    observe_names = {"Interactief onderzoeken", "Anatomie van de mens", "LLM Observatorium", "Galactisch Observatorium: met uitleg"}
+    observe_cards = []
+    for card in design_section.select(".tool-grid > .tool-card"):
+        heading = card.find("h2")
+        if heading and heading.get_text(" ", strip=True) in observe_names:
+            observe_cards.append(card.extract())
+    if len(observe_cards) != len(observe_names):
+        raise ValueError("Niet alle observatoria konden worden verplaatst")
+    observatory = BeautifulSoup(
+        '<section class="section" id="observatoria"><div class="wrap">'
+        '<div class="section-head"><div class="kicker">Interactief onderzoeken</div>'
+        '<div><h2>Vakinhoud en interactieve modellen</h2>'
+        '<p>Kies een vakgebied. Bekijk de uitleg en onderzoek zelf hoe het werkt.</p></div></div>'
+        '<div class="tool-grid"></div></div></section>', "html.parser"
+    ).section
+    grid = observatory.select_one(".tool-grid")
+    for title in ("Interactief onderzoeken", "Anatomie van de mens", "LLM Observatorium", "Galactisch Observatorium: met uitleg"):
+        grid.append(next(card for card in observe_cards if card.h2.get_text(" ", strip=True) == title))
+    design_section.insert_before(observatory)
+    tools_body = str(tools_soup)
     write(out, "tools/index.html", doc("Tools", tools_body, "/tools/", "tools", "EAI-tools voor analyse, ontwerp en mens-AI-taakverdeling."))
+    # Science Observatory: alleen de geselecteerde proefmodellen publiceren.
+    # tools/ is uitvoer en wordt telkens opnieuw opgebouwd.
+    science_source = Path(__file__).resolve().parent.parent / "content" / "science-observatory"
+    science_landing = science_source / "landing.html"
+    if not science_landing.is_file():
+        raise FileNotFoundError(f"Science Observatory catalogusbron ontbreekt: {science_landing}")
+    write(out, "tools/science-observatory/index.html",
+          doc("Interactief onderzoeken", science_landing.read_text(encoding="utf-8"),
+              "/tools/science-observatory/", "observatoria",
+              "Onderzoek natuurkunde, wiskunde, de Melkweg, anatomie, AI en sport met interactieve modellen."))
+    for slug in ("melkweg", "gravitatie-banen", "natuurkunde", "schuine-worp", "wiskunde-a", "wiskunde-b"):
+        source = science_source / "labs" / (slug + ".html")
+        if not source.is_file():
+            raise FileNotFoundError(f"Science Observatory-model ontbreekt: {source}")
+        write(out, f"tools/science-observatory/labs/{slug}/index.html",
+              source.read_text(encoding="utf-8"))
+
+    # Melkweg Lab: zelfstandige kinderversie naast het wetenschappelijke observatorium.
+    melkweg_lab_source = Path(__file__).resolve().parent.parent / "content" / "melkweg-lab" / "index.html"
+    if not melkweg_lab_source.is_file():
+        raise FileNotFoundError(f"Melkweg Lab-bron ontbreekt: {melkweg_lab_source}")
+    write(out, "tools/melkweg-lab/index.html", melkweg_lab_source.read_text(encoding="utf-8"))
+
+    # LO Aanvalslab: zelfstandige multiplayer-HTML, behouden na iedere volledige rebuild.
+    lo_lab_source = Path(__file__).resolve().parent.parent / "tools" / "lo-aanvalslab" / "index.html"
+    if not lo_lab_source.is_file():
+        raise FileNotFoundError(f"LO Aanvalslab-bron ontbreekt: {lo_lab_source}")
+    write(out, "tools/lo-aanvalslab/index.html", lo_lab_source.read_text(encoding="utf-8"))
+
+    # LO Aanvalslab: bewaar kalibratie en bronverwijzing bij elke herbouw.
+    for source_name in ("README.md", "extract_tracking.py", "tracking_metrics.json"):
+        evidence_path = lo_lab_source.parent / "calibratie" / "v13" / source_name
+        if not evidence_path.is_file():
+            raise FileNotFoundError(f"LO v13 meetbestand ontbreekt: {evidence_path}")
+        write(out, f"tools/lo-aanvalslab/calibratie/v13/{source_name}", evidence_path.read_text(encoding="utf-8"))
+
+
+
+    # LLM Observatorium: zelfstandige interactieve HTML, ongewijzigd publiceren.
+    llm_source = Path(__file__).resolve().parent.parent / "content" / "llm-observatorium" / "index.html"
+    if not llm_source.is_file():
+        raise FileNotFoundError(f"LLM Observatorium-bron ontbreekt: {llm_source}")
+    write(out, "tools/llm-observatorium/index.html", llm_source.read_text(encoding="utf-8"))
+
+    # ABYSS: behoud een zelfstandige HTML-bron, los van de gegenereerde uitvoermap.
+    abyss_source = Path(__file__).resolve().parent.parent / "content" / "abyss" / "ABYSS.html"
+    if not abyss_source.is_file():
+        raise FileNotFoundError(f"ABYSS-bron ontbreekt: {abyss_source}")
+    write(out, "tools/abyss/index.html", abyss_source.read_text(encoding="utf-8"))
+
+    # Losse tools blijven gescheiden van de websitevormgeving.
+    for slug, app in (("eaimesh", "start"), ("eaistudio", "studio")):
+        source = Path(__file__).resolve().parent.parent / "content" / slug
+        write(out, f"tools/{slug}/{app}/index.html", (source / f"{app}.html").read_text(encoding="utf-8"))
+        if (source / "pwa").is_dir():
+            shutil.copytree(source / "pwa", out / "tools" / slug / app, dirs_exist_ok=True)
+
     # WiHTML wordt als een geteste bronkopie uit de eigen GitHub-repository beheerd.
     # De studio gebruikt geen server voor lesgegevens of leerlingantwoorden.
     wihtml_source = Path(__file__).resolve().parent.parent / "content" / "wihtml" / "studio.html"
@@ -2629,6 +2754,8 @@ def build(sources: Path, out: Path) -> None:
     library_body = (wihtml_dir / "library.html").read_text(encoding="utf-8")
     write(out, "tools/wihtml/index.html", doc("WiHTML: maak je eigen wiskundeles", wihtml_body, "/tools/wihtml/", "tools", "Maak interactieve wiskundelessen, bekijk voorbeelden en werk verder in de Docentstudio."))
     write(out, "tools/wihtml/bibliotheek/index.html", doc("WiHTML lesbibliotheek", library_body, "/tools/wihtml/bibliotheek/", "tools", "Bekijk WiHTML-voorbeeldlessen en gebruik er een als startpunt."))
+    write(out, "tools/eaistudio/index.html", doc('EAIstudio', '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">EAIstudio</div><h1>Maak een presentatie die op jouw klik reageert.</h1><p class="lede">Bouw dia’s met tekst, beeld, animatie en interactie. Pas de huisstijl aan en bepaal wat vanzelf gaat en wat op jouw klik wacht. Je kunt de presentatie als zelfstandige HTML downloaden.</p><div class="button-row"><a class="button" href="/tools/eaistudio/studio/">Open EAIstudio</a><a class="button secondary" href="/nl/tools/">Alle tools</a></div></div></section><section class="section"><div class="wrap"><h2>Zo begin je</h2><p>De editor gebruikt de bestaande EAIdeck Studio 2.2.1. Werk snel met voorbeelden of open de volledige tijdlijn. Projecten blijven op je apparaat; bewaar een projectbestand of editor-HTML om later verder te werken.</p></div></section></main>', "/tools/eaistudio/", "tools", 'Bouw dia’s met tekst, beeld, animatie en interactie. Pas de huisstijl aan en bepaal wat vanzelf gaat en wat op jouw klik wacht. Je kunt de presentatie als zelfstandige HTML downloaden.'))
+    write(out, "tools/eaimesh/index.html", doc('EAImesh', '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">EAImesh</div><h1>Bekijk hoe een GitHub-repository in elkaar zit.</h1><p class="lede">EAImesh leest een openbare GitHub-repository en maakt de bestanden en hun samenhang zichtbaar. Kies wat je wilt bekijken en hoeveel detail je nodig hebt.</p><div class="button-row"><a class="button" href="/tools/eaimesh/start/">Open EAImesh</a><a class="button secondary" href="/nl/tools/">Alle tools</a></div></div></section><section class="section"><div class="wrap"><h2>Zo begin je</h2><p>Sleep de EAImesh-knop op de startpagina naar je bladwijzerbalk. Open daarna een openbare GitHub-repository en klik op die bladwijzer. EAImesh 0.6.1 draait daar in je browser; je hebt geen account bij EAI nodig.</p></div></section></main>', "/tools/eaimesh/", "tools", 'EAImesh leest een openbare GitHub-repository en maakt de bestanden en hun samenhang zichtbaar. Kies wat je wilt bekijken en hoeveel detail je nodig hebt.'))
     write(out, "tools/prompt-framework/index.html", doc("EAI Prompt Framework", load_content_fragment("prompt-framework-page.html"), "/tools/prompt-framework/", "prompt-framework", "Ontwerp een complete EAI-instructie vanuit doel, menselijke stap, AI-hulp, grenzen en controle."))
     write(out, "model-monitor/index.html", doc("AI (Act) Model Monitor", load_content_fragment("model-monitor-page.html"), "/model-monitor/", "model-monitor", "Vergelijk AI-modellen en landen, bekijk gebruik en incidenten, volg onderwijsontwikkelingen en de EU AI Act, en traceer cijfers naar hun bron."))
     write(out, "eai-tools-modules/index.html", redirect("/tools/"))
@@ -2660,7 +2787,8 @@ def build(sources: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/tools/eaigame/", "/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/lo-aanvalslab/", "/tools/sport-en-bewegen/", "/tools/sport-en-bewegen/opstellingen/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/labs/hartslag/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaiwork/", "/tools/html-galerij/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/statistieken/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls.append('/topo/')
     # The bilingual redesign is maintained in nl/ and en/. Preserve it during
     # the legacy article/tool build, including its current home and assets.
     repo_root = Path(__file__).resolve().parent.parent
@@ -2670,16 +2798,37 @@ def build(sources: Path, out: Path) -> None:
             shutil.copytree(language_source, out / language, dirs_exist_ok=True)
             urls.extend("/" + str(page.relative_to(repo_root).parent) + "/"
                         for page in language_source.rglob("index.html"))
+    # These model pages are materialized during the subsequent UI preparation.
+    # They belong in the public sitemap even though they are not source index.html files.
+    urls.extend(["/nl/model/", "/en/model/"])
+    # EAIgit is a public tool with three indexable entry pages.
+    urls.extend(["/tools/eaigit/", "/tools/eaigit/hulp/", "/tools/eaigit/prompts/"])
     # Current redesigned aliases are also maintained as page sources. Older
     # article and toolbox pages continue to come from their content/generator.
     for page in repo_root.rglob("*.html"):
         relative = page.relative_to(repo_root)
-        if relative.parts[0] in {"content", "nl", "en", "site-build"}:
+        # TOPO has its own complete publication path; the generic site build must not copy
+        # an isolated TOPO landing page without its settings, map and data files.
+        if relative.parts[0] in {"content", "nl", "en", "site-build", "topo"}:
+            continue
+        # tools/index.html is generated above from the current Tools catalogue.
+        # The old refreshed output must not overwrite that newly built page.
+        if relative.as_posix() == "tools/index.html":
             continue
         if 'class="eai-refresh' in page.read_text() or relative.as_posix() == "tools/van-proces-naar-prompt/index.html":
             target = out / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(page, target)
+    # Only the clearly marked demo snapshot ships with the generated site.
+    # Live data.json is published separately by Cloudflare, never overwritten by builds.
+    demo_source = repo_root / "statistieken" / "demo.json"
+    if demo_source.is_file():
+        (out / "statistieken").mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(demo_source, out / "statistieken" / "demo.json")
+    collector = repo_root / "statistieken" / "collect.php"
+    if collector.is_file():
+        (out / "statistieken").mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(collector, out / "statistieken" / "collect.php")
     # Shared styles and behavior belong to the bilingual redesign as well.
     if (repo_root / "nl").is_dir():
         shutil.copytree(repo_root / "assets", out / "assets", dirs_exist_ok=True)
@@ -2694,6 +2843,56 @@ def build(sources: Path, out: Path) -> None:
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
+    # EAIgit is a separate browser wizard: publish only its four intended pages.
+    # Do not let the general site generator rewrite their UI or JavaScript.
+    eai_routes = (
+        "tools/eaigit/index.html",
+        "tools/eaigit/hulp/index.html",
+        "tools/eaigit/prompts/index.html",
+        "tools/projecthulp/index.html",
+    )
+    for relative in eai_routes:
+        source = repo_root / relative
+        if not source.is_file():
+            raise FileNotFoundError(f"Missing EAIgit page: {source}")
+        destination = out / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+    for relative in (
+        "assets/eaigit/wizard.mjs",
+        "assets/projecthulp/analyse.mjs",
+        "assets/projecthulp/inhoudscontrole.mjs",
+        "assets/projecthulp/onderzoek-worker.mjs",
+    ):
+        if not (out / relative).is_file():
+            raise FileNotFoundError(f"Missing EAIgit browser asset: {relative}")
+    # Publish only the explicit app asset allowlist. Never copy sources/
+    # (tools/ict-scan/bronnen), which stay readable through GitHub only.
+    ict_scan_source = repo_root / "tools" / "ict-scan"
+    for filename in ("index.html", "style.css", "monitor.css", "record-taxonomy.js", "inventory-index.js", "report-print.js", "report-print.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js", "ux-clarity.css", "studio-interface.css", "relationship-orbit.css", "relationship-atlas.js", "relationship-atlas.css", "document-library.js", "document-library.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", ".htaccess", "README.md"):
+        source_file = ict_scan_source / filename
+        if not source_file.is_file():
+            raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")
+        destination_file = out / "tools" / "ict-scan" / filename
+        destination_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source_file, destination_file)
+
+    # A cached older validator cannot read newer registerFiles keys. Bind the
+    # browser's profile validator URL to its actual published contents.
+    ict_path = out / "tools" / "ict-scan"
+    profile_hash = hashlib.sha256((ict_path / "assurance" / "profile.js").read_bytes()).hexdigest()[:16]
+    ict_html_file = ict_path / "index.html"
+    ict_html = ict_html_file.read_text(encoding="utf-8")
+    ict_html, replaced = re.subn(
+        r'(src="\./assurance/profile\.js\?v=)[^"]+(")',
+        lambda match: match.group(1) + profile_hash + match.group(2),
+        ict_html,
+        count=1,
+    )
+    if replaced != 1:
+        raise ValueError("ICT-scan: de versiegebonden organisatieprofielvalidator ontbreekt")
+    ict_html_file.write_text(ict_html, encoding="utf-8")
+
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.
     leif_source = repo_root / "leif"
@@ -2709,6 +2908,71 @@ def build(sources: Path, out: Path) -> None:
         shutil.rmtree(private_leif_sources)
     items = "".join(f"<url><loc>{BASE_URL}{path}</loc></url>" for path in urls)
     write(out, "sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>')
+    add_cloudflare_beacon_to_public_routes(out, urls)
+
+
+# Public Cloudflare Web Analytics browser beacon. This token is a public site
+# identifier used by the browser, NOT a privileged Cloudflare API credential.
+CLOUDFLARE_PUBLIC_BEACON = (
+    '<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+    'data-cf-beacon=\'{"token":"1aa5d5810d5a48e7bb8e5b2bac573e74"}\'></script>'
+)
+EAI_FIRST_PARTY_TRACKER = '<script defer src="/assets/site-analytics.js"></script>'
+# These are reviewed standalone HTML files whose publication tests require exact bytes.
+# They may get RUM later through an explicit, separately tested source change.
+CLOUDFLARE_EXACT_SOURCE_ROUTES = {
+    # EAIgit analyses potentially private ZIPs locally; no site analytics.
+    "/tools/eaigit/",
+    "/tools/eaigit/hulp/",
+    "/tools/eaigit/prompts/",
+    "/tools/wihtml/studio/",
+    "/tools/wihtml/voorbeeld/",
+    "/tools/abyss/",
+    "/tools/melkweg-lab/",
+    "/tools/llm-observatorium/",
+    "/tools/eaimesh/start/",
+    "/tools/eaistudio/studio/",
+}
+
+
+CLOUDFLARE_ANALYTICS_EXCLUDED = {
+    "leif", "houseoftalents", "admin", "beheer", "login", "logout",
+    "auth", "private", "backoffice", "account", "accounts", "profile",
+    "profiel", "continue", "multitenant", "dossier", "html-galerij",
+}
+
+
+def add_cloudflare_beacon_to_public_routes(out: Path, public_urls: list[str]) -> None:
+    """Measure only sitemap-listed public pages, never private/administrative routes.
+
+    Insertion is text-only to avoid reserializing standalone educational HTML.
+    This is intentionally idempotent because published nl/en HTML becomes source.
+    """
+    for route in set(public_urls):
+        if not route.startswith("/") or not route.endswith("/") or ".." in route:
+            continue
+        if route in CLOUDFLARE_EXACT_SOURCE_ROUTES or route.startswith("/tools/science-observatory/labs/"):
+            continue
+        segments = [part for part in route.split("/") if part]
+        if any(part.casefold() in CLOUDFLARE_ANALYTICS_EXCLUDED for part in segments):
+            continue
+        page = out.joinpath(*segments, "index.html")
+        if not page.is_file():
+            continue
+        html = page.read_text(encoding="utf-8")
+        scripts = ""
+        if "static.cloudflareinsights.com/beacon.min.js" not in html:
+            scripts += CLOUDFLARE_PUBLIC_BEACON
+        if "/assets/site-analytics.js" not in html:
+            scripts += EAI_FIRST_PARTY_TRACKER
+        if not scripts:
+            continue
+        revised, changed = re.subn(
+            r"</head\s*>", lambda match: scripts + match.group(0),
+            html, count=1, flags=re.I,
+        )
+        if changed:
+            page.write_text(revised, encoding="utf-8")
 
 
 # Shared editorial finish for generated legacy pages. Source content and URLs stay intact.

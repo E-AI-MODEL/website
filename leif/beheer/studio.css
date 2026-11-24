@@ -1,0 +1,93 @@
+
+/* LEIF Studio: compact beheer met drie werkvlakken en rustige kleine typografie. */
+#workspace{font-size:12px;line-height:1.45}
+#workspace .tag{font-size:10px;letter-spacing:.09em}
+#workspace h1{font-size:19px;margin:2px 0 6px}
+#workspace h2{font-size:15px;margin:3px 0 7px}
+#workspace h3{font-size:13px;margin:3px 0 6px}
+#workspace .sub,#workspace .meta,#workspace .save-status{font-size:11px;line-height:1.4}
+#workspace .btn{font-size:11px;min-height:30px;padding:5px 9px;border-radius:7px}
+#workspace .panel{padding:11px 13px;border-radius:10px;margin:7px 0}
+#workspace .field{margin:7px 0;gap:3px}
+#workspace .field label{font-size:11px}
+#workspace .field input,#workspace .field textarea,#workspace .field select{font-size:12px;padding:7px 9px;line-height:1.4}
+#workspace .navtabs{gap:5px;flex-wrap:wrap;margin:9px 0}
+#workspace .navtabs button{padding:6px 10px;font-size:11px;border-radius:6px}
+#workspace .detail-grid{grid-template-columns:minmax(190px,225px) minmax(0,1fr);gap:10px}
+#workspace .person{padding:7px 9px;gap:1px;font-size:12px;min-height:44px}
+#workspace .person strong{font-size:12px}
+#workspace .person small,#workspace .person .status{font-size:10px}
+#workspace .list{max-height:72vh}
+#workspace #newPanel{padding:9px 12px}
+#workspace #inviteForm{gap:8px;align-items:end}
+#workspace #inviteForm .field{margin:0;max-width:250px;flex:1}
+#workspace #newPanel h2{font-size:13px}
+#workspace #newPanel>.meta{display:none}
+#workspace #personMeta{margin:2px 0}
+#workspace #detail{min-width:0}
+#workspace .studio-grid{display:grid;grid-template-columns:minmax(155px,205px) minmax(190px,1fr) minmax(190px,.95fr);gap:10px;align-items:start}
+#workspace .studio-pane{background:#fafbfb;border:1px solid #dce4e7;border-radius:9px;padding:9px;min-width:0}
+#workspace .studio-head{display:flex;gap:7px;justify-content:space-between;align-items:center;margin-bottom:9px}
+#workspace .studio-head strong{font-size:11px}
+#workspace .studio-stack{display:grid;gap:5px;max-height:460px;overflow-y:auto}
+#workspace .studio-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px;align-items:center;border:1px solid #dbe3e7;background:#fff;border-radius:7px;padding:5px}
+#workspace .studio-item[data-active="true"]{border-color:#496f88;background:#edf4f7}
+#workspace .studio-item-name{min-width:0;text-align:left;background:transparent;border:0;font-size:11px;font-weight:600;color:#283e4e;padding:3px;overflow-wrap:anywhere}
+#workspace .studio-actions{display:flex;gap:1px}
+#workspace .studio-mini{width:23px;height:23px;padding:0;border:0;background:transparent;border-radius:5px;color:#546b79;font-size:12px;line-height:1}
+#workspace .studio-mini:hover{background:#dbe8ee}
+#workspace .studio-options{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px}
+#workspace .studio-options button{background:#fff;border:1px solid #cedbe2;border-radius:7px;padding:6px 5px;font-size:11px;color:#2c4557;cursor:pointer}
+#workspace .studio-pane input,#workspace .studio-pane textarea{width:100%;border:1px solid #cbd8de;border-radius:7px;background:white;padding:7px 8px;color:#243746;font:12px/1.5 system-ui,sans-serif}
+#workspace .studio-pane textarea{min-height:130px;resize:vertical;white-space:pre-wrap}
+#workspace .studio-pane label{display:block;font-size:10px;font-weight:700;color:#486274;margin:10px 0 4px}
+#workspace .studio-pane label:first-child{margin-top:0}
+#workspace .studio-pane .studio-check{display:flex;align-items:center;gap:7px;font-size:11px;margin:9px 0}
+#workspace .studio-pane .studio-check input{width:auto}
+#workspace .studio-stage{background:#fff;border:1px solid #dce4e7;border-radius:8px;padding:12px;max-height:570px;overflow-y:auto;min-height:165px}
+#workspace .studio-stage-card{background:#fff;border-bottom:1px solid #e5ecef;padding:11px 0;overflow-wrap:anywhere}
+#workspace .studio-stage-card:last-child{border-bottom:0}
+#workspace .studio-stage-card h4{font:650 12px/1.4 system-ui,sans-serif;margin:0 0 5px}
+#workspace .studio-stage-card p{white-space:pre-wrap;font-size:11px;line-height:1.65;margin:0;color:#4e6370}
+#workspace .studio-music{border:1px solid #dce5e8;background:#f6fafb;border-radius:7px;padding:8px;margin:7px 0;font-size:10px}
+#workspace .studio-status{margin:7px 0;font-size:11px;min-height:18px;color:#3e6b60}
+#workspace .studio-status.error{color:#a43d39}
+#workspace .studio-toolbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:8px 0}
+#workspace .studio-toolbar .btn{flex:0 0 auto}
+#workspace .studio-muted{font-size:10px;color:#647c89}
+#workspace #studioPreviewBadge{font-size:10px;color:#537080}
+@media(max-width:1150px){#workspace .studio-grid{grid-template-columns:minmax(150px,205px) 1fr}#workspace .studio-preview-pane{grid-column:1/-1}}
+@media(max-width:760px){#workspace .detail-grid{grid-template-columns:1fr}#workspace .studio-grid{grid-template-columns:1fr}#workspace .studio-preview-pane{grid-column:auto}#workspace .list{max-height:180px}main{padding:10px 12px 35px}#workspace .panel{padding:10px}}
+
+/* Dagelijkse beheeracties direct in beeld, overige formulieren pas na een klik. */
+#workspace .workspace-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #dbe4e7;padding:0 0 7px;margin-bottom:7px}
+#workspace .workspace-heading h1{font-size:16px;letter-spacing:-.02em;margin:0}
+#workspace .workspace-heading>.site-edit-toolbar{margin:0;gap:5px}
+#workspace .workspace-heading>.site-edit-toolbar .btn{font-size:11px;padding:5px 9px}
+#workspace #accountSettings:not([open]){display:none!important}
+#workspace #accountSettings[open]{max-width:540px;margin:8px 0;padding:12px 15px;border-color:#c8dbe5}
+#workspace #accountSettings[open] summary{font-size:12px}
+#workspace #peopleWorkspace>.toolbar{display:flex;gap:6px;align-items:center;margin:0 0 7px}
+#workspace #peopleWorkspace>.toolbar label{font-size:10px;color:#5e7888}
+#workspace #peopleWorkspace>.toolbar select{width:125px;max-width:36vw;height:30px;padding:4px 6px;font-size:11px}
+#workspace #peopleWorkspace>.toolbar #reload{margin:0}
+#workspace #newPanel{padding:0;margin:0 0 8px;background:transparent;border:0}
+#workspace #newPanel>summary{display:inline-flex;align-items:center;list-style:none;cursor:pointer;border:1px solid #cbdce3;background:#fff;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:650;color:#2c4657;min-height:30px}
+#workspace #newPanel>summary::-webkit-details-marker{display:none}
+#workspace #newPanel[open]{background:#fff;padding:9px 11px 11px;border:1px solid #dce4e7;border-radius:8px}
+#workspace #newPanel[open]>summary{margin-bottom:7px;background:#eaf2f6}
+#workspace #newPanel[open]>.meta{display:block;max-width:70ch;font-size:10px}
+#workspace #newPanel[open] #inviteForm{display:flex;align-items:end;gap:7px;flex-wrap:wrap}
+#workspace #newPanel[open] #inviteForm .field{min-width:180px}
+#workspace #newPanel[open] #inviteForm input{max-width:235px}
+#workspace .detail-grid{margin-top:4px}
+#workspace .detail-grid aside>.actions{gap:7px;margin:0 0 5px}
+#workspace .detail-grid aside h2{margin:0;font-size:12px}
+#workspace .detail-grid aside #peopleCount{font-size:10px}
+#workspace #detail{margin:0}
+#workspace #empty{margin:0;padding:16px}
+#workspace #detail #personName{font-size:16px}
+#workspace #detail #personStatus{font-size:9px}
+#workspace #detail #personMeta{font-size:10px}
+#workspace #detail .navtabs{margin:6px 0 9px;padding:0 0 6px}
+@media(max-width:760px){#workspace .workspace-heading{align-items:flex-start}#workspace #peopleWorkspace>.toolbar{margin-bottom:6px}}

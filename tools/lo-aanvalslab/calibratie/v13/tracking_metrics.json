@@ -1,0 +1,167 @@
+{
+  "version": "13",
+  "method": "separate sport tracking and source limits",
+  "generated_at": "2026-11-12T13:48:27Z",
+  "sports": {
+    "soccer": {
+      "status": "measured",
+      "source": "https://github.com/metrica-sports/sample-data",
+      "sampling_hz": 25,
+      "files": [
+        {
+          "game": 1,
+          "team": "Home",
+          "frames": 145006,
+          "players": 14,
+          "ball_column": true,
+          "sampled_seconds": 5800.2
+        },
+        {
+          "game": 1,
+          "team": "Away",
+          "frames": 145006,
+          "players": 14,
+          "ball_column": true,
+          "sampled_seconds": 5800.2
+        },
+        {
+          "game": 2,
+          "team": "Home",
+          "frames": 141156,
+          "players": 14,
+          "ball_column": true,
+          "sampled_seconds": 5646.2
+        },
+        {
+          "game": 2,
+          "team": "Away",
+          "frames": 141156,
+          "players": 12,
+          "ball_column": true,
+          "sampled_seconds": 5646.2
+        }
+      ],
+      "outfield_speed_0_6s_mps": {
+        "n": 6096429,
+        "p10": 0.395,
+        "p50": 1.389,
+        "p75": 2.475,
+        "p90": 3.669,
+        "mean": 1.773
+      },
+      "nearest_opponent_to_ball_m_if_possession_proxy": {
+        "n": 12145,
+        "p10": 1.58,
+        "p50": 4.884,
+        "p75": 8.24,
+        "p90": 12.347,
+        "mean": 6.317
+      },
+      "ball_nearest_player_m": {
+        "n": 12233,
+        "p10": 0.034,
+        "p50": 0.147,
+        "p75": 0.617,
+        "p90": 1.74,
+        "mean": 0.488
+      },
+      "limits": [
+        "Snelheden inclusief alle loopfases en keepers; geen maximale sprintsnelheden.",
+        "Bezit afgeleid van balafstand <2.5m, niet gevalideerd met events.",
+        "Volwassen volledig veld en 11 tegen 11: geen directe LO 3 tegen 2 schatting."
+      ]
+    },
+    "handball": {
+      "status": "measured",
+      "source": "https://zenodo.org/records/12065335",
+      "rows": 84690,
+      "possessions": 730,
+      "units": "m/s; 1-second displacement",
+      "defence_mps": {
+        "n": 40257,
+        "p10": 0.251,
+        "p50": 0.797,
+        "p75": 1.373,
+        "p90": 2.654,
+        "mean": 1.139
+      },
+      "attack_mps": {
+        "n": 36607,
+        "p10": 0.315,
+        "p50": 1.157,
+        "p75": 2.001,
+        "p90": 3.182,
+        "mean": 1.467
+      },
+      "limits": [
+        "Alleen één damesamateurteam; overige verdedigers niet gevolgd.",
+        "IDs wisselen per balbezit; alleen opeenvolgende metingen binnen één bezit meegenomen.",
+        "1 Hz onderschat pieksnelheid/versnelling; contact- en reactietijden NIET afleidbaar."
+      ]
+    },
+    "basketball": {
+      "status": "measured",
+      "source": "https://github.com/sealneaward/nba-movement-data",
+      "game": "2016-01-01 CHA@TOR",
+      "event_files": 1,
+      "valid_frames": 57036,
+      "raw_event_moments": 211445,
+      "sample_frame_speed_mps": {
+        "n": 557939,
+        "p10": 0.402,
+        "p50": 1.556,
+        "p75": 2.751,
+        "p90": 3.921,
+        "mean": 1.887
+      },
+      "ball_to_nearest_player_m": {
+        "n": 57036,
+        "p10": 0.221,
+        "p50": 0.468,
+        "p75": 0.68,
+        "p90": 1.317,
+        "mean": 0.641
+      },
+      "limits": [
+        "Één professionele wedstrijd uit 2015/16; 5 tegen 5 geen 3 tegen 2.",
+        "Snelheid omvat aanval én verdediging (geen betrouwbare bezitclassificatie).",
+        "Dubbeltellingen rond moment-overlappen mogelijk; geen directe interceptiekans."
+      ]
+    },
+    "hockey": {
+      "status": "measured",
+      "source": "https://github.com/felicitylord/Hockey-Analysis",
+      "file_count": 74,
+      "row_count": 234806,
+      "coded_action_row_count": 63470,
+      "categories": {
+        "Passing": 66611,
+        "Game Actions Att": 63470,
+        "Passing Sequence": 14282,
+        "Attack": 12972,
+        "Turnover Att": 12512,
+        "Stoppages Att": 11827,
+        "D50 Att": 9878,
+        "Established Attack": 9776,
+        "A50 Att": 9533,
+        "D25 Att": 7351,
+        "A25 Att": 6865,
+        "Counter Attack": 4350,
+        "AC Att": 3321,
+        "Goal Shot Att": 1509,
+        "Attack Set Piece": 549
+      },
+      "action_rows_with_descriptor": {
+        "pass": 40984,
+        "maintain": 34331,
+        "gain": 19607,
+        "turnover": 9087
+      },
+      "limits": [
+        "Gecodeerde veldzone-events overlappen per tijdstip; getelde descriptor-rijen zijn geen onafhankelijke passes.",
+        "Geen volledige x/y-trajecten van verdedigers; contacttijd en intercepties niet direct te fitten.",
+        "Data over professionele wedstrijden zonder schaalverantwoording voor LO."
+      ]
+    }
+  }
+}

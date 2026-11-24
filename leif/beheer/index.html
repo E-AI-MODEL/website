@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; frame-src 'self'; img-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://ngcyfbstajfcfdhlelbz.supabase.co; frame-src 'self'; img-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <title>LEIF | Beheer</title>
 <style>
 :root{--paper:#f7f4ef;--white:#fffdfc;--ink:#243746;--muted:#607783;--line:#d9e2e6;--soft:#e8f0f3;--blue:#426c82;--warning:#924232}
@@ -28,22 +28,46 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 .site-edit-status{font-size:13px;color:var(--muted);min-height:22px}
 .site-edit-history button{margin:4px 0}
 @media(max-width:830px){.site-edit-grid{grid-template-columns:1fr}.site-frame{min-height:440px}.site-edit-side{max-height:none}}
+#accountSettings{scroll-margin-top:110px}#accountSettings summary{cursor:pointer;font-weight:750}
+/* Compact beheer: minder ruimte, meer gegevens zichtbaar. */
+body{font-size:14px;line-height:1.45}main{max-width:1440px;padding:14px 20px 44px}.mast-inner{max-width:1440px;padding:9px 20px}
+#workspace h1{font:650 22px/1.2 system-ui,sans-serif;margin:4px 0}#workspace h2{font:650 18px/1.3 system-ui,sans-serif;margin:5px 0 9px}#workspace h3{font:650 15px/1.3 system-ui,sans-serif;margin:5px 0 8px}
+#workspace .tag{margin:0}#workspace .sub{font-size:12px;margin:5px 0 8px}#workspace .panel{padding:13px;border-radius:8px;margin:9px 0}
+.detail-grid{grid-template-columns:280px minmax(0,1fr);gap:12px;margin-top:10px}.person{padding:8px 10px;border-radius:7px}.list{gap:4px}
+.field{gap:4px;margin:9px 0}.field input,.field textarea,.field select,select{padding:7px 9px}.field textarea{min-height:115px;line-height:1.5}
+.btn{min-height:34px;padding:6px 11px;font-size:12px}.toolbar{margin:9px 0}.navtabs{margin:10px 0}.navtabs button{padding:6px 9px}
+#testerPanel h2,#testerPanel>.sub{display:none}#testerPanel{display:none!important}#testerPanel{padding:10px}#testerPanel .field{margin:2px 0}
+#testerList{display:none!important}#testerDetail{grid-column:2}.site-frame{min-height:520px}.site-edit-side{max-height:590px}
+@media(max-width:850px){.detail-grid{grid-template-columns:1fr}#testerDetail{grid-column:auto}}
 </style>
+<link rel="stylesheet" href="/leif/beheer/studio.css">
 </head>
 <body>
-<header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
+<header class="mast"><div class="mast-inner"><a href="/leif/" class="brand">LEIF <span>Beheer</span></a><div class="actions"><span class="meta" id="identity"></span><button id="openAccount" type="button" class="btn secondary compact" hidden>Mijn beheerinlog</button><button id="logout" type="button" class="btn secondary compact" hidden>Uitloggen</button></div></div></header>
 <main>
 <section id="login" class="panel login" hidden>
-<p>Ga terug naar LEIF en vul VIS in om een inloglink te ontvangen.</p>
+<p><a href="/leif/?beheer=1">Ga naar de beheerinlog</a></p>
 </section>
 <p id="loading" class="meta" role="status">Beheer openen...</p>
+<button id="retrySession" class="btn secondary" type="button" hidden>Opnieuw proberen</button>
 <section id="workspace" hidden>
-<div class="tag">LEIF beheer</div><h1>Deelnemers en verhalen</h1>
-<p class="sub">Je kunt hier deelnemers beheren, hun verhalen schrijven en de teksten van LEIF aanpassen.</p>
-<div class="site-edit-toolbar"><button id="showPeople" type="button" class="btn secondary compact" aria-pressed="true">Deelnemers en verhalen</button><button id="showSiteEditor" type="button" class="btn secondary compact" aria-pressed="false">Teksten beheren</button></div>
+<div class="workspace-heading"><h1>LEIF Studio</h1><div class="site-edit-toolbar"><button id="showPeople" type="button" class="btn secondary compact" aria-pressed="true">Deelnemers en verhalen</button><button id="showSiteEditor" type="button" class="btn secondary compact" aria-pressed="false">Teksten beheren</button></div></div>
+<details id="accountSettings" class="panel" data-leif-locked>
+<summary>Mijn beheerinlog</summary>
+<h2>E-mailadres en wachtwoord</h2>
+<p class="sub">Stel hier je inloggegevens in voor volgende bezoeken. Je blijft op dit apparaat ingelogd totdat je zelf uitlogt of je sessie verloopt.</p>
+<form id="accountForm">
+<div class="field"><label for="accountEmail">E-mailadres</label><input id="accountEmail" type="email" name="username" autocomplete="username" maxlength="254" required></div>
+<div class="field"><label for="accountPassword">Nieuw wachtwoord</label><input id="accountPassword" type="password" name="new-password" autocomplete="new-password" minlength="6" maxlength="1000" required aria-describedby="accountHelp"></div>
+<p id="accountHelp" class="meta">Gebruik minstens 6 tekens. Je wachtwoord wordt niet in deze browser opgeslagen.</p>
+<div class="field"><label for="accountRepeat">Herhaal wachtwoord</label><input id="accountRepeat" type="password" autocomplete="new-password" minlength="6" maxlength="1000" required></div>
+<button id="saveAccount" type="submit" class="btn">Bewaar mijn inloggegevens</button>
+<p id="accountStatus" class="save-status" role="status" aria-live="polite"></p>
+</form>
+</details>
 <section id="siteEditor" class="panel" hidden>
 <h2>Teksten beheren</h2>
-<p class="sub">Kies een pagina en klik op een tekst in het voorbeeld. Je wijzigingen blijven een concept totdat je op Publiceren klikt. Het versleutelde persoonlijke KEI-verhaal is hier niet bewerkbaar.</p>
+<p class="sub">Kies een pagina en klik op een tekst in het voorbeeld. Met Opslaan voor iedereen wordt je wijziging de vaste tekst op LEIF. Je kunt ook eerst een concept bewaren. Het versleutelde persoonlijke KEI-verhaal is hier niet bewerkbaar.</p>
 <div class="site-edit-toolbar">
 <label for="sitePage">Pagina</label>
 <select id="sitePage" aria-label="Kies een pagina">
@@ -67,7 +91,8 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <div class="field"><label for="siteEditInput">Tekst</label><textarea id="siteEditInput" maxlength="6000" rows="7"></textarea></div>
 <div class="meta">Oorspronkelijk</div><p id="siteOriginal" class="site-original"></p>
 <div class="site-edit-toolbar">
-<button id="siteSave" class="btn" type="button">Bewaar concept</button>
+<button id="siteApply" class="btn" type="button">Opslaan voor iedereen</button>
+<button id="siteSave" class="btn secondary" type="button">Bewaar concept</button>
 <button id="sitePublish" class="btn secondary" type="button">Publiceren</button>
 <button id="siteUnpublish" class="btn secondary" type="button">Publicatie terugnemen</button>
 </div>
@@ -80,9 +105,9 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <div id="peopleWorkspace">
 <div class="toolbar"><label for="tenant">Omgeving</label><select id="tenant" aria-label="Kies een LEIF-omgeving"></select><button id="reload" type="button" class="btn secondary compact">Vernieuwen</button></div>
 <section class="panel" id="testerPanel" hidden>
-<h2>Testers van de LEIF-proef</h2>
+<h2>Bestaande proefregistratie</h2>
 <p class="sub">Voeg iemand toe aan de bestaande proef. Iedere tester krijgt een eigen code om antwoorden te bewaren en later verder te gaan.</p>
-<form id="testerForm" class="actions"><div class="field"><label for="testerName">Naam tester</label><input id="testerName" maxlength="120" required placeholder="Naam tester"></div><button type="submit" class="btn">Voeg tester toe</button></form>
+<form id="testerForm" class="actions"><div class="field"><label for="testerName">Naam deelnemer</label><input id="testerName" maxlength="120" required placeholder="Naam tester"></div><button type="submit" class="btn">Voeg deelnemer toe</button></form>
 <p id="testerStatus" class="save-status" role="status" aria-live="polite"></p>
 <div id="testerInvite" hidden></div>
 <h3>Testers</h3>
@@ -94,12 +119,12 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <dl id="testerAnswers"></dl>
 </section>
 </section>
-<div class="panel" id="newPanel">
-<h2>Nieuwe deelnemer</h2>
+<details class="panel" id="newPanel">
+<summary>+ Nieuwe deelnemer</summary>
 <p class="meta">Vul de naam in en maak een persoonlijke toegangscode. De code wordt één keer getoond. Bewaar of verstuur hem zelf via een veilige weg.</p>
 <form id="inviteForm" class="actions"><div class="field"><label for="newName">Naam</label><input id="newName" maxlength="120" required placeholder="Naam deelnemer"></div><button type="submit" class="btn">Maak deelnemer en code</button></form>
 <div id="codePanel" hidden></div>
-</div>
+</details>
 <div class="detail-grid">
 <aside aria-label="Deelnemers">
 <div class="actions"><h2>Deelnemers</h2><span id="peopleCount" class="meta"></span></div>
@@ -111,10 +136,39 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 <div class="tag" id="personStatus">Deelnemer</div><h2 id="personName">Deelnemer</h2>
 <p id="personMeta" class="meta"></p>
 <div class="navtabs" id="tabs">
+<button type="button" data-tab="blocks" aria-current="false">Persoonlijke studio</button>
 <button type="button" data-tab="story" aria-current="page">Verhaal schrijven</button>
 <button type="button" data-tab="answers">Antwoorden lezen</button>
 <button type="button" data-tab="settings">Naam en toegang</button>
 </div>
+<div id="blocksTab" hidden>
+ <div class="studio-toolbar">
+  <button class="btn" id="studioSave" type="button">Bewaar concept</button>
+  <button class="btn secondary" id="studioPublish" type="button">Publiceer voor deelnemer</button>
+  <button class="btn secondary" id="studioUnpublish" type="button">Haal onderdelen weg</button>
+  <span class="studio-muted">Alleen voor deze deelnemer. Andere dossiers blijven ongewijzigd.</span>
+ </div>
+ <p class="studio-status" id="studioStatus" role="status" aria-live="polite"></p>
+ <div class="studio-grid">
+  <section class="studio-pane">
+   <div class="studio-head"><strong>Onderdelen</strong><span class="studio-muted" id="studioCount">0 / 24</span></div>
+   <div id="studioBlockList" class="studio-stack"></div>
+   <div class="studio-options">
+    <button data-studio-add="text" type="button">+ Tekst</button>
+    <button data-studio-add="heading" type="button">+ Kop</button>
+    <button data-studio-add="spotify" type="button">+ Spotify</button>
+   </div>
+  </section>
+  <section class="studio-pane">
+   <div class="studio-head"><strong>Bewerken</strong><span class="studio-muted" id="studioOwner"></span></div>
+   <div id="studioEditor"></div>
+  </section>
+  <section class="studio-pane studio-preview-pane">
+   <div class="studio-head"><strong>Voorbeeld</strong><span id="studioPreviewBadge"></span></div>
+   <div class="studio-stage" id="studioPreview"></div>
+  </section>
+ </div>
+ </div>
 <div id="storyTab">
 <p class="sub">Je concept wordt tijdens het schrijven opgeslagen. Met <strong>Publiceren</strong> wordt de tekst zichtbaar in de persoonlijke omgeving van de deelnemer.</p>
 <div class="field"><label for="textIntro">Inleiding</label><textarea id="textIntro" rows="6" placeholder="Een korte, persoonlijke opening."></textarea></div>
@@ -149,74 +203,124 @@ main{max-width:1160px;margin:auto;padding:42px 24px 120px}.tag{font-weight:800;c
 </div>
 </section>
 </main>
+<script src="/leif/beheersessie.js"></script>
 <script>
 'use strict';
 const endpoint='https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-admin-console';
 const fields={inleiding:'textIntro',blik_van_een_ander:'textOther',verder_kijken:'textFurther',slotwoord:'textClosing'};
 const E=id=>document.getElementById(id);
-let auth=null,tenants=[],tenant=null,participants=[],selected=null,documentState=null,tab='story',dirty=false,busy=false,storyTimer=null;
+let auth=null,tenants=[],tenant=null,participants=[],selected=null,documentState=null,tab='blocks',dirty=false,busy=false,storyTimer=null;
 const el=(tag,cls,content)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=content;return n};
 const show=(id,visible)=>E(id).hidden=!visible;
 const status=(msg,error=false)=>{E('storyStatus').textContent=msg;E('storyStatus').classList.toggle('error',error)};
 function setBusy(on){busy=on;document.querySelectorAll('#detail button,#inviteForm button').forEach(b=>b.disabled=on)}
-function changeTab(name){tab=name;for(const b of E('tabs').querySelectorAll('button'))b.setAttribute('aria-current',b.dataset.tab===name?'page':'false');show('storyTab',name==='story');show('answersTab',name==='answers');show('settingsTab',name==='settings')}
-async function request(action,extra={},retry=true){
- const payload=JSON.stringify({action,...extra});
- const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json',...(auth?.access_token?{Authorization:'Bearer '+auth.access_token}:{})},credentials:'omit',cache:'no-store',body:payload});
- const data=await response.json().catch(()=>({error:'server_unavailable'}));
- if(response.status===401&&retry&&auth?.refresh_token&&action!=='login'&&action!=='refresh'){
-  const refreshed=await request('refresh',{refresh_token:auth.refresh_token},false);
-  auth=refreshed;saveSession();return request(action,extra,false);
- }
- if(!response.ok){const err=new Error(data.error||'server_unavailable');err.status=response.status;throw err}
- return data;
+function changeTab(name){tab=name;for(const b of E('tabs').querySelectorAll('button'))b.setAttribute('aria-current',b.dataset.tab===name?'page':'false');show('storyTab',name==='story');show('blocksTab',name==='blocks');show('answersTab',name==='answers');show('settingsTab',name==='settings')}
+const adminSession=window.LeifAdminSession;
+// Toon ook antwoorden uit oude proefregistraties in dezelfde werkruimte.
+document.querySelector('.detail-grid')?.append(E('testerDetail'));
+
+async function request(action,extra={}){
+ const result=await adminSession.request(action,extra);
+ auth=adminSession.read();return result;
 }
-function saveSession(){try{sessionStorage.setItem('leif-admin-session-v1',JSON.stringify({access_token:auth.access_token,refresh_token:auth.refresh_token,tenants}))}catch{}}
+function accountIdentity(){
+ E('identity').textContent=auth?.user_email||'Beheerder';
+ E('accountEmail').value=auth?.pending_email||auth?.user_email||'';
+ const allowed=tenants.some(t=>t.slug==='leif'&&t.role==='manager');
+ E('accountSettings').hidden=!allowed;E('openAccount').hidden=!allowed;
+ if(auth?.pending_email)E('accountStatus').textContent='Bevestig '+auth.pending_email+' via de e-mail. Je huidige adres blijft bruikbaar tot de wijziging is bevestigd.';
+}
 async function resumeSession(){
- let value;try{value=JSON.parse(sessionStorage.getItem('leif-admin-session-v1')||'null')}catch{}
- if(!value?.refresh_token){location.replace('/leif/?beheer=1');return;}
+ E('retrySession').hidden=true;
  try{
-  const newAuth=await request('refresh',{refresh_token:value.refresh_token},false);
-  auth=newAuth;tenants=newAuth.tenants;saveSession();
+  const newAuth=await adminSession.resume();
+  if(!newAuth){location.replace('/leif/?beheer=1');return}
+  auth=newAuth;tenants=newAuth.tenants;
   show('login',false);show('workspace',true);show('logout',true);E('loading').hidden=true;
-  E('identity').textContent=newAuth.user_email||'Beheerder';
+  accountIdentity();
+  if(location.hash==='#accountSettings')openAccountSettings();
   E('tenant').replaceChildren(...tenants.map(t=>{const o=el('option',null,t.name);o.value=t.id;return o}));
   tenant=tenants[0];E('tenant').value=tenant.id;await loadList();await loadTesters();
- }catch{sessionStorage.removeItem('leif-admin-session-v1');location.replace('/leif/?beheer=1')}
+ }catch(error){
+  if(error.status===401||error.status===403){adminSession.clear();location.replace('/leif/?beheer=1');return}
+  E('loading').textContent='Geen verbinding met beheer. Je sessie is bewaard. Probeer het opnieuw.';
+  E('loading').hidden=false;E('retrySession').hidden=false;
+ }
 }
+function openAccountSettings(){
+ if(E('accountSettings').hidden)return;
+ E('accountSettings').open=true;
+ E('accountSettings').scrollIntoView({behavior:'smooth',block:'start'});
+ E('accountEmail').focus({preventScroll:true});
+}
+E('openAccount').onclick=()=>{
+ history.replaceState(null,'',location.pathname+location.search+'#accountSettings');
+ openAccountSettings();
+};
+window.addEventListener('hashchange',()=>{if(location.hash==='#accountSettings')openAccountSettings()});
+E('retrySession').onclick=()=>resumeSession();
+function keepSession(){if(window.parent===window&&document.visibilityState==='visible'&&adminSession.read())adminSession.refresh().catch(()=>{})}
+setInterval(keepSession,60000);
+document.addEventListener('visibilitychange',keepSession);
+E('accountForm').onsubmit=async event=>{
+ event.preventDefault();
+ const password=E('accountPassword').value;
+ if(password!==E('accountRepeat').value){E('accountStatus').textContent='De wachtwoorden zijn niet gelijk.';return}
+ const manager=tenants.find(t=>t.slug==='leif'&&t.role==='manager');if(!manager)return;
+ E('saveAccount').disabled=true;E('accountStatus').textContent='Inloggegevens bewaren...';
+ try{
+  const result=await request('update_account',{tenant_id:manager.id,email:E('accountEmail').value.trim(),password});
+  auth=adminSession.save({...adminSession.read(),user_email:result.user_email,pending_email:result.pending_email||''});
+  E('accountPassword').value='';E('accountRepeat').value='';accountIdentity();
+  E('accountStatus').textContent=result.pending_email?'Je wachtwoord is bewaard. Bevestig de adreswijziging via de e-mail. Je blijft hier ingelogd.':'Je inloggegevens zijn bewaard. Je blijft ingelogd. Volgende keer kun je hiermee beheer openen.';
+ }catch(error){
+  const messages={weak_password:'Kies een wachtwoord van minstens 6 tekens.',same_password:'Dit wachtwoord is al ingesteld. Je kunt het blijven gebruiken.',email_exists:'Dit e-mailadres is al aan een ander account gekoppeld.',reauthentication_needed:'Open een nieuwe inloglink en stel daarna je wachtwoord in.'};
+  E('accountStatus').textContent=messages[error.message]||'Bewaren is niet gelukt. Je huidige inloggegevens en sessie blijven behouden. Probeer het opnieuw.';
+ }finally{E('saveAccount').disabled=false}
+};
 function canManage(){return tenant?.role==='manager'}
 async function loadTesters(){
   E('testerPanel').hidden=!(canManage() && tenant?.slug==='leif');
-  if(E('testerPanel').hidden)return;
+  // Oude proefregistraties blijven leesbaar; de aparte testerweergave blijft verborgen.
+  if(!canManage() || tenant?.slug!=='leif')return;
   try{
     const response=await request('list_testers',{tenant_id:tenant.id});
     const list=E('testerList');list.replaceChildren();
+    const unified=E('participants');
     for(const person of response.testers){
       const item=el('button','person');item.type='button';
       item.onclick=()=>openTester(person.id);
       item.append(el('strong',null,person.tester_name||'Bestaande tester'));
       const state=person.status==='submitted'?'Afgerond':'Nog bezig';
       const when=person.created_at?new Date(person.created_at).toLocaleDateString('nl-NL'):'';
-      item.append(el('small',null,state+(when?' · '+when:'')));
-      list.append(item);
+      item.append(el('small',null,state+' · bestaande proef'+(when?' · '+when:'')));
+      item.append(el('span','status','Deelnemer'));
+      unified.append(item);
     }
-    if(!response.testers.length)list.append(el('p','meta','Er zijn nog geen testers.'));
-  }catch{E('testerStatus').textContent='De testers konden niet worden geladen.';}
+    E('peopleCount').textContent=String(participants.length+response.testers.length+1);
+  }catch{E('peopleCount').textContent=String(participants.length+1);E('testerStatus').textContent='Een deel van de bestaande proefgegevens kon niet worden geladen.';}
 }
 async function openTester(id){
- E('testerDetail').hidden=false;
- E('testerDetailName').textContent='Antwoorden laden...';
- E('testerAnswers').replaceChildren();
+ if(!confirmDiscard())return;
+ clearTimeout(storyTimer);selected=null;documentState=null;show('empty',false);
+ E('testerDetail').hidden=true;show('detail',false);
+ E('participants').querySelectorAll('.person').forEach(b=>b.dataset.active='false');
  try{
   const result=await request('get_tester',{tenant_id:tenant.id,tester_id:id});
   const person=result.tester;
-  E('testerDetailName').textContent='Antwoorden van '+(person.tester_name||'bestaande tester');
-  const values=Object.entries(person.answers||{}).filter(([,v])=>typeof v==='string'&&v.trim());
-  if(!values.length){E('testerAnswers').append(el('p','meta','Nog geen antwoorden ingevuld.'));return}
-  for(const [key,val] of values){
-   E('testerAnswers').append(el('dt','readout',key.replace(/_/g,' ')),el('dd',null,val));
-  }
- }catch{E('testerDetailName').textContent='Antwoorden ophalen is niet gelukt.'}
+  selected={id:person.id,display_name:person.tester_name||'Deelnemer',legacy:true,state:'active'};
+  documentState={answers:person.answers||{},personal_texts:person.personal_texts||{},revision:person.studio_revision,updated_at:person.updated_at};
+  E('personName').textContent=selected.display_name;
+  E('personStatus').textContent=person.status==='submitted'?'Afgerond':'Nog bezig';
+  E('personMeta').textContent='Bestaande proef · opgeslagen '+(person.updated_at?new Date(person.updated_at).toLocaleString('nl-NL'):'onbekend');
+  E('tabs').querySelector('[data-tab="story"]').hidden=true;
+  E('tabs').querySelector('[data-tab="settings"]').hidden=true;
+  show('detail',true);show('empty',false);changeTab('blocks');showAnswers();
+  window.LeifStudio?.load({participant:selected,document:documentState,tenant_id:tenant.id});
+ }catch{
+  selected=null;documentState=null;show('detail',false);show('empty',true);
+  E('empty').textContent='De gegevens konden niet worden geladen. Controleer of de opslaguitbreiding is uitgevoerd.';
+ }
 }
 function showTesterInvite(name,code){
   const panel=E('testerInvite');panel.replaceChildren();
@@ -233,20 +337,23 @@ function showTesterInvite(name,code){
 }
 async function loadList(){
  const data=await request('list',{tenant_id:tenant.id});participants=data.participants;
- E('peopleCount').textContent=String(participants.length);
+ E('peopleCount').textContent=String(participants.length+1);
  E('newPanel').hidden=!canManage();
  const list=E('participants');list.replaceChildren();
  for(const p of participants){
   const b=el('button','person');b.type='button';b.dataset.active=String(p.id===selected?.id);
-  b.append(el('strong',null,p.display_name||'Naam ontbreekt'),el('small',null,p.created_at?new Date(p.created_at).toLocaleDateString('nl-NL'):''),el('span','status',p.state==='revoked'?'Toegang ingetrokken':'Actief'));
+  b.append(el('strong',null,p.display_name||'Naam ontbreekt'),el('small',null,p.created_at?new Date(p.created_at).toLocaleDateString('nl-NL'):''),el('span','status',p.state==='revoked'?'Toegang ingetrokken':'Deelnemer'));
   b.onclick=()=>choosePerson(p.id);list.append(b);
  }
- if(!participants.length)list.append(el('p','meta','Nog geen deelnemers.'));
+ const kei=el('button','person');kei.type='button';
+ kei.append(el('strong',null,'KEI'),el('small',null,'Oorspronkelijke lokale proef'),el('span','status','Ingevuld · lokaal'));
+ kei.onclick=()=>{if(!confirmDiscard())return;selected=null;documentState=null;show('detail',false);E('testerDetail').hidden=true;show('empty',true);E('empty').textContent='KEI heeft de bestaande, lokaal versleutelde ingevulde proef. Deze antwoorden zijn niet op de server beschikbaar. Je kunt de oorspronkelijke omgeving via het inlogscherm openen. De inhoud blijft ongewijzigd.';list.querySelectorAll('.person').forEach(b=>b.dataset.active='false');kei.dataset.active='true'};
+ list.prepend(kei);
  if(selected){
   const found=participants.find(p=>p.id===selected.id);
   if(found){if(dirty)return;await choosePerson(found.id);return}
  }
- selected=null;documentState=null;show('detail',false);show('empty',true);
+ selected=null;documentState=null;show('detail',false);show('empty',true);E('testerDetail').hidden=true;
 }
 function codeVisible(code,name){
  const panel=E('codePanel');panel.replaceChildren();show('codePanel',true);
@@ -259,15 +366,18 @@ function codeVisible(code,name){
  block.append(copy);panel.append(block);
 }
 function readDraft(){const obj={};for(const [key,id] of Object.entries(fields))obj[key]=E(id).value;return obj}
-function confirmDiscard(){return !dirty||confirm('Je hebt nog niet opgeslagen wijzigingen in het verhaal. Wil je die verliezen?')}
+function confirmDiscard(){return (!window.LeifStudio||window.LeifStudio.canLeave())&&(!dirty||confirm('Je hebt nog niet opgeslagen wijzigingen in het verhaal. Wil je die verliezen?'))}
 function planStorySave(){clearTimeout(storyTimer);if(dirty)storyTimer=setTimeout(()=>{if(!dirty||!selected)return;if(busy){planStorySave();return}performStory('save_draft',{draft:readDraft()})},1700)}
 async function choosePerson(id){
  if(selected?.id!==id&&!confirmDiscard())return;
+ E('testerDetail').hidden=true;
  clearTimeout(storyTimer);
  setBusy(true);
  try{
   const data=await request('get',{tenant_id:tenant.id,participant_id:id});
   selected=data.participant;documentState=data.document;dirty=false;
+  E('tabs').querySelector('[data-tab="story"]').hidden=false;
+  E('tabs').querySelector('[data-tab="settings"]').hidden=false;
   show('detail',true);show('empty',false);
   E('personName').textContent=selected.display_name||'Naam ontbreekt';
   E('personStatus').textContent=selected.state==='revoked'?'Toegang ingetrokken':'Actief';
@@ -276,7 +386,7 @@ async function choosePerson(id){
   const content=documentState.personal_texts||{};
   for(const [key,field] of Object.entries(fields))E(field).value=content.draft?.[key]||'';
   E('publishedStatus').textContent=content.published_at?'Gepubliceerd op '+new Date(content.published_at).toLocaleString('nl-NL')+'.':'Nog geen tekst gepubliceerd.';
-  status('');changeTab(tab);showAnswers();
+  status('');changeTab(tab);showAnswers();window.LeifStudio?.load({participant:selected,document:documentState,tenant_id:tenant.id});
   E('participants').querySelectorAll('.person').forEach(b=>b.dataset.active=String(b.textContent?.includes(selected.display_name)||false));
  }catch(e){status('Dossier openen is niet gelukt. Probeer opnieuw.',true)}
  finally{setBusy(false)}
@@ -305,7 +415,7 @@ async function performStory(action,extra={}){
  }catch(e){status(e.status===409?'Dit dossier is intussen gewijzigd. Kopieer je tekst en open het dossier opnieuw.':'Opslaan is niet gelukt. Je tekst staat nog op dit scherm.',true)}
  finally{setBusy(false)}
 }
-E('logout').onclick=()=>{if(!confirmDiscard())return;sessionStorage.removeItem('leif-admin-session-v1');auth=null;tenants=[];tenant=null;selected=null;documentState=null;dirty=false;show('workspace',false);show('detail',false);show('logout',false);E('identity').textContent='';location.assign('/leif/')};
+E('logout').onclick=async()=>{if(!confirmDiscard())return;E('logout').disabled=true;try{await adminSession.logout()}catch{}auth=null;location.assign('/leif/')};
 E('tenant').onchange=async()=>{if(!confirmDiscard()){E('tenant').value=tenant.id;return}tenant=tenants.find(t=>t.id===E('tenant').value);selected=null;dirty=false;E('testerInvite').hidden=true;await loadList();await loadTesters()};
 E('reload').onclick=async()=>{if(confirmDiscard()){dirty=false;await loadList();await loadTesters()}};
 E('testerForm').onsubmit=async e=>{
@@ -316,7 +426,7 @@ E('testerForm').onsubmit=async e=>{
  E('testerStatus').textContent='Toegangscode maken...';
  try{
   const result=await request('create_tester',{tenant_id:tenant.id,name});
-  E('testerName').value='';E('testerStatus').textContent='Tester toegevoegd.';
+  E('testerName').value='';E('testerStatus').textContent='Deelnemer toegevoegd.';
   showTesterInvite(name,result.code);await loadTesters();
  }catch{E('testerStatus').textContent='Toevoegen is niet gelukt.';}
  finally{button.disabled=false;}
@@ -334,13 +444,15 @@ E('saveName').onclick=async()=>{if(!selected||!canManage()||dirty)return;const n
 E('rotateCode').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('De bestaande code werkt hierna niet meer. Een nieuwe code maken?'))return;try{const r=await request('rotate',{tenant_id:tenant.id,participant_id:selected.id});codeVisible(r.code,selected.display_name||'deelnemer');E('codePanel').scrollIntoView({behavior:'smooth'})}catch{alert('Een nieuwe code maken is niet gelukt.')}};
 E('revoke').onclick=async()=>{if(!selected||!canManage())return;if(!confirm('Toegang intrekken? De gegevens blijven bewaard.'))return;try{await request('revoke',{tenant_id:tenant.id,participant_id:selected.id});await loadList()}catch{alert('Intrekken is niet gelukt.')}};
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
-window.LeifBeheer={request,getTenant:()=>tenant,canManage};
+window.LeifBeheer={request,getTenant:()=>tenant,canManage,getSelection:()=>({selected,documentState,tenant_id:tenant?.id})};
 if(window.parent!==window&&new URLSearchParams(location.search).get('leif_voorbeeld')==='1'){
  E('workspace').hidden=false;E('loading').hidden=true;E('login').hidden=true;
  E('newPanel').hidden=true;E('testerPanel').hidden=true;
  E('identity').textContent='Voorbeeld zonder deelnemersgegevens';
 }else resumeSession();
 </script>
+<script src="/leif/beheer/studio.js" defer></script>
 <script src="/leif/beheer/teksteditor.js" defer></script>
+<script src="/leif/tekstvelden.js"></script>
 <script src="/leif/tekstbeheer.js" defer></script>
 </body></html>

@@ -13,6 +13,10 @@ answers.observeren='Ik kijk en luister eerst';answers.reactie='Het verschilt per
 answers.zorgvragen='Ik los het liever zelf op';answers.keuzes='Ik analyseer eerst';
 let sent=false,saveCount=0;
 const server=createServer((req,res)=>{
+ if(req.url?.startsWith('/leif/tekstvelden.js')){
+  res.writeHead(200,{'content-type':'application/javascript;charset=utf-8'});
+  res.end(readFileSync(resolve(process.argv[2]||'site-build','leif/tekstvelden.js'),'utf8'));return;
+ }
  if(req.url?.startsWith('/leif/tekstbeheer.js')){
   res.writeHead(200,{'content-type':'application/javascript;charset=utf-8'});
   res.end(siteCopy);return;
@@ -40,6 +44,8 @@ await page.route('**/functions/v1/leif-demo-session',async route=>{
 });
 try{
  await page.goto(origin+'/leif/continue/');
+ await page.locator('#welcomePhase').waitFor({state:'visible',timeout:10000});
+ await page.locator('#beginContinue').click();
  await page.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await page.locator('#total').innerText(),'23');
  assert.match(await page.locator('#question h2').innerText(),/zit diezelfde kant je in de weg/);
@@ -50,6 +56,8 @@ try{
  mkdirSync('test-results',{recursive:true});
  await page.screenshot({path:'test-results/leif-continue-desktop.png',fullPage:true});
  await page.reload();
+ await page.locator('#welcomePhase').waitFor({state:'visible',timeout:10000});
+ await page.locator('#beginContinue').click();
  await page.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await page.locator('#total').innerText(),'24');
  assert.match(await page.locator('#question h2').innerText(),/Welk gevoel laat je niet gemakkelijk zien/);
@@ -69,6 +77,8 @@ try{
  const mobilePage=await mobile.newPage();
  await mobilePage.addInitScript(code=>{sessionStorage.setItem('leifContinueToken',code)},demoCode);
  await mobilePage.goto(origin+'/leif/continue/');
+ await mobilePage.locator('#welcomePhase').waitFor({state:'visible',timeout:10000});
+ await mobilePage.locator('#beginContinue').click();
  await mobilePage.locator('#editor').waitFor({state:'visible',timeout:10000});
  assert.equal(await mobilePage.locator('#total').innerText(),'24');
  await mobilePage.screenshot({path:'test-results/leif-continue-mobile.png',fullPage:true});

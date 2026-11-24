@@ -1,0 +1,3 @@
+Z-Anatomy derivative: nqwrc/3d-anatomy
+Commit: 8ca3b7421bcfbe88b85859eb1983d5cf79f21749
+Original models: BodyParts3D / Z-Anatomy. See NOTICE.txt and LICENSE.txt.

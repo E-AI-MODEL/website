@@ -1,0 +1,4 @@
+# Haal beheer en zijn scripts opnieuw op. Een open tabblad blijft behouden.
+<IfModule mod_headers.c>
+  Header always set Cache-Control "no-store, max-age=0"
+</IfModule>
