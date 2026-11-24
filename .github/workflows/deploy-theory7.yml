@@ -19,11 +19,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  ict-controls:
-    uses: ./.github/workflows/check-ict-assurance.yml
+  release-check:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    uses: ./.github/workflows/site-check.yml
+    with:
+      release_artifact: true
+      skip_topo: true
 
   deploy:
-    needs: ict-controls
+    needs: release-check
+    if: ${{ github.ref == 'refs/heads/main' && needs.release-check.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -32,17 +37,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Use Node.js 22 for the anatomical 3D atlas
-        uses: actions/setup-node@v4
+      - name: Download exact de geteste productiebuild
+        uses: actions/download-artifact@v4
         with:
-          node-version: '22'
-      - name: Build and validate the release to publish
+          name: site-release-${{ github.run_id }}
+      - name: Verifieer commit en alle bestanden voor upload
         run: |
           pip install beautifulsoup4
-          python scripts/build_site.py --sources content/legacy --out site-build
-          python scripts/build_anatomie.py --out site-build/tools/anatomie
-          python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
-          python scripts/prepare_ui.py --root site-build
+          python scripts/release_artifact.py verify --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
           python scripts/verify_ui.py --root site-build
       - name: Install FTPS client
         run: |
@@ -60,6 +62,12 @@ jobs:
             echo "Unexpected FTPS certificate fingerprint."
             exit 1
           fi
+      - name: Controleer dat dit nog de actuele hoofdversie is
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(git ls-remote --exit-code origin refs/heads/main | cut -f1)"
+          test "$current" = "$GITHUB_SHA" || { echo "Nieuwere hoofdversie aanwezig; geen oude release uploaden."; exit 1; }
       - name: Publish assets before HTML
         shell: bash
         env:

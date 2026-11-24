@@ -1,21 +1,9 @@
 name: EAIgit · gebruikersproef
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'assets/projecthulp/**'
-      - 'tools/projecthulp/**'
-      - 'tools/eaigit/**'
-      - 'assets/eaigit/**'
-      - 'tests/test_projecthulp.mjs'
-      - 'tests/test_static_audit.mjs'
-      - 'tests/test_audit_advice.mjs'
-      - 'tests/test_eaigit_help.mjs'
-      - 'tests/test_eaigit_single_file.mjs'
-      - 'tests/test_eaigit_github_checks.mjs'
-      - 'scripts/test_projecthulp_browser.mjs'
-      - '.github/workflows/projecthulp-browser.yml'
+  workflow_call:
   workflow_dispatch:
+
+
 permissions:
   contents: read
 jobs:

@@ -1,20 +1,9 @@
 name: TOPO mobile and country map verification
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'topo/**'
-      - 'scripts/test_topo_mobile.mjs'
-      - 'scripts/validate_topo_content.mjs'
-      - '.github/workflows/topo-mobile-verify.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'topo/**'
-      - 'scripts/test_topo_mobile.mjs'
-      - 'scripts/validate_topo_content.mjs'
-      - '.github/workflows/topo-mobile-verify.yml'
+  workflow_call:
   workflow_dispatch:
+
+
 permissions:
   contents: read
 jobs:
