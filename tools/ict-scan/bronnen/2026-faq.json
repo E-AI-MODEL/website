@@ -1,7 +1,7 @@
 {
   "schema": "eai-school-ict-v1",
   "metadata": {
-    "faqVersion": "2026-11-20",
+    "faqVersion": "2026-11-24",
     "faqEditorialStatus": "Werkversie. Voor externe publicatie of juridische status zijn bronbeoordelingen per vraag nodig.",
     "firstInventoryStarted": "2026-08-10",
     "compiledBy": "Hans Visser"
@@ -230,7 +230,7 @@
     {
       "id": "FAQ-011",
       "name": "Hoe voeg ik een nieuwe toepassing toe?",
-      "answer": "Open de extra functies in de zijbalk, kies 'JSON-kaarten beheren', selecteer 'Toepassingen en diensten' en maak een nieuwe kaart. Voeg beschrijving en bron toe. Een concept verandert het dashboard pas na beoordeling en publicatie via GitHub.",
+      "answer": "Open Register, kies Applicaties en diensten en klik op Open register. Maak in de bestaande kaarteditor een nieuwe kaart, voeg de gegevens en bron toe en bewaar het concept. Een concept verandert de officiële gegevens pas na beoordeling en publicatie via GitHub.",
       "aliases": "applicatie toevoegen|hoe registreer ik software|nieuwe json kaart maken",
       "topic": "Beheer",
       "reference": "JSON-kaart",
@@ -247,7 +247,20 @@
       "recordMeta": {
         "sourceSystem": "Applicatielandschap 2026",
         "referenceDate": "2026-11-20"
-      }
+      },
+      "auditTrail": [
+        {
+          "timestamp": "2026-11-24T11:31:00+01:00",
+          "actor": "ChatGPT",
+          "action": "aangepast",
+          "fields": [
+            "answer"
+          ],
+          "reason": "Verwijzing naar de vereenvoudigde navigatie en de bestaande kaarteditor.",
+          "method": "GitHub-pull-request",
+          "source": "Applicatielandschap 2026 / JSON-kaart"
+        }
+      ]
     },
     {
       "id": "FAQ-012",
@@ -313,6 +326,92 @@
       "recordMeta": {
         "sourceSystem": "Applicatielandschap 2026",
         "referenceDate": "2026-11-20"
+      }
+    },
+    {
+      "id": "FAQ-015",
+      "name": "Welke Microsoft 365-onderdelen zijn standaard beschikbaar voor docenten en leerlingen?",
+      "answer": "Uitgangspunt voor de inventaris is Microsoft 365 Education A5 voor medewerkers en A3 voor leerlingen. Diensten die bij die licenties horen, worden bij licentietoewijzing normaal standaard aangezet. Een beheerder kan onderdelen uitschakelen en functies kunnen extra voorwaarden hebben. Dit is een leveranciersstandaard, geen controle van de daadwerkelijke toegang in de schooltenant. De 40 beschreven productonderdelen staan afzonderlijk bij de Microsoft 365-kaart.",
+      "aliases": "standaard apps leerlingen m365|microsoft 365 default settings|welke m365 apps voor leerlingen|standaard beschikbaar microsoft 365",
+      "topic": "Microsoft 365",
+      "reference": "Microsoft Learn Education, licenties en standaardservices",
+      "sourceIds": [
+        "SRC-00055",
+        "SRC-00056",
+        "SRC-00059"
+      ],
+      "status": "Brongebonden werkversie",
+      "sourceRefs": [
+        "https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/microsoft-365-education",
+        "https://learn.microsoft.com/en-us/microsoft-365/education/guide/0-start/all-license",
+        "https://learn.microsoft.com/en-us/microsoftteams/teams-edu-licensing"
+      ],
+      "sources": [
+        "Microsoft Learn Education, licenties en standaardservices"
+      ],
+      "reviewedAt": "",
+      "relations": [],
+      "frameworkLinks": [],
+      "recordMeta": {
+        "sourceSystem": "Microsoft Learn / Kennisnet",
+        "referenceDate": "2026-11-23",
+        "scope": "Leveranciersstandaard en proces; geen tenantmeting of contractgoedkeuring"
+      }
+    },
+    {
+      "id": "FAQ-016",
+      "name": "Welke standaardinstellingen gelden voor klasTeams en leerlingen?",
+      "answer": "Een klasTeam heeft standaard onderwijsfuncties zoals Opdrachten, Klaswerk en Klasnotitieblok. Docenten beheren het klasTeam; leerlingen zien na toevoeging de voor hen bestemde onderdelen. Een klasTeam en het klaslidmaatschap ontstaan niet alleen door licentietoewijzing. Microsoft adviseert voor het voortgezet onderwijs apart leerlingenbeleid via de Teams for Education Policy Wizard. Niet vastgesteld is of de school deze wizard of afwijkende tenantinstellingen toepast.",
+      "aliases": "klasteams default settings|teams klas standaardinstellingen|welke functies klas team|wat kan leerling in klas team",
+      "topic": "Microsoft Teams for Education",
+      "reference": "Microsoft Learn, klasTeams en Education Policy Wizard",
+      "sourceIds": [
+        "SRC-00060",
+        "SRC-00061"
+      ],
+      "status": "Brongebonden werkversie",
+      "sourceRefs": [
+        "https://learn.microsoft.com/en-us/microsoftteams/remote-learning-edu",
+        "https://learn.microsoft.com/en-us/microsoftteams/easy-policy-setup-edu"
+      ],
+      "sources": [
+        "Microsoft Learn, klasTeams en Education Policy Wizard"
+      ],
+      "reviewedAt": "",
+      "relations": [],
+      "frameworkLinks": [],
+      "recordMeta": {
+        "sourceSystem": "Microsoft Learn / Kennisnet",
+        "referenceDate": "2026-11-23",
+        "scope": "Leveranciersstandaard en proces; geen tenantmeting of contractgoedkeuring"
+      }
+    },
+    {
+      "id": "FAQ-017",
+      "name": "Hoe beoordelen en ondertekenen we verwerkersovereenkomsten via eHerkenning?",
+      "answer": "Ga naar de Dienst Verwerkersovereenkomsten van Kennisnet: https://dv.kennisnet.nl/ en log in met eHerkenning. Open de bij de leverancier aangeboden verwerkersovereenkomst, controleer ook privacybijsluiter en beveiligingsbijlage en leg afwijkingen vast. Het bevoegd gezag of een gemachtigde geeft akkoord en ondertekent digitaal. Noteer daarna de status en het ondertekenbewijs bij de leverancier. Niet iedere leverancier gebruikt deze dienst: bijvoorbeeld Microsoft werkt niet met de modelverwerkersovereenkomst van het Privacyconvenant. Controleer zo nodig de afzonderlijke DPA. Er is niets automatisch goedgekeurd.",
+      "aliases": "verwerkersovereenkomst eherkenning|hoe komen we bij verwerkersovereenkomsten|kennisnet dienst verwerkersovereenkomsten|dpa goedkeuren via eherkenning",
+      "topic": "Privacy",
+      "reference": "Kennisnet Dienst Verwerkersovereenkomsten en Privacyconvenant",
+      "sourceIds": [
+        "SRC-00062",
+        "SRC-00063"
+      ],
+      "status": "Brongebonden werkversie",
+      "sourceRefs": [
+        "https://www.kennisnet.nl/diensten/dienst-verwerkersovereenkomsten/",
+        "https://www.privacyconvenant.nl/veelgestelde-vragen/"
+      ],
+      "sources": [
+        "Kennisnet Dienst Verwerkersovereenkomsten en Privacyconvenant"
+      ],
+      "reviewedAt": "",
+      "relations": [],
+      "frameworkLinks": [],
+      "recordMeta": {
+        "sourceSystem": "Microsoft Learn / Kennisnet",
+        "referenceDate": "2026-11-23",
+        "scope": "Leveranciersstandaard en proces; geen tenantmeting of contractgoedkeuring"
       }
     }
   ]

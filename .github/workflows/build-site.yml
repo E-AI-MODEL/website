@@ -244,6 +244,8 @@ jobs:
           test -s site-build/tools/ict-scan/monitor.css
           test -s site-build/tools/ict-scan/enhancements.js
           test -s site-build/tools/ict-scan/github-sync.js
+          test ! -e site-build/tools/ict-scan/bronnen
+          test ! -e site-build/ict-scan/bronnen
           test -s site-build/tools/ict-scan/rail-drawer.js
           test -s site-build/tools/ict-scan/visual-explorer.js
           test -s site-build/tools/ict-scan/visual-explorer.css

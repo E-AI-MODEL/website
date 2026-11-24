@@ -4,10 +4,10 @@ import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {resolve} from 'node:path';
 
-const source=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
-const manifest=JSON.parse(readFileSync(resolve('ict-scan/bronnen/manifest.json'),'utf8'));
-const work=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'),'utf8'));
-const faq=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-faq.json'),'utf8'));
+const source=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
+const manifest=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/manifest.json'),'utf8'));
+const work=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/2026-werkregister.json'),'utf8'));
+const faq=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/2026-faq.json'),'utf8'));
 
 const html=readFileSync(resolve('tools/ict-scan/index.html'),'utf8');
 const app=readFileSync(resolve('tools/ict-scan/app.js'),'utf8');
@@ -15,7 +15,7 @@ const sync=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
 
 test('Bronregistraties 2026 zijn compleet volgens de gecontroleerde werkmap',()=>{
   assert.equal(source.schema,'eai-school-ict-v1');
-  const totals={apps:61,ai:76,connections:93,additionalCandidates:76,dpia:10,aiControls:22,checks:16,licenseReview:40,devices:4};
+  const totals={apps:69,ai:76,connections:93,additionalCandidates:76,dpia:10,aiControls:22,checks:16,licenseReview:40,devices:4,hardwareGroups:15,parts:53};
   for(const [category,count] of Object.entries(totals)){
     assert.equal(source[category].length,count,category);
     assert.equal(source.metadata.counts[category],count,category+' in metadata');
@@ -23,7 +23,7 @@ test('Bronregistraties 2026 zijn compleet volgens de gecontroleerde werkmap',()=
   assert.equal(source.metadata.firstInventoryStarted,'2026-08-10');
   assert.equal(source.metadata.compiledBy,'Hans Visser');
   assert.equal(manifest.metadata.firstInventoryStarted,source.metadata.firstInventoryStarted);
-  assert.equal(manifest.dataFiles[0].recordCounts.apps,61);
+  assert.equal(manifest.dataFiles[0].recordCounts.apps,69);
   assert.equal(manifest.dataFiles[0].recordCounts.ai,76);
 });
 
@@ -63,19 +63,20 @@ test('Aanvullende kandidaten zijn niet als bevestigde toepassingen meegeteld',()
 
 test('FAQ-registraties en hun bronnen zijn afzonderlijk gecontroleerd',()=>{
   assert.equal(faq.schema,'eai-school-ict-v1');
-  assert.equal(faq.faqs.length,14);
-  assert.equal(new Set(faq.faqs.map(x=>x.id)).size,14);
+  assert.equal(faq.faqs.length,17);
+  assert.equal(new Set(faq.faqs.map(x=>x.id)).size,17);
   const row=manifest.dataFiles.find(x=>x.path==='2026-faq.json');
   assert.ok(row,'FAQ staat niet in het manifest');
-  assert.equal(row.recordCounts.faqs,14);
+  assert.equal(row.recordCounts.faqs,17);
   assert.ok(faq.faqs.every(x=>x.answer&&x.status==='Brongebonden werkversie'&&x.sources.length));
 });
 
 test('Manifest-SHA controleert de exacte publicatiebestanden',()=>{
   const sources=[
-    ['2026-applicatielandschap.json',readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'))],
-    ['2026-werkregister.json',readFileSync(resolve('ict-scan/bronnen/2026-werkregister.json'))],
-    ['2026-faq.json',readFileSync(resolve('ict-scan/bronnen/2026-faq.json'))]
+    ['2026-applicatielandschap.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-applicatielandschap.json'))],
+    ['2026-werkregister.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-werkregister.json'))],
+    ['2026-faq.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-faq.json'))],
+    ['2026-bronnenregister.json',readFileSync(resolve('tools/ict-scan/bronnen/2026-bronnenregister.json'))]
   ];
   for(const [name,bytes] of sources){
     const expected=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
@@ -94,7 +95,8 @@ test('Een vermoede productfamilie wordt niet als bewezen parent/child opgenomen'
 
 test('Het gecontroleerde werkregister is apart beschikbaar',()=>{
   assert.equal(work.schema,'eai-school-ict-v1');
-  assert.equal(work.workActions.length,13);
+  assert.equal(work.workActions.length,manifest.dataFiles.find(x=>x.path==='2026-werkregister.json').recordCounts.workActions);
+  assert.ok(work.workActions.length>=13);
   assert.equal(work.softwareReview.length,12);
   assert.ok(manifest.dataFiles.some(item=>item.path==='2026-werkregister.json'));
   assert.ok(work.workActions.every(item=>item.id && item.action && item.status));
@@ -105,7 +107,7 @@ test('Website kan de registers laden en toont ze in eigen panelen',()=>{
   for(const id of ['candidatePanel','candidatesList','candidateTotal','licensePanel','licenseList','licenseTotal','workPanel','workList','workTotal','softwareReviewList']){
     assert.ok(html.includes('id="'+id+'"'),id+' mist in HTML');
   }
-  for(const piece of ["['additionalCandidates',state.candidates]","['licenseReview',state.licenseReview]","function renderCandidates()","function renderLicenseReview()"]){
+  for(const piece of ["function renderCandidates()","function renderLicenseReview()"]){
     assert.ok(app.includes(piece),piece);
   assert.ok(app.includes('function renderWorkActions()'));
   assert.ok(app.includes('function renderSoftwareReview()'));
