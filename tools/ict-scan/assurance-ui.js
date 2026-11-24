@@ -2,7 +2,7 @@
 /* The UI presents observations. It never creates a legal or learning judgement. */
 (function(){
   const byId=id=>document.getElementById(id);
-  const labels={structure:'Gegevens',sources:'Bronnen',review:'Beoordelingen',drift:'Wijzigingen',evaluation:'Tests'};
+  const labels={structure:'Gegevensstructuur',sources:'Bronregistratie',review:'Vastgelegde beoordelingen',drift:'Vergelijking',evaluation:'Interne testgevallen'};
   const states={pass:'Geslaagd',attention:'Aandacht',fail:'Afgekeurd',not_run:'Niet uitgevoerd'};
   let profile=null,catalog=null,corpus=null,worker=null,timer=null,queued=false,serial=0;
   let latest=null,latestBasis=null,candidateBaseline=null,baseline=null,lastInput=null;
@@ -48,7 +48,7 @@
   }
   function render(result){
     const summary=byId('assuranceSummary');summary.textContent=states[result.overall.status]||'Niet uitgevoerd';summary.dataset.status=result.overall.status;
-    byId('assuranceStamp').textContent=(lastInput?.records.length||0)+' registraties · '+result.context.asOf;
+    byId('assuranceStamp').textContent=(lastInput?.records.length||0)+' gecontroleerde registerrecords · '+result.context.asOf;
     const cards=byId('assuranceChecks'),details=byId('assuranceFindings');cards.replaceChildren();details.replaceChildren();
     for(const check of result.checks){
       const button=node('button',undefined,'assurance-check');button.type='button';button.dataset.status=check.status;
@@ -59,14 +59,31 @@
       section.append(node('h3',(labels[check.id]||check.title)+' · '+(states[check.status]||'Niet uitgevoerd')));
       if(!check.findings.length)section.append(node('p',check.id==='evaluation'?(check.coverage.executedCases||0)+' testgevallen geslaagd.':'Geen aandachtspunten binnen deze controle.'));
       else{
-        const list=node('ul');
-        for(const finding of check.findings.slice(0,30)){
-          const item=node('li');item.append(node('span',(finding.recordId?finding.recordId+': ':'')+readableFinding(finding.message)));
-          if(finding.recordType&&finding.recordId&&window.EmmausRecordCards){const open=node('button','Open registratie','assurance-link');open.type='button';open.addEventListener('click',()=>window.EmmausRecordCards.open(finding.recordType,finding.recordId));item.append(open);}
-          list.append(item);
+        const groups=new Map();
+        for(const finding of check.findings){
+          const message=readableFinding(finding.message);
+          const key=JSON.stringify([finding.code,message]);
+          if(!groups.has(key))groups.set(key,{message,items:[]});
+          groups.get(key).items.push(finding);
         }
-        section.append(list);
-        if(check.findings.length>30)section.append(node('p',(check.findings.length-30)+' extra meldingen staan in het controleverslag.'));
+        section.append(node('p',check.findings.length+' meldingen in '+groups.size+' verschillende categorieën. Eén registratie kan meerdere meldingen hebben.'));
+        for(const group of [...groups.values()].sort((a,b)=>b.items.length-a.items.length||a.message.localeCompare(b.message,'nl'))){
+          const bucket=node('details',undefined,'assurance-finding-bucket');
+          const title=node('summary',group.message);
+          title.append(node('span',group.items.length+' meldingen','assurance-count'));
+          bucket.append(title);
+          const list=node('ul');
+          for(const finding of group.items){
+            const match=String(finding.path||'').match(/^\/records\/(\d+)/);
+            const record=match?lastInput?.records?.[Number(match[1])]:null;
+            const type=finding.recordType||(finding.sourceId?'sourceRegister':record?.type);
+            const id=finding.recordId||finding.sourceId||record?.id;
+            const item=node('li');item.append(node('span',[id,record?.id===id?record?.data?.name:''].filter(Boolean).join(' · ')||finding.path||'Algemene controle'));
+            if(type&&id&&window.EmmausRecordCards){const open=node('button','Open registratie','assurance-link');open.type='button';open.addEventListener('click',()=>window.EmmausRecordCards.open(type,id));item.append(open);}
+            list.append(item);
+          }
+          bucket.append(list);section.append(bucket);
+        }
       }
       details.append(section);
     }
