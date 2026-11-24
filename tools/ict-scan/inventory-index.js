@@ -192,9 +192,30 @@
       for(const edge of edges)if(!valid.has(edge.relationType))
         errors.push({code:'UNKNOWN_RELATION_TYPE',relationType:edge.relationType});
     }
+    // The AI overview is a projection of the registered cards, not another dataset.
+    function aiProgress(){
+      const groups={good:[],open:[],unknown:[]};
+      const unknown=value=>!String(value||'').trim()||/^\?|niet inzichtelijk|onbekend|niet vastgesteld|niet gecontroleerd|niet bekend/i.test(String(value));
+      for(const type of TYPES){
+        if(type==='sourceRegister')continue;
+        for(const record of records(type)){
+          const links=(record.frameworkLinks||[]).filter(link=>link.frameworkId==='AIACT');
+          if(!links.length)continue;
+          const status=String(record.status||record.local||'').trim();
+          const bucket=/niet inzichtelijk|onbekend/i.test(status)?'unknown':
+            links.every(link=>['Afgerond','In uitvoering'].includes(link.followUpStatus))?'good':'open';
+          const note=[...new Set(links.map(link=>link.note).filter(Boolean))].join(' ');
+          const followUp=[...new Set(links.filter(link=>link.followUpStatus!=='Afgerond').map(link=>link.followUp).filter(Boolean))].join(' ');
+          groups[bucket].push({type,id:record.id,name:record.name,note,followUp,status:status||links[0].followUpStatus||'Open'});
+        }
+      }
+      const features=records('ai');
+      return {groups,featureCount:features.length,unknownCount:features.filter(record=>unknown(record.local)).length,
+        possibleHighRisk:features.filter(record=>/mogelijk hoog risico/i.test(record.aiAct||'')).map(record=>({id:record.id,name:record.name,product:record.product,local:record.local}))};
+    }
     return Object.freeze({
       version:VERSION,nodes,edges,errors,sourceCoverage,
-      get,records,connected,descendants,sourcesFor,
+      get,records,connected,descendants,sourcesFor,aiProgress,
       count:type=>records(type).length,
       countLinked:(type,id,targetType)=>new Set(connected(type,id,{type:targetType}).map(x=>x.otherId)).size
     });
