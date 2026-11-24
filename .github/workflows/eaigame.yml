@@ -6,7 +6,9 @@ on:
       - 'tools/eaigame/**'
       - 'assets/eaigame*'
       - 'tests/test_eaigame.mjs'
+      - 'tests/test_eaigame_sites_levels.mjs'
       - 'scripts/test_eaigame_browser.mjs'
+      - 'scripts/test_eaigame_sites_browser.mjs'
       - '.github/workflows/eaigame.yml'
   push:
     branches: [main]
@@ -14,7 +16,9 @@ on:
       - 'tools/eaigame/**'
       - 'assets/eaigame*'
       - 'tests/test_eaigame.mjs'
+      - 'tests/test_eaigame_sites_levels.mjs'
       - 'scripts/test_eaigame_browser.mjs'
+      - 'scripts/test_eaigame_sites_browser.mjs'
       - '.github/workflows/eaigame.yml'
   workflow_dispatch:
 permissions:
@@ -40,8 +44,20 @@ jobs:
           node --check assets/eaigame-questions.js
           node --check assets/eaigame-ai.js
           node --check scripts/test_eaigame_browser.mjs
+          node --check scripts/test_eaigame_sites_browser.mjs
+          node --check assets/eaigame-sites-app.js
+          node --check assets/eaigame-sites-island.js
+          node --check assets/eaigame-sites-questions.js
+          node --check assets/eaigame-sites-improvements.js
+          node --check assets/eaigame-sites-level-bank.js
+          node --check assets/eaigame-sites-level-pilots.js
+          node --check assets/eaigame-sites-controls.js
+          node --check assets/eaigame-sites-sessions.js
+          node --check assets/eaigame-sites-learning.js
+          node --check assets/eaigame-sites-editor.js
+          node --check assets/eaigame-sites-3d.js
       - name: Verify questions and gameplay
-        run: node --test tests/test_eaigame.mjs
+        run: node --test tests/test_eaigame.mjs tests/test_eaigame_sites_levels.mjs
       - name: Install Playwright
         run: |
           npm install --no-save playwright@1.56.1
@@ -50,6 +66,8 @@ jobs:
         env:
           EAIGAME_REQUIRE_3D: '1'
         run: node scripts/test_eaigame_browser.mjs .
+      - name: Verify original Sites interface and game flow on desktop and phone
+        run: node scripts/test_eaigame_sites_browser.mjs .
       - name: Save browser screenshots
         if: always()
         uses: actions/upload-artifact@v4
