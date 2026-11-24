@@ -3,15 +3,15 @@
    Only existing DOM nodes move, so graphs, imports and form listeners are retained. */
 (function(){
   const groups={
-    overview:[['Aantallen en verdeling',4],['Geregistreerde verbanden',1],['Ingevulde velden',1],['Toepassingen openen',1]],
-    apps:[['Toepassingen zoeken',3]],
-    connections:[['Entra in cijfers',2],['Entra-registraties bekijken',3]],
-    devices:[['Apparaatmetingen',3],['Meetgegevens bekijken',1]],
-    ai:[['AI per lesfase',2],['AI-functies bekijken',2],['AI-inrichting en beheer',1]],
-    privacy:[['DPIA en privacy',3],['Wet- en regelgeving',1]],
-    findings:[['Uitkomst van controles',3],['Openstaande gegevens aanvullen',4]],
-    reports:[['Kies een rapport',2],['Download het rapport',2]],
-    sources:[['Bronnen ophalen',3],['Bronnen en herkomst',3],['Broninformatie',2]]
+    overview:[['Cijfers en verdeling',4],['Koppelingen',1],['Volledigheid',1],['Applicaties',1]],
+    apps:[['Applicaties zoeken',3]],
+    connections:[['Koppelingen in cijfers',2],['Koppelingen zoeken',3]],
+    devices:[['Apparaten in cijfers',3],['Meetgegevens',1]],
+    ai:[['AI per lesfase',2],['AI-functies',2],['AI-instellingen en beheer',1]],
+    privacy:[['Privacyonderzoeken',3],['Wet- en regelgeving',1]],
+    findings:[['Controle-uitkomsten',3],['Controles en acties',4]],
+    reports:[['Rapport kiezen',2],['Rapport downloaden',2]],
+    sources:[['Bronbestanden ophalen',3],['Bestanden en wijzigingen',3],['Broninformatie',2]]
   };
   const leading={ai:2};
   const scenes=new Map();
@@ -50,7 +50,7 @@
     const nav=document.createElement('nav');
     nav.className='scene-navigation';
     nav.setAttribute('role','tablist');
-    nav.setAttribute('aria-label','Weergaven binnen '+name);
+    nav.setAttribute('aria-label','Onderdelen van dit scherm');
     const frame=document.createElement('div');
     frame.className='scene-frame';
     const panels=[],tabs=[];

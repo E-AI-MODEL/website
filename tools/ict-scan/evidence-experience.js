@@ -36,19 +36,19 @@
       byId('deviceRecords').replaceChildren();return;
     }
     const period=d.total?.measurementDate||'Periode nog onbekend';
-    byId('deviceStamp').textContent='Bronpeildatum '+period;
+    byId('deviceStamp').textContent='Peildatum '+period;
     cardRoot.innerHTML=[
-      ['Entra-apparaatrecords',d.amount?fmt(d.amount):'Onbekend','Geen schoolbreed totaal'],
-      ['Compliance ingevuld',d.complete?fmt(d.yes+d.no):'Onbekend','Niet hetzelfde als aantoonbaar veilig'],
-      ['Compliance ontbreekt',d.complete?fmt(d.missing):'Onbekend','Geen waarde in de export'],
-      ['Mac-records',d.macs?String(d.macs.quantity):'Onbekend','Aantal records in deze export']
+      ['Apparaten in Entra',d.amount?fmt(d.amount):'Onbekend','Niet het totaal aantal apparaten op school'],
+      ['Status apparaatbeleid bekend',d.complete?fmt(d.yes+d.no):'Onbekend','Volgens de beschikbare export'],
+      ['Status apparaatbeleid ontbreekt',d.complete?fmt(d.missing):'Onbekend','Geen status in de export'],
+      ['Mac-registraties',d.macs?String(d.macs.quantity):'Onbekend','Aantal volgens de bron']
     ].map(([label,num,sub])=>'<div class="evidence-stat"><small>'+safe(label)+'</small><strong>'+safe(num)+'</strong><span>'+safe(sub)+'</span></div>').join('');
     if(d.complete){
-      const parts=[{n:d.yes,label:'True',cls:'yes'},{n:d.no,label:'False',cls:'no'},{n:d.missing,label:'Niet ingevuld',cls:'missing'}];
+      const parts=[{n:d.yes,label:'Voldoet (Entra)',cls:'yes'},{n:d.no,label:'Voldoet niet (Entra)',cls:'no'},{n:d.missing,label:'Niet ingevuld',cls:'missing'}];
       bars.innerHTML='<div class="device-headline"><strong>'+fmt(d.yes+d.no)+' / '+fmt(d.amount)+'</strong><span>records met een ingevulde waarde</span></div>'+
         '<div class="device-meter" role="img" aria-label="'+parts.map(p=>p.n+' '+p.label).join(', ')+'">'+parts.filter(p=>p.n).map(p=>'<span class="device-meter-'+p.cls+'" style="width:'+(p.n/d.amount*100).toFixed(3)+'%"></span>').join('')+'</div>'+
         '<div class="device-legend">'+parts.map(p=>'<div><i class="device-dot '+p.cls+'"></i><span>'+p.label+'</span><strong>'+fmt(p.n)+'</strong><small>'+Math.round(p.n/d.amount*100)+'%</small></div>').join('')+'</div>';
-      byId('deviceCoverageNote').textContent='De 28 True en 64 False zijn waarden in de bronexport, geen oordeel over alle apparaten. De 69 ontbrekende waarden tellen niet als False.';
+      byId('deviceCoverageNote').textContent=fmt(d.yes)+' voldoen en '+fmt(d.no)+' voldoen niet volgens de export. Bij '+fmt(d.missing)+' ontbreekt de status. Dit is geen volledige beveiligingsbeoordeling.';
     }else{
       bars.innerHTML='<div class="no-results">De totalen van deze bron sluiten niet op elkaar aan. Geen verdeling getoond.</div>';
       byId('deviceCoverageNote').textContent='Controleer de bronwaarden voordat percentages worden gebruikt.';
@@ -56,8 +56,8 @@
     byId('deviceGaps').innerHTML=[
       ['Actuele schoolpopulatie','De export uit september bevestigt niet hoeveel fysieke apparaten er nu zijn.'],
       ['Eigenaar en gebruik','Voor iedere apparaatgroep ontbreken hier volledige rol-, locatie- en gebruiksgegevens.'],
-      ['Beheer en beveiliging','Een True/False-veld is onvoldoende voor een complete MDM-, Intune- of beveiligingscontrole.'],
-      ['Aanvullende meting','Controleer aantallen per type en de actuele beheerstatus in de juiste bronsystemen.']
+      ['Beheer en beveiliging','De exportstatus alleen is onvoldoende om de beveiliging te beoordelen.'],
+      ['Actuele gegevens','Controleer de aantallen en beheerstatus in de systemen van de school.']
     ].map(([name,desc])=>'<div class="device-gap"><span class="device-gap-line"></span><strong>'+safe(name)+'</strong><p>'+safe(desc)+'</p></div>').join('');
     const host=byId('deviceRecords');host.replaceChildren();
     for(const row of d.rows){
@@ -74,7 +74,7 @@
     const external=dpia.filter(x=>/bevestigd/i.test(x.evidence||'')).length;
     byId('privacySummary').innerHTML=[
       ['DPIA-bronitems',dpia.length,'Geen uitgevoerde DPIAs of FG-oordelen'],
-      ['Externe bronstatus',external,'Verwijzingen met bevestigde externe onderbouwing'],
+      ['Externe bronstatus',external,'Bronnen met vastgelegde externe onderbouwing'],
       ['FG-advies','Niet aangeleverd','Niet opgenomen in deze inventarisatie'],
       ['Besluit bevoegd gezag','Niet aangeleverd','Geen besluit in de aangeleverde bronnen']
     ].map(([name,n,caption])=>'<div class="evidence-stat"><small>'+safe(name)+'</small><strong>'+(typeof n==='number'?fmt(n):safe(n))+'</strong><span>'+safe(caption)+'</span></div>').join('');
@@ -189,10 +189,10 @@
     const narrowed=filtered.length!==apps.length;
     const aiCount=narrowed?items(state.ai).filter(a=>ids.has(a.parentId)).length:state.ai.size;
     const d=deviceData(),totals=[
-      ['Basisregistraties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
+      ['Applicaties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
       ['AI-functies',aiCount,narrowed?'Gekoppeld aan de selectie; '+state.ai.size+' totaal':'Beschreven functies, niet automatisch ingeschakeld','ai'],
-      ['Entra-registraties',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
-      ['Apparaatrecords',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
+      ['Koppelingen vanuit Entra',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
+      ['Apparaatregistraties',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
     ].filter(row=>row[3]!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
     const grid=byId('kpiGrid');
     grid.replaceChildren();
@@ -204,17 +204,17 @@
       b.addEventListener('click',()=>selectView(view));grid.append(b);
     }
     const sub=byId('inventoryPopulation');
-    if(sub)sub.textContent=fmt(state.apps.size)+' basis · '+fmt(state.ai.size)+' AI-functies · '+fmt(state.connections.size)+' Entra · '+fmt(state.candidates.size)+' kandidaten · '+(d.amount?fmt(d.amount)+' apparaatrecords':'apparaatrecords onbekend')+' · verschillende tellingen, niet optelbaar';
+    if(sub)sub.textContent=fmt(state.apps.size)+' applicaties · '+fmt(state.ai.size)+' AI-functies · '+fmt(state.connections.size)+' koppelingen vanuit Entra · '+fmt(state.candidates.size)+' overige softwarevermeldingen · '+(d.amount?fmt(d.amount)+' apparaatrecords':'aantal apparaatrecords onbekend')+' · aantallen zijn niet optelbaar';
   }
   renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
   const oldCandidates=renderCandidates;
   renderCandidates=function(){
     oldCandidates();
     const info=byId('candidateInfo');
-    if(info)info.textContent='Gebruik en overlap nog controleren; niet meegeteld bij basisregistraties';
+    if(info)info.textContent='Niet opgenomen bij de applicaties. Gebruik en overlap nog niet gecontroleerd.';
   };
   // Record population and status instead of suggesting every recorded item is in use.
-  const sourceLabels={studio:'Overzicht samenstellen',overview:'Schoolbreed',apps:'Toepassingen',connections:'Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacy en beheer',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
+  const sourceLabels={studio:'Dashboard op maat',overview:'Overzicht',apps:'Applicaties',connections:'Koppelingen vanuit Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacybronnen',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
   function updatePath(view){
     let path=byId('evidencePath');
     if(!path){path=document.createElement('div');path.id='evidencePath';path.className='evidence-path';byId('sectionEyebrow').insertAdjacentElement('afterend',path);}
@@ -236,13 +236,44 @@
   const duplicateExport=byId('exportExcel')?.closest('.panel');
   if(duplicateExport)duplicateExport.classList.add('duplicate-source-export');
   const candidate=byId('candidatePanel');
-  if(candidate)candidate.querySelector('summary')?.setAttribute('title','Mogelijke toepassingen, niet meegenomen in de 61 basisregistraties');
+  if(candidate)candidate.querySelector('summary')?.setAttribute('title','Software buiten de huidige applicatielijst. Gebruik en dubbele vermeldingen nog te controleren.');
+  // Golden path: one starting point for viewing, searching, checking, editing and reporting.
+  // This is a navigation layer; source records and permissions never change.
+  const nav=byId('sections');
+  const overviewNav=nav?.querySelector('[data-view="overview"]');
+  const studioNav=nav?.querySelector('[data-view="studio"]');
+  if(overviewNav&&studioNav)nav.insertBefore(overviewNav,studioNav);
+  const overview=byId('viewOverview');
+  if(overview&&!byId('overviewQuickActions')){
+    const actions=document.createElement('nav');
+    actions.id='overviewQuickActions';
+    actions.className='overview-quick-actions';
+    actions.setAttribute('aria-label','Direct naar');
+    const destinations=[
+      ['Applicatie zoeken',()=>{selectView('apps');byId('appsSearch')?.focus();}],
+      ['Controles bekijken',()=>{selectView('findings');window.EmmausScenes?.show('findings',1,false);}],
+      ['Gegevens aanpassen',()=>window.EmmausRecordCards?.launch()],
+      ['Rapport maken',()=>{selectView('reports');window.EmmausScenes?.show('reports',0,false);}]
+    ];
+    for(const [label,action] of destinations){
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='overview-quick-action';
+      button.textContent=label;
+      button.addEventListener('click',action);
+      actions.append(button);
+    }
+    overview.insertBefore(actions,overview.querySelector('.scene-navigation')||overview.firstChild);
+  }
+  // Rapporten blijven bereikbaar via de navigatie en de overzichtsactie.
+  // Het submenu hoeft dezelfde downloadmogelijkheden niet opnieuw te tonen.
+  byId('topReports')?.closest('.rail-drawer-section')?.setAttribute('hidden','');
   const registerRoot=byId('viewAppsScene0');
   if(registerRoot){
     const tabs=document.createElement('div');tabs.className='app-register-switch';
     const buttons=[
-      action('Basisregistraties',()=>chooseApps('registered'),'app-register-tab active'),
-      action('Aanvullende kandidaten',()=>chooseApps('candidates'),'app-register-tab')
+      action('Applicaties',()=>chooseApps('registered'),'app-register-tab active'),
+      action('Overige software',()=>chooseApps('candidates'),'app-register-tab')
     ];
     buttons.forEach(b=>tabs.append(b));registerRoot.prepend(tabs);
     function chooseApps(mode){

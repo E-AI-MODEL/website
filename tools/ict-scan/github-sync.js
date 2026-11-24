@@ -226,7 +226,8 @@
         if(replacing)verifyCounts(manifestSpec);
         state.ready=state.apps.size+state.connections.size+state.ai.size+state.checks.size+state.signals.size+state.devices.size+state.parts.size+state.sourceRegister.size>0;
         buildDerived();
-        state.view=(state.view==='sources'||state.view==='overview')?'studio':state.view;
+        // After a completed import, show the usable overview rather than the dashboard editor.
+        state.view=(state.view==='sources'||state.view==='studio'||state.view==='overview')?'overview':state.view;
         renderAll();
         assertNotCancelled(abort.signal);
       }catch(error){restoreState(backup);if(error.name==='AbortError')throw error;throw Error('Gegevens niet bijgewerkt: '+error.message);}

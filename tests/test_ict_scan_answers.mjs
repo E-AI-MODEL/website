@@ -32,15 +32,15 @@ const tasks=[
   ['Wat is de bron van 3CX?','source',/Bronnen.*bewaard voor de interne controle/i,'APP-033'],
   ['Heeft 3CX AI-functies?','relations',/geen AI-functies gekoppeld/i,'APP-033'],
   ['Welke AI-functies kent Microsoft 365?','relations',/16 AI-functies beschreven/i,'APP-034'],
-  ['Hoeveel applicaties zijn er?','count',/69 basisregistraties/i],
+  ['Hoeveel applicaties zijn er?','count',/69 geregistreerde applicaties/i],
   ['Hoeveel AI-functies staan er?','count',/76 beschreven AI-functies/i],
-  ['Hoeveel Entra-registraties zijn er?','count',/93 Entra-registraties/i],
-  ['Hoeveel kandidaten zijn er?','count',/76 aanvullende kandidaten/i],
+  ['Hoeveel Entra-registraties zijn er?','count',/93 koppelingen vanuit Entra/i],
+  ['Hoeveel kandidaten zijn er?','count',/76 overige softwarevermeldingen/i],
   ['Hoeveel apps hebben AI-functies?','count',/beschreven AI-functie/i],
   ['Welke printsoftware gebruiken we?','list',/Canon UniFlow.*Kuario|Kuario.*Canon UniFlow/i],
   ['Welke telefoniesoftware staat geregistreerd?','list',/3CX/i,'APP-033'],
   ['Welke applicaties hebben nog geen verantwoordelijke?','list',/geen vastgestelde verantwoordelijke/i],
-  ['Welke applicaties hebben een Entra-match?','list',/mogelijke Entra-match/i],
+  ['Welke applicaties hebben een Entra-match?','list',/mogelijke koppeling vanuit Entra/i],
   ['Wat betekent een Entra-registratie?','faq',/bewijst niet dat de dienst/i,'FAQ-001'],
   ['Wat is een verwerkersovereenkomst?','faq',/verwerkingsverantwoordelijke/i,'FAQ-007'],
   ['Wat is het IBP-normenkader?','faq',/informatiebeveiliging en privacy/i,'FAQ-008'],
@@ -115,10 +115,10 @@ test('Geen bevestiging uit een ontbrekend veld verzinnen',()=>{
 });
 test('Vragen gebruiken de actuele bronpopulatie en geen vaste aantallen',()=>{
   const changed={...dataset,apps:dataset.apps.slice(1),ai:dataset.ai.slice(0,10),connections:dataset.connections.slice(0,12),candidates:dataset.candidates.slice(0,7)};
-  assert.match(query('Hoeveel applicaties zijn er?',changed).answer,/68 basisregistraties/);
+  assert.match(query('Hoeveel applicaties zijn er?',changed).answer,/68 geregistreerde applicaties/);
   assert.match(query('Hoeveel AI-functies zijn er?',changed).answer,/10 beschreven AI-functies/);
-  assert.match(query('Hoeveel Entra-registraties zijn er?',changed).answer,/12 Entra-registraties/);
-  assert.match(query('Hoeveel kandidaten zijn er?',changed).answer,/7 aanvullende kandidaten/);
+  assert.match(query('Hoeveel Entra-registraties zijn er?',changed).answer,/12 koppelingen vanuit Entra/);
+  assert.match(query('Hoeveel kandidaten zijn er?',changed).answer,/7 overige softwarevermeldingen/);
 });
 test('LessonUp-telling is geen totaal van veertig schoolbrede licentiecontrolepunten',()=>{
   const output=ask('Hoeveel licenties heeft LessonUp?');
@@ -164,7 +164,7 @@ test('Aantallen AI-functies en Entra-matches horen bij de gekozen toepassing',()
   assert.doesNotMatch(ai.answer,/76 beschreven AI-functies/);
   const entra=query('Hoeveel Entra-registraties heeft 3CX?',data);
   assert.equal(entra.kind,'count');
-  assert.match(entra.answer,/Bij 3CX zijn \d+ mogelijke Entra-matches beschreven/i);
+  assert.match(entra.answer,/Bij 3CX staan \d+ mogelijke koppelingen vanuit Entra/i);
   assert.doesNotMatch(entra.answer,/93 Entra-registraties/);
   const students=query('Welke AI-functies van Microsoft 365 zijn beschikbaar voor leerlingen?',data);
   assert.equal(students.kind,'relations');
@@ -211,7 +211,7 @@ test('Standaard Microsoft 365-instellingen blijven onderscheiden van tenanttoega
   const studentAnswer=ask('Wat zijn de standaardinstellingen van Microsoft 365 voor leerlingen?');
   assert.equal(studentAnswer.kind,'field');
   assert.match(studentAnswer.answer,/A3-leerlingen/);
-  assert.match(studentAnswer.answer,/geen controle van de schooltenant/i);
+  assert.match(studentAnswer.answer,/M365-instellingen \(tenant\).*niet gecontroleerd/i);
   const classAnswer=ask('Wat zijn de defaultsettings van klasTeams?');
   assert.equal(classAnswer.kind,'field');
   assert.match(classAnswer.answer,/klasTeam/i);

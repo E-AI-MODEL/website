@@ -94,10 +94,26 @@ try {
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
-  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 toepassingen'));
-  await page.locator('#viewStudio:not([hidden])').waitFor();
-  assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
-  assert.equal(await page.locator('#evidencePath').textContent(),'Overzicht samenstellen');
+  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 applicaties'));
+  await page.locator('#viewOverview:not([hidden])').waitFor();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'ICT-overzicht');
+  assert.match(await page.locator('#evidencePath').textContent(),/^Overzicht/);
+  assert.equal(await page.locator('#overviewQuickActions button').count(),4,'De vier gebruikerstaken ontbreken');
+  await page.locator('#overviewQuickActions button').filter({hasText:'Applicatie zoeken'}).click();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'Applicaties en diensten');
+  assert.equal(await page.locator('#appsSearch').evaluate(el=>el===document.activeElement),true,'Zoeken opent direct het zoekveld');
+  await navigate('overview');
+  await page.locator('#overviewQuickActions button').filter({hasText:'Controles bekijken'}).click();
+  await page.locator('#viewFindingsScene1:not([hidden])').waitFor();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'Controles');
+  await navigate('overview');
+  await page.locator('#overviewQuickActions button').filter({hasText:'Rapport maken'}).click();
+  await page.locator('#reportPicker:visible').waitFor();
+  assert.equal(await page.locator('#sectionTitle').textContent(),'Rapporten');
+  await navigate('overview');
+  await page.locator('#overviewQuickActions button').filter({hasText:'Gegevens aanpassen'}).click();
+  await page.locator('#cardEditor').waitFor({state:'visible'});
+  await page.locator('#cardEditorClose').click();
   if(width<700){
     const dock=await page.locator('.sidebar.icon-rail').boundingBox();
     assert(dock&&dock.x>=-1&&dock.width>=width-2&&dock.x+dock.width<=width+1,'Mobiele navigatie is geen volledige balk: '+JSON.stringify(dock));
@@ -106,12 +122,14 @@ try {
     }
     assert.equal(await page.locator('.rail-button[data-view="connections"]').isVisible(),false,'Secundaire onderdelen horen onder Meer');
     await navigate('connections');
-    assert.equal(await page.locator('#sectionTitle').textContent(),'Entra-registraties en toegang');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Koppelingen vanuit Entra');
     await navigate('studio');
-    assert.equal(await page.locator('#sectionTitle').textContent(),'Applicatielandschap');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Dashboard op maat');
   }
-  assert.equal(await page.locator('#viewStudio .ds-panel-head h2').textContent(),'Dashboard instellen');
-  assert.equal(await page.locator('.rail-button[data-view="studio"] .rail-label').textContent(),'Dashboard');
+  await navigate('studio');
+  await page.locator('#viewStudio:not([hidden])').waitFor();
+  assert.equal(await page.locator('#viewStudio .ds-panel-head h2').textContent(),'Gegevens en grafieken');
+  assert.equal(await page.locator('.rail-button[data-view="studio"] .rail-label').textContent(),'Op maat');
   assert.equal(await page.locator('#dsDataOptions .ds-option').count(),8,'Gegevenskeuze moet alle acht beschikbare bronsoorten bevatten');
   assert.equal(await page.locator('#dsDataOptions .ds-option-description').count(),8,'Een gegevensgroep moet direct vertellen waarvoor die dient');
   assert.equal(await page.locator('#dsPartOptions .ds-option-description').count(),9,'Elk dashboardonderdeel moet zijn werking uitleggen');
@@ -198,6 +216,8 @@ try {
   assert(size.scrollWidth<=size.clientWidth+1,'Horizontale overflow bij '+width+': '+JSON.stringify(size));
   assert(size.main<size.height,'Hoofdvenster groeit buiten de viewport bij '+width);
   await page.locator('#viewOverview .scene-tab').nth(1).click();
+  await page.locator('#viewOverviewScene1:not([hidden])').waitFor({state:'visible'});
+  assert.equal(await page.locator('#viewOverview .scene-tab.active').textContent(),'Koppelingen');
   assert.equal(await page.locator('#viewOverview .scene-panel:not([hidden])').count(),1);
   assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-informatie mag niet standaard zichtbaar zijn');
   assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false,'FG-modus moet standaard uit staan');
@@ -339,7 +359,7 @@ try {
     const menu=await page.locator('#railDrawer').boundingBox();
     assert(menu&&menu.x>=0&&menu.x+menu.width<=321,'Menu valt buiten 320px viewport: '+JSON.stringify(menu));
     await page.locator('[data-drawer-view="findings"]').click();
-    assert.equal(await page.locator('#sectionTitle').textContent(),'Wat moet nog worden gecontroleerd?');
+    assert.equal(await page.locator('#sectionTitle').textContent(),'Controles');
   }
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
