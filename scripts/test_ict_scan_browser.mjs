@@ -518,6 +518,16 @@ try {
   await page.locator('#cardEditorClose').click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),false,'Kandidaten zijn niet gescheiden van basisregistraties');
   // One compact inspector, not nested Excel/JSON/read-card duplicates.
+  // A visible button is not sufficient: its own row and scroll viewport
+  // must actually contain the hit target. Never force the click.
+  const listGeometry=await page.locator('#appsList').evaluate(el=>{
+    const card=el.querySelector('.item-card-direct'),button=card.querySelector('.item-summary');
+    const r=card.getBoundingClientRect(),b=button.getBoundingClientRect(),v=el.getBoundingClientRect();
+    return {row:r.height,button:b.height,viewport:v.height,rows:[...el.children].length,scrollHeight:el.scrollHeight};
+  });
+  assert(listGeometry.row>=listGeometry.button&&listGeometry.row>=57&&listGeometry.viewport>=57,
+    'Registerrij wordt samengedrukt: '+JSON.stringify(listGeometry));
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-register-fixed.png',animations:'disabled'});
   await page.locator('#appsList .item-card-direct .item-summary').first().click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
   assert.equal(await page.locator('#cardEditor').evaluate(el=>el.classList.contains('card-context-mode')),true);
@@ -666,6 +676,7 @@ try {
       await page.evaluate(n=>window.EmmausScenes.show(n,0,false),name);
       const id='view'+name[0].toUpperCase()+name.slice(1);
       await page.locator('#'+id+'Scene0:not([hidden])').waitFor({state:'visible'});
+      await page.locator('#'+id).evaluate(el=>Promise.all(el.getAnimations({subtree:true}).filter(a=>a.effect?.getTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{}))));
       const geometry=await page.evaluate(id=>{
         const panel=document.getElementById(id+'Scene0'),frame=panel.parentElement;
         const r=panel.getBoundingClientRect(),f=frame.getBoundingClientRect();
@@ -690,7 +701,7 @@ try {
         }
       }
       if(name==='ai')assert.equal(await page.locator('#aiProgress .ai-group-toggle').count(),3);
-      if(viewport.width===1280||viewport.width===320)await page.screenshot({path:'test-results/ict-fixed-'+viewport.width+'-'+name+'.png',animations:'disabled'});
+      if(viewport.width===1280||viewport.width===320)await page.screenshot({path:'test-results/ict-scan-fixed-'+viewport.width+'-'+name+'.png',animations:'disabled'});
     }
     await navigate('studio');
     const studio=await page.locator('#viewStudio').boundingBox();

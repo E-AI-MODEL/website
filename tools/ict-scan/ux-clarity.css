@@ -324,3 +324,44 @@ body>.rail-drawer .rail-drawer-view.active{background:#eaf1f8;border-color:#b9cc
  .workspace.monitor-layout #viewAi .ai-group-label{font-size:12px}
 }
 }
+
+/* Scrolling lists keep their natural row height. Grid auto tracks with
+   overflow:hidden cards can otherwise shrink below their clickable content. */
+@media screen{
+.workspace.monitor-layout #viewAppsScene0 :is(#appsList,#candidatesList):not([hidden]){
+ display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;
+ min-height:0;overflow-y:auto;overflow-x:hidden;scroll-padding:3px
+}
+.workspace.monitor-layout #viewAppsScene0 :is(#appsList,#candidatesList)>.item-card{
+ flex:0 0 auto;min-height:max-content;width:100%;margin:0
+}
+.workspace.monitor-layout #viewAppsScene0 :is(#appsList,#candidatesList) .item-summary{
+ min-height:57px;height:auto;box-sizing:border-box
+}
+.workspace.monitor-layout #viewAppsScene0 #candidatePanel:not([hidden]){
+ overflow:auto;overscroll-behavior:contain
+}
+.workspace.monitor-layout #viewAppsScene0 #candidatePanel .candidate-content{
+ max-height:none;overflow:visible
+}
+.workspace.monitor-layout #viewAppsScene0 #candidatePanel #candidatesList{
+ overflow:visible;max-height:none
+}
+/* Devices had an older, more specific grid declaration. Use the same
+   opening-scene contract here as for the other registers. */
+.workspace.monitor-layout #viewDevices .scene-panel.fixed-start:not([hidden]){
+ display:flex;flex-direction:column;align-content:normal;gap:9px
+}
+.workspace.monitor-layout #viewDevicesScene0>.two-col.screen-scroll{
+ grid-auto-rows:max-content;align-content:start
+}
+.workspace.monitor-layout #viewReportsScene0 #reportPicker{
+ grid-auto-rows:max-content
+}
+.workspace.monitor-layout #viewPrivacyScene0 #privacyDpia{
+ display:block
+}
+@media(max-width:950px){
+ .workspace.monitor-layout #viewAi #aiProgress>.ai-progress-grid{grid-auto-rows:max-content}
+}
+}
