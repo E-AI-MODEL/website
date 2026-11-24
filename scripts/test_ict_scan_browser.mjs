@@ -220,6 +220,105 @@ try {
   assert.equal(await page.locator('#viewOverview .scene-tab.active').textContent(),'Koppelingen');
   assert.equal(await page.locator('#viewOverview .scene-panel:not([hidden])').count(),1);
   assert.equal(await page.locator('#relationshipExplorer .relation-spoke').count(),4,'FG-informatie mag niet standaard zichtbaar zijn');
+  // Alle verbanden komen uit een enkele index, inclusief licenties en acties.
+  await page.locator('#relationAtlasOpen').click();
+  const atlas=page.locator('#relationAtlasDialog');
+  await atlas.waitFor({state:'visible'});
+  assert.match(await atlas.locator('#relationAtlasStats').textContent(),/579/);
+  assert.match(await atlas.locator('#relationAtlasStats').textContent(),/273/);
+  assert.equal(await atlas.locator('.ra-link-row').count(),273,'Niet alle bronverbanden staan in de lijst');
+  assert((await atlas.locator('.ra-mobile-group').count())>=8,'De categorieën zijn niet volledig opgebouwd');
+  const assertAtlasLayout=async w=>{
+    const mobile=w<=650;
+    assert.equal(await atlas.locator('.ra-mobile-graph').isVisible(),mobile,'Onjuiste mobiele atlasweergave bij '+w);
+    assert.equal(await atlas.locator('.ra-graph-scroll').isVisible(),!mobile,'Onjuiste netwerkweergave bij '+w);
+    const geometry=await atlas.locator('.ra-shell').evaluate(shell=>({scrollWidth:shell.scrollWidth,clientWidth:shell.clientWidth,scrollHeight:shell.scrollHeight,clientHeight:shell.clientHeight}));
+    assert(geometry.scrollWidth<=geometry.clientWidth+2,'Horizontale overloop in de atlas bij '+w+': '+JSON.stringify(geometry));
+    if(!mobile){
+      const chart=await atlas.locator('.ra-graph').boundingBox();
+      const frame=await atlas.locator('.ra-graph-wrap').boundingBox();
+      assert(chart&&frame&&chart.width>0&&chart.height>0,'Geen meetbaar netwerkdiagram');
+      assert(chart.y>=frame.y-2&&chart.y+chart.height<=frame.y+frame.height+2&&chart.x>=frame.x-2&&chart.x+chart.width<=frame.x+frame.width+2,'Netwerkdiagram valt buiten kader bij '+w+': '+JSON.stringify({chart,frame}));
+    }
+    const reachable=await atlas.locator('.ra-shell').evaluate(shell=>{
+      shell.scrollTop=shell.scrollHeight;
+      const last=shell.querySelector('.ra-link-row:last-child');
+      return {last:last.getBoundingClientRect().bottom,bottom:shell.getBoundingClientRect().bottom,scrollTop:shell.scrollTop};
+    });
+    assert(reachable.scrollTop>0&&reachable.last<=reachable.bottom+3,'Laatste verband niet bereikbaar bij '+w+': '+JSON.stringify(reachable));
+    await atlas.locator('.ra-shell').evaluate(shell=>{shell.scrollTop=0;});
+  };
+  await assertAtlasLayout(width);
+  if(width===1440){
+    for(const w of [1024,680,320]){
+      await page.setViewportSize({width:w,height:740});
+      await assertAtlasLayout(w);
+      await page.screenshot({path:'test-results/ict-scan-atlas-'+w+'.png'});
+    }
+    await page.setViewportSize({width,height:900});
+  }
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-relatieatlas.png'});
+  const readAtlasCsv=async()=>{
+    const pending=page.waitForEvent('download');
+    await atlas.getByRole('button',{name:'CSV downloaden',exact:true}).click();
+    const download=await pending;
+    assert.equal(download.suggestedFilename(),'ict-scan-verbanden.csv','De atlasexport heeft geen herkenbare bestandsnaam');
+    const raw=readFileSync(await download.path(),'utf8');
+    assert(raw.startsWith('\ufeff'),'Excel-compatibele BOM ontbreekt');
+    // Quoted fields may contain delimiters, escaped quotes and line breaks.
+    const field=/"((?:[^"]|"")*)"(;|\r\n|$)/gy;
+    const records=[];let row=[];const body=raw.slice(1);
+    while(field.lastIndex<body.length){
+      const pos=field.lastIndex,match=field.exec(body);
+      assert(match&&field.lastIndex>pos,'Ongeldige CSV op teken '+pos);
+      row.push(match[1].replace(/""/g,'"'));
+      if(match[2]!==';'){records.push(row);row=[];}
+    }
+    assert.equal(row.length,0,'Onvolledige CSV-regel');
+    assert.deepEqual(records.shift(),['Van (ID)','Van (naam)','Van (onderdeel)','Naar (ID)','Naar (naam)','Naar (onderdeel)','Soort verband','Status','Bron','Toelichting']);
+    assert(records.every(r=>r.length===10&&r.slice(0,8).every(Boolean)),'CSV bevat onvolledige verbanden');
+    return records;
+  };
+  const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
+  const fixture=manifest.dataFiles.map(f=>JSON.parse(readFileSync('tools/ict-scan/bronnen/'+f.path,'utf8')));
+  const fixtureState=Object.fromEntries(Object.entries(inventory.STORES).map(([type,store])=>[store,fixture.flatMap(f=>f[type]||[])]));
+  const expectedIndex=inventory.build(fixtureState);
+  const safeValue=v=>/^[\s]*[=+\-@\t\r]/.test(v)?"'"+v:v;
+  const expectedRows=edges=>edges.map(e=>JSON.stringify([e.fromId,e.toId,e.status,safeValue(e.evidence||''),safeValue(e.note||'')])).sort();
+  const actualRows=rows=>rows.map(r=>JSON.stringify([r[0],r[3],r[7],r[8],r[9]])).sort();
+  const records=await readAtlasCsv();
+  assert.equal(records.length,273);
+  assert.deepEqual(actualRows(records),expectedRows(expectedIndex.edges),'CSV wijkt af van de volledige index');
+  assert.equal(records.filter(r=>r[7]==='Geregistreerd').length,236);
+  assert.equal(records.filter(r=>r[7]==='Vermoedelijk').length,37);
+  assert.equal(await atlas.locator('.ra-link-proof').count(),273);
+  const proof=atlas.locator('.ra-link-proof').first();
+  await proof.locator('summary').click();
+  assert(await proof.locator('p').nth(1).isVisible(),'Broninformatie niet zichtbaar');
+  assert.match(await proof.locator('p').nth(1).textContent(),/^Bron: .+/);
+  assert.match(await proof.locator('p').nth(2).textContent(),/^Status: (Geregistreerd|Vermoedelijk)$/);
+  await proof.locator('summary').click();
+  await atlas.locator('.ra-shell').evaluate(shell=>{shell.scrollTop=0;});
+  await atlas.locator('select[aria-label="Filter status van het verband"]').selectOption('Vermoedelijk');
+  assert.equal(await atlas.locator('.ra-link-row').count(),37,'Vermoedelijke verbanden onjuist geteld');
+  assert.deepEqual(actualRows(await readAtlasCsv()),expectedRows(expectedIndex.edges.filter(e=>e.status==='Vermoedelijk')),'Gefilterde CSV bevat verkeerde verbanden');
+  await atlas.locator('select[aria-label="Filter status van het verband"]').selectOption('Geregistreerd');
+  assert.equal(await atlas.locator('.ra-link-row').count(),236,'Geregistreerde verbanden onjuist geteld');
+  await atlas.locator('button.ra-reset').click();
+  await atlas.locator('select[aria-label="Filter onderdeel"]').selectOption('licenseReview');
+  assert.equal(await atlas.locator('.ra-link-row').count(),26,'Licentierelaties ontbreken');
+  await atlas.locator('button.ra-reset').click();
+  await atlas.locator('input.ra-search').fill('APP-034');
+  assert(await atlas.locator('.ra-match-button').count()>0,'Zoeken in alle registraties werkt niet');
+  await atlas.locator('.ra-match-button').first().click();
+  const selectedEdges=expectedIndex.edges.filter(e=>(e.fromType==='apps'&&e.fromId==='APP-034')||(e.toType==='apps'&&e.toId==='APP-034'));
+  assert(selectedEdges.length>0,'Zoekfixture bevat geen verbanden');
+  assert.equal(await atlas.locator('.ra-link-row').count(),selectedEdges.length,'Gerichte verbanden niet volledig');
+  assert.match(await atlas.locator('.ra-detail').textContent(),/APP-034/);
+  assert.match(await atlas.locator('.ra-sources').textContent(),/Bronverwijzingen/);
+  console.log('Relatieatlas '+browserType.name()+' '+width+'px: 579 registraties, 273 verbanden (236 geregistreerd, 37 vermoedelijk), CSV-inhoud, bronstatus, filters, zoekfunctie en bereikbaarheid gecontroleerd');
+  await atlas.locator('button.ra-close').click();
+  await atlas.waitFor({state:'hidden'});
   assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false,'FG-modus moet standaard uit staan');
   await page.screenshot({path:'test-results/ict-scan-'+width+'-relationships.png'});
   await navigate('devices');

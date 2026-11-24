@@ -11,6 +11,15 @@ class ICTScanTests(unittest.TestCase):
         for filename in ("index.html", "style.css", "monitor.css", "inventory-index.js", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "role-modes.js", "role-modes.css", "dashboard-composer.js", "dashboard-composer.css", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
 
+    def test_relationship_atlas_assets_are_shipped(self):
+        html = (TOOL / "index.html").read_text(encoding="utf-8")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        for filename in ("relationship-atlas.js", "relationship-atlas.css"):
+            self.assertTrue((TOOL / filename).is_file(), filename)
+            self.assertIn(f'"{filename}"', builder, f"{filename} must be in the publish allowlist")
+            self.assertIn(f'./{filename}?v=', html, f"{filename} must be referenced from the entry point")
+        self.assertNotIn('shutil.copytree(ict_scan_source', builder)
+
     def test_composer_and_edit_gate_assets_published(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
