@@ -189,10 +189,10 @@
     const narrowed=filtered.length!==apps.length;
     const aiCount=narrowed?items(state.ai).filter(a=>ids.has(a.parentId)).length:state.ai.size;
     const d=deviceData(),totals=[
-      ['Basisregistraties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
+      ['Applicaties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
       ['AI-functies',aiCount,narrowed?'Gekoppeld aan de selectie; '+state.ai.size+' totaal':'Beschreven functies, niet automatisch ingeschakeld','ai'],
-      ['Entra-registraties',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
-      ['Apparaatrecords',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
+      ['Koppelingen vanuit Entra',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
+      ['Apparaatregistraties',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
     ].filter(row=>row[3]!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
     const grid=byId('kpiGrid');
     grid.replaceChildren();
@@ -204,17 +204,17 @@
       b.addEventListener('click',()=>selectView(view));grid.append(b);
     }
     const sub=byId('inventoryPopulation');
-    if(sub)sub.textContent=fmt(state.apps.size)+' basis · '+fmt(state.ai.size)+' AI-functies · '+fmt(state.connections.size)+' Entra · '+fmt(state.candidates.size)+' kandidaten · '+(d.amount?fmt(d.amount)+' apparaatrecords':'apparaatrecords onbekend')+' · verschillende tellingen, niet optelbaar';
+    if(sub)sub.textContent=fmt(state.apps.size)+' applicaties · '+fmt(state.ai.size)+' AI-functies · '+fmt(state.connections.size)+' koppelingen vanuit Entra · '+fmt(state.candidates.size)+' overige softwarevermeldingen · '+(d.amount?fmt(d.amount)+' apparaatrecords':'aantal apparaatrecords onbekend')+' · aantallen zijn niet optelbaar';
   }
   renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
   const oldCandidates=renderCandidates;
   renderCandidates=function(){
     oldCandidates();
     const info=byId('candidateInfo');
-    if(info)info.textContent='Gebruik en overlap nog controleren; niet meegeteld bij basisregistraties';
+    if(info)info.textContent='Niet opgenomen bij de applicaties. Gebruik en overlap nog niet gecontroleerd.';
   };
   // Record population and status instead of suggesting every recorded item is in use.
-  const sourceLabels={studio:'Overzicht samenstellen',overview:'Schoolbreed',apps:'Toepassingen',connections:'Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacy en beheer',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
+  const sourceLabels={studio:'Dashboard op maat',overview:'Overzicht',apps:'Applicaties',connections:'Koppelingen vanuit Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacybronnen',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
   function updatePath(view){
     let path=byId('evidencePath');
     if(!path){path=document.createElement('div');path.id='evidencePath';path.className='evidence-path';byId('sectionEyebrow').insertAdjacentElement('afterend',path);}
@@ -236,13 +236,44 @@
   const duplicateExport=byId('exportExcel')?.closest('.panel');
   if(duplicateExport)duplicateExport.classList.add('duplicate-source-export');
   const candidate=byId('candidatePanel');
-  if(candidate)candidate.querySelector('summary')?.setAttribute('title','Mogelijke toepassingen, niet meegenomen in de 61 basisregistraties');
+  if(candidate)candidate.querySelector('summary')?.setAttribute('title','Software buiten de huidige applicatielijst. Gebruik en dubbele vermeldingen nog te controleren.');
+  // Golden path: one starting point for viewing, searching, checking, editing and reporting.
+  // This is a navigation layer; source records and permissions never change.
+  const nav=byId('sections');
+  const overviewNav=nav?.querySelector('[data-view="overview"]');
+  const studioNav=nav?.querySelector('[data-view="studio"]');
+  if(overviewNav&&studioNav)nav.insertBefore(overviewNav,studioNav);
+  const overview=byId('viewOverview');
+  if(overview&&!byId('overviewQuickActions')){
+    const actions=document.createElement('nav');
+    actions.id='overviewQuickActions';
+    actions.className='overview-quick-actions';
+    actions.setAttribute('aria-label','Direct naar');
+    const destinations=[
+      ['Applicatie zoeken',()=>{selectView('apps');byId('appsSearch')?.focus();}],
+      ['Controles bekijken',()=>{selectView('findings');window.EmmausScenes?.show('findings',1,false);}],
+      ['Gegevens aanpassen',()=>window.EmmausRecordCards?.launch()],
+      ['Rapport maken',()=>{selectView('reports');window.EmmausScenes?.show('reports',0,false);}]
+    ];
+    for(const [label,action] of destinations){
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='overview-quick-action';
+      button.textContent=label;
+      button.addEventListener('click',action);
+      actions.append(button);
+    }
+    overview.insertBefore(actions,overview.querySelector('.scene-navigation')||overview.firstChild);
+  }
+  // Rapporten blijven bereikbaar via de navigatie en de overzichtsactie.
+  // Het submenu hoeft dezelfde downloadmogelijkheden niet opnieuw te tonen.
+  byId('topReports')?.closest('.rail-drawer-section')?.setAttribute('hidden','');
   const registerRoot=byId('viewAppsScene0');
   if(registerRoot){
     const tabs=document.createElement('div');tabs.className='app-register-switch';
     const buttons=[
-      action('Basisregistraties',()=>chooseApps('registered'),'app-register-tab active'),
-      action('Aanvullende kandidaten',()=>chooseApps('candidates'),'app-register-tab')
+      action('Applicaties',()=>chooseApps('registered'),'app-register-tab active'),
+      action('Overige software',()=>chooseApps('candidates'),'app-register-tab')
     ];
     buttons.forEach(b=>tabs.append(b));registerRoot.prepend(tabs);
     function chooseApps(mode){
