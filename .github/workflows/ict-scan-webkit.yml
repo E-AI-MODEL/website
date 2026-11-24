@@ -27,6 +27,10 @@ jobs:
   webkit:
     name: WebKit iPhone-layout, grafieken en bronimport
     runs-on: ubuntu-24.04
+    # WebKit and its Ubuntu libraries are already installed in this pinned image.
+    # Avoid repeated slow apt downloads, while still running the real browser test.
+    container:
+      image: mcr.microsoft.com/playwright/python:v1.56.1-noble
     timeout-minutes: 14
     steps:
       - name: Checkout zonder opgeslagen credentials
@@ -42,10 +46,8 @@ jobs:
         run: pip3 install --disable-pip-version-check --user beautifulsoup4
       - name: Bouw bestaande ICT-scan zonder externe gegevens
         run: python3 scripts/build_site.py --sources content/legacy --out site-build
-      - name: Installeer Playwright WebKit
-        run: |
-          npm install --no-save --package-lock=false --ignore-scripts playwright@1.56.1
-          npx playwright install --with-deps webkit
+      - name: Gebruik bij de container passende Playwright
+        run: npm install --no-save --package-lock=false --ignore-scripts playwright@1.56.1
       - name: Test dashboard in echte WebKit-renderer
         run: node scripts/test_ict_scan_browser.mjs site-build webkit
       - name: Bewaar screenshots van WebKit-test
