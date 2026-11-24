@@ -106,7 +106,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     await seek(31);await visible();const side=await vs();assert.equal(side.chapter,1);assert.ok(Math.hypot(...side.position)>100);
     assert.notEqual(await p.locator('#voyageCanvas').evaluate(c=>c.toDataURL()),earth,'Echte camera moet ander beeld tonen');
     await shot('opzij');
-    await seek(48);await visible();assert.equal((await vs()).focus,49669);assert.ok((await vs()).projected>=1);await shot('regulus');
+    await seek(48);await visible();assert.equal((await vs()).focus,49669);assert.ok((await vs()).projected>=1);assert.ok((await vs()).portrait>.99);assert.match(await p.locator('#voyageSceneLabel').textContent(),/ILLUSTRATIEF DETAILBEELD/);await shot('regulus');
     await seek(72);await visible();assert.equal((await vs()).focus,49583);assert.ok(Math.hypot(...(await vs()).position)>1000);await shot('eta');
     await seek(94);await visible();assert.equal((await vs()).chapter,4);assert.ok(Math.hypot(...(await vs()).position)<1);await shot('terug');
     await p.locator('.voyage-chapter').nth(1).click();assert.equal((await vs()).chapter,1);
@@ -118,6 +118,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     await p.locator('#returnVoyageTop').click();
     await p.waitForFunction(()=>window.LEO_VOYAGE_STATE().visible);
     assert.equal(await p.locator('#voyage').isVisible(),true);
+    await p.locator('#voyageSources').click();await p.waitForFunction(()=>!window.LEO_VOYAGE_STATE().visible&&document.querySelector('#bronnen details').open);assert.equal(await p.locator('#bronnen').isVisible(),true);
     assert.deepEqual(errors,[],'Reis browserfouten op '+engine+'/'+w);
     await ctx.close();
   }
@@ -125,8 +126,8 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
   const film=await still.newPage();await film.goto(base+path,{waitUntil:'load'});
   await film.waitForFunction(()=>window.LEO_VOYAGE_STATE?.().frame>0);
   const v=await film.evaluate(()=>window.LEO_VOYAGE_STATE());
-  assert.equal(v.playing,false,'Verminderde beweging start zonder film');assert.equal(v.time,0);
-  await film.locator('#voyageNext').click();assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().chapter),1);
+  assert.equal(v.playing,false,'Verminderde beweging start zonder film');assert.equal(v.time,9);
+  await film.locator('#voyageNext').click();assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().chapter),1);assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().time),31);
   await still.close();
 
   const reduced=await browser.newContext({viewport:{width:390,height:760},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
