@@ -117,7 +117,7 @@ test('De volledige relatieatlas is een eigen visual zonder dubbel gegevensbestan
   assert.match(atlas,/for\(const edge of currentEdges\)/,'Geen afkap van de volledige relatielijst');
   assert.match(atlas,/filterEdges\(/);
   assert.match(atlas,/exportCsv\(/);
-  assert.match(atlas,/csvSafe\(/);
+  assert.match(atlas,/const csvSafe=/);
   assert.match(atlas,/relationAtlasDialog/);
   assert.match(atlasStyle,/@media\(max-width:650px\)/);
   assert.doesNotMatch(atlas,/const links=\[[^]*?APP-034/,'Geen handmatig ingevulde relatielijnen');
