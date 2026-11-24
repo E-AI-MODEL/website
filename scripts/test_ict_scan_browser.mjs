@@ -151,6 +151,38 @@ try {
   await page.locator('#overviewQuickActions button').filter({hasText:'Rapport maken'}).click();
   await page.locator('#reportPicker:visible').waitFor();
   assert.equal(await page.locator('#sectionTitle').textContent(),'Rapporten');
+  if(width===1440){
+    await page.evaluate(()=>{window.print=()=>{};});
+    const reports=await page.evaluate(()=>Object.keys(window.IctPrintReports.titles));
+    assert.equal(reports.length,9);
+    for(const scope of reports){
+      const model=await page.evaluate(scope=>indexedReport(scope),scope);
+      assert(model.sections.length>1);
+      assert(model.kpis.length>0);
+      await page.evaluate(scope=>printIndexedReport(scope),scope);
+      assert.equal(await page.locator('#printReport .report-cover h1').count(),1);
+      assert.equal(await page.locator('#printReport .report-chapter').count(),model.sections.length);
+      assert.equal(await page.locator('#printReport script').count(),0);
+      // Do not export the actual school register as a public CI artifact.
+      if(browserType===chromium&&['ict','privacy','aiGovernance'].includes(scope)){
+        await page.evaluate(scope=>{
+          const synthetic=IctInventoryIndex.build({
+            apps:[{id:'TEST-APP',name:'Voorbeeldapplicatie',kind:'Applicatie',area:'Onderwijs',description:'Fictieve applicatie voor de PDF-proef.',local:'Onbekend',data:'Fictieve gegevens'}],
+            ai:[{id:'TEST-AI',name:'Voorbeeldfunctie',product:'Voorbeeldapplicatie',domain:'Onderwijs',local:'Onbekend',action:'Fictieve functie'}],
+            checks:[{id:'TEST-CHECK',name:'Voorbeeldcontrole',category:'Toegang',explanation:'Controleer de fictieve rolverdeling.',status:'Open'}],
+            dpia:[{id:'TEST-DPIA',name:'Voorbeeldonderzoek',assessment:'Nog niet beoordeeld',evidence:'Niet vastgesteld'}],
+            workActions:[{id:'TEST-WORK',name:'Voorbeeldactie',action:'Controleer de fictieve instellingen.',status:'Open'}]
+          });
+          const example=IctPrintReports.build(synthetic,{scope,taxonomy:IctScanTaxonomy,date:'24-11-2026',sourceLabel:'SYNTHETISCHE TESTGEGEVENS'});
+          document.getElementById('printReport').innerHTML=IctPrintReports.render(example);
+        },scope);
+        const pdf=await page.pdf({path:'test-results/ict-scan-report-'+scope+'.pdf',format:'A4',preferCSSPageSize:true,printBackground:true});
+        assert.equal(pdf.subarray(0,5).toString(),'%PDF-');
+        assert(pdf.length>5000,'PDF is onverwacht klein');
+      }
+    }
+    await page.evaluate(()=>{document.getElementById('printReport').replaceChildren();});
+  }
   await navigate('overview');
   await page.locator('#overviewQuickActions button').filter({hasText:'Gegevens aanpassen'}).click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
@@ -454,7 +486,7 @@ try {
   assert.equal(await page.locator('#candidatePanel').isVisible(),true);
   assert(!/76\s+aanwijzingen/.test(await page.locator('#candidateInfo').textContent()),'Dezelfde 76 wordt dubbel getoond');
   await navigate('reports');
-  assert.equal(await page.locator('#reportPicker [data-report]').count(),7);
+  assert.equal(await page.locator('#reportPicker [data-report]').count(),9);
   await page.locator('[data-report="devices"]').click();
   assert.match(await page.locator('#reportPreviewTitle').textContent(),/Apparaten/);
   await navigate('ai');

@@ -34,11 +34,11 @@
       if(tab){tab.hidden=!on;tab.setAttribute('aria-hidden',String(!on));}
     }
     const reports=byId('reportPicker');
-    for(const [scope,on] of [['ai',roles.ai],['privacy',roles.fg]]){
+    for(const [scope,on] of [['ai',roles.ai],['aiGovernance',roles.ai],['privacy',roles.fg]]){
       const option=reports?.querySelector('[data-report="'+scope+'"]');
       if(option)option.hidden=!on;
     }
-    if((!roles.ai&&state.reportScope==='ai')||(!roles.fg&&state.reportScope==='privacy')){
+    if((!roles.ai&&['ai','aiGovernance'].includes(state.reportScope))||(!roles.fg&&state.reportScope==='privacy')){
       state.reportScope='all';
       if(typeof renderReports==='function')renderReports();
     }

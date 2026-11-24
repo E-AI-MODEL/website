@@ -14,7 +14,7 @@ class ICTScanTests(unittest.TestCase):
     def test_relationship_atlas_assets_are_shipped(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
-        for filename in ("relationship-atlas.js", "relationship-atlas.css"):
+        for filename in ("relationship-atlas.js", "relationship-atlas.css", "report-print.js", "report-print.css"):
             self.assertTrue((TOOL / filename).is_file(), filename)
             self.assertIn(f'"{filename}"', builder, f"{filename} must be in the publish allowlist")
             self.assertIn(f'./{filename}?v=', html, f"{filename} must be referenced from the entry point")
