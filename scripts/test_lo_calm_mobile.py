@@ -107,6 +107,10 @@ def phone(browser,width,height):
         assert page.locator("#loCoachPanel").is_visible()
         assert page.locator("#after").is_visible()
         page.screenshot(path=str(SHOTS/f"{browser.browser_type.name}-390x844-analyse.png"),full_page=True)
+    # WebKit under file:// may reject the third-party analytics beacon. This
+    # does not belong to the local application; keep all other JS failures fatal.
+    errors=[error for error in errors if not (
+        "cloudflareinsights.com/cdn-cgi/rum" in error and "access control checks" in error)]
     assert not errors,errors
     page.close()
 

@@ -1,17 +1,39 @@
 name: Verify public UI
 on:
-  pull_request:
-    branches: [main]
-  push:
-    branches: [main]
+  workflow_call:
+    inputs:
+      release_artifact:
+        type: boolean
+        default: false
+  workflow_dispatch:
+
+
 permissions:
   contents: read
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    # De volledige selectie bevat beide WebGL-proeven op een software-renderer.
+    # Houd ook bij een trage runner tijd over voor de overige browsercontroles.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Kies de browserproeven die deze wijziging kunnen raken
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] || ! git rev-parse --verify HEAD^1 >/dev/null 2>&1; then
+            python3 scripts/ci_pr_scope.py --all --output "$GITHUB_OUTPUT"
+          else
+            git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed-files"
+            mapfile -d '' changed < "$RUNNER_TEMP/changed-files"
+            python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
+          fi
+      - name: Test veilige selectie van browserproeven
+        run: python3 -m unittest discover -s tests -p 'test_ci_pr_scope.py' -v
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -21,9 +43,13 @@ jobs:
       - run: pip install beautifulsoup4
       - run: python scripts/build_site.py --sources content/legacy --out site-build
       - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
-      - name: Build self-hosted anatomy before verifying site links
-        run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - run: python scripts/prepare_ui.py --root site-build
+      - name: Verify one canonical hub per subject and legacy redirects
+        run: python -m unittest discover -s tests -p 'test_hub_structure.py' -v
+      - name: Check dashboard cards, route preservation and lab isolation
+        run: python -m unittest discover -s tests -p 'test_dashboard_cards.py' -v
+      - name: Verify editorial card scope and build output
+        run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
       - run: python scripts/verify_ui.py --root site-build
       - name: Verify LEIF is published without rewriting answers or access screen
         run: |
@@ -35,41 +61,72 @@ jobs:
         run: npx playwright install chromium
         timeout-minutes: 4
       - run: python -m unittest discover -s tests -p test_tool_launch.py -v
+      - name: Controleer ICT-scan synchronisatie en interface op desktop en mobiel
+        if: ${{ steps.scope.outputs.ictscan == 'true' }}
+        run: node scripts/test_ict_scan_browser.mjs site-build
       - name: Check anatomical 3D rendering and local organ models
+        if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_anatomie_3d.mjs site-build
       - run: node scripts/test_tool_launch.mjs site-build
+      - name: Proef EAIgit op desktop en mobiel
+        if: ${{ steps.scope.outputs.eaigit == 'true' }}
+        run: node scripts/test_projecthulp_browser.mjs site-build
+      - name: Verify dashboard cards and filters on desktop and phones
+        if: ${{ steps.scope.outputs.home == 'true' }}
+        run: node scripts/test_dashboard_cards_browser.mjs site-build
       - run: node scripts/ui_smoke.mjs site-build
+      - name: Verify homepage style and visible cards on phones and desktop
+        if: ${{ steps.scope.outputs.home == 'true' }}
+        run: node scripts/test_story_cards_browser.mjs site-build
+      - name: Test EAIgame 3D and full gameplay on phone and desktop
+        if: ${{ steps.scope.outputs.eaigame == 'true' }}
+        env:
+          EAIGAME_REQUIRE_3D: '1'
+        run: node scripts/test_eaigame_browser.mjs site-build
       - name: Test compacte schuine-worpstudio op telefoons en desktop
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node scripts/test_schuine_worp_studio.mjs site-build chromium
       - name: Test mobiel richten, schaal en schieten in Natuurkunde
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node scripts/test_science_mobile_aim.mjs site-build
       - name: Check EAIwork dashboard layout on phones and desktop
+        if: ${{ steps.scope.outputs.eaiwork == 'true' }}
         run: node scripts/test_eaiwork_mobile.mjs site-build
       - name: Verify anatomical 3D viewer on desktop and mobile
+        if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_anatomie_browser.mjs site-build
       - name: Verify Hartslaglab WebGL animation and mobile layout
+        if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_hartslaglab_browser.mjs site-build chromium
       - name: Verify LLM Observatory tokenizer in Chromium
+        if: ${{ steps.scope.outputs.llm == 'true' }}
         run: node scripts/test_llm_observatorium.mjs site-build
       - name: Test Melkweg Lab on phones and desktop
+        if: ${{ steps.scope.outputs.melkweg == 'true' }}
         run: node scripts/test_melkweg_mobile.mjs site-build
       - name: Test direct visual experiments in Melkweg Lab
+        if: ${{ steps.scope.outputs.melkweg == 'true' }}
         run: node scripts/test_melkweg_visual_play.mjs site-build
       - name: Verify LEIF continuation in Chromium
+        if: ${{ steps.scope.outputs.leif == 'true' }}
         run: node scripts/test_leif_continue.mjs site-build
       - name: Verify LEIF text editor in Chromium
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.scope.outputs.leif == 'true' }}
         run: node scripts/test_leif_site_editor.mjs site-build
       - name: Verify LEIF manager login and saved account in Chromium
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.scope.outputs.leif == 'true' }}
         run: node scripts/test_leif_magic_login.mjs site-build
       - name: Verify compact LEIF Studio and per-participant edits in Chromium
+        if: ${{ steps.scope.outputs.leif == 'true' }}
         run: node scripts/test_leif_studio_ui.mjs site-build
       - name: Verify mobile LEIF question and exercise typing in Chromium
+        if: ${{ steps.scope.outputs.leif == 'true' }}
         run: node scripts/test_leif_mobile_questions.mjs site-build
       - name: Verify LEIF landing pages after participant login
+        if: ${{ steps.scope.outputs.leif == 'true' }}
         run: node scripts/test_leif_landing_ui.mjs site-build
       - name: Verify LEIF session API rejects unknown private codes
+        if: ${{ steps.scope.outputs.leif == 'true' }}
         run: |
           status="$(curl --silent --show-error --max-time 25 --output /tmp/leif-api-check.json --write-out '%{http_code}' --request POST 'https://ngcyfbstajfcfdhlelbz.supabase.co/functions/v1/leif-demo-session' --header 'Content-Type: application/json' --data '{"action":"load","token":"synthetic-invalid-continuation-code-xxxxxxxxxxxxxx"}')"
           test "$status" = "404" || { echo "LEIF API health check failed: HTTP $status"; exit 1; }
@@ -78,3 +135,23 @@ jobs:
         with:
           name: public-ui-check
           path: test-results/
+
+      - name: Leg de gecontroleerde productiebuild vast
+        if: ${{ inputs.release_artifact == true }}
+        run: |
+          python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
+          python scripts/verify_ui.py --root site-build
+          python scripts/release_artifact.py create --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
+      - name: Bewaar exact de geteste sitebuild
+        if: ${{ inputs.release_artifact == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-release-${{ github.run_id }}
+          path: |
+            site-build/
+            release-manifest.json
+          if-no-files-found: error
+          include-hidden-files: true
+          compression-level: 0
+          overwrite: true
+          retention-days: 30

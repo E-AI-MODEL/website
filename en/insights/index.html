@@ -46,7 +46,7 @@ var current=30;
 var summary=document.getElementById('summary'),notice=document.getElementById('notice');
 var trend=document.getElementById('trend'),xticks=document.getElementById('xticks');
 var nf=new Intl.NumberFormat(locale);
-var titleMap={'/':'Homepage','/nl/':'Homepage','/en/':'Home','/nl/tools/':'Tools','/en/tools/':'Tools','/tools/':'Tools','/tools/melkweg-lab/':'Melkweg Lab','/tools/wihtml/':'WiHTML','/tools/science-observatory/':'Science Observatory','/tools/llm-observatorium/':'LLM Observatorium','/tools/abyss/':'ABYSS','/tools/eaimesh/':'EAImesh','/tools/eaistudio/':'EAIstudio','/nl/insights/':'Website-inzichten','/en/insights/':'Site insights'};
+var titleMap={'/':'Homepage','/nl/':'Homepage','/en/':'Home','/nl/tools/':'Tools','/en/tools/':'Tools','/tools/':'Tools','/tools/melkweg-lab/':'The Milky Way','/tools/wihtml/':'WiHTML','/tools/science-observatory/':'Physics and mathematics','/tools/llm-observatorium/':'How does a language model work?','/tools/abyss/':'Oceanography','/tools/anatomie/':'The body in 3D','/tools/anatomie/labs/hartslag/':'Heart and circulation','/tools/lo-aanvalslab/':'Attack and defence','/tools/eaimesh/':'EAImesh','/tools/eaistudio/':'EAIstudio','/nl/insights/':'Website-inzichten','/en/insights/':'Site insights'};
 function nameFor(p){return titleMap[p]||p.replace(/^\/(nl|en)\//,'/').replace(/^\/|\/$/g,'').replaceAll('-',' ')||I.home;}
 function format(n){return nf.format(n);}
 function days(n){

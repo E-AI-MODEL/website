@@ -1,20 +1,10 @@
 name: Publish Zhang Review
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-zhang-review-rapid.yml'
-      - 'nl/onderzoek/zhang-genai-taal/**'
-      - 'en/research/zhang-genai-language/**'
-      - 'nl/onderzoek/index.html'
-      - 'en/research/index.html'
-      - 'nl/publicaties/index.html'
-      - 'en/publications/index.html'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
-  group: review-zhang-publication
+  group: theory7-production
   cancel-in-progress: false
 jobs:
   publish:
@@ -31,6 +21,31 @@ jobs:
               assert path.is_file() and path.stat().st_size > 500000 and path.read_bytes().startswith(b'%PDF-')
               assert path.name in Path(route, 'index.html').read_text()
           PY
+      - name: Set up Python for PDF verification
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install fonts and PDF tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-crosextra-carlito fonts-dejavu-core
+          python -m pip install --disable-pip-version-check 'PyMuPDF==1.26.7' 'Pillow==12.3.0'
+      - name: Apply reviewed PDF corrections
+        run: |
+          python scripts/rebuild_zhang_review.py
+          python scripts/rebuild_zhang_review_en.py
+      - name: Preserve definitive PDF files in repository
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet -- assets/research/zhang-genai-l2-review-nl-2026.pdf assets/research/zhang-genai-l2-review-en-2026.pdf; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add assets/research/zhang-genai-l2-review-nl-2026.pdf assets/research/zhang-genai-l2-review-en-2026.pdf
+            git commit -m 'docs: publish final Dutch and English Zhang reviews'
+            git push origin HEAD:main
+          else
+            echo 'Both definitive PDF files already checked in'
+          fi
       - name: Install FTPS
         run: sudo apt-get update && sudo apt-get install -y lftp openssl
       - name: Verify FTP certificate
@@ -38,7 +53,8 @@ jobs:
           set -euo pipefail
           actual="$(openssl s_client -starttls ftp -connect ftp.eaimodel.nl:21 -servername ftp.eaimodel.nl </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
           test "$actual" = '4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32'
-      - name: Publish review files
+      # All shared HTML and site scripts belong exclusively to deploy-theory7.yml.
+      - name: Publish reviewed PDF files only
         env:
           FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
@@ -57,25 +73,14 @@ jobs:
           mkdir -p /en/research/zhang-genai-language
           put -O /assets/research/ assets/research/zhang-genai-l2-review-nl-2026.pdf
           put -O /assets/research/ assets/research/zhang-genai-l2-review-en-2026.pdf
-          put -O /assets/ assets/site-refresh.js
-          put -O /nl/onderzoek/zhang-genai-taal/ nl/onderzoek/zhang-genai-taal/index.html
-          put -O /en/research/zhang-genai-language/ en/research/zhang-genai-language/index.html
-          put -O /nl/onderzoek/ nl/onderzoek/index.html
-          put -O /en/research/ en/research/index.html
-          put -O /nl/publicaties/ nl/publicaties/index.html
-          put -O /en/publications/ en/publications/index.html
           bye
           EOF
-      - name: Verify public pages
+      - name: Verify live PDF files (HTML is checked by Theory7 release)
         run: |
           python - <<'PY'
           from urllib.request import urlopen, Request
           from time import sleep
           checks={
-              '/nl/onderzoek/zhang-genai-taal/':b'zhang-genai-l2-review-nl-2026.pdf',
-              '/en/research/zhang-genai-language/':b'zhang-genai-l2-review-en-2026.pdf',
-              '/nl/onderzoek/':b'zhang-genai-taal',
-              '/en/research/':b'zhang-genai-language',
               '/assets/research/zhang-genai-l2-review-nl-2026.pdf':b'%PDF-',
               '/assets/research/zhang-genai-l2-review-en-2026.pdf':b'%PDF-',
           }
@@ -83,15 +88,30 @@ jobs:
               problem=None
               for i in range(4):
                   try:
-                      req=Request('https://eaimodel.nl'+path+'?review=20261114',headers={'Cache-Control':'no-cache'})
+                      req=Request('https://eaimodel.nl'+path+'?review=20261115',headers={'Cache-Control':'no-cache'})
                       with urlopen(req,timeout=30) as res:
                           data=res.read()
                           assert res.status==200
                           assert data.startswith(expect) if path.endswith('.pdf') else expect in data
-                          if path == '/nl/onderzoek/zhang-genai-taal/':
-                              assert b'Helpt AI bij het leren van een taal?' in data, 'Outdated Dutch copy'
-                          if path == '/en/research/zhang-genai-language/':
-                              assert b'Does AI help students learn another language?' in data, 'Outdated English copy'
+                          if path == '/assets/research/zhang-genai-l2-review-nl-2026.pdf':
+                              import fitz
+                              document=fitz.open(stream=data,filetype='pdf')
+                              assert len(document)==9, 'Expected nine pages'
+                              assert 'hardop lezen met Amazon Alexa' in document[2].get_text(), 'Stale Dutch PDF'
+                              assert 'Zes opgenomen onderzoeken' in document[2].get_text(), 'Old figure caption'
+                              assert 'Vissers opgave' in document[8].get_text(), 'Old EAI attribution'
+                              assert sum(len(page.get_links()) for page in document)==10, 'Lost DOI links'
+                              document.close()
+                          if path == '/assets/research/zhang-genai-l2-review-en-2026.pdf':
+                              import fitz
+                              document=fitz.open(stream=data,filetype='pdf')
+                              assert len(document)==9, 'Expected nine English pages'
+                              assert 'aloud with Amazon Alexa' in document[2].get_text(), 'Old English PDF'
+                              assert 'Six studies require different checks' in document[2].get_text(), 'Old English figure caption'
+                              assert 'indicating consistent coding' in document[5].get_text(), 'Old English coding discussion'
+                              assert 'Visser’s description' in document[8].get_text(), 'Old English EAI disclosure'
+                              assert sum(len(page.get_links()) for page in document)==10, 'Lost English DOI links'
+                              document.close()
                       print('LIVE:',path,len(data),'bytes')
                       problem=None
                       break

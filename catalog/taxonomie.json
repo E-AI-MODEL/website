@@ -1,0 +1,290 @@
+{
+  "schema": "eai.website.taxonomie.v1",
+  "scope": "E-AI-MODEL/website",
+  "uitgangspunten": [
+    "De familie is de vaste plaats in het register; thema en vindwoorden mogen meer dan een ingang geven.",
+    "De registratie van een onderdeel is onafhankelijk van de menustructuur en weergave.",
+    "Tonen van typewoorden zoals onderwerp of toepassing is optioneel, nooit verplicht.",
+    "Het register onderscheidt een werkende publicatie, een bronbestand, een doorverwijzing en een interne toepassing.",
+    "Behoud technische ID's, bronpaden en bestaande URL's; publieke namen worden in de interface en zoekfunctie gebruikt.",
+    "Publiceer geen ongecontroleerde automatische vertaling: label de werkelijke beschikbare taal.",
+    "Een bestaand productmerk zoals EAIgit blijft herkenbaar; omslachtige of modieuze termen zijn geen standaardnamen."
+  ],
+  "families": [
+    {
+      "id": "model",
+      "nl": "Het model",
+      "en": "The model",
+      "kind": "inhoud"
+    },
+    {
+      "id": "onderwijs",
+      "nl": "Onderwijs",
+      "en": "Education",
+      "kind": "inhoud"
+    },
+    {
+      "id": "onderzoek",
+      "nl": "Onderzoek",
+      "en": "Research",
+      "kind": "inhoud"
+    },
+    {
+      "id": "publicaties",
+      "nl": "Publicaties",
+      "en": "Publications",
+      "kind": "inhoud"
+    },
+    {
+      "id": "hulpmiddelen",
+      "nl": "Hulpmiddelen",
+      "en": "Tools",
+      "kind": "toepassingen"
+    },
+    {
+      "id": "natuurkunde",
+      "nl": "Natuurkunde",
+      "en": "Physics",
+      "kind": "vakgebied",
+      "parent": "hulpmiddelen"
+    },
+    {
+      "id": "wiskunde",
+      "nl": "Wiskunde",
+      "en": "Mathematics",
+      "kind": "vakgebied",
+      "parent": "hulpmiddelen"
+    },
+    {
+      "id": "menselijk-lichaam",
+      "nl": "Menselijk lichaam",
+      "en": "Human body",
+      "kind": "vakgebied",
+      "parent": "hulpmiddelen"
+    },
+    {
+      "id": "heelal",
+      "nl": "Heelal",
+      "en": "Space",
+      "kind": "vakgebied",
+      "parent": "hulpmiddelen"
+    },
+    {
+      "id": "sport-en-bewegen",
+      "nl": "Sport en bewegen",
+      "en": "Sport and movement",
+      "kind": "vakgebied",
+      "parent": "hulpmiddelen"
+    },
+    {
+      "id": "oceanen",
+      "nl": "Oceanen",
+      "en": "Oceans",
+      "kind": "vakgebied",
+      "parent": "hulpmiddelen"
+    },
+    {
+      "id": "ai",
+      "nl": "AI",
+      "en": "Artificial intelligence",
+      "kind": "vakgebied",
+      "parent": "hulpmiddelen"
+    },
+    {
+      "id": "praktijk",
+      "nl": "Voorbeelden uit de praktijk",
+      "en": "Examples from practice",
+      "kind": "inhoud"
+    },
+    {
+      "id": "over",
+      "nl": "Over EAI",
+      "en": "About EAI",
+      "kind": "inhoud"
+    },
+    {
+      "id": "archief",
+      "nl": "Archief",
+      "en": "Archive",
+      "kind": "achtergrond"
+    },
+    {
+      "id": "technisch",
+      "nl": "Technische en afgeschermde pagina's",
+      "en": "Technical and restricted pages",
+      "kind": "intern"
+    },
+    {
+      "id": "te-beoordelen",
+      "nl": "Nog te beoordelen",
+      "en": "Needs review",
+      "kind": "intern"
+    },
+    {
+      "id": "spelen-en-oefenen",
+      "nl": "Spelen en oefenen",
+      "en": "Play and practice",
+      "kind": "toepassingen",
+      "parent": "hulpmiddelen"
+    }
+  ],
+  "types": [
+    {
+      "id": "pagina",
+      "nl": "Pagina",
+      "en": "Page"
+    },
+    {
+      "id": "onderdeel",
+      "nl": "Onderdeel",
+      "en": "Part"
+    },
+    {
+      "id": "toepassing",
+      "nl": "Toepassing",
+      "en": "Application"
+    },
+    {
+      "id": "werkvorm",
+      "nl": "Werkvorm",
+      "en": "Teaching activity"
+    },
+    {
+      "id": "publicatie",
+      "nl": "Publicatie",
+      "en": "Publication"
+    },
+    {
+      "id": "onderzoek",
+      "nl": "Onderzoek",
+      "en": "Research"
+    },
+    {
+      "id": "bron",
+      "nl": "Bron",
+      "en": "Source"
+    },
+    {
+      "id": "doorverwijzing",
+      "nl": "Doorverwijzing",
+      "en": "Redirect"
+    },
+    {
+      "id": "technische-pagina",
+      "nl": "Technische pagina",
+      "en": "Technical page"
+    }
+  ],
+  "publieke_namen": [
+    {
+      "url": "/tools/abyss/",
+      "nl": "Oceanografie",
+      "public": true
+    },
+    {
+      "url": "/tools/anatomie/",
+      "nl": "Het lichaam in 3D",
+      "public": true
+    },
+    {
+      "url": "/tools/anatomie/labs/hartslag/",
+      "nl": "Hart en bloedsomloop",
+      "public": true
+    },
+    {
+      "url": "/tools/llm-observatorium/",
+      "nl": "Hoe werkt een taalmodel?",
+      "public": true
+    },
+    {
+      "url": "/tools/lo-aanvalslab/",
+      "nl": "Aanvallen en verdedigen",
+      "public": true
+    },
+    {
+      "url": "/tools/melkweg-lab/",
+      "nl": "De Melkweg",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/labs/melkweg/",
+      "nl": "De Melkweg",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/",
+      "nl": "Natuurkunde en wiskunde",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/labs/natuurkunde/",
+      "nl": "Natuurkunde",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/labs/wiskunde-a/",
+      "nl": "Wiskunde A",
+      "public": true
+    },
+    {
+      "url": "/tools/science-observatory/labs/wiskunde-b/",
+      "nl": "Wiskunde B",
+      "public": true
+    }
+  ],
+  "zelf_aan_de_slag": [
+    {
+      "id": "natuurkunde",
+      "nl": "Natuurkunde",
+      "en": "Physics",
+      "public_url": "/nl/tools/#vak-natuurkunde"
+    },
+    {
+      "id": "wiskunde",
+      "nl": "Wiskunde",
+      "en": "Mathematics",
+      "public_url": "/nl/tools/#vak-wiskunde"
+    },
+    {
+      "id": "menselijk-lichaam",
+      "nl": "Menselijk lichaam",
+      "en": "Human body",
+      "public_url": "/nl/tools/#vak-menselijk-lichaam"
+    },
+    {
+      "id": "heelal",
+      "nl": "Heelal",
+      "en": "Space",
+      "public_url": "/nl/tools/#vak-heelal"
+    },
+    {
+      "id": "oceanografie",
+      "nl": "Oceanografie",
+      "en": "Oceanography",
+      "public_url": "/nl/tools/#vak-oceanografie"
+    },
+    {
+      "id": "sport-en-bewegen",
+      "nl": "Sport en bewegen",
+      "en": "Sport and movement",
+      "public_url": "/nl/tools/#vak-sport-en-bewegen"
+    },
+    {
+      "id": "ai",
+      "nl": "AI",
+      "en": "AI",
+      "public_url": "/nl/tools/#vak-ai"
+    },
+    {
+      "id": "lessen-en-presentaties",
+      "nl": "Lessen en presentaties",
+      "en": "Lessons and presentations",
+      "public_url": "/nl/tools/#vak-lessen-en-presentaties"
+    }
+  ],
+  "melkweg": {
+    "publieke_ingang": "/tools/melkweg-lab/",
+    "andere_uitvoering": "/tools/science-observatory/labs/melkweg/",
+    "samenvoegen": false
+  }
+}

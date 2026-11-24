@@ -1,0 +1,32 @@
+name: Onderwijsregio mobile and publication check
+on:
+  pull_request:
+    paths:
+      - 'nl/onderwijsregio-proef/**'
+      - 'scripts/test_regio_design.mjs'
+      - '.github/workflows/onderwijsregio-ui.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'nl/onderwijsregio-proef/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install chromium
+      - run: node scripts/test_regio_design.mjs .
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: onderwijsregio-layouts
+          path: test-results/onderwijsregio/*.png
+          if-no-files-found: ignore

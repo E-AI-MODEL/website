@@ -1,16 +1,24 @@
 import assert from 'node:assert/strict';
 import {chromium, webkit} from 'playwright';
 import {spawn} from 'node:child_process';
+import {request as httpRequest} from 'node:http';
 import {mkdirSync} from 'node:fs';
 const root=process.argv[2]||'site-build',engine=process.argv[3]==='webkit'?webkit:chromium;
 const port=8891,base='http://127.0.0.1:'+port;
 const server=spawn('python3',['-m','http.server',String(port),'--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const resourceAvailable=url=>new Promise(resolve=>{
+ const request=httpRequest(url,{method:'HEAD'},response=>{response.resume();resolve(response.statusCode===200);});
+ request.on('error',()=>resolve(false));
+ request.setTimeout(2500,()=>{request.destroy();resolve(false);});
+ request.end();
+});
+
 let browser;
 mkdirSync('test-results',{recursive:true});
 try{
  let ok=false;
- for(let i=0;i<100;i++){try{if((await fetch(base+'/tools/science-observatory/labs/natuurkunde/')).ok){ok=true;break}}catch{}await pause(120)}
+ for(let i=0;i<100;i++){try{if(await resourceAvailable(base+'/tools/science-observatory/labs/natuurkunde/')){ok=true;break}}catch{}await pause(120)}
  assert(ok,'Built physics page must be served');
  browser=await engine.launch({headless:true});
  for(const width of [320,390,768,1024,1440]){
@@ -424,18 +432,41 @@ try{
   assert.equal(await page.locator('#insightTeacher').evaluate(el=>el.open),false,'De docentverdieping start dicht');
   await page.evaluate(()=>{document.querySelector('#insightMath').open=true;document.querySelector('#insightTeacher').open=true;});
   assert((await page.locator('#insightTeacherContent').innerText()).includes('OpenStax'),'De bronverwijzing wordt getoond');
+  if (engine.name() === 'webkit' && width < 500) {
+   // An iPhone has no hardware mouse. Do not emulate a mouse drag as a
+   // substitute for a real touch gesture in WebKit's phone context.
+   // Verify the visible touch-accessible settings instead.
+   assert(await page.locator('#openMobileSettings').isVisible(),
+    'Hefboominstellingen blijven bereikbaar via de mobiele bediening');
+   await page.locator('#openMobileSettings').click();
+   assert(await page.locator('#inspector').evaluate(el=>el.classList.contains('open')),
+    'De instellingen openen op mobiele Safari');
+   assert.equal(await page.locator('#num-arm2').count(),1,'De rechter arm kan numeriek worden ingesteld');
+   assert.equal(await page.locator('#num-arm1').count(),1,'De linker arm blijft instelbaar');
+   await page.locator('#closeMobileSettings').click();
+  } else {
   const leverStart=await page.evaluate(()=>{
    const p=state.p,c=document.querySelector('#scene'),r=c.getBoundingClientRect(),g=sceneViewport(c),pivot=p.pivot??510;
-   return {x:r.left+g.left+pivot*g.scale,y:r.top+g.top+350*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
+   return {x:r.left+g.left+(pivot-g.worldX)*g.scale,y:r.top+g.top+(350-g.worldY)*g.scale,scale:g.scale,pivot,left:pivot-65*p.arm1,right:pivot+65*p.arm2,p:{...p}};
   });
   await page.mouse.move(leverStart.x+leverStart.scale*12,leverStart.y);
   await page.mouse.down();
-  const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2}));
+  const pressed=await page.evaluate(()=>({pivot:state.p.pivot??510,arm1:state.p.arm1,arm2:state.p.arm2,playing:state.playing,drag2d:state.drag2d}));
   assert.equal(pressed.pivot,leverStart.pivot,'Het steunpunt springt niet weg bij aanraken');
+  assert(Number.isFinite(pressed.drag2d),'Het zichtbare steunpunt moet een pointer-event opvangen: '+JSON.stringify({leverStart,pressed}));
+  assert.equal(pressed.playing,false,'De hefboom blijft stil tijdens het verslepen van het steunpunt');
   assert.equal(pressed.arm1,leverStart.p.arm1,'Aanraken zonder slepen verandert de linker arm niet');
   await page.mouse.move(leverStart.x+leverStart.scale*(65+12),leverStart.y,{steps:10});
   await page.mouse.up();
-  await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:5000});
+  const afterRelease=await page.evaluate(()=>({playing:state.playing,pivot:state.p.pivot??510,angle:state.leverMotion?.angle,drag2d:state.drag2d,leverDrag:state.leverDrag}));
+  assert.equal(afterRelease.playing,true,'De hefboom hervat na pointerup of het verliezen van pointer capture: '+JSON.stringify(afterRelease));
+  assert(afterRelease.pivot>leverStart.pivot+40,'Het steunpunt moet echt worden versleept: '+JSON.stringify(afterRelease));
+  try {
+    await page.waitForFunction(()=>Math.abs(state.leverMotion?.angle||0)>.15,null,{timeout:12000});
+  } catch (error) {
+    const stateOnFailure=await page.evaluate(()=>({playing:state.playing,p:state.p,motion:state.leverMotion,drag2d:state.drag2d,leverDrag:state.leverDrag,visible:document.visibilityState}));
+    throw new Error('De hefboom beweegt niet na loslaten: '+JSON.stringify(stateOnFailure),{cause:error});
+  }
   const leverEnd=await page.evaluate(()=>{
    setPlaying(false);render(); // Vergelijk de berekening met het getoonde beeld op precies dezelfde hoek.
    const p=state.p,pivot=p.pivot??510,forces=leverPhysics(p,state.leverMotion.angle,state.leverMotion.omega);
@@ -460,6 +491,7 @@ try{
   assert.equal(leverReset.pivot,510,'Herstel zet het draaipunt terug');
   assert.equal(leverReset.arm1,2,'Herstel zet de linker arm terug');
   assert.equal(leverReset.arm2,3,'Herstel zet de rechter arm terug');
+  }
   if(width===1440){
    // De paneelindeling is onafhankelijk van de gekozen proef.
    await page.evaluate(()=>{loadLab('resolution');selectBottom('insight')});

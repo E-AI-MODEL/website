@@ -1,0 +1,92 @@
+name: Publish Sport en Bewegen
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+concurrency:
+  group: theory7-production
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify only the intended pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          required = {
+            'tools/sport-en-bewegen/index.html': ('/tools/lo-aanvalslab/', '/tools/sport-en-bewegen/opstellingen/'),
+            'tools/sport-en-bewegen/opstellingen/index.html': ('sport-opstellingen-v1', '11 tegen 11', 'renamePlayers'),
+            'nl/tools/index.html': ('/tools/sport-en-bewegen/',),
+            'tools/science-observatory/index.html': ('/tools/lo-aanvalslab/', '/tools/sport-en-bewegen/opstellingen/'),
+          }
+          for path, parts in required.items():
+            html = Path(path).read_text(encoding='utf-8')
+            assert all(piece in html for piece in parts), path
+            print('OK:',path)
+          PY
+      - name: Install FTPS client
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp openssl
+      - name: Verify expected FTPS fingerprint
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
+          actual="$(openssl s_client -starttls ftp -connect ftp.eaimodel.nl:21 -servername ftp.eaimodel.nl </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
+          test "$actual" = "$expected"
+      - name: Upload sport pages without touching existing tactic simulator
+        shell: bash
+        env:
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          lftp -u "$FTP_USER","$FTP_PASSWORD" ftp://ftp.eaimodel.nl:21 <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate false
+          set net:timeout 20
+          set net:max-retries 1
+          set xfer:use-temp-file yes
+          mkdir -p /tools/sport-en-bewegen
+          mkdir -p /tools/sport-en-bewegen/opstellingen
+          put tools/sport-en-bewegen/index.html -o /tools/sport-en-bewegen/index.html
+          put tools/sport-en-bewegen/opstellingen/index.html -o /tools/sport-en-bewegen/opstellingen/index.html
+          put nl/tools/index.html -o /nl/tools/index.html
+          put en/tools/index.html -o /en/tools/index.html
+          put tools/science-observatory/index.html -o /tools/science-observatory/index.html
+          bye
+          EOF
+      - name: Verify public sport pages and unchanged tactics
+        run: |
+          python - <<'PY'
+          from urllib.request import Request, urlopen
+          import time
+          checks = {
+            '/tools/sport-en-bewegen/': (b'Sport en bewegen', b'/tools/lo-aanvalslab/', b'/tools/sport-en-bewegen/opstellingen/'),
+            '/tools/sport-en-bewegen/opstellingen/': (b'sport-opstellingen-v1', b'11 tegen 11', b'getConfig'),
+            '/nl/tools/': (b'/tools/sport-en-bewegen/',),
+            '/tools/science-observatory/': (b'/tools/lo-aanvalslab/', b'/tools/sport-en-bewegen/opstellingen/'),
+            '/tools/lo-aanvalslab/': (b'LO Aanvalslab',)
+          }
+          for route, needles in checks.items():
+            error = None
+            for attempt in range(5):
+              try:
+                req = Request('https://eaimodel.nl' + route + '?sport=20261115', headers={'Cache-Control':'no-cache'})
+                with urlopen(req, timeout=25) as response:
+                  data = response.read()
+                  assert response.status == 200, (route, response.status)
+                  assert all(needle in data for needle in needles), route
+                print('LIVE:',route,len(data),'bytes')
+                error = None
+                break
+              except Exception as exc:
+                error = repr(exc)
+                if attempt < 4: time.sleep(5)
+            if error: raise RuntimeError(route + ': ' + error)
+          PY

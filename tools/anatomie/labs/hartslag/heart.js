@@ -1,8 +1,8 @@
 // Hartslaglab: BodyParts3D als anatomische basis, met didactisch benaderde beweging.
 // Alleen als de anatomische atlas ontbreekt gebruiken we het oude schematische model.
 // Alle grafieken, klepbewegingen, kamerbewegingen en stroomdeeltjes gebruiken dezelfde fase.
-import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=142a96c444f9';
-import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=142a96c444f9';
+import {PHASES,volume,pressure,mechanics,phaseFor} from './cycle.js?v=8619a741a891';
+import {CHAMBERS,VESSELS,VALVES,ANATOMY_PARTS,FLOW_PATHS,leafletGeometry,chamberGeometry,tubeGeometry,ringGeometry,septumGeometry,heartEnvelopeGeometry,muscleRidges,TENDINOUS_CORDS,CORONARY_DETAILS,MUSCLE_DETAILS,AURICLES} from './anatomyGeometry.js?v=8619a741a891';
 const $=id=>document.getElementById(id);
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -10,7 +10,7 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const span=(t,a,b)=>ease((t-a)/(b-a));
 const fmt=(v,n=0)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:n,maximumFractionDigits:n});
-const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,pan:[0,0,0],selected:null,showLabels:false,showFlow:true,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
+const state={cutaway:true,t:0,playing:false,speed:.25,yaw:-.20,pitch:.08,zoom:5.95,pan:[0,0,0],selected:null,showLabels:false,showFlow:true,vesselSection:false,tab:'phase',rate:75,last:0,drag:null,study:{guess:null,stage:'choose',stopAt:null},focusSide:'both',showDetails:false,anatomyView:false,userPaused:false,mode:'watch',guideStep:0};
 const layerVisibility={outer:true,wall:true,valve:true,vessel:true,coronary:true,papillary:true};
 function layerForKind(kind){return kind==='artery'||kind==='vein'?'coronary':kind;}
 function isLayerVisible(part){return layerVisibility[layerForKind(part.kind)]!==false;}
@@ -20,7 +20,7 @@ function syncLayerControls(){
   document.querySelectorAll('[data-layer]').forEach(button=>{
     const layer=button.dataset.layer;
     const active=layer==='flow'?state.showFlow:
-      layer==='labels'?state.showLabels:layerVisibility[layer];
+      layer==='labels'?state.showLabels:layer==='vesselSection'?state.vesselSection:layerVisibility[layer];
     button.setAttribute('aria-pressed',String(active));
     button.querySelector('.layer-state').textContent=active?'Aan':'Uit';
   });
@@ -87,7 +87,7 @@ function tube(path,radius=.095,segments=10){
 }
 const COLORS={red:[.98,.63,.53],blue:[.47,.82,.98]};
 const canvas=$('heartCanvas'),stage=$('stage');
-let gl,program,pointProgram,meshes={},pv=m4(),loc={},ploc={},particleBuffer;
+let gl,program,pointProgram,meshes={},pv=m4(),loc={},ploc={},particleBuffer,cameraEye=[0,0,6];
 let atlasParts=[],atlasCenters={},atlasDetails={},atlasReady=false,atlasRich=false,atlasError=null,atlasFlowPaths=[];
 function compile(gl,type,src){const shader=gl.createShader(type);gl.shaderSource(shader,src);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader));return shader;}
 function shader(gl,vs,fs){const p=gl.createProgram();gl.attachShader(p,compile(gl,gl.VERTEX_SHADER,vs));gl.attachShader(p,compile(gl,gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
@@ -98,10 +98,10 @@ function setupModel(){
   // Op oudere/procedurele meshes blijft dit attribuut neutraal.
   program=shader(gl,
     "attribute vec3 position;\nattribute vec3 normal;\nattribute vec3 tissue;\nuniform mat4 pv;\nuniform mat4 model;\nuniform float pulse;\nuniform float atrialMode;\nuniform vec3 cutAxis;\nuniform float moveValve;\nuniform float valveOpen;\nuniform float valveRadius;\nuniform vec3 valveCenter;\nuniform vec3 valveAxis;\nvarying vec3 n;\nvarying vec3 p;\nvarying vec3 tissueData;\nvarying float front;\nvoid main(){\n  vec3 anatomy=position;\n  if(moveValve>.5){\n    // De bronmesh blijft intact. Alleen de bladen krijgen een getekende opening.\n    vec3 axis=normalize(valveAxis);\n    vec3 offset=anatomy-valveCenter;\n    vec3 radial=offset-axis*dot(offset,axis);\n    float r=clamp(length(radial)/max(valveRadius,.001),0.,1.);\n    float flex=1.-smoothstep(.12,.95,r);\n    float flare=4.*r*(1.-r);\n    anatomy+=valveOpen*valveRadius*(axis*.40*flex+normalize(radial+vec3(.00001))*.23*flare);\n  }else if(pulse>0.){\n    // Beperkte, niet-klinische contractie van de spierwand, niet van de vaten.\n    float weight=mix(1.-smoothstep(-.9,.62,anatomy.y),smoothstep(-.12,.75,anatomy.y),atrialMode);\n    anatomy.xz*=1.-.065*pulse*weight;\n    anatomy.y+=.026*pulse*weight;\n  }\n  vec4 world=model*vec4(anatomy,1.);\n  front=dot(world.xyz,cutAxis);\n  gl_Position=pv*world;\n  n=normalize(mat3(model)*normal);\n  p=world.xyz;\n  tissueData=tissue;\n}",
-    'precision mediump float;varying vec3 n;varying vec3 p;varying vec3 tissueData;varying float front;uniform vec3 tint;uniform float alpha;uniform float cutFront;void main(){if(cutFront>.5&&front>.025)discard;vec3 normal=normalize(n);vec3 light=normalize(vec3(-.47,.83,1.0));vec3 fill=normalize(vec3(.50,.18,-.8));float direct=max(dot(normal,light),0.0);float soft=max(dot(normal,fill),0.0);float ao=mix(.48,1.0,clamp(tissueData.r,0.0,1.0));float mottle=mix(.91,1.07,clamp(tissueData.g,0.0,1.0));vec3 base=mix(tint,vec3(.93,.71,.43),clamp(tissueData.b,0.0,1.0)*.70);vec3 color=base*(.31+.62*direct+.12*soft)*ao*mottle;float rim=pow(1.0-abs(dot(normal,normalize(vec3(0.,.15,1.)))),2.0);color+=tint*rim*.10;float spec=pow(max(dot(reflect(-light,normal),vec3(0.,0.,1.)),0.0),28.0);color+=vec3(.92,.68,.61)*spec*.15*ao;gl_FragColor=vec4(color,alpha);}');
+    'precision mediump float;varying vec3 n;varying vec3 p;varying vec3 tissueData;varying float front;uniform vec3 tint;uniform float alpha;uniform float cutFront;uniform float vesselSection;uniform vec3 eyePosition;void main(){if(cutFront>.5&&front>.025)discard;if(vesselSection>.5&&dot(normalize(n),normalize(eyePosition-p))>.12)discard;vec3 normal=normalize(n);vec3 light=normalize(vec3(-.47,.83,1.0));vec3 fill=normalize(vec3(.50,.18,-.8));float direct=max(dot(normal,light),0.0);float soft=max(dot(normal,fill),0.0);float ao=mix(.48,1.0,clamp(tissueData.r,0.0,1.0));float mottle=mix(.91,1.07,clamp(tissueData.g,0.0,1.0));vec3 base=mix(tint,vec3(.93,.71,.43),clamp(tissueData.b,0.0,1.0)*.70);vec3 color=base*(.31+.62*direct+.12*soft)*ao*mottle;float rim=pow(1.0-abs(dot(normal,normalize(vec3(0.,.15,1.)))),2.0);color+=tint*rim*.10;float spec=pow(max(dot(reflect(-light,normal),vec3(0.,0.,1.)),0.0),28.0);color+=vec3(.92,.68,.61)*spec*.15*ao;gl_FragColor=vec4(color,alpha);}');
   pointProgram=shader(gl,'attribute vec3 position;uniform mat4 pv;uniform float size;void main(){vec4 clip=pv*vec4(position,1.0);gl_Position=clip;gl_PointSize=size*clamp(5.0/clip.w,.7,2.4);}',
     'precision mediump float;uniform vec3 tint;void main(){vec2 v=gl_PointCoord-vec2(.5);float r=length(v);if(r>.5)discard;float shine=1.0-smoothstep(.10,.50,r);gl_FragColor=vec4(tint,shine*.87);}');
-  for(const k of ['position','normal','tissue','pv','model','tint','alpha','pulse','atrialMode','cutAxis','cutFront','moveValve','valveOpen','valveRadius','valveCenter','valveAxis'])loc[k]=['position','normal','tissue'].includes(k)?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
+  for(const k of ['position','normal','tissue','pv','model','tint','alpha','pulse','atrialMode','cutAxis','cutFront','vesselSection','eyePosition','moveValve','valveOpen','valveRadius','valveCenter','valveAxis'])loc[k]=['position','normal','tissue'].includes(k)?gl.getAttribLocation(program,k):gl.getUniformLocation(program,k);
   for(const k of ['position','pv','size','tint'])ploc[k]=k==='position'?gl.getAttribLocation(pointProgram,k):gl.getUniformLocation(pointProgram,k);
   meshes.sphere=upload(sphere());
   meshes.chambers={};
@@ -137,12 +137,14 @@ function upload(m){
   if(m.t){tb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,tb);gl.bufferData(gl.ARRAY_BUFFER,m.t,gl.STATIC_DRAW);}
   return {...m,vb,nb,tb};
 }
-function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false,valveMotion=null,atrialMode=0){
+function drawMesh(mesh,model,color,alpha=1,pulse=0,cutFront=false,valveMotion=null,atrialMode=0,vesselSection=false){
   gl.useProgram(program);gl.uniformMatrix4fv(loc.pv,false,pv);gl.uniformMatrix4fv(loc.model,false,model);
   gl.uniform3fv(loc.tint,color);gl.uniform1f(loc.alpha,alpha);
   gl.uniform1f(loc.pulse,pulse);
   gl.uniform1f(loc.atrialMode,atrialMode);
   gl.uniform1f(loc.cutFront,cutFront?1:0);
+  gl.uniform1f(loc.vesselSection,vesselSection?1:0);
+  gl.uniform3fv(loc.eyePosition,cameraEye);
   gl.uniform1f(loc.moveValve,valveMotion?1:0);
   gl.uniform1f(loc.valveOpen,valveMotion?valveMotion.opening:0);
   gl.uniform1f(loc.valveRadius,valveMotion?valveMotion.radius:.1);
@@ -183,25 +185,37 @@ function sampleFlow(flow,fraction){
   const k=Math.floor(i);
   return add(positions[k],scl(sub(positions[k+1],positions[k]),i-k));
 }
+// Vaatmiddenlijnen en bloedruimten uit DEZELFDE BodyParts3D-bron als de 34 3D-meshes.
+// Herkomst: Niyaz-05/heart-anatomy-lab, commit ad9af6c, generated/geometry.json,
+// CC BY 4.0 (DBCLS). De ruwe meters zijn met exact dezelfde uniforme schaal
+// (23.8308044) als atlas-heart-rich.json omgezet naar de EAI-ruimte.
+// Zo loopt een route niet meer rechtstreeks tussen de zichtbare meshmiddelpunten.
+const FLOW_ANATOMY={"vessel":{"svc":[[-0.84692,1.17257,-0.21169],[-1.09317,1.27526,-0.10926],[-0.78268,1.49355,-0.3062],[-0.92459,1.62259,-0.26619],[-0.90273,1.80106,-0.27529],[-0.86973,1.94962,-0.129]],"ivc":[[-0.81768,-3.10184,-0.20606],[-0.92218,-2.55106,-0.2502],[-0.84585,-2.15643,-0.06136],[-0.94022,-1.89803,-0.3006],[-0.90042,-1.4156,0.00834],[-0.89218,-0.89582,-0.22584]],"pa":[[0.24031,0.81685,0.76192],[0.06687,0.96162,0.58919],[-0.00805,0.90898,0.30248],[0.2119,1.18136,0.20063],[0.13636,1.22862,-0.01947],[0.11341,1.46972,-0.12173]],"pa_left":[[0.10772,1.27226,0.10552],[0.26052,1.32578,-0.41299],[0.3903,1.24964,-0.83811],[0.62592,1.08077,-1.17715],[0.83827,0.79492,-1.34194],[1.24418,0.12502,-1.43666]],"pa_right":[[-1.80535,0.13083,-1.27623],[-1.57631,0.66026,-0.94029],[-1.14836,0.9426,-0.77915],[-0.71886,1.13149,-0.73156],[-0.2344,1.24792,-0.49377],[0.16448,1.34546,-0.09725]],"pv_ls":[[0.49165,0.75479,-0.83727],[0.66988,0.67205,-0.75108],[0.87647,0.36468,-0.66905],[1.04388,0.23826,-0.58772],[1.21823,0.10524,-0.49163],[1.37988,-0.12909,-0.35641]],"pv_li":[[0.35303,0.09668,-1.18973],[0.52568,0.03603,-1.15942],[0.68413,-0.09578,-1.20646],[0.79907,-0.38389,-1.38583],[0.97942,-0.27372,-0.99038],[1.15963,-0.25864,-0.84161]],"pv_rs":[[-1.32301,0.7831,-0.45126],[-1.29718,0.6395,-0.55769],[-1.26017,0.55199,-0.63847],[-1.1383,0.4692,-0.68688],[-1.00726,0.38346,-0.72279],[-0.9273,0.27162,-0.75484]],"pv_ri":[[-1.26158,-0.31392,-1.0609],[-1.16716,-0.25668,-1.02322],[-1.0869,-0.14663,-1.01286],[-0.97671,-0.08612,-0.96982],[-0.80624,-0.15044,-0.92711],[-0.72458,-0.05231,-0.90774]],"ao":[[-0.04888,0.29655,-0.13622],[-0.11718,0.46136,-0.13512],[-0.32686,0.65945,0.06063],[-0.36292,0.83768,0.09875],[-0.33497,1.13211,0.03072],[-0.44054,1.28884,0.04039]],"ao_arch":[[-0.44966,1.50804,0.15645],[-0.26114,1.66637,-0.17613],[-0.06687,1.89729,-0.4826],[0.00562,1.89705,-0.88284],[0.05662,1.72178,-1.198],[0.09323,1.4507,-1.59938]],"ao_desc":[[-0.21965,-2.18054,-0.7765],[-0.18533,-1.25822,-1.07317],[-0.11725,-0.67389,-1.22357],[-0.04242,0.03999,-1.40735],[-0.05307,0.62708,-1.46226],[-0.01299,1.53763,-1.31679]]},"chamber":{"ra":[-0.94377,0.10736,-0.21681],"rv":[-0.47376,-0.30644,0.49814],"la":[-0.295,0.25046,-0.86932],"lv":[0.51167,-0.21567,-0.14522]},"valve":{"tricuspid":[-0.47864,-0.29989,0.23292],"mitral":[0.31466,-0.27119,-0.38051],"pulmonary":[0.12382,0.65785,0.48133],"aortic":[-0.0158,0.43496,-0.07807]}};
 function makeAtlasFlowPaths(centers){
+  const {vessel:v,chamber:c,valve:k}=FLOW_ANATOMY;
+  const distance=(a,b)=>Math.hypot(...sub(a,b));
+  const from=(line,origin)=>distance(line[0],origin)<=distance(line.at(-1),origin)?line:[...line].reverse();
+  const into=(line,destination)=>distance(line.at(-1),destination)<=distance(line[0],destination)?line:[...line].reverse();
+  const pa=from(v.pa,k.pulmonary),paEnd=pa.at(-1);
+  const aorta=from(v.ao,k.aortic),arch=from(v.ao_arch,aorta.at(-1));
+  const desc=from(v.ao_desc,arch.at(-1));
   const specs=[
-    ['blue','return',['svc','ra'],22],
-    ['blue','return',['ivc','ra'],20],
-    ['blue','av',['ra','tricuspid','rv'],28],
-    ['blue','sem',['rv','pulmonary','pa','pa_left'],23],
-    ['blue','sem',['rv','pulmonary','pa','pa_right'],23],
-    ['red','return',['pv_ls','la'],19],
-    ['red','return',['pv_li','la'],19],
-    ['red','return',['pv_rs','la'],19],
-    ['red','return',['pv_ri','la'],19],
-    ['red','av',['la','mitral','lv'],28],
-    ['red','sem',['lv','aortic','ao','ao_arch','ao_desc'],26]
+    ['blue','return',['svc','ra'],22,[...into(v.svc,c.ra),c.ra]],
+    ['blue','return',['ivc','ra'],20,[...into(v.ivc,c.ra),c.ra]],
+    ['blue','av',['ra','tricuspid','rv'],28,[c.ra,k.tricuspid,c.rv]],
+    ['blue','sem',['rv','pulmonary','pa','pa_left'],23,[c.rv,k.pulmonary,...pa,...from(v.pa_left,paEnd)]],
+    ['blue','sem',['rv','pulmonary','pa','pa_right'],23,[c.rv,k.pulmonary,...pa,...from(v.pa_right,paEnd)]],
+    ['red','return',['pv_ls','la'],19,[...into(v.pv_ls,c.la),c.la]],
+    ['red','return',['pv_li','la'],19,[...into(v.pv_li,c.la),c.la]],
+    ['red','return',['pv_rs','la'],19,[...into(v.pv_rs,c.la),c.la]],
+    ['red','return',['pv_ri','la'],19,[...into(v.pv_ri,c.la),c.la]],
+    ['red','av',['la','mitral','lv'],28,[c.la,k.mitral,c.lv]],
+    ['red','sem',['lv','aortic','ao','ao_arch','ao_desc'],26,[c.lv,k.aortic,...aorta,...arch,...desc]]
   ];
-  return specs.map(([color,channel,ids,n])=>{
-    const path=ids.map(id=>centers[id]).filter(Boolean);
-    return {color,channel,n,path,ids,
-      curve:path.length>=2?Array.from({length:37},(_,i)=>splineAt(path,i/36)):[]};
-  }).filter(route=>route.path.length>=2);
+  return specs.map(([color,channel,ids,n,path])=>({
+    color,channel,n,ids,path,geometrySource:'bodyparts3d-centrelines',
+    curve:Array.from({length:61},(_,i)=>splineAt(path,i/60))
+  }));
 }
 function flowIsActive(flow,m){
   return flow.channel==='return'||(flow.channel==='av'&&m.av)||
@@ -214,14 +228,14 @@ function drawParticles(m){
   for(const flow of routes){
     if(atlasReady&&state.cutaway&&state.focusSide!=='both'&&flow.color!==(state.focusSide==='left'?'red':'blue'))continue;
     if(!flowIsActive(flow,m))continue;
-    for(let i=0;i<flow.n;i++){
+    for(let i=0;i<flow.n;i+=(atlasRich?2:1)){
       const progress=(i/flow.n+state.t*(flow.channel==='sem'?2.35:1.2))%1;
       const point=flow.curve?sampleFlow(flow,progress):pathPoint(flow.path,progress);
       batches[flow.color].push(...point);
     }
   }
   gl.disable(gl.DEPTH_TEST);gl.depthMask(false);gl.useProgram(pointProgram);
-  gl.uniformMatrix4fv(ploc.pv,false,pv);gl.uniform1f(ploc.size,(atlasRich?5.0:7.5)*Math.min(devicePixelRatio||1,2));
+  gl.uniformMatrix4fv(ploc.pv,false,pv);gl.uniform1f(ploc.size,(atlasRich?3.4:7.5)*Math.min(devicePixelRatio||1,2));
   for(const name of ['blue','red']){
     const arr=batches[name];if(!arr.length)continue;
     gl.bindBuffer(gl.ARRAY_BUFFER,particleBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.DYNAMIC_DRAW);
@@ -238,21 +252,31 @@ let flowVisuals=[],flowVisualKey='';
 function svgElement(name){return document.createElementNS(svgNS,name);}
 function prepareFlowOverlay(){
   flowOverlay.replaceChildren();
-  flowVisuals=atlasFlowPaths.map(flow=>{
-    const bed=svgElement('path'),pulse=svgElement('path'),arrow=svgElement('path');
-    const color=flow.color==='blue'?'#75ddff':'#ffbdad';
-    for(const p of [bed,pulse]){
+  flowVisuals=atlasFlowPaths.map((flow,index)=>{
+    // Korte brede kleurbanen suggereren doorlopend bloed, geen rij neonstippen.
+    // Het blijft een 3D-geprojecteerde onderwijsroute, geen gemeten stromingsveld.
+    const track=svgElement('path'),bed=svgElement('path'),pulse=svgElement('path'),arrow=svgElement('path');
+    const color=flow.color==='blue'?'#6bc8ec':'#ec917e';
+    const highlight=flow.color==='blue'?'#bcefff':'#ffd4c4';
+    for(const p of [track,bed,pulse]){
       p.setAttribute('fill','none');
-      p.setAttribute('stroke',color);
       p.setAttribute('stroke-linecap','round');
       p.setAttribute('stroke-linejoin','round');
     }
-    bed.setAttribute('stroke-width','7');
-    pulse.setAttribute('stroke-width','3.0');
-    pulse.setAttribute('stroke-dasharray','7 11');
+    track.setAttribute('stroke',color);
+    track.setAttribute('stroke-width',flow.channel==='return'?'9':'11');
+    track.setAttribute('class','blood-track');
+    bed.setAttribute('stroke',color);
+    bed.setAttribute('stroke-width',flow.channel==='return'?'5.6':'6.8');
+    bed.setAttribute('class','blood-fill');
+    pulse.setAttribute('stroke',highlight);
+    pulse.setAttribute('stroke-width',flow.channel==='return'?'3':'3.8');
+    pulse.setAttribute('class','blood-pulse');
+    pulse.dataset.flowChannel=flow.channel;
     arrow.setAttribute('fill',color);
-    flowOverlay.append(bed,pulse,arrow);
-    return {flow,bed,pulse,arrow};
+    arrow.setAttribute('class','blood-arrow');
+    flowOverlay.append(track,bed,pulse,arrow);
+    return {flow,index,track,bed,pulse,arrow,length:1,blob:16};
   });
   flowVisualKey='';
 }
@@ -267,29 +291,46 @@ function updateFlowOverlay(m){
   const view=[w,h,state.yaw,state.pitch,state.zoom,...state.pan].join(':');
   if(view!==flowVisualKey){
     flowOverlay.setAttribute('viewBox','0 0 '+w+' '+h);
-    for(const {flow,bed,pulse,arrow} of flowVisuals){
+    for(const visual of flowVisuals){
+      const {flow,track,bed,pulse,arrow}=visual;
       const points=flow.curve.map(p=>project(p,pv,w,h));
       const d=points.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
-      bed.setAttribute('d',d);pulse.setAttribute('d',d);
-      const tip=points[Math.floor(points.length*.70)];
-      const before=points[Math.floor(points.length*.64)];
-      const length=Math.hypot(tip[0]-before[0],tip[1]-before[1])||1;
-      const ux=(tip[0]-before[0])/length,uy=(tip[1]-before[1])/length;
-      const back=[tip[0]-ux*12,tip[1]-uy*12];
+      for(const segment of [track,bed,pulse])segment.setAttribute('d',d);
+      const length=Math.max(1,pulse.getTotalLength());
+      const blob=clamp(length*.18,14,32);
+      visual.length=length;
+      visual.blob=blob;
+      // Eén zachte, langgerekte stroompuls per route, met een open ruimte ertussen.
+      pulse.setAttribute('stroke-dasharray',blob.toFixed(1)+' '+(length+blob).toFixed(1));
+      const tip=points[Math.floor(points.length*.76)];
+      const before=points[Math.floor(points.length*.70)];
+      const tangent=Math.hypot(tip[0]-before[0],tip[1]-before[1])||1;
+      const ux=(tip[0]-before[0])/tangent,uy=(tip[1]-before[1])/tangent;
+      const back=[tip[0]-ux*8,tip[1]-uy*8];
       arrow.setAttribute('d','M '+tip[0].toFixed(1)+' '+tip[1].toFixed(1)+
-        ' L '+(back[0]-uy*4.8).toFixed(1)+' '+(back[1]+ux*4.8).toFixed(1)+
-        ' L '+(back[0]+uy*4.8).toFixed(1)+' '+(back[1]-ux*4.8).toFixed(1)+' Z');
+        ' L '+(back[0]-uy*3.0).toFixed(1)+' '+(back[1]+ux*3.0).toFixed(1)+
+        ' L '+(back[0]+uy*3.0).toFixed(1)+' '+(back[1]-ux*3.0).toFixed(1)+' Z');
     }
     flowVisualKey=view;
   }
-  for(const {flow,bed,pulse,arrow} of flowVisuals){
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for(const {flow,index,track,bed,pulse,arrow,length,blob} of flowVisuals){
     const side=state.focusSide==='both'||flow.color===(state.focusSide==='left'?'red':'blue');
     const active=side&&flowIsActive(flow,m);
+    const valveOpening=flow.channel==='av'?m.avOpening:flow.channel==='sem'?m.semOpening:1;
+    const strength=active?clamp(valveOpening,0,1):0;
+    // Aanvoer loopt door. Bij gesloten kleppen verdwijnen bewegende uitstroombanen.
     const entering=flow.channel==='return';
-    bed.style.opacity=active?(entering?'0.15':'0.26'):'0';
-    pulse.style.opacity=active?(entering?'0.65':'0.96'):'0';
-    arrow.style.opacity=active?(entering?'0.72':'0.98'):'0';
-    pulse.style.strokeDashoffset=String(-state.t*(flow.channel==='sem'?175:95));
+    track.style.opacity=String(strength*(entering?.13:.19));
+    bed.style.opacity=String(strength*(entering?.35:.52));
+    pulse.style.opacity=String(strength*(reducedMotion?.24:(entering?.62:.94)));
+    // Alleen bij de vijf hoofdverbindingen een klein pijltje. De zijtakken
+    // lees je aan de bewegende puls, zonder een wirwar van pijlen te tekenen.
+    arrow.style.opacity=String(!entering&&active?strength*.58:0);
+    const progress=entering?state.t:flow.channel==='av'?
+      clamp(state.t/.64,0,1):clamp((state.t-.70)/.23,0,1);
+    const travel=(progress+index*.13)%1;
+    pulse.style.strokeDashoffset=String(-(length+blob)*(reducedMotion?.30:travel));
   }
 }
 function updateViewport(){
@@ -299,6 +340,7 @@ function updateViewport(){
   const center=add([0,.12,0],state.pan);
   const eye=add(center,[Math.sin(state.yaw)*Math.cos(state.pitch)*state.zoom,
     Math.sin(state.pitch)*state.zoom,Math.cos(state.yaw)*Math.cos(state.pitch)*state.zoom]);
+  cameraEye=eye;
   pv=mul(persp(42*Math.PI/180,Math.max(.5,w/Math.max(h,1)),.1,100),lookAt(eye,center));
 }
 // De anatomische buitenvorm wordt tijdens de sitebuild uit de bestaande GLB
@@ -308,12 +350,12 @@ async function loadAtlasModels(){
   const failures=[];
   for(const [name,isRich] of [['atlas-heart-rich',true],['atlas-heart',false]]){
     try{
-      const response=await fetch('./'+name+'.json?v=142a96c444f9');
+      const response=await fetch('./'+name+'.json?v=8619a741a891');
       if(!response.ok)throw Error(name+'-manifest ontbreekt: '+response.status);
       const manifest=await response.json();
       if(manifest.format!==(isRich?2:1)||!Array.isArray(manifest.parts)||manifest.parts.length<(isRich?34:4))
         throw Error('Onvolledig anatomisch model: '+name);
-      const data=await fetch('./'+name+'.bin?v=142a96c444f9');
+      const data=await fetch('./'+name+'.bin?v=8619a741a891');
       if(!data.ok)throw Error('Hartmesh ontbreekt: '+name);
       const buffer=await data.arrayBuffer();
       if(buffer.byteLength!==manifest.bytes)throw Error('Hartmesh-bestand is niet volledig');
@@ -445,7 +487,10 @@ function drawAtlasHeart(m,section=false){
       const atrialWall=['ra_wall','la_wall'].includes(part.id);
       const wallPulse=atrialWall?clamp((1-m.atriumScale)/.16,0,1):
         (part.kind==='wall'||part.kind==='papillary')?pulse:0;
-      drawMesh(part.mesh,m4(),color,1,wallPulse,cutWall,valveMotion,atrialWall?1:0);
+      // Verberg de camera-gerichte helft van de grote vaten, met de echte bronmesh als achterwand.
+      // De stromingsroutes blijven zichtbaar; dit is een didactische kijkopening, geen scan.
+      drawMesh(part.mesh,m4(),color,1,wallPulse,cutWall,valveMotion,atrialWall?1:0,
+        section&&state.vesselSection&&part.kind==='vessel');
       continue;
     }
     if(section&&part.kind!=='chamber'&&part.id!==(state.focusSide==='left'?'ao':'pa'))continue;
@@ -914,7 +959,10 @@ document.querySelectorAll('[data-layer]').forEach(button=>button.addEventListene
   const layer=button.dataset.layer;
   if(layer==='flow')state.showFlow=!state.showFlow;
   else if(layer==='labels')state.showLabels=!state.showLabels;
-  else layerVisibility[layer]=!layerVisibility[layer];
+  else if(layer==='vesselSection'){
+    state.vesselSection=!state.vesselSection;
+    if(state.vesselSection){state.cutaway=true;state.anatomyView=atlasRich;}
+  }else layerVisibility[layer]=!layerVisibility[layer];
   positionInfo(null);
   syncLabelsToggle();
   syncViewControls();
@@ -925,6 +973,7 @@ $('resetLayers').addEventListener('click',()=>{
   Object.keys(layerVisibility).forEach(layer=>{layerVisibility[layer]=true;});
   state.showFlow=true;
   state.showLabels=false;
+  state.vesselSection=false;
   positionInfo(null);
   syncLabelsToggle();
   syncViewControls();
@@ -1100,7 +1149,7 @@ canvas.tabIndex=0;
 let resize=new ResizeObserver(()=>{if(gl)render();});resize.observe(stage);
 setupModel();syncLearningMode();syncLabelsToggle();syncViewControls();syncStudy();loadAtlasModels();
 window.__EAI_HEART_LAB__={
-  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,pitch:state.pitch,zoom:state.zoom,pan:[...state.pan],selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,flow:state.showFlow,labels:state.showLabels}};},
+  get state(){return {t:state.t,playing:state.playing,speed:state.speed,yaw:state.yaw,pitch:state.pitch,zoom:state.zoom,pan:[...state.pan],selected:state.selected,cutaway:state.cutaway,showLabels:state.showLabels,showFlow:state.showFlow,vesselSection:state.vesselSection,focusSide:state.focusSide,showDetails:state.showDetails,atlasReady,atlasRich,anatomyView:state.anatomyView,atlasError,atlasPartCount:atlasParts.length,studyStage:state.study.stage,mode:state.mode,guideStep:state.guideStep,layers:{...layerVisibility,vesselSection:state.vesselSection,flow:state.showFlow,labels:state.showLabels}};},
   get visibleAtlasPartIds(){return atlasParts.filter(part=>part.kind!=='space'&&isLayerVisible(part)).map(part=>part.id);},
   // Debugbare projectiepunten voor een echte browserklik in de regressietest.
   get hitTargets(){return Object.entries(selectableParts()).map(([id,part])=>{
@@ -1114,6 +1163,7 @@ window.__EAI_HEART_LAB__={
     flowRoutes:atlasFlowPaths.length};},
   get flowPreview(){return atlasFlowPaths.map(f=>({
     color:f.color,channel:f.channel,ids:f.ids,points:f.curve.length,
+    waypoints:f.path.length,source:f.geometrySource||'illustrative',
     active:flowIsActive(f,mechanics(state.t))
   }));},
   setTime:t=>setTime(t,true),pause:()=>{state.playing=false;syncPlay();},

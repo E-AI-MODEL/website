@@ -1,0 +1,211 @@
+{
+  "id": "projecthulp-testscenario",
+  "title": "Van ZIP naar bruikbaar GitHub-project",
+  "goal": "Verkenning van werkverdeling, bewijs en gebruikersbesluiten; geen echte publicatie",
+  "sourceInstruction": "TESTSCENARIO, GEEN GEBRUIKERSTOESTEMMING: onderzoek een ZIP-bestand en een openbare GitHub-repository, bepaal welke controles nodig zijn en maak een voorstel. Schrijf alleen naar GitHub na afzonderlijke toestemming voor repositorywijzigingen. Publiceer alleen na afzonderlijke toestemming voor publicatie. Controleer na iedere wijziging of het oorspronkelijke gebruiksdoel bereikt is.",
+  "tasks": [
+    {
+      "id": "goal-normalize",
+      "title": "Beoogd resultaat structureren",
+      "taskKind": "text-normalize",
+      "dependsOn": [],
+      "effect": "local",
+      "input": {
+        "text": "  GitHub project bruikbaar maken  "
+      }
+    },
+    {
+      "id": "goal-measure",
+      "title": "Eisen vastleggen als controleerbare vragen",
+      "taskKind": "text-metrics",
+      "dependsOn": [
+        "goal-normalize"
+      ],
+      "effect": "local",
+      "textFrom": "goal-normalize"
+    },
+    {
+      "id": "zip-inventory",
+      "title": "ZIP lokaal en veilig inventariseren",
+      "taskKind": "zip-inspect",
+      "dependsOn": [
+        "goal-normalize"
+      ],
+      "effect": "local",
+      "input": {
+        "text": "ZIP lokaal en veilig inventariseren (testplan; geen gegevens van een echte gebruiker)"
+      }
+    },
+    {
+      "id": "github-inventory",
+      "title": "Openbare repository uitlezen",
+      "taskKind": "github-read",
+      "dependsOn": [
+        "goal-normalize"
+      ],
+      "effect": "local",
+      "input": {
+        "text": "Openbare repository uitlezen (testplan; geen gegevens van een echte gebruiker)"
+      }
+    },
+    {
+      "id": "compare-files",
+      "title": "Verschillen tussen bronnen bepalen",
+      "taskKind": "file-compare",
+      "dependsOn": [
+        "zip-inventory",
+        "github-inventory"
+      ],
+      "effect": "local",
+      "input": {
+        "text": "Verschillen tussen bronnen bepalen (testplan; geen gegevens van een echte gebruiker)"
+      }
+    },
+    {
+      "id": "goal-check",
+      "title": "Projectstructuur toetsen aan doel",
+      "taskKind": "purpose-check",
+      "dependsOn": [
+        "goal-measure",
+        "compare-files"
+      ],
+      "effect": "local",
+      "input": {
+        "text": "Projectstructuur toetsen aan doel (testplan; geen gegevens van een echte gebruiker)"
+      }
+    },
+    {
+      "id": "lint-check",
+      "title": "Relevante statische codecontroles uitvoeren",
+      "taskKind": "lint-check",
+      "dependsOn": [
+        "goal-check"
+      ],
+      "effect": "local",
+      "input": {
+        "text": "Relevante statische codecontroles uitvoeren (testplan; geen gegevens van een echte gebruiker)"
+      }
+    },
+    {
+      "id": "project-tests",
+      "title": "Beschikbare projecttests echt uitvoeren",
+      "taskKind": "project-test",
+      "dependsOn": [
+        "lint-check"
+      ],
+      "effect": "local",
+      "input": {
+        "text": "Beschikbare projecttests echt uitvoeren (testplan; geen gegevens van een echte gebruiker)"
+      }
+    },
+    {
+      "id": "repo-write",
+      "title": "Voorbereide wijziging in GitHub plaatsen",
+      "taskKind": "github-write",
+      "dependsOn": [
+        "project-tests"
+      ],
+      "effect": "external-write",
+      "input": {
+        "text": "Voorbereide wijziging in GitHub plaatsen (testplan; geen gegevens van een echte gebruiker)"
+      }
+    },
+    {
+      "id": "publish-site",
+      "title": "Project openbaar uitrollen",
+      "taskKind": "site-publish",
+      "dependsOn": [
+        "repo-write"
+      ],
+      "effect": "publish",
+      "input": {
+        "text": "Project openbaar uitrollen (testplan; geen gegevens van een echte gebruiker)"
+      }
+    },
+    {
+      "id": "acceptance-review",
+      "title": "Gebruiker beoordeelt of het project echt werkt",
+      "taskKind": "human-review",
+      "dependsOn": [
+        "publish-site"
+      ],
+      "effect": "local",
+      "input": {
+        "text": "Gebruiker beoordeelt of het project echt werkt (testplan; geen gegevens van een echte gebruiker)"
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "phase-purpose",
+      "title": "Doel en voorwaarden",
+      "taskIds": [
+        "goal-normalize",
+        "goal-measure"
+      ]
+    },
+    {
+      "id": "phase-sources",
+      "title": "Bestanden onderzoeken",
+      "taskIds": [
+        "zip-inventory",
+        "github-inventory"
+      ]
+    },
+    {
+      "id": "phase-review",
+      "title": "Vergelijken en beoordelen",
+      "taskIds": [
+        "compare-files",
+        "goal-check"
+      ]
+    },
+    {
+      "id": "phase-checks",
+      "title": "Lint en tests",
+      "taskIds": [
+        "lint-check",
+        "project-tests"
+      ]
+    },
+    {
+      "id": "phase-delivery",
+      "title": "Wijzigingen en publicatie",
+      "taskIds": [
+        "repo-write",
+        "publish-site"
+      ]
+    },
+    {
+      "id": "phase-acceptance",
+      "title": "Gebruikerscontrole",
+      "taskIds": [
+        "acceptance-review"
+      ]
+    }
+  ],
+  "constraints": [
+    {
+      "id": "gate-github-write",
+      "kind": "approval",
+      "quote": "na afzonderlijke toestemming voor repositorywijzigingen",
+      "start": 186,
+      "end": 241,
+      "taskIds": [
+        "repo-write"
+      ],
+      "approverId": "test-owner"
+    },
+    {
+      "id": "gate-publish",
+      "kind": "approval",
+      "quote": "na afzonderlijke toestemming voor publicatie",
+      "start": 260,
+      "end": 304,
+      "taskIds": [
+        "publish-site"
+      ],
+      "approverId": "test-owner"
+    }
+  ]
+}

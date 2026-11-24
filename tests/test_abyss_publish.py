@@ -35,9 +35,9 @@ class AbyssPublishTests(unittest.TestCase):
         self.assertIn('id="sea3d"', html)
         self.assertIn('role="status"', html)
 
-    def test_abyss_is_available_but_not_advertised_in_tools(self):
+    def test_oceanografie_is_public_but_keeps_the_existing_route(self):
         self.assertTrue(PUBLIC.is_file(), "ABYSS blijft bereikbaar via het bestaande adres")
-        for rel in ("nl/tools/index.html", "tools/index.html"):
+        for rel in ("nl/tools/index.html", "en/tools/index.html"):
             page = ROOT / "site-build" / rel
             self.assertTrue(page.is_file())
             html = page.read_text(encoding="utf-8")
@@ -45,7 +45,7 @@ class AbyssPublishTests(unittest.TestCase):
             main = "<main" + html.split("<main", 1)[1].split("</main>", 1)[0] + "</main>"
             links = Links()
             links.feed(main)
-            self.assertNotIn("/tools/abyss/", links.hrefs)
+            self.assertIn("/tools/abyss/", links.hrefs)
 
     def test_source_explains_actual_data_vs_demo(self):
         html = SOURCE.read_text(encoding="utf-8")

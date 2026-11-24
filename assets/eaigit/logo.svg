@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-labelledby="title desc">
+<title id="title">EAIgit</title><desc id="desc">EAIgit, met donkerblauw rond Git-beeldmerk, heldere cyaan bogen en het woord EAIgit.</desc>
+<circle cx="100" cy="100" r="92" fill="#071426"/>
+<path d="M42 76 A70 70 0 0 1 120 35" fill="none" stroke="#72DFF6" stroke-width="6" stroke-linecap="round"/>
+<path d="M75 166 A70 70 0 0 0 168 132" fill="none" stroke="#557BFF" stroke-width="6" stroke-linecap="round"/>
+<path d="M71 145 V92 L91 69 H133 M71 145 H119 L141 119" fill="none" stroke="#F5FBFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="91" cy="69" r="11" fill="#2ED3EC" stroke="#F5FBFF" stroke-width="6"/>
+<circle cx="141" cy="119" r="11" fill="#2ED3EC" stroke="#F5FBFF" stroke-width="6"/>
+<circle cx="71" cy="145" r="11" fill="#557BFF" stroke="#F5FBFF" stroke-width="6"/>
+<text x="223" y="128" font-family="Inter, Arial, sans-serif" font-size="119" font-weight="750" letter-spacing="-5" fill="#071426">EAI</text>
+<text x="432" y="128" font-family="Inter, Arial, sans-serif" font-size="119" font-weight="750" letter-spacing="-5" fill="#13BDD6">git</text>
+</svg>

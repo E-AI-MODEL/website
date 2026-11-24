@@ -1,85 +1,12 @@
 name: Build EAI Site
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/build-site.yml'
-      - '.github/workflows/publish-public-analytics.yml'
-      - 'statistieken/**'
-      - 'scripts/publish_web_analytics.py'
-      - 'tests/test_public_analytics.py'
-      - 'tests/test_public_analytics_ui.mjs'
-      - 'tests/test_cloudflare_beacon.py'
-      - 'tests/test_first_party_analytics.py'
-      - '.github/workflows/deploy-theory7.yml'
-      - 'scripts/build_site.py'
-      - 'scripts/prepare_ui.py'
-      - 'services/html-galerij/**'
-      - 'tests/test_html_galerij_publish.py'
-      - 'tools/html-galerij/index.html'
-      - 'tools/lo-aanvalslab/**'
-      - 'scripts/build_anatomie.py'
-      - 'scripts/extract_hart_atlas.mjs'
-      - 'scripts/extract_hart_rich.mjs'
-      - 'tests/test_anatomie_publish.py'
-      - 'content/**'
-      - 'nl/**'
-      - 'en/**'
-      - 'assets/**'
-      - 'index.html'
-      - 'houseoftalents/**'
-      - 'leif/**'
-      - 'tests/test_home_model.py'
-      - 'tests/test_eaiwork_dashboard_publish.py'
-      - 'tests/test_science_observatory_publish.py'
-      - 'tests/test_abyss_publish.py'
-      - 'tests/test_llm_observatorium_source.py'
-      - 'scripts/home_model.py'
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/build-site.yml'
-      - '.github/workflows/publish-public-analytics.yml'
-      - 'statistieken/**'
-      - 'scripts/publish_web_analytics.py'
-      - 'tests/test_public_analytics.py'
-      - 'tests/test_public_analytics_ui.mjs'
-      - 'tests/test_cloudflare_beacon.py'
-      - 'tests/test_first_party_analytics.py'
-      - '.github/workflows/deploy-theory7.yml'
-      - 'scripts/build_site.py'
-      - 'scripts/prepare_ui.py'
-      - 'services/html-galerij/**'
-      - 'tests/test_html_galerij_publish.py'
-      - 'tools/html-galerij/index.html'
-      - 'tools/lo-aanvalslab/**'
-      - 'scripts/build_anatomie.py'
-      - 'scripts/extract_hart_atlas.mjs'
-      - 'scripts/extract_hart_rich.mjs'
-      - 'tests/test_anatomie_publish.py'
-      - 'content/**'
-      - 'nl/**'
-      - 'en/**'
-      - 'assets/**'
-      - 'index.html'
-      - 'houseoftalents/**'
-      - 'leif/**'
-      - 'tests/test_home_model.py'
-      - 'tests/test_science_observatory_publish.py'
-      - 'tests/test_abyss_publish.py'
-      - 'tests/test_llm_observatorium_source.py'
-      - 'scripts/home_model.py'
+  workflow_call:
   workflow_dispatch:
 
-permissions:
-  contents: write
 
-concurrency:
-  group: eai-site-${{ github.ref_name }}
-  cancel-in-progress: true
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -87,6 +14,22 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Kies de vakspecifieke tests voor gewijzigde bestanden
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] || ! git rev-parse --verify HEAD^1 >/dev/null 2>&1; then
+            python3 scripts/ci_pr_scope.py --all --output "$GITHUB_OUTPUT"
+          else
+            git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed-files"
+            mapfile -d '' changed < "$RUNNER_TEMP/changed-files"
+            python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
+          fi
+      - name: Controleer selectie van tests
+        run: python3 -m unittest discover -s tests -p 'test_ci_pr_scope.py' -v
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -103,14 +46,42 @@ jobs:
           python -m pip install --upgrade pip
           pip install beautifulsoup4
 
+      - name: Test exact Theory7 hashes with Cloudflare beacon injection
+        run: python -m unittest discover -s tests -p 'test_theory7_cloudflare_hash.py' -v
+
+      - name: Check review PDF workflow never overwrites site HTML or JS
+        run: python -m unittest discover -s tests -p 'test_zhang_workflow_isolation.py' -v
+
       - name: Test homepage and model rendering
         run: python -m unittest discover -s tests -p 'test_home_model.py' -v
 
+      - name: Check shared dashboard-card scope and homepage content
+        if: ${{ steps.scope.outputs.home == 'true' }}
+        run: python -m unittest discover -s tests -p 'test_dashboard_cards.py' -v
+
       - name: Test LEIF en het toevoegen van testers
+        if: ${{ steps.scope.outputs.leif == 'true' }}
         run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs tests/test_leif_unified_login.mjs tests/test_leif_site_texts.mjs
 
       - name: Verify Cloudflare beacon on public sitemap pages
         run: python -m unittest discover -s tests -p 'test_cloudflare_beacon.py' -v
+
+      - name: Check local-only ICT scan publishing
+        run: python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
+
+      - name: Test ICT scan Excel reports and AI categorization
+        run: node tests/test_ict_scan_export.mjs
+
+      - name: Controleer de brondata en JSON-import van Applicatielandschap 2026
+        run: |
+          node --check tools/ict-scan/app.js
+          node --check tools/ict-scan/enhancements.js
+          node --check tools/ict-scan/github-sync.js
+          node --check tools/ict-scan/visual-explorer.js
+          node --check tools/ict-scan/record-cards.js
+          node --check tools/ict-scan/record-github.js
+          node --check tools/ict-scan/answer-engine.js
+          node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_github_sync.mjs tests/test_ict_scan_visuals.mjs tests/test_ict_scan_cards.mjs tests/test_ict_scan_answers.mjs
 
       - name: Check first-party clicks and session privacy
         run: |
@@ -128,30 +99,89 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
       - name: Check compact NL and EN menus
         run: python -m unittest discover -s tests -p 'test_site_menu_groups.py' -v
+      - name: Check bilingual EAI Dictionary and semantic menu links
+        run: python -m unittest discover -s tests -p 'test_dictionary_and_menu.py' -v
+      - name: Check editorial card scope excludes interactive labs
+        run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
+
+      - name: Check EAIwork public /work/ entry
+        run: python -m unittest discover -s tests -p 'test_eaiwork_public_entry.py' -v
 
       - name: Check EAIwork public demonstration
+        if: ${{ steps.scope.outputs.eaiwork == 'true' }}
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
+
+      - name: Test EAIgit browser analysis
+        if: ${{ steps.scope.outputs.eaigit == 'true' }}
+        run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs
+
+      - name: Check EAIgame 300 questions and gameplay mechanics
+        if: ${{ steps.scope.outputs.eaigame == 'true' }}
+        run: node --test tests/test_eaigame.mjs
 
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
+          # TOPO is a complete, independently deployed application.
+          test ! -e site-build/topo/index.html
+          test -s topo/index.html
+          test -s topo/instellingen/index.html
+          test -s topo/nederland/index.html
           test -s site-build/statistieken/demo.json
           test -s site-build/statistieken/collect.php
           test -s site-build/assets/site-analytics.js
           test ! -e site-build/statistieken/data.json
 
+      - name: Controleer verborgen lokale ICT-scan
+        run: |
+          python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
+          node --test tests/test_ict_scan_github_sync.mjs
+          test -s site-build/tools/ict-scan/index.html
+          test -s site-build/tools/ict-scan/app.js
+          test -s site-build/tools/ict-scan/style.css
+          test -s site-build/tools/ict-scan/monitor.css
+          test -s site-build/tools/ict-scan/enhancements.js
+          test -s site-build/tools/ict-scan/github-sync.js
+          test ! -e site-build/tools/ict-scan/bronnen
+          test ! -e site-build/ict-scan/bronnen
+          test -s site-build/tools/ict-scan/rail-drawer.js
+          test -s site-build/tools/ict-scan/visual-explorer.js
+          test -s site-build/tools/ict-scan/visual-explorer.css
+          test -s site-build/tools/ict-scan/record-cards.js
+          test -s site-build/tools/ict-scan/record-github.js
+          test -s site-build/tools/ict-scan/record-cards.css
+          test -s site-build/tools/ict-scan/frameworks.json
+          test -s site-build/tools/ict-scan/answer-engine.js
+          test -s site-build/tools/ict-scan/answer-engine.css
+          node --check tools/ict-scan/rail-drawer.js
+          node --check tools/ict-scan/github-sync.js
+          test -s site-build/tools/ict-scan/emmaus-logo.svg
+          ! grep -q 'https://eaimodel.nl/tools/ict-scan/' site-build/sitemap.xml
+
+      - name: Controleer EAIgit in gebouwde website
+        run: |
+          set -euo pipefail
+          test -s site-build/tools/eaigit/index.html
+          test -s site-build/tools/eaigit/hulp/index.html
+          test -s site-build/tools/eaigit/prompts/index.html
+          test -s site-build/tools/projecthulp/index.html
+          test -s site-build/assets/eaigit/wizard.mjs
+          test -s site-build/assets/projecthulp/analyse.mjs
+          test -s site-build/assets/projecthulp/inhoudscontrole.mjs
+          test -s site-build/assets/projecthulp/onderzoek-worker.mjs
+          test -s site-build/assets/projecthulp/los-bestand.mjs
+
       - name: Build local anatomical 3D models and viewer
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
 
       - name: Test physiological sequence in Hartslaglab
+        if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_hartslaglab_cycle.mjs
       - name: Check 3D anatomy geometry in Hartslaglab
+        if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_hartslaglab_geometry.mjs
       - name: Verify anatomical atlas, licensing and navigation
         run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
-
-      - name: Check site insights, navigation and privacy
-        run: python -m unittest discover -s tests -p 'test_site_insights.py' -v
 
       - name: Check HTML upload link in header
         run: python -m unittest discover -s tests -p 'test_header_upload_link.py' -v
@@ -166,37 +196,51 @@ jobs:
         run: python -m unittest discover -s tests -p "test_wihtml_publish.py" -v
 
       - name: Check LLM observatory source and menus
+        if: ${{ steps.scope.outputs.llm == 'true' }}
         run: python -m unittest discover -s tests -p 'test_llm_observatorium_source.py' -v
 
       - name: Check ABYSS source and mobile menu
         run: python -m unittest discover -s tests -p 'test_abyss_publish.py' -v
 
       - name: Check Science Observatory pilot publication
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: python -m unittest discover -s tests -p 'test_science_observatory_publish.py' -v
       - name: Check adaptive mathematics and physics workspaces
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_adaptive_workspaces.mjs
       - name: Check physics reference values and drawings
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_models.mjs
       - name: Check wave motion and optical models
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_round3.mjs
       - name: Check 53 proefspecifieke natuurkundeberekeningen
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_insights.mjs
       - name: Check physics source references and independent calculations
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_evidence.mjs
       - name: Check independent model references for the other 48 physics labs
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_reference_48.mjs
       - name: Check physics visuals against the simulated equations
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_visual_fidelity.mjs
       - name: Check physical graph axes and comparisons
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physical_graphs.mjs
       - name: Check animation, graph and measurement agreement
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_graph_animation_alignment.mjs
       - name: Check three experiment-specific inquiry methods
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_inquiry_variants.mjs
       - name: Check quality register for all 53 physics experiments
+        if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_quality_register.mjs
 
       - name: Check Melkweg Lab publication
+        if: ${{ steps.scope.outputs.melkweg == 'true' }}
         run: python -m unittest discover -s tests -p 'test_melkweg_lab_publish.py' -v
 
       - name: Verify EAIstudio and EAImesh source publication
@@ -288,48 +332,3 @@ jobs:
               raise SystemExit("\\n".join(problems))
           print("Visitor route and shared styling checks passed")
           PY
-
-      - name: Publish generated files to main
-        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
-        run: |
-          git fetch origin main
-          REMOTE_SHA="$(git rev-parse origin/main)"
-          LOCAL_SHA="$(git rev-parse HEAD)"
-          if [ "$REMOTE_SHA" != "$LOCAL_SHA" ]; then
-            echo "A newer commit exists on main; this run is stale and will not publish generated files."
-            exit 0
-          fi
-
-          rm -rf assets publicaties tools model-monitor eai-blog eai-tools-modules eaa-model onderwijsin houseoftalents twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping toepassingen onderwijs kennis
-          cp -R site-build/assets .
-          cp -R site-build/publicaties .
-          cp -R site-build/tools .
-          cp -R site-build/model-monitor .
-          cp -R site-build/eai-blog .
-          cp -R site-build/eai-tools-modules .
-          cp -R site-build/eaa-model .
-          cp -R site-build/onderwijsin .
-          cp -R site-build/houseoftalents .
-          cp -R site-build/twee-pijlers .
-          cp -R site-build/workshop-ai .
-          cp -R site-build/werkvormen .
-          cp -R site-build/taalwerkvormen .
-          cp -R site-build/onderbouwing .
-          cp -R site-build/bronnen .
-          cp -R site-build/praktijk .
-          cp -R site-build/over .
-          cp -R site-build/verdieping .
-          cp -R site-build/toepassingen .
-          cp -R site-build/onderwijs .
-          cp -R site-build/kennis .
-          cp -R site-build/nl .
-          cp -R site-build/en .
-          cp -R site-build/statistieken .
-          cp site-build/index.html site-build/404.html site-build/robots.txt site-build/sitemap.xml .
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html robots.txt sitemap.xml assets publicaties tools model-monitor eai-blog eai-tools-modules eaa-model onderwijsin houseoftalents twee-pijlers workshop-ai werkvormen taalwerkvormen onderbouwing bronnen praktijk over verdieping toepassingen onderwijs kennis statistieken nl en
-          if ! git diff --cached --quiet; then
-            git commit -m "build: refresh EAI site"
-            git push origin HEAD:main
-          fi
