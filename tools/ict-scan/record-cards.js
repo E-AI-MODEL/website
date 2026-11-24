@@ -99,12 +99,12 @@
   }
   function fillTypeSelect(){
     const list=$c('cardTypeFilter');list.replaceChildren();
-    for(const spec of SPECS){if(!window.IctOrganisation.profile?.source.registerFiles[spec.key])continue;const o=text('option','',spec.label);o.value=spec.key;list.append(o);}
+    for(const spec of SPECS){if(!window.IctOrganisation.profile?.source.registerFiles[spec.key])continue;const o=text('option','',spec.label+' ('+(state[spec.store]?.size||0)+')');o.value=spec.key;list.append(o);}
   }
   function showList(){
     const type=$c('cardTypeFilter').value,query=$c('cardSearch').value.trim().toLocaleLowerCase('nl-NL');
     const list=$c('cardBrowserList');list.replaceChildren();
-    const items=records(type).filter(r=>([r.id,r.name,r.description,r.action,r.status,r.local].filter(Boolean).join(' ')).toLocaleLowerCase('nl-NL').includes(query));
+    const items=records(type).filter(r=>window.IctInventoryIndex?.matchesRecord(r,query)??String(r.name||'').toLocaleLowerCase('nl-NL').includes(query));
     for(const r of items){
       const button=text('button','card-browser-item');button.type='button';
       if(model.current?.type===type&&model.current?.id===r.id)button.classList.add('active');
@@ -620,13 +620,17 @@
     }
     fillTypeSelect();model.loading=false;
   }
-  function launch(){
+  function launch(type){
+    if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?'))return;
+    model.editing=false;model.working=null;
     model.contextMode=false;
-    if(!$c('cardEditor').hidden){showList();showPane();return;}
+    fillTypeSelect();
+    if(typeof type==='string'&&typesByKey[type])model.current=null;
+    if(!$c('cardEditor').hidden&&typeof type!=='string'){showList();showPane();return;}
     $c('cardEditor').hidden=false;$c('cardScrim').hidden=false;
     document.body.classList.add('record-card-open');
-    $c('cardTypeFilter').value=model.current?.type||'apps';
-    showList();showPane();
+    $c('cardTypeFilter').value=typeof type==='string'&&typesByKey[type]?type:model.current?.type||'apps';
+    $c('cardSearch').value='';showList();showPane();
   }
   function logbookRows(){
     const rows=[];
@@ -668,6 +672,7 @@
   renderSources=function(){oldRenderSources();renderLogbook();};
   $c('logbookSearch').addEventListener('input',renderLogbook);
   $c('cardOpen').addEventListener('click',launch);
+  $c('registerOpen')?.addEventListener('click',()=>launch($c('registerPicker').value));
   $c('cardEditorClose').addEventListener('click',close);
   $c('cardScrim').addEventListener('click',close);
   $c('cardTypeFilter').addEventListener('change',()=>{if(model.editing&&!confirm('Niet-bewaarde invoer verlaten?')){$c('cardTypeFilter').value=model.current.type;return;}model.current=null;model.editing=false;model.working=null;showList();showPane();});
@@ -697,6 +702,7 @@
   });
   window.EmmausRecordCards=Object.freeze({
     open,launch,feedback,
+    refreshRegisterPicker:()=>{const picker=$c('registerPicker');if(!picker)return;const selected=picker.value;picker.replaceChildren();const ix=window.IctInventoryIndex?.build(state);if(!ix)return;for(const spec of SPECS){const option=text('option','',spec.label+' ('+ix.count(spec.key)+')');option.value=spec.key;picker.append(option);}picker.value=selected||'apps';$c('registerTotal').textContent=ix.nodes.size+' registraties · '+SPECS.length+' registers';},
     drafts:()=>[...model.drafts.values()].map(copy),
     clearPublished:submitted=>{
       if(!Array.isArray(submitted))throw Error('De gepubliceerde conceptversies ontbreken.');

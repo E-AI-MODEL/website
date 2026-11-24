@@ -59,7 +59,7 @@
     const target=event.target;
     if(target && (target.closest('input,textarea,select,[contenteditable="true"]') || target.isContentEditable))return;
     event.preventDefault();
-    openDrawer(true);
+    search.focus();
   });
 
   byId('drawerExcel').addEventListener('click',()=>byId('exportExcel').click());

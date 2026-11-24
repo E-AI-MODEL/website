@@ -13,7 +13,7 @@
     reports:[['Rapport kiezen',2],['Rapport downloaden',2]],
     sources:[['Bronbestanden ophalen',3],['Bestanden en wijzigingen',3],['Broninformatie',2]]
   };
-  const leading={ai:2};
+  const leading={ai:2,apps:1};
   const scenes=new Map();
   const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
   function show(view,index,animate=true){

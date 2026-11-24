@@ -250,3 +250,18 @@ test('Bestaande zijbalk en eenvoudige bronverwijzingen blijven intact',()=>{
   assert.ok(app.includes('faqs:new Map()'));
   assert.ok(app.includes("faqs:'faqs'"),'De native JSON-import moet FAQ-registraties blijven inlezen.');
 });
+
+test('Elke bestaande registratie is rechtstreeks vindbaar op ID, met volledige bronvelden',()=>{
+  const data=indexedDataset();
+  for(const [type] of Object.entries(inventoryIndex.STORES)){
+    for(const row of data.index.records(type)){
+      const matches=data.index.searchRecords(row.id);
+      assert.ok(matches.some(x=>x.type===type&&x.id===row.id),type+'/'+row.id);
+      assert.ok(query(row.id,data).records.some(x=>x.type===type&&x.id===row.id),type+'/'+row.id+' antwoord');
+    }
+  }
+  const nested={id:'H-test',name:'Voorbeeld',extension:{inner:['uniekevindterm']}};
+  const index=inventoryIndex.build({hardwareGroups:[nested]});
+  assert.deepEqual(index.searchRecords('uniekevindterm').map(x=>x.id),['H-test']);
+  assert.equal(index.searchRecords('H-test')[0].record,nested);
+});

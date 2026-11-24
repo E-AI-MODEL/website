@@ -14,7 +14,14 @@
     {key:'checks',store:'checks',card:'checks',label:'Controlepunten',help:'Vastgelegde vragen die nog moeten worden nagegaan.',unit:'controlepunten',field:'category',fieldLabel:'Categorie',fields:['status','evidence','action']},
     {key:'candidates',store:'candidates',card:'additionalCandidates',label:'Overige software',help:'Software buiten de applicatielijst. Gebruik nog controleren.',unit:'softwarevermeldingen',field:'kind',fieldLabel:'Soort',fields:['status','confirmed','action']},
     {key:'aiControls',store:'aiControls',card:'aiControls',label:'AI-beheer',help:'Beheerafspraken, inrichting en controleacties.',unit:'beheerpunten',field:'domain',fieldLabel:'Domein',fields:['local','execution','managementLocation'],role:'ai'},
-    {key:'dpia',store:'dpia',card:'dpia',label:'Privacyonderzoeken',help:'Broninformatie over privacyonderzoeken en gegevensbescherming.',unit:'brononderwerpen',field:'type',fieldLabel:'Soort bron',fields:['sourceDate','local','evidence'],role:'fg'}
+    {key:'dpia',store:'dpia',card:'dpia',label:'Privacyonderzoeken',help:'Broninformatie over privacyonderzoeken en gegevensbescherming.',unit:'brononderwerpen',field:'type',fieldLabel:'Soort bron',fields:['sourceDate','local','evidence'],role:'fg'},
+    {key:'parts',store:'parts',card:'parts',label:'Onderdelen',help:'Productonderdelen en technische registraties.',unit:'onderdelen',field:'kind',fieldLabel:'Soort',fields:['parent','local','accessStatus']},
+    {key:'hardwareGroups',store:'hardwareGroups',card:'hardwareGroups',label:'Hardwaregroepen',help:'Apparaatgroepen, gescheiden van metingen.',unit:'hardwaregroepen',field:'category',fieldLabel:'Categorie',fields:['owner','status','quantity']},
+    {key:'licenseReview',store:'licenseReview',card:'licenseReview',label:'Licenties',help:'Licentieregistraties ter controle; geen telling van betaalde licenties.',unit:'licentiecontroles',field:'status',fieldLabel:'Status',fields:['license2026','localAI','action']},
+    {key:'workActions',store:'workActions',card:'workActions',label:'Werkacties',help:'Vastgelegde acties en verantwoordelijken.',unit:'werkacties',field:'status',fieldLabel:'Status',fields:['action','involvedRoles','status']},
+    {key:'softwareReview',store:'softwareReview',card:'softwareReview',label:'Softwarecontroles',help:'Bekende gegevens en te controleren onderdelen.',unit:'softwarecontroles',field:'status',fieldLabel:'Status',fields:['known','action','status']},
+    {key:'faqs',store:'faqs',card:'faqs',label:'Veelgestelde vragen',help:'Vaste antwoorden uit de registratie.',unit:'vragen',field:'topic',fieldLabel:'Onderwerp',fields:['answer','status','reviewedAt']},
+    {key:'sourceRegister',store:'sourceRegister',card:'sourceRegister',label:'Bronregister',help:'Bronidentiteiten en beoordelingsstatus.',unit:'bronnen',field:'approvalStatus',fieldLabel:'Beoordeling',fields:['owner','version','rightsStatus']}
   ];
   const PARTS=[
     {id:'numbers',name:'Aantallen per onderdeel',eyebrow:'AANTALLEN',caption:'Aantallen uit de gekozen gegevensgroepen.',span:12},
@@ -57,7 +64,7 @@
   const known=v=>{const x=clean(v);return !!x&&!/^\?|^(nog |onbekend|niet gecontroleerd|niet bevestigd|niet vastgesteld|geen gegevens|n.v.t)/i.test(x);};
   function enabled(d){return !d.role||window.EmmausRoles?.isEnabled(d.role)===true;}
   function availableData(){return DATA.filter(d=>config.data.includes(d.key)&&enabled(d));}
-  function source(d){return Array.from((state[d.store] instanceof Map?state[d.store]:new Map()).values());}
+  function source(d){return window.IctInventoryIndex?.build(state).records(d.card)||[];}
   function definition(k){return DATA.find(d=>d.key===k);}
   function activeSource(){const list=availableData();return list.find(d=>d.key===config.primary)||list[0]||null;}
   function filtered(d){
@@ -392,10 +399,11 @@
     const all=filtered(d);
     const wrap=text('div',undefined,'ds-records');const input=text('input');input.type='search';input.placeholder='Zoek binnen '+d.label.toLowerCase();input.className='ds-record-search';input.setAttribute('aria-label','Doorzoek '+d.label);root.append(input,wrap);
     function fill(){
-      const q=input.value.trim().toLocaleLowerCase('nl-NL');const matched=all.filter(r=>[r.id,r.name,r.description,r.status,r.local,r.action].filter(Boolean).join(' ').toLocaleLowerCase('nl-NL').includes(q));wrap.replaceChildren();
+      const q=input.value.trim().toLocaleLowerCase('nl-NL');const matched=all.filter(r=>window.IctInventoryIndex.matchesRecord(r,q));wrap.replaceChildren();
       for(const r of matched.slice(0,10)){const b=button('','ds-record-row',()=>openCard(d,r));b.append(text('span',r.id,'ds-record-id'),text('strong',r.name||'Naam ontbreekt'),text('span','Bekijk','ds-record-open'));wrap.append(b);}
       if(!matched.length)wrap.append(text('p','Geen registraties voor deze zoekterm.','ds-note'));
       const result=text('p',fmt(matched.length)+' registraties'+(matched.length>10?' · de eerste tien getoond':''),'ds-note');wrap.append(result);
+      if(matched.length>10)wrap.append(button('Open alle registraties','ds-action-text',()=>window.EmmausRecordCards.launch(d.card)));
     }
     input.addEventListener('input',fill);fill();
   }

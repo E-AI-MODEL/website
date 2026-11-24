@@ -47,9 +47,9 @@ try {
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
   const errors=[],network=[];
   let initialSyncDelayed=false;
-  const secondaryMobile=new Set(['connections','devices','privacy','findings','reports']);
+  const secondaryViews=new Set(['studio','connections','devices','privacy','reports','sources']);
   const navigate=async view=>{
-    if(width<700&&secondaryMobile.has(view)){
+    if(secondaryViews.has(view)){
       await page.locator('#railMore').click();
       await page.locator('[data-drawer-view="'+view+'"]').click();
     }else{
@@ -100,6 +100,10 @@ try {
   try{await page.waitForFunction(()=>/geslaagd|niet gelukt/i.test(document.getElementById('githubSyncStatus')?.textContent||''),null,{timeout:15000});}
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
+  assert.equal(await page.locator('#globalSearch').isVisible(),true,'Zoekfunctie moet direct zichtbaar zijn');
+  assert.match(await page.locator('#githubLiveStatus').textContent(),new RegExp(String(nodeCount)));
+  assert.equal(await page.locator('#githubLiveStatus').getAttribute('data-mode'),'success');
+  assert.equal(await page.locator('#sections .rail-button:visible').count(),4);
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
   await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 applicaties'));
   await page.locator('#viewOverview:not([hidden])').waitFor();
@@ -124,7 +128,7 @@ try {
   if(width<700){
     const dock=await page.locator('.sidebar.icon-rail').boundingBox();
     assert(dock&&dock.x>=-1&&dock.width>=width-2&&dock.x+dock.width<=width+1,'Mobiele navigatie is geen volledige balk: '+JSON.stringify(dock));
-    for(const view of ['studio','overview','apps','ai','sources']){
+    for(const view of ['overview','apps','ai','findings']){
       assert(await page.locator('.rail-button[data-view="'+view+'"]').isVisible(),'Primair onderdeel niet bereikbaar: '+view);
     }
     assert.equal(await page.locator('.rail-button[data-view="connections"]').isVisible(),false,'Secundaire onderdelen horen onder Meer');
@@ -137,8 +141,8 @@ try {
   await page.locator('#viewStudio:not([hidden])').waitFor();
   assert.equal(await page.locator('#viewStudio .ds-panel-head h2').textContent(),'Gegevens en grafieken');
   assert.equal(await page.locator('.rail-button[data-view="studio"] .rail-label').textContent(),'Op maat');
-  assert.equal(await page.locator('#dsDataOptions .ds-option').count(),8,'Gegevenskeuze moet alle acht beschikbare bronsoorten bevatten');
-  assert.equal(await page.locator('#dsDataOptions .ds-option-description').count(),8,'Een gegevensgroep moet direct vertellen waarvoor die dient');
+  assert.equal(await page.locator('#dsDataOptions .ds-option').count(),Object.keys(inventory.STORES).length,'Gegevenskeuze moet alle registers bevatten');
+  assert.equal(await page.locator('#dsDataOptions .ds-option-description').count(),Object.keys(inventory.STORES).length,'Een gegevensgroep moet direct vertellen waarvoor die dient');
   assert.equal(await page.locator('#dsPartOptions .ds-option-description').count(),9,'Elk dashboardonderdeel moet zijn werking uitleggen');
   assert.equal(await page.locator('#dsPartOptions .ds-part').count(),9,'Er ontbreken vrij kiesbare dashboardonderdelen');
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),5,'Het startdashboard moet direct bruikbaar zijn');
@@ -345,6 +349,17 @@ try {
   assert.match(await page.locator('#privacySummary').textContent(),/Niet aangeleverd/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-privacy.png'});
   await navigate('apps');
+  assert.equal(await page.locator('#registerPicker option').count(),Object.keys(inventory.STORES).length);
+  await page.locator('#registerPicker').selectOption('hardwareGroups');
+  await page.locator('#registerOpen').click();
+  assert.equal(await page.locator('#cardTypeFilter').inputValue(),'hardwareGroups');
+  assert.equal(await page.locator('#cardBrowserList .card-browser-item').count(),expectedIndex.count('hardwareGroups'));
+  await page.locator('#cardEditorClose').click();
+  await page.locator('#globalSearch').fill('WRK-014');
+  await page.locator('#globalSearch').press('Enter');
+  await page.locator('#globalResults [data-result-id="WRK-014"]').click();
+  assert.equal(await page.locator('#cardRecordId').textContent(),'WRK-014');
+  await page.locator('#cardEditorClose').click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),false,'Kandidaten zijn niet gescheiden van basisregistraties');
   // One compact inspector, not nested Excel/JSON/read-card duplicates.
   await page.locator('#appsList .item-card-direct .item-summary').first().click();
@@ -460,7 +475,8 @@ try {
     await page.locator('#railMore').click();
     const menu=await page.locator('#railDrawer').boundingBox();
     assert(menu&&menu.x>=0&&menu.x+menu.width<=321,'Menu valt buiten 320px viewport: '+JSON.stringify(menu));
-    await page.locator('[data-drawer-view="findings"]').click();
+    await page.locator('#railDrawerClose').click();
+    await navigate('findings');
     assert.equal(await page.locator('#sectionTitle').textContent(),'Controles');
   }
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
