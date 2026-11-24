@@ -33,7 +33,7 @@ test('alle drie wetsteksten worden volledig bewaard en zijn tegen Git blob SHA g
     const body=local(d.path);
     assert.ok(body.length>10000);
     assert.equal(sha(body),d.blobSha,id+': onverifieerbare momentopname');
-    for(const token of markers[id])assert.ok(body.includes(token),id+': mist '+token);
+    for(const token of markers[id])assert.ok(body.replace(/\u00a0/g,' ').includes(token.replace(/\u00a0/g,' ')),id+': mist '+token);
   }
 });
 

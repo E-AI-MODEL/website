@@ -74,6 +74,11 @@ try {
     const sha=url.pathname.split('/').pop();
     assert(sources.has(sha),'Onverwachte GitHub SHA: '+sha);
     data={encoding:'base64',content:sources.get(sha).toString('base64')};
+   }else if(url.pathname.includes('/contents/tools/ict-scan/docs/')){
+    assert.equal(url.searchParams.get('ref'),'d'.repeat(40));
+    const path=url.pathname.split('/contents/')[1];
+    const bytes=readFileSync(path);const sha=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+    data={type:'file',encoding:'base64',content:bytes.toString('base64'),size:bytes.length,sha};
    }else throw Error('Onverwachte GitHub-route '+url.pathname);
    await route.fulfill({status:200,headers:cors,body:JSON.stringify(data)});
   });
@@ -125,6 +130,19 @@ try {
   await page.locator('#overviewQuickActions button').filter({hasText:'Gegevens aanpassen'}).click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
   await page.locator('#cardEditorClose').click();
+  // Exercise the real reader against the exact repository blobs, with no remote school data.
+  await page.evaluate(()=>window.EmmausDocs.open('AIACT'));
+  await page.locator('#docDialog').waitFor({state:'visible'});
+  await page.waitForFunction(()=>document.getElementById('docReaderStatus').textContent.includes('Volledige bronmomentopname'));
+  assert.match(await page.locator('#docReaderTitle').textContent(),/AI-verordening/);
+  assert((await page.locator('#docArticleJump option').count())>100,'Artikelnavigatie ontbreekt');
+  await page.locator('#docArticleSearch').fill('AI-geletterdheid');
+  assert((await page.locator('.doc-law-section:visible').count())>0,'Zoeken in wetstekst levert geen resultaat');
+  await page.locator('#docDialogClose').click();
+  await page.evaluate(()=>window.EmmausDocs.open('IBP'));
+  await page.waitForFunction(()=>document.getElementById('docReaderStatus').textContent.includes('geen herpublicatie'));
+  assert.equal(await page.locator('#docLocalChoice').isVisible(),true);
+  await page.locator('#docDialogClose').click();
   if(width<700){
     const dock=await page.locator('.sidebar.icon-rail').boundingBox();
     assert(dock&&dock.x>=-1&&dock.width>=width-2&&dock.x+dock.width<=width+1,'Mobiele navigatie is geen volledige balk: '+JSON.stringify(dock));

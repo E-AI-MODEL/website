@@ -158,7 +158,8 @@
       const body=loaded.has(key)?loaded.get(key):await readGit(d.path,d.blobSha);
       if(opened!==d||el('docDialog').hidden)return;
       loaded.set(key,body);
-      if((d.id==='AVG'&&!body.includes('Artikel 99'))||(d.id==='AIACT'&&!body.includes('Artikel 113'))||(d.id==='UAVG'&&!body.includes('Artikel 54')))throw Error('De volledige documenttekst is niet aantoonbaar beschikbaar.');
+      const normalized=body.replace(/\u00a0/g,' ');
+      if((d.id==='AVG'&&!normalized.includes('Artikel 99'))||(d.id==='AIACT'&&(!normalized.includes('Artikel 113')||!normalized.includes('BIJLAGE XIII')))||(d.id==='UAVG'&&!normalized.includes('Artikel 54')))throw Error('De verwachte eindartikelen of bijlagen ontbreken in de bronmomentopname.');
       showText(body);
       el('docReaderStatus').textContent='Volledige bronmomentopname · '+d.snapshotAt+'. '+d.note;
     }catch(error){if(opened===d&&!el('docDialog').hidden)el('docReaderStatus').textContent='Document niet geladen: '+error.message;}
