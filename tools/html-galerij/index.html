@@ -1,279 +1,53 @@
 <!doctype html>
 <html lang="nl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Bekijk interactieve HTML-pagina’s van anderen of voeg zelf een bestand toe.">
-<title>Interactieve HTML bekijken en delen | EAI</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Beheer je eigen interactieve HTML-pagina's in de beveiligde EAI HTML-galerij.">
+<meta name="robots" content="noindex,follow">
+<title>HTML-galerij inloggen | EAI</title>
 <link rel="icon" href="/assets/eai-logo.svg" type="image/svg+xml">
 <style>
-
-:root{--paper:#f7f8f3;--white:#fff;--ink:#1b2a23;--muted:#69776f;--line:#dae4db;--accent:#2b5c47;--sage:#ecf4e9;--serif:Georgia,serif}
+:root{--bg:#f7f9f5;--ink:#1d3027;--muted:#63756a;--line:#d7e3d9;--accent:#2b5a42}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 Inter,system-ui,-apple-system,sans-serif}
-a{color:inherit}button,input{font:inherit}button{cursor:pointer}
-button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #8db5a0;outline-offset:3px}
-.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;background:white;padding:10px;z-index:20}
-header{border-bottom:1px solid var(--line);background:#fffefb}
-.nav,.wrap{max-width:1180px;margin:auto;padding:0 28px}
-.nav{min-height:68px;display:flex;align-items:center;gap:14px}
-.brand{font-size:17px;font-weight:750;text-decoration:none;display:flex;gap:10px;align-items:center}
-.brand img{width:31px;height:31px}.nav>div{margin-left:auto;display:flex;gap:23px;align-items:center}
-.nav a:not(.brand){font-size:13px;text-decoration:none;color:#3f5549;font-weight:600}
-.nav a:hover{text-decoration:underline}
-main{padding:0 0 110px}
-.hero{padding:74px 0 64px;border-bottom:1px solid #e0e8de;background:linear-gradient(125deg,#f7f9f4 0%,#eef5ec 90%)}
-.hero-inner{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);align-items:center;gap:7%}
-.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#537463;font-weight:750}
-.eyebrow-button{border:0;background:transparent;padding:0;text-align:left}
-h1,h2{font-family:var(--serif);letter-spacing:-.035em;font-weight:400}
-h1{font-size:clamp(43px,4.65vw,66px);line-height:1.1;max-width:12ch;margin:20px 0 24px}
-h2{font-size:clamp(26px,3vw,35px);line-height:1.2;margin:0}
-.lede{font-size:17px;max-width:53ch;color:#55675c;margin:0}
-.hero-note{margin:34px 0 0;padding:0 0 0 18px;border-left:2px solid #b9cbb9;font-size:13px;line-height:1.7;color:#63736b;max-width:44ch}
-.preview-art{background:#e7efe4;border:1px solid #d2e0d1;border-radius:13px;padding:17px;box-shadow:0 18px 45px #2c51340b}
-.preview-art-top{display:flex;gap:5px;padding:2px 0 14px;align-items:center}.preview-art-top span{width:7px;height:7px;background:#abc6ae;border-radius:100%}
-.art-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}
-.art-screen{min-height:217px;padding:21px;background:#fff;border-radius:7px;border:1px solid #d8e4d9;display:flex;flex-direction:column;justify-content:space-between}
-.art-screen small{font:700 10px/1.4 Inter,system-ui;letter-spacing:.12em;color:#64846f;text-transform:uppercase}
-.art-orbit{width:124px;height:124px;position:relative;margin:auto;border:1px solid #b8d2c0;border-radius:50%;display:grid;place-items:center}
-.art-orbit:before{content:"";width:74px;height:74px;border:1px dashed #a8c4ae;border-radius:50%;position:absolute}
-.art-orbit:after{content:"";width:13px;height:13px;background:#3e7760;border-radius:50%;box-shadow:43px 21px 0 -4px #8aaa92}
-.art-lines{display:flex;flex-direction:column;gap:13px;padding:12px 5px}
-.art-lines span{display:block;height:9px;border-radius:3px;background:#b6ceba}.art-lines span:nth-child(2){width:70%;background:#8cae98}.art-lines span:nth-child(3){width:90%}.art-lines span:nth-child(4){width:50%;background:#d3dfd2}
-.art-caption{font-size:11px;letter-spacing:.05em;color:#698376;padding:14px 2px 2px}
-.layout-section{padding-top:58px}
-.editorial-row{display:grid;grid-template-columns:minmax(0,.66fr) minmax(0,1.34fr);gap:44px;align-items:start}
-.section-intro{padding-top:18px}.section-intro p{margin:18px 0;color:#6a796e;max-width:33ch;font-size:14px}
-.section-intro .step{font-size:11px;color:#648571;font-weight:700;letter-spacing:.09em;text-transform:uppercase;display:block;margin-bottom:15px}
-.panel{background:#fff;border:1px solid var(--line);padding:30px;border-radius:12px;box-shadow:0 9px 30px #344f3908}
-.panel h2{font-size:27px;margin:0 0 8px}
-.panel-description{margin:0 0 25px;color:#758178;font-size:13px}
-form{display:grid;gap:18px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-label{font-size:12px;font-weight:700;display:block;margin-bottom:7px}
-input[type=text],input[type=search],input[type=password]{width:100%;background:#fff;border:1px solid #ccd8d0;border-radius:7px;padding:12px 13px;color:var(--ink);min-height:44px}
-input::placeholder{color:#8a9690}
-.drop{border:1.5px dashed #a5bbab;background:#f8faf6;padding:24px;text-align:center;border-radius:8px;transition:background .15s,border-color .15s}
-.drop strong{display:block;font-size:13px;margin:0 0 3px}.drop small{display:block;color:var(--muted);font-size:12px}
-.drop.dragging{background:#e5f0e8;border-color:var(--accent)}
-.drop input{width:min(100%,270px);margin-top:13px;font-size:12px}
-.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-button.primary{background:#26523e;color:white;padding:12px 19px;border-radius:7px;border:1px solid #26523e;font-size:13px;font-weight:700;min-height:44px}
-button.primary:hover:not(:disabled){background:#19452e}
-button:disabled{opacity:.5;cursor:not-allowed}
-.hint{color:#758079;font-size:12px;margin:0;line-height:1.65}
-.status{font-size:12px;min-height:22px;flex:1;color:#506c58}.status.error{color:#ad3c35}
-#turnstile{min-height:0}#retry-check{border:1px solid var(--line);background:white;border-radius:6px;padding:7px 11px;color:var(--accent)}
-.gallery-section{padding-top:82px}.gallery-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin:0 0 26px}
-.gallery-head h2{margin-top:9px}.gallery-head input{max-width:290px}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.card{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden;transition:transform .2s,box-shadow .2s}
-.card:hover{transform:translateY(-2px);box-shadow:0 11px 28px #294b3410}
-.preview{height:140px;background:linear-gradient(135deg,#e9f2e6,#f4f7ee);display:grid;place-items:center;color:#709280;font:400 25px Georgia,serif}
-.card-content{padding:19px}.card h3{margin:0 0 8px;font-size:17px;line-height:1.35}
-.card p{margin:0 0 13px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
-.card a{font-size:12px;font-weight:700;color:var(--accent);text-decoration:none}.card a:hover{text-decoration:underline}
-.card button{border:0;background:none;color:var(--ink);padding:0;font-size:12px;font-weight:650;text-decoration:underline}
-.empty{grid-column:1/-1;padding:38px;border:1px solid #d8e3d9;border-radius:10px;background:#fbfcfa;color:#667c6c;font-size:14px}
-dialog{border:1px solid #dbe5da;border-radius:12px;padding:0;width:min(1020px,95vw);max-height:95vh;box-shadow:0 25px 90px #0003;background:white}
-dialog::backdrop{background:#11251dbb}
-.dialog-bar{padding:14px 19px;display:flex;align-items:center;gap:15px;border-bottom:1px solid var(--line)}
-.dialog-bar strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dialog-bar button{margin-left:auto;border:1px solid var(--line);background:white;border-radius:6px;padding:6px 12px}
-dialog iframe{display:block;width:100%;height:min(78vh,760px);border:0;background:white}
-.card{position:relative}
-.card-delete{position:absolute;right:10px;top:10px;z-index:2;width:30px;height:30px;border:1px solid #e2a39d!important;border-radius:50%;background:#fff5f3!important;color:#ad2927!important;font-size:20px!important;font-weight:700!important;line-height:1;text-decoration:none!important;box-shadow:0 2px 7px #24110f18}
-.card-delete:hover{background:#fce4e1!important}
-.card-delete:disabled{opacity:.5}
-#gallery-management-status{font-size:12px;color:#ad2927;min-height:16px;margin-top:8px}
-
-footer{border-top:1px solid var(--line);padding:30px 0;color:#79867b;font-size:12px;background:#fffefb}
-@media(max-width:850px){.hero-inner{grid-template-columns:1fr;gap:32px}.preview-art{display:none}.editorial-row{grid-template-columns:1fr;gap:15px}.section-intro p{max-width:60ch}.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:620px){.nav,.wrap{padding:0 19px}.hero{padding:50px 0 48px}h1{font-size:43px}.lede{font-size:16px}.hero-note{margin-top:25px}.layout-section{padding-top:35px}.panel{padding:21px}.fields,.cards{grid-template-columns:1fr}.gallery-head{display:block}.gallery-head input{max-width:none;margin-top:19px}.gallery-section{padding-top:63px}.preview{height:110px}.nav>div{gap:16px}#admin-panel{padding:18px}}
-@media(prefers-reduced-motion:reduce){.card,.drop{transition:none}.card:hover{transform:none}}
+body{margin:0;color:var(--ink);background:var(--bg);font:15px/1.6 Inter,system-ui,-apple-system,sans-serif}
+a{color:var(--accent)}a:focus-visible{outline:3px solid #86b49a;outline-offset:3px}
+header{border-bottom:1px solid var(--line);background:#fff}
+.nav,.wrap{width:min(100% - 44px,1100px);margin:auto}
+.nav{min-height:68px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:750}
+.brand img{width:32px;height:32px}
+.back{font-size:13px;margin-left:auto;text-decoration:none}
+main{min-height:calc(100vh - 145px);display:grid;align-items:center}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:7%;align-items:center;padding:88px 0}
+.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#537b62;font-weight:700}
+h1{font:400 clamp(43px,5.2vw,67px)/1.1 Georgia,serif;letter-spacing:-.04em;margin:20px 0 23px}
+.lede{font-size:18px;line-height:1.65;color:#53695a;max-width:48ch}
+.login{display:inline-flex;align-items:center;justify-content:center;margin:20px 0 10px;padding:13px 23px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:650;min-height:48px}
+.login:hover{background:#1a4731}
+.note{font-size:13px;color:var(--muted);max-width:44ch}
+.art{background:#e9f3e8;border:1px solid #d7e6d6;border-radius:18px;padding:23px;box-shadow:0 20px 55px #203c260c}
+.art-top{display:flex;gap:7px;padding-bottom:18px}.art-top i{height:7px;width:7px;border-radius:99px;background:#afcbb4}
+.art-window{min-height:280px;background:white;border:1px solid #dce5dc;border-radius:10px;padding:29px;display:flex;flex-direction:column;gap:15px;align-items:center;justify-content:center}
+.lock{width:85px;height:85px;border-radius:50%;background:#edf5ec;display:grid;place-items:center;color:#2b6746}
+.lock svg{width:42px;height:42px}
+.art-window strong{font-size:18px}.art-window span{font-size:13px;color:#728278;text-align:center}
+footer{border-top:1px solid var(--line);background:#fff;color:#728278;padding:24px 0;font-size:12px}
+@media(max-width:750px){.hero{grid-template-columns:1fr;padding:60px 0}.art{display:none}.lede{font-size:16px}h1{font-size:43px}}
 </style>
 </head>
 <body class="eai-refresh">
-<a class="skip" href="#main">Ga naar inhoud</a>
-<header><nav class="nav"><a class="brand" href="/"><img src="/assets/eai-logo.svg" alt="">EAI</a><div><a href="/tools/">Tools</a><a href="/">Home</a></div></nav></header>
-<main id="main">
-<section class="hero"><div class="wrap hero-inner">
-<div>
-<button class="eyebrow eyebrow-button" id="secret-entrance" type="button">HTML-galerij</button>
-<h1>Interactieve HTML bekijken en delen.</h1>
-<p class="lede">Bekijk wat anderen hebben gemaakt. Of voeg zelf een interactieve pagina, les of simulatie toe.</p>
-<p class="hero-note">Een HTML-bestand blijft gewoon werken. Inclusief animaties, knoppen en andere interactie.</p>
-</div>
-<div class="preview-art" aria-hidden="true"><div class="preview-art-top"><span></span><span></span><span></span></div><div class="art-grid"><div class="art-screen"><small>Een interactieve pagina</small><div class="art-orbit"></div><small>verkennen · bewegen · proberen</small></div><div class="art-screen"><small>Zelf gemaakt</small><div class="art-lines"><span></span><span></span><span></span><span></span></div><small>HTML</small></div></div><div class="art-caption">GEMAAKT OM TE BEKIJKEN EN UIT TE PROBEREN</div></div>
-</div></section>
-<div class="wrap">
-<section class="layout-section editorial-row" aria-labelledby="upload-title">
-<div class="section-intro"><span class="step">Zelf iets gemaakt?</span><h2>Voeg het toe aan de galerij.</h2><p>Je deelt één HTML-bestand. Vul een naam en titel in, kies het bestand en publiceer het. Anderen kunnen de pagina direct openen.</p></div>
-<div class="panel">
-<h2 id="upload-title">Een bestand toevoegen</h2><p class="panel-description">HTML-bestand · maximaal 1 MB</p>
-<form id="upload-form">
-<div class="fields"><div><label for="author">Naam van de maker</label><input id="author" name="author" type="text" maxlength="80" required autocomplete="name" placeholder="Naam van de maker"></div>
-<div><label for="title">Titel van de pagina</label><input id="title" name="title" type="text" maxlength="120" required placeholder="Bijv. Interactief zonnestelsel"></div></div>
-<label for="file">HTML-bestand</label><div class="drop" id="drop"><strong>Sleep je .html-bestand hierheen</strong><small>Of selecteer het hieronder. Maximaal 1 MB.</small><input id="file" type="file" name="file" accept=".html,.htm,text/html" required></div>
-<div id="turnstile" aria-label="Controle tegen automatische uploads"></div><div class="row"><button id="retry-check" type="button" hidden>Controle opnieuw proberen</button><span id="check-help" class="hint" role="status" aria-live="polite"></span></div>
-<p class="hint">Je werk wordt openbaar. Gebruik geen persoonsgegevens, wachtwoorden of geheime sleutels in het bestand. Externe afbeeldingen en scripts moeten zelf bereikbaar blijven.</p>
-<div class="row"><button id="publish" class="primary" type="submit" disabled>Toevoegen aan de galerij</button><span id="upload-status" class="status" role="status" aria-live="polite">Verbinding met de uploaddienst controleren…</span></div>
-</form>
-</div></section>
-<section class="gallery-section" aria-labelledby="gallery-title">
-<div class="gallery-head"><div><div class="eyebrow">De galerij</div><h2 id="gallery-title">Door anderen gemaakt</h2></div><input id="search" type="search" placeholder="Zoek op naam of titel" aria-label="Zoek in galerij"></div>
-<div id="gallery-management-status" role="status" aria-live="polite"></div><div id="cards" class="cards" aria-live="polite"><p class="empty">Galerij laden…</p></div>
+<header><nav class="nav"><a class="brand" href="/"><img src="/assets/eai-logo.svg" alt="">EAI</a><a class="back" href="/tools/">Alle tools</a></nav></header>
+<main><div class="wrap hero">
+<section>
+<span class="eyebrow">Beveiligde omgeving</span>
+<h1>Mijn HTML-galerij</h1>
+<p class="lede">Sla je eigen interactieve HTML op, bekijk je bestanden en bepaal zelf wat zichtbaar blijft. De galerij is alleen toegankelijk na inloggen.</p>
+<a class="login" href="https://eai-html-galerij.vis-c9d.workers.dev/auth/login">Inloggen met e-mail</a>
+<p class="note">Je wordt doorgestuurd naar de beveiligde galerij. Alleen de beheerder heeft toegang. Een Microsoft 365-aanmelding kan later worden toegevoegd.</p>
 </section>
+<div class="art" aria-hidden="true"><div class="art-top"><i></i><i></i><i></i></div><div class="art-window"><div class="lock"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 21v-6a9 9 0 0 1 18 0v6"/><rect x="11" y="21" width="26" height="22" rx="5"/><circle cx="24" cy="31" r="2.5"/><path d="M24 34v4"/></svg></div><strong>Je eigen verzameling</strong><span>HTML toevoegen, bekijken en beheren</span></div></div>
 </div></main>
-<dialog id="viewer"><div class="dialog-bar"><strong id="viewer-title">HTML bekijken</strong><button id="close-viewer" type="button">Sluiten</button></div><iframe id="viewer-frame" title="Voorbeeld van een upload" sandbox="allow-scripts allow-forms allow-modals allow-downloads" referrerpolicy="no-referrer"></iframe></dialog>
-<footer><div class="wrap">EAI · Gedeelde HTML wordt afgeschermd van de hoofdwebsite uitgevoerd.</div></footer>
-
-<script>
-(() => {
-'use strict';
-const API = 'https://eai-html-galerij.vis-c9d.workers.dev';
-const form = document.querySelector('#upload-form');
-const publish = document.querySelector('#publish');
-const status = document.querySelector('#upload-status');
-const cards = document.querySelector('#cards');
-const search = document.querySelector('#search');
-const file = document.querySelector('#file');
-const drop = document.querySelector('#drop');
-const retryCheck = document.querySelector('#retry-check');
-const checkHelp = document.querySelector('#check-help');
-const viewer = document.querySelector('#viewer');
-const frame = document.querySelector('#viewer-frame');
-let uploads = [];
-let deleteMode = false;
-let ready = false;
-let widgetId = null;
-let checkPassed = false;
-const setStatus = (message, error = false) => { status.textContent = message; status.classList.toggle('error', error); };
-const api = (path) => API + path;
-function safeId(id) { return /^[0-9]{13}-[a-f0-9-]{36}$/.test(id); }
-function openUpload(item) {
- if (!safeId(item.id)) return;
- document.querySelector('#viewer-title').textContent = item.title;
- frame.src = api('/view/' + item.id);
- viewer.showModal();
-}
-document.querySelector('#close-viewer').addEventListener('click', () => viewer.close());
-viewer.addEventListener('close', () => { frame.removeAttribute('src'); });
-function render() {
- cards.replaceChildren();
- const query = search.value.trim().toLocaleLowerCase('nl');
- const filtered = uploads.filter(x => (x.title+' '+x.author+' '+x.filename).toLocaleLowerCase('nl').includes(query));
- if (!filtered.length) { const p=document.createElement('p');p.className='empty';p.textContent=query?'Geen resultaten.':'Er zijn nog geen HTML-bestanden gedeeld.';cards.append(p);return; }
- filtered.forEach((item) => {
-  if (!safeId(item.id)) return;
-  const article=document.createElement('article');article.className='card';
-  const preview=document.createElement('div');preview.className='preview';preview.textContent='HTML';
-  const body=document.createElement('div');body.className='card-content';
-  const h=document.createElement('h3');h.textContent=item.title;
-  const by=document.createElement('p');by.textContent='Door '+item.author+' · '+item.filename;
-  const actions=document.createElement('div');actions.className='row';
-  const show=document.createElement('a');show.href=api('/view/'+item.id);show.target='_blank';show.rel='noopener noreferrer';show.textContent='Open in nieuw tabblad ↗';
-  if(deleteMode){
-   const remove=document.createElement('button');
-   remove.type='button';remove.className='card-delete';remove.textContent='×';
-   remove.setAttribute('aria-label','Verwijder '+item.title);
-   remove.title='Uit de galerij verwijderen';
-   remove.addEventListener('click',()=>removeUpload(item,remove));
-   article.append(remove);
-  }
-  const previewButton=document.createElement('button');previewButton.type='button';previewButton.textContent='Voorbeeld bekijken';previewButton.addEventListener('click',()=>openUpload(item));
-  actions.append(previewButton,show);body.append(h,by,actions);article.append(preview,body);cards.append(article);
- });
-}
-search.addEventListener('input',render);
-async function load() {
- try {
-  const res=await fetch(api('/api/uploads'),{cache:'no-store'});
-  if (!res.ok) throw new Error('Galerij niet beschikbaar');
-  const data=await res.json();
-  uploads=Array.isArray(data.items)?data.items:[];
-  render();
- } catch { cards.innerHTML='<p class="empty">De galerij is momenteel niet bereikbaar.</p>'; }
-}
-async function init() {
- try {
-  const res=await fetch(api('/api/config'),{cache:'no-store'});
-  if (!res.ok) throw new Error('Geen uploaddienst');
-  const config=await res.json();
-  if (!config.turnstileSiteKey || !window.turnstile) throw new Error('Uploadfunctie nog niet actief');
-  widgetId=window.turnstile.render('#turnstile',{
-   sitekey:config.turnstileSiteKey,
-   callback:()=>{checkPassed=true;publish.disabled=false;retryCheck.hidden=true;checkHelp.textContent='';setStatus('');},
-   'expired-callback':()=>{checkPassed=false;publish.disabled=true;checkHelp.textContent='De controle is verlopen. Probeer het opnieuw.';retryCheck.hidden=false;},
-   'error-callback':(code)=>{
-     checkPassed=false;publish.disabled=true;retryCheck.hidden=false;
-     const issue=String(code||'onbekend');
-     checkHelp.textContent='Cloudflare-controle mislukt (code '+issue+'). Probeer het opnieuw, eventueel in een privévenster zonder browserextensies.';
-     setStatus('De beveiligingscontrole is niet afgerond.',true);
-     return true;
-   }
-  });
-  ready=true;publish.disabled=true;setStatus('');
- } catch { publish.disabled=true;setStatus('Uploaden is nog niet beschikbaar.',true); }
- load();
-}
-form.addEventListener('submit',async(e)=>{
- e.preventDefault();if(!ready||!checkPassed)return;
- if(!file.files[0] || file.files[0].size>1024*1024){setStatus('Kies een HTML-bestand van maximaal 1 MB.',true);return;}
- const token=window.turnstile.getResponse(widgetId);
- if(!token){setStatus('Bevestig eerst de controle tegen automatische uploads.',true);return;}
- publish.disabled=true;setStatus('HTML publiceren…');
- try{
-  const data=new FormData(form);data.set('turnstileToken',token);
-  const res=await fetch(api('/api/uploads'),{method:'POST',body:data});
-  const body=await res.json().catch(()=>({}));
-  if(!res.ok) throw new Error(body.error||'Publiceren mislukt.');
-  setStatus('De pagina is toegevoegd aan de galerij.');
-  form.reset();checkPassed=false;window.turnstile.reset(widgetId);await load();
-  const link=document.createElement('a');link.href=api('/view/'+body.id);link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open de pagina ↗';
-  status.append(' ',link);
- }catch(err){setStatus(err.message||'Publiceren mislukt.',true);checkPassed=false;window.turnstile.reset(widgetId);}
- finally{publish.disabled=!checkPassed;}
-});
-['dragenter','dragover'].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.add('dragging');}));
-['dragleave','drop'].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.remove('dragging');}));
-drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f && /\.html?$/i.test(f.name)){const transfer=new DataTransfer();transfer.items.add(f);file.files=transfer.files;}});
-retryCheck.addEventListener('click',()=>{
- if(!window.turnstile||widgetId===null)return;
- retryCheck.hidden=true;checkHelp.textContent='Controle opnieuw laden…';checkPassed=false;publish.disabled=true;
- try{window.turnstile.reset(widgetId);}catch{retryCheck.hidden=false;checkHelp.textContent='Ververs de pagina en probeer het opnieuw.';}
-});
-
-/* Drie keer klikken op het galerijlabel toont verwijderkruisjes.
-   Iedereen die de beheerstand ontdekt kan bestanden verbergen. */
-const managementStatus=document.querySelector('#gallery-management-status');
-let taps=0;
-let lastTap=0;
-document.querySelector('#secret-entrance').addEventListener('click',()=>{
- const now=Date.now();taps=(now-lastTap<1800)?taps+1:1;lastTap=now;
- if(taps===3){
-  taps=0;deleteMode=!deleteMode;
-  managementStatus.textContent=deleteMode?'Beheerstand ingeschakeld. Klik op een rood kruis om een bestand te verwijderen.':'';
-  render();
- }
-});
-async function removeUpload(item,button){
- if(!window.confirm('Wil je "'+item.title+'" uit de galerij verwijderen?'))return;
- button.disabled=true;
- try{
-  const res=await fetch(api('/api/admin/uploads/'+item.id),{
-   method:'DELETE'
-  });
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok)throw new Error(data.error||'Verwijderen mislukt.');
-  managementStatus.textContent='De pagina is verwijderd uit de openbare galerij.';
-  await load();
- }catch(err){
-  managementStatus.textContent=err.message||'Verwijderen mislukt.';
-  button.disabled=false;
- }
-}
-
-const challenge=document.createElement('script');challenge.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';challenge.async=true;challenge.onload=init;challenge.onerror=()=>{setStatus('Uploaden is nog niet beschikbaar.',true);load();};document.head.append(challenge);
-})();
-</script>
-</body></html>
+<footer><div class="wrap">EAI · HTML-galerij</div></footer>
+</body>
+</html>

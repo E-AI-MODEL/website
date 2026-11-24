@@ -1,0 +1,38 @@
+name: Test gallery authentication
+
+on:
+  pull_request:
+    paths:
+      - 'services/html-galerij/**'
+      - 'tests/test_html_galerij_admin.mjs'
+      - 'tools/html-galerij/index.html'
+      - '.github/workflows/test-html-gallery-auth.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'services/html-galerij/**'
+      - 'tests/test_html_galerij_admin.mjs'
+      - 'tools/html-galerij/index.html'
+      - '.github/workflows/test-html-gallery-auth.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  auth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse Worker modules and password tool
+        run: |
+          node --check services/html-galerij/src/index.js
+          node --check services/html-galerij/src/auth.js
+          node --check services/html-galerij/src/ui.js
+          node --check services/html-galerij/scripts/password-hash.mjs
+      - name: Test login, sessions, authorization, CSRF, and deletion
+        run: node tests/test_html_galerij_admin.mjs
