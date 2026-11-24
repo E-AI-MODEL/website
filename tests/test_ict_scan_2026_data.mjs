@@ -95,7 +95,8 @@ test('Een vermoede productfamilie wordt niet als bewezen parent/child opgenomen'
 
 test('Het gecontroleerde werkregister is apart beschikbaar',()=>{
   assert.equal(work.schema,'eai-school-ict-v1');
-  assert.equal(work.workActions.length,13);
+  assert.equal(work.workActions.length,manifest.dataFiles.find(x=>x.path==='2026-werkregister.json').recordCounts.workActions);
+  assert.ok(work.workActions.length>=13);
   assert.equal(work.softwareReview.length,12);
   assert.ok(manifest.dataFiles.some(item=>item.path==='2026-werkregister.json'));
   assert.ok(work.workActions.every(item=>item.id && item.action && item.status));

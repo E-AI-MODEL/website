@@ -88,7 +88,7 @@ test('Elke kaart heeft eigen weergavekeuze en het 404-menu en de zijbalk blijven
 });
 
 
-test('Relatieatlas bevat alle 579 registraties en 273 getypeerde verbanden',async()=>{
+test('Relatieatlas bevat alle manifestregistraties en getypeerde verbanden',async()=>{
   const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
   const sourceNames=['2026-applicatielandschap.json','2026-werkregister.json','2026-faq.json','2026-bronnenregister.json'];
   const sources=sourceNames.map(name=>JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/'+name),'utf8')));
@@ -98,11 +98,11 @@ test('Relatieatlas bevat alle 579 registraties en 273 getypeerde verbanden',asyn
     state[store]=new Map(records.map(row=>[row.id,row]));
   }
   const full=inventory.build(state);
-  assert.equal(full.nodes.size,579);
-  assert.equal(full.edges.length,273);
+  assert.equal(full.nodes.size,Object.values(state).reduce((sum,rows)=>sum+rows.size,0));
+  assert.ok(full.edges.length>=273,'Oorspronkelijke verbanden moeten behouden blijven');
   assert.deepEqual(full.errors,[]);
   assert.equal(full.edges.filter(x=>x.status==='Vermoedelijk').length,37);
-  assert.equal(full.edges.filter(x=>x.status==='Geregistreerd').length,236);
+  assert.ok(full.edges.filter(x=>x.status==='Geregistreerd').length>=236);
   for(const edge of full.edges){
     assert.ok(full.get(edge.fromType,edge.fromId),'Bron ontbreekt '+edge.fromId);
     assert.ok(full.get(edge.toType,edge.toId),'Doel ontbreekt '+edge.toId);

@@ -2157,7 +2157,7 @@
       ],
       "recordMeta": {
         "ownerSource": "Interview schoolleiding Emmauscollege, 24 november 2026",
-        "ownerScope": "Stuurgroep ICT is beheerder van Showbie volgens schoolleiding.",
+        "ownerScope": "Verantwoordelijke voor inzet en afspraken rond deze onderwijsapplicatie. Stuurgroep ICT is beheerder van Showbie volgens schoolleiding.",
         "referenceDate": "2026-11-24"
       },
       "sourceIds": [
@@ -17245,13 +17245,13 @@
       "kind": "Microsoft 365-onderdeel",
       "category": "AI en onderwijs",
       "description": "Medewerkers mogelijk standaard toegang; 13-17 in K-12 standaard uit, onder 13 geen toegang. ageGroup en tenantclassificatie onbekend.",
-      "local": "Niet inzichtelijk",
+      "local": "Niet inzichtelijk: leeftijdsgroepen in Entra en toegang per leerling.",
       "audience": [
         "medewerkers",
         "leerlingen"
       ],
       "availability": "Beschreven in Microsoft Education; beschikbaarheid afhankelijk van licentie/rol/beleid.",
-      "accessStatus": "Niet inzichtelijk: leeftijdsgroepen in Entra en toegang per leerling.",
+      "accessStatus": "Niet onafhankelijk geverifieerd",
       "connectionId": "",
       "sources": [
         "https://learn.microsoft.com/en-us/microsoft-365/education/guide/1-reference/enable-copilot-chat-for-learners",

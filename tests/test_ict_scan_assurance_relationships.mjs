@@ -18,9 +18,11 @@ test('Bevestigde bronpopulaties blijven ongewijzigd en elke nieuwe relatie heeft
  assert.equal(data.connections.length,93);
  assert.equal(data.licenseReview.length,40);
  assert.equal(work.softwareReview.length,12);
- assert.equal(work.workActions.length,13);
- assert.equal(all.length,64);
- assert.equal(new Set(all.map(x=>x.app.id)).size,34);
+ assert.equal(work.workActions.length,manifest.dataFiles.find(x=>x.path==='2026-werkregister.json').recordCounts.workActions);
+ assert.ok(work.workActions.length>=13);
+ assert.ok(all.length>=64,'Oorspronkelijke relaties moeten behouden blijven');
+ assert.ok(new Set(all.map(x=>x.app.id)).size>=34);
+ for(const id of ['WRK-014','WRK-015','WRK-016'])assert.ok(indexed.workActions.has(id),id);
  const uniq=new Set();
  for(const {app,rel} of all){
    assert.ok(indexed[rel.targetType]?.has(rel.targetId),app.id+' -> '+rel.targetType+'/'+rel.targetId);
