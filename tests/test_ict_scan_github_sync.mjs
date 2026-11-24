@@ -4,10 +4,13 @@ import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import vm from 'node:vm';
 import {File} from 'node:buffer';
+import {createHash,webcrypto} from 'node:crypto';
+import inventory from '../tools/ict-scan/inventory-index.js';
+const blobSha=bytes=>createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
 
 const source=readFileSync(resolve('tools/ict-scan/github-sync.js'),'utf8');
-const maps=['apps','ai','connections','checks','devices','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'];
-function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirectory=false,withManifest=false,shaMismatch=false,badCounts=false,withSources=false,badSourceCounts=false,profile}={}) {
+const maps=['apps','ai','connections','checks','devices','hardwareGroups','parts','dpia','aiControls','policyDocs','signals','candidates','licenseReview','workActions','softwareReview','faqs','sourceRegister'];
+function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirectory=false,withManifest=false,shaMismatch=false,badCounts=false,withSources=false,badSourceCounts=false,profile,alterField=false,unknownRegister=false}={}) {
   const fields={};
   for(const id of ['githubRepo','githubFolder','githubRef','githubToken','githubSyncStart','githubSyncCancel','githubSyncStatus','githubSyncSummary','githubReplace','topGithubSync']) {
     fields[id]={events:{},value:'',checked:false,hidden:false,disabled:false,textContent:'',dataset:{},addEventListener(event,handler){this.events[event]=handler;},focus(){}};
@@ -21,10 +24,10 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
   const state={sources:[],docs:[],derived:[],ready:false,view:'sources',sourceRegisterLoaded:false};
   for(const name of maps)state[name]=new Map();
   const content=Buffer.from(JSON.stringify({schema:'eai-school-ict-v1',apps:[{id:'APP-1',name:'Dummy software'}],...(withSources?{sourceRegister:[{id:'SRC-00001',name:'Exact source',extension:{keep:true}}]}:{})}));
-  const sha='a'.repeat(40);
-  const manifestSha='b'.repeat(40);
-  const manifestContent=Buffer.from(JSON.stringify({schema:'eai-school-ict-manifest-v1',metadata:{firstInventoryStarted:'2026-08-10',compiledBy:'Hans Visser'},dataFiles:[{path:'school.json',sha:shaMismatch?'c'.repeat(40):sha,recordCounts:{apps:badCounts?2:1,...(withSources?{sourceRegister:badSourceCounts?2:1}:{})}}]}));
-  const context={window:profile?{IctOrganisation:{ready:Promise.resolve(profile)}}:{},
+  const sha=profile?blobSha(content):'a'.repeat(40);
+  const manifestContent=Buffer.from(JSON.stringify({schema:'eai-school-ict-manifest-v1',metadata:{firstInventoryStarted:'2026-08-10',compiledBy:'Hans Visser'},dataFiles:[{path:'school.json',sha:shaMismatch?'c'.repeat(40):sha,recordCounts:{apps:badCounts?2:1,...(withSources?{sourceRegister:badSourceCounts?2:1}:{}),...(unknownRegister?{invented:0}:{})}}]}));
+  const manifestSha=profile?blobSha(manifestContent):'b'.repeat(40);
+  const context={window:profile?{IctOrganisation:{ready:Promise.resolve(profile)},IctInventoryIndex:inventory}:{},crypto:webcrypto,TextEncoder,
     document:{getElementById:id=>fields[id],addEventListener(event,handler){this.events??={};this.events[event]=handler;}}, state,
     URL, AbortController, File, atob,
     Date, Error, Uint8Array, console,
@@ -35,7 +38,7 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
       if(bad)throw Error('Ongeldig bestand');
       if(cancelDuringImport)fields.githubSyncCancel.events.click();
       const payload=JSON.parse(await file.text());
-      state.apps.set(payload.apps[0].id,{...payload.apps[0],sources:[file.name]});
+      state.apps.set(payload.apps[0].id,profile?{...payload.apps[0],...(alterField?{name:'Aangepast'}:{})}:{...payload.apps[0],sources:[file.name]});
       if(payload.sourceRegister){for(const entry of payload.sourceRegister)state.sourceRegister.set(entry.id,entry);state.sourceRegisterLoaded=true;}
       state.sources.push({name:file.name,kind:'toepassingen',rows:1,info:'Herkomst van de registratie.'});
     },
@@ -44,14 +47,14 @@ function setup({bad=false,unauthorized=false,cancelDuringImport=false,largeDirec
       if(unauthorized)return {ok:false,status:404};
       const files=[{name:'school.json',type:'file',path:'bronmap/school.json',size:content.length,sha}];
       if(withManifest)files.push({name:'manifest.json',type:'file',path:'bronmap/manifest.json',size:manifestContent.length,sha:manifestSha});
-      const data=url.includes('/contents/')
+      const data=url.includes('/commits/')?{sha:'d'.repeat(40)}:url.includes('/contents/')
         ?(largeDirectory?Array.from({length:1000},(_,i)=>({name:'item-'+i+'.txt',type:'file',path:'bronmap/item-'+i+'.txt',size:100,sha})):files)
         :{encoding:'base64',content:(url.endsWith(manifestSha)?manifestContent:content).toString('base64')};
       return {ok:true,async json(){return data;}};
     },
   };
   vm.runInNewContext(source,context,{filename:'github-sync.js'});
-  return {fields,state,calls,get renders(){return renders;}};
+  return {fields,state,calls,events:context.document.events,get renders(){return renders;}};
 }
 
 test('GitHub-bron wordt alleen gelezen, verwerkt en de token gewist',async()=>{
@@ -211,4 +214,31 @@ test('Het verplichte bronbestand of register wordt vóór wijziging van de inven
     assert.equal(x.state.apps.size,1);assert.equal(x.state.apps.get('APP-OLD').name,'Vorige app');
     assert.match(x.fields.githubSyncStatus.textContent,/Verplicht.*ontbreekt/);
   }
+});
+
+test('GitHub wordt bij opening opnieuw gelezen ondanks een lokale momentopname',async()=>{
+  const profile={source:{repository:'E-AI-MODEL/private-data',baseRef:'main',sourceDir:'bronmap',registerFiles:{apps:'school.json',sourceRegister:'school.json'}}};
+  const x=setup({profile,withManifest:true,withSources:true});
+  x.state.ready=true;x.state.sourceMode='snapshot';x.state.apps.set('LOCAL',{id:'LOCAL',name:'Oud'});
+  x.fields.githubReplace.checked=false;
+  await x.events['ict-scan:local-restored']();
+  assert.equal(x.state.apps.has('LOCAL'),false);
+  assert.equal(x.state.githubVerification.records,2);
+  assert.equal(x.state.githubVerification.registers,2);
+  assert.equal(x.state.githubVerification.commit,'d'.repeat(40));
+  assert.ok(x.calls.some(c=>c.url.includes('ref='+'d'.repeat(40))));
+});
+test('Gelijke aantallen volstaan niet: ontbrekende of gewijzigde JSON-velden blokkeren de officiële bron',async()=>{
+  const profile={source:{repository:'E-AI-MODEL/private-data',baseRef:'main',sourceDir:'bronmap',registerFiles:{apps:'school.json',sourceRegister:'school.json'}}};
+  const x=setup({profile,withManifest:true,withSources:true,alterField:true});
+  x.state.apps.set('OLD',{id:'OLD',name:'Vorige bron'});x.state.ready=true;
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.state.apps.get('OLD').name,'Vorige bron');
+  assert.equal(x.state.githubVerification,undefined);
+  assert.match(x.fields.githubSyncStatus.textContent,/velden ontbreken/);
+});
+test('Onbekend manifestregister mag niet ongemerkt worden overgeslagen',async()=>{
+  const x=setup({withManifest:true,unknownRegister:true});
+  await x.fields.githubSyncStart.events.click();
+  assert.equal(x.state.apps.size,0);assert.match(x.fields.githubSyncStatus.textContent,/Onbekend register/);
 });

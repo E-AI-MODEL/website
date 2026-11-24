@@ -20,7 +20,7 @@ for(const source of manifest.dataFiles){
  listing.push({type:'file',name:source.path,path,sha,size:content.length});
 }
 const manifestContent=readFileSync('tools/ict-scan/bronnen/manifest.json');
-const manifestSha='f'.repeat(40);
+const manifestSha=createHash('sha1').update('blob '+manifestContent.length+'\0').update(manifestContent).digest('hex');
 sources.set(manifestSha,manifestContent);
 listing.push({type:'file',name:'manifest.json',path:'tools/ict-scan/bronnen/manifest.json',sha:manifestSha,size:manifestContent.length});
 const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
@@ -68,7 +68,8 @@ try {
      initialSyncDelayed=true;
      await new Promise(done=>setTimeout(done,1100));
    }
-   if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen'))data=listing;
+   if(url.pathname.endsWith('/commits/main'))data={sha:'d'.repeat(40)};
+   else if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen')){assert.equal(url.searchParams.get('ref'),'d'.repeat(40));data=listing;}
    else if(url.pathname.includes('/git/blobs/')){
     const sha=url.pathname.split('/').pop();
     assert(sources.has(sha),'Onverwachte GitHub SHA: '+sha);
