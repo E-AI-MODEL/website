@@ -39,11 +39,11 @@
     return node;
   };
   const shorten=(value,n=22)=>String(value||'Naam onbekend').length>n?String(value).slice(0,n-1)+'…':String(value||'Naam onbekend');
-  const csvSafe=value=>{
+  function csvSafe(value){
     let v=String(value==null?'':value);
     if(/^[\s]*[=+\-@\t\r]/.test(v))v="'"+v;
     return '"'+v.replace(/"/g,'""')+'"';
-  };
+  }
   const dialog=document.createElement('dialog');
   dialog.id='relationAtlasDialog';dialog.className='relation-atlas-dialog';
   dialog.setAttribute('aria-labelledby','relationAtlasTitle');
