@@ -171,32 +171,6 @@ try {
   assert.equal(await page.locator('#dsPartOptions .ds-option-description').count(),9,'Elk dashboardonderdeel moet zijn werking uitleggen');
   assert.equal(await page.locator('#dsPartOptions .ds-part').count(),9,'Er ontbreken vrij kiesbare dashboardonderdelen');
   assert.equal(await page.locator('#dsCanvas .ds-component').count(),5,'Het startdashboard moet direct bruikbaar zijn');
-  // The shared design is the same native layout schema, not a second data source.
-  if(width>=700){
-    const sourceBefore=await page.evaluate(()=>JSON.stringify([...state.apps.values()]));
-    await page.locator('#dsSharedLoad').click();
-    await page.waitForFunction(()=>document.getElementById('dsSharedStatus').textContent.includes('Gedeeld ontwerp geopend'));
-    assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
-    await page.locator('#dsLayout').selectOption('editorial');
-    await page.locator('#dsSharedPublish').click();
-    if(await page.locator('#cardGatePassword').isVisible()){await page.locator('#cardGatePassword').fill('Emmauscollege');await page.locator('[data-unlock]').filter({hasText:'Ontgrendelen'}).click();}
-    await page.locator('#dsSharedDialog').waitFor({state:'visible'});
-    assert.equal(designWrites.length,0,'Openen van de pop-up mag niets schrijven');
-    await page.locator('#dsSharedReason').fill('Browserproef gedeelde indeling');
-    await page.locator('#dsSharedToken').fill('browser-test-design-token');
-    await page.locator('#dsSharedSubmit').click();
-    await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('bevestig'));
-    assert.equal(designWrites.length,0,'Zonder toestemming wordt niets geschreven');
-    await page.locator('#dsSharedToken').fill('browser-test-design-token');
-    await page.locator('#dsSharedConsent').check();
-    await page.locator('#dsSharedSubmit').click();
-    await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('PR #9999'));
-    assert.equal(designWrites.length,3,'Uitsluitend een branch, layoutbestand en pull request');
-    assert.equal(await page.locator('#dsSharedToken').inputValue(),'');
-    await page.locator('#dsSharedClose').click();
-    assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
-    await page.locator('#dsLayout').selectOption('balanced');
-  }
   const assertNoComponentOverlap=async where=>{
     const result=await page.evaluate(()=>{
       const nodes=[...document.querySelectorAll('#dsCanvas .ds-component')];
@@ -529,6 +503,33 @@ try {
     await page.locator('#railDrawerClose').click();
     await navigate('findings');
     assert.equal(await page.locator('#sectionTitle').textContent(),'Controles');
+  }
+  // The shared design is the same native layout schema, not a second data source.
+  if(width>=700){
+    await navigate('studio');
+    await page.locator('[data-ds-preset="school"]').click();
+    const sourceBefore=await page.evaluate(()=>JSON.stringify([...state.apps.values()]));
+    await page.locator('#dsSharedLoad').click();
+    await page.waitForFunction(()=>document.getElementById('dsSharedStatus').textContent.includes('Gedeeld ontwerp geopend'));
+    assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
+    await page.locator('#dsLayout').selectOption('editorial');
+    await page.locator('#dsSharedPublish').click();
+    await page.locator('#dsSharedDialog').waitFor({state:'visible'});
+    assert.equal(designWrites.length,0,'Openen van de pop-up mag niets schrijven');
+    await page.locator('#dsSharedReason').fill('Browserproef gedeelde indeling');
+    await page.locator('#dsSharedToken').fill('browser-test-design-token');
+    await page.locator('#dsSharedSubmit').click();
+    await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('bevestig'));
+    assert.equal(designWrites.length,0,'Zonder toestemming wordt niets geschreven');
+    await page.locator('#dsSharedToken').fill('browser-test-design-token');
+    await page.locator('#dsSharedConsent').check();
+    await page.locator('#dsSharedSubmit').click();
+    await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('PR #9999'));
+    assert.equal(designWrites.length,3,'Uitsluitend een branch, layoutbestand en pull request');
+    assert.equal(await page.locator('#dsSharedToken').inputValue(),'');
+    await page.locator('#dsSharedClose').click();
+    assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
+    await page.locator('#dsLayout').selectOption('balanced');
   }
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
