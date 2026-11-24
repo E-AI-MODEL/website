@@ -182,24 +182,57 @@
   }
   const earlierOverview=renderOverview;
   function renderOverviewMetrics(){
-    const apps=items(state.apps),filtered=apps,narrowed=false,aiCount=state.ai.size;
-    const d=deviceData(),totals=[
-      ['Applicaties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
-      ['AI-functies',aiCount,narrowed?'Gekoppeld aan de selectie; '+state.ai.size+' totaal':'Beschreven functies, niet automatisch ingeschakeld','ai'],
-      ['Koppelingen vanuit Entra',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
-      ['Apparaatregistraties',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
-    ].filter(row=>row[3]!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
+    // Count source records by type, not all graph nodes or inferred relationships.
+    const index=window.IctInventoryIndex.build(state);
+    const registered=type=>index.records(type).filter(r=>index.get(type,r.id)?.derived===false);
+    const apps=registered('apps'),candidates=registered('additionalCandidates'),ai=registered('ai');
+    const connections=registered('connections'),hardware=registered('hardwareGroups'),parts=registered('parts');
+    const appIds=new Set(apps.map(r=>r.id));
+    const aiWithParent=ai.filter(r=>appIds.has(r.parentId));
+    const appsWithAi=new Set(aiWithParent.map(r=>r.parentId)).size;
+    const directMatches=connections.filter(r=>appIds.has(r.matchedId)).length;
+    const totalRecords=[...index.nodes.values()].filter(n=>!n.derived).length;
+    const d=deviceData(),rawAmount=String(d.total?.quantity??'').trim();
+    const measurement=/^\d+$/.test(rawAmount)&&Number.isSafeInteger(Number(rawAmount))?fmt(Number(rawAmount)):null;
+    const cards=[
+      {key:'software',label:'Softwarevermeldingen',value:apps.length+candidates.length,detail:fmt(apps.length)+' applicatieregistraties · '+fmt(candidates.length)+' overige vermeldingen',context:'Overlap mogelijk. '+fmt(parts.length)+' onderdelen worden apart geteld.',view:'apps',link:'Bekijk software'},
+      {key:'ai',label:'Beschreven AI-functies',value:ai.length,detail:'Bij '+fmt(appsWithAi)+' van '+fmt(apps.length)+' applicatieregistraties'+(aiWithParent.length<ai.length?' · '+fmt(ai.length-aiWithParent.length)+' functies zonder geregistreerde bovenliggende applicatie':''),context:'Aantal daadwerkelijk ingeschakelde functies niet vastgesteld.',view:'ai',link:'Bekijk AI-functies'},
+      {key:'entra',label:'Entra-appregistraties',value:connections.length,detail:fmt(directMatches)+' mogelijke directe appmatches · '+fmt(connections.length-directMatches)+' zonder directe appmatch',context:'Actuele technische koppelingen niet vastgesteld.',view:'connections',link:'Bekijk Entra-registraties'},
+      {key:'hardware',label:'Hardwaregroepen',value:hardware.length,detail:measurement!==null?measurement+' Entra-apparaatrecords · '+(d.total.measurementDate||'peildatum onbekend'):'Geen Entra-apparaattelling beschikbaar.',context:'Schoolbreed aantal fysieke apparaten niet vastgesteld.',view:'devices',link:'Bekijk hardware en metingen'}
+    ].filter(row=>row.view!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
+    const navigation={
+      software:['Applicaties en software','M3 3h7l2 3h9v14H3z M3 9h18'],
+      ai:['AI-functies','M12 3v4 M12 17v4 M3 12h4 M17 12h4 M6 6l3 3 M15 15l3 3 M6 18l3-3 M15 9l3-3 M9 9h6v6H9z'],
+      entra:['Entra en toegang','M8 11V7a4 4 0 0 1 8 0v4 M5 11h14v10H5z M12 15v3'],
+      hardware:['Hardware en apparaten','M3 4h18v12H3z M12 16v4 M7 20h10']
+    };
     const grid=byId('kpiGrid');
     grid.replaceChildren();
-    for(const [label,value,explain,view] of totals){
+    for(const row of cards){
+      const [name,path]=navigation[row.key];
       const b=document.createElement('button');
-      b.type='button';b.className='kpi trust-kpi evidence-kpi';
-      b.setAttribute('aria-label',label+': '+value+'. Open '+viewNames[view]);
-      b.innerHTML='<span class="kpi-label">'+safe(label)+'</span><strong class="kpi-value">'+safe(value)+'</strong><span class="kpi-desc">'+safe(explain)+'</span><span class="evidence-kpi-open">Bekijk '+safe(viewNames[view])+'</span>';
-      b.addEventListener('click',()=>selectView(view));grid.append(b);
+      b.type='button';b.className='overview-category kpi';b.dataset.metric=row.key;
+      b.setAttribute('aria-label','Bekijk '+name);
+      b.innerHTML='<span class="overview-category-icon"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+path+'"/></svg></span><strong>'+safe(name)+'</strong><svg class="overview-category-arrow" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>';
+      b.addEventListener('click',()=>selectView(row.view));grid.append(b);
     }
+    // These counts are intentionally separate from the navigation. The
+    // unit, denominator and limitations remain alongside every value.
+    const host=byId('overviewCounts');
+    if(host){
+      host.replaceChildren();
+      for(const row of cards){
+        const b=document.createElement('button');
+        b.type='button';b.className='overview-count-row';b.dataset.countMetric=row.key;
+        b.innerHTML='<span class="overview-count-label">'+safe(row.label)+'</span><strong class="kpi-value">'+safe(fmt(row.value))+'</strong><span class="overview-count-detail"><span class="kpi-desc">'+safe(row.detail)+'</span><span class="evidence-kpi-context">'+safe(row.context)+'</span></span>';
+        b.addEventListener('click',()=>selectView(row.view));host.append(b);
+      }
+    }
+    const countNote=byId('overviewRegisterCount');
+    if(countNote)countNote.textContent=fmt(totalRecords)+' records in alle ingelezen registers. Geen telling van unieke systemen.';
     const sub=byId('inventoryPopulation');
-    if(sub)sub.textContent='De cijfers tellen verschillende soorten registraties. Ze zijn niet optelbaar.';
+    if(sub)sub.textContent='';
+
   }
   renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
   const oldCandidates=renderCandidates;
@@ -262,7 +295,7 @@
       button.addEventListener('click',action);
       actions.append(button);
     }
-    overview.insertBefore(actions,overview.querySelector('.scene-navigation')||overview.firstChild);
+    const start=byId('viewOverviewScene0');if(start)start.append(actions);else overview.insertBefore(actions,overview.firstChild);
   }
   // Rapporten blijven bereikbaar via de navigatie en de overzichtsactie.
   // Het submenu hoeft dezelfde downloadmogelijkheden niet opnieuw te tonen.

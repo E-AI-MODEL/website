@@ -131,11 +131,12 @@ try {
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.equal(await page.locator('#globalSearch').isVisible(),true,'Zoekfunctie moet direct zichtbaar zijn');
-  assert.match(await page.locator('#githubLiveStatus').textContent(),new RegExp(String(nodeCount)));
+  assert.equal(await page.locator('#githubLiveStatus').textContent(),'GitHub · gesynchroniseerd');
+  assert.match(await page.locator('#githubLiveStatus').getAttribute('title'),new RegExp(String(nodeCount)));
   assert.equal(await page.locator('#githubLiveStatus').getAttribute('data-mode'),'success');
   assert.equal(await page.locator('#sections .rail-button:visible').count(),4);
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
-  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 applicaties'));
+  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent==='Brongegevens ingelezen');
   await page.locator('#viewOverview:not([hidden])').waitFor();
   assert.equal(await page.locator('#sectionTitle').textContent(),'ICT-overzicht');
   assert.match(await page.locator('#evidencePath').textContent(),/^Overzicht/);
@@ -187,6 +188,19 @@ try {
   await navigate('overview');
   await page.locator('#overviewQuickActions button').filter({hasText:'Registratie bewerken'}).click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
+  assert.equal(await page.locator('#cardBrowserList [data-tree-register]').count(),Object.keys(inventory.STORES).length,'Mappen voor alle registers ontbreken');
+  assert((await page.locator('#cardReadView .card-directory-folder').count())>0,'Register moet als mappen kunnen worden doorlopen');
+  assert.equal(await page.locator('#cardPendingPanel').isVisible(),false,'Leeg wijzigingenpaneel hoort niet in de verkenner');
+  await page.locator('#cardReadView .card-directory-folder').first().click();
+  assert((await page.locator('#cardReadView .card-directory-file').count())>0,'Mapinhoud ontbreekt');
+  await page.locator('#cardReadView .card-directory-file').first().click();
+  assert.match(await page.locator('#cardRecordId').textContent(),/^APP-/);
+  await page.locator('#cardSearch').fill('WRK-014');
+  await page.locator('#cardBrowserList [data-record-id="WRK-014"]').click();
+  assert.equal(await page.locator('#cardRecordId').textContent(),'WRK-014','Zoeken over alle registers mislukt');
+  await page.locator('#cardSearch').clear();
+  await page.locator('#cardBrowserList [data-tree-register="apps"]').click();
+  if(width===1440)await page.screenshot({path:'test-results/ict-scan-register-explorer.png'});
   await page.locator('#cardEditorClose').click();
   // Exercise the real reader against the exact repository blobs, with no remote school data.
   await page.evaluate(()=>window.EmmausDocs.open('AIACT'));
@@ -309,6 +323,43 @@ try {
   await navigate('overview');
 
   assert.equal(await page.locator('#kpiGrid .kpi').count(),4,'Vier statuscijfers ontbreken');
+  // Primary counts and denominators must describe their own source population.
+  const sourceRows=type=>expectedIndex.records(type).filter(r=>expectedIndex.get(type,r.id)?.derived===false);
+  const appRecords=sourceRows('apps'),appIds=new Set(appRecords.map(r=>r.id));
+  const candidates=sourceRows('additionalCandidates'),aiRecords=sourceRows('ai'),entra=sourceRows('connections');
+  const aiParents=new Set(aiRecords.filter(r=>appIds.has(r.parentId)).map(r=>r.parentId));
+  const direct=entra.filter(r=>appIds.has(r.matchedId)).length;
+  const metric=key=>page.locator('#overviewCounts [data-count-metric="'+key+'"]');
+  assert.equal(await page.locator('#kpiGrid .kpi-value').count(),0,'Het startscherm mag geen hoofdcijfers tonen');
+  assert.equal(await page.locator('#overviewCountsPanel').isVisible(),false,'De tellingen horen bij cijfers en verdeling');
+  await page.locator('#viewOverview .scene-tab').nth(2).click();
+  await page.locator('#viewOverviewScene2:not([hidden])').waitFor({state:'visible'});
+  const number=n=>n.toLocaleString('nl-NL');
+  assert.equal(await metric('software').locator('.kpi-value').textContent(),number(appRecords.length+candidates.length));
+  assert.match(await metric('software').locator('.kpi-desc').textContent(),new RegExp(number(appRecords.length)+' applicatieregistraties'));
+  assert.match(await metric('software').locator('.kpi-desc').textContent(),new RegExp(number(candidates.length)+' overige vermeldingen'));
+  assert.match(await metric('software').locator('.evidence-kpi-context').textContent(),/Overlap mogelijk/);
+  assert.equal(await metric('ai').locator('.kpi-value').textContent(),number(aiRecords.length));
+  assert.match(await metric('ai').locator('.kpi-desc').textContent(),new RegExp(number(aiParents.size)+' van '+number(appRecords.length)));
+  assert.equal(await metric('entra').locator('.kpi-value').textContent(),number(entra.length));
+  assert.match(await metric('entra').locator('.kpi-desc').textContent(),new RegExp(number(direct)+' mogelijke directe appmatches'));
+  assert.equal(await metric('hardware').locator('.kpi-value').textContent(),number(sourceRows('hardwareGroups').length));
+  const measure=sourceRows('devices').find(r=>/entra apparaatrecords/i.test(r.name));
+  if(measure){
+    const detail=await metric('hardware').locator('.kpi-desc').textContent();
+    assert(detail.includes(measure.quantity+' Entra-apparaatrecords'));
+    assert(detail.includes(measure.measurementDate));
+  }
+  assert.match(await metric('hardware').locator('.evidence-kpi-context').textContent(),/Schoolbreed aantal fysieke apparaten niet vastgesteld/);
+  assert.match(await page.locator('#overviewRegisterCount').textContent(),new RegExp(number([...expectedIndex.nodes.values()].filter(n=>!n.derived).length)+' records'));
+  // Overview is school-wide even if the distribution tab has an app filter.
+  await page.evaluate(()=>{state.overviewArea=[...state.apps.values()][0].area;renderOverview();});
+  assert.equal(await metric('software').locator('.kpi-value').textContent(),number(appRecords.length+candidates.length));
+  await page.evaluate(()=>{state.overviewArea='';renderOverview();});
+  if(width===1440)await page.screenshot({path:'test-results/ict-scan-overview-populations.png'});
+  await page.locator('#viewOverview .scene-tab').first().click();
+  await page.locator('#viewOverviewScene0:not([hidden])').waitFor({state:'visible'});
+  if(width===1440){await page.locator('#viewOverviewScene0').evaluate(el=>Promise.all(el.getAnimations({subtree:true}).map(a=>a.finished.catch(()=>{}))));await page.screenshot({path:'test-results/ict-scan-overview-categories.png'});}
   assert.equal(await page.locator('#viewOverview .scene-tab').count(),4,'Schoolbreed, relaties, broncontrole en toepassingen moeten afzonderlijk toegankelijk zijn');
   const size=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,height:innerHeight,main:document.querySelector('.main-content').getBoundingClientRect().height,cardWidth:document.querySelector('.panel')?.getBoundingClientRect().width}));
   assert(size.scrollWidth<=size.clientWidth+1,'Horizontale overflow bij '+width+': '+JSON.stringify(size));
@@ -331,6 +382,15 @@ try {
     const endpoints=new Set(expectedIndex.edges.flatMap(e=>[JSON.stringify([e.fromType,e.fromId]),JSON.stringify([e.toType,e.toId])]));
     assert.equal(await atlas.locator('.ra-network-node').count(),endpoints.size);
     assert.equal(await atlas.locator('.ra-network-edge').count(),edgeCount);
+    const layout=await atlas.locator('.ra-network-node circle').evaluateAll(nodes=>nodes.map(c=>({x:+c.getAttribute('cx'),y:+c.getAttribute('cy'),r:+c.getAttribute('r')})));
+    assert(layout.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x-p.r>=0&&p.x+p.r<=1000&&p.y-p.r>=0&&p.y+p.r<=600),'Knooppunten buiten diagram');
+    const border=layout.filter(p=>p.x<=30||p.x>=970||p.y<=30||p.y>=570);
+    assert(border.length<layout.length*.2,'Netwerk drukt te veel knooppunten tegen de randen');
+    assert((await atlas.locator('.ra-network-node').evaluateAll(ns=>new Set(ns.map(n=>n.dataset.component)).size))>1,'Losse componenten zijn niet apart ingedeeld');
+    await atlas.locator('.ra-network-node').first().focus();
+    assert((await atlas.locator('.ra-network-edge.is-connected').count())>0,'Directe lijnen lichten niet op');
+    await atlas.locator('select[aria-label="Netwerkweergave"]').focus();
+
     await page.screenshot({path:'test-results/ict-scan-1440-network.png'});
     await atlas.locator('select[aria-label="Netwerkweergave"]').selectOption('groups');
   }

@@ -156,3 +156,41 @@
 @media(max-width:720px){.workspace.monitor-layout .overview-quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.workspace.monitor-layout .overview-quick-action{min-width:0;min-height:43px;padding:9px 8px;font-size:12px;text-align:center}}
 @media(max-width:350px){.workspace.monitor-layout .overview-quick-actions{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.workspace.monitor-layout .overview-quick-action{transition:none}}
+
+/* Overview: make populations and measurement limits distinct and legible. */
+.workspace.monitor-layout .evidence-kpi .kpi-desc{color:#405773;font-weight:600;font-size:12px;line-height:1.4;margin-top:4px}
+.workspace.monitor-layout .evidence-kpi-context{display:block;color:#62748b;font-size:11px;line-height:1.4;margin:5px 0 0;overflow-wrap:anywhere}
+.workspace.monitor-layout .evidence-kpi .evidence-kpi-open{padding-top:10px;font-size:11px}
+@media(max-width:720px){.workspace.monitor-layout .evidence-kpi .kpi-desc{font-size:11px}.workspace.monitor-layout .evidence-kpi-context{font-size:10px}}
+
+/* Category navigation, without headline metrics. Counts live in their own tab. */
+.workspace.monitor-layout #kpiGrid .overview-category.kpi{display:grid;grid-template-columns:40px minmax(0,1fr) 16px;align-items:center;gap:12px;min-height:76px;padding:16px;border:1px solid #d7e2ee;background:#fff;box-shadow:0 2px 8px #263d6010;text-align:left;color:#263f66;border-radius:10px;cursor:pointer}
+.workspace.monitor-layout #kpiGrid .overview-category.kpi::before,.workspace.monitor-layout #kpiGrid .overview-category.kpi::after{display:none!important}
+.workspace.monitor-layout #kpiGrid .overview-category strong{font-size:15px;font-weight:680;line-height:1.35;overflow-wrap:anywhere}
+.workspace.monitor-layout .overview-category-icon{display:grid;place-items:center;width:40px;height:40px;color:#365d85;background:#edf3f8;border-radius:8px}
+.workspace.monitor-layout .overview-category-icon svg{width:23px;height:23px}
+.workspace.monitor-layout .overview-category-arrow{width:17px;height:17px;color:#8294ab}
+.workspace.monitor-layout #kpiGrid .overview-category:hover{border-color:#a3b9ce;background:#f8fbfd}
+.workspace.monitor-layout #kpiGrid .overview-category:focus-visible{outline:2px solid #36699a;outline-offset:2px}
+.workspace.monitor-layout #overviewCounts{display:grid}
+.workspace.monitor-layout .overview-count-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(50px,.35fr) minmax(0,2fr);gap:16px;align-items:center;text-align:left;border:0;border-bottom:1px solid #e5ebf2;background:#fff;color:#30466a;padding:13px 3px;font:inherit;cursor:pointer}
+.workspace.monitor-layout .overview-count-row:hover{background:#f7fafd}
+.workspace.monitor-layout .overview-count-label{font-size:13px;font-weight:650}
+.workspace.monitor-layout .overview-count-row .kpi-value{font-size:25px;margin:0;font-weight:750;font-variant-numeric:tabular-nums}
+.workspace.monitor-layout .overview-count-detail .kpi-desc{display:block;font-size:12px;color:#405773;font-weight:600}
+.workspace.monitor-layout .overview-count-detail .evidence-kpi-context{font-size:11px;margin:4px 0 0}
+@media(max-width:720px){
+ .workspace.monitor-layout #kpiGrid .overview-category.kpi{grid-template-columns:28px minmax(0,1fr) 12px;gap:7px;min-height:60px;padding:10px}
+ .workspace.monitor-layout .overview-category-icon{width:28px;height:28px}
+ .workspace.monitor-layout .overview-category-icon svg{width:18px;height:18px}
+ .workspace.monitor-layout #kpiGrid .overview-category strong{font-size:12px}
+ .workspace.monitor-layout .overview-category-arrow{width:13px;height:13px}
+ .workspace.monitor-layout .overview-count-row{grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px}
+ .workspace.monitor-layout .overview-count-detail{grid-column:1/-1}
+}
+
+.workspace.monitor-layout #viewOverviewScene0{gap:16px}
+.workspace.monitor-layout #viewOverviewScene0 .inventory-line{order:2}
+.workspace.monitor-layout #viewOverviewScene0 #overviewQuickActions{order:1;padding-top:12px;border-top:1px solid #dce5ed}
+.workspace.monitor-layout #viewOverviewScene0 #kpiGrid{order:0}
+@media(min-width:1000px){.workspace.monitor-layout #viewOverviewScene0 #kpiGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.workspace.monitor-layout #viewOverviewScene0 .overview-category.kpi{min-height:92px;padding:20px}.workspace.monitor-layout #viewOverviewScene0 .overview-category strong{font-size:16px}}
