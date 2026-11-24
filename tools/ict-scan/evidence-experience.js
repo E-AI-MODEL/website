@@ -36,19 +36,19 @@
       byId('deviceRecords').replaceChildren();return;
     }
     const period=d.total?.measurementDate||'Periode nog onbekend';
-    byId('deviceStamp').textContent='Bronpeildatum '+period;
+    byId('deviceStamp').textContent='Peildatum '+period;
     cardRoot.innerHTML=[
-      ['Entra-apparaatrecords',d.amount?fmt(d.amount):'Onbekend','Geen schoolbreed totaal'],
-      ['Compliance ingevuld',d.complete?fmt(d.yes+d.no):'Onbekend','Niet hetzelfde als aantoonbaar veilig'],
-      ['Compliance ontbreekt',d.complete?fmt(d.missing):'Onbekend','Geen waarde in de export'],
-      ['Mac-records',d.macs?String(d.macs.quantity):'Onbekend','Aantal records in deze export']
+      ['Apparaten in Entra',d.amount?fmt(d.amount):'Onbekend','Niet het totaal aantal apparaten op school'],
+      ['Status apparaatbeleid bekend',d.complete?fmt(d.yes+d.no):'Onbekend','Volgens de beschikbare export'],
+      ['Status apparaatbeleid ontbreekt',d.complete?fmt(d.missing):'Onbekend','Geen status in de export'],
+      ['Mac-registraties',d.macs?String(d.macs.quantity):'Onbekend','Aantal volgens de bron']
     ].map(([label,num,sub])=>'<div class="evidence-stat"><small>'+safe(label)+'</small><strong>'+safe(num)+'</strong><span>'+safe(sub)+'</span></div>').join('');
     if(d.complete){
-      const parts=[{n:d.yes,label:'True',cls:'yes'},{n:d.no,label:'False',cls:'no'},{n:d.missing,label:'Niet ingevuld',cls:'missing'}];
+      const parts=[{n:d.yes,label:'Voldoet (Entra)',cls:'yes'},{n:d.no,label:'Voldoet niet (Entra)',cls:'no'},{n:d.missing,label:'Niet ingevuld',cls:'missing'}];
       bars.innerHTML='<div class="device-headline"><strong>'+fmt(d.yes+d.no)+' / '+fmt(d.amount)+'</strong><span>records met een ingevulde waarde</span></div>'+
         '<div class="device-meter" role="img" aria-label="'+parts.map(p=>p.n+' '+p.label).join(', ')+'">'+parts.filter(p=>p.n).map(p=>'<span class="device-meter-'+p.cls+'" style="width:'+(p.n/d.amount*100).toFixed(3)+'%"></span>').join('')+'</div>'+
         '<div class="device-legend">'+parts.map(p=>'<div><i class="device-dot '+p.cls+'"></i><span>'+p.label+'</span><strong>'+fmt(p.n)+'</strong><small>'+Math.round(p.n/d.amount*100)+'%</small></div>').join('')+'</div>';
-      byId('deviceCoverageNote').textContent='De 28 True en 64 False zijn waarden in de bronexport, geen oordeel over alle apparaten. De 69 ontbrekende waarden tellen niet als False.';
+      byId('deviceCoverageNote').textContent=fmt(d.yes)+' voldoen en '+fmt(d.no)+' voldoen niet volgens de export. Bij '+fmt(d.missing)+' ontbreekt de status. Dit is geen volledige beveiligingsbeoordeling.';
     }else{
       bars.innerHTML='<div class="no-results">De totalen van deze bron sluiten niet op elkaar aan. Geen verdeling getoond.</div>';
       byId('deviceCoverageNote').textContent='Controleer de bronwaarden voordat percentages worden gebruikt.';
@@ -56,8 +56,8 @@
     byId('deviceGaps').innerHTML=[
       ['Actuele schoolpopulatie','De export uit september bevestigt niet hoeveel fysieke apparaten er nu zijn.'],
       ['Eigenaar en gebruik','Voor iedere apparaatgroep ontbreken hier volledige rol-, locatie- en gebruiksgegevens.'],
-      ['Beheer en beveiliging','Een True/False-veld is onvoldoende voor een complete MDM-, Intune- of beveiligingscontrole.'],
-      ['Aanvullende meting','Controleer aantallen per type en de actuele beheerstatus in de juiste bronsystemen.']
+      ['Beheer en beveiliging','De exportstatus alleen is onvoldoende om de beveiliging te beoordelen.'],
+      ['Actuele gegevens','Controleer de aantallen en beheerstatus in de systemen van de school.']
     ].map(([name,desc])=>'<div class="device-gap"><span class="device-gap-line"></span><strong>'+safe(name)+'</strong><p>'+safe(desc)+'</p></div>').join('');
     const host=byId('deviceRecords');host.replaceChildren();
     for(const row of d.rows){
@@ -74,7 +74,7 @@
     const external=dpia.filter(x=>/bevestigd/i.test(x.evidence||'')).length;
     byId('privacySummary').innerHTML=[
       ['DPIA-bronitems',dpia.length,'Geen uitgevoerde DPIAs of FG-oordelen'],
-      ['Externe bronstatus',external,'Verwijzingen met bevestigde externe onderbouwing'],
+      ['Externe bronstatus',external,'Bronnen met vastgelegde externe onderbouwing'],
       ['FG-advies','Niet aangeleverd','Niet opgenomen in deze inventarisatie'],
       ['Besluit bevoegd gezag','Niet aangeleverd','Geen besluit in de aangeleverde bronnen']
     ].map(([name,n,caption])=>'<div class="evidence-stat"><small>'+safe(name)+'</small><strong>'+(typeof n==='number'?fmt(n):safe(n))+'</strong><span>'+safe(caption)+'</span></div>').join('');
@@ -102,26 +102,24 @@
   renderAi=function(){previouslyRenderedAi();byId('aiSchoolPanels')?.classList.toggle('evidence-organisational',state.aiMode==='school');};
 
   function relationSets(app){
-    const ai=items(state.ai).filter(x=>x.parentId===app.id);
-    const entra=items(state.connections).filter(x=>x.matchedId===app.id);
-    const parts=items(state.parts).filter(x=>x.parent===app.id);
-    const refs=new Set(ai.map(x=>x.id));
-    const controls=items(state.aiControls).filter(x=>(String(x.aiRefs||'').match(/AI-\d+/gi)||[]).some(id=>refs.has(id)));
-    const isMicrosoft=/^(Microsoft 365|Microsoft Copilot|Teams for Education)(?:$|\s)/i.test(app.name||'');
-    const isToetsPers=/toetspers/i.test(app.name||'');
-    const dpia=items(state.dpia).filter(x=>{
-      const name=String(x.name||'');
-      return isMicrosoft&&/m365|microsoft|copilot|flex routing|leerlingen en minderjarigen/i.test(name)||
-             isToetsPers&&/toetspers/i.test(name);
-    });
+    const index=window.IctInventoryIndex?.build(state);
+    if(!index)return[];
+    const ai=index.connected('apps',app.id,{type:'ai'}).map(link=>link.other);
+    const parts=index.connected('apps',app.id,{type:'parts',relationType:'part_of'}).map(link=>link.other);
+    const entra=index.connected('apps',app.id,{type:'connections'}).map(link=>link.other);
+    const controls=new Map();
+    for(const item of ai)for(const link of index.connected('ai',item.id,{type:'aiControls'})){
+      controls.set(link.otherId,link.other);
+    }
+    const dpia=index.connected('apps',app.id,{type:'dpia'}).map(link=>link.other);
     return [
       {key:'ai',name:'AI-functies',items:ai,type:'ai',note:'Beschrijving, niet automatisch lokaal actief'},
-      {key:'parts',name:'Onderdelen',items:parts,type:'parts',note:'Vastgelegde onderliggende registraties'},
+      {key:'parts',name:'Onderdelen',items:parts,type:'parts',note:'Vastgelegde productonderdelen; beschikbare functie is niet automatisch actief'},
       {key:'entra',name:'Entra-matches',items:entra,type:'connections',note:'Mogelijke overeenkomst, werking niet bewezen'},
-      {key:'controls',name:'AI-beheer',items:controls,type:'aiControls',note:'Via expliciete AI-ID gekoppeld'},
-      {key:'dpia',name:'FG | DPIA-bronnen',items:dpia,type:'dpia',note:'Thematische bronverwijzing voor FG, geen beoordeling door deze scan'}
+      {key:'controls',name:'AI-beheer',items:[...controls.values()],type:'aiControls',note:'Via AI-ID gekoppelde beheercontroles'},
+      {key:'dpia',name:'DPIA-beoordelingen',items:dpia,type:'dpia',note:'Alleen expliciet vastgelegde relaties; geen automatisch privacyoordeel'}
     ].filter(group=>{
-      if(group.key==='dpia')return window.EmmausRoles?.isEnabled('fg')===true;
+      if(group.key==='dpia')return window.EmmausRoles?.isEnabled('fg')===true&&group.items.length>0;
       if(group.key==='ai'||group.key==='controls')return window.EmmausRoles?.isEnabled('ai')!==false;
       return true;
     });
@@ -135,8 +133,25 @@
     if(relationApp!==app.id){relationApp=app.id;relationTab='ai';}
     const sets=relationSets(app);
     if(!sets.some(x=>x.key===relationTab&&x.items.length))relationTab=(sets.find(x=>x.items.length)||sets[0]).key;
-    root.innerHTML='<div class="relation-overview"><div class="relation-center"><small>'+safe(app.id)+' · '+safe(app.kind)+'</small><strong>'+safe(app.name)+'</strong><span>Geregistreerde toepassing · '+safe(unknown(app.local)?'lokaal gebruik niet bevestigd':app.local)+'</span></div>'+
-      '<div class="relation-spokes">'+sets.map(group=>'<button type="button" data-relation="'+group.key+'" class="relation-spoke '+(relationTab===group.key?'active':'')+'"><small>'+safe(group.name)+'</small><strong>'+fmt(group.items.length)+'</strong><span>'+safe(group.items.length?'Bronrelaties':'Geen relatie vastgelegd')+'</span></button>').join('')+'</div></div>'+
+    const positions=sets.length===5?[[230,105],[765,110],[847,242],[725,373],[228,369]]:
+      sets.length===4?[[234,112],[765,112],[765,372],[234,372]]:
+      sets.length===3?[[245,122],[775,230],[245,365]]:
+      sets.length===2?[[245,230],[765,230]]:[[500,95]];
+    const connectors=sets.map((group,i)=>{
+      const [x,y]=positions[i]||[500,90],active=group.key===relationTab;
+      return '<path class="'+(group.items.length?'linked':'empty')+(active?' selected':'')+'" d="M500 240 Q'+Math.round((500+x)/2)+' '+Math.round((240+y)/2-12)+' '+x+' '+y+'"/>'+
+      '<circle class="'+(active?'selected':'')+'" cx="'+x+'" cy="'+y+'" r="'+(active?7:4)+'"/>';
+    }).join('');
+    const orbit='<svg class="relation-orbit-lines" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true">'+
+      '<circle class="orbit-trace orbit-trace-a" cx="500" cy="240" r="119"/>'+
+      '<ellipse class="orbit-trace orbit-trace-b" cx="500" cy="240" rx="302" ry="181"/>'+
+      connectors+'</svg>';
+    root.innerHTML='<div class="relation-overview" data-node-count="'+sets.length+'">'+orbit+
+      '<div class="relation-center"><small>'+safe(app.id)+' · '+safe(app.kind)+'</small><strong>'+safe(app.name)+'</strong><span>'+safe(unknown(app.local)?'Gebruik niet bevestigd':app.local)+'</span></div>'+
+      '<div class="relation-spokes">'+sets.map((group,i)=>{
+         const [x,y]=positions[i]||[500,95];
+         return '<button type="button" data-relation="'+group.key+'" style="--node-x:'+x/10+'%;--node-y:'+y/4.8+'%;" class="relation-spoke '+(relationTab===group.key?'active':'')+'" aria-pressed="'+(relationTab===group.key?'true':'false')+'"><small>'+safe(group.name)+'</small><strong>'+fmt(group.items.length)+'</strong><span>'+safe(group.items.length?'Vastgelegde relaties':'Geen relatie gevonden')+'</span></button>';
+      }).join('')+'</div><span class="orbit-axis-label" aria-hidden="true">VERBANDEN UIT BRONNEN · NIET AUTOMATISCH BEVESTIGD</span></div>'+
       '<div class="relation-detail" id="relationDetail"></div>';
     for(const b of root.querySelectorAll('[data-relation]'))b.addEventListener('click',()=>{relationTab=b.dataset.relation;renderRelations();});
     const chosen=sets.find(x=>x.key===relationTab);
@@ -148,7 +163,12 @@
     for(const rec of rows.slice(0,32)){
       const item=document.createElement('div');item.className='relation-item';
       item.innerHTML='<span><small>'+safe(rec.id)+'</small><strong>'+safe(rec.name)+'</strong></span>';
-      item.append(action('Bekijk',()=>openCard(chosen.type,rec.id),'evidence-link'));
+      const store=chosen.type==='additionalCandidates'?'candidates':chosen.type;
+      if(state[store] instanceof Map&&state[store].has(rec.id)){
+        item.append(action('Bekijk',()=>openCard(chosen.type,rec.id),'evidence-link'));
+      }else if(rec.description||rec.note||rec.local){
+        item.append(document.createTextNode(' · '+(rec.note||rec.description||rec.local)));
+      }
       list.append(item);
     }
     box.append(list);
@@ -162,17 +182,12 @@
   }
   const earlierOverview=renderOverview;
   function renderOverviewMetrics(){
-    const apps=items(state.apps),filtered=apps.filter(a=>
-      (!state.overviewArea||String(a.area||'').trim()===state.overviewArea)&&
-      (!state.overviewKind||String(a.kind||'').trim()===state.overviewKind));
-    const ids=new Set(filtered.map(a=>a.id));
-    const narrowed=filtered.length!==apps.length;
-    const aiCount=narrowed?items(state.ai).filter(a=>ids.has(a.parentId)).length:state.ai.size;
+    const apps=items(state.apps),filtered=apps,narrowed=false,aiCount=state.ai.size;
     const d=deviceData(),totals=[
-      ['Basisregistraties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
+      ['Applicaties',filtered.length,narrowed?filtered.length+' geselecteerd van '+apps.length+' totaal':'Gebruik niet volledig bevestigd','apps'],
       ['AI-functies',aiCount,narrowed?'Gekoppeld aan de selectie; '+state.ai.size+' totaal':'Beschreven functies, niet automatisch ingeschakeld','ai'],
-      ['Entra-registraties',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
-      ['Apparaatrecords',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
+      ['Koppelingen vanuit Entra',state.connections.size,'Schoolbreed, geen bewijs van actuele uitwisseling','connections'],
+      ['Apparaatregistraties',d.amount||'?',(d.total?.measurementDate||'Peildatum onbekend')+' · geen totaal fysieke apparaten','devices']
     ].filter(row=>row[3]!=='ai'||window.EmmausRoles?.isEnabled('ai')!==false);
     const grid=byId('kpiGrid');
     grid.replaceChildren();
@@ -184,17 +199,17 @@
       b.addEventListener('click',()=>selectView(view));grid.append(b);
     }
     const sub=byId('inventoryPopulation');
-    if(sub)sub.textContent=fmt(state.apps.size)+' basis · '+fmt(state.ai.size)+' AI-functies · '+fmt(state.connections.size)+' Entra · '+fmt(state.candidates.size)+' kandidaten · '+(d.amount?fmt(d.amount)+' apparaatrecords':'apparaatrecords onbekend')+' · verschillende tellingen, niet optelbaar';
+    if(sub)sub.textContent='De cijfers tellen verschillende soorten registraties. Ze zijn niet optelbaar.';
   }
   renderOverview=function(){earlierOverview();if(state.ready){renderOverviewMetrics();renderRelations();}};
   const oldCandidates=renderCandidates;
   renderCandidates=function(){
     oldCandidates();
     const info=byId('candidateInfo');
-    if(info)info.textContent='Gebruik en overlap nog controleren; niet meegeteld bij basisregistraties';
+    if(info)info.textContent='Niet opgenomen bij de applicaties. Gebruik en overlap nog niet gecontroleerd.';
   };
   // Record population and status instead of suggesting every recorded item is in use.
-  const sourceLabels={overview:'Schoolbreed',apps:'Toepassingen',connections:'Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacy en beheer',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
+  const sourceLabels={studio:'Dashboard op maat',overview:'Overzicht',apps:'Applicaties',connections:'Koppelingen vanuit Entra',devices:'Apparaten',ai:'AI-functies',privacy:'Privacybronnen',findings:'Controles',reports:'Rapporten',sources:'Bronnen'};
   function updatePath(view){
     let path=byId('evidencePath');
     if(!path){path=document.createElement('div');path.id='evidencePath';path.className='evidence-path';byId('sectionEyebrow').insertAdjacentElement('afterend',path);}
@@ -216,13 +231,48 @@
   const duplicateExport=byId('exportExcel')?.closest('.panel');
   if(duplicateExport)duplicateExport.classList.add('duplicate-source-export');
   const candidate=byId('candidatePanel');
-  if(candidate)candidate.querySelector('summary')?.setAttribute('title','Mogelijke toepassingen, niet meegenomen in de 61 basisregistraties');
+  if(candidate)candidate.querySelector('summary')?.setAttribute('title','Software buiten de huidige applicatielijst. Gebruik en dubbele vermeldingen nog te controleren.');
+  // Golden path: one starting point for viewing, searching, checking, editing and reporting.
+  // This is a navigation layer; source records and permissions never change.
+  const nav=byId('sections');
+  const overviewNav=nav?.querySelector('[data-view="overview"]');
+  const studioNav=nav?.querySelector('[data-view="studio"]');
+  if(overviewNav&&studioNav)nav.insertBefore(overviewNav,studioNav);
+  const overview=byId('viewOverview');
+  if(overview&&!byId('overviewQuickActions')){
+    const actions=document.createElement('nav');
+    actions.id='overviewQuickActions';
+    actions.className='overview-quick-actions';
+    actions.setAttribute('aria-label','Direct naar');
+    const destinations=[
+      ['Applicatie zoeken',()=>{selectView('apps');byId('appsSearch')?.focus();}],
+      ['Controles bekijken',()=>{selectView('findings');window.EmmausScenes?.show('findings',1,false);}],
+      ['Verbanden onderzoeken',()=>window.EmmausRelationAtlas?.openNetwork()],
+      ['Dashboard aanpassen',()=>{selectView('studio');window.EmmausDashboardStudio?.setEditing(true);}],
+      ['Registratie bewerken',()=>window.EmmausRecordCards?.launch()],
+      ['Rapport maken',()=>{selectView('reports');window.EmmausScenes?.show('reports',0,false);}]
+    ];
+    for(const [label,action] of destinations){
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='overview-quick-action';
+      button.textContent=label;
+      if(label==='Registratie bewerken')button.classList.add('overview-edit-action');
+      if(label==='Dashboard aanpassen')button.classList.add('overview-layout-action');
+      button.addEventListener('click',action);
+      actions.append(button);
+    }
+    overview.insertBefore(actions,overview.querySelector('.scene-navigation')||overview.firstChild);
+  }
+  // Rapporten blijven bereikbaar via de navigatie en de overzichtsactie.
+  // Het submenu hoeft dezelfde downloadmogelijkheden niet opnieuw te tonen.
+  byId('topReports')?.closest('.rail-drawer-section')?.setAttribute('hidden','');
   const registerRoot=byId('viewAppsScene0');
   if(registerRoot){
     const tabs=document.createElement('div');tabs.className='app-register-switch';
     const buttons=[
-      action('Basisregistraties',()=>chooseApps('registered'),'app-register-tab active'),
-      action('Aanvullende kandidaten',()=>chooseApps('candidates'),'app-register-tab')
+      action('Applicaties',()=>chooseApps('registered'),'app-register-tab active'),
+      action('Overige software',()=>chooseApps('candidates'),'app-register-tab')
     ];
     buttons.forEach(b=>tabs.append(b));registerRoot.prepend(tabs);
     function chooseApps(mode){

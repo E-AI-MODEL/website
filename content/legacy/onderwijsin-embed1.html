@@ -113,6 +113,9 @@
 #oiApp .oi-primaryintro p{color:var(--oi-mute);margin:0}
 #oiApp .oi-contextnotice{background:#faf3e5;border:1px solid #e7d4ae;color:#67502b;padding:15px 18px;border-radius:12px;line-height:1.55;font-size:.87rem;margin:18px 0}
 #oiApp .oi-contextnotice strong{display:block;margin-bottom:4px}
+#oiApp .oi-drawing{padding:16px;background:white;border:1px solid var(--oi-line);border-radius:16px;margin:18px 0 28px;overflow:hidden}
+#oiApp .oi-drawing iframe{display:block;width:100%;height:clamp(550px,75vh,850px);border:0;border-radius:11px;background:#f6f1ea}
+#oiApp .oi-exit3d{font-size:.82rem;font-weight:700}
 #oiApp .oi-verifiedflow{display:flex;flex-wrap:wrap;gap:11px;align-items:stretch;margin:18px 0}
 #oiApp .oi-verifiedflow .oi-mini{background:white;border:1px solid var(--oi-line);border-radius:10px;padding:15px;flex:1 1 160px;min-width:0}
 #oiApp .oi-verifiedflow .oi-mini b{font-size:.91rem;display:block;line-height:1.3}
@@ -123,7 +126,7 @@
 #oiApp .oi-panel.oi-repositorypanel .oi-section{padding-top:35px}
 @keyframes oiAppears{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:960px){#oiApp .oi-toolbar{position:relative;top:auto}#oiApp .oi-toolbarline{align-items:flex-start}#oiApp .oi-viewtabs{width:100%}#oiApp .oi-viewtab{flex:1 1 170px}}
-@media(max-width:600px){#oiApp .oi-toolbar{padding:12px 0}#oiApp .oi-viewtabs{display:grid;grid-template-columns:1fr 1fr}#oiApp .oi-viewtab{min-width:0;padding:10px}#oiApp .oi-viewtab small{font-size:.64rem}#oiApp .oi-language{width:100%;justify-content:space-between}#oiApp .oi-vf-arrow{display:none}}
+@media(max-width:600px){#oiApp .oi-toolbar{padding:12px 0}#oiApp .oi-viewtabs{display:grid;grid-template-columns:1fr 1fr}#oiApp .oi-viewtab{min-width:0;padding:10px}#oiApp .oi-viewtab small{font-size:.64rem}#oiApp .oi-language{width:100%;justify-content:space-between}#oiApp .oi-drawing{padding:6px;margin-left:-8px;margin-right:-8px}#oiApp .oi-drawing iframe{height:68vh;min-height:510px}#oiApp .oi-vf-arrow{display:none}}
 @media(prefers-reduced-motion:reduce){#oiApp .oi-panel{animation:none}}
 </style>
 </head>
@@ -143,6 +146,7 @@
 <button class="oi-viewtab" id="oiTabOverview" data-oi-view="overzicht" role="tab" type="button" aria-selected="true" aria-controls="oi-panel-overzicht"><span class="oi-tabicon" aria-hidden="true">▦</span><span><b>Overzicht</b><small>Wat bestaat er?</small></span></button>
 <button class="oi-viewtab" id="oiTabText" data-oi-view="tekst" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-tekst" tabindex="-1"><span class="oi-tabicon" aria-hidden="true">≡</span><span><b>Tekst</b><small>Alle onderdelen</small></span></button>
 <button class="oi-viewtab" id="oiTabPipeline" data-oi-view="pijplijn" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-pijplijn" tabindex="-1"><span class="oi-tabicon" aria-hidden="true">⇢</span><span><b>Pijplijn</b><small>Wat gaat waarheen?</small></span></button>
+<button class="oi-viewtab" id="oiTab3d" data-oi-view="3d" role="tab" type="button" aria-selected="false" aria-controls="oi-panel-3d" tabindex="-1"><span class="oi-tabicon" aria-hidden="true">⬡</span><span><b>3D</b><small>Interactief model</small></span></button>
 </div>
 <div class="oi-language"><span id="oiLanguageLabel">Uitleg:</span><div class="oi-switch" role="group" aria-labelledby="oiLanguageLabel"><button type="button" id="oiPlain" aria-pressed="true">Gewone taal</button><button type="button" id="oiTech" aria-pressed="false">Technisch</button></div></div>
 </div>
@@ -221,6 +225,11 @@
 </div>
 <p class="oi-secondarysource">Andere repositories, zoals Nuxt Modules en Directus Extensions, leveren herbruikbare code. Er is geen publiek bewijs dat ze standaard samen worden uitgerold.</p>
 </section>
+</section><section class="oi-panel" id="oi-panel-3d" role="tabpanel" aria-labelledby="oiTab3d" hidden>
+<div class="oi-primaryintro"><h2>3D-verkenning van de eerdere HTML</h2><p>De oorspronkelijke interactieve tekening is behouden. Je kunt draaien, inzoomen, kaarten openen en een rondleiding volgen.</p></div>
+<div class="oi-contextnotice" role="note"><strong>Let op: dit is een historische ontwerpschets.</strong>De tekening mengt openbare code, gebruikte diensten en aannames. De getekende verbindingen zijn niet allemaal onafhankelijk vastgesteld. Gebruik de pijplijn en repositorybeschrijvingen voor brongecontroleerde informatie.</div>
+<div class="oi-drawing"><iframe id="oi3dFrame" title="Interactieve 3D-schets van Onderwijs in, met deels niet geverifieerde relaties" data-src="/onderwijsin/3d/" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen"></iframe></div>
+<p><a class="oi-exit3d" href="/onderwijsin/3d/" target="_blank" rel="noopener">Open de 3D-schets op een volledig scherm ↗</a></p>
 </section><div class="oi-colophon">Bronnen: de openbare repositories onder <a href="https://github.com/onderwijsin" target="_blank" rel="noopener">github.com/onderwijsin</a>, de genoemde README's en publiek bereikbare productpagina's. Peildatum 19 oktober 2026. Deze reconstructie is onafhankelijk gemaakt voor <a href="https://eaimodel.nl/">EAI</a>. Er is geen toegang tot private repositories, serverconfiguraties of beheeraccounts gebruikt.</div>
 </div>
 <dialog id="oiDialog" aria-label="Repository in detail"><div class="oi-detail">
@@ -241,15 +250,31 @@ let group='Alles',query='',tech=false;
 const cards=root.querySelector('#oiRepos'),count=root.querySelector('#oiCount'),filters=root.querySelector('#oiFilters');
 const detail=root.querySelector('#oiDialog');
 
-/* De drie weergaven zijn apart van het taalniveau te bedienen. */
-const views=['overzicht','tekst','pijplijn'];
+/* De vier weergaven zijn apart van het taalniveau te bedienen. */
+const views=['overzicht','tekst','pijplijn','3d'];
 const viewNotes={
  overzicht:'Een rustig begin: toepassingen, openbare code en wat we nog niet weten.',
  tekst:'Lees en doorzoek alle 18 repositories. De tekst wisselt mee met het taalniveau.',
  pijplijn:'Bekijk twee afzonderlijke gegevensstromen. Niet-geteste koppelingen zijn aangeduid.',
+ '3d':'Bewaarde interactieve ontwerpschets. Controleer feitelijke claims via de andere weergaven.'
 };
 const viewTabs=[...root.querySelectorAll('[data-oi-view]')];
+const oldFrame=root.querySelector('#oi3dFrame');
 let activeView='overzicht';
+function sync3dMode(tries=0){
+ if(!oldFrame||!oldFrame.src||oldFrame.src==='about:blank')return;
+ try{
+  const d=oldFrame.contentDocument;
+  const button=d&&d.querySelector(tech?'#modeTech':'#modePlain');
+  if(button){
+   if(button.classList.contains('on'))return;
+   button.click();
+   return;
+  }
+ }catch(_){}
+ if(tries<20)window.setTimeout(()=>sync3dMode(tries+1),200);
+}
+oldFrame.addEventListener('load',()=>sync3dMode());
 function setView(view,updateUrl=true){
  if(!views.includes(view))view='overzicht';
  activeView=view;
@@ -260,8 +285,10 @@ function setView(view,updateUrl=true){
   root.querySelector('#oi-panel-'+tab.dataset.oiView).hidden=!on;
  }
  root.querySelector('#oiTabInfo').textContent=viewNotes[view];
+ if(view==='3d'&&!oldFrame.hasAttribute('src'))oldFrame.setAttribute('src',oldFrame.dataset.src);
+ if(view==='3d')sync3dMode();
  if(updateUrl&&window.history&&window.history.replaceState)
-   window.history.replaceState(null,'',window.location.pathname+window.location.search+'#'+view);
+   window.history.replaceState(null,'',window.location.pathname+window.location.search+'#'+(view==='3d'?'3d':view));
 }
 for(const tab of viewTabs){
  tab.addEventListener('click',()=>setView(tab.dataset.oiView));
@@ -309,6 +336,7 @@ function setDescriptionMode(){
   if(!originalTexts.has(p))originalTexts.set(p,p.textContent);
   p.textContent=tech?techText.api[i]:originalTexts.get(p);
  });
+ sync3dMode();
 }
 
 function button(tag,cls,txt){const e=document.createElement(tag);e.className=cls;e.textContent=txt;return e;}

@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from check_publication_duplicates import audit, known_pairs, summary_md
+from check_publication_duplicates import audit, known_pairs, summary_md, variant_pairs
 
 
 LONG_TEXT = " ".join(
@@ -184,19 +184,39 @@ class PublicationDuplicatesTests(unittest.TestCase):
 
     def test_publication_workflow_has_hard_gate(self):
         workflow = (ROOT / ".github/workflows/deploy-theory7.yml").read_text(encoding="utf-8")
-        upload = workflow.find("Publish assets before HTML")
-        guard = workflow.find("python scripts/check_publication_duplicates.py")
-        self.assertGreater(guard, 0)
-        self.assertLess(guard, upload)
-        self.assertIn("GITHUB_STEP_SUMMARY", workflow)
-        self.assertIn("--json", workflow)
+        gate = (ROOT / ".github/workflows/site-check.yml").read_text(encoding="utf-8")
+        ui = (ROOT / ".github/workflows/verify-ui.yml").read_text(encoding="utf-8")
+        self.assertIn("needs: release-check", workflow)
+        self.assertIn("needs.release-check.result == 'success'", workflow)
+        self.assertIn("uses: ./.github/workflows/site-check.yml", workflow)
+        self.assertIn("uses: ./.github/workflows/verify-ui.yml", gate)
+        guard = ui.index("python scripts/check_publication_duplicates.py")
+        self.assertLess(ui.index("python scripts/prepare_ui.py --root site-build"), guard)
+        self.assertLess(guard, ui.index("python scripts/release_artifact.py create"))
+        self.assertIn("GITHUB_STEP_SUMMARY", ui)
+        self.assertIn("--json", ui)
 
-    def test_own_workflow_checks_real_build(self):
-        workflow = (ROOT / ".github/workflows/publication-duplicates.yml").read_text(encoding="utf-8")
-        self.assertIn("python scripts/build_site.py", workflow)
-        self.assertIn("python scripts/prepare_ui.py", workflow)
-        self.assertIn("python scripts/check_publication_duplicates.py", workflow)
-        self.assertIn("upload-artifact", workflow)
+    def test_non_index_html_is_checked(self):
+        self.page("/one/", LONG_TEXT)
+        (self.site / "two.html").write_text((self.site / "one/index.html").read_text().replace("/one/", "/two.html"), encoding="utf-8")
+        self.sitemap("/one/", "/two.html")
+        result = audit(self.site, {})
+        self.assertIn("exact_dezelfde_pagina", [x["type"] for x in result["blocking"]])
+        self.assertNotIn("ontbrekende_pagina", [x["type"] for x in result["blocking"]])
+
+    def test_only_explicitly_reviewed_math_pair_is_an_exception(self):
+        register = self.site / "register.json"
+        math = {"id": "wiskunde", "review": "volledigheid_broncatalogi_gecontroleerd",
+                "members": ["page:/tools/science-observatory/labs/wiskunde-a/",
+                            "page:/tools/science-observatory/labs/wiskunde-b/"]}
+        other = {"id": "other", "review": "not_yet_reviewed",
+                 "members": ["page:/een/", "page:/twee/"]}
+        register.write_text(json.dumps({"collections": [math, other]}))
+        self.assertEqual(set(variant_pairs(register)), {
+            ("/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/")})
+        math["members"].append("page:/new/")
+        register.write_text(json.dumps({"collections": [math, other]}))
+        self.assertEqual(variant_pairs(register), {})
 
 
 if __name__ == "__main__":

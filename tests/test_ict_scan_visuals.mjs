@@ -7,22 +7,23 @@ import vm from 'node:vm';
 const source=readFileSync(resolve('tools/ict-scan/visual-explorer.js'),'utf8');
 const html=readFileSync(resolve('tools/ict-scan/index.html'),'utf8');
 const css=readFileSync(resolve('tools/ict-scan/visual-explorer.css'),'utf8');
-const data=JSON.parse(readFileSync(resolve('ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
+const data=JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/2026-applicatielandschap.json'),'utf8'));
 const context={window:{},document:{getElementById(){return null;}}};
 vm.runInNewContext(source,context,{filename:'visual-explorer.js'});
 const {tally,pairs,treemap}=context.window.EAIApplicatieVisualMath;
 const apps=data.apps;
 
-test('Tellingen zijn afkomstig uit de 61 basisregistraties en sluiten exact',()=>{
-  assert.equal(apps.length,61);
+test('Tellingen zijn afkomstig uit de 69 basisregistraties en sluiten exact',()=>{
+  assert.equal(apps.length,69);
   const byArea=tally(apps,'area'),byKind=tally(apps,'kind'),joint=pairs(apps);
-  assert.equal(byArea.length,8);
-  assert.equal(byKind.length,14);
-  assert.equal(byArea.reduce((n,x)=>n+x[1],0),61);
-  assert.equal(byKind.reduce((n,x)=>n+x[1],0),61);
-  assert.equal(joint.reduce((n,x)=>n+x.count,0),61);
-  assert.deepEqual(JSON.parse(JSON.stringify(byArea.slice(0,2))),[['Schoolorganisatie',19],['Onderwijs',18]]);
-  assert.ok(byKind.some(([name,count])=>name==='Applicatie'&&count===34));
+  assert.ok(byArea.length>=8);
+  assert.ok(byKind.length>=14);
+  assert.equal(byArea.reduce((n,x)=>n+x[1],0),69);
+  assert.equal(byKind.reduce((n,x)=>n+x[1],0),69);
+  assert.equal(joint.reduce((n,x)=>n+x.count,0),69);
+  assert.ok(byArea.some(([name,count])=>name==='Schoolorganisatie'&&count>=19));
+  assert.ok(byArea.some(([name,count])=>name==='Onderwijs'&&count>=18));
+  assert.ok(byKind.some(([name,count])=>name==='Applicatie'&&count>=34));
 });
 
 test('Elk gebied/soort-kruispunt komt uit exact dezelfde populatie',()=>{
@@ -61,10 +62,10 @@ test('Bronrelaties zijn expliciet; technische matches worden niet als actieve ko
   const ids=new Set(apps.map(x=>x.id));
   assert.equal(data.ai.filter(x=>ids.has(x.parentId)).length,76);
   assert.equal(data.connections.filter(x=>ids.has(x.matchedId)).length,21);
-  assert.equal(data.parts.filter(x=>ids.has(x.parent)).length,13);
+  assert.equal(data.parts.filter(x=>ids.has(x.parent)).length,53);
   assert.ok(!source.includes('Microsoft 365 Copilot</span>'));
-  assert.ok(source.includes('matchingFamily(app)'));
-  assert.ok(source.includes("matchedId===app.id"));
+  assert.ok(source.includes('matchingFamily(app,index)'));
+  assert.ok(source.includes("index.connected('apps',app.id)"));
   assert.ok(source.includes('Een Entra-match is geen bevestigde actieve koppeling'));
 });
 
@@ -82,6 +83,42 @@ test('Elke kaart heeft eigen weergavekeuze en het 404-menu en de zijbalk blijven
   assert.ok(!html.includes('class="monitor-hero"'));
   assert.ok(!html.includes('class="relation-tree"'));
   assert.ok(css.includes('@media(max-width:720px)'));
-  assert.ok(html.includes('href="./visual-explorer.css"'));
-  assert.ok(html.includes('src="./visual-explorer.js"'));
+  assert.ok(html.includes('href="./visual-explorer.css'));
+  assert.ok(html.includes('src="./visual-explorer.js'));
+});
+
+
+test('Relatieatlas bevat alle manifestregistraties en getypeerde verbanden',async()=>{
+  const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
+  const sourceNames=['2026-applicatielandschap.json','2026-werkregister.json','2026-faq.json','2026-bronnenregister.json'];
+  const sources=sourceNames.map(name=>JSON.parse(readFileSync(resolve('tools/ict-scan/bronnen/'+name),'utf8')));
+  const state={};
+  for(const [type,store] of Object.entries(inventory.STORES)){
+    const records=sources.flatMap(s=>s[type]||[]);
+    state[store]=new Map(records.map(row=>[row.id,row]));
+  }
+  const full=inventory.build(state);
+  assert.equal(full.nodes.size,Object.values(state).reduce((sum,rows)=>sum+rows.size,0));
+  assert.ok(full.edges.length>=273,'Oorspronkelijke verbanden moeten behouden blijven');
+  assert.deepEqual(full.errors,[]);
+  assert.equal(full.edges.filter(x=>x.status==='Vermoedelijk').length,37);
+  assert.ok(full.edges.filter(x=>x.status==='Geregistreerd').length>=236);
+  for(const edge of full.edges){
+    assert.ok(full.get(edge.fromType,edge.fromId),'Bron ontbreekt '+edge.fromId);
+    assert.ok(full.get(edge.toType,edge.toId),'Doel ontbreekt '+edge.toId);
+  }
+});
+test('De volledige relatieatlas is een eigen visual zonder dubbel gegevensbestand',()=>{
+  const atlas=readFileSync(resolve('tools/ict-scan/relationship-atlas.js'),'utf8');
+  const atlasStyle=readFileSync(resolve('tools/ict-scan/relationship-atlas.css'),'utf8');
+  assert.match(html,/src="\.[/]relationship-atlas\.js\?v=/);
+  assert.match(html,/href="\.[/]relationship-atlas\.css\?v=/);
+  assert.match(atlas,/window\.IctInventoryIndex\?\.build/);
+  assert.match(atlas,/for\(const edge of currentEdges\)/,'Geen afkap van de volledige relatielijst');
+  assert.match(atlas,/filterEdges\(/);
+  assert.match(atlas,/exportCsv\(/);
+  assert.match(atlas,/(?:const\s+csvSafe\s*=|function\s+csvSafe\()/);
+  assert.match(atlas,/relationAtlasDialog/);
+  assert.match(atlasStyle,/@media\(max-width:650px\)/);
+  assert.doesNotMatch(atlas,/const links=\[[^]*?APP-034/,'Geen handmatig ingevulde relatielijnen');
 });

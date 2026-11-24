@@ -1,0 +1,14 @@
+/* UI-only editing threshold: does not protect source data */
+.card-edit-gate{width:min(420px,calc(100vw - 32px));max-width:100%;border:1px solid #ccd7e5;border-radius:14px;padding:0;background:#fbfcfe;color:#263e61;box-shadow:0 24px 80px rgba(19,40,74,.23);font-family:inherit}
+.card-edit-gate::backdrop{background:rgba(20,37,63,.44);backdrop-filter:blur(3px)}
+.card-edit-gate-form{display:grid;gap:12px;padding:25px}
+.card-gate-eyebrow{font-size:10px;font-weight:750;letter-spacing:.14em;color:#a58156;margin:0}
+.card-edit-gate h2{font-size:21px;margin:0;line-height:1.2}
+.card-edit-gate p:not(.card-gate-eyebrow){font-size:13px;line-height:1.55;margin:0;color:#63758e}
+.card-edit-gate label{font-size:12px;font-weight:650}
+.card-edit-gate input{height:41px;width:100%;box-sizing:border-box;border:1px solid #b9cbe0;border-radius:7px;background:white;padding:9px;color:#243b5a;font-size:15px}
+.card-edit-gate input:focus{outline:2px solid #678db6;outline-offset:2px}
+.card-edit-gate .card-gate-error{color:#a43d35!important}
+.card-gate-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:5px}
+.card-gate-actions button{border:1px solid #d1dcea;border-radius:7px;padding:10px 14px;background:#fff;color:#2a4264;font-weight:650;cursor:pointer}
+.card-gate-actions [data-unlock]{background:#263d6a;color:#fff;border-color:#263d6a}

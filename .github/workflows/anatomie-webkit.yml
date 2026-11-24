@@ -1,45 +1,9 @@
 name: Test anatomy in mobile WebKit
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'scripts/build_anatomie.py'
-      - 'scripts/extract_hart_atlas.mjs'
-      - 'scripts/extract_hart_rich.mjs'
-      - 'scripts/anatomie_refine.py'
-      - 'scripts/audit_anatomie_content.py'
-      - 'tests/test_anatomie_content_audit.py'
-      - 'scripts/anatomie_shell.py'
-      - 'scripts/test_anatomie_webkit.mjs'
-      - 'scripts/test_anatomie_teaching.mjs'
-      - 'scripts/test_anatomie_sources.mjs'
-      - 'scripts/test_hartslaglab_browser.mjs'
-      - 'scripts/test_hartslaglab_cycle.mjs'
-      - 'scripts/test_hartslaglab_geometry.mjs'
-      - 'scripts/audit_hart_glb.mjs'
-      - 'tests/test_anatomie_picking.mjs'
-      - 'content/anatomie/**'
-      - '.github/workflows/anatomie-webkit.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/build_anatomie.py'
-      - 'scripts/extract_hart_atlas.mjs'
-      - 'scripts/extract_hart_rich.mjs'
-      - 'scripts/anatomie_refine.py'
-      - 'scripts/audit_anatomie_content.py'
-      - 'tests/test_anatomie_content_audit.py'
-      - 'scripts/anatomie_shell.py'
-      - 'scripts/test_anatomie_webkit.mjs'
-      - 'scripts/test_anatomie_teaching.mjs'
-      - 'scripts/test_anatomie_sources.mjs'
-      - 'scripts/test_hartslaglab_browser.mjs'
-      - 'scripts/test_hartslaglab_cycle.mjs'
-      - 'scripts/test_hartslaglab_geometry.mjs'
-      - 'scripts/audit_hart_glb.mjs'
-      - 'tests/test_anatomie_picking.mjs'
-      - 'content/anatomie/**'
-      - '.github/workflows/anatomie-webkit.yml'
+  workflow_call:
+  workflow_dispatch:
+
+
 permissions:
   contents: read
 jobs:

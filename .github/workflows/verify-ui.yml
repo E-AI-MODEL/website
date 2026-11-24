@@ -1,18 +1,21 @@
 name: Verify public UI
 on:
-  pull_request:
-    branches: [main]
-  push:
-    branches: [main]
+  workflow_call:
+    inputs:
+      release_artifact:
+        type: boolean
+        default: false
+  workflow_dispatch:
+
+
 permissions:
   contents: read
-concurrency:
-  group: verify-public-ui-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    # De volledige selectie bevat beide WebGL-proeven op een software-renderer.
+    # Houd ook bij een trage runner tijd over voor de overige browsercontroles.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,7 +28,8 @@ jobs:
           if [ "$GITHUB_EVENT_NAME" != "pull_request" ] || ! git rev-parse --verify HEAD^1 >/dev/null 2>&1; then
             python3 scripts/ci_pr_scope.py --all --output "$GITHUB_OUTPUT"
           else
-            mapfile -d '' changed < <(git diff --name-only -z HEAD^1 HEAD)
+            git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed-files"
+            mapfile -d '' changed < "$RUNNER_TEMP/changed-files"
             python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
           fi
       - name: Test veilige selectie van browserproeven
@@ -40,8 +44,6 @@ jobs:
       - run: python scripts/build_site.py --sources content/legacy --out site-build
       - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
       - run: python scripts/prepare_ui.py --root site-build
-      - name: Controleer dubbele pagina's voordat de website naar productie gaat
-        run: python scripts/check_publication_duplicates.py --root site-build --summary "$GITHUB_STEP_SUMMARY"
       - name: Verify one canonical hub per subject and legacy redirects
         run: python -m unittest discover -s tests -p 'test_hub_structure.py' -v
       - name: Check dashboard cards, route preservation and lab isolation
@@ -49,6 +51,11 @@ jobs:
       - name: Verify editorial card scope and build output
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
       - run: python scripts/verify_ui.py --root site-build
+      - name: Test en controleer dubbele publicatiepagina's
+        run: |
+          python -m unittest discover -s tests -p 'test_publication_duplicates.py' -v
+          mkdir -p test-results
+          python scripts/check_publication_duplicates.py --root site-build --summary "$GITHUB_STEP_SUMMARY" --json test-results/publication-duplicates.json
       - name: Verify LEIF is published without rewriting answers or access screen
         run: |
           test -s site-build/leif/index.html
@@ -60,6 +67,7 @@ jobs:
         timeout-minutes: 4
       - run: python -m unittest discover -s tests -p test_tool_launch.py -v
       - name: Controleer ICT-scan synchronisatie en interface op desktop en mobiel
+        if: ${{ steps.scope.outputs.ictscan == 'true' }}
         run: node scripts/test_ict_scan_browser.mjs site-build
       - name: Check anatomical 3D rendering and local organ models
         if: ${{ steps.scope.outputs.anatomy == 'true' }}
@@ -132,3 +140,23 @@ jobs:
         with:
           name: public-ui-check
           path: test-results/
+
+      - name: Leg de gecontroleerde productiebuild vast
+        if: ${{ inputs.release_artifact == true }}
+        run: |
+          python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
+          python scripts/verify_ui.py --root site-build
+          python scripts/release_artifact.py create --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
+      - name: Bewaar exact de geteste sitebuild
+        if: ${{ inputs.release_artifact == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-release-${{ github.run_id }}
+          path: |
+            site-build/
+            release-manifest.json
+          if-no-files-found: error
+          include-hidden-files: true
+          compression-level: 0
+          overwrite: true
+          retention-days: 30

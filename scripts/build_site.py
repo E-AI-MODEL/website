@@ -3,6 +3,7 @@ from __future__ import annotations
 # v2 editorial build: two pillars -> workforms -> practice -> publications
 
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -2211,7 +2212,7 @@ def redirect(target: str) -> str:
     return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={esc(target)}"><link rel="canonical" href="{esc(canonical)}"><title>Doorsturen…</title></head><body><p><a href="{esc(target)}">Ga verder</a></p></body></html>'
 
 def require_sources(sources: Path) -> None:
-    required = [file for _, _, file, _ in PUBLICATIONS] + ["onderwijsin-embed1.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
+    required = [file for _, _, file, _ in PUBLICATIONS] + ["onderwijsin-embed1.html", "onderwijsin-3d.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
     missing = [name for name in required if not (sources / name).exists()]
     if missing:
         raise SystemExit("Missing vendored legacy sources: " + ", ".join(missing))
@@ -2767,6 +2768,9 @@ def build(sources: Path, out: Path) -> None:
 
     onderwijs = sources / "onderwijsin-embed1.html"
     write(out, "onderwijsin/index.html", inject_embed(onderwijs, "/onderwijsin/", "OnderwijsIn — technische anatomie", "/"))
+    # Bewaar de oorspronkelijke 3D-illustratie als een geïsoleerde, optionele weergave.
+    # Dit is een historische schets, niet de bron van de gecontroleerde repositoryclaims.
+    write(out, "onderwijsin/3d/index.html", (sources / "onderwijsin-3d.html").read_text(encoding="utf-8"))
 
     redirects = {
         "eai-toolanalyse": "https://subtle-churros-4d44d5.netlify.app",
@@ -2783,7 +2787,7 @@ def build(sources: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/tools/eaigame/", "/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/lo-aanvalslab/", "/tools/sport-en-bewegen/", "/tools/sport-en-bewegen/opstellingen/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/labs/hartslag/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaiwork/", "/tools/html-galerij/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/statistieken/", "/over/", "/eaa-model/", "/onderwijsin/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/tools/eaigame/", "/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/lo-aanvalslab/", "/tools/sport-en-bewegen/", "/tools/sport-en-bewegen/opstellingen/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/labs/hartslag/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaiwork/", "/tools/html-galerij/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/statistieken/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     urls.append('/topo/')
     # The bilingual redesign is maintained in nl/ and en/. Preserve it during
     # the legacy article/tool build, including its current home and assets.
@@ -2839,14 +2843,6 @@ def build(sources: Path, out: Path) -> None:
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
     finish_generated_pages(out)
-    # Standalone local-only school ICT scan. Not part of navigation or sitemap.
-    ict_scan_source = repo_root / "tools" / "ict-scan"
-    if ict_scan_source.is_dir():
-        for name in ("index.html", "style.css", "app.js"):
-            if not (ict_scan_source / name).is_file():
-                raise FileNotFoundError(f"Missing local ICT scan asset: {name}")
-        shutil.copytree(ict_scan_source, out / "tools" / "ict-scan", dirs_exist_ok=True)
-
     # EAIgit is a separate browser wizard: publish only its four intended pages.
     # Do not let the general site generator rewrite their UI or JavaScript.
     eai_routes = (
@@ -2870,16 +2866,32 @@ def build(sources: Path, out: Path) -> None:
     ):
         if not (out / relative).is_file():
             raise FileNotFoundError(f"Missing EAIgit browser asset: {relative}")
-    # Schoolbrede ICT-scan: standalone local-first browser tool. No public navigation,
-    # no sitemap entry and no public source data. Files stay in the browser.
+    # Publish only the explicit app asset allowlist. Never copy sources/
+    # (tools/ict-scan/bronnen), which stay readable through GitHub only.
     ict_scan_source = repo_root / "tools" / "ict-scan"
-    for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "README.md"):
+    for filename in ("index.html", "style.css", "monitor.css", "record-taxonomy.js", "inventory-index.js", "report-print.js", "report-print.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js", "ux-clarity.css", "studio-interface.css", "relationship-orbit.css", "relationship-atlas.js", "relationship-atlas.css", "document-library.js", "document-library.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", ".htaccess", "README.md"):
         source_file = ict_scan_source / filename
         if not source_file.is_file():
             raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")
         destination_file = out / "tools" / "ict-scan" / filename
         destination_file.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_file, destination_file)
+
+    # A cached older validator cannot read newer registerFiles keys. Bind the
+    # browser's profile validator URL to its actual published contents.
+    ict_path = out / "tools" / "ict-scan"
+    profile_hash = hashlib.sha256((ict_path / "assurance" / "profile.js").read_bytes()).hexdigest()[:16]
+    ict_html_file = ict_path / "index.html"
+    ict_html = ict_html_file.read_text(encoding="utf-8")
+    ict_html, replaced = re.subn(
+        r'(src="\./assurance/profile\.js\?v=)[^"]+(")',
+        lambda match: match.group(1) + profile_hash + match.group(2),
+        ict_html,
+        count=1,
+    )
+    if replaced != 1:
+        raise ValueError("ICT-scan: de versiegebonden organisatieprofielvalidator ontbreekt")
+    ict_html_file.write_text(ict_html, encoding="utf-8")
 
     # Standalone LEIF and its private continuation page are kept byte-for-byte.
     # Neither page is in the public sitemap or shared editorial UI.

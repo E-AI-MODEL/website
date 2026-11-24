@@ -1,115 +1,12 @@
 name: Build EAI Site
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/build-site.yml'
-      - '.github/workflows/publish-public-analytics.yml'
-      - 'statistieken/**'
-      - 'scripts/publish_web_analytics.py'
-      - 'tests/test_public_analytics.py'
-      - 'tests/test_public_analytics_ui.mjs'
-      - 'tests/test_cloudflare_beacon.py'
-      - 'tests/test_first_party_analytics.py'
-      - '.github/workflows/deploy-theory7.yml'
-      - 'scripts/build_site.py'
-      - 'scripts/prepare_ui.py'
-      - 'scripts/verify_ui.py'
-      - 'tests/test_theory7_cloudflare_hash.py'
-      - 'services/html-galerij/**'
-      - 'tests/test_html_galerij_publish.py'
-      - 'tools/html-galerij/index.html'
-      - 'tools/lo-aanvalslab/**'
-      - 'scripts/build_anatomie.py'
-      - 'scripts/extract_hart_atlas.mjs'
-      - 'scripts/extract_hart_rich.mjs'
-      - 'tests/test_anatomie_publish.py'
-      - 'content/**'
-      - 'nl/**'
-      - 'en/**'
-      - 'assets/**'
-      - 'tools/projecthulp/**'
-      - 'tools/eaigit/**'
-      - 'tools/ict-scan/**'
-      - 'tests/test_ict_scan_publish.py'
-      - 'tests/test_ict_scan_export.mjs'
-      - 'tests/test_ict_scan_github_sync.mjs'
-      - 'tools/ict-scan/**'
-      - 'tests/test_ict_scan_publish.py'
-      - 'tests/test_ict_scan_export.mjs'
-      - 'tests/test_ict_scan_github_sync.mjs'
-      - 'tests/test_projecthulp.mjs'
-      - 'tests/test_eaigit_help.mjs'
-      - 'tests/test_eaigit_single_file.mjs'
-      - 'index.html'
-      - 'houseoftalents/**'
-      - 'leif/**'
-      - 'tests/test_home_model.py'
-      - 'tests/test_eaiwork_dashboard_publish.py'
-      - 'tests/test_eaiwork_public_entry.py'
-      - 'work/**'
-      - 'tests/test_science_observatory_publish.py'
-      - 'tests/test_abyss_publish.py'
-      - 'tests/test_llm_observatorium_source.py'
-      - 'scripts/home_model.py'
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/build-site.yml'
-      - '.github/workflows/publish-public-analytics.yml'
-      - 'statistieken/**'
-      - 'scripts/publish_web_analytics.py'
-      - 'tests/test_public_analytics.py'
-      - 'tests/test_public_analytics_ui.mjs'
-      - 'tests/test_cloudflare_beacon.py'
-      - 'tests/test_first_party_analytics.py'
-      - '.github/workflows/deploy-theory7.yml'
-      - 'scripts/build_site.py'
-      - 'scripts/prepare_ui.py'
-      - 'scripts/verify_ui.py'
-      - 'tests/test_theory7_cloudflare_hash.py'
-      - 'services/html-galerij/**'
-      - 'tests/test_html_galerij_publish.py'
-      - 'tools/html-galerij/index.html'
-      - 'tools/lo-aanvalslab/**'
-      - 'scripts/build_anatomie.py'
-      - 'scripts/extract_hart_atlas.mjs'
-      - 'scripts/extract_hart_rich.mjs'
-      - 'tests/test_anatomie_publish.py'
-      - 'content/**'
-      - 'nl/**'
-      - 'en/**'
-      - 'assets/**'
-      - 'tools/projecthulp/**'
-      - 'tools/eaigit/**'
-      - 'tools/ict-scan/**'
-      - 'tests/test_ict_scan_publish.py'
-      - 'tests/test_ict_scan_export.mjs'
-      - 'tests/test_ict_scan_github_sync.mjs'
-      - 'tools/ict-scan/**'
-      - 'tests/test_ict_scan_publish.py'
-      - 'tests/test_ict_scan_export.mjs'
-      - 'tests/test_ict_scan_github_sync.mjs'
-      - 'tests/test_projecthulp.mjs'
-      - 'index.html'
-      - 'houseoftalents/**'
-      - 'leif/**'
-      - 'tests/test_home_model.py'
-      - 'tests/test_science_observatory_publish.py'
-      - 'tests/test_abyss_publish.py'
-      - 'tests/test_llm_observatorium_source.py'
-      - 'scripts/home_model.py'
+  workflow_call:
   workflow_dispatch:
+
 
 permissions:
   contents: read
-
-concurrency:
-  group: eai-site-${{ github.ref_name }}
-  cancel-in-progress: true
 
 jobs:
   build:
@@ -127,7 +24,8 @@ jobs:
           if [ "$GITHUB_EVENT_NAME" != "pull_request" ] || ! git rev-parse --verify HEAD^1 >/dev/null 2>&1; then
             python3 scripts/ci_pr_scope.py --all --output "$GITHUB_OUTPUT"
           else
-            mapfile -d '' changed < <(git diff --name-only -z HEAD^1 HEAD)
+            git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed-files"
+            mapfile -d '' changed < "$RUNNER_TEMP/changed-files"
             python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
           fi
       - name: Controleer selectie van tests
@@ -244,6 +142,8 @@ jobs:
           test -s site-build/tools/ict-scan/monitor.css
           test -s site-build/tools/ict-scan/enhancements.js
           test -s site-build/tools/ict-scan/github-sync.js
+          test ! -e site-build/tools/ict-scan/bronnen
+          test ! -e site-build/ict-scan/bronnen
           test -s site-build/tools/ict-scan/rail-drawer.js
           test -s site-build/tools/ict-scan/visual-explorer.js
           test -s site-build/tools/ict-scan/visual-explorer.css

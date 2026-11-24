@@ -1,5 +1,6 @@
 """Static checks for the hidden, local-only ICT scan."""
 from pathlib import Path
+import shlex
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -7,8 +8,46 @@ TOOL = ROOT / "tools" / "ict-scan"
 
 class ICTScanTests(unittest.TestCase):
     def test_files_exist(self):
-        for filename in ("index.html", "style.css", "monitor.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "role-modes.js", "role-modes.css", "emmaus-logo.svg", "README.md"):
+        for filename in ("index.html", "style.css", "monitor.css", "inventory-index.js", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "frameworks.json", "answer-engine.js", "answer-engine.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "role-modes.js", "role-modes.css", "dashboard-composer.js", "dashboard-composer.css", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", "README.md"):
             self.assertTrue((TOOL / filename).is_file(), filename)
+
+    def test_relationship_atlas_assets_are_shipped(self):
+        html = (TOOL / "index.html").read_text(encoding="utf-8")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        for filename in ("relationship-atlas.js", "relationship-atlas.css", "report-print.js", "report-print.css"):
+            self.assertTrue((TOOL / filename).is_file(), filename)
+            self.assertIn(f'"{filename}"', builder, f"{filename} must be in the publish allowlist")
+            self.assertIn(f'./{filename}?v=', html, f"{filename} must be referenced from the entry point")
+        self.assertNotIn('shutil.copytree(ict_scan_source', builder)
+
+    def test_composer_and_edit_gate_assets_published(self):
+        html = (TOOL / "index.html").read_text(encoding="utf-8")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        for filename in ("composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js"):
+            self.assertTrue((TOOL / filename).is_file(), filename)
+            self.assertIn(f'"{filename}"', builder, f"{filename} must be shipped")
+            self.assertIn(f'./{filename}', html, f"{filename} must be referenced")
+        app = (TOOL / "app.js").read_text(encoding="utf-8")
+        cards = (TOOL / "record-cards.js").read_text(encoding="utf-8")
+        self.assertIn("signalTarget.type,signalTarget.id,true", app)
+        self.assertIn("focusEditField", cards)
+        self.assertIn("EmmausEditGate?.request()", cards)
+
+    def test_clear_dashboard_labels_and_published_styles(self):
+        html = (TOOL / "index.html").read_text(encoding="utf-8")
+        composer = (TOOL / "dashboard-composer.js").read_text(encoding="utf-8")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        self.assertNotIn("Kies. De rest volgt.", html)
+        self.assertNotIn("Dunne lijnen, direct filteren", composer)
+        self.assertNotIn("De weergave volgt vanzelf", composer)
+        for label in ("Gegevens en grafieken", "Welke gegevens?", "Hoe wil je ze bekijken?", "Bewaar in browser", "Download indeling"):
+            self.assertIn(label, html)
+        self.assertEqual(html.count('class="rail-label"'), 11)
+        self.assertIn("ds-option-description", composer)
+        self.assertIn("ds-option-count", composer)
+        self.assertIn("ux-clarity.css", builder)
+        self.assertIn('href="./ux-clarity.css', html)
+        self.assertTrue((TOOL / "ux-clarity.css").is_file())
 
     def test_secret_not_security_and_litespeed_404_middle_zero(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
@@ -60,9 +99,17 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn('href="./scene-navigation.css', html)
         self.assertIn('src="./evidence-experience.js', html)
         self.assertIn('href="./evidence-experience.css', html)
+        self.assertIn('href="./studio-interface.css', html)
+        self.assertIn('href="./relationship-orbit.css', html)
         self.assertIn('id="roleModeFG"', html)
         self.assertIn('id="roleModeAI"', html)
         self.assertIn('class="fg-role-boundary"', html)
+        self.assertIn('id="viewStudio"', html)
+        self.assertIn('id="dsCanvas"', html)
+        self.assertIn('id="dsDataOptions"', html)
+        self.assertIn('id="dsPartOptions"', html)
+        self.assertIn('src="./dashboard-composer.js', html)
+        self.assertIn('href="./dashboard-composer.css', html)
         self.assertIn('src="./role-modes.js', html)
         self.assertIn('href="./role-modes.css', html)
         self.assertNotIn('<h2>DPIA-beoordelingen</h2>', html)
@@ -88,10 +135,75 @@ class ICTScanTests(unittest.TestCase):
         self.assertIn('await importOneFile(file)', js)
         self.assertIn('restoreState(backup)', js)
 
+    def test_sources_share_project_folder_but_do_not_ship_in_site(self):
+        data = TOOL / "bronnen"
+        self.assertTrue(data.is_dir())
+        for name in ("manifest.json", "2026-applicatielandschap.json", "2026-werkregister.json", "2026-faq.json"):
+            self.assertTrue((data / name).is_file(), name)
+        self.assertFalse((ROOT / "ict-scan").exists(), "Verouderde bronmap op repository-root")
+        builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
+        self.assertNotIn("shutil.copytree(ict_scan_source", builder)
+        self.assertIn('destination_file = out / "tools" / "ict-scan" / filename', builder)
+        html = (TOOL / "index.html").read_text(encoding="utf-8")
+        github = (TOOL / "record-github.js").read_text(encoding="utf-8")
+        self.assertIn('value="tools/ict-scan/bronnen"', html)
+        self.assertIn("SOURCE_DIR=profile.source.sourceDir+'/'", github)
+
     def test_routes_copied_by_builder(self):
         builder = (ROOT / 'scripts' / 'build_site.py').read_text(encoding='utf-8')
         self.assertIn('ict_scan_source = repo_root / "tools" / "ict-scan"', builder)
         self.assertNotIn('"/tools/ict-scan/"', builder.split('urls.extend(')[-1])
+
+    def test_deploy_installs_ict_headers_before_html_without_replacing_root_headers(self):
+        workflow = (ROOT / '.github' / 'workflows' / 'deploy-theory7.yml').read_text(encoding='utf-8')
+        transfer = workflow.split("<<'EOF'", 1)[1].split('\n          EOF', 1)[0]
+        commands = [shlex.split(line.strip()) for line in transfer.splitlines()
+                    if line.strip() and not line.lstrip().startswith('#')]
+        header_uploads = [(index, command) for index, command in enumerate(commands)
+                          if command[0] == 'put' and any('.htaccess' in word for word in command)]
+        self.assertEqual(len(header_uploads), 1, 'Only the ICT directory headers may be uploaded explicitly')
+        upload_index, upload = header_uploads[0]
+        self.assertEqual(upload, ['put', 'site-build/tools/ict-scan/.htaccess', '-o', '/tools/ict-scan/.htaccess'])
+        directory_index = commands.index(['mkdir', '-p', '/tools/ict-scan'])
+        self.assertLess(directory_index, upload_index)
+        site_mirrors = [(index, command) for index, command in enumerate(commands)
+                        if command[0] == 'mirror' and command[-2:] == ['site-build/', '/']]
+        self.assertEqual(len(site_mirrors), 1)
+        mirror_index, mirror = site_mirrors[0]
+        self.assertLess(upload_index, mirror_index, 'Directory headers must precede the HTML publication')
+        excluded = [mirror[index + 1] for index, word in enumerate(mirror[:-1]) if word == '--exclude-glob']
+        self.assertIn('.htaccess', excluded, 'The host-managed root headers must remain excluded')
+        self.assertTrue((TOOL / '.htaccess').is_file())
+
+    def test_actual_upload_connection_verifies_certificate_and_hostname(self):
+        workflow = (ROOT / '.github' / 'workflows' / 'deploy-theory7.yml').read_text(encoding='utf-8')
+        transfer = workflow.split("<<'EOF'", 1)[1].split('\n          EOF', 1)[0]
+        commands = [shlex.split(line.strip()) for line in transfer.splitlines()
+                    if line.strip() and not line.lstrip().startswith('#')]
+        settings = {command[1]: command[2] for command in commands
+                    if len(command) == 3 and command[0] == 'set'}
+        for option in ('ssl:verify-certificate', 'ssl:check-hostname', 'ftp:ssl-force', 'ftp:ssl-protect-data'):
+            self.assertEqual(settings.get(option), 'true', option)
+        self.assertEqual(settings.get('cmd:fail-exit'), 'yes')
+        self.assertEqual(workflow.count('HOST: web0102.theory7.net'), 2, 'FTPS preflight and upload must use the certified server name')
+        self.assertNotIn('HOST: ftp.eaimodel.nl', workflow)
+        checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
+        self.assertIn("workflow_call:", checks)
+
+    def test_deployment_requires_the_same_ict_checks_including_browser_validation(self):
+        deploy = (ROOT / '.github' / 'workflows' / 'deploy-theory7.yml').read_text(encoding='utf-8')
+        checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
+        gate = (ROOT / '.github' / 'workflows' / 'site-check.yml').read_text(encoding='utf-8')
+        self.assertIn('uses: ./.github/workflows/site-check.yml', deploy)
+        self.assertIn('needs: release-check', deploy)
+        self.assertIn('uses: ./.github/workflows/check-ict-assurance.yml', gate)
+        self.assertIn('uses: ./.github/workflows/ict-scan-webkit.yml', gate)
+        self.assertIn('ict-check, ict-webkit', gate)
+        self.assertIn('scripts/check_release_gate.py', gate)
+        self.assertIn('  workflow_call:\n', checks)
+        self.assertIn('node tests/verify_ict_assurance_browser.mjs', checks)
+        self.assertIn('group: ict-assurance-${{ github.workflow }}-${{ github.ref }}', checks,
+                      'Standalone checks must not cancel the reusable deployment check')
 
     def test_expandable_sidebar_keeps_primary_navigation(self):
         html = (TOOL / 'index.html').read_text(encoding='utf-8')
@@ -107,7 +219,10 @@ class ICTScanTests(unittest.TestCase):
             self.assertEqual(html.count(f'id="{control}"'), 1, control)
         self.assertIn("event.key==='Escape'", js)
         self.assertIn("event.key!=='/'", js)
-        self.assertIn("openDrawer(true)", js)
+        self.assertIn("search.focus()", js)
+        self.assertRegex(html, r'class="top-search"[^>]*>.*id="globalSearch"')
+        for label in ("studio","connections","devices","privacy","reports","sources"):
+            self.assertIn(f'data-drawer-view="{label}"', html)
         self.assertIn('.icon-rail .rail-more', css)
         self.assertIn('@media(max-width:720px)', css)
 

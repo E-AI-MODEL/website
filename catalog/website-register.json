@@ -421,6 +421,19 @@
       "search_scope": "algemeen"
     },
     {
+      "id": "page:/en/publications/what-the-watermerk/",
+      "url": "/en/publications/what-the-watermerk/",
+      "file": "en/publications/what-the-watermerk/index.html",
+      "title": "what the watermark?!",
+      "kind": "publicatie",
+      "category": "Research & publications · Essays",
+      "review": "bron_vastgelegd",
+      "parent": "page:/en/publications/",
+      "family": "publicaties",
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
+    },
+    {
       "id": "page:/en/publications/",
       "url": "/en/publications/",
       "file": "en/publications/index.html",
@@ -495,6 +508,21 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": null,
       "family": "technisch",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
+      "id": "page:/houseoftalents/3d/",
+      "url": "/houseoftalents/3d/",
+      "file": "houseoftalents/3d/index.html",
+      "title": "Onderwijs in: technische anatomie (kaarten)",
+      "kind": "overig",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": "page:/houseoftalents/",
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
       "in_committed_sitemap": false,
       "search_scope": "niet_indexeren"
     },
@@ -636,6 +664,19 @@
       "parent": "page:/nl/",
       "family": "publicaties",
       "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/nl/blog/what-the-watermerk/",
+      "url": "/nl/blog/what-the-watermerk/",
+      "file": "nl/blog/what-the-watermerk/index.html",
+      "title": "what the watermerk?!",
+      "kind": "publicatie",
+      "category": "Onderzoek & publicaties · Blog",
+      "review": "bron_vastgelegd",
+      "parent": "page:/nl/blog/",
+      "family": "publicaties",
+      "in_committed_sitemap": false,
       "search_scope": "algemeen"
     },
     {
@@ -873,6 +914,21 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/onderwijsin/3d/",
+      "url": "/onderwijsin/3d/",
+      "file": "onderwijsin/3d/index.html",
+      "title": "Onderwijs in: technische anatomie (kaarten)",
+      "kind": "overig",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": "page:/onderwijsin/",
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": true,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/onderwijsin/houseoftalents/",
       "url": "/onderwijsin/houseoftalents/",
       "file": "onderwijsin/houseoftalents/index.html",
@@ -882,6 +938,21 @@
       "review": "niet_in_publieke_zoekindex_status_controleren",
       "parent": "page:/onderwijsin/",
       "family": "technisch",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
+      "id": "page:/onderwijsin/houseoftalents/3d/",
+      "url": "/onderwijsin/houseoftalents/3d/",
+      "file": "onderwijsin/houseoftalents/3d/index.html",
+      "title": "Onderwijs in: technische anatomie (kaarten)",
+      "kind": "overig",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": "page:/onderwijsin/houseoftalents/",
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
       "in_committed_sitemap": false,
       "search_scope": "niet_indexeren"
     },
@@ -7005,6 +7076,9 @@
       "path": "content/legacy/eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"
     },
     {
+      "path": "content/legacy/onderwijsin-3d.html"
+    },
+    {
       "path": "content/legacy/onderwijsin-embed1.html"
     },
     {
@@ -7057,8 +7131,8 @@
     }
   ],
   "audit": {
-    "tracked_html_files": 215,
-    "public_page_files": 176,
+    "tracked_html_files": 219,
+    "public_page_files": 179,
     "generated_pages": 2,
     "search_index_entries": 289,
     "embedded_items_in_search": 144,
@@ -7076,6 +7150,7 @@
       "/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
       "/eai-tools-modules/eai-what-if-machine/",
       "/houseoftalents/",
+      "/houseoftalents/3d/",
       "/kennis/",
       "/leif/",
       "/leif/beheer/",
@@ -7086,7 +7161,9 @@
       "/onderbouwing/",
       "/onderwijs/",
       "/onderwijsin/",
+      "/onderwijsin/3d/",
       "/onderwijsin/houseoftalents/",
+      "/onderwijsin/houseoftalents/3d/",
       "/over/",
       "/publicaties/",
       "/statistieken/",
@@ -7098,14 +7175,14 @@
       "/verdieping/"
     ],
     "orphan_items": [],
-    "additional_html_files": 39,
-    "all_html_files": 215,
-    "pages_not_in_public_search": 33,
+    "additional_html_files": 40,
+    "all_html_files": 219,
+    "pages_not_in_public_search": 36,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
     "collections": 5,
     "wihtml_examples": 2,
-    "last_structural_review": "2026-11-21",
+    "last_structural_review": "2026-11-16",
     "additional_verified_sections": {
       "abyss": 6,
       "gravity": 6,
@@ -7114,7 +7191,7 @@
       "melkweg_variants": 2,
       "melkweg_shared_topics": 6,
       "verified_redirects": 9,
-      "noindex_pages_checked": 5
+      "noindex_pages_checked": 8
     },
     "new_embedded_items": 18,
     "dynamic_function_review_pending": [],
@@ -7143,8 +7220,8 @@
     },
     "sitemap_from_main": {
       "source": "sitemap.xml",
-      "registered_urls": 147,
-      "registered_missing": 29,
+      "registered_urls": 148,
+      "registered_missing": 31,
       "examples_not_in_sitemap": [
         "/eai-blog/",
         "/eai-blog/eai-balans/",
@@ -7163,12 +7240,14 @@
         "/eai-tools-modules/eai-toolkit-the-act-of-learning-en/",
         "/eai-tools-modules/eai-what-if-machine/",
         "/houseoftalents/",
+        "/houseoftalents/3d/",
         "/leif/",
         "/leif/beheer/",
         "/leif/continue/",
         "/leif/mijn/",
         "/leif/verhaal/",
         "/onderwijsin/houseoftalents/",
+        "/onderwijsin/houseoftalents/3d/",
         "/toepassingen/onderwijsregio-rotterdam/",
         "/toepassingen/saga-legal-ai/",
         "/tools/lo-aanvalslab/onderbouwing/",

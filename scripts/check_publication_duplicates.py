@@ -80,7 +80,7 @@ class Page:
 
 def parse_page(root: Path, path: Path) -> Page:
     rel = path.relative_to(root).as_posix()
-    url = "/" if rel == "index.html" else "/" + rel.removesuffix("index.html")
+    url = "/" if rel == "index.html" else "/" + (rel.removesuffix("index.html") if path.name == "index.html" else rel)
     soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
     title = soup.title.get_text(" ", strip=True) if soup.title else ""
     title = re.sub(r"\s*(?:[|·]\s*EAI)\s*$", "", title, flags=re.I).casefold().strip()
@@ -143,7 +143,13 @@ def variant_pairs(register: Path) -> dict[tuple[str, str], str]:
     documented = {}
     for collection in payload.get("collections", []):
         members = [m.removeprefix("page:") for m in collection.get("members", [])]
-        if len(members) < 2 or not collection.get("review"):
+        # Only the explicitly checked A/B mathematics variants are known
+        # to share their text while performing separate model calculations.
+        # A general collection or a changed script is not approval by itself.
+        if (collection.get("id") != "wiskunde" or
+                collection.get("review") != "volledigheid_broncatalogi_gecontroleerd" or
+                set(members) != {"/tools/science-observatory/labs/wiskunde-a/",
+                                 "/tools/science-observatory/labs/wiskunde-b/"}):
             continue
         # Toevallige inhoudsgelijkheid mag niet worden weggewimpeld: alleen
         # een als eigen uitvoering geregistreerde verzameling geeft context.
@@ -175,7 +181,7 @@ def audit(root: Path, reviewed: dict[tuple[str, str], str],
             blocking.append(entry("dubbele_sitemap_url", [url],
                                   f"{count} keer vermeld in sitemap.xml"))
     pages = {}
-    for path in sorted(root.rglob("index.html")):
+    for path in sorted(root.rglob("*.html")):
         page = parse_page(root, path)
         if page.url in pages:
             blocking.append(entry("dubbele_url", [page.url],

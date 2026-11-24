@@ -34,7 +34,14 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertNotIn("rm -rf assets publicaties tools", source)
         self.assertIn("contents: read", source)
         deploy = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
-        self.assertIn("python scripts/build_site.py", deploy)
+        self.assertIn("uses: ./.github/workflows/site-check.yml", deploy)
+        self.assertIn("needs: release-check", deploy)
+        self.assertIn("actions/download-artifact@v4", deploy)
+        self.assertIn("scripts/release_artifact.py verify", deploy)
+        self.assertNotIn("python scripts/build_site.py", deploy)
+        ui = (WORKFLOWS / "verify-ui.yml").read_text(encoding="utf-8")
+        self.assertIn("scripts/release_artifact.py create", ui)
+        self.assertIn("include-hidden-files: true", ui)
         self.assertIn("mirror -R", deploy)
 
     def test_manual_recovery_publishers_do_not_compete_automatically(self):
@@ -80,6 +87,18 @@ class PublicationOwnershipTests(unittest.TestCase):
         events = source.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
         self.assertIn("  push:", events)
         self.assertIn("branches: [main]", events)
+
+    def test_release_gate_and_topo_browser_cannot_be_bypassed(self):
+        gate = (WORKFLOWS / "site-check.yml").read_text(encoding="utf-8")
+        self.assertIn("  static-checks:", gate)
+        self.assertIn("name: static-checks", gate)
+        self.assertIn("always()", gate)
+        self.assertIn("scripts/check_release_gate.py", gate)
+        topo = (WORKFLOWS / "deploy-topo-theory7.yml").read_text(encoding="utf-8")
+        self.assertIn("needs: browser-check", topo)
+        self.assertIn("uses: ./.github/workflows/topo-mobile-verify.yml", topo)
+        delf = (WORKFLOWS / "deploy-delf-preview.yml").read_text(encoding="utf-8")
+        self.assertNotIn("Wait until main-site deployment is finished", delf)
 
     def test_public_data_keeps_its_own_publication(self):
         source = (WORKFLOWS / "publish-public-analytics.yml").read_text(encoding="utf-8")

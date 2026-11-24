@@ -2148,6 +2148,7 @@ function guideAddRealTrace(host){
  const viewer=globalThis.EAIRealTraceViewer;
  if(!viewer)return;
  const outer=guideNode('section',null,'ai-trace-outer');
+ outer.dataset.lessonStep=String(guideStep);
  const button=guideNode('button','Bekijk echte modelmeting (ander model)','ai-trace-toggle');
  button.type='button';button.setAttribute('aria-expanded','false');
  const contents=guideNode('div',null,'ai-trace-content');contents.hidden=true;
@@ -2197,6 +2198,11 @@ function guideRender(){
  GUIDE_STEPS.forEach((_,i)=>{
   const mark=document.createElement('i');if(i<=guideStep)mark.classList.add('on');progress.append(mark);
  });
+ // Keep the optional recorded execution open through redraws of this same
+ // lesson (e.g. asynchronous tokenizer initialization). Changing lessons
+ // intentionally creates a fresh viewer. The recording is independent of input.
+ const previousTrace=interactive.querySelector('.ai-trace-outer');
+ const retainedTrace=previousTrace?.dataset.lessonStep===String(guideStep)?previousTrace:null;
  visual.replaceChildren();interactive.replaceChildren();
  if(guideStep===0){
   guideLabel(visual,'JOUW VRAAG');
@@ -2277,7 +2283,8 @@ function guideRender(){
   quick.onclick=()=>{guideBuildCount=Math.min(tokens.length,guideBuildCount+5);guideRender()};
   actions.append(quick);interactive.append(actions);
  }
- guideAddRealTrace(interactive);
+ if(retainedTrace)interactive.append(retainedTrace);
+ else guideAddRealTrace(interactive);
 }
 function setupGuide(){
  window.addEventListener('resize',()=>{
