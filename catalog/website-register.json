@@ -1615,14 +1615,16 @@
       "id": "page:/tools/science-observatory/labs/schuine-worp/",
       "url": "/tools/science-observatory/labs/schuine-worp/",
       "file": "tools/science-observatory/labs/schuine-worp/index.html",
-      "title": "Schuine worp",
-      "kind": "toepassing",
-      "category": "TOOLS",
-      "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/science-observatory/",
-      "family": "hulpmiddelen",
+      "title": "Doorverwijzing naar Schuine worp",
+      "kind": "doorverwijzing",
+      "category": null,
+      "review": "doel_in_bron_vastgelegd",
+      "parent": "page:/tools/science-observatory/labs/natuurkunde/",
+      "family": "natuurkunde",
       "in_committed_sitemap": false,
-      "search_scope": "algemeen"
+      "search_scope": "niet_indexeren",
+      "page_status": "meta_redirect_verified",
+      "redirect_target": "/tools/science-observatory/labs/natuurkunde/#projectile"
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-a/",
