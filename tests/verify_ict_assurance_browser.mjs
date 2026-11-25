@@ -84,7 +84,7 @@ async function openCard(target,type,id){
   assert.equal(await target.locator('#cardRecordId').innerText(),id);
 }
 async function saveCard(target){
-  await target.locator('#cardSaveDraft').click();
+  await target.locator('#cardKeepDraft').click();
   await target.locator('#cardForm').waitFor({state:'hidden',timeout:10000});
   assert.match(await target.locator('#cardFeedback').innerText(),/Concept bewaard/);
 }
@@ -131,8 +131,7 @@ async function exerciseBoundApprovals(target){
   await target.locator('#cardEditor').waitFor({state:'visible'});
   await target.locator('#cardTypeFilter').selectOption('sourceRegister');
   await target.locator('#cardNew').click();
-  await target.locator('#cardGatePassword').fill('Emmauscollege');
-  await target.locator('.card-edit-gate [data-unlock]').click();
+  await target.locator('#cardForm').waitFor({state:'visible'});
   assert.equal(await target.locator('#cardRecordId').innerText(),'SRC-99002','Een nieuwe bronkaart moet een geldig bron-ID met minimaal vijf cijfers krijgen');
   assert.equal(await target.locator('#cardFormFields [data-field="owner"]').inputValue(),'');
   assert.equal(await target.locator('#cardFormFields [name="confirmSourceApproval"]').isChecked(),false);
@@ -153,7 +152,7 @@ async function exerciseBoundApprovals(target){
   await target.locator('#cardFormFields [name="changeReason"]').fill('Synthetische bron volledig invullen en expliciet goedkeuren.');
   const sourceConfirmation=target.locator('#cardFormFields [name="confirmSourceApproval"]');
   assert.equal(await sourceConfirmation.isChecked(),false);
-  await target.locator('#cardSaveDraft').click();
+  await target.locator('#cardKeepDraft').click();
   await target.locator('#cardFeedback').filter({hasText:/Bevestig de gewijzigde brongoedkeuring/}).waitFor();
   assert.equal(await target.locator('#cardForm').isVisible(),true);
   assert.equal(await draft(target,'sourceRegister',sourceId),undefined,'Zonder bevestiging mag geen goedgekeurd bronconcept ontstaan');
@@ -187,7 +186,7 @@ async function exerciseBoundApprovals(target){
   await target.locator('#cardFormFields [name="changeReason"]').fill('Synthetische beoordeling met een exact gekoppelde, goedgekeurde bron.');
   const reviewConfirmation=review.locator('[data-part="confirmReviewBinding"]');
   assert.equal(await reviewConfirmation.isChecked(),false);
-  await target.locator('#cardSaveDraft').click();
+  await target.locator('#cardKeepDraft').click();
   await target.locator('#cardFeedback').filter({hasText:/Bevestig de gewijzigde beoordeling/}).waitFor();
   assert.equal(await draft(target,'apps',recordId),undefined,'Zonder bevestiging mag geen afgerond beoordelingsconcept ontstaan');
   await reviewConfirmation.check();
@@ -271,8 +270,15 @@ try {
   browser=await chromium.launch({headless:true});
   summary.browserVersion=browser.version();summary.playwrightVersion=packageInfo.version;
   context=await browser.newContext({viewport:{width:1440,height:960},acceptDownloads:true,reducedMotion:'reduce'});
+  const editorUnlocked=true;
   await context.route('**/*',async route=>{
     const request=route.request(),url=new URL(request.url());
+    if(url.origin===origin&&url.pathname.endsWith('/edit-api.php')){
+      const body=request.postDataJSON();let response;
+      if(body.action==='status')response={unlocked:editorUnlocked,csrf:editorUnlocked?'fixture-csrf':null};
+      else throw Error('Onverwachte schrijfroute in lokale conceptproef');
+      await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(response)});return;
+    }
     if(url.origin===origin||url.protocol==='blob:'||url.protocol==='data:'){await route.continue();return;}
     externalRequests.push({method:request.method(),url:request.url(),action:'aborted'});
     await route.abort('blockedbyclient');

@@ -23,10 +23,11 @@ class ICTScanTests(unittest.TestCase):
     def test_composer_and_edit_gate_assets_published(self):
         html = (TOOL / "index.html").read_text(encoding="utf-8")
         builder = (ROOT / "scripts" / "build_site.py").read_text(encoding="utf-8")
-        for filename in ("composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js"):
+        for filename in ("composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js", "edit-api.php"):
             self.assertTrue((TOOL / filename).is_file(), filename)
             self.assertIn(f'"{filename}"', builder, f"{filename} must be shipped")
-            self.assertIn(f'./{filename}', html, f"{filename} must be referenced")
+            consumer = (TOOL / 'edit-gate.js').read_text() if filename == 'edit-api.php' else html
+            self.assertIn(f'./{filename}', consumer, f"{filename} must be referenced")
         app = (TOOL / "app.js").read_text(encoding="utf-8")
         cards = (TOOL / "record-cards.js").read_text(encoding="utf-8")
         self.assertIn("signalTarget.type,signalTarget.id,true", app)
@@ -115,7 +116,8 @@ class ICTScanTests(unittest.TestCase):
         self.assertNotIn('<h2>DPIA-beoordelingen</h2>', html)
         self.assertIn('data-view="devices"', html)
         self.assertIn('id="deviceCoverage"', html)
-        self.assertIn('data-report="devices"', html)
+        self.assertIn('id="reportPicker"', html)
+        self.assertIn('"devices":[', (TOOL / "report-print.js").read_text(encoding="utf-8"))
         self.assertIn('PDF-inhoud is niet beoordeeld', (TOOL / 'app.js').read_text(encoding='utf-8'))
 
     def test_github_sync_is_read_only_and_credentials_not_persisted(self):
@@ -163,11 +165,11 @@ class ICTScanTests(unittest.TestCase):
                           if command[0] == 'put' and any('.htaccess' in word for word in command)]
         self.assertEqual(len(header_uploads), 1, 'Only the ICT directory headers may be uploaded explicitly')
         upload_index, upload = header_uploads[0]
-        self.assertEqual(upload, ['put', 'site-build/tools/ict-scan/.htaccess', '-o', '/tools/ict-scan/.htaccess'])
+        self.assertEqual(upload, ['put', 'candidate/site-build/tools/ict-scan/.htaccess', '-o', '/tools/ict-scan/.htaccess'])
         directory_index = commands.index(['mkdir', '-p', '/tools/ict-scan'])
         self.assertLess(directory_index, upload_index)
         site_mirrors = [(index, command) for index, command in enumerate(commands)
-                        if command[0] == 'mirror' and command[-2:] == ['site-build/', '/']]
+                        if command[0] == 'mirror' and command[-2:] == ['candidate/site-build/', '/']]
         self.assertEqual(len(site_mirrors), 1)
         mirror_index, mirror = site_mirrors[0]
         self.assertLess(upload_index, mirror_index, 'Directory headers must precede the HTML publication')
@@ -194,8 +196,14 @@ class ICTScanTests(unittest.TestCase):
         deploy = (ROOT / '.github' / 'workflows' / 'deploy-theory7.yml').read_text(encoding='utf-8')
         checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
         gate = (ROOT / '.github' / 'workflows' / 'site-check.yml').read_text(encoding='utf-8')
-        self.assertIn('uses: ./.github/workflows/site-check.yml', deploy)
-        self.assertIn('needs: release-check', deploy)
+        candidate = (ROOT / 'scripts' / 'release_candidate.py').read_text(encoding='utf-8')
+        validation = (ROOT / '.github' / 'workflows' / 'validate-main.yml').read_text(encoding='utf-8')
+        self.assertIn('uses: ./.github/workflows/site-check.yml', validation)
+        self.assertIn('python scripts/release_candidate.py', deploy)
+        self.assertIn('validate_run(run, repo, jobs)', candidate)
+        self.assertIn('gates[0]["conclusion"] != "success"', candidate)
+        self.assertIn('validated_manifest(dest / folder', candidate)
+        self.assertIn('same_tree(tree, current)', candidate)
         self.assertIn('uses: ./.github/workflows/check-ict-assurance.yml', gate)
         self.assertIn('uses: ./.github/workflows/ict-scan-webkit.yml', gate)
         self.assertIn('ict-check, ict-webkit', gate)

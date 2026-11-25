@@ -1,9 +1,10 @@
 // Run after prepare_ui.py. Usage: node scripts/ui_smoke.mjs [site-build]
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
+import { runLeeuwConsoleChecks } from './test_leeuw_console.mjs';
 const root = resolve(process.argv[2] || 'site-build');
 const base = 'http://127.0.0.1:8765';
 const server = spawn('python3', ['-m', 'http.server', '8765', '--bind', '127.0.0.1', '--directory', root], { stdio: 'ignore' });
@@ -17,7 +18,9 @@ try {
     await new Promise(r => setTimeout(r, 100));
   }
   assert(ready, 'Preview server did not start');
-  browser = await chromium.launch({ headless: true });
+  const engine = process.env.UI_BROWSER || 'chromium';
+  const browsers = { chromium, firefox, webkit };
+  browser = await browsers[engine].launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
@@ -143,6 +146,7 @@ try {
   assert(await page.locator('.eai-explore-choices').isVisible(), 'Back returns to all subjects');
   await page.locator('.eai-explore-choice[href="#vak-oceanografie"]').click();
   assert(await page.locator('#vak-oceanografie a[href="/tools/abyss/"]').isVisible(), 'Oceanography has a working direct entry');
+  await runLeeuwConsoleChecks(browser, base, engine);
   // WiHTML: van de rustige landingspagina via elke keuze naar een echte offline HTML-les.
   const wiContext = await browser.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
   const wiPage = await wiContext.newPage();

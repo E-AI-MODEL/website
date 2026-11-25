@@ -383,6 +383,8 @@ $("githubCheckReload").addEventListener("click",async()=>{
   state.repo=repo;state.repoError=null;
   renderResult();
  }catch(error){
+  state.repo={...state.repo,actionChecks:null};
+  renderResult();
   label("githubCheckSummary","Vernieuwen niet gelukt");
   label("githubCheckExplanation",error?.message||"Controleer je verbinding en probeer opnieuw.");
  }finally{

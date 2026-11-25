@@ -27,7 +27,7 @@ De 53 natuurkundeproeven vormen samen één onderzoeksruimte. Verbeter de bestaa
 - Controleer bij gekoppelde grootheden ook de natuurkundige relaties, bijvoorbeeld pV=nRT: bij een isobaar gasproces hoort T mee te veranderen met V zodat de druk constant blijft.
 - Een grootheid met alleen gehele waarden, zoals het aantal dragende touwdelen of een Bohr-energieniveau, staat als losse punten in de grafiek. Tussenliggende waarden zijn geen mogelijke instellingen.
 - Behoud de verschillende natuurkundige eigenschappen per proef en test veranderde metingen, grafieken en bediening afzonderlijk. Een geslaagde schermtest bewijst geen natuurkundige nauwkeurigheid.
-- De losse schuine-worpstudio blijft voorlopig als eerdere proefvariant bestaan, maar is geen tweede hoofdingang naast de gezamenlijke 53 proeven.
+- Schuine worp heeft één publieke uitvoering binnen Natuurkunde. De oude studio en de doorverwijzing zijn verwijderd; de vorige uitvoering blijft herstelbaar in de Git-geschiedenis.
 
 ## Grenzen
 
@@ -122,3 +122,15 @@ Een natuurkundige vergelijking en een geslaagde rekencontrole zijn niet genoeg o
 De controle `tests/test_science_physics_visual_fidelity.mjs` onderzoekt de zichtbare coördinaten, krachtenpijlen, beginrichting en intensiteitsverdeling. De tests voor alle 53 formules, grafieken en grenswaarden blijven actief. Dit is *gerichte technische dekking*, geen volledige inhoudelijke goedkeuring.
 
 Voor een vakdocent staat een [controlelijst voor alle 53 proeven](vakdocent-controle-53.md) klaar. Daarin zijn per proef de onderzoeksvraag en de beperking opgenomen, met extra aandachtspunten bij veertien onderwerpen. Ook het register `natuurkunde-kwaliteit.json` onderscheidt nu technische beeldtests van de nog ontbrekende beoordeling door een docent. Alle `inhoudelijk_gevalideerd`-velden blijven `false`.
+
+## Leeuw in 3D
+
+`labs/leeuw.html` is een zelfstandige onderzoeksruimte met zeven standen: hemelkaart, 3D, afstanden, parallax, licht, eigenbeweging en horizon. De negen figuursterren hebben vaste HIP-identificaties en bronlinks. Alle berekeningen lezen dezelfde ingebedde JSON met parallax en meetfout, ICRS/J2000, eigenbeweging, V-magnitude, spectraaltype en radiale snelheid. De CSV-export komt uit dezelfde gegevens. De pagina maakt duidelijk dat de figuur niet de volledige IAU-regio Leo is, kleuren niet fysieke sterdiameters zijn, inverse parallax geen volledige afstandsinferentie is en de bewegings- en horizonmodellen benaderingen zijn. Geen account, API of externe scriptbibliotheek nodig. Route: `/tools/science-observatory/labs/leeuw/`. De bron- en browsertests vallen onder de bestaande websitecontrole.
+
+### Leeuw-console v2
+
+De Leeuw gebruikt de CSS en instrumentindeling van het oorspronkelijke Galactisch Observatorium (`labs/melkweg.html`), met eigen scène en zeven ongewijzigde onderzoeksstanden. De hoofdpagina vult de viewport zonder scroll. Grafieken en metingen zijn op kleine schermen afzonderlijke panelen. De 3D-stand begint met een geanimeerde overgang uit de hemelprojectie en kan worden gepauzeerd, met de hand verschoven of gedraaid. De gegevens en rekenfunctie blijven dezelfde. `scripts/test_leeuw_console.mjs` controleert op echte Chromium- en WebKit-viewports de beschikbare scène, zichtbare knoppen, overgang, rotatie, pauze, metingen, grafiek en verminderde beweging. De gewone productiecontrole gebruikt dezelfde Chromium-test.
+
+### Leeuw: ruimtereis (v3)
+
+De bestaande route opent standaard een zelfstandige film van 96 seconden in vijf hoofdstukken. De camera gebruikt een perspectiefprojectie van de negen gemeten sterposities uit dezelfde JSON-data. De achtergrondsterren, diffuse lichtwolken, aardrand en het detailbeeld van Regulus zijn illustratief, evenals de lichtpuntgrootte; dit staat in beeld. De onderzoeksconsole blijft bereikbaar via `#hemel`, `#ruimte` en de andere bestaande hashes. De film is te pauzeren, te verschuiven en per hoofdstuk te bekijken; de voorkeursinstelling voor verminderde beweging wordt gerespecteerd. De gedeelde browsertest controleert ook de film op 320, 390 en 1440 pixels, maakt beelden van alle vijf scènes en controleert de overgang naar de bestaande console.

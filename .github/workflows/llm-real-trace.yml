@@ -1,6 +1,7 @@
 name: Record real tiny LLM activations
 # Heavy model inference runs only on deliberate manual request, not every PR commit.
 on:
+  workflow_call:
   workflow_dispatch:
 permissions:
   contents: read

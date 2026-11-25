@@ -51,7 +51,7 @@ function dom() {
   return document;
 }
 
-function setup({token = 'synthetic-secret-for-security-tests', message = 'Registratie bijwerken', fetchResponse, record, rawProfile = profileJson} = {}) {
+function setup({message = 'Correctie na broncontrole', fetchResponse, record, rawProfile = profileJson, unlocked = true} = {}) {
   const document = dom(), calls = [], feedback = [];
   let resolveFeedback;
   const feedbackReceived = new Promise(resolve => {resolveFeedback = resolve;});
@@ -74,16 +74,14 @@ function setup({token = 'synthetic-secret-for-security-tests', message = 'Regist
   const profile = context.AssuranceProfile.validate(clone(rawProfile));
   context.IctOrganisation = {profile, ready: Promise.resolve(profile)};
   state.sources = [{name: profile.source.registerFiles.apps, githubRemote: {repository: profile.source.repository, ref: profile.source.baseRef, path: profile.source.sourceDir + '/' + profile.source.registerFiles.apps, sha: 'a'.repeat(40)}}];
-  const draft = {type: 'apps', id: original.id, before: clone(original), after: {...clone(original), description: 'Gecorrigeerde omschrijving'}, changed: ['description'], reason: 'Correctie na broncontrole', sourceScope: context.AssuranceProfile.scopeKey(profile)};
+  const draft = {type: 'apps', id: original.id, before: clone(original), after: {...clone(original), description: 'Gecorrigeerde omschrijving'}, changed: ['description'], reason: message, sourceScope: context.AssuranceProfile.scopeKey(profile)};
   context.EmmausRecordCards = {
     drafts: () => [clone(draft)],
     catalog: () => clone(catalog),
     feedback(message, error) {feedback.push({message, error}); resolveFeedback();},
     clearPublished() {throw Error('No successful publication expected in this test');}
   };
-  document.getElementById('cardGithubToken').value = token;
-  document.getElementById('cardCommitMessage').value = message;
-  document.getElementById('cardConfirmPublic').checked = true;
+  context.EmmausEditGate={request:async()=>unlocked,githubRequest:async(url,method,payload)=>{const response=await context.fetch(url,{method,body:payload===undefined?undefined:JSON.stringify(payload),redirect:'error',credentials:'omit'});if(!response.ok)throw Error('GitHub kon het verzoek niet afronden (HTTP '+response.status+').');return response.json();}};
   vm.runInContext(read('tools/ict-scan/record-github.js'), context, {filename: 'record-github.js'});
   return {
     context, document, calls, feedback, profile, draft, logic: context.EmmausCardGitLogic,
@@ -246,43 +244,29 @@ test('Bekende sleuteltypen en de exact ingevoerde sleutel worden uit inhoud gewe
   assert.doesNotThrow(() => logic.assertNoSecrets({description: 'Normaal bronkenmerk', sourceSha: 'a'.repeat(64)}, nonstandard));
 });
 
-test('Een sleutel in het commitbericht wordt geblokkeerd voordat een netwerkverzoek start', async () => {
-  const token = 'synthetic-unique-secret-for-commit';
-  const app = setup({token, message: 'Correctie ' + token});
+test('Een sleutel in de wijziging wordt geblokkeerd voordat een netwerkverzoek start', async () => {
+  const token='ghp_'+'T'.repeat(24), app=setup({message:'Correctie '+token});
   await app.publishUntilFeedback();
-  assert.equal(app.calls.length, 0);
-  assert.match(app.feedback[0].message, /toegangssleutel/);
+  assert.equal(app.calls.length,0);assert.match(app.feedback[0].message,/toegangssleutel/);
   assert.ok(!app.feedback[0].message.includes(token));
-  assert.equal(app.document.getElementById('cardGithubToken').value, '');
 });
-
-test('API-fouten tonen geen ingevoerde sleutel en verzoeken volgen geen redirects', async () => {
-  const token = 'synthetic-secret-returned-by-api';
-  const app = setup({token, fetchResponse: async url => url === 'https://api.github.com/user'
-    ? {ok: false, status: 401, json: async () => ({message: 'Request failed for ' + token})}
-    : {ok: true, status: 200, json: async () => ({object: {sha: 'b'.repeat(40)}})}});
+test('Zonder geldige bewerksessie wordt geen GitHub-verzoek gedaan', async () => {
+  const app=setup({unlocked:false});
+  assert.equal(await app.context.EmmausCardPublisher.submit(),false);
+  assert.equal(app.calls.length,0);
+});
+test('De serverfout bevat geen upstream-sleutel en de browser heeft geen tokenveld', async () => {
+  const token='synthetic-server-only-secret';
+  const app=setup({fetchResponse:async url=>url==='https://api.github.com/user'
+    ? {ok:false,status:401,json:async()=>({message:'Upstream '+token})}
+    : {ok:true,json:async()=>({object:{sha:'b'.repeat(40)}})}});
   await app.publishUntilFeedback();
-  assert.ok(app.calls.length >= 1);
-  for (const {url, options} of app.calls) {
-    assert.equal(new URL(url).origin, 'https://api.github.com');
-    assert.equal(options.redirect, 'error');
-    assert.equal(options.credentials, 'omit');
-  }
   assert.ok(!JSON.stringify(app.feedback).includes(token));
-  assert.match(app.feedback[0].message, /afgeschermd/);
-  assert.equal(app.document.getElementById('cardGithubToken').value, '');
+  const html=read('tools/ict-scan/index.html'),gate=read('tools/ict-scan/edit-gate.js');
+  assert.ok(!html.includes('id="cardGithubToken"'));assert.ok(!html.includes('id="dsSharedToken"'));
+  assert.ok(!gate.includes("==='Emmauscollege'"));assert.match(gate,/credentials:'same-origin'/);
+  assert.match(gate,/redirect:'error'/);assert.match(gate,/X-ICT-CSRF/);
 });
-
-test('Lange API-fouten maskeren de sleutel voordat de tekst wordt ingekort', async () => {
-  const token = 'synthetic-tail-token-not-a-known-prefix';
-  const app = setup({token, fetchResponse: async url => url === 'https://api.github.com/user'
-    ? {ok: false, status: 401, json: async () => ({message: 'x'.repeat(210) + token})}
-    : {ok: true, status: 200, json: async () => ({object: {sha: 'b'.repeat(40)}})}});
-  await app.publishUntilFeedback();
-  assert.ok(!JSON.stringify(app.feedback).includes(token.slice(0, 10)), 'Ook een afgekapt sleutelfragment mag niet in de foutmelding staan.');
-  assert.equal(app.document.getElementById('cardGithubToken').value, '');
-});
-
 test('Kaartnamen, bewijs en foutmeldingen worden als tekst weergegeven', async () => {
   const payload = '<img src=x onerror="globalThis.injected=true"><script>injected=true</script>';
   const app = setup({record: {id: 'APP-001', name: payload, description: payload, sources: [payload], frameworkLinks: [{frameworkId: 'IBP', article: '1', status: 'In onderzoek', evidence: payload}]}, fetchResponse: async () => ({ok: true, json: async () => clone(catalog)})});

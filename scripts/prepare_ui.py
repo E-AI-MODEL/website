@@ -140,7 +140,7 @@ def experiment_sections(en: bool):
         ('Physics' if en else 'Natuurkunde', [(name, links) for name, links in physics_groups.items()]),
         ('Mathematics' if en else 'Wiskunde', maths),
         ('Human body' if en else 'Menselijk lichaam', [('Body and heart' if en else 'Lichaam en hart', [('The body in 3D' if en else 'Het lichaam in 3D', '/tools/anatomie/', ''), ('Heart and circulation' if en else 'Hart en bloedsomloop', '/tools/anatomie/labs/hartslag/', 'hartslag hartkleppen bloedstroom hartcyclus')])]),
-        ('Space' if en else 'Heelal', [('The Milky Way' if en else 'De Melkweg', guided_modes), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
+        ('Space' if en else 'Heelal', [('The Milky Way' if en else 'De Melkweg', guided_modes), ('Constellations' if en else 'Sterrenbeelden', [('Leo in 3D (Dutch)' if en else 'Leeuw in 3D', '/tools/science-observatory/labs/leeuw/', 'Sterrenbeeld Leeuw, Leo, sterrenkaart, parallax, sterrenlicht en eigenbeweging')]), ('Orbits' if en else 'Banen', [('Gravity and satellites' if en else 'Gravitatie en satellietbanen', '/tools/science-observatory/labs/gravitatie-banen/', '')])]),
         ('Oceanography' if en else 'Oceanografie', [('Oceanography' if en else 'Oceanografie', [('Oceanography (Dutch)' if en else 'Oceanografie', '/tools/abyss/', 'Zeebodem, aardbevingen, plaattektoniek, stromingen en meetgegevens')])]),
         ('Sport and movement' if en else 'Sport en bewegen', [('Sports' if en else 'Sport en bewegen', [('Attack and defence' if en else 'Aanvallen en verdedigen', '/tools/lo-aanvalslab/', ''), ('Research and sources' if en else 'Onderbouwing van aanvallen en verdedigen', '/tools/lo-aanvalslab/onderbouwing/', '')])]),
         ('AI', [('Language models' if en else 'Taalmodellen', [('How does a language model work?' if en else 'Hoe werkt een taalmodel?', '/tools/llm-observatorium/', '')] + llm_modes)]),
@@ -199,11 +199,13 @@ def tool_sections(en: bool):
         return [
             ('Create lessons and prompts', [('Prompt Framework', '/tools/prompt-framework/', ''), ('Process to prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Library', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Example', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio Editor', '/tools/eaistudio/studio/', '')]),
             ('Check models and publications', [('LLMscan', '/en/llmscan/', ''), ('LLMscan research', '/nl/llmscan/onderzoek/', 'Dutch'), ('AI Model Monitor', '/en/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publication verification', '/nl/tools/verificatie/', 'Dutch')]),
+            ('Speech and translation', [('EAIspeak', '/tools/eaispeak/', 'Live translation, captions, transcription, conversation and read-aloud (Dutch interface)')]),
             ('Workspaces and sharing', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh Start', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('Upload HTML', '/tools/html-galerij/', '')]),
         ]
     return [
         ('Lesmateriaal en prompts maken', [('EAI Prompt Framework', '/tools/prompt-framework/', ''), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML Docentstudio', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Bibliotheek', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Voorbeeld', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio bewerken', '/tools/eaistudio/studio/', '')]),
         ('AI en publicaties controleren', [('LLMscan', '/nl/llmscan/', ''), ('LLMscan onderzoek', '/nl/llmscan/onderzoek/', ''), ('AI Model Monitor', '/nl/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publicatie verifiëren', '/nl/tools/verificatie/', '')]),
+        ('Spraak en vertalen', [('EAIspeak', '/tools/eaispeak/', 'Live vertalen, ondertitelen, transcriberen, vrij praten en voorlezen')]),
         ('Werkruimtes en delen', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh starten', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('HTML uploaden', '/tools/html-galerij/', '')]),
     ]
 

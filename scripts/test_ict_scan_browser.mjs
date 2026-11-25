@@ -8,6 +8,7 @@ import {resolve} from 'node:path';
 const root=resolve(process.argv[2]||'site-build');
 const profileHash=createHash('sha256').update(readFileSync('tools/ict-scan/assurance/profile.js')).digest('hex').slice(0,16);
 const browserType=process.argv[3]==='webkit'?webkit:chromium;
+const fixedOnly=process.argv.includes('--fixed-only');
 const base='http://127.0.0.1:8797';
 const manifest=JSON.parse(readFileSync('tools/ict-scan/bronnen/manifest.json','utf8'));
 const sources=new Map();
@@ -24,6 +25,7 @@ const manifestSha=createHash('sha1').update('blob '+manifestContent.length+'\0')
 sources.set(manifestSha,manifestContent);
 listing.push({type:'file',name:'manifest.json',path:'tools/ict-scan/bronnen/manifest.json',sha:manifestSha,size:manifestContent.length});
 const {default:inventory}=await import('../tools/ict-scan/inventory-index.js');
+const {default:taxonomy}=await import('../tools/ict-scan/record-taxonomy.js');
 const fixture=manifest.dataFiles.map(f=>JSON.parse(readFileSync('tools/ict-scan/bronnen/'+f.path,'utf8')));
 const fixtureState=Object.fromEntries(Object.entries(inventory.STORES).map(([type,store])=>[store,fixture.flatMap(f=>f[type]||[])]));
 const expectedIndex=inventory.build(fixtureState);
@@ -43,6 +45,7 @@ try {
  assert(ready,'De ICT-scan ontbreekt in de sitebuild');
  browser=await browserType.launch({headless:true});
  mkdirSync('test-results',{recursive:true});
+ const fixedScreenFailures=[];
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:900},isMobile:width<600,hasTouch:width<600});
   const errors=[],network=[],designWrites=[];
@@ -71,23 +74,7 @@ try {
      const bytes=readFileSync('tools/ict-scan/dashboard-layouts/layouts.json');
      const sha=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
      data={type:'file',encoding:'base64',content:bytes.toString('base64'),size:bytes.length,sha};
-   }else if(method!=='GET'){
-     const payload=route.request().postDataJSON();
-     assert.equal(route.request().headers().authorization,'Bearer browser-test-design-token');
-     if(url.pathname.endsWith('/git/refs')&&method==='POST'){
-       assert.match(payload.ref,/^refs\/heads\/applicatielandschap\/ontwerp-/);assert.equal(payload.sha,'d'.repeat(40));data={ref:payload.ref};
-     }else if(url.pathname.endsWith('/contents/tools/ict-scan/dashboard-layouts/layouts.json')&&method==='PUT'){
-       assert.match(payload.branch,/^applicatielandschap\/ontwerp-/);
-       const file=JSON.parse(Buffer.from(payload.content,'base64').toString('utf8'));
-       assert.equal(file.schema,'eai-ict-dashboard-designs-v1');
-       for(const item of Object.values(file.designs))assert.deepEqual(Object.keys(item).sort(),['components','content','format','layout','primary','title','variant','version','visuals']);
-       assert(!JSON.stringify(file).includes('APP-034'));assert(!JSON.stringify(file).includes('browser-test-design-token'));
-       data={content:{sha:'e'.repeat(40)}};
-     }else if(url.pathname.endsWith('/pulls')&&method==='POST'){
-       assert.equal(payload.base,'main');assert.match(payload.head,/^applicatielandschap\/ontwerp-/);data={number:9999,html_url:'https://github.com/E-AI-MODEL/website/pull/9999'};
-     }else throw Error('Onverwachte schrijfroute '+url.pathname);
-     designWrites.push({method,path:url.pathname});
-   }
+   }else if(method!=='GET'){throw Error('Browser mag GitHub niet rechtstreeks wijzigen');}
    if(data!==undefined){await route.fulfill({status:200,headers:cors,body:JSON.stringify(data)});return;}
    if(url.pathname.endsWith('/contents/tools/ict-scan/bronnen')&&width<700&&!initialSyncDelayed){
      initialSyncDelayed=true;
@@ -113,6 +100,39 @@ try {
    if(url.startsWith('https://api.github.com/'))return route.fallback();
    return route.abort();
   });
+  const editorUnlocked=true;
+  await page.route('**/edit-api.php',async route=>{
+    const body=route.request().postDataJSON();let data;
+    assert(!route.request().headers().authorization,'Geen GitHub-sleutel in de browser');
+    if(body.action==='status')data={unlocked:editorUnlocked,csrf:editorUnlocked?'test-csrf':null};
+    else if(body.action==='github'){
+      assert(editorUnlocked);assert.equal(route.request().headers()['x-ict-csrf'],'test-csrf');
+      const url=new URL(body.url),method=body.method,payload=body.payload;
+      let result;
+      if(method==='GET'&&url.pathname.endsWith('/git/ref/heads/main'))result={object:{sha:'d'.repeat(40)}};
+      else if(method==='GET'&&url.pathname.endsWith('/contents/tools/ict-scan/dashboard-layouts/layouts.json')){
+        const bytes=readFileSync('tools/ict-scan/dashboard-layouts/layouts.json');
+        const sha=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+        result={type:'file',encoding:'base64',content:bytes.toString('base64'),sha};
+      }else{
+     if(url.pathname.endsWith('/git/refs')&&method==='POST'){
+       assert.match(payload.ref,/^refs\/heads\/applicatielandschap\/ontwerp-/);assert.equal(payload.sha,'d'.repeat(40));result={ref:payload.ref};
+     }else if(url.pathname.endsWith('/contents/tools/ict-scan/dashboard-layouts/layouts.json')&&method==='PUT'){
+       assert.match(payload.branch,/^applicatielandschap\/ontwerp-/);
+       const file=JSON.parse(Buffer.from(payload.content,'base64').toString('utf8'));
+       assert.equal(file.schema,'eai-ict-dashboard-designs-v1');
+       for(const item of Object.values(file.designs))assert.deepEqual(Object.keys(item).sort(),['components','content','format','layout','primary','title','variant','version','visuals']);
+       assert(!JSON.stringify(file).includes('APP-034'));assert(!JSON.stringify(file).includes('browser-test-design-token'));
+       result={content:{sha:'e'.repeat(40)}};
+     }else if(url.pathname.endsWith('/pulls')&&method==='POST'){
+       assert.equal(payload.base,'main');assert.match(payload.head,/^applicatielandschap\/ontwerp-/);result={number:9999,html_url:'https://github.com/E-AI-MODEL/website/pull/9999'};
+     }else throw Error('Onverwachte schrijfroute '+url.pathname);
+     designWrites.push({method,path:url.pathname});
+      }
+      data={data:result};
+    }else throw Error('Onverwachte bewerkservicehandeling');
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+  });
   await page.goto(base+'/tools/ict-scan/',{waitUntil:'load'});
   assert.equal(await page.locator('script[src^="./assurance/profile.js"]').getAttribute('src'),'./assurance/profile.js?v='+profileHash,'De browser moet de juiste, versienummergebonden validator laden');
   assert.equal(await page.title(),'404 Not Found');
@@ -131,12 +151,94 @@ try {
   catch(error){const state=await page.evaluate(()=>({status:document.getElementById('githubSyncStatus')?.textContent,view:document.getElementById('workspace')?.hidden,ready:typeof window.state==='object'?window.state.ready:null,button:document.getElementById('githubSyncStart')?.disabled}));throw Error('Synchronisatie voltooit niet: '+JSON.stringify({state,network,errors,reason:error.message}));}
   const message=await page.locator('#githubSyncStatus').textContent();
   assert.equal(await page.locator('#globalSearch').isVisible(),true,'Zoekfunctie moet direct zichtbaar zijn');
-  assert.match(await page.locator('#githubLiveStatus').textContent(),new RegExp(String(nodeCount)));
+  assert.equal(await page.locator('#githubLiveStatus').textContent(),'GitHub · gesynchroniseerd');
+  assert.match(await page.locator('#githubLiveStatus').getAttribute('title'),new RegExp(String(nodeCount)));
   assert.equal(await page.locator('#githubLiveStatus').getAttribute('data-mode'),'success');
   assert.equal(await page.locator('#sections .rail-button:visible').count(),4);
   assert.match(message,/geslaagd/i,'GitHub-sync mislukt: '+message);
-  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent.includes('69 applicaties'));
+  await page.waitForFunction(()=>document.getElementById('statusText')?.textContent==='Brongegevens ingelezen');
   await page.locator('#viewOverview:not([hidden])').waitFor();
+  // Test actual opening-view geometry, not just body overflow:hidden.
+  const assertFixedStarts=async viewport=>{
+    await page.setViewportSize(viewport);
+    for(const name of ['overview','apps','connections','devices','ai','privacy','findings','reports','sources']){
+      try{
+      await navigate(name);
+      await page.evaluate(n=>window.EmmausScenes.show(n,0,false),name);
+      const id='view'+name[0].toUpperCase()+name.slice(1);
+      await page.locator('#'+id+'Scene0:not([hidden])').waitFor({state:'visible'});
+      await page.locator('#'+id).evaluate(el=>Promise.all(el.getAnimations({subtree:true}).filter(a=>a.effect?.getTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{}))));
+      const geometry=await page.evaluate(id=>{
+        const panel=document.getElementById(id+'Scene0'),frame=panel.parentElement;
+        const r=panel.getBoundingClientRect(),f=frame.getBoundingClientRect();
+        const blocks=[...panel.children].filter(el=>!el.hidden&&getComputedStyle(el).display!=='none').map(el=>{const b=el.getBoundingClientRect();return {name:el.id||el.className,bottom:b.bottom,top:b.top};});
+        return {frame:frame.clientHeight,frameScroll:frame.scrollHeight,frameOverflow:getComputedStyle(frame).overflowY,panel:panel.clientHeight,panelScroll:panel.scrollHeight,top:r.top,bottom:r.bottom,frameBottom:f.bottom,blocks};
+      },id);
+      await page.screenshot({path:'test-results/ict-scan-fixed-'+viewport.width+'-'+name+'.png',animations:'disabled'});
+      assert(geometry.frame>70,'Geen bruikbare schermruimte bij '+name+' '+JSON.stringify(viewport));
+      assert.equal(geometry.frameOverflow,'hidden','Startscherm scrolt als geheel: '+name);
+      assert(geometry.panelScroll<=geometry.panel+3&&geometry.frameScroll<=geometry.frame+3,'Startscherm past niet: '+name+' '+JSON.stringify({viewport,geometry}));
+      assert(geometry.blocks.every(b=>b.bottom<=geometry.bottom+3&&b.top>=geometry.top-3),'Een startblok is afgesneden: '+name+' '+JSON.stringify({viewport,geometry}));
+      if(name==='overview'){
+        const actions=await page.locator('#viewOverviewScene0 #overviewQuickActions button').evaluateAll(els=>els.map(e=>({bottom:e.getBoundingClientRect().bottom,height:e.getBoundingClientRect().height})));
+        assert(actions.length===6&&actions.every(e=>e.bottom<=geometry.bottom+3&&e.height>=30),'Hoofdacties niet direct bereikbaar');
+      }
+      if(name==='apps'){
+        const list=page.locator('#appsList');
+        if(await list.isVisible()){
+          await list.evaluate(el=>{el.scrollTop=el.scrollHeight;});
+          const reach=await list.evaluate(el=>{const last=el.lastElementChild;return !last||last.getBoundingClientRect().bottom<=el.getBoundingClientRect().bottom+4;});
+          assert(reach,'Laatste applicatie niet bereikbaar in eigen lijst');
+          await list.evaluate(el=>{el.scrollTop=0;});
+        }
+      }
+      if(name==='ai')assert.equal(await page.locator('#aiProgress .ai-group-toggle').count(),3);
+      const requiredRegions={apps:'#appsList',connections:'#connectionChart',devices:'#viewDevicesScene0>.two-col',ai:'#aiProgress>.ai-progress-grid',privacy:'#privacyDpia',findings:'#assuranceDetailArea',reports:'#reportPicker',sources:'#githubSyncDetailArea'};
+      if(requiredRegions[name]){
+        const region=page.locator(requiredRegions[name]);
+        if(await region.isVisible()){
+          const box=await region.boundingBox();
+          assert(box&&box.height>=44&&box.y+box.height<=geometry.bottom+3,'Onbruikbaar of afgesneden detailvlak: '+name+' '+JSON.stringify({viewport,box,geometry}));
+        }else assert(name==='apps'&&await page.locator('#candidatePanel').isVisible(),'Detailvlak ontbreekt: '+name);
+      }
+      if(name==='privacy'){
+        const list=page.locator('#privacyDpia');
+        const result=await list.evaluate(el=>{
+          const last=el.lastElementChild;el.scrollTop=el.scrollHeight;
+          const visible=!!last&&last.getBoundingClientRect().bottom<=el.getBoundingClientRect().bottom+4;
+          el.scrollTop=0;return {visible,count:el.querySelectorAll('.dpia-evidence').length};
+        });
+        assert(result.visible&&result.count===expectedIndex.count('dpia'),'DPIA-lijst niet volledig bereikbaar: '+JSON.stringify(result));
+      }
+      if(name==='sources'){
+        for(const selector of ['#githubSyncStart','#sourcesImport']){
+          const button=page.locator(selector),box=await button.boundingBox();
+          assert(box&&box.height>=30&&box.y+box.height<=geometry.bottom+3,'Bronactie buiten scherm: '+selector);
+          await button.click({trial:true});
+        }
+      }
+      console.log('Vast scherm '+browserType.name()+' '+viewport.width+'x'+viewport.height+' '+name+' OK');
+      }catch(error){
+        const diagnostic=browserType.name()+' '+viewport.width+'x'+viewport.height+' '+name+': '+error.message;
+        fixedScreenFailures.push(diagnostic);console.error(diagnostic);
+      }
+    }
+    await navigate('studio');
+    const studio=await page.locator('#viewStudio').boundingBox();
+    if(!studio||studio.y+studio.height>viewport.height+3)fixedScreenFailures.push(browserType.name()+' '+viewport.width+'x'+viewport.height+' Dashboardbouwer valt buiten beeld');
+  };
+
+  if(fixedOnly){
+    // A separate layout run must not be blocked by a later copy or feature test.
+    await page.locator('#railMore').click();
+    await page.locator('#roleModeFG').check();
+    await page.locator('#railDrawerClose').click();
+  await assertFixedStarts(width===1440?{width:1280,height:720}:{width:320,height:740});
+  await assertFixedStarts({width,height:900});
+    assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
+    await page.close();
+    continue;
+  }
   assert.equal(await page.locator('#sectionTitle').textContent(),'ICT-overzicht');
   assert.match(await page.locator('#evidencePath').textContent(),/^Overzicht/);
   assert.equal(await page.locator('#overviewQuickActions button').count(),6,'De zes gebruikerstaken ontbreken');
@@ -154,7 +256,18 @@ try {
   if(width===1440){
     await page.evaluate(()=>{window.print=()=>{};});
     const reports=await page.evaluate(()=>Object.keys(window.IctPrintReports.titles));
-    assert.equal(reports.length,9);
+    const scoped=await page.evaluate(()=>['bestuur','ibp','aiAct','aiLiteracy','processing'].map(scope=>{
+      const m=indexedReport(scope);return {scope,title:m.title,limit:m.limit,kpis:m.kpis,sections:m.sections.map(s=>s.title),body:JSON.stringify(m),workbookSize:(()=>{const b=indexedReportWorkbook(m);return b.size??b.byteLength??b.length;})()};
+    }));
+    for(const report of scoped){assert(report.limit);assert(report.sections.length>=2);assert(report.workbookSize>1000);}
+    const aiActReport=scoped.find(r=>r.scope==='aiAct');
+    assert.match(aiActReport.body,/2 december 2027/);
+    assert.match(aiActReport.body,/geen automatische|Geen juridische/);
+    assert(scoped.find(r=>r.scope==='aiLiteracy').sections.includes('AI-geletterdheid: maatregelen en bewijs'));
+    assert.match(scoped.find(r=>r.scope==='processing').body,/geen verwerkingsactiviteit|geen afzonderlijk register/);
+    await page.screenshot({path:'test-results/ict-scan-report-picker.png'});
+
+    assert.equal(reports.length,14);
     for(const scope of reports){
       const model=await page.evaluate(scope=>indexedReport(scope),scope);
       assert(model.sections.length>1);
@@ -164,14 +277,14 @@ try {
       assert.equal(await page.locator('#printReport .report-chapter').count(),model.sections.length);
       assert.equal(await page.locator('#printReport script').count(),0);
       // Do not export the actual school register as a public CI artifact.
-      if(browserType===chromium&&['ict','privacy','aiGovernance'].includes(scope)){
+      if(browserType===chromium&&['ict','privacy','aiGovernance','bestuur','ibp','aiAct','aiLiteracy','processing'].includes(scope)){
         await page.evaluate(scope=>{
           const synthetic=IctInventoryIndex.build({
             apps:[{id:'TEST-APP',name:'Voorbeeldapplicatie',kind:'Applicatie',area:'Onderwijs',description:'Fictieve applicatie voor de PDF-proef.',local:'Onbekend',data:'Fictieve gegevens'}],
             ai:[{id:'TEST-AI',name:'Voorbeeldfunctie',product:'Voorbeeldapplicatie',domain:'Onderwijs',local:'Onbekend',action:'Fictieve functie'}],
             checks:[{id:'TEST-CHECK',name:'Voorbeeldcontrole',category:'Toegang',explanation:'Controleer de fictieve rolverdeling.',status:'Open'}],
             dpia:[{id:'TEST-DPIA',name:'Voorbeeldonderzoek',assessment:'Nog niet beoordeeld',evidence:'Niet vastgesteld'}],
-            workActions:[{id:'TEST-WORK',name:'Voorbeeldactie',action:'Controleer de fictieve instellingen.',status:'Open'}]
+            workActions:[{id:'TEST-WORK',name:'Voorbeeldactie',action:'Controleer de fictieve instellingen.',status:'Open',frameworkLinks:[{frameworkId:'AIACT',article:'art. 4',status:'Nog te beoordelen',followUp:'Synthetische scholingsactie',followUpStatus:'In uitvoering'}]}]
           });
           const example=IctPrintReports.build(synthetic,{scope,taxonomy:IctScanTaxonomy,date:'24-11-2026',sourceLabel:'SYNTHETISCHE TESTGEGEVENS'});
           document.getElementById('printReport').innerHTML=IctPrintReports.render(example);
@@ -187,6 +300,19 @@ try {
   await navigate('overview');
   await page.locator('#overviewQuickActions button').filter({hasText:'Registratie bewerken'}).click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
+  assert.equal(await page.locator('#cardBrowserList [data-tree-register]').count(),Object.keys(inventory.STORES).length,'Mappen voor alle registers ontbreken');
+  assert((await page.locator('#cardReadView .card-directory-folder').count())>0,'Register moet als mappen kunnen worden doorlopen');
+  assert.equal(await page.locator('#cardPendingPanel').isVisible(),false,'Leeg wijzigingenpaneel hoort niet in de verkenner');
+  await page.locator('#cardReadView .card-directory-folder').first().click();
+  assert((await page.locator('#cardReadView .card-directory-file').count())>0,'Mapinhoud ontbreekt');
+  await page.locator('#cardReadView .card-directory-file').first().click();
+  assert.match(await page.locator('#cardRecordId').textContent(),/^APP-/);
+  await page.locator('#cardSearch').fill('WRK-014');
+  await page.locator('#cardBrowserList [data-record-id="WRK-014"]').click();
+  assert.equal(await page.locator('#cardRecordId').textContent(),'WRK-014','Zoeken over alle registers mislukt');
+  await page.locator('#cardSearch').clear();
+  await page.locator('#cardBrowserList [data-tree-register="apps"]').click();
+  if(width===1440)await page.screenshot({path:'test-results/ict-scan-register-explorer.png'});
   await page.locator('#cardEditorClose').click();
   // Exercise the real reader against the exact repository blobs, with no remote school data.
   await page.evaluate(()=>window.EmmausDocs.open('AIACT'));
@@ -309,6 +435,43 @@ try {
   await navigate('overview');
 
   assert.equal(await page.locator('#kpiGrid .kpi').count(),4,'Vier statuscijfers ontbreken');
+  // Primary counts and denominators must describe their own source population.
+  const sourceRows=type=>expectedIndex.records(type).filter(r=>expectedIndex.get(type,r.id)?.derived===false);
+  const appRecords=sourceRows('apps'),appIds=new Set(appRecords.map(r=>r.id));
+  const candidates=sourceRows('additionalCandidates'),aiRecords=sourceRows('ai'),entra=sourceRows('connections');
+  const aiParents=new Set(aiRecords.filter(r=>appIds.has(r.parentId)).map(r=>r.parentId));
+  const direct=entra.filter(r=>appIds.has(r.matchedId)).length;
+  const metric=key=>page.locator('#overviewCounts [data-count-metric="'+key+'"]');
+  assert.equal(await page.locator('#kpiGrid .kpi-value').count(),0,'Het startscherm mag geen hoofdcijfers tonen');
+  assert.equal(await page.locator('#overviewCountsPanel').isVisible(),false,'De tellingen horen bij cijfers en verdeling');
+  await page.locator('#viewOverview .scene-tab').nth(2).click();
+  await page.locator('#viewOverviewScene2:not([hidden])').waitFor({state:'visible'});
+  const number=n=>n.toLocaleString('nl-NL');
+  assert.equal(await metric('software').locator('.kpi-value').textContent(),number(appRecords.length+candidates.length));
+  assert.match(await metric('software').locator('.kpi-desc').textContent(),new RegExp(number(appRecords.length)+' applicatieregistraties'));
+  assert.match(await metric('software').locator('.kpi-desc').textContent(),new RegExp(number(candidates.length)+' overige vermeldingen'));
+  assert.match(await metric('software').locator('.evidence-kpi-context').textContent(),/Overlap mogelijk/);
+  assert.equal(await metric('ai').locator('.kpi-value').textContent(),number(aiRecords.length));
+  assert.match(await metric('ai').locator('.kpi-desc').textContent(),new RegExp(number(aiParents.size)+' van '+number(appRecords.length)));
+  assert.equal(await metric('entra').locator('.kpi-value').textContent(),number(entra.length));
+  assert.match(await metric('entra').locator('.kpi-desc').textContent(),new RegExp(number(direct)+' mogelijke directe appmatches'));
+  assert.equal(await metric('hardware').locator('.kpi-value').textContent(),number(sourceRows('hardwareGroups').length));
+  const measure=sourceRows('devices').find(r=>/entra apparaatrecords/i.test(r.name));
+  if(measure){
+    const detail=await metric('hardware').locator('.kpi-desc').textContent();
+    assert(detail.includes(measure.quantity+' Entra-apparaatrecords'));
+    assert(detail.includes(measure.measurementDate));
+  }
+  assert.match(await metric('hardware').locator('.evidence-kpi-context').textContent(),/Schoolbreed aantal fysieke apparaten niet vastgesteld/);
+  assert.match(await page.locator('#overviewRegisterCount').textContent(),new RegExp(number([...expectedIndex.nodes.values()].filter(n=>!n.derived).length)+' records'));
+  // Overview is school-wide even if the distribution tab has an app filter.
+  await page.evaluate(()=>{state.overviewArea=[...state.apps.values()][0].area;renderOverview();});
+  assert.equal(await metric('software').locator('.kpi-value').textContent(),number(appRecords.length+candidates.length));
+  await page.evaluate(()=>{state.overviewArea='';renderOverview();});
+  if(width===1440)await page.screenshot({path:'test-results/ict-scan-overview-populations.png'});
+  await page.locator('#viewOverview .scene-tab').first().click();
+  await page.locator('#viewOverviewScene0:not([hidden])').waitFor({state:'visible'});
+  if(width===1440){await page.locator('#viewOverviewScene0').evaluate(el=>Promise.all(el.getAnimations({subtree:true}).map(a=>a.finished.catch(()=>{}))));await page.screenshot({path:'test-results/ict-scan-overview-categories.png'});}
   assert.equal(await page.locator('#viewOverview .scene-tab').count(),4,'Schoolbreed, relaties, broncontrole en toepassingen moeten afzonderlijk toegankelijk zijn');
   const size=await page.evaluate(()=>({scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,height:innerHeight,main:document.querySelector('.main-content').getBoundingClientRect().height,cardWidth:document.querySelector('.panel')?.getBoundingClientRect().width}));
   assert(size.scrollWidth<=size.clientWidth+1,'Horizontale overflow bij '+width+': '+JSON.stringify(size));
@@ -331,6 +494,15 @@ try {
     const endpoints=new Set(expectedIndex.edges.flatMap(e=>[JSON.stringify([e.fromType,e.fromId]),JSON.stringify([e.toType,e.toId])]));
     assert.equal(await atlas.locator('.ra-network-node').count(),endpoints.size);
     assert.equal(await atlas.locator('.ra-network-edge').count(),edgeCount);
+    const layout=await atlas.locator('.ra-network-node circle').evaluateAll(nodes=>nodes.map(c=>({x:+c.getAttribute('cx'),y:+c.getAttribute('cy'),r:+c.getAttribute('r')})));
+    assert(layout.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x-p.r>=0&&p.x+p.r<=1000&&p.y-p.r>=0&&p.y+p.r<=600),'Knooppunten buiten diagram');
+    const border=layout.filter(p=>p.x<=30||p.x>=970||p.y<=30||p.y>=570);
+    assert(border.length<layout.length*.2,'Netwerk drukt te veel knooppunten tegen de randen');
+    assert((await atlas.locator('.ra-network-node').evaluateAll(ns=>new Set(ns.map(n=>n.dataset.component)).size))>1,'Losse componenten zijn niet apart ingedeeld');
+    await atlas.locator('.ra-network-node').first().focus();
+    assert((await atlas.locator('.ra-network-edge.is-connected').count())>0,'Directe lijnen lichten niet op');
+    await atlas.locator('select[aria-label="Netwerkweergave"]').focus();
+
     await page.screenshot({path:'test-results/ict-scan-1440-network.png'});
     await atlas.locator('select[aria-label="Netwerkweergave"]').selectOption('groups');
   }
@@ -440,7 +612,11 @@ try {
   assert.equal(await page.locator('#viewPrivacy .scene-tab').count(),2);
   assert.equal(await page.locator('#viewPrivacy .privacy-governance-panel').count(),0,'AI-beheer mag niet onder FG staan');
   assert.equal(await page.locator('#privacyDpia .dpia-evidence').count(),10,'DPIA-bronvermeldingen niet volledig');
-  assert.match(await page.locator('.fg-role-boundary').textContent(),/geen DPIA|Geen DPIA/i);
+  const fgBoundary=await page.locator('.fg-role-boundary').textContent();
+  assert.match(fgBoundary,/geen DPIA/i);
+  assert.match(fgBoundary,/bevoegd gezag beslist/i);
+  assert.match(fgBoundary,/onafhankelijk toezicht/i);
+  assert.match(fgBoundary,/goedkeuring/i);
   assert.match(await page.locator('#privacySummary').textContent(),/Niet aangeleverd/);
   await page.screenshot({path:'test-results/ict-scan-'+width+'-privacy.png'});
   await navigate('apps');
@@ -457,6 +633,16 @@ try {
   await page.locator('#cardEditorClose').click();
   assert.equal(await page.locator('#candidatePanel').isVisible(),false,'Kandidaten zijn niet gescheiden van basisregistraties');
   // One compact inspector, not nested Excel/JSON/read-card duplicates.
+  // A visible button is not sufficient: its own row and scroll viewport
+  // must actually contain the hit target. Never force the click.
+  const listGeometry=await page.locator('#appsList').evaluate(el=>{
+    const card=el.querySelector('.item-card-direct'),button=card.querySelector('.item-summary');
+    const r=card.getBoundingClientRect(),b=button.getBoundingClientRect(),v=el.getBoundingClientRect();
+    return {row:r.height,button:b.height,viewport:v.height,rows:[...el.children].length,scrollHeight:el.scrollHeight};
+  });
+  assert(listGeometry.row>=listGeometry.button&&listGeometry.row>=57&&listGeometry.viewport>=57,
+    'Registerrij wordt samengedrukt: '+JSON.stringify(listGeometry));
+  await page.screenshot({path:'test-results/ict-scan-'+width+'-register-fixed.png',animations:'disabled'});
   await page.locator('#appsList .item-card-direct .item-summary').first().click();
   await page.locator('#cardEditor').waitFor({state:'visible'});
   assert.equal(await page.locator('#cardEditor').evaluate(el=>el.classList.contains('card-context-mode')),true);
@@ -475,8 +661,7 @@ try {
   await page.locator('#cardReadView .card-read-tab[data-target="overview"]').click();
   assert.equal(await page.locator('#cardJsonPanel').isVisible(),false);
   await page.locator('#cardEditButton').click();
-  await page.locator('#cardGatePassword').fill('Emmauscollege');
-  await page.locator('.card-edit-gate [data-unlock]').click();
+  await page.locator('#cardForm').waitFor({state:'visible'});
   assert.equal(await page.locator('#cardForm').isVisible(),true,'Bewerken hoort in dezelfde kaart');
   await page.locator('#cardCancelEdit').click();
   await page.locator('#cardEditorClose').click();
@@ -506,18 +691,81 @@ try {
   assert.equal(await page.locator('#candidatePanel').isVisible(),true);
   assert(!/76\s+aanwijzingen/.test(await page.locator('#candidateInfo').textContent()),'Dezelfde 76 wordt dubbel getoond');
   await navigate('reports');
-  assert.equal(await page.locator('#reportPicker [data-report]').count(),9);
+  assert.equal(await page.locator('#reportPicker [data-report]').count(),14);
+  assert.equal(await page.locator('#reportPicker .report-purpose-group').count(),5);
+  assert.equal(await page.locator('[data-report="privacy"]').count(),1);
   await page.locator('[data-report="devices"]').click();
   assert.match(await page.locator('#reportPreviewTitle').textContent(),/Apparaten/);
   await navigate('ai');
+  await page.locator('#viewAiTab0').click();
+  await page.locator('#viewAiScene0:not([hidden])').waitFor({state:'visible'});
+  assert.equal(await page.locator('#aiModeKlas').isVisible(),false,'Schoolbrede stand mag niet als klasselectie verschijnen');
+  const progress=expectedIndex.aiProgress();
+  assert.equal(await page.locator('#aiProgress .ai-progress-group').count(),3);
+  assert.match(await page.locator('#aiProgress [data-ai-inspect="unknown"] .ai-measure-number').textContent(),new RegExp(progress.unknownCount+' / '+progress.featureCount));
+  assert.match(await page.locator('#aiProgress [data-ai-inspect="risk"] .ai-measure-number').textContent(),new RegExp(progress.possibleHighRisk.length+' / '+progress.featureCount));
+  for(const [group,rows] of Object.entries(progress.groups)){
+    const panel=page.locator('#aiProgress [data-progress="'+group+'"]');
+    assert.equal(await panel.locator('[data-record-id]').count(),rows.length);
+    if(rows.length>3){assert.equal(await panel.locator('details').getAttribute('open'),null);}
+  }
+  if(width===1440)await page.screenshot({path:'test-results/ict-scan-ai-overview.png',animations:'disabled'});
+  await page.locator('#aiProgress [data-ai-inspect="unknown"]').click();
+  await page.locator('#viewAiScene2:not([hidden])').waitFor({state:'visible'});
+  assert.equal(await page.locator('#aiModeAll').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('#aiStatusFilter').inputValue(),'unknown');
+  assert.equal(await page.locator('#aiList .item-card-direct').count(),progress.unknownCount);
+  await page.locator('#aiClearFilters').click();
+  assert.equal(await page.locator('#aiList .item-card-direct').count(),progress.featureCount);
+  await page.locator('#viewAiTab0').click();
+  await page.locator('#viewAiScene0:not([hidden])').waitFor({state:'visible'});
+  await page.locator('#aiProgress [data-ai-inspect="risk"]').click();
+  await page.locator('#viewAiScene2:not([hidden])').waitFor({state:'visible'});
+  assert.equal(await page.locator('#aiList .item-card-direct').count(),progress.possibleHighRisk.length);
   await page.locator('#aiModeSchool').click();
-  await page.locator('#viewAiScene2').waitFor({state:'visible'});
+  assert.equal(await page.locator('#aiStatusFilter').inputValue(),'');
   assert((await page.locator('#aiList .item-card-direct').count())>0,'AI in de school mag geen lege introductie tonen');
   assert.equal(await page.locator('#dpiaList').isVisible(),false,'DPIA wordt dubbel getoond binnen AI');
+  await page.locator('#aiModeKlas').click();
+  const schoolProducts=await page.locator('#aiFilterProduct option').allTextContents();
+  assert(schoolProducts.length>1,'Toepassingsfilter ontbreekt');
+  const product=await page.locator('#aiFilterProduct option').nth(1).getAttribute('value');
+  await page.locator('#aiFilterProduct').selectOption(product);
+  assert((await page.locator('#aiList .item-card-direct').count())>0);
+  assert.match(await page.locator('#aiList .item-sub').first().textContent(),new RegExp(product.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  await page.locator('#aiClearFilters').click();
+  const classFunctions=expectedIndex.records('ai').filter(taxonomy.isClassroomAi);
+  for(const phase of taxonomy.PHASES){
+    await page.locator('#aiFilterPhase').selectOption(phase);
+    const expected=classFunctions.filter(row=>taxonomy.phases(row).includes(phase));
+    assert.equal(await page.locator('#aiList .item-card-direct').count(),expected.length,'Onjuiste functiepopulatie bij '+phase);
+  }
+  await page.locator('#aiClearFilters').click();
+  assert.equal(await page.locator('#aiList .item-card-direct').count(),classFunctions.length);
+  if(width===1440)await page.screenshot({path:'test-results/ict-scan-ai-functions.png',animations:'disabled'});
+  await page.locator('#viewAi .scene-tab').nth(1).click();
+  await page.locator('#viewAiScene1:not([hidden])').waitFor({state:'visible'});
+  assert.equal(await page.locator('#aiClassPanels').isVisible(),true);
   await page.locator('#viewAi .scene-tab').nth(3).click();
+  await page.locator('#viewAiScene3:not([hidden])').waitFor({state:'visible'});
   assert.equal(await page.locator('#viewAi .scene-tab').count(),4,'AI-beheer moet onder AI staan');
   assert((await page.locator('#privacyControls .evidence-group').count())>=4,'Beheerpunten zijn niet gegroepeerd');
-  await page.locator('#viewAiScene3').waitFor({state:'visible'});
+  assert.equal(await page.locator('#privacyControls .evidence-group[open]').count(),0,'Beheermappen openen alleen op verzoek');
+  const control=expectedIndex.records('aiControls')[0];
+  await page.locator('#aiControlSearch').fill(control.id);
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),1);
+  assert.equal(await page.locator('#privacyControls .evidence-group[open]:not([hidden])').count(),1);
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden]) [data-card-id]').getAttribute('data-card-id'),control.id);
+  await page.locator('#aiControlSearch').fill(' '+control.id.toLowerCase()+' ');
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),1);
+  await page.locator('#aiControlSearch').fill('B-999999');
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),0);
+  assert.equal(await page.locator('#aiControlEmpty').isVisible(),true);
+  await page.locator('#aiControlSearch').fill('Teams Classwork');
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),expectedIndex.records('aiControls').filter(row=>inventory.matchesRecord(row,'Teams Classwork',{exactId:true,excludeMetadata:true})).length);
+  await page.locator('#aiControlClear').click();
+  assert.equal(await page.locator('#privacyControls .evidence-row:not([hidden])').count(),expectedIndex.records('aiControls').length);
+  if(width===1440)await page.screenshot({path:'test-results/ict-scan-ai-management.png',animations:'disabled'});
   await page.locator('#railMore').click();
   await page.locator('#roleModeAI').uncheck();
   assert.equal(await page.locator('.rail-button[data-view="ai"]').isVisible(),false);
@@ -526,7 +774,7 @@ try {
   assert.equal(await page.locator('.rail-button[data-view="ai"]').isVisible(),true);
   await page.locator('#roleModeFG').uncheck();
   assert.equal(await page.locator('.rail-button[data-view="privacy"]').isVisible(),false);
-  assert.equal(await page.locator('#reportPicker [data-report="privacy"]').isVisible(),false);
+  assert.equal(await page.locator('#reportPicker [data-report="privacy"]').evaluate(el=>el.hidden),false,'FG-rapport blijft beschikbaar wanneer de functieweergave uit staat');
   await page.locator('#roleModeFG').check();
   await page.locator('#railDrawerClose').click();
   assert.match(await page.evaluate(()=>localStorage.getItem('emmaus-ict-scan-visible-roles-v1')),/"fg":true/);
@@ -536,6 +784,10 @@ try {
     const result=await page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth,heading:document.getElementById('sectionTitle')?.textContent}));
     assert(result.width<=result.viewport+1,'Horizontale overloop bij '+width+' in '+name+': '+JSON.stringify(result));
   }
+  // Check the final screen state after the normal interactions.
+  await assertFixedStarts(width===1440?{width:1280,height:720}:{width:320,height:740});
+  await assertFixedStarts({width,height:900});
+  await navigate('sources');
   await page.locator('#railMore').click();
   const pop=await page.locator('#railDrawer').boundingBox();
   assert(pop&&pop.x>=0&&pop.x+pop.width<=width+1,'Functiemenu buiten viewport: '+JSON.stringify(pop));
@@ -588,16 +840,10 @@ try {
     await page.locator('#dsSharedDialog').waitFor({state:'visible'});
     assert.equal(designWrites.length,0,'Openen van de pop-up mag niets schrijven');
     await page.locator('#dsSharedReason').fill('Browserproef gedeelde indeling');
-    await page.locator('#dsSharedToken').fill('browser-test-design-token');
-    await page.locator('#dsSharedSubmit').click();
-    await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('bevestig'));
-    assert.equal(designWrites.length,0,'Zonder toestemming wordt niets geschreven');
-    await page.locator('#dsSharedToken').fill('browser-test-design-token');
-    await page.locator('#dsSharedConsent').check();
+    assert.equal(await page.locator('#dsSharedToken,#cardGithubToken').count(),0);
     await page.locator('#dsSharedSubmit').click();
     await page.waitForFunction(()=>document.getElementById('dsSharedFeedback').textContent.includes('PR #9999'));
-    assert.equal(designWrites.length,3,'Uitsluitend een branch, layoutbestand en pull request');
-    assert.equal(await page.locator('#dsSharedToken').inputValue(),'');
+    assert.equal(designWrites.length,3,'Uitsluitend branch, layoutbestand en pull request');
     await page.locator('#dsSharedClose').click();
     assert.equal(await page.evaluate(()=>JSON.stringify([...state.apps.values()])),sourceBefore);
     await page.locator('#dsLayout').selectOption('balanced');
@@ -606,6 +852,7 @@ try {
   assert.deepEqual(errors,[],'JavaScript-fouten: '+errors.join(' / '));
   await page.close();
  }
+ assert.deepEqual(fixedScreenFailures,[],'Afwijkingen vaste schermen:\n'+fixedScreenFailures.join('\n'));
  console.log('ICT-scan '+browserType.name()+': 69 toepassingen geladen, vaste schermen, menu, grafieken en desktop/mobiele sync gecontroleerd');
 }finally{
  await browser?.close();

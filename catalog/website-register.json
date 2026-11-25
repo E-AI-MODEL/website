@@ -194,7 +194,7 @@
       "parent": null,
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "/tools/",
+      "redirect_target": "/nl/tools/",
       "in_committed_sitemap": false,
       "search_scope": "niet_indexeren"
     },
@@ -1191,6 +1191,20 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/tools/eaispeak/",
+      "url": "/tools/eaispeak/",
+      "file": "tools/eaispeak/index.html",
+      "title": "EAIspeak | praten, vertalen en luisteren",
+      "kind": "toepassing",
+      "category": "Hulpmiddelen · Spraak en vertalen",
+      "review": "opgenomen_in_algemeen_hulpmiddelenoverzicht",
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen",
+      "public_title_nl": "EAIspeak"
+    },
+    {
       "id": "page:/tools/abyss/",
       "url": "/tools/abyss/",
       "file": "tools/abyss/index.html",
@@ -1410,24 +1424,36 @@
       "search_scope": "algemeen"
     },
     {
+      "id": "page:/beheer/",
+      "url": "/beheer/",
+      "file": "beheer/index.html",
+      "title": "EAI Beheer | Inloggen",
+      "kind": "afgeschermd_of_app",
+      "category": null,
+      "review": "noindex_in_bron_gecontroleerd",
+      "parent": null,
+      "family": "technisch",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/tools/html-galerij/",
       "url": "/tools/html-galerij/",
       "file": "tools/html-galerij/index.html",
-      "title": "HTML uploaden",
-      "kind": "toepassing",
+      "title": "HTML-galerij inloggen | EAI",
+      "kind": "afgeschermd_of_app",
       "category": "Hulpmiddelen · Werkruimtes en delen",
-      "review": "bronstructuur_gelezen_backend_en_toegang_niet_getest",
+      "review": "noindex_en_worker_bron_gecontroleerd_persoonlijke_login_nog_niet_getest",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "embedded_inventory": "uploadformulier_en_dynamische_galerij_geen_statische_onderdelen",
-      "note": "Uploads en galerijvermeldingen worden niet door de website-repository beheerd. Geen schijnzekerheid over live items.",
+      "robots_noindex_in_html": true,
+      "page_status": "niet_voor_zoekmachines",
       "in_committed_sitemap": true,
-      "functional_sections": [
-        "HTML-bestand toevoegen",
-        "Door anderen gemaakte HTML bekijken"
-      ],
-      "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository",
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "note": "Openbare inlogpagina, vindbaar via het EAI-menu en de interne zoekfunctie; niet bedoeld voor externe zoekmachines. De Worker controleert toegang server-side. Uploads en beheerdata staan niet in Git of in de publieke zoekindex.",
+      "external_dependency": "services/html-galerij/ en externe opslag/API; inhoud van uploads niet opgenomen in deze Git-repository"
     },
     {
       "id": "page:/tools/llm-observatorium/",
@@ -1583,19 +1609,6 @@
       "family": "natuurkunde",
       "in_committed_sitemap": true,
       "public_title_nl": "Natuurkunde",
-      "search_scope": "algemeen"
-    },
-    {
-      "id": "page:/tools/science-observatory/labs/schuine-worp/",
-      "url": "/tools/science-observatory/labs/schuine-worp/",
-      "file": "tools/science-observatory/labs/schuine-worp/index.html",
-      "title": "Schuine worp",
-      "kind": "toepassing",
-      "category": "TOOLS",
-      "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/science-observatory/",
-      "family": "hulpmiddelen",
-      "in_committed_sitemap": false,
       "search_scope": "algemeen"
     },
     {
@@ -2554,6 +2567,21 @@
       "review": "gevonden_in_zoekindex",
       "parent": null,
       "family": "onderwijs",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/tools/science-observatory/labs/leeuw/",
+      "url": "/tools/science-observatory/labs/leeuw/",
+      "file": "tools/science-observatory/labs/leeuw/index.html",
+      "title": "Leeuw in 3D",
+      "kind": "toepassing",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "review": "brondata_en_modelbeschrijving_opgenomen",
+      "parent": "page:/tools/science-observatory/",
+      "family": "heelal",
+      "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
+      "public_title_nl": "Leeuw in 3D",
       "in_committed_sitemap": true,
       "search_scope": "algemeen"
     }
@@ -7006,6 +7034,104 @@
       "link": "verzamelpagina",
       "review": "titel_uit_bronbestand",
       "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#hemel",
+      "url": "/tools/science-observatory/labs/leeuw/#hemel",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Hemelkaart",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Bekijk de negen figuursterren vanaf de aarde.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#ruimte",
+      "url": "/tools/science-observatory/labs/leeuw/#ruimte",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Ruimte in 3D",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Draai de sterren en vergelijk hun gemeten afstanden.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#meten",
+      "url": "/tools/science-observatory/labs/leeuw/#meten",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Afstanden meten",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Vergelijk hoekafstand en onderlinge afstand in lichtjaren.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#parallax",
+      "url": "/tools/science-observatory/labs/leeuw/#parallax",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Parallax",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Verander de parallax en onderzoek de afstandsonzekerheid.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#licht",
+      "url": "/tools/science-observatory/labs/leeuw/#licht",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Sterrenlicht",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Vergelijk schijnbare en absolute V-magnitude.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#beweging",
+      "url": "/tools/science-observatory/labs/leeuw/#beweging",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Eigenbeweging",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Verander de tijd in een model met constante snelheid.",
+      "search_scope": "binnen_toepassing"
+    },
+    {
+      "id": "anchor:/tools/science-observatory/labs/leeuw/#waarnemen",
+      "url": "/tools/science-observatory/labs/leeuw/#waarnemen",
+      "parent": "page:/tools/science-observatory/labs/leeuw/",
+      "name": "Waarnemen",
+      "category": "Heelal en ruimtevaart · Sterrenbeelden",
+      "source": "content/science-observatory/labs/leeuw.html",
+      "source_file": "content/science-observatory/labs/leeuw.html",
+      "family": "heelal",
+      "link": "direct",
+      "review": "afzonderlijk_in_bron_gevonden",
+      "suggested_description_nl": "Kies plaats en tijd en onderzoek de geometrische horizon.",
+      "search_scope": "binnen_toepassing"
     }
   ],
   "html_sources": [
@@ -7103,9 +7229,6 @@
       "path": "content/science-observatory/labs/natuurkunde.html"
     },
     {
-      "path": "content/science-observatory/labs/schuine-worp.html"
-    },
-    {
       "path": "content/science-observatory/labs/wiskunde-a.html"
     },
     {
@@ -7128,13 +7251,16 @@
     },
     {
       "path": "content/wihtml/verdubbelen-halveren-v9.html"
+    },
+    {
+      "path": "content/science-observatory/labs/leeuw.html"
     }
   ],
   "audit": {
-    "tracked_html_files": 219,
-    "public_page_files": 179,
+    "tracked_html_files": 220,
+    "public_page_files": 180,
     "generated_pages": 2,
-    "search_index_entries": 289,
+    "search_index_entries": 290,
     "embedded_items_in_search": 144,
     "taalwerkvormen": 15,
     "llmscan_products": 51,
@@ -7176,13 +7302,13 @@
     ],
     "orphan_items": [],
     "additional_html_files": 40,
-    "all_html_files": 219,
-    "pages_not_in_public_search": 36,
+    "all_html_files": 220,
+    "pages_not_in_public_search": 37,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
     "collections": 5,
     "wihtml_examples": 2,
-    "last_structural_review": "2026-11-16",
+    "last_structural_review": "2026-11-24",
     "additional_verified_sections": {
       "abyss": 6,
       "gravity": 6,
@@ -7191,7 +7317,8 @@
       "melkweg_variants": 2,
       "melkweg_shared_topics": 6,
       "verified_redirects": 9,
-      "noindex_pages_checked": 8
+      "noindex_pages_checked": 8,
+      "leeuw": 7
     },
     "new_embedded_items": 18,
     "dynamic_function_review_pending": [],
@@ -7220,8 +7347,8 @@
     },
     "sitemap_from_main": {
       "source": "sitemap.xml",
-      "registered_urls": 148,
-      "registered_missing": 31,
+      "registered_urls": 149,
+      "registered_missing": 30,
       "examples_not_in_sitemap": [
         "/eai-blog/",
         "/eai-blog/eai-balans/",
@@ -7252,7 +7379,6 @@
         "/toepassingen/saga-legal-ai/",
         "/tools/lo-aanvalslab/onderbouwing/",
         "/tools/projecthulp/",
-        "/tools/science-observatory/labs/schuine-worp/",
         "/tools/van-proces-naar-prompt/"
       ],
       "important_generated_pages_missing": [],

@@ -1,20 +1,8 @@
 name: Check standalone LLMscan
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'nl/llmscan/**'
-      - 'tests/test_llmscan_standalone.py'
-      - 'scripts/test_llmscan_browser.mjs'
-      - '.github/workflows/check-llmscan.yml'
-  push:
-    branches:
-      - 'feat/standalone-llmscan-20261113'
-    paths:
-      - 'nl/llmscan/**'
-      - 'tests/test_llmscan_standalone.py'
-      - '.github/workflows/check-llmscan.yml'
+  workflow_call:
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

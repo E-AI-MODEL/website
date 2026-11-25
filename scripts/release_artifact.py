@@ -2,6 +2,8 @@
 import argparse
 import hashlib
 import json
+import os
+import subprocess
 from pathlib import Path
 import re
 
@@ -43,10 +45,17 @@ def main():
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--commit", required=True)
     args = parser.parse_args()
+    provenance = {
+        "tree": subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], text=True).strip(),
+        "run": os.environ.get("GITHUB_RUN_ID", "local"),
+        "attempt": os.environ.get("BUILD_ATTEMPT", os.environ.get("GITHUB_RUN_ATTEMPT", "1")),
+        "repository": os.environ.get("GITHUB_REPOSITORY", "local"),
+    }
+    expected = dict(record(args.root, args.commit), schema=2, provenance=provenance)
     if args.operation == "create":
-        args.manifest.write_text(json.dumps(record(args.root, args.commit), indent=2) + "\n", encoding="utf-8")
-    else:
-        verify(args.root, args.commit, json.loads(args.manifest.read_text(encoding="utf-8")))
+        args.manifest.write_text(json.dumps(expected, indent=2) + "\n", encoding="utf-8")
+    elif json.loads(args.manifest.read_text(encoding="utf-8")) != expected:
+        raise SystemExit("Bestanden, herkomst of bronboom wijken af")
     print(f"Release {args.operation}: {args.commit}")
 
 

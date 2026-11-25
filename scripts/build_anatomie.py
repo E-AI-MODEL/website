@@ -36,6 +36,17 @@ def command(*args: str, cwd: Path) -> str:
         raise
     return result.stdout.strip()
 
+def checkout_pinned_source(source: Path, url: str, commit: str) -> None:
+    """Fetch the reviewed object itself, never a moving branch tip."""
+    source.mkdir(parents=True)
+    command("git", "init", "--quiet", cwd=source)
+    command("git", "remote", "add", "origin", url, cwd=source)
+    command("git", "fetch", "--depth", "1", "--no-tags", "origin", commit, cwd=source)
+    command("git", "checkout", "--detach", "FETCH_HEAD", cwd=source)
+    actual = command("git", "rev-parse", "HEAD", cwd=source)
+    if actual != commit:
+        raise RuntimeError(f"Upstream commit mismatch: expected {commit}, got {actual}")
+
 def patch_upstream(source: Path) -> None:
     index = source / "index.html"
     html = index.read_text(encoding="utf-8")
@@ -532,11 +543,7 @@ def build(destination: Path) -> None:
         raise ValueError("Destination must end in tools/anatomie")
     with tempfile.TemporaryDirectory(prefix="eai-anatomie-") as tmp:
         source = Path(tmp) / "upstream"
-        command("git", "clone", "--depth", "1", "--single-branch",
-                "--branch", "master", SOURCE_URL, str(source), cwd=Path(tmp))
-        actual = command("git", "rev-parse", "HEAD", cwd=source)
-        if actual != SOURCE_COMMIT:
-            raise RuntimeError(f"Upstream commit changed: expected {SOURCE_COMMIT}, got {actual}")
+        checkout_pinned_source(source, SOURCE_URL, SOURCE_COMMIT)
         for rel in ("LICENSE", "NOTICE", "public/models/License.txt", "package-lock.json"):
             if not (source / rel).is_file():
                 raise RuntimeError(f"Required source file missing: {rel}")

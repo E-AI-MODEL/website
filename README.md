@@ -15,7 +15,7 @@ De tweetalige hoofdpagina’s worden rechtstreeks onderhouden in `nl/` en `en/`;
 - `content/legacy/` — vaste snapshots van historische publicaties en embeds die vroeger van de Google Site kwamen
 - `scripts/build_site.py` — pagina-opbouw, navigatie, styles en sitemap
 
-De mappen zoals `werkvormen/`, `taalwerkvormen/`, `bronnen/`, `publicaties/` en `assets/` zijn gegenereerde productie-output.
+De productie-output staat in `site-build/`. De map `assets/` bevat ook rechtstreeks onderhouden bronbestanden. Rootpagina's kunnen nog nodig zijn voor de generator of GitHub Pages; verwijder ze niet zonder controle.
 
 ## Lokaal bouwen
 
@@ -28,17 +28,14 @@ De build controleert of alle vereiste historische bronbestanden aanwezig zijn.
 
 ## CI en publiceren
 
-`.github/workflows/build-site.yml` draait:
+Ontwikkel op een branch, open een pull request en merge pas na beoordeling en geslaagde verplichte controles. De merge naar de beschermde hoofdbranch is de toestemming om te publiceren.
 
-- op iedere pull request naar `main` wanneer build- of contentbronnen wijzigen;
-- op relevante pushes naar `main`;
-- handmatig via `workflow_dispatch`.
-
-De workflow:
-
-1. bouwt de volledige site uit de repo;
-2. controleert alle interne links;
-3. publiceert de gegenereerde bestanden alleen vanaf `main`.
+- `site-check.yml` controleert pull requests; `validate-main.yml` valideert de hoofdversie na de merge.
+- Een geslaagde main-validatie start automatisch de publicatie van het bijbehorende gecontroleerde artifact op Theory7. De publicatie controleert de bronboom, herkomst, SHA-256 en verplichte tests opnieuw, maar bouwt de website niet opnieuw.
+- TOPO behoudt een afzonderlijke workflow, wachtrij en gecontroleerd artifact.
+- Een verouderde, mislukte of niet van main afkomstige build kan niet worden gepubliceerd.
+- Alleen voor herstel kan de eigenaar de deployworkflow handmatig starten met het nummer van een geldige main-validatie. De normale route vraagt geen tweede toestemming.
+- GitHub Pages gebruikt nog een afzonderlijke publicatieprocedure. Die wordt apart beoordeeld voordat rootbestanden verdwijnen.
 
 TAALwerkvormen en Bronnen zijn onderdeel van dezelfde generator en kunnen dus niet meer verdwijnen bij een volledige rebuild.
 
