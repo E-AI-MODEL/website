@@ -31,7 +31,7 @@ on:
       - 'en/**'
       - 'assets/**'
       - 'tools/projecthulp/**'
-      - 'tools/delf-live/**'
+      - 'tools/eaispeak/**'
       - 'tools/eaigit/**'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
@@ -83,7 +83,7 @@ on:
       - 'en/**'
       - 'assets/**'
       - 'tools/projecthulp/**'
-      - 'tools/delf-live/**'
+      - 'tools/eaispeak/**'
       - 'tools/eaigit/**'
       - 'tools/ict-scan/**'
       - 'tests/test_ict_scan_publish.py'
@@ -220,14 +220,14 @@ jobs:
 
       - name: Controleer en bouw EAIspeak
         run: |
-          npm install --prefix tools/delf-live --no-audit --no-fund
-          npm run test --prefix tools/delf-live
-          npm run build --prefix tools/delf-live
+          npm install --prefix tools/eaispeak --no-audit --no-fund
+          npm run test --prefix tools/eaispeak
+          npm run build --prefix tools/eaispeak
 
       - name: Build site
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
-          # EAIspeak and the old DELF address use the same built files.
+          # EAIspeak is the canonical application; the old address redirects.
           test -s site-build/tools/eaispeak/index.html
           test -s site-build/tools/delf-live/index.html
           # TOPO is a complete, independently deployed application.

@@ -3,14 +3,13 @@ name: EAIspeak native speech bridge
 on:
   pull_request:
     paths:
-      - 'tools/delf-live/bridge/**'
+      - 'tools/eaispeak/bridge/**'
       - '.github/workflows/eaispeak-bridge.yml'
   push:
     branches:
       - main
-      - feature/delf-live-stage-2026-11-19
     paths:
-      - 'tools/delf-live/bridge/**'
+      - 'tools/eaispeak/bridge/**'
       - '.github/workflows/eaispeak-bridge.yml'
   workflow_dispatch:
 
@@ -23,19 +22,19 @@ jobs:
     timeout-minutes: 10
     defaults:
       run:
-        working-directory: tools/delf-live/bridge
+        working-directory: tools/eaispeak/bridge
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: tools/delf-live/bridge/requirements.txt
+          cache-dependency-path: tools/eaispeak/bridge/requirements.txt
       - name: Installeer bridge en testafhankelijkheden
         run: python -m pip install -r requirements.txt
       - name: Controleer Python en transport
         run: |
-          python -m compileall -q server.py tests
+          python -m compileall -q server.py transcribe.py tests
           python -m pytest -q tests
       - name: Controleer lokaal Mac-startscript zonder iets te installeren
         run: bash -n start-macos.sh

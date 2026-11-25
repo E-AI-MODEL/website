@@ -6,8 +6,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from ci_pr_scope import SUITES, affected_suites
 
 class CiPrScopeTests(unittest.TestCase):
-    def test_new_delf_page_does_not_run_other_apps(self):
-        self.assertEqual(affected_suites(["tools/delf-live/index.html"]), set())
+    def test_eaispeak_does_not_run_other_apps(self):
+        self.assertEqual(affected_suites(["tools/delf-live/index.html", "tools/eaispeak/index.html"]), set())
 
     def test_eaigit_changes_run_eaigit(self):
         self.assertEqual(affected_suites(["tools/eaigit/index.html", "assets/eaigit/wizard.mjs"]), {"eaigit"})
