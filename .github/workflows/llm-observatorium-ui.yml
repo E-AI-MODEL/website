@@ -1,6 +1,10 @@
 name: Test Hoe werkt een AI
 on:
   workflow_call:
+    inputs:
+      reuse_build:
+        type: boolean
+        default: false
   workflow_dispatch:
 
 permissions:
@@ -18,9 +22,9 @@ jobs:
         with:
           node-version: '22'
       - run: pip install beautifulsoup4
-      - name: Build LLM page from source
-        run: python scripts/build_site.py --sources content/legacy --out site-build
-      - run: python scripts/prepare_ui.py --root site-build
+      - uses: ./.github/actions/checked-build
+        with:
+          reuse: ${{ inputs.reuse_build }}
       - name: Verify local learning mathematics
         run: node scripts/test_llm_learning_math.mjs
       - name: Verify real recorded GPT-Neo model execution

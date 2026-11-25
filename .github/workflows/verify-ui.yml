@@ -2,6 +2,9 @@ name: Verify public UI
 on:
   workflow_call:
     inputs:
+      reuse_build:
+        type: boolean
+        default: false
       selection:
         type: string
         required: true
@@ -40,11 +43,9 @@ jobs:
         with:
           node-version: '22'
       - run: pip install beautifulsoup4
-      - run: python scripts/build_site.py --sources content/legacy --out site-build
-      - run: python scripts/build_anatomie.py --out site-build/tools/anatomie
-      - name: Controleer anatomie vóór de algemene navigatiebewerking
-        run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
-      - run: python scripts/prepare_ui.py --root site-build
+      - uses: ./.github/actions/checked-build
+        with:
+          reuse: ${{ inputs.reuse_build }}
       - name: Verify one canonical hub per subject and legacy redirects
         run: python -m unittest discover -s tests -p 'test_hub_structure.py' -v
       - name: Check dashboard cards, route preservation and lab isolation
@@ -137,21 +138,5 @@ jobs:
           name: public-ui-check
           path: test-results/
 
-      - name: Leg de gecontroleerde build vast en toets de bestandsintegriteit
-        run: |
-          python scripts/verify_ui.py --root site-build
-          python scripts/release_artifact.py create --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
-          python scripts/release_artifact.py verify --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
-      - name: Bewaar exact de geteste sitebuild
-        if: ${{ inputs.release_artifact == true }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: site-release-${{ github.run_id }}
-          path: |
-            site-build/
-            release-manifest.json
-          if-no-files-found: error
-          include-hidden-files: true
-          compression-level: 0
-          overwrite: true
-          retention-days: 30
+      - name: Controleer dat de geteste bestanden ongewijzigd zijn
+        run: python scripts/release_artifact.py verify --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
