@@ -110,6 +110,7 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertIn("actions/download-artifact@v4", speak)
         self.assertIn("sha256sum -c SHA256SUMS", speak)
         self.assertNotIn("npm install", speak)
+        general = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
         self.assertIn("--exclude-glob 'tools/eaispeak/**'", general)
         self.assertIn("--exclude-glob 'tools/delf-live/**'", general)
 
