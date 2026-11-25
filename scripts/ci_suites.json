@@ -463,5 +463,111 @@
     "ui-check",
     "register-check",
     "test-html-gallery-auth"
-  ]
+  ],
+  "chromium": {
+    "ictscan": [
+      [
+        "scripts/test_ict_scan_browser.mjs",
+        "site-build"
+      ]
+    ],
+    "anatomy": [
+      [
+        "scripts/test_anatomie_3d.mjs",
+        "site-build"
+      ],
+      [
+        "scripts/test_anatomie_browser.mjs",
+        "site-build"
+      ]
+    ],
+    "eaigit": [
+      [
+        "scripts/test_projecthulp_browser.mjs",
+        "site-build"
+      ]
+    ],
+    "home": [
+      [
+        "scripts/test_dashboard_cards_browser.mjs",
+        "site-build"
+      ],
+      [
+        "scripts/test_story_cards_browser.mjs",
+        "site-build"
+      ]
+    ],
+    "eaigame": [
+      [
+        "scripts/test_eaigame_browser.mjs",
+        "site-build"
+      ]
+    ],
+    "physics": [
+      [
+        "scripts/test_schuine_worp_studio.mjs",
+        "site-build",
+        "chromium"
+      ],
+      [
+        "scripts/test_science_mobile_aim.mjs",
+        "site-build"
+      ]
+    ],
+    "eaiwork": [
+      [
+        "scripts/test_eaiwork_mobile.mjs",
+        "site-build"
+      ]
+    ],
+    "heart": [
+      [
+        "scripts/test_hartslaglab_browser.mjs",
+        "site-build",
+        "chromium"
+      ]
+    ],
+    "llm": [
+      [
+        "scripts/test_llm_observatorium.mjs",
+        "site-build"
+      ]
+    ],
+    "melkweg": [
+      [
+        "scripts/test_melkweg_mobile.mjs",
+        "site-build"
+      ],
+      [
+        "scripts/test_melkweg_visual_play.mjs",
+        "site-build"
+      ]
+    ],
+    "leif": [
+      [
+        "scripts/test_leif_continue.mjs",
+        "site-build"
+      ],
+      [
+        "scripts/test_leif_site_editor.mjs",
+        "site-build"
+      ],
+      [
+        "scripts/test_leif_magic_login.mjs",
+        "site-build"
+      ],
+      [
+        "scripts/test_leif_studio_ui.mjs",
+        "site-build"
+      ],
+      [
+        "scripts/test_leif_mobile_questions.mjs",
+        "site-build"
+      ],
+      [
+        "scripts/test_leif_landing_ui.mjs",
+        "site-build"
+      ]
+    ]
+  }
 }

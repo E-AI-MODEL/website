@@ -41,7 +41,16 @@ def api(path, *args):
     return json.loads(raw) if raw else None
 
 
+def authorize(event, ref, actor, triggering_actor, owner):
+    if (not owner or event != "workflow_dispatch" or ref != "refs/heads/main"
+            or actor != owner or triggering_actor != owner):
+        raise ValueError("Expliciete toestemming van de eigenaar op main ontbreekt")
+
+
 def retrieve(run_id, target):
+    authorize(os.environ["GITHUB_EVENT_NAME"], os.environ["GITHUB_REF"],
+              os.environ["GITHUB_ACTOR"], os.environ["GITHUB_TRIGGERING_ACTOR"],
+              os.environ["GITHUB_REPOSITORY_OWNER"])
     if not re.fullmatch("[1-9][0-9]*", run_id) or target not in ("site", "topo"):
         raise ValueError("Ongeldig runnummer of publicatiedoel")
     repo = os.environ["GITHUB_REPOSITORY"]
