@@ -23,9 +23,12 @@
     "heart": [
       "anatomy-webkit"
     ],
-    "galactic": [],
+    "galactic": [
+      "astronomy-validation"
+    ],
     "stellar": [
-      "leeuw-console"
+      "leeuw-console",
+      "astronomy-validation"
     ],
     "physics": [
       "science-fixed-workspace",
@@ -427,6 +430,30 @@
     ],
     "work/*": [
       "eaiwork"
+    ],
+    "scripts/validate_astronomy.py": [
+      "galactic",
+      "stellar"
+    ],
+    "scripts/extract_astronomy_benchmark.mjs": [
+      "galactic",
+      "stellar"
+    ],
+    "scripts/check_astronomy_baseline.py": [
+      "galactic",
+      "stellar"
+    ],
+    "tests/fixtures/astronomy-*": [
+      "galactic",
+      "stellar"
+    ],
+    "tests/requirements-astronomy.txt": [
+      "galactic",
+      "stellar"
+    ],
+    ".github/workflows/astronomy-validation.yml": [
+      "galactic",
+      "stellar"
     ]
   },
   "always": [
