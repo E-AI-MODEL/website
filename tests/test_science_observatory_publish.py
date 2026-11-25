@@ -8,7 +8,7 @@ BUILD = ROOT / "site-build"
 SOURCE = ROOT / "content" / "science-observatory"
 PUBLISHED = BUILD / "tools" / "science-observatory"
 SLUGS = ("melkweg", "gravitatie-banen", "natuurkunde", "wiskunde-a", "wiskunde-b", "leeuw")
-PUBLISHED_LABS = SLUGS + ("schuine-worp",)
+PUBLISHED_LABS = SLUGS
 
 
 class Anchors(HTMLParser):
@@ -68,25 +68,26 @@ class ObservatoryPublicationTests(unittest.TestCase):
         self.assertFalse((PUBLISHED / "STUDIO_INRICHTEN.html").exists())
         self.assertEqual(len(list((PUBLISHED / "labs").rglob("index.html"))), len(PUBLISHED_LABS))
 
-    def test_projectile_has_one_public_application_and_legacy_redirect(self):
+    def test_projectile_has_one_public_application_without_legacy_route(self):
         source = (SOURCE / "labs" / "natuurkunde.html").read_text(encoding="utf-8")
         self.assertNotIn('id="projectileStudioLink"', source)
         self.assertIn("['projectile','Schuine worp'", source)
         target = "/tools/science-observatory/labs/natuurkunde/#projectile"
-        legacy = (PUBLISHED / "labs" / "schuine-worp" / "index.html").read_text(encoding="utf-8")
-        self.assertIn(f'content="0;url={target}"', legacy)
-        self.assertIn(f'href="{target}"', legacy)
-        self.assertIn('content="noindex,follow"', legacy)
-        self.assertNotIn('id="statRange"', legacy)
-        self.assertNotIn('id="field"', legacy)
-        self.assertNotIn('id="admin"', legacy)
-        self.assertEqual(legacy, (ROOT / "tools/science-observatory/labs/schuine-worp/index.html").read_text(encoding="utf-8"))
+        old = "/tools/science-observatory/labs/schuine-worp/"
+        self.assertFalse((PUBLISHED / "labs" / "schuine-worp").exists())
+        self.assertFalse((SOURCE / "labs" / "schuine-worp.html").exists())
+        self.assertFalse((ROOT / old.strip("/") / "index.html").exists())
         import json
         register = json.loads((ROOT / "catalog/website-register.json").read_text(encoding="utf-8"))
-        old = next(p for p in register["pages"] if p["url"] == "/tools/science-observatory/labs/schuine-worp/")
-        self.assertEqual(old["search_scope"], "niet_indexeren")
-        self.assertEqual(old["redirect_target"], target)
+        self.assertFalse(any(p["url"] == old for p in register["pages"]))
         self.assertTrue(any(p.get("url") == target for p in register["embedded_items"]))
+        for rel in ("nl/tools/index.html", "en/tools/index.html"):
+            for root in (ROOT, BUILD):
+                with self.subTest(page=rel, root=root):
+                    parser = Anchors()
+                    parser.feed((root / rel).read_text(encoding="utf-8"))
+                    self.assertNotIn(old, parser.hrefs)
+                    self.assertIn(target, parser.hrefs)
 
     def test_names_and_model_limits_are_visible_without_internal_labels(self):
         catalog = (PUBLISHED / "index.html").read_text(encoding="utf-8")
