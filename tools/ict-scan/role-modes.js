@@ -33,15 +33,7 @@
       const tab=document.querySelector('.rail-button[data-view="'+view+'"]');
       if(tab){tab.hidden=!on;tab.setAttribute('aria-hidden',String(!on));}
     }
-    const reports=byId('reportPicker');
-    for(const [scope,on] of [['ai',roles.ai],['aiGovernance',roles.ai],['privacy',roles.fg]]){
-      const option=reports?.querySelector('[data-report="'+scope+'"]');
-      if(option)option.hidden=!on;
-    }
-    if((!roles.ai&&['ai','aiGovernance'].includes(state.reportScope))||(!roles.fg&&state.reportScope==='privacy')){
-      state.reportScope='all';
-      if(typeof renderReports==='function')renderReports();
-    }
+    // Functieweergaven filteren navigatie, niet de beschikbare rapporten.
     if((state.view==='ai'&&!roles.ai)||(state.view==='privacy'&&!roles.fg)){
       selectView('overview');
     }

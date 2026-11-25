@@ -122,3 +122,15 @@ Een natuurkundige vergelijking en een geslaagde rekencontrole zijn niet genoeg o
 De controle `tests/test_science_physics_visual_fidelity.mjs` onderzoekt de zichtbare coördinaten, krachtenpijlen, beginrichting en intensiteitsverdeling. De tests voor alle 53 formules, grafieken en grenswaarden blijven actief. Dit is *gerichte technische dekking*, geen volledige inhoudelijke goedkeuring.
 
 Voor een vakdocent staat een [controlelijst voor alle 53 proeven](vakdocent-controle-53.md) klaar. Daarin zijn per proef de onderzoeksvraag en de beperking opgenomen, met extra aandachtspunten bij veertien onderwerpen. Ook het register `natuurkunde-kwaliteit.json` onderscheidt nu technische beeldtests van de nog ontbrekende beoordeling door een docent. Alle `inhoudelijk_gevalideerd`-velden blijven `false`.
+
+## Leeuw in 3D
+
+`labs/leeuw.html` is een zelfstandige onderzoeksruimte met zeven standen: hemelkaart, 3D, afstanden, parallax, licht, eigenbeweging en horizon. De negen figuursterren hebben vaste HIP-identificaties en bronlinks. Alle berekeningen lezen dezelfde ingebedde JSON met parallax en meetfout, ICRS/J2000, eigenbeweging, V-magnitude, spectraaltype en radiale snelheid. De CSV-export komt uit dezelfde gegevens. De pagina maakt duidelijk dat de figuur niet de volledige IAU-regio Leo is, kleuren niet fysieke sterdiameters zijn, inverse parallax geen volledige afstandsinferentie is en de bewegings- en horizonmodellen benaderingen zijn. Geen account, API of externe scriptbibliotheek nodig. Route: `/tools/science-observatory/labs/leeuw/`. De bron- en browsertests vallen onder de bestaande websitecontrole.
+
+### Leeuw-console v2
+
+De Leeuw gebruikt de CSS en instrumentindeling van het oorspronkelijke Galactisch Observatorium (`labs/melkweg.html`), met eigen scène en zeven ongewijzigde onderzoeksstanden. De hoofdpagina vult de viewport zonder scroll. Grafieken en metingen zijn op kleine schermen afzonderlijke panelen. De 3D-stand begint met een geanimeerde overgang uit de hemelprojectie en kan worden gepauzeerd, met de hand verschoven of gedraaid. De gegevens en rekenfunctie blijven dezelfde. `scripts/test_leeuw_console.mjs` controleert op echte Chromium- en WebKit-viewports de beschikbare scène, zichtbare knoppen, overgang, rotatie, pauze, metingen, grafiek en verminderde beweging. De gewone productiecontrole gebruikt dezelfde Chromium-test.
+
+### Leeuw: ruimtereis (v3)
+
+De bestaande route opent standaard een zelfstandige film van 96 seconden in vijf hoofdstukken. De camera gebruikt een perspectiefprojectie van de negen gemeten sterposities uit dezelfde JSON-data. De achtergrondsterren, diffuse lichtwolken, aardrand en het detailbeeld van Regulus zijn illustratief, evenals de lichtpuntgrootte; dit staat in beeld. De onderzoeksconsole blijft bereikbaar via `#hemel`, `#ruimte` en de andere bestaande hashes. De film is te pauzeren, te verschuiven en per hoofdstuk te bekijken; de voorkeursinstelling voor verminderde beweging wordt gerespecteerd. De gedeelde browsertest controleert ook de film op 320, 390 en 1440 pixels, maakt beelden van alle vijf scènes en controleert de overgang naar de bestaande console.

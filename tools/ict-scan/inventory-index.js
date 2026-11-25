@@ -28,9 +28,16 @@
     if(value&&typeof value==='object')return Object.values(value).map(recordText).join(' ');
     return value===null||value===undefined?'':String(value);
   }
-  function matchesRecord(record,query){
-    const q=normalize(query);if(!q)return true;
-    const haystack=normalize(recordText(record));
+  function matchesRecord(record,query,options={}){
+    const raw=String(query??'').trim(),q=normalize(raw);if(!q)return true;
+    // In a register browser a complete ID identifies the record itself,
+    // not a reference in another record's audit history. Keep the broader
+    // reference-search behavior for other index consumers.
+    if(options.exactId&&/^[a-z][a-z0-9]*\s*-\s*\d+(?:-[a-z0-9]+)*$/i.test(raw))return normalize(record?.id)===q;
+    const searchable=options.excludeMetadata&&record&&typeof record==='object'
+      ?Object.fromEntries(Object.entries(record).filter(([field])=>!['auditTrail','recordMeta'].includes(field)))
+      :record;
+    const haystack=normalize(recordText(searchable));
     return q.split(' ').every(term=>haystack.includes(term));
   }
   function build(state,options={}){
@@ -233,9 +240,11 @@
           groups[bucket].push({type,id:record.id,name:record.name,note,followUp,status:status||links[0].followUpStatus||'Open'});
         }
       }
-      const features=records('ai');
-      return {groups,featureCount:features.length,unknownCount:features.filter(record=>unknown(record.local)).length,
-        possibleHighRisk:features.filter(record=>/mogelijk hoog risico/i.test(record.aiAct||'')).map(record=>({id:record.id,name:record.name,product:record.product,local:record.local}))};
+      const features=records('ai').filter(record=>!get('ai',record.id)?.derived);
+      const feature=record=>({id:record.id,name:record.name,product:record.product,local:record.local});
+      const unknownLocal=features.filter(record=>unknown(record.local)).map(feature);
+      return {groups,featureCount:features.length,unknownCount:unknownLocal.length,unknownLocal,
+        possibleHighRisk:features.filter(record=>/mogelijk hoog risico/i.test(record.aiAct||'')).map(feature)};
     }
     return Object.freeze({
       version:VERSION,nodes,edges,errors,sourceCoverage,

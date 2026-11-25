@@ -27,4 +27,23 @@ class ArchiveReviewTests(unittest.TestCase):
  def test_ordinary_sources_receive_no_editorial_warning(self):
   soup=self.page();self.assertTrue(archive_review.review(soup,'/bronnen/'))
   self.assertFalse(soup.select('#archive-review-note'))
+ def test_legacy_tool_modules_redirects_directly_to_mobile_ready_hub(self):
+  import json
+  from build_site import redirect
+  root=Path(__file__).resolve().parents[1]
+  page_path=root/'eai-tools-modules/index.html'
+  source=BeautifulSoup(page_path.read_text(encoding='utf-8'),'html.parser')
+  expected=BeautifulSoup(redirect('/nl/tools/'),'html.parser')
+  for page in (source,expected):
+   self.assertEqual(page.find('meta',attrs={'http-equiv':'refresh'})['content'],'0; url=/nl/tools/')
+   self.assertEqual(page.find('meta',attrs={'name':'viewport'})['content'],'width=device-width,initial-scale=1')
+   self.assertEqual(page.find('link',rel='canonical')['href'],'https://eaimodel.nl/nl/tools/')
+   self.assertEqual(page.find('a')['href'],'/nl/tools/')
+  register=json.loads((root/'catalog/website-register.json').read_text(encoding='utf-8'))
+  self.assertEqual(next(p for p in register['pages'] if p['url']=='/eai-tools-modules/')['redirect_target'],'/nl/tools/')
+  generated=root/'site-build/eai-tools-modules/index.html'
+  if generated.exists():
+   page=BeautifulSoup(generated.read_text(encoding='utf-8'),'html.parser')
+   self.assertEqual(page.find('meta',attrs={'http-equiv':'refresh'})['content'],'0; url=/nl/tools/')
+   self.assertEqual(page.find('meta',attrs={'name':'viewport'})['content'],'width=device-width,initial-scale=1')
 if __name__=='__main__':unittest.main()

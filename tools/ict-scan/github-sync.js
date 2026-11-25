@@ -20,8 +20,8 @@
     const verified=state.githubVerification;
     const current=state.ready&&state.sourceMode==='github'&&syncMode==='success'&&verified;
     badge.dataset.mode=current?'success':syncMode==='info'?'loading':'warning';
-    badge.textContent=syncMode==='info'?'GitHub ophalen…':current?'GitHub · '+verified.records+' registraties':state.ready?'GitHub niet actueel':'GitHub verbinden';
-    badge.title=current?'Gecontroleerd: '+verified.files+' bestanden, '+verified.registers+' registers · '+verified.version+' · '+verified.commit:' '+syncMessage+(state.ready?' De getoonde gegevens zijn niet als actuele GitHub-versie bevestigd.':'');
+    badge.textContent=syncMode==='info'?'GitHub ophalen…':current?'GitHub · gesynchroniseerd':state.ready?'GitHub niet actueel':'GitHub verbinden';
+    badge.title=current?'Gecontroleerd: '+verified.records+' registraties, '+verified.files+' bestanden, '+verified.registers+' registers · '+verified.version+' · '+verified.commit:' '+syncMessage+(state.ready?' De getoonde gegevens zijn niet als actuele GitHub-versie bevestigd.':'');
     badge.setAttribute('aria-label',badge.textContent+'. '+badge.title);
   }
   function markLocal(mode='local'){state.sourceMode=mode;state.githubVerification=null;syncMode='warning';syncMessage=mode==='snapshot'?'Lokale momentopname; GitHub nog niet gecontroleerd.':'Lokale gegevens; geen actuele GitHub-bron.';renderStatus();}

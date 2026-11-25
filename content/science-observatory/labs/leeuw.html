@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0a1422"><meta name="description" content="Reis langs de sterren van Leeuw. Zie hoe de bekende figuur aan de hemel verandert wanneer je de ruimte in beweegt."><title>Leeuw in 3D | EAI Observatorium</title>
+<style>
+:root{--bg:#050914;--panel:#0b1220;--panel2:#0c1525;--line:#233149;--muted:#788da8;--txt:#dbe7f7;--hi:#f0f6ff;--cyan:#70e4ec;--amber:#eab979;--purple:#aa9df4;--green:#84d8af;--red:#fc8c93;--sidebar:222px;--right:335px}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font:13px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.012em;color:var(--txt);background:var(--bg)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}::selection{background:#316a77;color:white}
+#app{display:grid;grid-template-columns:var(--sidebar) minmax(350px,1fr) var(--right);grid-template-rows:67px minmax(320px,1fr) 254px;width:100%;height:100dvh;min-height:620px;background:radial-gradient(ellipse at 55% 45%,#101c36 0%,#070c18 65%,#040711 100%)}
+.sidebar{grid-row:1/4;grid-column:1;border-right:1px solid var(--line);background:linear-gradient(180deg,#0b1424,#080e19 78%);display:flex;flex-direction:column;min-height:0;z-index:5}.brand{padding:25px 20px 23px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #223048}.brandmark{width:38px;height:38px;border:1px solid #4a6c80;border-radius:50%;position:relative;display:grid;place-items:center;background:radial-gradient(circle,#385b70 0 3px,transparent 4px)}.brandmark:before,.brandmark:after{content:"";position:absolute;inset:8px -5px;border:1px solid #8abccc;border-radius:50%;transform:rotate(-35deg)}.brandmark:after{inset:13px 0;transform:rotate(48deg);border-color:#5f718a}.brandmark b{height:5px;width:5px;background:var(--amber);border-radius:50%;box-shadow:0 0 10px var(--amber)}.brand h1{font-size:15px;letter-spacing:.17em;line-height:1.1;margin:0;font-weight:800;color:#f3f7ff}.brand small{font:9px/1.3 ui-monospace,SFMono-Regular,monospace;letter-spacing:.15em;color:var(--muted)}.s-label{padding:24px 19px 11px;font-size:10px;color:#66819f;letter-spacing:.18em;font-weight:800}.navlist{padding:0 10px;display:grid;gap:4px}.nav-btn{position:relative;width:100%;border:1px solid transparent;background:transparent;color:#899ab4;border-radius:8px;display:flex;align-items:center;gap:12px;text-align:left;padding:11px 10px;transition:.2s}.nav-btn:hover{background:#15243a;color:#eff8ff}.nav-btn.active{background:linear-gradient(90deg,#172d43,#142136);border-color:#2a4b62;color:#e7f9ff}.nav-btn.active:before{position:absolute;content:"";height:63%;width:2px;left:-11px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}.nav-icon{width:29px;min-width:29px;height:29px;display:grid;place-items:center;background:#132238;border:1px solid #30435e;border-radius:6px;color:#9ddde7;font:700 15px/1 ui-monospace,monospace}.navcopy{display:grid;min-width:0}.navcopy b{font-size:12px;font-weight:650}.navcopy small{font:10px/1.4 ui-monospace,monospace;letter-spacing:.01em;color:#71849e}.navnum{font:10px ui-monospace,monospace;color:#7087a0;margin-left:auto}.side-end{margin-top:auto;padding:16px 20px 21px;border-top:1px solid var(--line)}.live{display:flex;gap:8px;align-items:center;font:10px ui-monospace,monospace;letter-spacing:.1em;color:#90d1bc}.led{width:6px;height:6px;border-radius:50%;background:#70dda6;box-shadow:0 0 10px #72d8a6;animation:blink 3s ease-in-out infinite}.side-end p{font-size:11px;color:#70859f;line-height:1.6;margin:8px 0 0}.side-end .ver{display:block;font:9px ui-monospace,monospace;color:#546780;margin-top:10px}.topbar{grid-column:2/4;grid-row:1;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(7,14,26,.91);padding:0 22px;gap:12px;z-index:4}.breadcrumb{font:10px ui-monospace,monospace;letter-spacing:.13em;color:#7795b0;white-space:nowrap}.breadcrumb strong{color:#deedf8;font-weight:650}.slash{padding:0 10px;color:#405369}.top-actions{display:flex;align-items:center;gap:8px}.tag{display:inline-flex;align-items:center;gap:8px;border:1px solid #31516b;color:#a8d3e5;border-radius:4px;background:#102234;padding:7px 9px;font:9px/1 ui-monospace,monospace;letter-spacing:.1em;white-space:nowrap}.tag .dot{width:5px;height:5px;background:#7ed4cf;border-radius:50%}.topbtn{height:32px;padding:0 11px;border-radius:5px;border:1px solid #2a3d54;background:#121e30;color:#c0d4e9;display:flex;align-items:center;gap:7px;font-size:11px;white-space:nowrap}.topbtn:hover{border-color:#5c97b3;color:white}.topbtn.primary{border-color:#527d8b;color:#ddfdff;background:#174052}.topbtn svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.7;fill:none}.topbtn .btxt{display:inline}
+.stage{grid-column:2;grid-row:2;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 47%,#0f203b 0%,#09162b 48%,#030916 100%)}.stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.025) 4px),linear-gradient(90deg,rgba(4,9,20,.38),transparent 19%,transparent 78%,rgba(4,9,20,.34));z-index:1}.stage canvas{width:100%;height:100%;position:absolute;inset:0;touch-action:none;cursor:grab}.stage canvas.dragging{cursor:grabbing}.stage-head{position:absolute;top:25px;left:29px;z-index:2;pointer-events:none;max-width:500px}.eyebrow{font:10px ui-monospace,monospace;letter-spacing:.2em;font-weight:650;color:var(--cyan)}.stage-head h2{font-size:clamp(23px,2.2vw,38px);font-weight:650;letter-spacing:-.047em;line-height:1.09;margin:9px 0;color:#f6f9ff;text-shadow:0 2px 28px #030711}.stage-head p{margin:10px 0 0;color:#93aac7;font-size:12px;max-width:410px;line-height:1.6}.stage-head strong{color:#deedff;font-weight:600}.stage-metrics{position:absolute;top:27px;right:23px;display:grid;gap:5px;text-align:right;z-index:2;pointer-events:none}.stage-metrics div{font:10px ui-monospace,monospace;color:#8ba3bf}.stage-metrics b{color:#dbf7ff;font-weight:650}.stage-hud-bottom{position:absolute;bottom:17px;left:23px;right:23px;z-index:3;display:flex;align-items:flex-end;justify-content:space-between;gap:15px;pointer-events:none}.scene-meta{font:10px/1.7 ui-monospace,monospace;letter-spacing:.04em;color:#849bb4}.scene-meta strong{color:#bbe2eb;font-weight:500}.camera-controls{pointer-events:auto;display:flex;gap:3px;padding:4px;background:rgba(9,18,32,.87);border:1px solid #32465c;border-radius:7px;backdrop-filter:blur(12px)}.cambtn{border:0;background:transparent;color:#7b93af;padding:7px 11px;border-radius:4px;font:10px ui-monospace,monospace;white-space:nowrap}.cambtn:hover,.cambtn.active{color:#eaffff;background:#1b4054}.scene-badge{position:absolute;top:238px;left:29px;z-index:2;pointer-events:none;border-left:2px solid var(--amber);padding:4px 0 4px 9px;font:10px/1.5 ui-monospace,monospace;color:#b2a18a;max-width:245px}.scene-badge span{color:#e4c69f}
+.inspector{grid-column:3;grid-row:2/4;min-width:0;min-height:0;border-left:1px solid var(--line);background:#0a1221;display:flex;flex-direction:column}.panel-head{padding:20px 20px 17px;border-bottom:1px solid #263750;flex:none}.panel-head .section-counter{display:flex;justify-content:space-between;align-items:center;font:10px ui-monospace,monospace;color:#7795ae;letter-spacing:.1em}.panel-head .section-counter b{font-size:10px;color:var(--cyan);font-weight:500}.panel-head h3{font-size:19px;letter-spacing:-.035em;color:#f0f6ff;line-height:1.2;margin:11px 0 7px;font-weight:650}.panel-head p{margin:0;color:#91a6bf;font-size:11px;line-height:1.65}.panel-body{min-height:0;overflow:auto;padding:18px 19px 38px;scrollbar-width:thin;scrollbar-color:#344861 transparent}.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:21px}.stat{background:linear-gradient(135deg,#132235,#0e1b2c);border:1px solid #283c54;border-radius:6px;padding:11px;min-width:0}.stat small{display:block;font:9px ui-monospace,monospace;color:#809bb3;letter-spacing:.03em}.stat strong{display:block;font:21px/1.3 ui-monospace,monospace;color:#eaf7ff;margin-top:4px;letter-spacing:-.055em}.stat strong.amber{color:var(--amber)}.stat .unit{font:10px ui-monospace,monospace;color:#8ca2bb;margin-left:4px}.subhead{display:flex;justify-content:space-between;align-items:center;gap:10px;font:10px ui-monospace,monospace;letter-spacing:.1em;font-weight:650;color:#d5e5f7;margin-bottom:10px}.subhead .mini{font-size:9px;color:#7490ac;font-weight:400}.ctrlgroup{border-top:1px solid #24354a;padding-top:16px;margin-top:17px}.ctrlrow{margin:0 0 16px}.ctrlrow .rowhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:11px;color:#b6cce2}.ctrlrow output{font:11px ui-monospace,monospace;color:#80e0e7}.ctrlrow input[type=range],.timeline input[type=range]{appearance:none;width:100%;height:3px;border-radius:5px;outline:0;background:linear-gradient(90deg,#44758d,#22334a);margin:14px 0 0;cursor:pointer}.ctrlrow input[type=range]::-webkit-slider-thumb,.timeline input[type=range]::-webkit-slider-thumb{appearance:none;width:12px;height:12px;border-radius:50%;background:#b4f5f6;border:2px solid #184454;box-shadow:0 0 0 3px #1c3c51}.ctrlrow .help{display:block;font:10px/1.5 ui-monospace,monospace;color:#617b95;margin:6px 0 0}.switchgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.switch{display:flex;gap:9px;align-items:center;padding:8px 9px;background:#101d2e;border:1px solid #283b53;border-radius:5px;font-size:10px;color:#abbfd8;cursor:pointer}.switch:has(input:checked){background:#162d3c;border-color:#326277;color:#e1f8ff}.switch input{appearance:none;margin:0;width:12px;height:12px;flex:none;border:1px solid #546b86;border-radius:3px;background:#0a1829}.switch input:checked{background:#71d9e0;border-color:#71d9e0;box-shadow:inset 0 0 0 3px #173645}.note{margin-top:16px;font-size:11px;color:#8ea4be;line-height:1.7;border-left:2px solid #5b7992;padding-left:10px}.note strong{color:#dae8f6}.note.warning{border-left-color:#bd9463}.insight{padding:12px;background:#121e30;border:1px solid #2e4057;border-radius:5px;margin:11px 0;font-size:11px;line-height:1.6;color:#b6c8dc}.insight b{font-weight:650;color:#cdeffa}.model-status{font:9px ui-monospace,monospace;color:#9bb2c8;padding:9px 10px;background:#101a2a;border:1px dashed #365269;border-radius:5px;margin-top:12px}.source-head{margin:20px 0 8px;font:10px ui-monospace,monospace;color:#c7d9eb}.sources{padding:0;margin:0 0 0 14px;color:#7c94ae;font-size:10px;line-height:1.9}.sources a{color:#97c6dc}.theoryhead{font:10px ui-monospace,monospace;letter-spacing:.12em;color:#c3d8e9;margin:20px 0 9px}.theory{margin:6px 0;border:1px solid #293d55;border-radius:5px;background:#0e1b2c;overflow:hidden}.theory summary{padding:10px 12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:8px;align-items:center;color:#c7def0;font-size:11px;font-weight:600}.theory summary::-webkit-details-marker{display:none}.theory summary:after{content:'+';font:16px ui-monospace,monospace;color:#8ed6db}.theory[open] summary:after{content:'−'}.theory[open] summary{border-bottom:1px solid #2a4158;background:#12263b}.theorytext{padding:9px 12px 12px;color:#9db3ca;font-size:11px;line-height:1.7}.theorytext p{margin:7px 0}.theorytext em{color:#e4cc9f;font-style:normal}.theorytext code{color:#c3e8ed;font-size:10px}.actionline{display:flex;gap:7px;flex-wrap:wrap}.small-action{font:10px ui-monospace,monospace;padding:8px 10px;border:1px solid #38576e;border-radius:4px;color:#b9d9e9;background:#14273a}.small-action:hover{background:#1b3b4b;color:white}
+.analytics{grid-column:2;grid-row:3;display:grid;grid-template-rows:38px minmax(0,1fr) 44px;border-top:1px solid #273950;background:linear-gradient(180deg,#0c1626,#08101c);min-width:0;min-height:0}.analytics-head{display:flex;justify-content:space-between;align-items:center;padding:0 19px;border-bottom:1px solid #203147;gap:10px}.analytics-head h3{font:10px ui-monospace,monospace;letter-spacing:.13em;color:#ccdff0;margin:0}.analytics-head .cal-tag{font:9px ui-monospace,monospace;color:#799ab6;white-space:nowrap}.analytics-main{min-height:0;display:grid;grid-template-columns:minmax(220px,1fr) 255px}.chartbox{min-width:0;min-height:0;position:relative;overflow:hidden}.chartbox canvas{width:100%;height:100%}.mathbox{border-left:1px solid #23364b;padding:14px 16px;overflow:auto;scrollbar-width:thin}.math-label{font:9px ui-monospace,monospace;letter-spacing:.1em;color:#698cac}.formula{font:13px/1.65 Georgia,serif;color:#f0e2c4;margin-top:8px}.formula-sub{font:10px/1.6 ui-monospace,monospace;color:#8da7bf;margin-top:9px}.timeline{display:flex;align-items:center;gap:12px;border-top:1px solid #23354c;padding:0 19px}.timeline button{width:27px;height:27px;flex:none;display:grid;place-items:center;border:1px solid #36546a;background:#16283b;border-radius:5px;color:#bdedf0}.timeline button:hover{background:#22475a}.timeline .playico{font:12px ui-monospace,monospace}.timeline label{font:9px ui-monospace,monospace;color:#8ca7bd;white-space:nowrap}.timeline input[type=range]{margin:0;flex:1;min-width:40px}.timeline .tvalue{min-width:91px;text-align:right;color:#d8e8f7;font:11px ui-monospace,monospace}.timeline .speed-wrap{min-width:67px;display:flex;gap:6px;align-items:center;justify-content:flex-end;font:10px ui-monospace,monospace;color:#7a9ab5}.timeline select{background:#0e2132;color:#a8dbe3;border:1px solid #30516a;border-radius:4px;font:10px ui-monospace,monospace;padding:4px}.cursorinfo{position:absolute;pointer-events:none;z-index:2;background:#102032e8;color:#dceaf9;font:10px ui-monospace,monospace;padding:6px 8px;border:1px solid #42647a;border-radius:3px;display:none}.helpkey{background:#16283b;border:1px solid #355168;padding:1px 4px;border-radius:3px;font:10px ui-monospace,monospace;color:#9bbfd0}
+.toast{position:fixed;bottom:23px;right:28px;max-width:330px;border:1px solid #3d7d84;background:#112e3c;box-shadow:0 17px 50px #0008;padding:12px 16px;color:#e0fbff;font-size:12px;border-radius:7px;opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s;pointer-events:none;z-index:99}.toast.show{opacity:1;transform:translateY(0)}
+@keyframes blink{50%{opacity:.35}}
+@media(max-width:1190px){:root{--sidebar:72px;--right:313px}.brand{padding:21px 16px;justify-content:center}.brand .brandtext,.navcopy,.navnum,.s-label,.side-end p,.side-end .ver{display:none}.nav-btn{justify-content:center;padding:11px 7px}.nav-btn.active:before{left:-11px}.side-end{padding:18px;display:flex;justify-content:center}.live{font-size:0}.topbar{padding:0 16px}.stage-head{left:20px}.stage-head p{max-width:310px}.analytics-main{grid-template-columns:minmax(180px,1fr) 210px}}
+@media(max-width:790px){html,body{overflow:auto;height:auto}#app{display:flex;flex-direction:column;min-height:100dvh;height:auto}.sidebar{position:sticky;top:0;height:56px;flex-direction:row;align-items:center;border-right:0;border-bottom:1px solid var(--line);z-index:20}.brand{padding:6px 12px}.brandmark{width:30px;height:30px}.navlist{display:flex;gap:2px;overflow-x:auto;padding:0 8px;flex:1}.nav-btn{min-width:37px;padding:5px}.nav-icon{height:27px;width:27px;min-width:27px}.nav-btn.active:before{height:2px;width:65%;top:auto;bottom:-1px;left:17%}.side-end{display:none}.topbar{height:49px;flex:none;padding:0 12px}.breadcrumb{font-size:9px}.tag{display:none}.topbtn .btxt{display:none}.topbtn{padding:0 9px}.stage{height:60vh;min-height:440px;flex:none}.stage-head{top:20px;left:19px}.stage-head h2{font-size:26px}.stage-head p{font-size:11px;max-width:250px}.scene-badge{display:none}.stage-metrics{top:20px;right:12px}.stage-hud-bottom{left:12px;right:12px}.camera-controls{gap:0}.cambtn{padding:6px 7px;font-size:9px}.inspector{border-left:0;border-top:1px solid var(--line);order:4}.panel-body{max-height:none;padding-bottom:25px}.analytics{order:3;height:260px;flex:none}.analytics-main{grid-template-columns:minmax(220px,1fr) minmax(140px,32%)}.mathbox{padding:10px}.formula{font-size:11px}.timeline{gap:8px;padding:0 10px}.timeline .speed-wrap{display:none}}
+@media(max-width:470px){.stage{height:490px;min-height:490px}.stage-head h2{font-size:23px}.stage-head p{max-width:195px}.stage-metrics div{font-size:8px}.analytics-main{grid-template-columns:minmax(0,1fr)}.mathbox{display:none}.analytics{height:236px}.camera-controls{max-width:100%}.cambtn{padding:6px;font-size:8px}.scene-meta{font-size:9px}.breadcrumb{letter-spacing:0}.slash{padding:0 3px}.stage-hud-bottom{align-items:flex-end}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+
+
+/* Leeuw: the original Melkweg console above supplies the instrument styles.
+   Fixed workspace, with separate internal scrolling only for reading panels. */
+:root{color-scheme:dark;--sidebar:202px;--right:306px;--cyan:#86dce2;--muted:#90a8bf}
+html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none;margin:0}
+body{position:fixed;inset:0;background:#050914}
+[hidden]{display:none!important}button,select,input{font:inherit}button:focus-visible,select:focus-visible,input:focus-visible,canvas:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+#app{width:100%;height:100dvh;min-height:0;overflow:hidden;display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr) var(--right);grid-template-rows:55px minmax(0,1fr) minmax(184px,27dvh);position:relative;background:#081321}
+.sidebar{grid-row:1/4;grid-column:1;min-height:0;overflow:hidden}.sidebar .brand{padding:19px 14px;gap:9px}.brand h1{font-size:13px;letter-spacing:.10em}.brand small{font-size:9px}.sidebar .navlist{min-height:0;overflow:auto;scrollbar-width:thin;gap:2px;padding:0 8px}.sidebar .nav-btn{padding:9px 7px;gap:8px;border-radius:4px;min-height:44px}.sidebar .nav-icon{width:27px;min-width:27px;height:27px;border-radius:4px;font-size:14px}.sidebar .navcopy b{font-size:11px}.sidebar .navcopy small{font-size:9px}.side-end{padding:14px 14px 16px}.side-end a{display:block;font-size:11px;margin-top:8px}
+.topbar{grid-column:2/4;grid-row:1;padding:0 15px;background:#0a1320;min-width:0;gap:8px}.top-actions{gap:5px}.topbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:32px;padding:0 9px;border-radius:4px;font:10px ui-monospace,monospace;color:#b8cedf;text-decoration:none}.topbtn svg{width:15px;height:15px;flex:none}.breadcrumb{overflow:hidden;text-overflow:ellipsis;font-size:10px;letter-spacing:.06em}.topbar .tag{font:9px ui-monospace,monospace}
+.stage{grid-row:2;grid-column:2;position:relative;overflow:hidden;min-width:0;min-height:0;height:auto;background:radial-gradient(ellipse at 49% 52%,#10203a 0%,#091527 48%,#050a14 92%)}.stage:after{opacity:.35}.stage-head{top:16px;left:20px;right:145px;max-width:none;z-index:3}.stage-head .eyebrow{font-size:10px;letter-spacing:.14em}.stage-head h2{font-size:clamp(22px,2.3vw,31px);font-weight:600;letter-spacing:-.045em;line-height:1.13;margin:7px 0}.stage-head p{font-size:12px;max-width:380px;line-height:1.5;margin:6px 0 0}.stage-metrics{right:16px;top:18px;max-width:140px;gap:4px;z-index:3}.stage-metrics div{font-size:9px;white-space:nowrap}.stage-metrics b{color:#c3e8e9}
+.viewport{position:absolute;inset:102px 0 83px;overflow:hidden;min-height:0}.viewport canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}.viewport canvas:active{cursor:grabbing}.canvasbadge{position:absolute;top:7px;right:11px;pointer-events:none;font:9px ui-monospace,monospace;color:#7694aa}
+.stage-footer{position:absolute;z-index:4;bottom:0;left:0;right:0;padding:6px 12px 9px;display:grid;gap:5px;background:linear-gradient(180deg,transparent,#081421e8 22%,#081421fa);border-top:1px solid #20354a88}.scene-meta{font:9px/1.4 ui-monospace,monospace;letter-spacing:.015em;display:flex;justify-content:space-between;gap:8px;color:#89a7bb;min-width:0}.scene-meta strong{font:9px/1.4 ui-monospace,monospace;color:#b7cbd9}.console-row{display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0}.camera-controls{display:flex;align-items:center;gap:2px;padding:3px;background:#091624d9;border:1px solid #314a60;border-radius:4px;min-width:0}.cambtn{padding:6px 8px;border-radius:3px;font:10px ui-monospace,monospace;line-height:1.2;white-space:nowrap;color:#90a9bf;min-height:28px}.cambtn[aria-pressed=true]{color:#dff9fa;background:#1b4054}.console-actions{display:flex;gap:5px;margin-left:auto;flex:none}.console-actions .topbtn{height:32px;min-width:32px;padding:0 8px;flex:none}.console-actions .topbtn[aria-expanded=true],.console-actions .topbtn[aria-pressed=true]{border-color:#71b3c2;background:#163746;color:#dbf7fa}#spin{min-width:42px;gap:5px}#playGlyph{font:15px/1 ui-monospace,monospace}.play-label{font:10px ui-monospace,monospace}
+.quickbar{display:flex;align-items:center;gap:9px;min-width:0;min-height:22px;font:10px ui-monospace,monospace;color:#abc4d5}.quickbar input[type=range]{width:100%;min-width:25px;flex:1;height:3px;accent-color:#8dd6dc;margin:0}.quickbar output{color:#c0e9ea;min-width:45px;text-align:right;white-space:nowrap}.quickbar label{white-space:nowrap;font-size:9px}.quickbar button{font:10px ui-monospace,monospace;padding:5px 9px;min-height:27px;color:#bce1e7;background:#14293b;border:1px solid #375568;border-radius:3px}.quickbar .quick-label{white-space:nowrap}.quickbar .quick-space{flex:1}
+.inspector{grid-column:3;grid-row:2/4;min-height:0;min-width:0;background:#0a1422;border-left:1px solid #263a50;overflow:hidden;display:flex;flex-direction:column;z-index:5}.inspector .panel-head{padding:12px 14px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px}.inspector .panel-head h3{font-size:15px;margin:5px 0 0}.inspector .panel-head .section-counter{font:9px ui-monospace,monospace;gap:9px}.inspector .panel-body{padding:13px 14px 22px;overflow:auto;overscroll-behavior:contain;flex:1;min-height:0;scrollbar-width:thin}.inspector h3,.inspector p{margin:0}.inspector h3{font-size:12px;font-weight:600}.inspector .section{border-top:1px solid #273a4f;padding-top:12px;margin-top:12px;display:grid;gap:7px}.inspector .selection{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.inspector .selection h3{font-size:17px}.inspector .big{font:500 26px/1.2 ui-monospace,monospace;color:#8de0e5;letter-spacing:-.045em;margin:5px 0}.muted{font-size:11px;line-height:1.6;color:#8fa8bf}.metricgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:10px 0}.metric{min-width:0;border-bottom:1px solid #25394d;padding:7px 4px}.metric small{display:block;font:9px ui-monospace,monospace;color:#8aa5bb}.metric strong{display:block;font:500 13px/1.5 ui-monospace,monospace;color:#e1eff8;overflow-wrap:anywhere;margin-top:3px}.inspector label{font-size:11px;color:#bfd1df;display:flex;align-items:center;justify-content:space-between;gap:7px}.inspector input[type=range]{width:100%;accent-color:#8dd6dc;height:3px}.inspector input[type=number],.inspector input[type=datetime-local],.inspector select{width:100%;min-width:0;background:#112236;border:1px solid #334e66;padding:7px 8px;border-radius:3px;color:#d9eaf5;font-size:12px}.inspector select{appearance:auto}.inspector .coords{display:grid;grid-template-columns:1fr 1fr;gap:7px}.inspector .coords label{display:grid;gap:4px}.inspector .toggle{display:flex;flex-wrap:wrap;gap:4px}.inspector .toggle button,.smallbtn{padding:6px 9px;border-radius:3px;border:1px solid #355369;background:#12263a;color:#bfd9e8;font:10px ui-monospace,monospace}.inspector .switchgrid{gap:3px}.inspector .switch{min-height:31px;padding:6px 7px;border-radius:3px;font:10px ui-monospace,monospace;justify-content:flex-start}.inspector .switch input{width:12px;height:12px}.inspector .starlist{display:grid;gap:2px}.inspector .star{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;background:#0d1a2a;border:1px solid transparent;border-radius:3px;color:#c4d5e3;padding:5px 7px;gap:7px;font-size:11px;min-height:30px}.inspector .star[aria-pressed=true]{background:#173346;border-color:#3e6577;color:#e4f9fa}.starname{display:flex;align-items:center;gap:7px;min-width:0}.starname .dot{height:5px;width:5px;border-radius:50%;flex:none}.star small{font:10px ui-monospace,monospace;color:#9eb7cb;white-space:nowrap}.inspector details{margin-top:9px;border:1px solid #293e53;border-radius:3px;background:#0c1928;padding:8px 9px;color:#9fb6c9;font-size:11px;line-height:1.65}.inspector summary{cursor:pointer;font:600 11px ui-monospace,monospace;color:#b0d8e2}.inspector details p{margin:8px 0}.tablewrap{overflow:auto;max-width:100%}.data{border-collapse:collapse;min-width:790px;font-size:10px}.data th,.data td{border-bottom:1px solid #263c50;text-align:left;padding:5px;white-space:nowrap}.inspector .bottom{padding:0;margin-top:11px}.inspector .answer{padding-top:7px}.panel-close,.graph-close{display:none}
+.analytics{grid-column:2;grid-row:3;min-width:0;min-height:0;display:grid;grid-template-rows:31px minmax(0,1fr) auto;overflow:hidden;background:#081321;border-top:1px solid #2c4156}.analytics-head{height:auto;min-width:0;padding:0 12px;gap:6px}.analytics-head h3{font:10px ui-monospace,monospace;letter-spacing:.045em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.analytics-head .cal-tag{font:9px ui-monospace,monospace}.analytics-main{min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(155px,35%)}.chartbox{min-width:0;min-height:0;position:relative;overflow:hidden}.chartbox canvas{width:100%;height:100%;display:block;touch-action:none}.mathbox{padding:9px 12px;min-width:0;overflow:auto;scrollbar-width:thin}.mathbox h3{font-size:12px;color:#c8dbe6;font-weight:550;line-height:1.4;margin:6px 0}.mathbox .formula{font:11px/1.6 Georgia,serif;color:#edd4ae;overflow-wrap:anywhere}.mathbox details{margin-top:7px;font-size:11px;color:#a3bacd}.mathbox details summary{font-size:10px;color:#9fd2d8;cursor:pointer}.mathbox p{font-size:11px;line-height:1.5;margin:5px 0}.chartnote{padding:5px 12px 6px;font:9px/1.35 ui-monospace,monospace;color:#88a6b9;border-top:1px solid #23364a}.status{font-size:10px;color:#96aebf;line-height:1.5}.panel-backdrop{display:none}.desktop-hidden{display:none}
+@media(max-width:1190px) and (min-width:851px){:root{--sidebar:64px;--right:280px}.sidebar .brand{justify-content:center;padding:12px 9px}.sidebar .navlist{padding:0 6px}.sidebar .nav-btn{justify-content:center;padding:7px 3px}.stage-head h2{font-size:23px}.stage-head{right:120px;left:14px}.stage-head p{font-size:11px}.stage-metrics{right:10px}.topbtn .btxt{display:none}.stage-footer{padding:6px 9px}.cambtn{padding:6px 7px}}
+@media(min-width:851px) and (max-height:660px){#app{grid-template-rows:48px minmax(0,1fr) 156px}.viewport{inset:77px 0 68px}.stage-head{top:11px}.stage-head h2{font-size:21px}.stage-head p{display:none}.stage-footer{gap:3px;padding:4px 9px}.quickbar{min-height:17px}.mathbox{padding:6px}.sidebar .nav-btn{min-height:36px;padding:5px 7px}.sidebar .brand{padding:9px 12px}}
+@media(max-width:850px){
+ html,body{height:100%;overflow:hidden;position:fixed;inset:0}
+ #app{height:100dvh;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:48px 43px minmax(0,1fr);overflow:hidden;max-width:none}
+ .sidebar{grid-column:1;grid-row:1;position:relative;top:auto;height:auto;min-height:0;display:flex;flex-direction:row;align-items:center;overflow:hidden;border:0;border-bottom:1px solid #2c4055;z-index:6;padding:0 4px;background:#091321}
+ .sidebar .brand{display:none}.sidebar .s-label,.sidebar .side-end,.sidebar .navcopy,.sidebar .navnum{display:none}.sidebar .navlist{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;overflow:hidden;width:100%;padding:2px 1px;height:100%;align-items:center}.sidebar .nav-btn{min-width:0;width:100%;height:40px;min-height:0;padding:2px;border-radius:4px;justify-content:center;gap:0}.sidebar .nav-btn.active:before{left:14%;width:72%;height:2px;top:auto;bottom:0}.sidebar .nav-icon{width:28px;height:28px;min-width:28px;font-size:14px;border-radius:4px;background:#132237}.sidebar .nav-btn.active .nav-icon{border-color:#4d8294;background:#1b3848;color:#b9f0f2}
+ .topbar{grid-row:2;grid-column:1;height:auto;min-height:0;padding:0 9px;gap:5px;z-index:6}.breadcrumb{font:9px ui-monospace,monospace;letter-spacing:.02em;min-width:0}.breadcrumb .console-label{display:none}.breadcrumb .slash{padding:0 4px}.topbar .tag,.topbar .btxt{display:none}.topbtn{padding:0 7px;min-width:30px;height:30px}.topbtn svg{width:14px;height:14px}.top-actions{gap:4px}
+ .stage{grid-column:1;grid-row:3;height:auto;min-height:0;flex:none;overflow:hidden}.stage-head{top:14px;left:14px;right:94px;max-width:none}.stage-head .eyebrow{font-size:9px;letter-spacing:.11em}.stage-head h2{font-size:clamp(20px,5.8vw,25px);line-height:1.08;margin:6px 0}.stage-head p{font-size:11px;line-height:1.45;margin:6px 0;max-width:none}.stage-metrics{right:9px;top:15px;max-width:87px;gap:4px}.stage-metrics div{font:8px/1.3 ui-monospace,monospace;white-space:normal}.stage-metrics b{display:block;font-size:9px}
+ .viewport{inset:111px 0 84px}.canvasbadge{top:5px;right:8px;font-size:8px}.stage-footer{padding:5px 8px max(8px,env(safe-area-inset-bottom));gap:5px}.scene-meta,.scene-meta strong{font-size:8px;line-height:1.3}.scene-meta span:first-child{white-space:nowrap}.scene-meta strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.camera-controls{padding:2px;gap:1px}.cambtn{padding:6px 6px;font-size:9px;min-height:30px}.console-actions{gap:4px}.console-actions .topbtn{min-width:33px;height:34px;padding:0 6px}.console-actions .topbtn svg{width:15px;height:15px}.play-label{display:none}#spin{min-width:32px}.quickbar{gap:7px;min-height:20px;font-size:9px}.quickbar label{font-size:9px}.quickbar output{min-width:32px;font-size:9px}.quickbar button{font-size:9px;padding:5px 6px}.desktop-hidden{display:inline-flex}
+ .inspector,.analytics{display:none;position:absolute;grid-column:auto;grid-row:auto;left:0;right:0;bottom:0;z-index:12;border:1px solid #3a536b;border-radius:7px 7px 0 0;box-shadow:0 -18px 40px #0009;background:#091624fa;overflow:hidden;max-height:calc(100% - 102px)}
+ body.panel-open .inspector{display:flex;height:min(68dvh,510px);min-height:0}.inspector .panel-head{padding:9px 12px;flex:none}.inspector .panel-body{padding:11px 13px max(18px,env(safe-area-inset-bottom));min-height:0}.inspector .panel-head h3{font-size:14px}.inspector .panel-close,.analytics .graph-close{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:32px;font:18px ui-monospace,monospace;border-radius:4px;border:1px solid #3b5268;color:#d0e4ee;background:#102338}.inspector .metricgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.inspector .starlist{grid-template-columns:1fr 1fr}.inspector .star{font-size:10px;padding:5px 4px}.inspector .star small{font-size:9px}
+ body.graph-open .analytics{display:grid;height:min(58dvh,400px);grid-template-rows:40px minmax(0,1fr) auto;min-height:0}.analytics-head{padding:0 9px}.analytics-head h3{font-size:9px}.analytics-head .cal-tag{margin-left:auto;font-size:8px}.analytics-main{display:grid;grid-template-columns:1fr;grid-template-rows:minmax(105px,1fr) minmax(64px,34%);overflow:hidden}.mathbox{display:block;min-height:0;border:0;border-top:1px solid #263a50;padding:7px 10px;overflow:auto;overscroll-behavior:contain}.mathbox h3{font-size:11px;margin:4px 0}.mathbox .formula{margin:3px 0;font-size:10px}.chartnote{padding:5px 9px;font-size:8px}.panel-backdrop{position:absolute;inset:91px 0 0;z-index:11;border:0;background:#0308136b;display:none}.panel-open .panel-backdrop,.graph-open .panel-backdrop{display:block}
+}
+@media(max-width:350px){.sidebar .nav-icon{width:25px;height:25px;min-width:25px;font-size:13px}.sidebar .nav-btn{height:37px}.stage-head{right:80px;left:11px}.stage-head h2{font-size:21px}.stage-head p{font-size:10px}.stage-metrics{right:7px;max-width:73px}.cambtn{font-size:8px;padding:6px 5px}.console-actions{gap:3px}.console-actions .topbtn{min-width:30px;padding:0 5px}.camera-controls{gap:0}.viewport{inset:109px 0 81px}.stage-footer{padding-left:5px;padding-right:5px}.quickbar label{font-size:8px}.scene-meta{font-size:8px}}
+@media(max-width:850px) and (max-height:550px){#app{grid-template-rows:42px 38px minmax(0,1fr)}.sidebar .nav-btn{height:34px}.sidebar .nav-icon{height:24px;width:24px;min-width:24px}.stage-head{top:8px;right:94px}.stage-head h2{font-size:18px;margin:4px 0}.stage-head p{display:none}.stage-metrics{top:8px}.viewport{inset:63px 0 74px}.stage-footer{padding-bottom:5px}.panel-backdrop{top:80px}.inspector,.analytics{max-height:calc(100% - 84px)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.stage .viewport{inset:var(--scene-top,110px) 0 var(--scene-bottom,86px)}
+
+/* A full-screen film first; the existing observatory remains available at its own hashes. */
+#voyage[hidden],#app[hidden]{display:none!important}
+#voyage{--paper:#f1f3f4;--sub:#aabac9;--ice:#b5e0e5;position:fixed;inset:0;height:100dvh;width:100%;overflow:hidden;isolation:isolate;background:#02040a;color:var(--paper);font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+#voyageCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#voyageCanvas:active{cursor:grabbing}
+.voyage-film{position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(2,4,10,.94),rgba(2,4,10,.68) 26%,rgba(2,4,10,.10) 54%,transparent 75%),linear-gradient(0deg,rgba(2,4,10,.92),rgba(2,4,10,.04) 26%,transparent 78%,rgba(2,4,10,.70))}
+.voyage-top{position:absolute;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:max(18px,env(safe-area-inset-top)) clamp(18px,4.2vw,64px) 12px;z-index:4}
+.voyage-mark{display:flex;gap:10px;align-items:center;color:#d8e2e9;text-decoration:none}.voyage-mark:hover{color:white;text-decoration:none}.voyage-mark svg{width:29px;height:29px;flex:none}.voyage-mark strong{font:600 11px/1.4 ui-monospace,monospace;letter-spacing:.15em;display:block}.voyage-mark small{font:9px ui-monospace,monospace;color:#8097a9;letter-spacing:.10em;display:block;margin-top:2px}
+.voyage-lab{display:inline-flex;align-items:center;gap:7px;color:#d9e5eb;background:#091523a8;border:1px solid #45596c9e;border-radius:4px;padding:9px 13px;font-size:12px;text-decoration:none;white-space:nowrap}.voyage-lab:hover{border-color:#b4dfe1;color:white;text-decoration:none}.voyage-lab svg{width:13px;height:13px}
+.voyage-copy{position:absolute;z-index:2;pointer-events:none;left:clamp(18px,4.2vw,64px);bottom:clamp(132px,20vh,192px);width:min(31vw,455px);text-shadow:0 2px 18px #010409,0 2px 5px #010409}
+.voyage-kicker{font:10px ui-monospace,monospace;letter-spacing:.19em;color:#a8d9dd;display:flex;align-items:center;gap:9px;text-transform:uppercase}.voyage-kicker:before{content:"";width:21px;height:1px;background:#94ccd2}
+.voyage-copy h2{font-size:clamp(34px,4.6vw,72px);line-height:1.02;letter-spacing:-.055em;font-weight:550;margin:16px 0 17px;max-width:100%;color:#f4f4f0}
+.voyage-copy p{font-size:clamp(14px,1.18vw,18px);line-height:1.65;margin:0;max-width:410px;color:#d0d9df;font-weight:400}
+.voyage-copy.reveal{animation:leo-caption-in .36s ease-out both}@keyframes leo-caption-in{from{opacity:.80;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.voyage-fact{margin-top:20px;display:flex;align-items:baseline;gap:8px;color:#d5e9ec}.voyage-fact strong{font:400 clamp(25px,3vw,43px)/1.05 ui-monospace,monospace;letter-spacing:-.065em}.voyage-fact span{font:10px/1.45 ui-monospace,monospace;color:#9eb7c9;max-width:150px;text-transform:uppercase;letter-spacing:.06em}
+.voyage-footer{position:absolute;z-index:4;left:clamp(18px,4.2vw,64px);right:clamp(18px,4.2vw,64px);bottom:max(17px,env(safe-area-inset-bottom));display:grid;gap:11px}
+.voyage-chapters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.voyage-chapter{appearance:none;border:0;background:none;color:#8497aa;text-align:left;padding:0;min-width:0;cursor:pointer;display:grid;gap:7px;font-size:11px;line-height:1.2}.voyage-chapter .chapter-track{position:relative;width:100%;height:2px;background:#788da944;overflow:hidden}.voyage-chapter .chapter-fill{display:block;height:100%;width:0;background:#9edbe0}.voyage-chapter[aria-current=true]{color:#edf5f5}.voyage-chapter[aria-current=true] .chapter-track{background:#a5c9d04b}.chapter-name{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.voyage-player{display:flex;align-items:center;gap:9px;min-width:0}.voyage-button{appearance:none;display:inline-flex;align-items:center;justify-content:center;width:39px;height:39px;flex:none;background:#0b1723c0;border:1px solid #3c53699c;border-radius:5px;color:#cde0e9;cursor:pointer}.voyage-button:hover{border-color:#b6dbde;color:white}.voyage-button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.voyage-button.primary{background:#173345;border-color:#7eaab4;color:#e5f6f6}.voyage-button:disabled{opacity:.33;cursor:default}
+.voyage-time{font:11px ui-monospace,monospace;color:#b7c9d6;white-space:nowrap;font-variant-numeric:tabular-nums}.voyage-seek{appearance:none;height:24px;margin:0 3px;min-width:20px;flex:1;background:transparent;cursor:pointer;accent-color:#abd9de}.voyage-seek::-webkit-slider-runnable-track{height:2px;background:#486170}.voyage-seek::-webkit-slider-thumb{appearance:none;background:#c3e3e6;border:1px solid #274854;border-radius:50%;width:12px;height:12px;margin-top:-5px}.voyage-seek::-moz-range-track{height:2px;background:#486170}.voyage-seek::-moz-range-thumb{background:#c3e3e6;border-radius:50%;width:12px;height:12px;border:0}
+.voyage-meta{display:flex;justify-content:space-between;gap:10px;font:9px/1.4 ui-monospace,monospace;letter-spacing:.035em;color:#869caf}.voyage-meta a{color:#a4c7d2;text-decoration:none}.voyage-meta a:hover{text-decoration:underline}.voyage-caption-live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.voyage-scene-label{position:absolute;z-index:2;top:83px;right:clamp(18px,4.2vw,64px);color:#8ca8ba;font:10px/1.5 ui-monospace,monospace;text-align:right;pointer-events:none;letter-spacing:.08em}
+#app .side-end #returnVoyage{color:#a8dce2;border-bottom:1px solid #335465;padding-bottom:7px;margin-bottom:8px}
+#returnVoyageTop{display:inline-flex}
+@media(max-width:850px){
+ #voyage .voyage-film{background:linear-gradient(0deg,#02040af7 0%,#02040adf 21%,#02040a26 47%,transparent 75%,#02040a8c 100%)}
+ .voyage-top{padding:max(12px,env(safe-area-inset-top)) 15px 8px}.voyage-mark svg{width:25px;height:25px}.voyage-mark strong{font-size:10px;letter-spacing:.09em}.voyage-mark small{font-size:8px}.voyage-lab{font-size:11px;padding:8px 9px}
+ .voyage-copy{left:17px;right:17px;width:auto;bottom:clamp(110px,17dvh,140px)}.voyage-kicker{font-size:9px;letter-spacing:.13em}.voyage-kicker:before{width:16px}.voyage-copy h2{font-size:clamp(29px,7.6vw,43px);line-height:1.02;margin:9px 0 8px;max-width:450px}.voyage-copy p{font-size:13px;line-height:1.5;max-width:480px}.voyage-fact{margin-top:10px;gap:7px}.voyage-fact strong{font-size:28px}.voyage-fact span{font-size:9px;max-width:155px}
+ .voyage-footer{left:15px;right:15px;bottom:max(12px,env(safe-area-inset-bottom));gap:8px}.voyage-chapters{gap:4px}.voyage-chapter{font-size:8px;gap:5px}.voyage-player{gap:6px}.voyage-button{width:34px;height:34px}.voyage-button svg{width:15px;height:15px}.voyage-time{font-size:10px}.voyage-meta{font-size:8px;letter-spacing:0}.voyage-meta span{max-width:77%}.voyage-scene-label{top:59px;right:15px;font-size:8px}.voyage-seek{margin:0 2px}
+}
+@media(max-width:350px){.voyage-copy{left:13px;right:13px;bottom:107px}.voyage-copy h2{font-size:27px}.voyage-copy p{font-size:12px;line-height:1.42}.voyage-fact{margin-top:7px}.voyage-fact strong{font-size:24px}.voyage-footer{left:12px;right:12px}.voyage-meta{font-size:7.5px}.voyage-top{padding-left:12px;padding-right:12px}.voyage-lab{padding:7px 8px}}
+@media(max-width:850px) and (max-height:500px){.voyage-copy{bottom:78px;left:15px;width:min(38vw,310px);right:auto}.voyage-copy h2{font-size:25px}.voyage-copy p{font-size:11px}.voyage-fact{margin-top:6px}.voyage-fact strong{font-size:20px}.voyage-footer{gap:5px}.voyage-meta{display:none}.voyage-chapter .chapter-name{display:none}.voyage-player{gap:5px}.voyage-scene-label{display:none}}
+@media(prefers-reduced-motion:reduce){.voyage-copy.reveal{animation:none}}
+
+</style></head><body>
+<section id="voyage" aria-label="Leeuw, een reis door de sterren" hidden>
+<canvas id="voyageCanvas" tabindex="0" aria-label="Ruimtereis langs de sterren van Leeuw. Gebruik de afspeelknop en hoofdstukken om de reis te volgen."></canvas><div class="voyage-film"></div>
+<header class="voyage-top"><a class="voyage-mark" href="/nl/tools/#vak-heelal" title="Naar de sterrenkunde"><svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="20" cy="20" r="15" stroke="#65879d" stroke-width=".9"/><ellipse cx="20" cy="20" rx="22" ry="7" transform="rotate(-37 20 20)" stroke="#a2cbce" stroke-width=".9"/><circle cx="20" cy="20" r="2" fill="#e8dbba"/></svg><span><strong>EAI / ASTRONOMIE</strong><small>LEEUW · LEO</small></span></a><a class="voyage-lab" href="#hemel" id="openLab">Onderzoek zelf <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a></header>
+<div class="voyage-scene-label" id="voyageSceneLabel">VANAF DE AARDE</div>
+<div class="voyage-copy" id="voyageCopy"><div class="voyage-kicker" id="voyageKicker">01 / 05 · De nacht</div><h2 id="voyageTitle">Leeuw</h2><p id="voyageText"></p><div class="voyage-fact" id="voyageFact" hidden><strong id="voyageNumber"></strong><span id="voyageUnit"></span></div></div>
+<div class="voyage-footer"><nav class="voyage-chapters" id="voyageChapters" aria-label="Hoofdstukken van de reis"></nav><div class="voyage-player"><button id="voyagePrev" class="voyage-button" title="Vorig hoofdstuk" aria-label="Vorig hoofdstuk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5 8 12l10 7M6 5v14"/></svg></button><button id="voyagePlay" class="voyage-button primary" aria-label="Pauzeren" title="Afspelen of pauzeren"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14m6-14v14"/></svg></button><button id="voyageNext" class="voyage-button" title="Volgend hoofdstuk" aria-label="Volgend hoofdstuk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 10 7-10 7M18 5v14"/></svg></button><input id="voyageSeek" class="voyage-seek" type="range" min="0" max="96" step=".1" value="0" aria-label="Positie in de reis"><span id="voyageTime" class="voyage-time">0:00 / 1:36</span></div><div class="voyage-meta"><span>Sterposities uit metingen · sterrenveld en detailbeeld illustratief</span><a href="#bronnen" id="voyageSources">Bronnen &amp; metingen</a></div></div><div id="voyageLive" class="voyage-caption-live" aria-live="polite"></div>
+</section>
+<div id="app" data-console-version="leo-3" hidden><aside class="sidebar" aria-label="Onderzoeken"><div class="brand"><div class="brandmark" aria-hidden="true"><b></b></div><div class="brandtext"><h1>Leeuw in 3D</h1><small>STERREN EN AFSTANDEN</small></div></div><div class="s-label">ONDERWERPEN</div><nav id="navigation" class="navlist" aria-label="Kies een onderzoek"><button class="nav-btn" data-mode="hemel" aria-label="Hemelkaart" title="Hemelkaart" aria-pressed="false"><span class="nav-icon" aria-hidden="true">◎</span><span class="navcopy"><b>Hemelkaart</b><small>Richting / ICRS</small></span><span class="navnum">01</span></button>
+<button class="nav-btn active" data-mode="ruimte" aria-label="Ruimte in 3D" title="Ruimte in 3D" aria-pressed="true"><span class="nav-icon" aria-hidden="true">◈</span><span class="navcopy"><b>Ruimte in 3D</b><small>Afstanden / projectie</small></span><span class="navnum">02</span></button>
+<button class="nav-btn" data-mode="meten" aria-label="Afstanden meten" title="Afstanden meten" aria-pressed="false"><span class="nav-icon" aria-hidden="true">⌖</span><span class="navcopy"><b>Afstanden meten</b><small>Hoek / lichtjaar</small></span><span class="navnum">03</span></button>
+<button class="nav-btn" data-mode="parallax" aria-label="Parallax" title="Parallax" aria-pressed="false"><span class="nav-icon" aria-hidden="true">∠</span><span class="navcopy"><b>Parallax</b><small>Meten / onzekerheid</small></span><span class="navnum">04</span></button>
+<button class="nav-btn" data-mode="licht" aria-label="Sterrenlicht" title="Sterrenlicht" aria-pressed="false"><span class="nav-icon" aria-hidden="true">✧</span><span class="navcopy"><b>Sterrenlicht</b><small>Magnitude / flux</small></span><span class="navnum">05</span></button>
+<button class="nav-btn" data-mode="beweging" aria-label="Eigenbeweging" title="Eigenbeweging" aria-pressed="false"><span class="nav-icon" aria-hidden="true">∿</span><span class="navcopy"><b>Eigenbeweging</b><small>Tijd / snelheid</small></span><span class="navnum">06</span></button>
+<button class="nav-btn" data-mode="waarnemen" aria-label="Waarnemen" title="Waarnemen" aria-pressed="false"><span class="nav-icon" aria-hidden="true">◉</span><span class="navcopy"><b>Waarnemen</b><small>Horizon / UTC</small></span><span class="navnum">07</span></button></nav><div class="side-end"><a href="#reis" id="returnVoyage">Terug naar de ruimtereis</a><div class="live"><span class="led"></span>9 STERREN / J2000</div><p>Gemeten posities, parallax en eigenbeweging. De afstanden zijn schattingen.</p><a href="/nl/tools/#vak-heelal">Alle onderzoeken</a><a href="/tools/melkweg-lab/">De Melkweg</a><span class="ver">LEO-02 / standalone</span></div></aside>
+<header class="topbar"><div class="breadcrumb"><span class="console-label">RESEARCH CONSOLE <span class="slash">/</span></span><span>LEEUW</span><span class="slash">/</span><strong id="crumb">RUIMTE IN 3D</strong></div><div class="top-actions"><a class="topbtn" href="#reis" id="returnVoyageTop" aria-label="Terug naar de ruimtereis" title="Ruimtereis"><svg viewBox="0 0 24 24"><path d="M8 5l12 7-12 7z"/></svg><span class="btxt">Reis</span></a><span class="tag"><span class="dot"></span>MODEL + BRONNEN</span><a class="topbtn" href="/nl/tools/#vak-heelal" aria-label="Terug naar Heelal" title="Terug naar Heelal"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5 3 12l7 7M3 12h17"/></svg></a><button id="reset" class="topbtn" title="Herstel beeld" aria-label="Herstel beeld"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a9 9 0 1 1 3 7M3 4v7h7"/></svg></button><button id="download" class="topbtn" title="Download stergegevens" aria-label="Download CSV"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 17v4h16v-4"/></svg></button><button id="snapshot" class="topbtn primary" title="Afbeelding opslaan" aria-label="Afbeelding opslaan"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></button></div></header>
+<section class="stage" id="stage" aria-label="Interactief sterrenbeeld"><div class="stage-head"><div class="eyebrow" id="modeLabel"></div><h2 id="modeTitle"></h2><p id="modeDesc"></p></div><div class="stage-metrics"><div>PROJECTIE <b id="viewangle">AARDE</b></div><div>VENSTER <b id="viewscale">J2000</b></div><div>FOCUS <b id="focusvalue">Regulus</b></div></div><span id="modeTag" hidden></span><div class="viewport"><canvas id="scene" tabindex="0" aria-label="Sterrenkaart. Sleep om te draaien, zoom met twee vingers of scroll. Selecteer sterren door erop te tikken."></canvas><div class="canvasbadge" id="canvasBadge"></div></div><div class="stage-footer"><div class="scene-meta"><span id="scale-label">LEO · J2000</span><strong id="canvasNote"></strong></div><div id="quickBar" class="quickbar"><label id="quickLabel" for="quickRange">HEMEL ↔ RUIMTE</label><input id="quickRange" type="range" min="0" max="100" step="1" value="0" aria-label="Overgang naar 3D"><output id="quickOut">0%</output><button id="quickAction" hidden></button></div><div class="console-row"><div class="camera-controls" id="viewButtons" aria-label="Camera"><button class="cambtn" id="earth" aria-pressed="false">AARDE</button><button class="cambtn" id="space" aria-pressed="true">3D</button><button class="cambtn" id="side" aria-pressed="false">ZIJ</button><button class="cambtn" id="near" aria-pressed="false" title="Binnen 250 lichtjaar">250 LJ</button></div><div class="console-actions"><button class="topbtn primary" id="spin" aria-pressed="false" aria-label="Animatie afspelen" title="Animatie afspelen of pauzeren"><span id="playGlyph">▶</span><span class="play-label" id="playLabel">Speel</span></button><button id="graphToggle" class="topbtn desktop-hidden" aria-label="Grafiek openen" aria-expanded="false" title="Grafiek en uitleg"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16M7 15l4-4 4 2 5-7"/></svg></button><button id="labDock" class="topbtn desktop-hidden" aria-label="Metingen en instellingen openen" aria-expanded="false" title="Metingen en instellingen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="#12263a"/><circle cx="15" cy="12" r="2" fill="#12263a"/><circle cx="9" cy="18" r="2" fill="#12263a"/></svg></button></div></div></div></section>
+<button class="panel-backdrop" id="panelBackdrop" aria-label="Sluit het geopende paneel" tabindex="-1"></button>
+<aside class="inspector" aria-label="Metingen en instellingen"><div class="panel-head"><div><div class="section-counter"><span>PARAMETERS / INSPECTOR</span><b id="inspector-counter">02 / 07</b></div><h3>Metingen en instellingen</h3></div><button id="panelClose" class="panel-close" aria-label="Sluit instellingen">×</button></div><div class="panel-body"><div><div class="eyebrow">GESELECTEERDE STER</div><div class="selection"><h3 id="starName"></h3><span class="muted" id="starBayer"></span></div><div class="big" id="headline"></div><p class="muted" id="headlineNote"></p></div><div class="metricgrid" id="metrics"></div><div class="section" id="modeControls"></div><div class="section"><h3>Weergave</h3><div class="switchgrid" id="overlays"><label class="switch"><input type="checkbox" id="lines" checked> Figuurlijnen</label><label class="switch"><input type="checkbox" id="labels" checked> Sternamen</label><label class="switch" id="raysWrap"><input type="checkbox" id="rays" checked> Kijklijnen</label><label class="switch" id="errorWrap"><input type="checkbox" id="errors" checked> Meetfout</label></div><label id="zoomWrap">Zoom <input type="range" id="zoom" min=".65" max="4" value="1" step=".05" aria-label="Zoom"></label></div><div class="section star-section"><div class="selection"><h3>Figuursterren</h3><span class="muted">HIP</span></div><div class="starlist" id="starlist"></div></div><details><summary>Bron van deze ster</summary><div class="answer"><a id="starSource" href="#" target="_blank" rel="noopener"></a><p id="starNote" class="muted"></p></div></details><section class="bottom" id="bronnen"><details><summary>Bronnen, afbakening en rekenmethode</summary><p>De negen sterren vormen de westerse lijnfiguur in <a href="https://github.com/Stellarium/stellarium-skycultures/blob/master/western/index.json" target="_blank" rel="noopener">Stellarium</a>. Dit is niet de gehele officieel afgebakende hemelregio Leo. De <a href="https://www.iau.org/IAU/Astronomy-FAQs/Constellations.aspx" target="_blank" rel="noopener">IAU</a> definieert 88 hemelgebieden, geen verplichte lijnfiguren.</p><p>De gegevens zijn op 24 november 2026 overgenomen uit SIMBAD (CDS), met per ster een bronlink. Posities zijn ICRS/J2000. Astrometrie: <a href="https://ui.adsabs.harvard.edu/abs/2007A%26A...474..653V/abstract" target="_blank" rel="noopener">Hipparcos-herreductie (van Leeuwen 2007)</a> voor vier sterren; <a href="https://gea.esac.esa.int/archive/" target="_blank" rel="noopener">Gaia EDR3</a> voor vijf sterren. Algieba: <a href="https://www.kuuke.nl/algieba-gamma-leonis/" target="_blank" rel="noopener">aanvullende bron voor de gecombineerde V-magnitude 2,08</a>. Meerdere sterren in een systeem zijn samengevoegd tot één punt.</p><p>Afstand in lichtjaar: 3261,563777/p, met p in mas. Getoonde grenzen zijn de inverses van p ± σ; geen betrouwbaarheidsinterval of Bayesiaanse afstandsschatting. Er is geen correctie voor systematische parallaxfouten, extinctie of onderlinge correlatie. De 3D-projectie heeft op ieder moment één lineaire schaal voor alle richtingen. De camera past de weergave aan het scherm en de kijkrichting aan; het schaalstreepje toont de actuele verhouding. De dunne ruimtelijke lijnen zijn een referentieraster. De overgang uit de hoekprojectie is een animatie, geen fysieke beweging. Sterkleuren en lichtpuntgroottes zijn illustratief; de sterdiameters zijn niet op schaal.</p><p>Eigenbeweging gebruikt de gemeten μ<sub>α*</sub>, μ<sub>δ</sub> en radiale snelheid, met constante rectilineaire snelheid. Geen baanintegratie, versnellingsmodel, terugrekening van lichtreistijd, dubbelsterbanen of propagatie van snelheidsfouten. De horizonberekening gebruikt GMST en J2000-richtingen; precessie, nutatie, atmosferische refractie en de zon/maan ontbreken. Deze is geschikt voor een lesmodel, niet voor precieze navigatie of een zichtbaarheidsvoorspelling.</p></details><details><summary>De negen bronrecords en berekende afstanden</summary><p>Alle waarden komen uit dezelfde opgenomen dataset. Met de downloadknop kun je de oorspronkelijke metingen zelf narekenen.</p><button id="downloadBottom" class="smallbtn">Download CSV</button><div class="tablewrap"><table class="data"><thead><tr><th>Ster / HIP</th><th>RK (h m s)</th><th>Dec (° ′ ″)</th><th>p ± σ (mas)</th><th>Afstand (lj)</th><th>V-mag</th><th>μ α* / δ (mas/jr)</th><th>v rad (km/s)</th><th>Astrometrie</th></tr></thead><tbody id="dataRows"></tbody></table></div></details></section></div></aside>
+<section class="analytics" aria-label="Grafiek en berekening"><div class="analytics-head"><h3 id="chartTitle"></h3><div class="cal-tag" id="chartUnit"></div><button id="graphClose" class="graph-close" aria-label="Sluit grafiek">×</button></div><div class="analytics-main"><div class="chartbox"><canvas id="chart" aria-label="Grafiek bij het onderzoek"></canvas></div><div class="mathbox"><div class="math-label">ONDERZOEK ZELF</div><h3 id="question"></h3><div class="formula" id="formula"></div><details id="answer"><summary>Bekijk de verklaring</summary><p id="explanation"></p></details><p class="status" id="status"></p></div></div><div class="chartnote" id="chartNote"></div></section></div>
+<script id="leo-data" type="application/json">{"schema":"eai.stellar-figure.v1","name":"Leeuw","abbr":"Leo","epoch":2000,"checked":"2026-11-24","figureSource":"https://github.com/Stellarium/stellarium-skycultures/blob/master/western/index.json","paths":[[57632,54879,49669,49583,50583,54872,57632],[50583,50335,48455,47908],[54872,54879]],"columns":["hip","name","bayer","ra_hms","dec_dms","parallax_mas","parallax_sigma_mas","v_mag","spectral_type","pm_ra_cosdec_mas_y","pm_dec_mas_y","radial_km_s","astrometry","color","simbad","note"],"stars":[[49669,"Regulus","α Leo","10 08 22.31099","+11 58 01.9516",41.13,0.35,1.4,"B8IVn",-248.73,5.59,0.719522,"Hipparcos","#c5dbff","Regulus","Meervoudig systeem; Gaia DR3 heeft geen overeenkomstige astrometrische meting voor deze heldere ster."],[57632,"Denebola","β Leo","11 49 03.57834","+14 34 19.4090",90.91,0.52,2.13,"A3Va",-497.68,-114.67,-0.2,"Hipparcos","#e5edff","Denebola","Een δ Scuti-veranderlijke ster; V-magnitude is een cataloguswaarde."],[50583,"Algieba","γ Leo","10 19 58.35056","+19 50 29.3468",25.07,0.52,2.08,"K1 III + G7 IIIb",304.3,-154.28,-36.24,"Hipparcos","#ffd09b","gam Leo","Dubbelster, als één lichtpunt afgebeeld. Gecombineerde V-magnitude (2,08) uit de aanvullende bron; precieze componentbanen zijn niet gemodelleerd."],[54872,"Zosma","δ Leo","11 14 06.50142","+20 31 25.3853",55.82,0.25,2.53,"A5IV(n)",143.42,-129.88,-20.9,"Hipparcos","#e3edff","Zosma",""],[47908,"Epsilon Leonis","ε Leo","09 45 51.0736168507","+23 46 27.313597604",14.3394,0.3209,2.98,"G1IIIa",-46.154,-10.799,4.322,"Gaia EDR3","#ffe0a9","eps Leo","Spectraaltype volgens de geraadpleegde SIMBAD-vermelding."],[54879,"Chertan","θ Leo","11 14 14.4056705348","+15 25 46.455911128",20.316,0.3262,3.35,"A2IV",-60.538,-78.675,7.536,"Gaia EDR3","#e7eeff","tet Leo",""],[49583,"Eta Leonis","η Leo","10 07 19.9523915176","+16 45 45.587968398",1.7965,0.3051,3.41,"A0Ib",-1.118,-0.655,2.82,"Gaia EDR3","#c5dbff","eta Leo","Relatieve parallaxfout circa 17%. De inverse parallax geeft hier slechts een ruwe afstandsschatting."],[50335,"Adhafera","ζ Leo","10 16 41.4151642435","+23 25 02.341160368",14.0377,0.2883,3.41,"F0IIIa",21.161,-8.263,-12.32,"Gaia EDR3","#fff1d8","zet Leo","Radiale snelheid heeft een aanzienlijke meetfout (6,23 km/s)."],[48455,"Rasalas","μ Leo","09 52 45.8170136628","+26 00 25.024269924",26.0971,0.1974,3.88,"K2IIIbCN1Ca1",-216.266,-55.125,13.647,"Gaia EDR3","#ffd09c","mu Leo",""]]}</script>
+<script id="leo-model">window.LEO_DATA=JSON.parse(document.getElementById("leo-data").textContent);window.LEO_MODEL=(function makeModel(data){
+  const D=Math.PI/180, MAS=D/3600000, PC=3.261563777, C=299792.458, K=1000*PC;
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), dot=(a,b)=>a.reduce((n,x,i)=>n+x*b[i],0), plus=(a,b)=>a.map((x,i)=>x+b[i]), sub=(a,b)=>a.map((x,i)=>x-b[i]), mul=(a,k)=>a.map(x=>x*k), norm=a=>Math.hypot(...a), unit=a=>mul(a,1/norm(a));
+  const sex=s=>{const [a,b,c]=s.replace(/^[+-]/,'').split(' ').map(Number);return (s.startsWith('-')?-1:1)*(a+b/60+c/3600)};
+  const vector=(ra,dec)=>[Math.cos(dec)*Math.cos(ra),Math.cos(dec)*Math.sin(ra),Math.sin(dec)];
+  const basis=(ra,dec)=>({f:vector(ra,dec),e:[-Math.sin(ra),Math.cos(ra),0],n:[-Math.sin(dec)*Math.cos(ra),-Math.sin(dec)*Math.sin(ra),Math.cos(dec)]});
+  const frame=basis(161*D,19*D);
+  const distance=p=>p>0?K/p:null;
+  const stars=data.stars.map(row=>{
+    const [id,name,bayer,rah,dech,p,e,mag,spectral,pmra,pmdec,rv,source,color,ident,note]=row;
+    const ra=sex(rah)*15*D, dec=sex(dech)*D, b=basis(ra,dec),d=distance(p);
+    const v=plus(plus(mul(b.e,d*pmra*MAS),mul(b.n,d*pmdec*MAS)),mul(b.f,rv/C));
+    return {id,name,bayer,rah,dech,p,e,mag,spectral,pmra,pmdec,rv,source,color,ident,note,ra,dec,d,u:b.f,r:mul(b.f,d),v,lo:distance(p+e),hi:distance(p-e),abs:mag-5*Math.log10(d/PC/10)};
+  });
+  const byId=new Map(stars.map(s=>[s.id,s]));
+  const pos=(s,t=0)=>plus(s.r,mul(s.v,t)), local=v=>[-dot(v,frame.e),dot(v,frame.n),dot(v,frame.f)];
+  const angle=(a,b)=>Math.acos(clamp(dot(unit(a),unit(b)),-1,1))/D;
+  const separation=(a,b)=>norm(sub(a,b));
+  const flux=(m,ref=0)=>10**(-.4*(m-ref));
+  const gmst=ms=>{const jd=ms/86400000+2440587.5,t=(jd-2451545)/36525;return ((280.46061837+360.98564736629*(jd-2451545)+.000387933*t*t-t*t*t/38710000)%360+360)%360};
+  const horizon=(s,ms,lat,lon)=>{const a=(gmst(ms)+lon)*D-s.ra,phi=lat*D;
+    const alt=Math.asin(clamp(Math.sin(phi)*Math.sin(s.dec)+Math.cos(phi)*Math.cos(s.dec)*Math.cos(a),-1,1));
+    const az=(Math.atan2(-Math.sin(a)*Math.cos(s.dec),Math.sin(s.dec)*Math.cos(phi)-Math.cos(s.dec)*Math.sin(phi)*Math.cos(a))/D+360)%360;
+    return {alt:alt/D,az};
+  };
+  return {D,PC,K,C,stars,byId,paths:data.paths,clamp,dot,plus,sub,mul,norm,unit,local,distance,pos,angle,separation,flux,gmst,horizon};
+})(window.LEO_DATA);window.LEO_MODES=[["hemel","Hemelkaart","Zo herken je de Leeuw","Bekijk de negen sterren van de westerse lijnfiguur. Noord staat boven; oost links."],["ruimte","Ruimte in 3D","Een figuur valt uiteen","Draai de figuur en bekijk de afstand tot de zon. De schaal is overal lineair."],["meten","Afstanden meten","Hoek is geen afstand","Kies twee sterren. Vergelijk de hoek aan de hemel met hun afstand in de ruimte."],["parallax","Parallax","Een kleine hoek meten","Verander de gemeten parallax en ontdek waarom een kleine meetfout grote gevolgen kan hebben."],["licht","Sterrenlicht","Helder of dichtbij?","Vergelijk de helderheid vanaf de aarde en op een gelijke afstand van 10 parsec."],["beweging","Eigenbeweging","Een veranderend sterrenbeeld","Verplaats de tijd en onderzoek de geschatte beweging ten opzichte van J2000."],["waarnemen","Waarnemen","Waar staat de Leeuw?","Kies tijd en plaats. Bekijk waar de figuursterren ten opzichte van de horizon staan."]];window.LEO_TASKS={"hemel":["Welke ster is het helderst vanaf de aarde? Welke twee liggen op de kaart dicht bij elkaar?","Regulus heeft de kleinste V-magnitude (1,40). Een kleine hoek op de kaart is nog geen kleine afstand in lichtjaren."],"ruimte":["Voorspel welke ster het verst weg ligt. Draai naar het zijaanzicht en vergelijk de twee schalen.","Eta Leonis ligt volgens de inverse parallax op ongeveer 1.816 lichtjaar. De andere acht liggen binnen circa 233 lichtjaar. De figuur is een projectie."],"meten":["Kies Regulus en Eta Leonis. Vergelijk de hoek met de werkelijke afstand. Vind daarna een paar dat veel dichter bij elkaar ligt.","De hoek volgt uit de richtingen naar beide sterren; de ruimtelijke afstand ook uit de twee afstanden tot de zon. De hoek alleen is onvoldoende."],"parallax":["Kies Denebola en verschuif de parallax met één standaardfout. Herhaal voor Eta Leonis. Welke afstand verandert relatief het meest?","Eta Leonis heeft een veel grotere relatieve meetfout. De relatie d = 1000/p (parsec) is niet lineair. Een omgekeerde foutmarge is geen statistisch betrouwbaarheidsinterval."],"licht":["Vergelijk Regulus met Eta Leonis. Welke lijkt vanaf de aarde helderder? Wat gebeurt er op 10 parsec?","Regulus lijkt helderder, maar Eta Leonis heeft een kleinere berekende absolute V-magnitude. We verwaarlozen extinctie; de afstand van Eta is onzeker."],"beweging":["Zet de tijd op +20.000 jaar en daarna op −20.000 jaar. Welke ster verschuift het sterkst aan de hemel?","Denebola heeft de grootste gemeten totale eigenbeweging van de negen. Het model veronderstelt constante ruimtelijke snelheid; een verre toekomst is geen nauwkeurige voorspelling."],"waarnemen":["Kies 25 maart, 21:00 UTC in Nederland. Verander de tijd met zes uur. Welke sterren komen dichter bij de horizon?","Door de aardrotatie veranderen hoogte en azimut. De getoonde hoogte is geometrisch; schemering, wolken, lichtvervuiling en refractie bepalen mee wat je ziet."]};</script>
+<script id="leo-app">(function init(){
+  "use strict";
+  const $=id=>document.getElementById(id);
+  const D=window.LEO_DATA,M=window.LEO_MODEL, modes=window.LEO_MODES,tasks=window.LEO_TASKS,byId=M.byId;
+  const n=(v,k=0)=>Number(v).toLocaleString("nl-NL",{minimumFractionDigits:k,maximumFractionDigits:k});
+  const s={mode:"hemel",view:"earth",star:49669,other:49583,yaw:.95,pitch:.48,zoom:1,spin:false,years:0,sigma:0,light:"apparent",date:"2026-03-25T21:00",lat:51.92,lon:4.48,anim:null,blend:0,playing:false,points:[],chartPoints:[],drag:null,frame:0};
+  const scene=$("scene"),chart=$("chart"),c=scene.getContext("2d"),g=chart.getContext("2d"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W=0,H=0,CW=0,CH=0,raf=0,last=0,lastReadout=0,chartDirty=true;
+  const setText=(id,t)=>$(id).textContent=t;
+  const selected=()=>byId.get(s.star), other=()=>byId.get(s.other);
+  const spatial=()=>s.view!=="earth"&&["ruimte","meten"].includes(s.mode);
+  const show=(id,v)=>$(id).hidden=!v;
+  function resize(el,ctx){const r=el.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);if(r.width&&r.height){el.width=Math.round(r.width*d);el.height=Math.round(r.height*d);ctx.setTransform(d,0,0,d,0,0)}return [r.width,r.height]}
+  function invalidate(change=true){if(change)chartDirty=true;if(!raf)raf=requestAnimationFrame(draw)}
+  const ro=new ResizeObserver(()=>{[W,H]=resize(scene,c);[CW,CH]=resize(chart,g);invalidate()});ro.observe(scene);ro.observe(chart);
+  const stage=$("stage"),head=stage.querySelector(".stage-head"),hud=stage.querySelector(".stage-metrics"),foot=stage.querySelector(".stage-footer");
+  const fitScene=()=>{const sr=stage.getBoundingClientRect(),a=head.getBoundingClientRect(),b=hud.getBoundingClientRect(),f=foot.getBoundingClientRect();stage.style.setProperty("--scene-top",Math.max(0,Math.ceil(Math.max(a.bottom,b.bottom)-sr.top+6))+"px");stage.style.setProperty("--scene-bottom",Math.ceil(sr.bottom-f.top+4)+"px");};
+  const fitObserver=new ResizeObserver(fitScene);[stage,head,hud,foot].forEach(el=>fitObserver.observe(el));
+  const opt=(id,title)=>'<option value="'+id+'">'+title+'</option>';
+  const starsOptions=M.stars.map(v=>opt(v.id,v.name)).join("");
+  function setStar(id){if(!byId.has(id))return;if(s.view==="near"&&byId.get(id).d>250){s.view="space";s.blend=1;s.zoom=1;$("zoom").value=1;syncCamera()}s.star=id;if(s.other===id)s.other=M.stars.find(v=>v.id!==id).id;s.sigma=0;updateInspector();buildControls();updateText();invalidate()}
+  function setPanel(which){
+    document.body.classList.toggle("panel-open",which==="inspector");
+    document.body.classList.toggle("graph-open",which==="graph");
+    $("labDock").setAttribute("aria-expanded",String(which==="inspector"));
+    $("graphToggle").setAttribute("aria-expanded",String(which==="graph"));
+    invalidate();
+  }
+  function animateTo(target,delay=0,duration=2100){
+    s.anim=reduced?null:{start:performance.now()+delay,from:s.blend,to:target,duration};
+    if(reduced)s.blend=target;
+  }
+  function stopMotion(){s.anim=null;s.spin=false;s.playing=false;syncCamera()}
+  function startIntro(){
+    s.view="space";s.yaw=.95;s.pitch=.48;s.zoom=1;s.blend=reduced?1:0;
+    $("zoom").value=1;
+    s.spin=!reduced;animateTo(1,1100,2600);
+    syncCamera();updateText();invalidate();
+  }
+  function setMode(mode,hash=true,autoplay=true){
+    if(!modes.some(m=>m[0]===mode))mode="hemel";
+    s.mode=mode;s.spin=false;s.playing=false;s.zoom=1;s.yaw=.95;s.pitch=.48;s.anim=null;s.view=mode==="ruimte"||mode==="meten"?"space":"earth";s.blend=s.view==="space"?1:0;s.sigma=0;$("zoom").value=1;$("answer").open=false;
+    if(hash)history.replaceState(null,"","#"+mode);
+    document.querySelectorAll("[data-mode]").forEach(b=>{const active=b.dataset.mode===mode;b.setAttribute("aria-pressed",String(active));b.classList.toggle("active",active)});
+    const m=modes.find(m=>m[0]===mode),index=String(modes.indexOf(m)+1).padStart(2,"0");
+    setText("modeLabel",index+" / "+m[1].toUpperCase());setText("crumb",m[1].toUpperCase());setText("inspector-counter",index+" / 07");
+    setText("modeTitle",mode==="ruimte"?"Van sterrenbeeld naar ruimte":m[2]);setText("modeDesc",mode==="ruimte"?"Bekijk de Leeuw vanaf de aarde. Draai daarna naar de werkelijke afstanden.":m[3]);setText("modeTag",mode==="beweging"?"LINEAIR MODEL":mode==="waarnemen"?"GEOMETRISCHE HORIZON":"LEO · J2000");
+    setText("question",tasks[mode][0]);setText("explanation",tasks[mode][1]);
+    buildControls();syncCamera();updateInspector();updateText();syncQuick();updateHUD();setPanel(null);
+    if(mode==="ruimte"&&autoplay)startIntro();fitScene();invalidate();
+  }
+  function syncCamera(){
+    const can3d=["ruimte","meten","hemel"].includes(s.mode);
+    show("viewButtons",can3d);show("spin",can3d||s.mode==="beweging");show("overlays",s.mode!=="parallax");show("raysWrap",can3d&&s.mode!=="hemel");show("errorWrap",can3d&&s.mode!=="hemel");show("zoomWrap",s.mode!=="parallax"&&s.mode!=="waarnemen");
+    for(const id of ["earth","space","side","near"]){const active=s.view===id;$(id).setAttribute("aria-pressed",String(active));$(id).classList.toggle("active",active)}
+    const running=!!(s.spin||s.anim||s.playing);$("spin").setAttribute("aria-pressed",String(running));$("spin").setAttribute("aria-label",running?"Animatie pauzeren":"Animatie afspelen");setText("playGlyph",running?"Ⅱ":"▶");setText("playLabel",running?"Pauze":"Speel");
+    syncQuick();updateHUD();
+  }
+  function setView(view,animate=true){
+    const prior=s.blend,wasSky=s.mode==="hemel";
+    if(wasSky&&view!=="earth")setMode("ruimte",true,false);
+    s.anim=null;s.playing=false;s.spin=false;s.view=view;s.zoom=1;s.yaw=view==="side"?Math.PI/2:.95;s.pitch=view==="side"?0:.48;$("zoom").value=1;
+    s.blend=wasSky?0:prior;
+    const target=view==="earth"?0:1;
+    if(animate&&Math.abs(s.blend-target)>.001)animateTo(target,0,1900);else s.blend=target;
+    if(view==="near"&&selected().d>250)s.star=49669;
+    syncCamera();updateInspector();buildControls();updateText();invalidate();
+  }
+  function syncQuick(){
+    const q=$("quickRange"),label=$("quickLabel"),action=$("quickAction"),out=$("quickOut");
+    const slider=["ruimte","meten","parallax","beweging"].includes(s.mode),button=["licht","waarnemen","meten"].includes(s.mode);
+    show("quickBar",slider||button);show("quickRange",slider);show("quickLabel",slider);show("quickOut",slider);show("quickAction",button);
+    if(s.mode==="ruimte"||s.mode==="meten"){
+      q.min=0;q.max=100;q.step=1;q.value=Math.round(s.blend*100);label.textContent="HEMEL ↔ 3D";q.setAttribute("aria-label","Overgang van hemelkaart naar 3D");out.textContent=Math.round(s.blend*100)+"%";
+      action.textContent="Kies sterren";
+    }else if(s.mode==="parallax"){q.min=-3;q.max=3;q.step=.1;q.value=s.sigma;label.textContent="MEETFOUT";q.setAttribute("aria-label","Afwijking in standaardfouten");out.textContent=n(s.sigma,1)+" σ";}
+    else if(s.mode==="beweging"){q.min=-20000;q.max=20000;q.step=250;q.value=s.years;label.textContent="JAAR T.O.V. 2000";q.setAttribute("aria-label","Jaren ten opzichte van 2000");out.textContent=(s.years>0?"+":"")+n(s.years);}
+    else if(s.mode==="licht"){action.textContent=s.light==="absolute"?"Op 10 pc · wissel":"Vanaf aarde · wissel";}
+    else if(s.mode==="waarnemen"){action.textContent="Kies tijd en locatie";}
+  }
+  function updateHUD(){
+    const is3d=["ruimte","meten"].includes(s.mode)&&s.blend>.03;
+    setText("viewangle",is3d?n(s.yaw/M.D)+"° / "+n(s.pitch/M.D)+"°":s.mode==="waarnemen"?"HORIZON":s.mode==="parallax"?"SCHEMA":"AARDE");
+    setText("viewscale",is3d?(s.view==="near"?"250 lj":"2.200 lj"):s.mode==="waarnemen"?"0–90°":s.mode==="parallax"?"mas":"J2000");
+    setText("focusvalue",selected().name);if(["ruimte","meten"].includes(s.mode)){setText("canvasBadge",s.blend<.02?"NOORD BOVEN · OOST LINKS":s.blend>.98?(s.view==="near"?"BINNEN 250 LJ":"LINEAIRE SCHAAL"):"OVERGANG VAN PROJECTIE");}
+    setText("scale-label",is3d?(s.view==="near"?"▱ 250 LJ":"▱ 2.200 LJ"):"LEO · "+(s.mode==="beweging"?"Δt":"J2000"));
+  }
+
+  function buildControls(){
+    const div=$("modeControls"),a=selected();
+    if(s.mode==="meten"){div.innerHTML='<h3>Twee sterren vergelijken</h3><label for="pairA">Eerste ster</label><select id="pairA">'+starsOptions+'</select><label for="pairB">Tweede ster</label><select id="pairB">'+starsOptions+'</select>';$("pairA").value=s.star;$("pairB").value=s.other;$("pairA").onchange=e=>setStar(+e.target.value);$("pairB").onchange=e=>{s.other=+e.target.value;updateText();invalidate()};}
+    else if(s.mode==="parallax"){div.innerHTML='<h3>Varieer de meting</h3><label for="sigma">Afwijking van p <output id="sigmaOut"></output></label><input id="sigma" aria-label="Afwijking in standaardfouten" type="range" min="-3" max="3" step=".1" value="'+s.sigma+'"><div class="muted">In eenheden van de opgegeven standaardfout σ.</div>';$("sigma").oninput=e=>{s.sigma=+e.target.value;updateInspector();updateText();invalidate()};}
+    else if(s.mode==="licht"){div.innerHTML='<h3>Vergelijk helderheid</h3><label for="light">Afstand</label><select id="light"><option value="apparent">Vanaf de aarde (V)</option><option value="absolute">Gelijke afstand (10 pc)</option></select><p class="muted">Een kleinere magnitude betekent een grotere lichtflux.</p>';$("light").value=s.light;$("light").onchange=e=>{s.light=e.target.value;updateInspector();updateText();invalidate()};}
+    else if(s.mode==="beweging"){div.innerHTML='<h3>Tijd veranderen</h3><label for="years">Jaren t.o.v. J2000 <output id="yearsOut"></output></label><input id="years" aria-label="Jaren ten opzichte van 2000" type="range" min="-20000" max="20000" step="250" value="'+s.years+'"><div class="toggle"><button id="past">−20.000</button> <button id="now">2000</button> <button id="future">+20.000</button></div><p class="muted">Stippellijnen tonen de posities in J2000.</p>';const change=v=>{s.years=v;$("years").value=v;updateInspector();updateText();invalidate()};$("years").oninput=e=>change(+e.target.value);$("past").onclick=()=>change(-20000);$("now").onclick=()=>change(0);$("future").onclick=()=>change(20000);}
+    else if(s.mode==="waarnemen"){div.innerHTML='<h3>Waarneemlocatie</h3><label for="date">Datum en tijd (UTC)</label><input id="date" type="datetime-local" min="1900-01-01T00:00" max="2100-12-31T23:59" value="'+s.date+'"><div class="coords"><label for="lat">Breedte (°)<input id="lat" type="number" min="-90" max="90" step=".01" value="'+s.lat+'"></label><label for="lon">Lengte (°)<input id="lon" type="number" min="-180" max="180" step=".01" value="'+s.lon+'"></label></div><p class="muted">Standaard: Rotterdam. Je locatie wordt niet opgevraagd.</p>';const change=()=>{const date=$("date").value,lat=$("lat").valueAsNumber,lon=$("lon").valueAsNumber;if(Number.isFinite(Date.parse(date+"Z"))&&date>="1900-01-01T00:00"&&date<="2100-12-31T23:59"&&Number.isFinite(lat)&&Math.abs(lat)<=90&&Number.isFinite(lon)&&Math.abs(lon)<=180){s.date=date;s.lat=lat;s.lon=lon;updateInspector();updateText();invalidate();}};["date","lat","lon"].forEach(id=>$(id).addEventListener("input",change));}
+    else if(s.mode==="ruimte"){div.innerHTML='<h3>Ruimtelijke schaal</h3><p class="muted">Gebruik Zijaanzicht voor de volledige diepte. Met Binnen 250 lj worden de acht nabije sterren op een eigen lineaire schaal getoond; Eta Leonis blijft in de gegevens beschikbaar.</p>';}
+    else{div.innerHTML='<h3>Ontdek de lijnfiguur</h3><p class="muted">Klik op een ster, schakel de lijnen uit of ga naar 3D. De hemelkaart gebruikt de richting vanaf het zonnestelsel, niet de afstand.</p>';}
+  }
+  function updateInspector(){
+    const a=selected(),p=a.p+s.sigma*a.e,dist=M.distance(p),h=M.horizon(a,Date.parse(s.date+"Z"),s.lat,s.lon),m=s.light==="absolute"?a.abs:a.mag;
+    setText("starName",a.name);setText("starBayer",a.bayer);setText("headline",s.mode==="licht"?n(m,2)+" mag":s.mode==="waarnemen"?n(h.alt,1)+"°":s.mode==="beweging"?n(M.angle(a.r,M.pos(a,s.years)),2)+"°":"≈ "+n(s.mode==="parallax"?dist:a.d)+" lj");
+    setText("headlineNote",s.mode==="licht"?(s.light==="absolute"?"Op 10 parsec, zonder extinctie":"Schijnbare V-magnitude"):s.mode==="waarnemen"?"Geometrische hoogte boven horizon":s.mode==="beweging"?"Hoekverplaatsing sinds J2000":"p ± σ → "+n(a.lo)+" tot "+n(a.hi)+" lj");
+    const metrics=[["HIP",a.id],["Parallax",n(a.p,4)+" mas"],["Meetfout",n(a.e,4)+" mas"],["Spectraaltype",a.spectral],["V-magnitude",n(a.mag,2)],["Eigenbeweging",n(Math.hypot(a.pmra,a.pmdec),1)+" mas/jr"],["Radiale snelheid",n(a.rv,2)+" km/s"],["Afstand",n(a.d/M.PC,1)+" pc"]];
+    $("metrics").innerHTML=metrics.map(x=>'<div class="metric"><small>'+x[0]+'</small><strong>'+x[1]+'</strong></div>').join("");
+    $("starSource").href="https://simbad.cds.unistra.fr/simbad/sim-id?Ident="+encodeURIComponent(a.ident);setText("starSource",a.source+" via SIMBAD · "+a.name);setText("starNote",(a.note||"ICRS/J2000; V-magnitude uit SIMBAD.")+" RK "+a.rah+"; Dec "+a.dech+".");
+    document.querySelectorAll(".star").forEach(b=>{b.setAttribute("aria-pressed",String(+b.dataset.id===s.star));b.querySelector("small").textContent=s.mode==="licht"?n(s.light==="absolute"?byId.get(+b.dataset.id).abs:byId.get(+b.dataset.id).mag,2)+" mag":n(byId.get(+b.dataset.id).d)+" lj"});
+    if($("sigmaOut"))setText("sigmaOut",n(s.sigma,1)+" σ");if($("yearsOut"))setText("yearsOut",(s.years>0?"+":"")+n(s.years));syncQuick();updateHUD();
+  }
+  function updateText(){
+    const a=selected(),b=other(),ang=M.angle(a.r,b.r),sep=M.separation(a.r,b.r),p=a.p+s.sigma*a.e;
+    const text={
+      hemel:["Afstand tot de zon","lichtjaar","Klik op een balk om een ster te kiezen.","d = 3261,563777 / p (mas)","Lijnen zijn een menselijke figuur, geen fysieke verbinding."],
+      ruimte:["Afstand tot de zon","lichtjaar","Alle balken op een lineaire schaal. De geselecteerde ster is gemarkeerd.","r = d · (cos δ cos α, cos δ sin α, sin δ)","De 3D-weergave draait in één schaal. Binnen 250 lj is een afzonderlijke schaal."],
+      meten:["Ruimtelijke afstand tot "+a.name,"lichtjaar","Vergelijk met elke andere figuurster.","θ = "+n(ang,2)+"°; √(d₁²+d₂²−2d₁d₂ cos θ) = "+n(sep,1)+" lj",a.name+" ↔ "+b.name+": "+n(ang,2)+"° aan de hemel, circa "+n(sep,1)+" lichtjaar in de ruimte."],
+      parallax:["Afstand als functie van parallax","mas → lj","De verticale lijnen markeren p−σ, p en p+σ. De lichte stip volgt je instelling.","p = "+n(p,4)+" mas; d = 3261,563777/p = "+n(M.distance(p),1)+" lj", "De grenzen gebruiken alleen de opgegeven meetfout; geen kansinterval."],
+      licht:[s.light==="absolute"?"Absolute V-magnitude (10 pc)":"Schijnbare V-magnitude","mag","Links is helderder. Lichtpunten zijn niet op fysieke grootte getekend.","Mᵥ = mᵥ − 5 log₁₀(d/10 pc) = "+n(a.abs,2)+"; tlicht ≈ "+n(a.d)+" jaar", "Relatieve visuele flux t.o.v. Regulus: "+n(M.flux(s.light==="absolute"?a.abs:a.mag,s.light==="absolute"?byId.get(49669).abs:byId.get(49669).mag),3)+". Geen extinctiecorrectie."],
+      beweging:["Hoekverplaatsing sinds J2000","graden","Afstand tussen de J2000-richting en de berekende richting.","r(t) = r₀ + v · t; μ = "+n(Math.hypot(a.pmra,a.pmdec),1)+" mas/jaar", "Geselecteerde ster na "+n(s.years)+" jaar: "+n(M.angle(a.r,M.pos(a,s.years)),3)+"°. Model met constante snelheid."],
+      waarnemen:["Geometrische hoogte van de sterren","graden","Positief = boven de horizon; negatief = eronder.","h = asin(sin φ sin δ + cos φ cos δ cos H)", "Azimut "+n(M.horizon(a,Date.parse(s.date+"Z"),s.lat,s.lon).az,1)+"°; hoogte "+n(M.horizon(a,Date.parse(s.date+"Z"),s.lat,s.lon).alt,1)+"°. Tijd in UTC."]
+    }[s.mode];
+    ["chartTitle","chartUnit","chartNote","formula","status"].forEach((id,i)=>setText(id,text[i]));
+    setText("canvasBadge",s.mode==="parallax"?"SCHEMATISCHE GEOMETRIE":s.mode==="waarnemen"?"N = 0° · O = 90°":s.mode==="beweging"?"Δt = "+n(s.years)+" jaar":spatial()?(s.view==="near"?"BINNEN 250 LJ":"LINEAIRE SCHAAL"):"NOORD BOVEN · OOST LINKS");
+    setText("canvasNote",s.mode==="parallax"?"Hoeken uitvergroot · niet op schaal":s.mode==="waarnemen"?"Boven de horizon binnen de cirkel · alle sterren in de lijst":spatial()?"Sleep om te draaien · scroll of zoom · tik op een ster":"Tik op een ster · zoom voor detail");
+  }
+  function line(ctx,a,b,color,width=1,dash=[]){ctx.beginPath();ctx.setLineDash(dash);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();ctx.setLineDash([])}
+  function text(ctx,str,x,y,col="#c9d9e8",size=11,align="left"){ctx.font=size+"px system-ui,sans-serif";ctx.textAlign=align;ctx.textBaseline="middle";ctx.fillStyle=col;ctx.fillText(str,x,y)}
+  function ring(ctx,x,y,r,col,w=1){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.strokeStyle=col;ctx.lineWidth=w;ctx.stroke()}
+  function glow(x,y,r,color,chosen=false){
+    // Point spread is illustrative, never a drawn physical stellar diameter.
+    r=Math.max(.75,Math.min(2.5,r));
+    const halo=r*2.5,grad=c.createRadialGradient(x,y,0,x,y,halo);
+    grad.addColorStop(0,color+"9a");grad.addColorStop(.35,color+"28");grad.addColorStop(1,color+"00");
+    c.fillStyle=grad;c.beginPath();c.arc(x,y,halo,0,2*Math.PI);c.fill();
+    c.fillStyle=color;c.beginPath();c.arc(x,y,r,0,2*Math.PI);c.fill();
+    if(chosen){ring(c,x,y,6.4,"#9ddbe0b0",.65);for(const a of [0,Math.PI/2,Math.PI,Math.PI*1.5])line(c,[x+Math.cos(a)*8,y+Math.sin(a)*8],[x+Math.cos(a)*11,y+Math.sin(a)*11],"#83bdc999",.65)}
+  }
+  const skyPoint=v=>{const a=M.local(M.unit(v)),k=Math.min(Math.max(20,W-45)/.64,Math.max(20,H-35)/.39)*s.zoom;return [W*.5+k*a[0]/a[2],H*.5-k*a[1]/a[2],0]};
+  // Fit the rotated model envelope, using one uniform light-year-to-pixel
+  // factor for all axes. The camera may fit more tightly on a wide desktop.
+  function spaceScale(){
+    const near=s.view==="near",span=near?250:2200,half=near?65:330,height=near?45:160,
+      cy=Math.abs(Math.cos(s.yaw)),sy=Math.abs(Math.sin(s.yaw)),cp=Math.abs(Math.cos(s.pitch)),sp=Math.abs(Math.sin(s.pitch)),
+      bw=2*half*cy+span*sy,bd=2*half*sy+span*cy,bh=2*height*cp+bd*sp;
+    return Math.min(Math.max(20,W-58)/Math.max(bw,span*.28),Math.max(20,H-58)/Math.max(bh,span*.24))*s.zoom;
+  }
+  function spacePoint(v){
+    const a=M.local(v),near=s.view==="near",focus=near?125:1100,k=spaceScale(),
+      z=a[2]-focus,x=a[0]*Math.cos(s.yaw)+z*Math.sin(s.yaw),zz=-a[0]*Math.sin(s.yaw)+z*Math.cos(s.yaw),
+      y=a[1]*Math.cos(s.pitch)-zz*Math.sin(s.pitch);
+    return [W*.5+x*k,H*.5-y*k,a[1]*Math.sin(s.pitch)+zz*Math.cos(s.pitch)];
+  }
+
+  function labelPoints(points){
+    const taken=[],priority=points.slice().sort((a,b)=>+(b.star.id===s.star)-+(a.star.id===s.star)||a.star.mag-b.star.mag);
+    for(const q of priority){
+      if(!$("labels").checked&&q.star.id!==s.star)continue;
+      const chosen=q.star.id===s.star,name=(!chosen&&W<460&&q.star.name.length>11?q.star.bayer:q.star.name),sz=chosen?10.5:9;
+      c.font=sz+"px ui-monospace,monospace";const tw=c.measureText(name).width;
+      for(const [dx,dy] of [[10,-9],[10,10],[-tw-10,-9],[-tw-10,10],[9,-22],[9,22],[-tw-9,-22],[-tw-9,22],[16,-33],[-tw-16,33]]){
+        const x=q.x+dx,y=q.y+dy,b=[x-2,y-6,x+tw+2,y+6];
+        if(b[0]<3||b[2]>W-3||b[1]<3||b[3]>H-3||taken.some(t=>b[0]<t[2]&&b[2]>t[0]&&b[1]<t[3]&&b[3]>t[1])||points.some(p=>p!==q&&p.x>b[0]-2&&p.x<b[2]+2&&p.y>b[1]-2&&p.y<b[3]+2))continue;
+        taken.push(b);const anchor=[dx>0?x-3:x+tw+3,y];if(chosen||Math.abs(dy)>15)line(c,[q.x,q.y],anchor,"#7d9daf70",.55);
+        c.font=sz+"px ui-monospace,monospace";c.textAlign="left";c.textBaseline="middle";c.fillStyle=chosen?"#b4f0f1":"#a0bacd";c.fillText(name,x,y);break;
+      }
+    }
+  }
+
+  function skyGrid(){const v=(a,d)=>[Math.cos(d*M.D)*Math.cos(a*M.D),Math.cos(d*M.D)*Math.sin(a*M.D),Math.sin(d*M.D)];
+    for(let dec=0;dec<=40;dec+=5){let prev=null;for(let ra=135;ra<=190;ra++){const p=skyPoint(v(ra,dec));if(prev)line(c,prev,p,"#43617730",.55);prev=p}const q=skyPoint(v(187,dec));if(q[0]>5&&q[0]<W-30&&q[1]>12&&q[1]<H-12)text(c,dec+"°",q[0],q[1],"#7591a8",9)}
+    for(let ra=135;ra<=190;ra+=5){let prev=null;for(let dec=0;dec<=40;dec++){const p=skyPoint(v(ra,dec));if(prev)line(c,prev,p,"#43617730",.55);prev=p}const q=skyPoint(v(ra,7));if(q[0]>15&&q[0]<W-15&&q[1]>12&&q[1]<H-12)text(c,n(ra/15,1)+"h",q[0],q[1],"#7591a8",9,"center")}
+    text(c,"N",W-18,23,"#7895aa",9,"center");line(c,[W-18,30],[W-18,45],"#5c7b92",.6);text(c,"O",W-35,45,"#7895aa",9,"center");line(c,[W-29,45],[W-18,45],"#5c7b92",.6);
+  }
+  function depthGrid(alpha){
+    if(alpha<=0)return;
+    const near=s.view==="near",max=near?250:2200,step=near?50:500,half=near?60:290,floor=near?30:125;
+    const center=M.unit(M.stars.reduce((p,t)=>M.plus(p,t.u),[0,0,0])),
+      side=M.unit([-center[1],center[0],0]),
+      up=M.unit([-center[0]*center[2],-center[1]*center[2],center[0]**2+center[1]**2]),
+      ground=(d,x)=>M.plus(M.plus(M.mul(center,d),M.mul(side,x)),M.mul(up,-floor)),
+      origin=spacePoint([0,0,0]),end=spacePoint(M.mul(center,max));
+    c.save();c.globalAlpha=alpha;
+    // The thin rectangular reference plane is a geometric grid, not a stellar structure.
+    for(const x of [-half,-half/2,0,half/2,half])line(c,spacePoint(ground(0,x)),spacePoint(ground(max,x)),"#55768c43",.55);
+    const ticks=[];for(let d=0;d<=max;d+=step)ticks.push(d);if(ticks.at(-1)!==max)ticks.push(max);
+    for(const d of ticks)line(c,spacePoint(ground(d,-half)),spacePoint(ground(d,half)),"#55768c55",.55);
+    line(c,origin,end,"#8097a97a",.65,[3,5]);
+    line(c,origin,spacePoint(ground(0,0)),"#8097a966",.55,[2,4]);
+    let lastLabel=null;
+    for(const d of ticks){
+      if(d===max&&max%step!==0)continue;
+      const p=spacePoint(ground(d,half)),q=spacePoint(ground(d,half+Math.min(15,half*.10)));
+      line(c,p,q,"#809bad99",.6);
+      if(!lastLabel||Math.hypot(q[0]-lastLabel[0],q[1]-lastLabel[1])>34){
+        const x=M.clamp(q[0],19,W-20),y=M.clamp(q[1]+11,10,H-11);
+        text(c,n(d)+" lj",x,y,"#839fb2",9,"center");lastLabel=q;
+      }
+    }
+    glow(origin[0],origin[1],2.1,"#ffd093");text(c,"ZON",origin[0]+8,origin[1]-10,"#e5c59b",9);
+    const stepBar=near?50:500,k=spaceScale(),len=stepBar*k;
+    if(len>13&&len<W*.58){const x=14,y=H-15;line(c,[x,y],[x+len,y],"#8fb9c8",.8);line(c,[x,y-3],[x,y+3],"#8fb9c8",.8);line(c,[x+len,y-3],[x+len,y+3],"#8fb9c8",.8);text(c,n(stepBar)+" lj",x+len/2,y-8,"#a0bcca",9,"center")}
+    c.restore();
+  }
+
+  function stellar(t){const isSpace=spatial(),near=s.view==="near"&&isSpace,active=M.stars.filter(a=>!near||a.d<=250);
+    if(t<.99){c.save();c.globalAlpha=1-t;skyGrid();c.restore()}depthGrid(t);
+    const pos=new Map(active.map(a=>{const r=s.mode==="beweging"?M.pos(a,s.years):a.r,one=skyPoint(r),two=spacePoint(r);return [a.id,[one[0]+(two[0]-one[0])*t,one[1]+(two[1]-one[1])*t,t*two[2]]]}));
+    if(t>.01){const origin=spacePoint([0,0,0]);c.save();c.globalAlpha=t;
+      for(const a of active){const p=pos.get(a.id);if($("rays").checked)line(c,origin,p,a.id===s.star?"#dfb985a0":"#7393a433",a.id===s.star?.8:.5,[3,5]);if($("errors").checked){const low=spacePoint(M.mul(a.u,a.lo)),hi=spacePoint(M.mul(a.u,a.hi));line(c,low,hi,a.id===s.star?"#f2c58c":"#e4b77855",a.id===s.star?1.35:.75);for(const q of [low,hi])line(c,[q[0],q[1]-4],[q[0],q[1]+4],"#e8c18c88")}}
+      c.restore()}
+    if(s.mode==="beweging"){for(const a of active){const q=skyPoint(a.r),p=pos.get(a.id);ring(c,q[0],q[1],3,"#8296ab77");line(c,q,p,"#8de0e599",1,[3,4])}}
+    if($("lines").checked)for(const path of D.paths)for(let i=1;i<path.length;i++){const a=pos.get(path[i-1]),b=pos.get(path[i]);if(a&&b)line(c,a,b,"#9ab9cf8c",.65)}
+    if(s.mode==="meten"){const a=pos.get(s.star),b=pos.get(s.other);if(a&&b){line(c,a,b,"#f1c58e",.9,[4,4]);const r=[(a[0]+b[0])/2,(a[1]+b[1])/2];text(c,t>.8?n(M.separation(selected().r,other().r),1)+" lj":n(M.angle(selected().r,other().r),2)+"°",r[0],r[1]-14,"#ffdbaf",12,"center")}}
+    const bright=Math.min(...active.map(a=>s.mode==="licht"&&s.light==="absolute"?a.abs:a.mag));
+    s.points=[];for(const a of active.slice().sort((a,b)=>pos.get(a.id)[2]-pos.get(b.id)[2])){const [x,y]=pos.get(a.id),mag=s.mode==="licht"&&s.light==="absolute"?a.abs:a.mag,r=.85+1.6*Math.pow(M.flux(mag,bright),.36);if(x<-30||x>W+30||y<-30||y>H+30)continue;glow(x,y,r,a.color,a.id===s.star);s.points.push({star:a,x,y})}labelPoints(s.points);
+  }
+  function parallaxScene(){const a=selected(),p=a.p+s.sigma*a.e,dist=M.distance(p),cx=W*.5,earth=H*.73,base=Math.min(W*.30,145),fraction=M.clamp((Math.log(p)-Math.log(.5))/(Math.log(120)-Math.log(.5)),0,1),top=H*(.13+.36*fraction),offset=Math.min(base*.8,12+Math.log1p(p)*11);const star=[cx,top],sun=[cx,earth],left=[cx-base,earth],right=[cx+base,earth];
+    line(c,left,right,"#748fa4",1.2);line(c,sun,star,"#8de0e5",1,[4,5]);line(c,left,star,"#f1c58e",1.5);line(c,right,star,"#7299b2",1.2);
+    glow(star[0],star[1],5,a.color,true);glow(sun[0],sun[1],5,"#ffd293");glow(left[0],left[1],3.5,"#a4d5f4");glow(right[0],right[1],3.5,"#a4d5f4");
+    text(c,a.name,cx,top-17,"#e9f7ff",12,"center");text(c,"Zon",cx,earth+17,"#f1c58e",11,"center");text(c,"Aarde A",left[0],earth+17,"#bad5e8",11,"center");text(c,"Aarde B",right[0],earth+17,"#bad5e8",11,"center");text(c,"1 AU",cx-base/2,earth+4,"#a5bace",10,"center");text(c,"1 AU",cx+base/2,earth+4,"#a5bace",10,"center");
+    const theta=Math.atan2(base,earth-top),r=Math.min(58,Math.max(30,offset));c.beginPath();c.arc(cx,top,r,Math.PI/2,Math.PI/2+theta);c.strokeStyle="#f1c58e";c.lineWidth=2;c.stroke();text(c,"p = "+n(p,3)+" mas",cx-12,top+r+12,"#f1c58e",12,"right");text(c,"≈ "+n(dist)+" lj",cx+10,(top+earth)/2,"#a9e1e7",13);
+    text(c,"1 AU meetbasis; schematische hoek, niet op schaal.",cx,H*.91,"#a2b9cc",10,"center");s.points=[];
+  }
+  function horizonScene(){const R=Math.min(W,H)*.36,cx=W*.5,cy=H*.49,ms=Date.parse(s.date+"Z"),hs=new Map(),point=h=>{const r=R*(90-h.alt)/90,a=h.az*M.D;return [cx+Math.sin(a)*r,cy-Math.cos(a)*r]};
+    for(let d=0;d<=60;d+=30){ring(c,cx,cy,R*(90-d)/90,d===0?"#88a9bb":"#3b5269",d===0?1.3:.8);text(c,d+"°",cx+5,cy-R*(90-d)/90+9,"#7895aa",9)}
+    for(let i=0;i<360;i+=45){const a=i*M.D;line(c,[cx,cy],[cx+R*Math.sin(a),cy-R*Math.cos(a)],"#324b61",.7)}
+    [["N",0],["O",90],["Z",180],["W",270]].forEach(([v,d])=>{const a=d*M.D;text(c,v,cx+(R+15)*Math.sin(a),cy-(R+15)*Math.cos(a),"#b9d6e6",12,"center")});
+    for(const a of M.stars){const h=M.horizon(a,ms,s.lat,s.lon);if(h.alt>=0)hs.set(a.id,point(h))}
+    if($("lines").checked)for(const path of D.paths)for(let i=1;i<path.length;i++){const a=hs.get(path[i-1]),b=hs.get(path[i]);if(a&&b)line(c,a,b,"#94b5ceaa",1.2)}
+    s.points=[];for(const a of M.stars){const q=hs.get(a.id);if(!q)continue;glow(q[0],q[1],1.05+.35*Math.max(0,4-a.mag),a.color,a.id===s.star);s.points.push({star:a,x:q[0],y:q[1]})}labelPoints(s.points);text(c,hs.size+" van 9 boven de horizon",cx,Math.min(H-19,cy+R+31),"#a9becf",11,"center");
+  }
+  function drawChart(){if(CW<135||CH<45)return;g.clearRect(0,0,CW,CH);s.chartPoints=[];const a=selected(),m=s.mode,left=CW<300?72:98,right=CW-40,top=8,bottom=CH-23;
+    if(m==="parallax"){
+      const p0=Math.max(.001,a.p-3*a.e),p1=a.p+3*a.e,ymax=M.distance(p0)*1.08,x=p=>left*.55+(right-left*.55)*(p-p0)/(p1-p0),y=d=>bottom-(bottom-top)*d/ymax;
+      for(let i=0;i<=4;i++){const v=ymax*i/4;line(g,[left*.55,y(v)],[right,y(v)],"#34475d");text(g,n(v),left*.55-5,y(v),"#8ea7bb",9,"right")}
+      let prev=null;for(let i=0;i<=150;i++){const p=p0+(p1-p0)*i/150,q=[x(p),y(M.distance(p))];if(prev)line(g,prev,q,"#8de0e5",1.6);prev=q}
+      for(const [p,cl] of [[a.p-a.e,"#cda46e"],[a.p,"#9ad5de"],[a.p+a.e,"#cda46e"]]){line(g,[x(p),top],[x(p),bottom],cl,1,[3,3]);text(g,n(p,2),x(p),bottom+12,cl,9,"center")}
+      const p=a.p+s.sigma*a.e;ring(g,x(p),y(M.distance(p)),4.5,"#fff4d5",2);return;
+    }
+    const metric=v=>m==="meten"?M.separation(a.r,v.r):m==="licht"?(s.light==="absolute"?v.abs:v.mag):m==="beweging"?M.angle(v.r,M.pos(v,s.years)):m==="waarnemen"?M.horizon(v,Date.parse(s.date+"Z"),s.lat,s.lon).alt:v.d;
+    const rows=M.stars.map(star=>({star,v:metric(star)})).sort((x,y)=>x.v-y.v);
+    const min=m==="waarnemen"?-90:m==="licht"?Math.floor(Math.min(...rows.map(r=>r.v)))-.5:0,max=m==="waarnemen"?90:m==="licht"?Math.ceil(Math.max(...rows.map(r=>r.v)))+.5:m==="beweging"?Math.max(.1,Math.ceil(Math.max(...rows.map(r=>r.v))*10)/10):Math.max(1,Math.ceil(Math.max(...rows.map(r=>r.v))/100)*100);
+    const x=v=>left+(right-left)*(v-min)/(max-min),rh=(bottom-top)/rows.length;
+    for(let i=0;i<=4;i++){const v=min+(max-min)*i/4,xx=x(v);line(g,[xx,top],[xx,bottom],"#34475b");text(g,n(v,m==="licht"||m==="beweging"?1:0),xx,bottom+11,"#90a8bb",9,"center")}
+    if(m==="waarnemen")line(g,[x(0),top],[x(0),bottom],"#7e9aac");
+    rows.forEach((row,i)=>{const yy=top+(i+.5)*rh,active=row.star.id===s.star,origin=x(m==="waarnemen"?0:min),end=x(row.v),color=active?"#8de0e5":row.star.color+"bb";if(active){g.fillStyle="#1c3547";g.fillRect(0,yy-rh/2,CW,rh)}
+      text(g,row.star.name.length>15?row.star.bayer:row.star.name,left-7,yy,active?"#e7fdff":"#a6bed1",10,"right");
+      if(m==="licht"){ring(g,end,yy,active?4:3,color,2)}else{line(g,[origin,yy],[end,yy],color,Math.min(8,rh*.5));if(Math.abs(end-origin)<1)ring(g,end,yy,2,color,1)}
+      text(g,n(row.v,m==="licht"?2:m==="beweging"?2:m==="waarnemen"?1:0),CW-3,yy,active?"#d8fcff":"#b5cbdc",10,"right");s.chartPoints.push({id:row.star.id,y:yy,h:rh});
+    });
+  }
+  function draw(now){
+    raf=0;if(!W||!H)return;
+    const delta=Math.min(50,now-(last||now));last=now;
+    if(s.anim){
+      const f=M.clamp((now-s.anim.start)/s.anim.duration,0,1),v=f*f*(3-2*f);
+      s.blend=s.anim.from+(s.anim.to-s.anim.from)*v;
+      if(f>=1){s.anim=null;syncCamera()}
+    }else if(s.spin&&spatial()){s.yaw=(s.yaw+delta*.00024)%(Math.PI*2)}
+    if(s.playing&&s.mode==="beweging"){
+      s.years+=delta*2.5;if(s.years>20000)s.years=-20000;
+      if(now-lastReadout>90){updateInspector();updateText();if($("years"))$("years").value=s.years;chartDirty=true;lastReadout=now}
+    }
+    c.clearRect(0,0,W,H);
+    if(s.mode==="parallax")parallaxScene();else if(s.mode==="waarnemen")horizonScene();else stellar(["ruimte","meten"].includes(s.mode)?s.blend:0);
+    s.frame++;
+    if(s.anim||s.spin){syncQuick();updateHUD()}
+    if(chartDirty){drawChart();chartDirty=false}
+    if(s.spin||s.anim||s.playing)invalidate(false);
+  }
+  document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+  window.addEventListener("hashchange",()=>{const mode=location.hash.slice(1);if(modes.some(m=>m[0]===mode))setMode(mode,false)});
+  for(const id of ["earth","space","side","near"])$(id).onclick=()=>setView(id);
+  $("spin").onclick=()=>{
+    if(s.spin||s.anim||s.playing){stopMotion();invalidate();return}
+    if(s.mode==="beweging"){s.playing=true;syncCamera();invalidate();return}
+    if(s.mode==="hemel"){setMode("ruimte",true,false);startIntro();return}
+    if(s.view==="earth"){s.view="space";s.yaw=.95;s.pitch=.48}
+    if(s.blend<.999)animateTo(1);s.spin=true;syncCamera();invalidate();
+  };
+  $("quickRange").oninput=e=>{
+    const v=+e.target.value;
+    if(s.mode==="ruimte"||s.mode==="meten"){stopMotion();s.blend=v/100;if(s.blend>0&&s.view==="earth")s.view="space";if(!s.blend)s.view="earth";syncCamera();updateText()}
+    else if(s.mode==="parallax"){s.sigma=v;if($("sigma"))$("sigma").value=v;updateInspector();updateText()}
+    else if(s.mode==="beweging"){stopMotion();s.years=v;if($("years"))$("years").value=v;updateInspector();updateText()}
+    syncQuick();invalidate();
+  };
+  $("quickAction").onclick=()=>{
+    if(s.mode==="licht"){s.light=s.light==="absolute"?"apparent":"absolute";if($("light"))$("light").value=s.light;updateInspector();updateText();invalidate();return}
+    if(innerWidth<=850)setPanel("inspector");else ($("pairA")||$("date"))?.focus();
+  };
+  $("labDock").onclick=()=>setPanel(document.body.classList.contains("panel-open")?null:"inspector");
+  $("graphToggle").onclick=()=>setPanel(document.body.classList.contains("graph-open")?null:"graph");
+  $("panelClose").onclick=$("graphClose").onclick=$("panelBackdrop").onclick=()=>setPanel(null);
+  window.addEventListener("keydown",e=>{if(e.key==="Escape")setPanel(null)});
+  $("snapshot").onclick=()=>scene.toBlob(blob=>{if(!blob)return;const a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download="leeuw-"+s.mode+".png";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)},"image/png");
+
+  $("reset").onclick=()=>{s.years=0;s.sigma=0;s.light="apparent";s.date="2026-03-25T21:00";s.lat=51.92;s.lon=4.48;s.star=49669;s.other=49583;for(const id of ["lines","labels","rays","errors"])$(id).checked=true;setMode(s.mode,true,false);if(s.mode==="ruimte"){s.view="earth";s.blend=0;syncCamera();updateText();invalidate()}};
+  $("zoom").oninput=e=>{s.zoom=+e.target.value;invalidate()};["lines","labels","rays","errors"].forEach(id=>$(id).onchange=invalidate);
+  const pointers=new Map();let pinch=0;scene.addEventListener("pointerdown",e=>{if(s.mode==="parallax")return;stopMotion();scene.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1)s.drag={x:e.clientX,y:e.clientY,moved:false};if(pointers.size===2){const p=[...pointers.values()];pinch=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);if(s.drag)s.drag.moved=true}});
+  scene.addEventListener("pointermove",e=>{if(!pointers.has(e.pointerId))return;const old=pointers.get(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2&&s.mode!=="waarnemen"){const p=[...pointers.values()],d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);if(pinch>0){s.zoom=M.clamp(s.zoom*d/pinch,.65,4);$("zoom").value=s.zoom;invalidate()}pinch=d;return}if(!s.drag||!["hemel","ruimte","meten"].includes(s.mode))return;
+    if(!s.drag.moved&&Math.hypot(e.clientX-s.drag.x,e.clientY-s.drag.y)<6)return;s.drag.moved=true;if(s.mode==="hemel"||s.view==="earth"){setView("space",false);s.blend=1;}s.anim=null;s.spin=false;if(s.view==="side")s.view="space";s.yaw+=(e.clientX-old.x)*.009;s.pitch=M.clamp(s.pitch+(e.clientY-old.y)*.009,-1.45,1.45);syncCamera();updateText();invalidate()});
+  scene.addEventListener("pointerup",e=>{pointers.delete(e.pointerId);if(s.drag&&!s.drag.moved&&pointers.size===0){const r=scene.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;const q=s.points.slice().sort((a,b)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y))[0];if(q&&Math.hypot(q.x-x,q.y-y)<20){setStar(q.star.id);updateHUD()}}if(!pointers.size){s.drag=null;pinch=0}});
+  scene.addEventListener("pointercancel",()=>{pointers.clear();s.drag=null;pinch=0});
+  scene.addEventListener("wheel",e=>{if(s.mode==="parallax"||s.mode==="waarnemen")return;e.preventDefault();stopMotion();s.zoom=M.clamp(s.zoom*Math.exp(-e.deltaY*.001),.65,4);$("zoom").value=s.zoom;invalidate()},{passive:false});
+  scene.addEventListener("keydown",e=>{if(!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key)||!["hemel","ruimte","meten"].includes(s.mode))return;e.preventDefault();if(!spatial())setView("space",false);stopMotion();if(e.key==="ArrowLeft")s.yaw-=.12;if(e.key==="ArrowRight")s.yaw+=.12;if(e.key==="ArrowUp")s.pitch=M.clamp(s.pitch-.12,-1.45,1.45);if(e.key==="ArrowDown")s.pitch=M.clamp(s.pitch+.12,-1.45,1.45);invalidate()});
+  chart.addEventListener("click",e=>{const r=chart.getBoundingClientRect(),y=e.clientY-r.top,q=s.chartPoints.find(q=>Math.abs(q.y-y)<=q.h/2);if(q)setStar(q.id)});
+  for(const a of M.stars.slice().sort((a,b)=>a.mag-b.mag)){const btn=document.createElement("button");btn.className="star";btn.dataset.id=a.id;btn.innerHTML='<span class="starname"><i class="dot" style="background:'+a.color+'"></i><span>'+a.name+'</span></span><small></small>';btn.onclick=()=>setStar(a.id);$("starlist").append(btn);
+    const tr=document.createElement("tr");tr.innerHTML=[a.name+" / "+a.id,a.rah,a.dech,a.p+" ± "+a.e,n(a.d,1),a.mag,a.pmra+" / "+a.pmdec,a.rv,a.source].map((v,i)=>"<td>"+(i===0?'<a href="https://simbad.cds.unistra.fr/simbad/sim-id?Ident='+encodeURIComponent(a.ident)+'" target="_blank" rel="noopener">'+v+"</a>":v)+"</td>").join("");$("dataRows").append(tr)}
+  function download(){const rows=[D.columns,...D.stars],csv=rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\n");const url=URL.createObjectURL(new Blob(["\ufeff",csv],{type:"text/csv;charset=utf-8"})),a=document.createElement("a");a.href=url;a.download="leo-figuursterren-simbad-2026-11-24.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}$("download").onclick=download;$("downloadBottom").onclick=download;
+  // Read-only snapshot of the same state the UI uses; supports reproducible browser checks.
+  window.LEO_STATE=()=>({mode:s.mode,view:s.view,star:s.star,other:s.other,zoom:s.zoom,yaw:s.yaw,pitch:s.pitch,years:s.years,sigma:s.sigma,light:s.light,blend:s.blend,animating:!!(s.anim||s.spin||s.playing),frame:s.frame,points:s.points.length,angle:M.angle(selected().r,other().r),separation:M.separation(selected().r,other().r),distance:M.distance(selected().p+s.sigma*selected().e),heading:$("headline").textContent});
+  setMode(modes.some(m=>m[0]===location.hash.slice(1))?location.hash.slice(1):"hemel",false,false);document.documentElement.dataset.ready="true";
+})();</script>
+<script id="leo-voyage">(function voyage(){
+"use strict";
+const $=id=>document.getElementById(id), M=window.LEO_MODEL,D=window.LEO_DATA,canvas=$("voyageCanvas"),ctx=canvas.getContext("2d",{alpha:false});
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const chapters=[
+ {start:0,end:17,short:"De nacht",title:"Leeuw",text:"Op een heldere lenteavond kun je de Leeuw aan de hemel vinden. Begin bij Regulus, de helderste ster van de figuur. De gebogen rij sterren erboven vormt de kop.",label:"VANAF DE AARDE",fact:"",unit:""},
+ {start:17,end:36,short:"Van opzij",title:"Kijk eens van opzij",text:"Denebola staat op ongeveer 36 lichtjaar van de zon. Chertan lijkt ernaast te staan, maar ligt op 161 lichtjaar. Vanuit een ander standpunt is de Leeuw nauwelijks te herkennen.",label:"DE STERREN IN DE RUIMTE",fact:"36",unit:"lichtjaar tot Denebola"},
+ {start:36,end:55,short:"Regulus",title:"79 jaar onderweg",text:"Het licht dat je van Regulus ziet, is ongeveer 79 jaar geleden vertrokken. Wat er vandaag bij de ster gebeurt, kunnen we pas over 79 jaar zien.",label:"REGULUS · α LEONIS",fact:"79",unit:"lichtjaar tot Regulus"},
+ {start:55,end:76,short:"De verre ster",title:"Ver achter de rest",text:"Aan de hemel staat Eta Leonis vlak bij Regulus. In de ruimte ligt zij naar schatting op zo'n 1.800 lichtjaar van ons. De precieze afstand is minder goed bekend.",label:"ETA LEONIS · η LEONIS",fact:"≈ 1.800",unit:"lichtjaar tot Eta Leonis"},
+ {start:76,end:96,short:"Terug naar huis",title:"Weer dezelfde Leeuw",text:"Vanaf de aarde vallen dezelfde sterren weer op hun plaats. In het voorjaar kun je de Leeuw zelf terugvinden. De figuur vertelt waar je moet kijken; de ruimte tussen de sterren zie je niet.",label:"TERUG NAAR DE AARDE",fact:"",unit:""}
+];
+const keys=[
+ [0,[0,0,0],[0,0,150],66],[8,[0,0,0],[0,0,150],42],[17,[0,0,0],[0,0,150],42],
+ [23,[-68,28,20],[2,0,125],52],[30,[-238,78,118],[5,0,120],48],[36,[-260,85,135],[6,0,125],46],
+ [42,[-64,17,30],[12,-9,78],44],[50,[-20,-1,45],[12,-9,78],38],[55,[-32,7,50],[12,-9,78],43],
+ [62,[-480,155,390],[77,-5,530],60],[70,[-1450,380,850],[120,-20,910],68],[76,[-1510,290,940],[120,-20,920],69],
+ [84,[-240,76,125],[8,0,135],50],[91,[0,0,0],[0,0,150],44],[96,[0,0,0],[0,0,150],42]
+];
+const measured=M.stars.map(star=>({star,p:M.local(star.r),color:star.color})),byId=new Map(measured.map(o=>[o.star.id,o]));
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),mix=(a,b,t)=>a+(b-a)*t, smooth=t=>t*t*(3-2*t);
+const ease=(t,a,b)=>smooth(clamp((t-a)/(b-a),0,1));
+const add=(a,b)=>a.map((v,i)=>v+b[i]),sub=(a,b)=>a.map((v,i)=>v-b[i]),scale=(a,n)=>a.map(v=>v*n),dot=(a,b)=>a.reduce((n,v,i)=>n+v*b[i],0),len=a=>Math.hypot(...a),unit=a=>scale(a,1/(len(a)||1)),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const vecmix=(a,b,t)=>a.map((v,i)=>mix(v,b[i],t));
+let seed=758192;function rng(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}
+const palette=["#b2c8ed","#d5e3f4","#e5e9ee","#e2c8a7","#b4c5e4","#a3c0da","#f3e0c0"];
+function direction(){const z=rng()*2-1,a=rng()*2*Math.PI,r=Math.sqrt(1-z*z);return [r*Math.cos(a),z,r*Math.sin(a)]}
+const sky=[];
+for(let i=0;i<4900;i++){const u=direction();sky.push({p:u,r:.30+Math.pow(rng(),9)*1.35,a:.10+Math.pow(rng(),2.4)*.67,c:palette[Math.floor(rng()*palette.length)],phase:rng()*6.28})}
+// Subdued diffuse light is a visual backdrop, not a survey image or a measured nebula.
+const haze=[];
+for(let i=0;i<210;i++){const a=rng()*Math.PI*2,b=(rng()-.5)*.42;const p=unit([Math.cos(a),b*.95+Math.sin(a)*.30,Math.sin(a)]);haze.push({p,size:.035+rng()*.11,opacity:.008+rng()*.012,tint:i%3})}
+// Several thousand dim points add depth and texture to the explicitly illustrative sky.
+for(let i=0;i<3300;i++){
+ const a=rng()*Math.PI*2,b=(rng()+rng()+rng()-1.5)*.28+.21*Math.sin(a*1.7+.3);
+ const p=unit([Math.cos(a)*Math.cos(b),Math.sin(b),Math.sin(a)*Math.cos(b)]);
+ sky.push({p,r:.22+Math.pow(rng(),8)*.78,a:.045+Math.pow(rng(),2.2)*.34,c:palette[Math.floor(rng()*palette.length)],phase:rng()*6.28});
+}
+const space=[];
+for(let i=0;i<1600;i++){const p=[(rng()-.5)*3900,(rng()-.5)*1800,(rng()-.14)*3800];space.push({p,r:.32+Math.pow(rng(),7)*.8,a:.07+Math.pow(rng(),3)*.38,c:palette[Math.floor(rng()*palette.length)]})}
+function sprite(color){
+ const el=document.createElement("canvas");el.width=96;el.height=96;const g=el.getContext("2d"),r=g.createRadialGradient(48,48,0,48,48,48);
+ r.addColorStop(0,color+"ef");r.addColorStop(.025,color+"b5");r.addColorStop(.12,color+"50");r.addColorStop(.32,color+"17");r.addColorStop(1,color+"00");g.fillStyle=r;g.fillRect(0,0,96,96);return el;
+}
+const glows=new Map([...palette,...new Set(measured.map(o=>o.color)),"#fff0cd","#d6e9ff"].map(c=>[c,sprite(c)]));
+function noise(x,y){
+ const i=Math.floor(x),j=Math.floor(y),a=smooth(x-i),b=smooth(y-j);
+ const hash=(u,v)=>{let n=Math.imul(u+213,374761393)+Math.imul(v+971,668265263);n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967295};
+ return mix(mix(hash(i,j),hash(i+1,j),a),mix(hash(i,j+1),hash(i+1,j+1),a),b);
+}
+function fbm(x,y){return noise(x,y)*.55+noise(x*2.1+13,y*2.1+5)*.27+noise(x*4.3+51,y*4.3+17)*.13+noise(x*9+23,y*9+8)*.05}
+const clouds=[[73,106,150],[117,137,163],[152,119,103]].map(([r,g,b],i)=>{
+ const el=document.createElement("canvas"),N=180;el.width=el.height=N;const c=el.getContext("2d"),im=c.createImageData(N,N);
+ for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+  const u=(x-N/2)/(N/2),v=(y-N/2)/(N/2),radius=Math.hypot(u,v),warp=fbm(u*3+i*8,v*3+2);
+  const w=fbm(u*4.8+warp*3+i*19,v*8.5-warp*4+5),fall=Math.pow(Math.max(0,1-radius),1.6),a=clamp(fall*(w-.2)*1.6,0,.9);
+  const k=(y*N+x)*4;im.data[k]=r;im.data[k+1]=g;im.data[k+2]=b;im.data[k+3]=Math.round(a*255);
+ }c.putImageData(im,0,0);return el;
+});
+// An illustrative B-type photosphere: no surface map or physical radius is inferred.
+const starDisk=(()=>{
+ const N=384,el=document.createElement("canvas");el.width=el.height=N;const g=el.getContext("2d"),im=g.createImageData(N,N);
+ for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+  const u=(x-N/2)/(N/2-2),v=(y-N/2)/(N/2-2),rr=u*u+v*v,k=(y*N+x)*4;if(rr>=1)continue;
+  const z=Math.sqrt(1-rr),lon=Math.atan2(u,z),lat=Math.asin(v),wx=fbm(lon*4+19,lat*4+2),wy=fbm(lon*5+41,lat*5+9);
+  const cell=fbm(lon*25+wx*8,lat*25+wy*8),fine=noise(lon*88+4,lat*88+9),
+    lum=clamp((.69+.26*cell+.11*fine)*(.50+.50*Math.pow(z,.25)),0,1);
+  im.data[k]=Math.min(255,Math.round(102+161*lum));im.data[k+1]=Math.min(255,Math.round(148+119*lum));im.data[k+2]=Math.min(255,Math.round(211+57*lum));im.data[k+3]=Math.round(clamp((1-rr)*N*.40,0,1)*255);
+ }g.putImageData(im,0,0);return el;
+})();
+const chapterStills=[9,31,48,72,94];
+let W=1,H=1,t=reduce?chapterStills[0]:0,playing=!reduce,visible=false,frame=0,raf=0,last=0,chapter=-1,yawOffset=0,pitchOffset=0,drag=null,painted=0,projected=[],lastUI=-1;
+function resize(){const r=canvas.getBoundingClientRect();if(r.width<1||r.height<1)return;const d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.round(W*d);canvas.height=Math.round(H*d);ctx.setTransform(d,0,0,d,0,0);if(visible)request()}
+new ResizeObserver(resize).observe(canvas);
+// Time-aware monotone cubic interpolation keeps the camera moving through
+// adjacent waypoints, without overshooting or stopping at each one.
+function interpolate(i,u,get){
+ const a=keys[i],b=keys[i+1],dt=b[0]-a[0],va=get(a),vb=get(b),d=(vb-va)/dt;
+ const prev=keys[i-1],next=keys[i+2],left=prev?(va-get(prev))/(a[0]-prev[0]):0,right=next?(get(next)-vb)/(next[0]-b[0]):0;
+ const tangent=(x,y)=>x*y>0?2*x*y/(x+y):0,m0=tangent(left,d),m1=tangent(d,right),u2=u*u,u3=u2*u;
+ return (2*u3-3*u2+1)*va+(u3-2*u2+u)*dt*m0+(-2*u3+3*u2)*vb+(u3-u2)*dt*m1;
+}
+function poseAt(time){
+ let i=0;while(i<keys.length-2&&time>keys[i+1][0])i++;const a=keys[i],b=keys[i+1],u=clamp((time-a[0])/(b[0]-a[0]),0,1);
+ const pos=[0,1,2].map(j=>interpolate(i,u,k=>k[1][j])),target=[0,1,2].map(j=>interpolate(i,u,k=>k[2][j])),fov=interpolate(i,u,k=>k[3]);
+ let f=unit(sub(target,pos)),right=unit(cross([0,1,0],f)),up=unit(cross(f,right));
+ if(yawOffset||pitchOffset){f=unit(add(add(f,scale(right,Math.tan(yawOffset))),scale(up,Math.tan(pitchOffset))));right=unit(cross([0,1,0],f));up=unit(cross(f,right))}
+ const mobile=W<850,short=H<510,center=[mobile&&!short?W*.5:W*.67,mobile&&!short?H*.345:H*.47];
+ const aperture=mobile&&!short?Math.min(W*.96,H*.70):Math.min(W*.91,H*.89);
+ return {pos,f,right,up,center,focal:aperture/(2*Math.tan(fov*Math.PI/360)),fov};
+}
+function project(v,p,infinite=false){
+ const x=v[0]-(infinite?0:p.pos[0]),y=v[1]-(infinite?0:p.pos[1]),q=v[2]-(infinite?0:p.pos[2]),
+ z=x*p.f[0]+y*p.f[1]+q*p.f[2];if(z<.003)return null;
+ return {x:p.center[0]+p.focal*(x*p.right[0]+y*p.right[1]+q*p.right[2])/z,
+ y:p.center[1]-p.focal*(x*p.up[0]+y*p.up[1]+q*p.up[2])/z,z,d:infinite?1:Math.hypot(x,y,q)};
+}
+function onScreen(p,pad=8){return p&&p.x>=-pad&&p.x<=W+pad&&p.y>=-pad&&p.y<=H+pad}
+function line(a,b,color,width=.65,dash=[]){if(!a||!b)return;ctx.beginPath();ctx.setLineDash(dash);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.setLineDash([])}
+function circle(x,y,r,fill){ctx.fillStyle=fill;ctx.beginPath();ctx.arc(x,y,r,0,2*Math.PI);ctx.fill()}
+function glow(q,r,color,amount=1,flare=false){
+ if(!onScreen(q,70))return;const s=glows.get(color)||glows.get("#d6e9ff"),radius=r*(flare?10:5.8);
+ ctx.globalAlpha=amount*.78;ctx.drawImage(s,q.x-radius,q.y-radius,radius*2,radius*2);ctx.globalAlpha=amount;
+ if(flare){ctx.globalAlpha=amount*.29;line({x:q.x-r*4.8,y:q.y},{x:q.x+r*4.8,y:q.y},color,.55);line({x:q.x,y:q.y-r*3.4},{x:q.x,y:q.y+r*3.4},color,.55)}
+ ctx.globalAlpha=amount;circle(q.x,q.y,r,color);ctx.globalAlpha=1;
+}
+function background(p,time){
+ const grad=ctx.createRadialGradient(p.center[0],p.center[1],0,p.center[0],p.center[1],Math.hypot(W,H)*.74);grad.addColorStop(0,"#091424");grad.addColorStop(.43,"#050c17");grad.addColorStop(1,"#010308");ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+ ctx.globalCompositeOperation="screen";
+ for(const v of haze){const q=project(v.p,p,true);if(!onScreen(q,p.focal*.25))continue;const r=p.focal*v.size/q.z;ctx.globalAlpha=v.opacity*4.5;ctx.drawImage(clouds[v.tint],q.x-r,q.y-r,r*2,r*2)}
+ ctx.globalAlpha=1;ctx.globalCompositeOperation="source-over";
+ for(const v of sky){const q=project(v.p,p,true);if(!onScreen(q))continue;ctx.globalAlpha=v.a*(reduce?1:.93+.07*Math.sin(time*.65+v.phase));if(v.r>1.15){const r=v.r*4;ctx.drawImage(glows.get(v.c),q.x-r,q.y-r,r*2,r*2)}circle(q.x,q.y,v.r,v.c)}
+ const motion=ease(time,17,27)*(1-ease(time,84,93));
+ if(motion>.01)for(const v of space){const q=project(v.p,p);if(!onScreen(q,2)||q.d<5)continue;ctx.globalAlpha=v.a*motion*clamp(q.d/45,0,1);const r=clamp(v.r*(1+110/(q.d+50)),.25,1.45);circle(q.x,q.y,r,v.c)}
+ ctx.globalAlpha=1;
+}
+function limb(time){
+ const opacity=(1-ease(time,6,15))*.65;
+ if(opacity<=0)return;
+ const x=W*(W<850?.58:.72),y=H*1.43,r=H*.69;
+ ctx.save();ctx.globalAlpha=opacity;
+ const g=ctx.createRadialGradient(x,y,r*.84,x,y,r+H*.018);
+ g.addColorStop(0,"#02070d");g.addColorStop(.78,"#071625");g.addColorStop(.91,"#18364b");g.addColorStop(.946,"#426e8d");g.addColorStop(.972,"#7db0c7");g.addColorStop(.986,"#34698966");g.addColorStop(1,"#15375500");
+ circle(x,y,r+H*.018,g);ctx.restore();
+}
+function portrait(q,time){
+ const opacity=ease(time,42,46)*(1-ease(time,51.5,55));
+ if(opacity<.001||!q)return 0;
+ const r=Math.min(W*(W<850?.205:.15),H*.157,167),x=q.x,y=q.y;
+ ctx.save();ctx.globalAlpha=opacity;
+ const halo=ctx.createRadialGradient(x,y,r*.72,x,y,r*2.45);
+ halo.addColorStop(0,"#d3e8ff65");halo.addColorStop(.23,"#a0c9fd42");halo.addColorStop(.43,"#648dce22");halo.addColorStop(1,"#4473c200");
+ ctx.globalCompositeOperation="screen";circle(x,y,r*2.45,halo);
+ ctx.globalCompositeOperation="source-over";ctx.translate(x,y);ctx.rotate((time-46)*.025);
+ ctx.drawImage(starDisk,-r,-r,r*2,r*2);
+ ctx.rotate(-(time-46)*.025);
+ const sheen=ctx.createRadialGradient(-r*.22,-r*.27,0,0,0,r);
+ sheen.addColorStop(0,"#ffffff29");sheen.addColorStop(.70,"#b7dfff09");sheen.addColorStop(1,"#72a7e328");circle(0,0,r,sheen);
+ ctx.globalCompositeOperation="screen";
+ const rim=ctx.createRadialGradient(0,0,r*.93,0,0,r*1.12);
+ rim.addColorStop(0,"#afd2ff00");rim.addColorStop(.35,"#d2e6ff65");rim.addColorStop(1,"#79a6eb00");circle(0,0,r*1.12,rim);
+ ctx.restore();return opacity;
+}
+function label(q,title,sub,accent,occupied){
+ if(!onScreen(q,0))return;
+ ctx.font="500 "+(W<850?10:12)+"px ui-monospace,monospace";const tw=Math.max(ctx.measureText(title).width,sub?ctx.measureText(sub).width*.88:0),lh=sub?26:13;
+ const xpad=8,opts=[[13,-15],[13,12],[-tw-13,-15],[-tw-13,12],[13,-35],[-tw-13,30]];
+ for(const [dx,dy] of opts){const x=q.x+dx,y=q.y+dy,b=[x-3,y-8,x+tw+3,y+lh];if(b[0]<xpad||b[2]>W-xpad||b[1]<56||b[3]>H*(W<850?.58:.80)||occupied.some(r=>b[0]<r[2]&&b[2]>r[0]&&b[1]<r[3]&&b[3]>r[1]))continue;
+ occupied.push(b);const color=accent?"#d5f0f3":"#a6bdcf";line(q,{x:dx>0?x-4:x+tw+4,y},accent?"#a6d8dcb0":"#7796ad65",.6);ctx.textBaseline="middle";ctx.textAlign="left";ctx.fillStyle=color;ctx.shadowColor="#02050a";ctx.shadowBlur=5;ctx.fillText(title,x,y);if(sub){ctx.font="9px ui-monospace,monospace";ctx.fillStyle="#94b2c4";ctx.fillText(sub,x,y+13)}ctx.shadowBlur=0;return;
+ }
+}
+function render(time){
+ const p=poseAt(time);background(p,time);limb(time);
+ const qs=new Map(measured.map(o=>[o.star.id,project(o.p,p)])),sun=project([0,0,0],p);
+ const skyAlpha=Math.max(1-ease(time,17,28),ease(time,85,92)),reveal=ease(time,1.0,6.5),connect=skyAlpha*Math.max(reveal,ease(time,88,94));
+ let seg=0,total=D.paths.reduce((a,path)=>a+path.length-1,0);
+ // Reveal the familiar outline, then remove it as the camera moves sideways.
+ for(const path of D.paths)for(let i=1;i<path.length;i++){const a=qs.get(path[i-1]),b=qs.get(path[i]);const n=clamp(connect*total-seg,0,1);seg++;if(!a||!b||n<=0)continue;ctx.globalAlpha=skyAlpha*.83;line(a,{x:mix(a.x,b.x,n),y:mix(a.y,b.y,n)},"#a7d4e1",.72);ctx.globalAlpha=skyAlpha*.14;line(a,{x:mix(a.x,b.x,n),y:mix(a.y,b.y,n)},"#88c8e3",2.2);ctx.globalAlpha=1}
+ const nearAlpha=ease(time,24,29)*(1-ease(time,37,42)),farAlpha=ease(time,63,69)*(1-ease(time,78,83));
+ if(sun&&(nearAlpha>.01||farAlpha>.01)){
+   ctx.globalAlpha=Math.max(nearAlpha,farAlpha)*.52;
+   for(const id of nearAlpha>farAlpha?[57632,54879,49669]:[49669,49583])line(sun,qs.get(id),"#7eabbd",.72,[3,5]);
+   ctx.globalAlpha=1;glow(sun,1.7,"#fff0cd",Math.max(nearAlpha,farAlpha),true);
+ }
+ const focus=time>=36&&time<55?49669:time>=55&&time<76?49583:0;
+ const dots=measured.map(o=>({...o,q:qs.get(o.star.id)})).filter(o=>onScreen(o.q,18)).sort((a,b)=>b.q.z-a.q.z);
+ projected=[];
+ for(const o of dots){
+   // Use visual magnitudes for the Earth view and relative modeled flux from the moving camera.
+   const absolute=o.star.abs+5*Math.log10(Math.max(.05,o.q.d)/M.PC/10),mag=mix(absolute,o.star.mag,skyAlpha);
+   const brightness=clamp(Math.pow(10,-.13*(mag-1.4)),.28,3.6),isFocus=o.star.id===focus;
+   const r=clamp(.95+brightness*.75+(isFocus?1.2:0),.8,isFocus?5.0:2.9);
+   glow(o.q,r,o.color,.96,isFocus||o.star.mag<2.2);
+   if(isFocus){
+     const focusStrength=focus===49669?ease(time,39,46)*(1-ease(time,52,55)):ease(time,66,71)*(1-ease(time,75,78));
+     if(focusStrength>.01){ctx.globalAlpha=focusStrength*.24;const halo=clamp(p.focal*.12,22,108),s=glows.get(o.color);ctx.globalCompositeOperation="screen";ctx.drawImage(s,o.q.x-halo,o.q.y-halo,halo*2,halo*2);ctx.globalCompositeOperation="source-over";ctx.globalAlpha=1}
+   }
+   projected.push({id:o.star.id,x:o.q.x,y:o.q.y});
+ }
+ const portraitOpacity=portrait(qs.get(49669),time);
+ const occupied=[];
+ const nam=(id,sub="",accent=false)=>{const o=byId.get(id),q=qs.get(id);if(o)label(q,o.star.name,sub,accent,occupied)};
+ if(time<17){if(time>3.5)nam(49669,"",true);if(time>7.5){nam(57632);nam(50583)}}
+ else if(time<36){if(time>25){nam(57632,"36 lj",true);nam(54879,"161 lj");nam(49669,"79 lj");if(sun)label(sun,"Zon","",false,occupied)}}
+ else if(time<55){if(portraitOpacity<.25)nam(49669,"79 lichtjaar",true)}
+ else if(time<76){if(time>64){nam(49583,"ca. 1.800 lj",true);nam(49669,"79 lj");if(sun)label(sun,"Zon","",false,occupied)}}
+ else if(time>90){nam(49669,"",true);nam(57632)}
+ painted=projected.length;frame++;
+}
+function chapterAt(time){return Math.min(chapters.length-1,Math.max(0,chapters.findIndex(ch=>time<ch.end)===-1?chapters.length-1:chapters.findIndex(ch=>time<ch.end)))}
+const timeText=x=>Math.floor(x/60)+":"+String(Math.floor(x%60)).padStart(2,"0");
+function updateUI(force=false){
+ const idx=chapterAt(t),ch=chapters[idx],changed=chapter!==idx;
+ if(changed||force){chapter=idx;$("voyageKicker").textContent=String(idx+1).padStart(2,"0")+" / 05 · "+ch.short;$("voyageTitle").textContent=ch.title;$("voyageText").textContent=ch.text;$("voyageSceneLabel").textContent=ch.label;$("voyageFact").hidden=!ch.fact;$("voyageNumber").textContent=ch.fact;$("voyageUnit").textContent=ch.unit;$("voyageLive").textContent=ch.title+". "+ch.text;
+ const copy=$("voyageCopy");if(changed){copy.classList.remove("reveal");void copy.offsetWidth;if(!reduce)copy.classList.add("reveal")}
+ document.querySelectorAll(".voyage-chapter").forEach((el,i)=>el.setAttribute("aria-current",String(i===idx)));
+ }
+ $("voyageSeek").value=t;$("voyageTime").textContent=timeText(t)+" / 1:36";$("voyagePrev").disabled=idx===0&&t<.1;$("voyageNext").disabled=idx===4;
+ document.querySelectorAll(".chapter-fill").forEach((el,i)=>{const ch=chapters[i];el.style.width=clamp((t-ch.start)/(ch.end-ch.start)*100,0,100)+"%"});
+ $("voyagePlay").setAttribute("aria-label",playing?"Pauzeren":t>=96?"Opnieuw afspelen":"Afspelen");
+ $("voyagePlay").innerHTML=playing?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14m6-14v14"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z"/></svg>';
+ $("voyageSceneLabel").textContent=chapter===2&&t>43&&t<54?"REGULUS · ILLUSTRATIEF DETAILBEELD":ch.label;lastUI=t;
+}
+function request(){if(!raf&&visible)raf=requestAnimationFrame(tick)}
+function tick(now){raf=0;if(!visible)return;const dt=last?Math.min(.10,(now-last)/1000):0;last=now;if(playing){t=Math.min(96,t+dt);if(t>=96)playing=false}render(t);if(Math.abs(t-lastUI)>.12||!playing)updateUI();if(playing)request()}
+function seek(v){t=clamp(Number(v),0,96);yawOffset=pitchOffset=0;last=0;updateUI(true);request()}
+function play(){if(t>=96){t=0;last=0}playing=!playing;last=0;updateUI();request()}
+function seekChapter(i){const idx=clamp(i,0,4);seek(reduce?chapterStills[idx]:chapters[idx].start)}
+$("voyagePlay").onclick=play;
+$("voyagePrev").onclick=()=>seekChapter(chapter-1);
+$("voyageNext").onclick=()=>seekChapter(chapter+1);
+$("voyageSeek").oninput=e=>seek(e.target.value);
+for(const [i,ch] of chapters.entries()){const el=document.createElement("button");el.className="voyage-chapter";el.type="button";el.setAttribute("aria-label",ch.short);el.innerHTML='<span class="chapter-track"><span class="chapter-fill"></span></span><span class="chapter-name">'+ch.short+'</span>';el.onclick=()=>seekChapter(i);$("voyageChapters").append(el)}
+canvas.addEventListener("pointerdown",e=>{if(reduce)return;playing=false;canvas.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY};updateUI();request()});
+canvas.addEventListener("pointermove",e=>{if(!drag)return;yawOffset=clamp(yawOffset-(e.clientX-drag.x)*.002,-.5,.5);pitchOffset=clamp(pitchOffset+(e.clientY-drag.y)*.002,-.35,.35);drag={x:e.clientX,y:e.clientY};request()});
+canvas.addEventListener("pointerup",()=>drag=null);canvas.addEventListener("pointercancel",()=>drag=null);
+canvas.addEventListener("keydown",e=>{if(e.key===" "){e.preventDefault();play()}else if(e.key==="ArrowRight"){e.preventDefault();seek(t+5)}else if(e.key==="ArrowLeft"){e.preventDefault();seek(t-5)}});
+function route(){
+ const hash=location.hash.slice(1),lab=window.LEO_MODES.some(m=>m[0]===hash)||hash==="bronnen";
+ visible=!lab;$("voyage").hidden=!visible;$("app").hidden=visible;
+ if(visible){document.title="Leeuw | EAI Astronomie";resize();last=0;updateUI(true);request()}else{playing=false;if(raf)cancelAnimationFrame(raf);raf=0;document.title="Leeuw in 3D | EAI Observatorium";if(hash==="bronnen"){requestAnimationFrame(()=>{const el=$("bronnen"),body=el.closest(".panel-body");document.body.classList.add("panel-open");document.body.classList.remove("graph-open");$("labDock").setAttribute("aria-expanded","true");$("graphToggle").setAttribute("aria-expanded","false");el.querySelector("details").open=true;body.scrollTop=body.scrollTop+el.getBoundingClientRect().top-body.getBoundingClientRect().top;})}}
+}
+window.addEventListener("hashchange",route);
+document.addEventListener("visibilitychange",()=>{if(document.hidden){last=0;if(raf)cancelAnimationFrame(raf);raf=0}else request()});
+window.LEO_VOYAGE_STATE=()=>({visible,time:t,playing,chapter,frame,projected:painted,focus:chapter===2?49669:chapter===3?49583:null,portrait:ease(t,42,46)*(1-ease(t,51.5,55)),position:poseAt(t).pos.slice(),width:W,height:H});
+route();
+})();</script>
+</body></html>

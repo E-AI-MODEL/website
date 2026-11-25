@@ -1,0 +1,4 @@
+numpy==1.26.4
+scipy==1.13.1
+astropy==6.1.7
+galpy==1.11.0

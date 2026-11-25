@@ -1,13 +1,8 @@
 name: LO Aanvalslab - zones en online opdrachten
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'tools/lo-aanvalslab/**'
-      - 'scripts/test_lo_zone.py'
-      - 'backend/lo-duo/**'
-      - '.github/workflows/lo-zone-verify.yml'
+  workflow_call:
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

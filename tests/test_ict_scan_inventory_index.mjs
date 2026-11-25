@@ -22,13 +22,21 @@ function state(){
 }
 test('Een index uit vier bestaande bronbestanden, zonder extra bronbestand of gedupliceerde feiten',()=>{
   const built=index.build(state(),{catalog});
-  assert.equal(built.nodes.size,579,'501 oorspronkelijke registraties plus acht apps, 40 modules, 15 hardwaregroepen, twaalf extra bronnen en drie extra FAQ’s');
+  const registers=state();
+  const expectedCount=Object.values(registers).reduce((sum,rows)=>sum+rows.size,0);
+  assert.equal(built.nodes.size,expectedCount,'Iedere unieke bronregistratie moet exact één indexknoop opleveren');
+  assert.ok(expectedCount>=579,'De eerder gecontroleerde omvang mag niet ongemerkt afnemen');
+  for(const type of index.TYPES){
+    const rows=landscape[type]||work[type]||faq[type]||source[type]||[];
+    assert.equal(registers[index.STORES[type]].size,rows.length,`Dubbel bron-ID in ${type}`);
+    assert.equal(built.count(type),rows.length,`Onvolledige index voor ${type}`);
+  }
   assert.equal(built.errors.length,0,JSON.stringify(built.errors.slice(0,6)));
   assert.equal(built.count('apps'),69);
   assert.equal(built.count('ai'),76);
   assert.equal(built.count('connections'),93);
   assert.equal(built.count('devices'),4);
-  assert.equal(built.count('sourceRegister'),63);
+  assert.equal(built.count('sourceRegister'),64);
   assert.equal(built.count('faqs'),17);
   assert.equal(built.count('parts'),53,'13 Entra-registraties en 40 Microsoft 365-productonderdelen');
   assert.equal(built.count('hardwareGroups'),15,'Hardwaregroepen zijn geen Entra-apparaatmetingen');
@@ -73,4 +81,22 @@ test('Dynamische verandering van de bron wordt niet door een eerder berekende in
   assert.equal(after.count('apps'),70);
   assert.ok(after.connected('apps','APP-034',{type:'apps'}).some(x=>x.otherId==='APP-ZZZ'));
   assert.equal(before.count('apps'),69);
+});
+test('Volledig registratie-ID zoekt exact in een register, ook bij overlappende auditgegevens',()=>{
+  const built=index.build(state(),{catalog});
+  const controls=built.records('aiControls'),options={exactId:true,excludeMetadata:true};
+  assert.ok(controls.length>1);
+  for(const row of controls){
+    assert.deepEqual(controls.filter(r=>index.matchesRecord(r,row.id,options)).map(r=>r.id),[row.id]);
+    assert.deepEqual(controls.filter(r=>index.matchesRecord(r,' '+row.id.toLowerCase()+' ',options)).map(r=>r.id),[row.id]);
+  }
+  assert.equal(controls.filter(r=>index.matchesRecord(r,'B-999999',options)).length,0);
+  assert.equal(controls.filter(r=>index.matchesRecord(r,'',options)).length,controls.length);
+  assert.ok(controls.some(r=>index.matchesRecord(r,'Teams Classwork',options)));
+  const sample={id:'B-02',name:'Instellingen Teams',auditTrail:[{recordId:'B-01',note:'uniekehistorischeterm'}]};
+  assert.ok(index.matchesRecord(sample,'B-01'),'Algemeen zoeken mag verwijzingen blijven vinden');
+  assert.ok(!index.matchesRecord(sample,'B-01',options));
+  assert.ok(!index.matchesRecord(sample,'uniekehistorischeterm',options));
+  assert.ok(index.matchesRecord(sample,'Instellingen Teams',options));
+  assert.ok(index.matchesRecord(sample,' b - 02 ',options));
 });

@@ -259,3 +259,9 @@ keuze wordt in de browser bewaard naast de indeling; de bron-JSON verandert niet
 Op mobiel worden onderdelen in de gewone documentstroom onder elkaar geplaatst,
 met een afzonderlijk scrollbaar dashboardvlak. De laadillustratie blijft in
 haar eigen ruimte. De afzonderlijke Builder uit PR #358 is hier niet inbegrepen.
+
+## Bewerken vanuit EAI Beheer
+
+Kies na het inloggen op het beheerportaal **ICT-scan bewerken**. De scan opent op eaimodel.nl. Een eenmalige code is 90 seconden geldig. De server controleert bij iedere schrijfactie of de oorspronkelijke beheersessie nog geldig is. Afmelden op het portaal trekt daarmee ook de bewerktoegang in.
+
+Pas voor ingebruikname het aanvullende schema in services/html-galerij/schema.sql toe en publiceer de Worker met de nieuwe routes. Configureer op Theory7 uitsluitend ICT_SCAN_GITHUB_TOKEN, of zet githubToken in .eai-ict-scan/editor.json buiten de documentroot. Gebruik alleen toegang tot Contents en Pull requests in E-AI-MODEL/website. De browser ontvangt deze sleutel niet. Opslaan maakt een wijzigingsvoorstel.

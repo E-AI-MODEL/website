@@ -1,40 +1,52 @@
-"""Regression checks for the new gallery without external Cloudflare credentials."""
+"""The public page must only link to the private authenticated gallery."""
 from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "tools/html-galerij/index.html"
 BUILD = ROOT / "site-build/tools/html-galerij/index.html"
-WORKER = ROOT / "services/html-galerij/src/index.js"
+SERVICE = ROOT / "services/html-galerij/src"
 SCHEMA = ROOT / "services/html-galerij/schema.sql"
 
 
 class GalleryPublicationTests(unittest.TestCase):
-    def test_gallery_is_built_without_modification(self):
+    def test_landing_is_built_without_modification(self):
         self.assertTrue(SOURCE.is_file())
-        self.assertTrue(BUILD.is_file(), "The static site build must include HTML gallery")
+        self.assertTrue(BUILD.is_file(), "Static site must include the sign-in landing")
         self.assertEqual(SOURCE.read_bytes(), BUILD.read_bytes())
 
-    def test_upload_fields_and_preview_sandbox(self):
+    def test_public_page_has_no_gallery_controls_or_credentials(self):
         html = SOURCE.read_text(encoding="utf-8")
-        for token in ('id="author"', 'id="title"', 'id="file"', 'id="cards"',
-                      'id="search"', 'turnstileToken', 'id="viewer-frame"',
-                      "'error-callback'", "'expired-callback'", "id=\"retry-check\"", "checkPassed",
-                      'sandbox="allow-scripts allow-forms allow-modals allow-downloads"',
-                      "https://eai-html-galerij.vis-c9d.workers.dev"):
-            with self.subTest(token=token):
-                self.assertIn(token, html)
+        self.assertIn("Inloggen met e-mail", html)
+        self.assertIn("https://eai-html-galerij.vis-c9d.workers.dev/auth/login", html)
+        for forbidden in ('id="secret-entrance"', 'id="upload-form"',
+                          '/api/admin/uploads/', 'turnstileToken',
+                          'GALLERY_PASSWORD_HASH', 'GALLERY_ADMIN_EMAIL'):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, html)
 
-    def test_worker_requires_challenge_and_isolates_html(self):
-        worker = WORKER.read_text(encoding="utf-8")
-        for token in ("TURNSTILE_SECRET", "verifyTurnstile(", "MAX_BYTES",
-                      "validId(", "htmlHeaders()", "sandbox allow-scripts",
-                      "frame-ancestors", "status = 'published'",
-                      "'CF-Connecting-IP'", "RATE_LIMIT_SALT"):
-            with self.subTest(token=token):
-                self.assertIn(token, worker)
+    def test_worker_authenticates_every_private_route(self):
+        worker = (SERVICE / "index.js").read_text(encoding="utf-8")
+        auth = (SERVICE / "auth.js").read_text(encoding="utf-8")
+        ui = (SERVICE / "ui.js").read_text(encoding="utf-8")
+        schema = SCHEMA.read_text(encoding="utf-8")
+        for text in ('currentUser(request, env)', 'if (!user) return error(',
+                     'sameOrigin(request)', r'\/api\/admin\/uploads\/',
+                     "sandbox allow-scripts", "frame-ancestors 'self'",
+                     "status = 'published'", "MAX_BYTES"):
+            with self.subTest(text=text):
+                self.assertIn(text, worker)
+        for text in ('GALLERY_ADMIN_EMAIL', 'GALLERY_PASSWORD_HASH',
+                     'PBKDF2', 'SameSite=Strict', 'HttpOnly',
+                     'gallery_sessions', 'gallery_login_attempts'):
+            with self.subTest(text=text):
+                self.assertIn(text, auth)
+        for text in ('gallery_sessions', 'gallery_login_attempts'):
+            self.assertIn(text, schema)
+        self.assertIn('Mijn HTML-galerij', ui)
+        self.assertIn('Uitloggen', ui)
         self.assertNotIn("allow-same-origin", worker)
-        self.assertTrue(SCHEMA.is_file())
+        self.assertNotIn('taps===3', worker)
 
 
 if __name__ == "__main__":

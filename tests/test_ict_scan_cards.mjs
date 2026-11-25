@@ -137,6 +137,9 @@ test('AI-tussenstand gebruikt uitsluitend de index en de bestaande kaarten',()=>
   assert.deepEqual(Array.from(index.errors),[]);
   const summary=index.aiProgress();
   assert.equal(summary.featureCount,main.ai.length);
+  assert.equal(summary.unknownLocal.length,summary.unknownCount);
+  assert.ok(summary.unknownLocal.every(row=>index.get('ai',row.id)));
+  assert.equal(new Set(summary.unknownLocal.map(row=>row.id)).size,summary.unknownCount);
   assert.equal(summary.possibleHighRisk.length,main.ai.filter(x=>/mogelijk hoog risico/i.test(x.aiAct)).length);
   for(const [group,ids] of Object.entries({good:['APP-012','WRK-010','WRK-012','SWR-005'],open:['WRK-001','WRK-008','WRK-014','WRK-016'],unknown:['WRK-003','WRK-015','SWR-004','C-07']})){
     for(const id of ids)assert.ok(summary.groups[group].some(x=>x.id===id),group+' '+id);
@@ -147,7 +150,7 @@ test('AI-tussenstand gebruikt uitsluitend de index en de bestaande kaarten',()=>
   assert.ok(ixContext.IctInventoryIndex.build(adjusted).aiProgress().groups.unknown.some(x=>x.id==='WRK-010'));
   assert.ok(html.includes('id="aiProgress"'));
   assert.ok(read('tools/ict-scan/app.js').includes('ix.aiProgress()'));
-  assert.ok(read('tools/ict-scan/scene-navigation.js').includes("['Tussenstand',1]"));
+  assert.ok(read('tools/ict-scan/scene-navigation.js').includes("['Stand van zaken',1]"));
 });
 
 test('Gedeelde dashboardontwerpen accepteren alleen de bestaande layoutkeuzes, geen brondata',()=>{
@@ -160,5 +163,6 @@ test('Gedeelde dashboardontwerpen accepteren alleen de bestaande layoutkeuzes, g
   assert.deepEqual(clone(file.designs.apps),design);
   assert.throws(()=>logic.validateDesignFile({schema:'eai-ict-dashboard-designs-v1',designs:{ai:design}},validate));
   assert.throws(()=>logic.validateDesignFile({schema:'eai-ict-dashboard-designs-v1',designs:{apps:design},sourceData:[]},validate));
-  for(const id of ['dsSharedLoad','dsSharedPublish','dsSharedDialog','dsSharedToken','dsSharedConsent','dsSharedSubmit'])assert.ok(html.includes('id="'+id+'"'));
+  for(const id of ['dsSharedLoad','dsSharedPublish','dsSharedDialog','dsSharedSubmit','cardKeepDraft'])assert.ok(html.includes('id="'+id+'"'));
+  assert.ok(!html.includes('id="cardGithubToken"'));assert.ok(!html.includes('id="dsSharedToken"'));
 });
