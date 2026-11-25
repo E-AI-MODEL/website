@@ -3,8 +3,9 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {chromium,webkit} from 'playwright';
-import {inspectIsolatedPage,waitForArchivePage} from './audit_archive_browser_session.mjs';
+import {inspectIsolatedPage,waitForArchivePage,openArchivePage} from './audit_archive_browser_session.mjs';
 
+let badGuestRedirect=false;
 const server=createServer((req,res)=>{
   res.setHeader('Content-Type','text/html; charset=utf-8');
   if(req.url==='/first/'){
@@ -15,6 +16,13 @@ const server=createServer((req,res)=>{
     res.end('<!doctype html><html><body><div id="atlasLoading">Loading</div><script>window.__EAI_HEART_LAB__={state:{atlasReady:false,atlasRich:false,atlasError:null}};setTimeout(()=>{window.__EAI_HEART_LAB__.state={atlasReady:true,atlasRich:true,atlasError:null,atlasPartCount:34};document.getElementById("atlasLoading").hidden=true;},200);</script></body></html>');
   }else if(req.url==='/tools/anatomie/labs/hartslag/?broken=1'){
     res.end('<!doctype html><html><body><div id="atlasLoading">Loading</div><script>window.__EAI_HEART_LAB__={state:{atlasReady:false,atlasRich:false,atlasError:"fixture model failed",atlasPartCount:0}};</script></body></html>');
+  }else if(/^\/leif\/(continue|verhaal|mijn|beheer)\/index\.html$/.test(req.url)){
+    const destination=badGuestRedirect?'/second/':req.url.includes('/beheer/')?'/leif/?beheer=1':'/leif/';
+    // A deliberately late redirect would outlive the old fixed 60 ms wait.
+    res.end('<!doctype html><html><body>Redirecting<script>setTimeout(()=>location.replace('+JSON.stringify(destination)+'),250)</script></body></html>');
+  }else if(req.url==='/leif/'||req.url==='/leif/?beheer=1'){
+    const admin=req.url.includes('beheer=1');
+    res.end('<!doctype html><html><body><section id="accessGate"><form id="accessForm" '+(admin?'hidden':'')+'><input type="password"></form><form id="adminLoginForm" '+(admin?'':'hidden')+'><input type="email"></form></section><main id="appRoot" hidden>Private content</main></body></html>');
   }else{res.statusCode=404;res.end('Not found');}
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -51,8 +59,28 @@ try{
         await waitForArchivePage(page,'tools/anatomie/labs/hartslag/index.html',base);
       },base);
       assert.match(broken.failure,/fixture model failed/);
+      for(const route of ['continue','verhaal','mijn','beheer']){
+        const target=route==='beheer'?'/leif/?beheer=1':'/leif/';
+        const guest=await inspectIsolatedPage(browser,options,{},async page=>{
+          const result=await openArchivePage(page,'leif/'+route+'/index.html',base);
+          assert.equal(result.guestRedirect,base+target);
+          assert.equal(await page.locator('#appRoot').isVisible(),false);
+          assert.equal(await page.locator(route==='beheer'?'#adminLoginForm':'#accessForm').isVisible(),true);
+          // Exercise the same post-navigation measurement the real audit uses.
+          assert.equal(await page.evaluate(()=>document.documentElement.clientWidth),390);
+        },base);
+        assert.equal(guest.failure,undefined,engine.name()+' '+route+' guest redirect: '+guest.failure);
+        assert.deepEqual(guest.jsErrors,[]);
+      }
+      badGuestRedirect=true;
+      try{
+        const wrong=await inspectIsolatedPage(browser,options,{},async page=>{
+          await openArchivePage(page,'leif/continue/index.html',base,1500);
+        },base);
+        assert.match(wrong.failure,/Timeout|timeout/,engine.name()+' must reject a wrong redirect');
+      }finally{badGuestRedirect=false;}
       assert.equal(browser.contexts().length,0);
-      console.log(engine.name()+': isolated documents, genuine errors retained, atlas readiness and failed model verified');
+      console.log(engine.name()+': isolated documents, genuine errors retained, atlas readiness, failed model and four protected LEIF redirects verified');
     }finally{await browser.close();}
   }
 }finally{await new Promise(resolve=>server.close(resolve));}
