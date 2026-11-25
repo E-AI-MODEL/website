@@ -24,10 +24,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      # This isolated archive diagnostic does not publish or repeat the EAIspeak
+      # test suite. It needs a real application target for public link checks.
+      - name: Build EAIspeak for independent archive inspection
+        working-directory: tools/eaispeak
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          test -s dist/index.html
       - name: Build current public sources
         run: |
           pip install beautifulsoup4
           python scripts/build_site.py --sources content/legacy --out site-build
+          test -s site-build/tools/eaispeak/index.html
           python scripts/build_anatomie.py --out site-build/tools/anatomie
           python scripts/prepare_ui.py --root site-build
           python scripts/verify_ui.py --root site-build
