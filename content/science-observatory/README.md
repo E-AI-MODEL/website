@@ -27,7 +27,7 @@ De 53 natuurkundeproeven vormen samen één onderzoeksruimte. Verbeter de bestaa
 - Controleer bij gekoppelde grootheden ook de natuurkundige relaties, bijvoorbeeld pV=nRT: bij een isobaar gasproces hoort T mee te veranderen met V zodat de druk constant blijft.
 - Een grootheid met alleen gehele waarden, zoals het aantal dragende touwdelen of een Bohr-energieniveau, staat als losse punten in de grafiek. Tussenliggende waarden zijn geen mogelijke instellingen.
 - Behoud de verschillende natuurkundige eigenschappen per proef en test veranderde metingen, grafieken en bediening afzonderlijk. Een geslaagde schermtest bewijst geen natuurkundige nauwkeurigheid.
-- Schuine worp heeft één publieke uitvoering binnen Natuurkunde. De oude studio-URL verwijst naar de proef en wordt niet opgenomen in de zoekindex. De vorige studio blijft herstelbaar in de Git-geschiedenis.
+- Schuine worp heeft één publieke uitvoering binnen Natuurkunde. De oude studio en de doorverwijzing zijn verwijderd; de vorige uitvoering blijft herstelbaar in de Git-geschiedenis.
 
 ## Grenzen
 

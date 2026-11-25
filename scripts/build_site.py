@@ -2678,7 +2678,7 @@ def build(sources: Path, out: Path) -> None:
           doc("Interactief onderzoeken", science_landing.read_text(encoding="utf-8"),
               "/tools/science-observatory/", "observatoria",
               "Onderzoek natuurkunde, wiskunde, de Melkweg, anatomie, AI en sport met interactieve modellen."))
-    for slug in ("melkweg", "gravitatie-banen", "natuurkunde", "schuine-worp", "wiskunde-a", "wiskunde-b", "leeuw"):
+    for slug in ("melkweg", "gravitatie-banen", "natuurkunde", "wiskunde-a", "wiskunde-b", "leeuw"):
         source = science_source / "labs" / (slug + ".html")
         if not source.is_file():
             raise FileNotFoundError(f"Science Observatory-model ontbreekt: {source}")

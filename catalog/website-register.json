@@ -1612,21 +1612,6 @@
       "search_scope": "algemeen"
     },
     {
-      "id": "page:/tools/science-observatory/labs/schuine-worp/",
-      "url": "/tools/science-observatory/labs/schuine-worp/",
-      "file": "tools/science-observatory/labs/schuine-worp/index.html",
-      "title": "Doorverwijzing naar Schuine worp",
-      "kind": "doorverwijzing",
-      "category": null,
-      "review": "doel_in_bron_vastgelegd",
-      "parent": "page:/tools/science-observatory/labs/natuurkunde/",
-      "family": "natuurkunde",
-      "in_committed_sitemap": false,
-      "search_scope": "niet_indexeren",
-      "page_status": "meta_redirect_verified",
-      "redirect_target": "/tools/science-observatory/labs/natuurkunde/#projectile"
-    },
-    {
       "id": "page:/tools/science-observatory/labs/wiskunde-a/",
       "url": "/tools/science-observatory/labs/wiskunde-a/",
       "file": "tools/science-observatory/labs/wiskunde-a/index.html",
@@ -7244,9 +7229,6 @@
       "path": "content/science-observatory/labs/natuurkunde.html"
     },
     {
-      "path": "content/science-observatory/labs/schuine-worp.html"
-    },
-    {
       "path": "content/science-observatory/labs/wiskunde-a.html"
     },
     {
@@ -7275,8 +7257,8 @@
     }
   ],
   "audit": {
-    "tracked_html_files": 222,
-    "public_page_files": 181,
+    "tracked_html_files": 220,
+    "public_page_files": 180,
     "generated_pages": 2,
     "search_index_entries": 290,
     "embedded_items_in_search": 144,
@@ -7319,8 +7301,8 @@
       "/verdieping/"
     ],
     "orphan_items": [],
-    "additional_html_files": 41,
-    "all_html_files": 222,
+    "additional_html_files": 40,
+    "all_html_files": 220,
     "pages_not_in_public_search": 37,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
@@ -7366,7 +7348,7 @@
     "sitemap_from_main": {
       "source": "sitemap.xml",
       "registered_urls": 149,
-      "registered_missing": 31,
+      "registered_missing": 30,
       "examples_not_in_sitemap": [
         "/eai-blog/",
         "/eai-blog/eai-balans/",
@@ -7397,7 +7379,6 @@
         "/toepassingen/saga-legal-ai/",
         "/tools/lo-aanvalslab/onderbouwing/",
         "/tools/projecthulp/",
-        "/tools/science-observatory/labs/schuine-worp/",
         "/tools/van-proces-naar-prompt/"
       ],
       "important_generated_pages_missing": [],

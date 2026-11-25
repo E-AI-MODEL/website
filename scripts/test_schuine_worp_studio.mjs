@@ -15,8 +15,11 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let browser;
 try{
  let available=false;
- for(let i=0;i<80;i++){try{if((await fetch(base+legacy)).ok){available=true;break}}catch{}await sleep(120)}
- assert(available,'De oude URL blijft bereikbaar');
+ for(let i=0;i<80;i++){try{if((await fetch(base+target)).ok){available=true;break}}catch{}await sleep(120)}
+ assert(available,'De geïntegreerde proef is bereikbaar');
+ const oldResponse=await fetch(base+legacy,{redirect:'manual'});
+ assert.equal(oldResponse.status,404,'De oude route is volledig verwijderd');
+ assert.equal((await fetch(base+legacy+'index.html',{redirect:'manual'})).status,404,'Ook het oude HTML-bestand is weg');
  const index=await fetch(base+'/assets/site-search-index.json');
  assert(index.ok,'De publieke zoekindex is aanwezig');
  const entries=await index.json();
@@ -27,7 +30,7 @@ try{
   const mobile=viewport.width<720;
   const page=await browser.newPage({viewport,deviceScaleFactor:mobile?2:1,isMobile:mobile,hasTouch:mobile});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(base+legacy,{waitUntil:'domcontentloaded'});
+  await page.goto(base+target,{waitUntil:'domcontentloaded'});
   await page.waitForURL(base+target);
   await page.waitForFunction(()=>document.querySelector('#labTitle')?.textContent==='Schuine worp'&&document.querySelector('#scene')?.width>0);
   assert.equal(await page.evaluate(()=>state.id),'projectile');
@@ -40,13 +43,9 @@ try{
    await page.waitForFunction(()=>mission.complete===true,null,{timeout:14000});
    assert.equal(await page.evaluate(()=>mission.shots.length),1,'Een afgeronde worp levert een meetresultaat op');
   }
-  await page.screenshot({path:'test-results/worp-studio-'+engine.name()+'-'+viewport.width+'-doorverwijzing.png'});
+  await page.screenshot({path:'test-results/worp-studio-'+engine.name()+'-'+viewport.width+'-natuurkunde.png'});
   assert.deepEqual(errors,[],'Geen runtime-fouten');
   await page.close();
  }
- const noJS=await browser.newPage({javaScriptEnabled:false});
- await noJS.goto(base+legacy,{waitUntil:'domcontentloaded'});
- await noJS.waitForURL(base+target);
- await noJS.close();
- console.log(engine.name()+': oude URL verwijst naar de enige publieke proef, ook zonder JavaScript');
+ console.log(engine.name()+': één geïntegreerde proef, oude URL en zoekvermelding verwijderd');
 }finally{if(browser)await browser.close();server.kill();}
