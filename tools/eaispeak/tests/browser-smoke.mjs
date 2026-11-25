@@ -58,15 +58,45 @@ try{
       assert.equal(await page.locator('#freeTalkInputLang').count(),1);
       await page.locator('#freeTalkMenuClose').click();
       assert.ok(await page.locator('#freeTalkSpeak').isDisabled());
+      let denyOllama=true;
       await page.route('http://localhost:11434/**',async route=>{
         const url=route.request().url();
-        const headers={'access-control-allow-origin':'*','access-control-allow-headers':'content-type','access-control-allow-methods':'GET, POST, OPTIONS'};
+        const headers={'access-control-allow-origin':base,'access-control-allow-headers':'content-type','access-control-allow-methods':'GET, POST, OPTIONS'};
         if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers});
-        if(url.endsWith('/api/tags'))return route.fulfill({json:{models:[{name:'test:local'}]},headers});
+        if(url.endsWith('/api/tags'))return denyOllama?route.fulfill({status:403,body:'',headers}):route.fulfill({json:{models:[{name:'test:local'}]},headers});
         if(url.endsWith('/api/generate'))return route.fulfill({json:{response:'De verbinding werkt.'},headers});
         return route.abort();
       });
       await page.evaluate(()=>{const e=document.getElementById('freeTalkEngine');e.value='ollama';e.dispatchEvent(new Event('change',{bubbles:true}));});
+      // Exercise the real wizard when the local origin is initially denied.
+      await page.locator('#talkGuideOllama').click();
+      await page.locator('#ollamaSetup .ollama-guide').waitFor({state:'visible'});
+      await page.locator('#ollamaNext').click();
+      await page.locator('#ollamaNext').click();
+      await page.locator('#ollamaConnectionKind').selectOption('http');
+      await page.getByRole('button',{name:'Test verbinding vanuit deze browser',exact:true}).click();
+      await page.waitForFunction(()=>document.getElementById('ollamaStepFeedback').dataset.kind==='error');
+      assert.ok(await page.locator('#ollamaNext').isDisabled());
+      const repair=page.locator('#ollamaStepContent details[open]').last();
+      assert.match(await repair.innerText(),/open -a Ollama/);
+      assert.match(await repair.innerText(),/launchctl setenv OLLAMA_ORIGINS/);
+      denyOllama=false;
+      await page.getByRole('button',{name:'Test verbinding vanuit deze browser',exact:true}).click();
+      await page.waitForFunction(()=>!document.getElementById('ollamaNext').disabled);
+      await page.locator('#ollamaNext').click();
+      await page.locator('#ollamaNext').click();
+      await page.getByRole('button',{name:'Test modelantwoord',exact:true}).click();
+      await page.waitForFunction(()=>!document.getElementById('ollamaNext').disabled);
+      await page.locator('#ollamaNext').click();
+      await page.waitForFunction(()=>document.getElementById('talkGuideStatus').dataset.state==='ready');
+      assert.equal(await page.locator('#freeTalkOllamaModel').inputValue(),'test:local');
+      assert.equal(await page.locator('#freeTalkSpeak').isDisabled(),false);
+      // A setting change invalidates the earlier model check.
+      await page.evaluate(()=>{const e=document.getElementById('freeTalkOutputLang');e.value=e.value==='nl-NL'?'en-US':'nl-NL';e.dispatchEvent(new Event('change',{bubbles:true}));});
+      await page.locator('#talkGuidePrepare').click();
+      await page.waitForFunction(()=>document.getElementById('talkGuideStatus').dataset.state==='ready');
+      // Check the direct model-selection path independently.
+      await page.evaluate(()=>{const e=document.getElementById('freeTalkOllamaEndpoint');e.dispatchEvent(new Event('change',{bubbles:true}));});
       await page.locator('#talkGuidePrepare').click();
       await page.waitForFunction(()=>document.getElementById('freeTalkOllamaModel').value==='test:local');
       await page.locator('#freeTalkMenuClose').click();
