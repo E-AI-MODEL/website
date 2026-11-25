@@ -78,7 +78,11 @@ jobs:
 
 
   apple-compile:
-    runs-on: macos-26
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-26, xcode-27]
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 10
     defaults:
       run:
@@ -94,5 +98,33 @@ jobs:
           python3 -c 'import json; assert json.load(open("invalid.json"))["type"] == "error"'
       - name: Check runtime locale and asset reporting without downloads
         run: |
+          sw_vers
+          ./eaispeak-apple --capabilities nl-NL 48000 > capabilities.json
+          python3 -c 'import json; d=json.load(open("capabilities.json")); assert d["type"]=="capabilities"; assert isinstance(d["speechSupported"],list) and isinstance(d["dictationSupported"],list); print(json.dumps(d,ensure_ascii=False))'
           ./eaispeak-apple --probe nl-NL 48000 > probe.json || true
           python3 -c 'import json; d=json.load(open("probe.json")); assert d["type"] in ("ready","error"); assert d.get("provider") in ("SpeechTranscriber","DictationTranscriber") if d["type"]=="ready" else bool(d.get("message")); print(d)'
+
+  browser-smoke:
+    needs: check-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          name: eaispeak-tested-build
+          path: release
+      - name: Verify exact build and website registration
+        run: |
+          (cd release && sha256sum -c SHA256SUMS)
+          python scripts/check_website_register.py
+          python -m unittest discover -s tests -p 'test_eaispeak_publish.py' -v
+      - name: Install browser test tools only
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Exercise built Studio with synthetic speech events
+        run: node tools/eaispeak/tests/browser-smoke.mjs release/tools/eaispeak

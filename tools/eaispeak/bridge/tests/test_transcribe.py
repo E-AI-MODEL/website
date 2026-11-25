@@ -64,3 +64,34 @@ async def test_apple_not_installed_does_not_claim_ready():
         async with client.ws_connect("/eaispeak",headers={"Origin":"https://eaimodel.nl"}) as ws:
             await ws.send_json(hello("apple","probe"))
             assert (await ws.receive_json())["type"]=="error"
+
+@pytest.mark.asyncio
+async def test_apple_helper_probe_and_final_stream(tmp_path):
+    # A local fixture exercises the real subprocess transport, not Apple's model.
+    import sys
+    helper=tmp_path/"apple-helper"
+    helper.write_text("#!"+sys.executable+"\n"
+        "import sys,json\n"
+        "def emit(x): print(json.dumps(x),flush=True)\n"
+        "emit({'type':'ready','provider':'DictationTranscriber','locale':'nl-NL'})\n"
+        "if sys.argv[1]=='--stream':\n"
+        "    data=sys.stdin.buffer.read(4)\n"
+        "    if data: emit({'type':'transcript','text':'voorlopig','final':False})\n"
+        "    rest=sys.stdin.buffer.read()\n"
+        "    if data or rest: emit({'type':'transcript','text':'definitief','final':True})\n"
+        "    emit({'type':'end'})\n")
+    helper.chmod(0o700)
+    async with TestClient(TestServer(create_app(apple_helper=helper))) as client:
+        async with client.ws_connect("/eaispeak",headers={"Origin":"https://eaimodel.nl"}) as ws:
+            await ws.send_json(hello("apple","probe"))
+            ready=await ws.receive_json(timeout=5)
+            assert ready["probe"] is True and ready["provider"]=="DictationTranscriber"
+        async with client.ws_connect("/eaispeak",headers={"Origin":"https://eaimodel.nl"}) as ws:
+            await ws.send_json(hello("apple"))
+            ready=await ws.receive_json(timeout=5)
+            assert ready["type"]=="ready" and ready["probe"] is False
+            await ws.send_bytes(bytes(8))
+            assert (await ws.receive_json(timeout=5))=={"type":"transcript","text":"voorlopig","final":False}
+            await ws.send_json({"type":"finish"})
+            assert (await ws.receive_json(timeout=5))=={"type":"transcript","text":"definitief","final":True}
+            assert (await ws.receive_json(timeout=5))["type"]=="end"

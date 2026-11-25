@@ -93,11 +93,28 @@ func run(module: any SpeechModule, provider: String, locale: Locale, rate: Doubl
 @available(macOS 26.0, *)
 func main() async throws {
     let args = CommandLine.arguments
-    guard args.count == 4, ["--probe","--stream","--install"].contains(args[1]),
+    guard args.count == 4, ["--capabilities","--probe","--stream","--install"].contains(args[1]),
           let rate = Double(args[3]), rate >= 8000, rate <= 96000 else {
-        throw LocalSpeechError.unavailable("Usage: eaispeak-apple --probe|--install|--stream nl-NL 48000")
+        throw LocalSpeechError.unavailable("Usage: eaispeak-apple --capabilities|--probe|--install|--stream nl-NL 48000")
     }
     let locale = Locale(identifier: args[2])
+    if args[1] == "--capabilities" {
+        let speech = await SpeechTranscriber.supportedLocales
+        let dictation = await DictationTranscriber.supportedLocales
+        let speechInstalled = await SpeechTranscriber.installedLocales
+        let dictationInstalled = await DictationTranscriber.installedLocales
+        let speechMatch = await SpeechTranscriber.supportedLocale(equivalentTo: locale)
+        let dictationMatch = await DictationTranscriber.supportedLocale(equivalentTo: locale)
+        emit(["type":"capabilities","requestedLocale":locale.identifier,
+              "speechHardwareAvailable":SpeechTranscriber.isAvailable,
+              "speechSupported":speech.map { $0.identifier }.sorted(),
+              "dictationSupported":dictation.map { $0.identifier }.sorted(),
+              "speechInstalled":speechInstalled.map { $0.identifier }.sorted(),
+              "dictationInstalled":dictationInstalled.map { $0.identifier }.sorted(),
+              "speechMatch":speechMatch?.identifier ?? "",
+              "dictationMatch":dictationMatch?.identifier ?? ""])
+        return
+    }
     if SpeechTranscriber.isAvailable, let supported = await SpeechTranscriber.supportedLocale(equivalentTo: locale) {
         let transcriber = SpeechTranscriber(locale: supported, preset: .progressiveTranscription)
         // Prefer the general speech model, but permit installed dictation when its assets are not ready.
