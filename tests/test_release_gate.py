@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -6,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from check_release_gate import ALWAYS, SCOPED, failures
 
 
-from ci_pr_scope import SUITES, job_selection
+from ci_pr_scope import REGISTRY, SUITES, job_selection
 
 
 class ReleaseGateTests(unittest.TestCase):
@@ -48,3 +49,43 @@ class ReleaseGateTests(unittest.TestCase):
         needs = self.result()
         needs["topo-check"]["result"] = "failure"
         self.assertTrue(failures(needs))
+
+    def test_unregistered_job_blocks(self):
+        needs = self.result()
+        needs["unknown-job"] = {"result": "success"}
+        self.assertTrue(failures(needs))
+
+    def test_gate_needs_exactly_match_registry(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/site-check.yml").read_text()
+        gate = workflow.split("  static-checks:", 1)[1]
+        match = re.search(r"(?m)^    needs: \[([^\n]+)\]$", gate)
+        self.assertIsNotNone(match)
+        jobs = [name.strip() for name in match.group(1).split(",")]
+        self.assertEqual(len(jobs), len(set(jobs)))
+        self.assertEqual(set(jobs), set(ALWAYS) | set(SCOPED))
+        self.assertFalse(set(ALWAYS) & set(SCOPED))
+
+    def test_consolidated_browser_jobs_keep_exact_commands_and_scope(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/site-check.yml").read_text()
+        fixed = (root / ".github/workflows/science-fixed-workspace.yml").read_text()
+        llm = (root / ".github/workflows/llm-observatorium-ui.yml").read_text()
+        build = (root / ".github/workflows/build-site.yml").read_text()
+        self.assertIn("test_eaiwork_dashboard_publish.py", build)
+        self.assertIn(["scripts/test_eaiwork_mobile.mjs", "site-build"], REGISTRY["chromium"]["eaiwork"])
+        self.assertIn(["scripts/test_schuine_worp_studio.mjs", "site-build", "chromium"], REGISTRY["chromium"]["physics"])
+        self.assertIn("node scripts/test_science_mobile_aim.mjs site-build webkit", fixed)
+        self.assertIn("science-*.png", fixed)
+        self.assertIn("science-fixed-workspace", REGISTRY["groups"]["physics"])
+        self.assertIn("science-studio-webkit", REGISTRY["groups"]["physics"])
+        self.assertIn(["scripts/test_llm_observatorium.mjs", "site-build"], REGISTRY["chromium"]["llm"])
+        self.assertIn("node scripts/test_llm_mobile_webkit.mjs site-build", llm)
+        self.assertIn("test_llm_learning_math.mjs", llm)
+        self.assertIn("test_llm_real_trace.py", llm)
+        self.assertIn("skip_duplicate_chromium: true", workflow)
+        for job in ("check-eaiwork-dashboard", "science-webkit", "schuine-worp-studio"):
+            self.assertNotIn(job, SCOPED)
+            self.assertNotIn(f"  {job}:\n", workflow)
+            standalone = root / ".github/workflows" / (job + ".yml")
+            self.assertIn("workflow_dispatch:", standalone.read_text())

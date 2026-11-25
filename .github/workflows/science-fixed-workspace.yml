@@ -5,6 +5,10 @@ on:
       reuse_build:
         type: boolean
         default: false
+      skip_duplicate_chromium:
+        description: De centrale Chromium-matrix draait dezelfde proef op dezelfde build
+        type: boolean
+        default: false
   workflow_dispatch:
 
 permissions:
@@ -38,6 +42,7 @@ jobs:
       - name: Mobile shooting and scale
         run: node scripts/test_science_mobile_aim.mjs site-build webkit
       - name: Compact studio and physics values
+        if: ${{ !inputs.skip_duplicate_chromium }}
         run: node scripts/test_schuine_worp_studio.mjs site-build chromium
       - uses: actions/upload-artifact@v4
         if: always()
@@ -46,3 +51,5 @@ jobs:
           path: |
             test-results/physics-*.png
             test-results/math-*.png
+            test-results/science-*.png
+            test-results/worp-studio-*.png
