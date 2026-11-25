@@ -153,10 +153,10 @@ try {
       const cards=hub.locator('#vak-heelal .heelal-card');
       await cards.first().waitFor({state:'visible'});
       assert.equal(await cards.count(),4);
-      assert.deepEqual(await cards.evaluateAll(els=>els.map(a=>a.getAttribute('href'))),['/tools/science-observatory/labs/melkweg/','/tools/melkweg-lab/','/tools/science-observatory/labs/leeuw/','/tools/science-observatory/labs/gravitatie-banen/']);
+      assert.deepEqual(await cards.evaluateAll(els=>els.map(a=>a.getAttribute('href'))),['/tools/science-observatory/labs/melkweg/','/tools/science-observatory/labs/leeuw/','/tools/melkweg-lab/','/tools/science-observatory/labs/gravitatie-banen/']);
       assert.ok(await hub.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Heelal overflow '+lang+'/'+width);
       await hub.screenshot({path:'test-results/heelal-'+lang+'-'+width+'.png',fullPage:true});
-      if(lang==='nl'&&width===390){await cards.nth(2).click();await hub.waitForURL('**/labs/leeuw/');await hub.waitForFunction(()=>window.LEO_VOYAGE_STATE?.().visible);}
+      if(lang==='nl'&&width===390){await cards.nth(1).click();await hub.waitForURL('**/labs/leeuw/');await hub.waitForFunction(()=>window.LEO_VOYAGE_STATE?.().visible);}
       await hub.close();
     }
   }
