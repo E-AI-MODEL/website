@@ -15,8 +15,13 @@ runs:
       with:
         name: site-release-${{ github.run_id }}-${{ github.run_attempt }}
     - if: inputs.reuse != 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - if: inputs.reuse != 'true'
       shell: bash
       run: |
+        (cd tools/eaispeak && npm install --no-audit --no-fund && npm test && npm run build)
         python3 -m pip install beautifulsoup4
         python3 scripts/build_site.py --sources content/legacy --out site-build
         python3 scripts/build_anatomie.py --out site-build/tools/anatomie

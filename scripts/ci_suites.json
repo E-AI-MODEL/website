@@ -64,7 +64,8 @@
     ],
     "wihtml": [
       "verify-wihtml"
-    ]
+    ],
+    "eaispeak": []
   },
   "paths": {
     ".github/workflows/audit-archive.yml": [
@@ -129,7 +130,9 @@
       "wihtml"
     ],
     "README.md": [],
-    "assets/delf-*": [],
+    "assets/delf-*": [
+      "eaispeak"
+    ],
     "assets/eaigame*": [
       "eaigame"
     ],
@@ -238,7 +241,9 @@
     "scripts/test_anatomie*": [
       "anatomy"
     ],
-    "scripts/test_delf_*": [],
+    "scripts/test_delf_*": [
+      "eaispeak"
+    ],
     "scripts/test_eaigame*": [
       "eaigame"
     ],
@@ -370,7 +375,9 @@
     "tools/anatomie/labs/hartslag/*": [
       "heart"
     ],
-    "tools/delf-live/*": [],
+    "tools/delf-live/*": [
+      "eaispeak"
+    ],
     "tools/eaigame/*": [
       "eaigame"
     ],
@@ -454,6 +461,30 @@
     ".github/workflows/astronomy-validation.yml": [
       "galactic",
       "stellar"
+    ],
+    "tools/eaispeak/*": [
+      "eaispeak"
+    ],
+    ".github/workflows/eaispeak.yml": [
+      "eaispeak"
+    ],
+    "tests/test_eaispeak_publish.py": [
+      "eaispeak"
+    ],
+    "tests/test_eaispeak_visibility.py": [
+      "eaispeak"
+    ],
+    "scripts/verify_eaispeak_live.py": [
+      "eaispeak"
+    ],
+    "scripts/audit_archive_browser_session.mjs": [
+      "archive"
+    ],
+    "scripts/audit_archive_session_test.mjs": [
+      "archive"
+    ],
+    "scripts/audit_archive_ui.mjs": [
+      "archive"
     ]
   },
   "always": [
@@ -462,7 +493,8 @@
     "build-check",
     "ui-check",
     "register-check",
-    "test-html-gallery-auth"
+    "test-html-gallery-auth",
+    "eaispeak-check"
   ],
   "chromium": {
     "ictscan": [

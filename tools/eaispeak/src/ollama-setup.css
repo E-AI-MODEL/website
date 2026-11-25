@@ -1,0 +1,29 @@
+/* Een rustige, stapsgewijze Ollama-handleiding in dezelfde studio. */
+.ollama-setup{margin-top:36px}
+.ollama-steps{display:flex;gap:7px;align-items:center;margin:23px 0 17px}
+.ollama-step-mark{display:grid;place-items:center;flex:1;height:28px;border-bottom:1px solid rgba(116,146,150,.22);color:#a2b0b4;font:400 10px/1.2 ui-monospace,monospace;transition:color .6s ease,border-color .6s ease}
+.ollama-step-mark.current{color:#3a656d;border-bottom-color:#658990}
+.ollama-step-mark.passed{color:#7a9f8f;border-bottom-color:#9ebcad}
+.ollama-step-content{min-height:160px;animation:system-arrive 1s ease both}
+.ollama-step-content h3{font:400 clamp(17px,2.1vw,21px)/1.4 system-ui,sans-serif;color:#48616a;margin:3px 0 12px}
+.ollama-kicker{font:400 10px/1.6 ui-monospace,monospace;letter-spacing:.06em;color:#849da1}
+.ollama-doc-link{display:inline-block;color:#3c6b7a;font:400 12px/1.5 system-ui,sans-serif;text-underline-offset:3px;margin:10px 0}
+.ollama-command{display:flex;align-items:stretch;justify-content:space-between;gap:9px;padding:11px 12px;background:rgba(205,224,226,.24);border:1px solid rgba(127,156,159,.2);border-radius:10px;margin:9px 0 14px}
+.ollama-command code{min-width:0;overflow-wrap:anywhere;word-break:break-word;color:#3e5964;font:400 11px/1.65 ui-monospace,SFMono-Regular,monospace}
+.ollama-copy{border:0;background:transparent;color:#537a83;font:400 11px system-ui,sans-serif;cursor:pointer;padding:0 2px;align-self:center;white-space:nowrap}
+.ollama-copy:focus-visible{outline:1px solid #6c929a;outline-offset:3px}
+.ollama-help{border-top:1px solid rgba(126,159,164,.19);padding-top:13px;margin-top:18px}
+.ollama-help summary{font:400 12px/1.5 system-ui,sans-serif;color:#52717c;cursor:pointer}
+.ollama-help[open]>:not(summary){animation:system-arrive 1s ease both}
+.ollama-feedback{font:400 12px/1.6 system-ui,sans-serif;color:#567a78;margin:18px 0 12px;min-height:18px;overflow-wrap:anywhere}
+.ollama-feedback[data-kind=error]{color:#986a6a}
+.ollama-navigation{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:13px 0 20px}
+.ollama-navigation button{min-height:44px}
+.ollama-setup .ollama-step-content>.action{margin:8px 0 11px}
+.ollama-setup button:disabled{opacity:.46;cursor:not-allowed}
+@media(max-width:540px){.ollama-navigation{grid-template-columns:1fr 1fr}.ollama-command{padding:10px 9px}.ollama-command code{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.ollama-step-content,.ollama-help[open]>:not(summary){animation:none!important}}
+
+.ollama-reply{margin:15px 0;padding:14px 16px;background:rgba(210,227,227,.24);border-left:1px solid #91b2ad;border-radius:0 9px 9px 0;color:#365b64;font:400 13px/1.8 system-ui,sans-serif;overflow-wrap:anywhere}
+
+.ollama-guide{border-top:1px solid rgba(127,156,159,.2);margin-top:14px;padding-top:4px}.ollama-guide>summary{padding:10px 0;color:#52717b;font:400 12px/1.6 system-ui,sans-serif;cursor:pointer;list-style:none}.ollama-guide>summary::-webkit-details-marker{display:none}.ollama-guide>summary:focus-visible{outline:1px solid #87a5a9;outline-offset:3px}.ollama-guide[open]>:not(summary){animation:system-arrive 1s ease both}

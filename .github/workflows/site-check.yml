@@ -43,10 +43,14 @@ jobs:
           if [[ "$GITHUB_EVENT_NAME" == push ]]; then args+=(--include-topo); fi
           python3 scripts/ci_pr_scope.py --published "$published" --output "$GITHUB_OUTPUT" "${args[@]}"
 
-  build-check:
+  eaispeak-check:
     needs: scope
+    uses: ./.github/workflows/eaispeak.yml
+  build-check:
+    needs: [scope, eaispeak-check]
     with:
       selection: ${{ needs.scope.outputs.selection }}
+      eaispeak_artifact: true
     uses: ./.github/workflows/build-site.yml
   ui-check:
     needs: [scope, build-check]
@@ -244,7 +248,7 @@ jobs:
   static-checks:
     name: static-checks
     runs-on: ubuntu-latest
-    needs: [scope, source-checks, build-check, ui-check, register-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, check-eaiwork-dashboard, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, science-webkit, schuine-worp-studio, llm-observatorium-ui, check-llmscan, lo-calm-mobile, lo-easteregg-verify, lo-tactics-source, lo-v13-verify, lo-zone-verify, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth, astronomy-validation]
+    needs: [scope, source-checks, build-check, ui-check, register-check, eaispeak-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, check-eaiwork-dashboard, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, science-webkit, schuine-worp-studio, llm-observatorium-ui, check-llmscan, lo-calm-mobile, lo-easteregg-verify, lo-tactics-source, lo-v13-verify, lo-zone-verify, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth, astronomy-validation]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@v4
