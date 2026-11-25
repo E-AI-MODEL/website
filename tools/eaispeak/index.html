@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fbfbf9">
 <title>EAIspeak | praten, vertalen en luisteren</title>
+<meta name="description" content="Live vertalen, ondertitelen, transcriberen, vrij praten met AI en eigen tekst voorlezen. Kies je taal en verbind je spraakmodel stap voor stap.">
+<link rel="canonical" href="https://eaimodel.nl/tools/eaispeak/">
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./cloud-shell.css">
 <script type="module" src="./src/main.js"></script>
@@ -59,16 +61,23 @@
           <label class="studio-field">Ik spreek<select id="liveSource"><option value="nl-NL" selected>Nederlands</option><option value="en-US">Engels</option><option value="fr-FR">Frans</option><option value="de-DE">Duits</option><option value="es-ES">Spaans</option><option value="pt-PT">Portugees</option></select></label>
           <label class="studio-field" id="liveTargetRow">Vertaal naar<select id="liveTarget"><option value="nl-NL">Nederlands</option><option value="en-US">Engels</option><option value="fr-FR" selected>Frans</option><option value="de-DE">Duits</option><option value="es-ES">Spaans</option><option value="pt-PT">Portugees</option></select></label>
         </div>
-        <details class="studio-disclosure"><summary>Spraak en vertaling</summary>
+        <details class="studio-disclosure" id="liveRouteSettings"><summary>Spraak en vertaling · instellingen</summary>
           <label class="studio-field">Spraakherkenning<select id="liveRecognition"><option value="browser">Browser</option><option value="apple">Apple · lokale spraakherkenning (macOS 26+)</option><option value="whisper">Whisper op mijn computer</option><option value="hibiki">Hibiki · spraakvertaling</option><option value="hibiki-zero">Hibiki-Zero · spraakvertaling</option></select></label>
           <p class="studio-support" id="liveRouteHint">Browserherkenning kan een online dienst gebruiken.</p>
           <label class="studio-field" id="liveEndpointRow" hidden>Lokale spraakbridge<input id="liveEndpoint" type="url" value="ws://localhost:8766/eaispeak" autocomplete="off" spellcheck="false"></label>
           <label class="studio-field" id="liveTranslationRow">Vertaalroute<select id="translationEngine"><option value="chrome">Chrome Translator</option><option value="onnx">Lokaal browsermodel · NL → FR</option></select></label>
           <label class="studio-field"><input id="translationDrafts" type="checkbox"> Toon voorlopige tekst tijdens het spreken</label>
           <label class="studio-field" id="liveVoiceRow"><input id="liveSpeak" type="checkbox"> Spreek definitieve vertalingen uit (gebruik een hoofdtelefoon)</label>
-          <button id="prepareTranslate" class="action studio-action" type="button">Voorbereiden</button>
-          <p class="feedback" id="translationStatus" aria-live="polite">Nog niet voorbereid</p>
         </details>
+        <div class="activation-guide" id="liveGuide" aria-label="Kies hoe je wilt spreken">
+          <div class="activation-step"><span>1</span><div><strong>Kies hoe je wilt spreken</strong><p id="liveGuideChoice" class="studio-support">Browser · geen modelserver nodig.</p></div></div>
+          <div class="activation-step"><span>2</span><div><strong>Verbind en test</strong><p id="liveGuideStatus" class="studio-support" role="status" aria-live="polite">Nog niet gecontroleerd.</p><button id="prepareTranslate" class="action studio-action" type="button">Verbind en bereid voor</button>
+          <p class="feedback" id="translationStatus" aria-live="polite">Nog niet voorbereid</p>
+          <button id="liveGuideSettings" class="action studio-action studio-action-quiet" type="button">Andere spraakroute kiezen</button>
+          <details id="liveGuideHelp" class="activation-help" hidden><summary>Zo sluit je deze route aan</summary><p id="liveGuideInstructions"></p><a id="liveGuideDocs" href="https://github.com/E-AI-MODEL/website/tree/main/tools/eaispeak/bridge" target="_blank" rel="noopener noreferrer">Open installatie en startinstructies</a></details></div></div>
+          <div class="activation-step"><span>3</span><div><strong>Begin</strong><p class="studio-support" id="liveGuideNext">Gebruik de startknop hieronder.</p></div></div>
+        </div>
+        
         <div class="studio-status cloud-reveal" role="status"><span class="status-breath" aria-hidden="true"></span><p class="feedback" id="phaseStatus">Klaar om te beginnen</p></div>
         <p class="feedback studio-live-feedback" id="runtimeStatus" aria-live="polite">Kies een functie en druk op Start.</p>
         <div class="studio-action-grid">
@@ -215,6 +224,14 @@
             </details>
           </div>
         </details>
+        <div class="activation-guide" id="talkGuide" aria-label="Kies je gespreksmodel">
+          <div class="activation-step"><span>1</span><div><strong>Kies je gespreksmodel</strong><p id="talkGuideChoice" class="studio-support">Kies een model op je apparaat of een online model.</p></div></div>
+          <div class="activation-step"><span>2</span><div><strong>Verbind en test</strong><p id="talkGuideStatus" class="studio-support" role="status" aria-live="polite">Nog niet gecontroleerd.</p><button id="talkGuideSettings" type="button" class="action studio-action studio-action-quiet">Taal en model kiezen</button>
+          <button id="talkGuidePrepare" type="button" class="action studio-action">Verbind en test model</button>
+          <button id="talkGuideOllama" type="button" class="action studio-action studio-action-quiet" hidden>Hulp bij Ollama installeren en verbinden</button>
+          <details id="talkGuideHelp" class="activation-help" hidden><summary>Installatie en verbinding</summary><p id="talkGuideInstructions"></p><a id="talkGuideDocs" href="https://github.com/E-AI-MODEL/website/blob/main/tools/eaispeak/docs/speech-engines.md" target="_blank" rel="noopener noreferrer">Open startinstructies</a></details></div></div>
+          <div class="activation-step"><span>3</span><div><strong>Begin</strong><p class="studio-support" id="talkGuideNext">Gebruik de startknop hieronder.</p></div></div>
+        </div>
         <div class="studio-action-grid mist-talk-actions">
           <button id="freeTalkSpeak" class="action studio-action studio-action-emphasis" type="button">Begin met spreken</button>
           <button id="freeTalkStop" class="action studio-action studio-action-quiet" type="button">Stop gesprek</button>
@@ -291,6 +308,11 @@
         <label class="studio-field">Taal<select id="readLanguage"><option value="nl-NL" selected>Nederlands</option><option value="en-US">Engels</option><option value="fr-FR">Frans</option><option value="de-DE">Duits</option><option value="es-ES">Spaans</option><option value="pt-PT">Portugees</option></select></label>
         <label class="studio-field">Stem<select id="readEngine"><option value="browser">Browserstem</option><option value="phonon">Phonon · Frans (eerst laden bij Stem)</option></select></label>
         <label class="studio-field">Tekst<textarea id="readText" maxlength="12000" rows="9" placeholder="Typ of plak je tekst."></textarea></label>
+        <div class="activation-guide" id="readGuide" aria-label="Kies je stem">
+          <div class="activation-step"><span>1</span><div><strong>Kies je stem</strong><p id="readGuideChoice" class="studio-support">Browserstem op je apparaat.</p></div></div>
+          <div class="activation-step"><span>2</span><div><strong>Verbind en test</strong><p id="readGuideStatus" class="studio-support" role="status" aria-live="polite">Nog niet gecontroleerd.</p><button id="readPrepare" type="button" class="action studio-action">Test gekozen stem</button><button id="readGuideLoad" class="action studio-action studio-action-quiet" type="button" hidden>Laad Franse Phonon-stem</button><button id="readGuideSettings" class="action studio-action studio-action-quiet" type="button" hidden>Eigen Frans stemmodel kiezen</button></div></div>
+          <div class="activation-step"><span>3</span><div><strong>Begin</strong><p class="studio-support" id="readGuideNext">Gebruik de startknop hieronder.</p></div></div>
+        </div>
         <div class="studio-action-grid"><button id="readStart" class="action studio-action studio-action-emphasis" type="button">Lees voor</button><button id="readStop" class="action studio-action studio-action-quiet" type="button">Stop</button></div>
         <p class="feedback" id="readStatus" role="status">Klaar om voor te lezen.</p>
       </section>
