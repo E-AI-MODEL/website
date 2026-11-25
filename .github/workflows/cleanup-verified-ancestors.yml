@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   cleanup:
-    if: github.repository == 'E-AI-MODEL/website' && github.actor == 'E-AI-MODEL' && github.event.before == 'c54c9d497754c5135e5619b99dcb871d8a48fc5f' && github.run_attempt == 1
+    if: github.repository == 'E-AI-MODEL/website' && github.actor == 'E-AI-MODEL' && github.event.before == 'b5d98c2bb8eecdca261f9fe9fb74846610524602' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     concurrency:

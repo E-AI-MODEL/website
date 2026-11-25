@@ -58,16 +58,32 @@ def save(name, value):
     (OUT / name).write_text(json.dumps(value, indent=2) + "\n")
 
 
-def snapshot():
+def snapshot(candidates):
     remote = {b["name"]: b for b in pages("branches?per_page=100")}
     prs = pages("pulls?state=open&per_page=100")
     used = {p[side]["ref"] for p in prs for side in ("head", "base")
             if (p[side].get("repo") or {}).get("full_name") == REPO}
     active = set()
     for status in ("queued", "in_progress", "requested", "waiting", "pending"):
-        active.update(r["head_branch"] for r in pages(
-            "actions/runs?" + urlencode({"status": status, "per_page": 100}),
-            "workflow_runs") if r.get("head_branch"))
+        try:
+            runs = pages("actions/runs?" + urlencode(
+                {"status": status, "per_page": 100}), "workflow_runs")
+            active.update(r["head_branch"] for r in runs if r.get("head_branch"))
+        except ValueError:
+            # GitHub's repository-wide pending count can disagree with the
+            # returned rows. Do not treat missing details as inactivity.
+            # Query each candidate separately; retain any uncertain branch.
+            for n in candidates:
+                if n in active:
+                    continue
+                try:
+                    runs = pages("actions/runs?" + urlencode(
+                        {"status": status, "branch": n, "per_page": 100}),
+                        "workflow_runs")
+                    if runs:
+                        active.add(n)
+                except (ValueError, subprocess.CalledProcessError, KeyError):
+                    active.add(n)
     live = refs()
     if set(remote) != set(live) or any(
             b["commit"]["sha"] != live[n] for n, b in remote.items()):
@@ -90,7 +106,7 @@ def main():
         raise RuntimeError("Unexpected cleanup context")
     save("result.json", {"status": "preflight_started", "deleted": {}, "audit_run": AUDIT_RUN})
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
-    if event.get("before") != "c54c9d497754c5135e5619b99dcb871d8a48fc5f":
+    if event.get("before") != "b5d98c2bb8eecdca261f9fe9fb74846610524602":
         raise RuntimeError("Not the authorized one-time update")
     run = api(f"actions/runs/{AUDIT_RUN}")
     if (run["head_sha"] != AUDIT_HEAD or run["conclusion"] != "success"
@@ -133,7 +149,7 @@ def main():
     report = {"audit_run": AUDIT_RUN, "main": main_sha, "candidates": candidates,
               "deleted": {}, "skipped": {}, "status": "preflight"}
     save("result.json", report)
-    remote, used, active, live = snapshot()
+    remote, used, active, live = snapshot(candidates)
     if live.get("main") != main_sha:
         raise RuntimeError("Main changed during preflight")
     eligible = {}
@@ -163,7 +179,7 @@ def main():
 
     # Refresh all safety inputs immediately before mutating. A changed ref
     # after this check is rejected by the explicit force-with-lease.
-    remote, used, active, live = snapshot()
+    remote, used, active, live = snapshot(candidates)
     if live.get("main") != main_sha:
         raise RuntimeError("Main changed before cleanup")
     for n, sha in list(eligible.items()):
