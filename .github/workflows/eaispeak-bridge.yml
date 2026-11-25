@@ -1,0 +1,44 @@
+name: EAIspeak native speech bridge
+
+on:
+  pull_request:
+    paths:
+      - 'tools/eaispeak/bridge/**'
+      - '.github/workflows/eaispeak-bridge.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'tools/eaispeak/bridge/**'
+      - '.github/workflows/eaispeak-bridge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-protocol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/eaispeak/bridge
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tools/eaispeak/bridge/requirements.txt
+      - name: Installeer bridge en testafhankelijkheden
+        run: python -m pip install -r requirements.txt
+      - name: Controleer Python en transport
+        run: |
+          python -m compileall -q server.py transcribe.py tests
+          python -m pytest -q tests
+      - name: Controleer lokaal Mac-startscript zonder iets te installeren
+        run: bash -n start-macos.sh
+      - name: Controleer dat deploy niet is ingeschakeld
+        run: |
+          test ! -e Dockerfile
+          echo "Tests only. No audio server, model download or public deploy."

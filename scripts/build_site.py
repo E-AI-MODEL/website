@@ -2815,6 +2815,9 @@ def build(sources: Path, out: Path) -> None:
         # The old refreshed output must not overwrite that newly built page.
         if relative.as_posix() == "tools/index.html":
             continue
+        # EAIspeak and its legacy redirect are released only from their verified artifact.
+        if relative.parts[:2] in {("tools", "eaispeak"), ("tools", "delf-live")}:
+            continue
         if 'class="eai-refresh' in page.read_text() or relative.as_posix() == "tools/van-proces-naar-prompt/index.html":
             target = out / relative
             target.parent.mkdir(parents=True, exist_ok=True)

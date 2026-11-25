@@ -1,0 +1,136 @@
+name: Publish verified EAIspeak build
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful EAIspeak build run on main
+        required: true
+        type: string
+      source_sha:
+        description: Exact approved main commit SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: theory7-production
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Verify owner-selected run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json, os, re
+          from urllib.request import Request, urlopen
+          run_id=os.environ['RUN_ID']
+          sha=os.environ['SOURCE_SHA']
+          assert re.fullmatch(r'[0-9]+',run_id) and re.fullmatch(r'[0-9a-f]{40}',sha)
+          def get(path):
+              request=Request('https://api.github.com/repos/'+os.environ['REPO']+path,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+              with urlopen(request,timeout=30) as response: return json.load(response)
+          run=get('/actions/runs/'+run_id)
+          assert run['path'].split('@')[0]=='.github/workflows/eaispeak.yml'
+          assert run['event']=='push' and run['head_branch']=='main' and run['head_sha']==sha and run['conclusion']=='success'
+          assert run['head_repository']['full_name']==os.environ['REPO']
+          artifacts=get('/actions/runs/'+run_id+'/artifacts')
+          assert sum(a['name']=='eaispeak-tested-build' and not a['expired'] for a in artifacts['artifacts'])==1
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: eaispeak-tested-build
+          path: release
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ github.token }}
+      - name: Verify exact package before upload
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          set -euo pipefail
+          test "$(cat release/source-sha.txt)" = "$SOURCE_SHA"
+          test "$(cat release/build-sha.txt)" = "$SOURCE_SHA"
+          cd release
+          sha256sum -c SHA256SUMS
+          test -s tools/eaispeak/index.html
+          test -s tools/delf-live/index.html
+          test ! -e tools/eaispeak/audio
+          test ! -e tools/eaispeak/mobile-preview.html
+          grep -q 'id="liveMode"' tools/eaispeak/index.html
+          grep -q 'url=/tools/eaispeak/' tools/delf-live/index.html
+          find tools -type f -print0 | sort -z | xargs -0 sha256sum > actual.txt
+          cmp SHA256SUMS actual.txt
+      - name: Install FTPS client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp openssl
+
+      - name: Verify Theory7 FTPS certificate
+        shell: bash
+        env:
+          HOST: web0102.theory7.net
+        run: |
+          set -euo pipefail
+          expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
+          actual="$(openssl s_client -starttls ftp -connect "$HOST:21" -servername "$HOST" </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
+          if [ "$actual" != "$expected" ]; then
+            echo "Unexpected FTPS certificate fingerprint"
+            exit 1
+          fi
+
+      - name: Publish only verified EAIspeak routes
+        shell: bash
+        env:
+          HOST: web0102.theory7.net
+          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER"
+          test -n "$FTP_PASSWORD"
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate true
+          set ssl:check-hostname true
+          set net:timeout 20
+          set net:max-retries 1
+          set xfer:use-temp-file yes
+          set net:connection-limit 4
+          mkdir -p /tools/eaispeak
+          mirror -R --delete --parallel=3 --verbose release/tools/eaispeak/ /tools/eaispeak/
+          mkdir -p /tools/delf-live
+          mirror -R --delete --parallel=3 --verbose release/tools/delf-live/ /tools/delf-live/
+          bye
+          EOF
+
+
+      - name: Verify published app assets and legacy redirect
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          from urllib.parse import quote
+          import hashlib
+          for path in Path('release/tools').rglob('*'):
+              if not path.is_file(): continue
+              rel=path.relative_to('release').as_posix()
+              with urlopen(Request('https://eaimodel.nl/'+quote(rel),headers={'Cache-Control':'no-cache','User-Agent':'EAIspeak-release-check'}),timeout=60) as response:
+                  assert response.status==200
+                  content=response.read()
+              assert hashlib.sha256(content).digest()==hashlib.sha256(path.read_bytes()).digest(),rel
+              print('OK',rel)
+          PY

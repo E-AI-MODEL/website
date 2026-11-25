@@ -17,6 +17,7 @@ SUITES = (
 # Changes to these standalone areas do not affect shared site components.
 AREAS = (
     ("tools/delf-live/", ()),
+    ("tools/eaispeak/", ()),
     ("assets/delf-", ()),
     ("scripts/test_delf_", ()),
     ("tools/anatomie/", ("anatomy",)),

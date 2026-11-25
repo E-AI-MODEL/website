@@ -8,7 +8,7 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 SHARED_THEORY7_UPLOADS = (
     "deploy-theory7.yml",
-    "deploy-delf-preview.yml",
+    "deploy-eaispeak.yml",
     "deploy-zhang-review-rapid.yml",
     "deploy-analytics-dashboard.yml",
     "deploy-eaiwork-theory7.yml",
@@ -55,7 +55,7 @@ class PublicationOwnershipTests(unittest.TestCase):
 
     def test_manual_recovery_publishers_do_not_compete_automatically(self):
         for workflow in (
-            "deploy-delf-preview.yml",
+            "deploy-eaispeak.yml",
             "deploy-zhang-review-rapid.yml",
             "deploy-analytics-dashboard.yml",
             "deploy-eaiwork-theory7.yml",
@@ -106,8 +106,12 @@ class PublicationOwnershipTests(unittest.TestCase):
         topo = (WORKFLOWS / "deploy-topo-theory7.yml").read_text(encoding="utf-8")
         self.assertIn("needs: browser-check", topo)
         self.assertIn("uses: ./.github/workflows/topo-mobile-verify.yml", topo)
-        delf = (WORKFLOWS / "deploy-delf-preview.yml").read_text(encoding="utf-8")
-        self.assertNotIn("Wait until main-site deployment is finished", delf)
+        speak = (WORKFLOWS / "deploy-eaispeak.yml").read_text(encoding="utf-8")
+        self.assertIn("actions/download-artifact@v4", speak)
+        self.assertIn("sha256sum -c SHA256SUMS", speak)
+        self.assertNotIn("npm install", speak)
+        self.assertIn("--exclude-glob 'tools/eaispeak/**'", general)
+        self.assertIn("--exclude-glob 'tools/delf-live/**'", general)
 
     def test_public_data_keeps_its_own_publication(self):
         source = (WORKFLOWS / "publish-public-analytics.yml").read_text(encoding="utf-8")

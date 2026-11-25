@@ -96,7 +96,7 @@ jobs:
           mkdir -p /tools/ict-scan
           put site-build/tools/ict-scan/.htaccess -o /tools/ict-scan/.htaccess
           # TOPO is published independently and cannot be overwritten by a whole-site deploy.
-          mirror -R --parallel=3 --verbose --exclude-glob topo/ --exclude-glob 'topo/**' --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ site-build/ /
+          mirror -R --parallel=3 --verbose --exclude-glob topo/ --exclude-glob 'topo/**' --exclude-glob 'tools/eaispeak/**' --exclude-glob 'tools/delf-live/**' --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ site-build/ /
           bye
           EOF
       - name: Verify live ICT-scan profile and validator version
