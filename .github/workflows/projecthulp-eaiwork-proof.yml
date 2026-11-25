@@ -1,16 +1,8 @@
 name: EAIgit · EAI Work-contractproef
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'assets/projecthulp/**'
-      - 'tools/projecthulp/**'
-      - 'tools/eaigit/**'
-      - 'assets/eaigit/**'
-      - 'content/projecthulp/eaiwork-mission.json'
-      - 'scripts/test_projecthulp_eaiwork.mjs'
-      - '.github/workflows/projecthulp-eaiwork-proof.yml'
+  workflow_call:
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

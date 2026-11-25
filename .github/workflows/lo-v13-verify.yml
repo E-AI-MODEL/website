@@ -1,11 +1,6 @@
 name: LO v13 - controle spelsimulatie
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'tools/lo-aanvalslab/**'
-      - 'scripts/test_lo_calm_mobile.py'
-      - '.github/workflows/lo-v13-verify.yml'
+  workflow_call:
   workflow_dispatch:
 
 permissions:

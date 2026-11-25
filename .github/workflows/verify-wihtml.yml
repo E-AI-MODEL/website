@@ -1,14 +1,7 @@
 name: Verify WiHTML editor and offline lesson
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'content/wihtml/**'
-      - 'scripts/test_wihtml_journey.mjs'
-      - 'scripts/build_site.py'
-      - 'scripts/prepare_ui.py'
-      - '.github/workflows/verify-wihtml.yml'
+  workflow_call:
   workflow_dispatch:
 
 permissions:

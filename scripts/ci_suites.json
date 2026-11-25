@@ -1,0 +1,440 @@
+{
+  "groups": {
+    "archive": [
+      "audit-archive"
+    ],
+    "exports": [
+      "check-own-exports"
+    ],
+    "eaigit": [
+      "eaigit-check",
+      "projecthulp-eaiwork-proof"
+    ],
+    "eaiwork": [
+      "check-eaiwork-dashboard",
+      "projecthulp-eaiwork-proof"
+    ],
+    "eaigame": [
+      "eaigame"
+    ],
+    "anatomy": [
+      "anatomy-webkit"
+    ],
+    "heart": [
+      "anatomy-webkit"
+    ],
+    "galactic": [],
+    "stellar": [
+      "leeuw-console"
+    ],
+    "physics": [
+      "science-fixed-workspace",
+      "science-studio-webkit",
+      "science-webkit",
+      "schuine-worp-studio"
+    ],
+    "leif": [],
+    "home": [],
+    "ictscan": [
+      "ict-check",
+      "ict-webkit"
+    ],
+    "llm": [
+      "llm-observatorium-ui"
+    ],
+    "llmscan": [
+      "check-llmscan"
+    ],
+    "melkweg": [],
+    "topo": [
+      "topo-check"
+    ],
+    "lo": [
+      "lo-calm-mobile",
+      "lo-easteregg-verify",
+      "lo-tactics-source",
+      "lo-v13-verify",
+      "lo-zone-verify"
+    ],
+    "regio": [
+      "onderwijsregio-ui"
+    ],
+    "wihtml": [
+      "verify-wihtml"
+    ]
+  },
+  "paths": {
+    ".github/workflows/audit-archive.yml": [
+      "archive"
+    ],
+    ".github/workflows/check-eaiwork-dashboard.yml": [
+      "eaiwork"
+    ],
+    ".github/workflows/check-llmscan.yml": [
+      "llmscan"
+    ],
+    ".github/workflows/check-own-exports.yml": [
+      "exports"
+    ],
+    ".github/workflows/eaigame.yml": [
+      "eaigame"
+    ],
+    ".github/workflows/leeuw-console.yml": [
+      "stellar"
+    ],
+    ".github/workflows/llm-observatorium-ui.yml": [
+      "llm"
+    ],
+    ".github/workflows/lo-calm-mobile.yml": [
+      "lo"
+    ],
+    ".github/workflows/lo-easteregg-verify.yml": [
+      "lo"
+    ],
+    ".github/workflows/lo-tactics-source.yml": [
+      "lo"
+    ],
+    ".github/workflows/lo-v13-verify.yml": [
+      "lo"
+    ],
+    ".github/workflows/lo-zone-verify.yml": [
+      "lo"
+    ],
+    ".github/workflows/onderwijsregio-ui.yml": [
+      "regio"
+    ],
+    ".github/workflows/projecthulp-browser.yml": [
+      "eaigit"
+    ],
+    ".github/workflows/projecthulp-eaiwork-proof.yml": [
+      "eaigit",
+      "eaiwork"
+    ],
+    ".github/workflows/schuine-worp-studio.yml": [
+      "physics"
+    ],
+    ".github/workflows/science-fixed-workspace.yml": [
+      "physics"
+    ],
+    ".github/workflows/science-studio-webkit.yml": [
+      "physics"
+    ],
+    ".github/workflows/science-webkit.yml": [
+      "physics"
+    ],
+    ".github/workflows/verify-wihtml.yml": [
+      "wihtml"
+    ],
+    "README.md": [],
+    "assets/delf-*": [],
+    "assets/eaigame*": [
+      "eaigame"
+    ],
+    "assets/eaigit/*": [
+      "eaigit"
+    ],
+    "assets/llm-learning-math.js": [
+      "llm"
+    ],
+    "assets/llm-real-trace-viewer.js": [
+      "llm"
+    ],
+    "assets/llm-real-trace.json": [
+      "llm"
+    ],
+    "assets/projecthulp/*": [
+      "eaigit"
+    ],
+    "assets/site-archive.css": [
+      "archive"
+    ],
+    "backend/lo-duo/*": [
+      "lo"
+    ],
+    "content/anatomie/*": [
+      "anatomy",
+      "heart"
+    ],
+    "content/anatomie/labs/hartslag/*": [
+      "heart"
+    ],
+    "content/eaiwork-dashboard.html": [
+      "eaiwork"
+    ],
+    "content/llm-observatorium/*": [
+      "llm"
+    ],
+    "content/melkweg-lab/*": [
+      "melkweg"
+    ],
+    "content/projecthulp/*": [
+      "eaigit",
+      "eaiwork"
+    ],
+    "content/projecthulp/eaiwork-mission.json": [
+      "eaigit",
+      "eaiwork"
+    ],
+    "content/science-observatory/labs/leeuw.html": [
+      "stellar"
+    ],
+    "content/science-observatory/labs/melkweg.html": [
+      "galactic"
+    ],
+    "content/science-observatory/labs/natuurkunde.html": [
+      "physics"
+    ],
+    "content/science-observatory/labs/schuine-worp.html": [
+      "physics"
+    ],
+    "content/science-observatory/labs/wiskunde-a.html": [
+      "physics"
+    ],
+    "content/science-observatory/labs/wiskunde-b.html": [
+      "physics"
+    ],
+    "content/wihtml/*": [
+      "wihtml"
+    ],
+    "docs/*.md": [],
+    "docs/ci-audit/*": [],
+    "leif/*": [
+      "leif"
+    ],
+    "nl/llmscan/*": [
+      "llmscan"
+    ],
+    "nl/onderwijsregio-proef/*": [
+      "regio"
+    ],
+    "scripts/anatomie_*": [
+      "anatomy"
+    ],
+    "scripts/audit_anatomie*": [
+      "anatomy"
+    ],
+    "scripts/audit_archive*": [
+      "archive"
+    ],
+    "scripts/audit_hart_glb*": [
+      "heart"
+    ],
+    "scripts/build_anatomie.py": [
+      "anatomy",
+      "heart"
+    ],
+    "scripts/check_ict_assurance.mjs": [
+      "ictscan"
+    ],
+    "scripts/check_own_*.mjs": [
+      "exports"
+    ],
+    "scripts/extract_hart_*": [
+      "heart"
+    ],
+    "scripts/test_anatomie*": [
+      "anatomy"
+    ],
+    "scripts/test_delf_*": [],
+    "scripts/test_eaigame*": [
+      "eaigame"
+    ],
+    "scripts/test_eaigame_browser.mjs": [
+      "eaigame"
+    ],
+    "scripts/test_eaiwork_mobile.mjs": [
+      "eaiwork"
+    ],
+    "scripts/test_hartslaglab*": [
+      "heart"
+    ],
+    "scripts/test_ict_scan_*": [
+      "ictscan"
+    ],
+    "scripts/test_leeuw_console.mjs": [
+      "stellar"
+    ],
+    "scripts/test_leif_*": [
+      "leif"
+    ],
+    "scripts/test_llm_learning_math.mjs": [
+      "llm"
+    ],
+    "scripts/test_llm_mobile_webkit.mjs": [
+      "llm"
+    ],
+    "scripts/test_llm_observatorium.mjs": [
+      "llm"
+    ],
+    "scripts/test_llm_real_trace.py": [
+      "llm"
+    ],
+    "scripts/test_llmscan_browser.mjs": [
+      "llmscan"
+    ],
+    "scripts/test_lo_calm_mobile.py": [
+      "lo"
+    ],
+    "scripts/test_lo_easteregg.py": [
+      "lo"
+    ],
+    "scripts/test_lo_zone.py": [
+      "lo"
+    ],
+    "scripts/test_melkweg*": [
+      "melkweg"
+    ],
+    "scripts/test_projecthulp_browser.mjs": [
+      "eaigit"
+    ],
+    "scripts/test_projecthulp_eaiwork.mjs": [
+      "eaigit",
+      "eaiwork"
+    ],
+    "scripts/test_regio_design.mjs": [
+      "regio"
+    ],
+    "scripts/test_schuine_worp*": [
+      "physics"
+    ],
+    "scripts/test_schuine_worp_studio.mjs": [
+      "physics"
+    ],
+    "scripts/test_science_*": [
+      "physics"
+    ],
+    "scripts/test_science_fixed_workspace.mjs": [
+      "physics"
+    ],
+    "scripts/test_science_math_adaptive.mjs": [
+      "physics"
+    ],
+    "scripts/test_science_mobile_aim.mjs": [
+      "physics"
+    ],
+    "scripts/test_topo_mobile.mjs": [
+      "topo"
+    ],
+    "scripts/test_wihtml_journey.mjs": [
+      "wihtml"
+    ],
+    "scripts/validate_topo_content.mjs": [
+      "topo"
+    ],
+    "scripts/workflow_export.js": [
+      "exports"
+    ],
+    "tests/test_anatomie*": [
+      "anatomy"
+    ],
+    "tests/test_archive_review.py": [
+      "archive"
+    ],
+    "tests/test_audit_advice.mjs": [
+      "eaigit"
+    ],
+    "tests/test_eaigame.mjs": [
+      "eaigame"
+    ],
+    "tests/test_eaigit_*": [
+      "eaigit"
+    ],
+    "tests/test_ict_scan_*": [
+      "ictscan"
+    ],
+    "tests/test_llm_observatorium_source.py": [
+      "llm"
+    ],
+    "tests/test_llmscan_standalone.py": [
+      "llmscan"
+    ],
+    "tests/test_lo_evidence_publish.py": [
+      "lo"
+    ],
+    "tests/test_projecthulp*": [
+      "eaigit"
+    ],
+    "tests/test_static_audit.mjs": [
+      "eaigit"
+    ],
+    "tests/verify_ict_assurance_browser.mjs": [
+      "ictscan"
+    ],
+    "tools/anatomie/*": [
+      "anatomy",
+      "heart"
+    ],
+    "tools/anatomie/labs/hartslag/*": [
+      "heart"
+    ],
+    "tools/delf-live/*": [],
+    "tools/eaigame/*": [
+      "eaigame"
+    ],
+    "tools/eaigit/*": [
+      "eaigit"
+    ],
+    "tools/eaiwork/*": [
+      "eaiwork"
+    ],
+    "tools/ict-scan/*": [
+      "ictscan"
+    ],
+    "tools/llm-observatorium/*": [
+      "llm"
+    ],
+    "tools/lo-aanvalslab/*": [
+      "lo"
+    ],
+    "tools/lo-aanvalslab/calibratie/tactics/*": [
+      "lo"
+    ],
+    "tools/lo-aanvalslab/index.html": [
+      "lo"
+    ],
+    "tools/lo-aanvalslab/onderbouwing/index.html": [
+      "lo"
+    ],
+    "tools/melkweg-lab/*": [
+      "melkweg"
+    ],
+    "tools/projecthulp/*": [
+      "eaigit"
+    ],
+    "tools/science-observatory/labs/leeuw/*": [
+      "stellar"
+    ],
+    "tools/science-observatory/labs/leeuw/index.html": [
+      "stellar"
+    ],
+    "tools/science-observatory/labs/melkweg/*": [
+      "galactic"
+    ],
+    "tools/science-observatory/labs/natuurkunde/*": [
+      "physics"
+    ],
+    "tools/science-observatory/labs/schuine-worp/*": [
+      "physics"
+    ],
+    "tools/science-observatory/labs/wiskunde-a/*": [
+      "physics"
+    ],
+    "tools/science-observatory/labs/wiskunde-b/*": [
+      "physics"
+    ],
+    "topo/*": [
+      "topo"
+    ],
+    "work/*": [
+      "eaiwork"
+    ]
+  },
+  "always": [
+    "scope",
+    "source-checks",
+    "build-check",
+    "ui-check",
+    "register-check",
+    "test-html-gallery-auth"
+  ]
+}

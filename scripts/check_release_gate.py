@@ -2,9 +2,10 @@
 import json
 import os
 
-ALWAYS = ("scope", "source-checks", "build-check", "ui-check", "register-check")
-SCOPED = {"ict-check": "ictscan", "ict-webkit": "ictscan",
-          "topo-check": "topo", "anatomy-webkit": "anatomy", "eaigit-check": "eaigit"}
+from ci_pr_scope import REGISTRY, SUITES, job_selection
+
+ALWAYS = tuple(REGISTRY["always"])
+SCOPED = tuple(job_selection(set()))
 
 
 def failures(needs, skip_topo=False):
@@ -12,14 +13,21 @@ def failures(needs, skip_topo=False):
     if not isinstance(needs, dict):
         return ["Missing or invalid job results"]
     outputs = needs.get("scope", {}).get("outputs", {})
-    for flag in set(SCOPED.values()):
-        if outputs.get(flag) not in ("true", "false"):
-            errors.append(f"Missing or invalid scope: {flag}")
+    try:
+        flags = json.loads(outputs["selection"])
+        if set(flags) != set(SUITES) or any(v not in ("true", "false") for v in flags.values()):
+            return ["Incomplete scope"]
+        selected = {group for group, value in flags.items() if value == "true"}
+        jobs = job_selection(selected)
+        if json.loads(outputs["jobs"]) != jobs:
+            return ["Inconsistent job selection"]
+    except (KeyError, TypeError, ValueError, AttributeError):
+        return ["Missing or invalid scope"]
     for job in ALWAYS:
         if needs.get(job, {}).get("result") != "success":
             errors.append(f"{job}: required success, got {needs.get(job, {}).get('result')}")
-    for job, flag in SCOPED.items():
-        required = outputs.get(flag) == "true" and not (job == "topo-check" and skip_topo)
+    for job in SCOPED:
+        required = jobs[job] and not (job == "topo-check" and skip_topo)
         result = needs.get(job, {}).get("result")
         expected = "success" if required else "skipped"
         if result != expected:

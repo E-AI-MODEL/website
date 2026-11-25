@@ -1,18 +1,8 @@
 name: Test compacte schuine worp
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'content/science-observatory/labs/schuine-worp.html'
-      - 'content/science-observatory/labs/natuurkunde.html'
-      - 'scripts/test_schuine_worp_studio.mjs'
-      - '.github/workflows/schuine-worp-studio.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'content/science-observatory/labs/schuine-worp.html'
-      - 'scripts/test_schuine_worp_studio.mjs'
-      - '.github/workflows/schuine-worp-studio.yml'
+  workflow_call:
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

@@ -2,6 +2,9 @@ name: Verify public UI
 on:
   workflow_call:
     inputs:
+      selection:
+        type: string
+        required: true
       release_artifact:
         type: boolean
         default: false
@@ -18,19 +21,15 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      - name: Kies de browserproeven die deze wijziging kunnen raken
+      - name: Lees de centrale testselectie
         id: scope
-        shell: bash
+        env:
+          SELECTION: ${{ inputs.selection }}
         run: |
-          set -euo pipefail
-          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] || ! git rev-parse --verify HEAD^1 >/dev/null 2>&1; then
+          if [[ -z "$SELECTION" ]]; then
             python3 scripts/ci_pr_scope.py --all --output "$GITHUB_OUTPUT"
           else
-            git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed-files"
-            mapfile -d '' changed < "$RUNNER_TEMP/changed-files"
-            python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
+            jq -er 'to_entries[] | "\(.key)=\(.value)"' <<<"$SELECTION" >> "$GITHUB_OUTPUT"
           fi
       - name: Test veilige selectie van browserproeven
         run: python3 -m unittest discover -s tests -p 'test_ci_pr_scope.py' -v
@@ -98,7 +97,7 @@ jobs:
         if: ${{ steps.scope.outputs.anatomy == 'true' }}
         run: node scripts/test_anatomie_browser.mjs site-build
       - name: Verify Hartslaglab WebGL animation and mobile layout
-        if: ${{ steps.scope.outputs.anatomy == 'true' }}
+        if: ${{ steps.scope.outputs.heart == 'true' }}
         run: node scripts/test_hartslaglab_browser.mjs site-build chromium
       - name: Verify LLM Observatory tokenizer in Chromium
         if: ${{ steps.scope.outputs.llm == 'true' }}

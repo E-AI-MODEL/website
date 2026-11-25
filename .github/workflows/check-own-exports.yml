@@ -1,13 +1,8 @@
 name: Check own exports
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'scripts/check_own_*.mjs'
-      - 'scripts/archive_review.py'
-      - 'scripts/workflow_export.js'
-      - '.github/workflows/check-own-exports.yml'
+  workflow_call:
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

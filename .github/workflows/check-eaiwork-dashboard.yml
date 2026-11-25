@@ -1,18 +1,7 @@
 name: Check EAIwork dashboard
 on:
-  pull_request:
-    paths:
-      - 'content/eaiwork-dashboard.html'
-      - 'scripts/test_eaiwork_mobile.mjs'
-      - 'scripts/build_site.py'
-      - '.github/workflows/check-eaiwork-dashboard.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'content/eaiwork-dashboard.html'
-      - 'scripts/test_eaiwork_mobile.mjs'
-      - 'scripts/build_site.py'
-      - '.github/workflows/check-eaiwork-dashboard.yml'
+  workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read

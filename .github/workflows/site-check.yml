@@ -15,65 +15,152 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   scope:
     runs-on: ubuntu-latest
     outputs:
-      ictscan: ${{ steps.scope.outputs.ictscan }}
-      topo: ${{ steps.scope.outputs.topo }}
-      anatomy: ${{ steps.scope.outputs.anatomy }}
-      eaigit: ${{ steps.scope.outputs.eaigit }}
+      selection: ${{ steps.scope.outputs.selection }}
+      jobs: ${{ steps.scope.outputs.jobs }}
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
-      - name: Bepaal welke toepassingen geraakt zijn
+          fetch-depth: 0
+      - name: Selecteer vanaf de laatst geslaagde websitepublicatie
         id: scope
-        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] || ! git rev-parse --verify HEAD^1 >/dev/null 2>&1; then
-            python3 scripts/ci_pr_scope.py --all --output "$GITHUB_OUTPUT"
-          else
-            git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed-files"
-            mapfile -d '' changed < "$RUNNER_TEMP/changed-files"
-            python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
+          published=""
+          if [[ "$GITHUB_EVENT_NAME" == pull_request || "$GITHUB_EVENT_NAME" == push ]]; then
+            published=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/deploy-theory7.yml/runs?branch=main&status=success&per_page=1" --jq '.workflow_runs[0].head_sha // empty') || published=""
           fi
+          python3 scripts/ci_pr_scope.py --published "$published" --output "$GITHUB_OUTPUT"
   build-check:
+    needs: scope
+    with:
+      selection: ${{ needs.scope.outputs.selection }}
     uses: ./.github/workflows/build-site.yml
   ui-check:
+    needs: scope
     uses: ./.github/workflows/verify-ui.yml
     with:
+      selection: ${{ needs.scope.outputs.selection }}
       release_artifact: ${{ inputs.release_artifact == true }}
   register-check:
     uses: ./.github/workflows/check-website-register.yml
   ict-check:
     needs: scope
-    if: ${{ needs.scope.outputs.ictscan == 'true' }}
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['ict-check'] }}
     uses: ./.github/workflows/check-ict-assurance.yml
   ict-webkit:
     needs: scope
-    if: ${{ needs.scope.outputs.ictscan == 'true' }}
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['ict-webkit'] }}
     uses: ./.github/workflows/ict-scan-webkit.yml
   topo-check:
     needs: scope
-    if: ${{ needs.scope.outputs.topo == 'true' && inputs.skip_topo != true }}
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['topo-check'] && inputs.skip_topo != true }}
     uses: ./.github/workflows/topo-mobile-verify.yml
   anatomy-webkit:
     needs: scope
-    if: ${{ needs.scope.outputs.anatomy == 'true' }}
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['anatomy-webkit'] }}
     uses: ./.github/workflows/anatomie-webkit.yml
   eaigit-check:
     needs: scope
-    if: ${{ needs.scope.outputs.eaigit == 'true' }}
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['eaigit-check'] }}
     uses: ./.github/workflows/projecthulp-browser.yml
+  audit-archive:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['audit-archive'] }}
+    uses: ./.github/workflows/audit-archive.yml
+  check-own-exports:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['check-own-exports'] }}
+    uses: ./.github/workflows/check-own-exports.yml
+  projecthulp-eaiwork-proof:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['projecthulp-eaiwork-proof'] }}
+    uses: ./.github/workflows/projecthulp-eaiwork-proof.yml
+  check-eaiwork-dashboard:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['check-eaiwork-dashboard'] }}
+    uses: ./.github/workflows/check-eaiwork-dashboard.yml
+  eaigame:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['eaigame'] }}
+    uses: ./.github/workflows/eaigame.yml
+  leeuw-console:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['leeuw-console'] }}
+    uses: ./.github/workflows/leeuw-console.yml
+  science-fixed-workspace:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['science-fixed-workspace'] }}
+    uses: ./.github/workflows/science-fixed-workspace.yml
+  science-studio-webkit:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['science-studio-webkit'] }}
+    uses: ./.github/workflows/science-studio-webkit.yml
+  science-webkit:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['science-webkit'] }}
+    uses: ./.github/workflows/science-webkit.yml
+  schuine-worp-studio:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['schuine-worp-studio'] }}
+    uses: ./.github/workflows/schuine-worp-studio.yml
+  llm-observatorium-ui:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['llm-observatorium-ui'] }}
+    uses: ./.github/workflows/llm-observatorium-ui.yml
+  check-llmscan:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['check-llmscan'] }}
+    uses: ./.github/workflows/check-llmscan.yml
+  lo-calm-mobile:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-calm-mobile'] }}
+    uses: ./.github/workflows/lo-calm-mobile.yml
+  lo-easteregg-verify:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-easteregg-verify'] }}
+    uses: ./.github/workflows/lo-easteregg-verify.yml
+  lo-tactics-source:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-tactics-source'] }}
+    uses: ./.github/workflows/lo-tactics-source.yml
+  lo-v13-verify:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-v13-verify'] }}
+    uses: ./.github/workflows/lo-v13-verify.yml
+  lo-zone-verify:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-zone-verify'] }}
+    uses: ./.github/workflows/lo-zone-verify.yml
+  onderwijsregio-ui:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['onderwijsregio-ui'] }}
+    uses: ./.github/workflows/onderwijsregio-ui.yml
+  verify-wihtml:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['verify-wihtml'] }}
+    uses: ./.github/workflows/verify-wihtml.yml
+  test-html-gallery-auth:
+    needs: scope
+    uses: ./.github/workflows/test-html-gallery-auth.yml
   source-checks:
+    needs: scope
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Check EAIgit ZIP and GitHub journey
+        if: ${{ fromJSON(needs.scope.outputs.selection).eaigit == 'true' }}
         run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs
+      - name: Controleer bewerkrechten en bronintegriteit van de ICT-scan
+        run: |
+          php tests/test_ict_scan_edit_api.php
+          node --test tests/test_ict_scan_assurance_security.mjs
       - name: Check navigation and page structure
         run: node scripts/check-site.mjs
       - name: Controleer scheiding tussen website- en TOPO-publicatie
@@ -81,26 +168,36 @@ jobs:
       - name: Check Science Observatory and observatory navigation
         run: node --test tests/test_science_observatory_navigation.mjs
       - name: Check physics reference values and drawings
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_physics_models.mjs
       - name: Check wave motion and optical models
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_physics_round3.mjs
       - name: Check 53 proefspecifieke natuurkundeberekeningen
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_physics_insights.mjs
       - name: Check physics source references and independent calculations
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_physics_evidence.mjs
       - name: Check independent model references for the other 48 physics labs
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_physics_reference_48.mjs
       - name: Check physics visuals against the simulated equations
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_physics_visual_fidelity.mjs
       - name: Check physical graph axes and comparisons
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_physical_graphs.mjs
       - name: Check animation, graph and measurement agreement
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_graph_animation_alignment.mjs
       - name: Check three learning routes and the projectile target
+        if: ${{ fromJSON(needs.scope.outputs.selection).physics == 'true' }}
         run: node --test tests/test_science_inquiry_variants.mjs
       - name: Verify one KEI login opens the complete LEIF website
         run: node --test tests/test_leif_kei.mjs
       - name: Verify LEIF reader and corrected text
+        if: ${{ fromJSON(needs.scope.outputs.selection).leif == 'true' }}
         run: node --test tests/test_leif_ereader.mjs tests/test_leif_question_copy_mobile.mjs
       - name: Check separate LEIF dossiers, admin rights and codes
         run: node --test tests/test_leif_multitenant.mjs tests/test_leif_account.mjs tests/test_leif_admin_session.mjs tests/test_leif_studio.mjs
@@ -114,7 +211,7 @@ jobs:
   static-checks:
     name: static-checks
     runs-on: ubuntu-latest
-    needs: [scope, source-checks, build-check, ui-check, register-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check]
+    needs: [scope, source-checks, build-check, ui-check, register-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, check-eaiwork-dashboard, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, science-webkit, schuine-worp-studio, llm-observatorium-ui, check-llmscan, lo-calm-mobile, lo-easteregg-verify, lo-tactics-source, lo-v13-verify, lo-zone-verify, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@v4

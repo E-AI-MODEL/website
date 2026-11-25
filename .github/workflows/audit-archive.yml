@@ -1,15 +1,8 @@
 name: Audit archive and linked tools
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'scripts/audit_archive*'
-      - 'scripts/archive_review.py'
-      - 'scripts/prepare_ui.py'
-      - 'assets/site-archive.css'
-      - 'tests/test_archive_review.py'
-      - '.github/workflows/audit-archive.yml'
+  workflow_call:
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:
