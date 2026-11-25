@@ -5,7 +5,7 @@ import {createServer} from 'node:http';
 import {chromium,webkit} from 'playwright';
 import {inspectIsolatedPage,waitForArchivePage,openArchivePage} from './audit_archive_browser_session.mjs';
 
-let badGuestRedirect=false;
+let badGuestRedirect=false,badResearchRedirect=false;
 const server=createServer((req,res)=>{
   res.setHeader('Content-Type','text/html; charset=utf-8');
   if(req.url==='/first/'){
@@ -20,6 +20,16 @@ const server=createServer((req,res)=>{
     const destination=badGuestRedirect?'/second/':req.url.includes('/beheer/')?'/leif/?beheer=1':'/leif/';
     // A deliberately late redirect would outlive the old fixed 60 ms wait.
     res.end('<!doctype html><html><body>Redirecting<script>setTimeout(()=>location.replace('+JSON.stringify(destination)+'),250)</script></body></html>');
+  }else if(req.url==='/verdieping/index.html'){
+    res.end('<!doctype html><html><head><meta http-equiv="refresh" content="0; url=/kennis/"></head><body>Redirecting</body></html>');
+  }else if(req.url==='/kennis/'||req.url==='/kennis/index.html'){
+    const destination=badResearchRedirect?'/second/':'/nl/onderzoek/';
+    res.end('<!doctype html><html><body>Redirecting<script>setTimeout(()=>location.replace('+JSON.stringify(destination)+'),250)</script></body></html>');
+  }else if(req.url==='/nl/onderzoek/'||req.url==='/nl/onderzoek/index.html'){
+    res.end('<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/research-layout.css"></head><body><main><section class="knowledge-routes"><a id="researchLink" href="/second/">Research destination</a></section></main></body></html>');
+  }else if(req.url==='/research-layout.css'){
+    res.setHeader('Content-Type','text/css');
+    setTimeout(()=>res.end('body{margin:0} .knowledge-routes{display:block;width:100%;max-width:100%} #researchLink{display:block;width:100%;max-width:100%}'),350);
   }else if(req.url==='/leif/'||req.url==='/leif/?beheer=1'){
     const admin=req.url.includes('beheer=1');
     res.end('<!doctype html><html><body><section id="accessGate"><form id="accessForm" '+(admin?'hidden':'')+'><input type="password"></form><form id="adminLoginForm" '+(admin?'':'hidden')+'><input type="email"></form></section><main id="appRoot" hidden>Private content</main></body></html>');
@@ -79,8 +89,34 @@ try{
         },base);
         assert.match(wrong.failure,/Timeout|timeout/,engine.name()+' must reject a wrong redirect');
       }finally{badGuestRedirect=false;}
+      for(const route of ['verdieping/index.html','kennis/index.html','nl/onderzoek/index.html']){
+        const research=await inspectIsolatedPage(browser,options,{},async page=>{
+          const result=await openArchivePage(page,route,base);
+          assert.equal(new URL(result.researchDestination).pathname.replace(/index\.html$/,''),'/nl/onderzoek/');
+          const ready=await page.evaluate(()=>({
+            ready:document.readyState,fonts:document.fonts.status,
+            width:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth,
+            style:getComputedStyle(document.querySelector('#researchLink')).display
+          }));
+          assert.equal(ready.ready,'complete');assert.equal(ready.fonts,'loaded');
+          assert.equal(ready.style,'block','Destination stylesheet must be loaded');
+          assert.equal(ready.width,ready.viewport);
+          // Genuine overflow must remain measurable, not be hidden or ignored.
+          await page.locator('#researchLink').evaluate(el=>{el.style.maxWidth='none';el.style.width='420px'});
+          assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2));
+        },base);
+        assert.equal(research.failure,undefined,engine.name()+' '+route+': '+research.failure);
+        assert.deepEqual(research.jsErrors,[]);
+      }
+      badResearchRedirect=true;
+      try{
+        const wrong=await inspectIsolatedPage(browser,options,{},async page=>{
+          await openArchivePage(page,'verdieping/index.html',base,1500);
+        },base);
+        assert.match(wrong.failure,/Timeout|timeout/,engine.name()+' must reject a wrong research redirect');
+      }finally{badResearchRedirect=false;}
       assert.equal(browser.contexts().length,0);
-      console.log(engine.name()+': isolated documents, genuine errors retained, atlas readiness, failed model and four protected LEIF redirects verified');
+      console.log(engine.name()+': isolated documents, genuine errors retained, atlas readiness, failed model and four protected LEIF redirects and the loaded research aliases verified');
     }finally{await browser.close();}
   }
 }finally{await new Promise(resolve=>server.close(resolve));}
