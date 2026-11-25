@@ -1,0 +1,32 @@
+name: Generated source ownership proof
+on:
+  push:
+    branches: [audit/generated-source-ownership]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install generator dependencies
+        run: python -m pip install beautifulsoup4
+      - name: Compare generator output without touching tracked production sources
+        run: python scripts/audit_generated_sources.py --output source-proof/report.json
+      - name: Retain the comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-source-proof-${{ github.run_id }}-${{ github.run_attempt }}
+          path: source-proof/report.json
+          if-no-files-found: error
+          retention-days: 14
