@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from check_astronomy_baseline import BASELINE, check
 from ci_pr_scope import SUITES, affected_suites, job_selection
-from release_candidate import authorize, same_tree, validate_run, validated_manifest
+from release_candidate import authorize, match_trigger, same_tree, validate_run, validated_manifest
 from release_artifact import record
 
 
@@ -72,6 +72,37 @@ class Scenarios(unittest.TestCase):
                 authorize(event, "refs/heads/main", actor, trigger, "owner")
         with self.assertRaises(ValueError):
             validate_run({"event": "pull_request"}, "E-AI-MODEL/website", [])
+
+    def test_automatic_publication_only_from_successful_main_validation(self):
+        repo = "E-AI-MODEL/website"
+        source = dict(name="Valideer de publicatieversie", id=17, run_attempt=1,
+                      head_sha="a"*40, event="push", head_branch="main",
+                      status="completed", conclusion="success",
+                      head_repository={"full_name": repo})
+        delivery = dict(action="completed", repository={"full_name": repo}, workflow_run=source)
+        def check(data, ref="refs/heads/main", run_id="17"):
+            return authorize("workflow_run", ref, "merge-user", "merge-user", "owner",
+                             data, repo, run_id)
+        self.assertEqual(check(delivery), source)
+        match_trigger(source, source)
+        for key, wrong in (("name", "Other workflow"), ("event", "pull_request"),
+                           ("head_branch", "feature"), ("status", "in_progress"),
+                           ("conclusion", "failure"), ("id", 18),
+                           ("head_repository", {"full_name": "other/website"}),
+                           ("run_attempt", 0), ("head_sha", "not-a-sha")):
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                check({**delivery, "workflow_run": {**source, key: wrong}})
+        for wrong in ({**delivery, "action": "requested"},
+                      {**delivery, "repository": {"full_name": "other/website"}}):
+            with self.assertRaises(ValueError):
+                check(wrong)
+        with self.assertRaises(ValueError):
+            check(delivery, "refs/heads/feature")
+        with self.assertRaises(ValueError):
+            check(delivery, run_id="18")
+        for key, wrong in (("id", 18), ("head_sha", "b"*40), ("run_attempt", 2)):
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                match_trigger(source, {**source, key: wrong})
 
     def test_missing_required_gate(self):
         repo = "E-AI-MODEL/website"
