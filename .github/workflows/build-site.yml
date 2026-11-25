@@ -392,6 +392,7 @@ jobs:
           test -s site-build/tools/delf-live/index.html
           test -d site-build/tools/eaispeak/assets
           python scripts/verify_ui.py --root site-build
+          python -m unittest discover -s tests -p 'test_generated_tool_sources.py' -v
           python scripts/release_artifact.py create --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
       - name: Bewaar de bouw voor alle testjobs in deze run
         uses: actions/upload-artifact@v4

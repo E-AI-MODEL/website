@@ -1,0 +1,88 @@
+{
+  "generated": [
+    {
+      "output": "tools/abyss/index.html",
+      "source": "content/abyss/ABYSS.html"
+    },
+    {
+      "output": "tools/eaimesh/start/index.html",
+      "source": "content/eaimesh/start.html"
+    },
+    {
+      "output": "tools/eaistudio/studio/icons/apple-touch-icon.png",
+      "source": "content/eaistudio/pwa/icons/apple-touch-icon.png"
+    },
+    {
+      "output": "tools/eaistudio/studio/icons/icon-192.png",
+      "source": "content/eaistudio/pwa/icons/icon-192.png"
+    },
+    {
+      "output": "tools/eaistudio/studio/icons/icon-512.png",
+      "source": "content/eaistudio/pwa/icons/icon-512.png"
+    },
+    {
+      "output": "tools/eaistudio/studio/index.html",
+      "source": "content/eaistudio/studio.html"
+    },
+    {
+      "output": "tools/eaistudio/studio/manifest.webmanifest",
+      "source": "content/eaistudio/pwa/manifest.webmanifest"
+    },
+    {
+      "output": "tools/eaistudio/studio/service-worker.js",
+      "source": "content/eaistudio/pwa/service-worker.js"
+    },
+    {
+      "output": "tools/melkweg-lab/index.html",
+      "source": "content/melkweg-lab/index.html"
+    },
+    {
+      "output": "tools/science-observatory/labs/gravitatie-banen/index.html",
+      "source": "content/science-observatory/labs/gravitatie-banen.html"
+    },
+    {
+      "output": "tools/science-observatory/labs/leeuw/index.html",
+      "source": "content/science-observatory/labs/leeuw.html"
+    },
+    {
+      "output": "tools/science-observatory/labs/melkweg/index.html",
+      "source": "content/science-observatory/labs/melkweg.html"
+    },
+    {
+      "output": "tools/science-observatory/labs/natuurkunde/index.html",
+      "source": "content/science-observatory/labs/natuurkunde.html"
+    },
+    {
+      "output": "tools/science-observatory/labs/schuine-worp/index.html",
+      "source": "content/science-observatory/labs/schuine-worp.html"
+    },
+    {
+      "output": "tools/science-observatory/labs/wiskunde-a/index.html",
+      "source": "content/science-observatory/labs/wiskunde-a.html"
+    },
+    {
+      "output": "tools/science-observatory/labs/wiskunde-b/index.html",
+      "source": "content/science-observatory/labs/wiskunde-b.html"
+    },
+    {
+      "output": "tools/wihtml/bibliotheek/kansen-twee-worpen.json",
+      "source": "content/wihtml/bibliotheek/kansen-twee-worpen.json"
+    },
+    {
+      "output": "tools/wihtml/bibliotheek/lineaire-verbanden.json",
+      "source": "content/wihtml/bibliotheek/lineaire-verbanden.json"
+    },
+    {
+      "output": "tools/wihtml/studio/index.html",
+      "source": "content/wihtml/studio.html"
+    },
+    {
+      "output": "tools/wihtml/voorbeeld-lesinhoud.json",
+      "source": "content/wihtml/voorbeeld-lesinhoud.json"
+    },
+    {
+      "output": "tools/wihtml/voorbeeld/index.html",
+      "source": "content/wihtml/verdubbelen-halveren-v9.html"
+    }
+  ]
+}
