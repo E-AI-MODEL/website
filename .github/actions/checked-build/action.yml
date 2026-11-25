@@ -7,6 +7,9 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Trust only the checked-out runner workspace for Git provenance
+      shell: bash
+      run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
     - if: inputs.reuse == 'true'
       uses: actions/download-artifact@v4
       with:
