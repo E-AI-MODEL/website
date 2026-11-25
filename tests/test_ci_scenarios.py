@@ -117,7 +117,7 @@ class Scenarios(unittest.TestCase):
 class RetryArtifactScenarios(unittest.TestCase):
     """Replay the observed attempt-1 build / attempt-3 green validation shape."""
     repo = "E-AI-MODEL/website"
-    run = {"id": 17, "run_attempt": 3, "head_sha": "a"*40,
+    workflow_run = {"id": 17, "run_attempt": 3, "head_sha": "a"*40,
            "repository": {"id": 21}, "head_repository": {"id": 21}}
 
     def producer(self, attempt=3, target="site", minute="36"):
@@ -125,7 +125,7 @@ class RetryArtifactScenarios(unittest.TestCase):
                       if target == "site" else ("topo-package", "Run actions/upload-artifact@v4"))
         def time(second):
             return f"2026-11-25T21:{minute}:{second:02d}Z"
-        return dict(name=name, run_id=17, run_attempt=attempt, head_sha=self.run["head_sha"],
+        return dict(name=name, run_id=17, run_attempt=attempt, head_sha=self.workflow_run["head_sha"],
                     status="completed", conclusion="success", started_at=time(1), completed_at=time(38),
                     steps=[dict(name=step, status="completed", conclusion="success",
                                 started_at=time(31), completed_at=time(35))])
@@ -133,12 +133,12 @@ class RetryArtifactScenarios(unittest.TestCase):
     def artifact(self, attempt=1, target="site", minute="36"):
         return dict(id=100+attempt, name=f"{target}-release-17-{attempt}", expired=False,
                     created_at=f"2026-11-25T21:{minute}:34Z", digest="sha256:"+"c"*64,
-                    workflow_run=dict(id=17, head_sha=self.run["head_sha"], head_branch="main",
+                    workflow_run=dict(id=17, head_sha=self.workflow_run["head_sha"], head_branch="main",
                                       repository_id=21, head_repository_id=21))
 
     def select(self, artifacts, jobs=None, earlier=None, target="site"):
         return select_release_artifact(
-            target, self.run, [self.producer(target=target)] if jobs is None else jobs,
+            target, self.workflow_run, [self.producer(target=target)] if jobs is None else jobs,
             artifacts, lambda attempt: [self.producer(attempt, target=target)]
             if earlier is None else earlier(attempt))
 
@@ -154,15 +154,15 @@ class RetryArtifactScenarios(unittest.TestCase):
             root = Path(d)
             (root / "index.html").write_text("getest")
             tree = "b"*40
-            manifest = dict(record(root, self.run["head_sha"]), schema=2,
+            manifest = dict(record(root, self.workflow_run["head_sha"]), schema=2,
                             provenance=dict(tree=tree, run="17", attempt="1", repository=self.repo))
-            validated_manifest(root, manifest, self.repo, self.run, tree, 1)
+            validated_manifest(root, manifest, self.repo, self.workflow_run, tree, 1)
             for wrong in (0, 2, 3, 4):
                 with self.subTest(attempt=wrong), self.assertRaises(ValueError):
-                    validated_manifest(root, manifest, self.repo, self.run, tree, wrong)
+                    validated_manifest(root, manifest, self.repo, self.workflow_run, tree, wrong)
             (root / "index.html").write_text("gewijzigd")
             with self.assertRaises(ValueError):
-                validated_manifest(root, manifest, self.repo, self.run, tree, 1)
+                validated_manifest(root, manifest, self.repo, self.workflow_run, tree, 1)
 
     def test_current_attempt_for_topo_and_rebuilt_site(self):
         for target in ("site", "topo"):
