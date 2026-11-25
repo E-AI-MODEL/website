@@ -29,3 +29,18 @@ class EAIspeakPublishTests(unittest.TestCase):
         self.assertIn("eaispeak-check:",gate)
         self.assertIn("uses: ./.github/workflows/eaispeak.yml",gate)
         self.assertIn("eaigit-check, eaispeak-check]",gate)
+
+    def test_public_links_depend_on_tested_eaispeak_bundle(self):
+        from sys import path
+        path.insert(0,str(ROOT/"scripts"))
+        from check_release_gate import ALWAYS
+        self.assertIn("eaispeak-check",ALWAYS)
+        gate=(WORKFLOWS/"site-check.yml").read_text()
+        self.assertIn("  build-check:\n    needs: eaispeak-check",gate)
+        self.assertIn("  ui-check:\n    needs: [scope, eaispeak-check]",gate)
+        for workflow in ("build-site.yml","verify-ui.yml"):
+            content=(WORKFLOWS/workflow).read_text()
+            self.assertLess(content.index('name: eaispeak-tested-build'),content.index('python scripts/build_site.py --sources'))
+            self.assertIn('cp -a "$bundle/tools/eaispeak/." tools/eaispeak/dist/',content)
+        ui=(WORKFLOWS/"verify-ui.yml").read_text()
+        self.assertLess(ui.index("Voeg EAIspeak exact"),ui.index("Verify one canonical hub"))

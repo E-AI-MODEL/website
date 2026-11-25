@@ -194,7 +194,7 @@
       "parent": null,
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "/tools/",
+      "redirect_target": "/nl/tools/",
       "in_committed_sitemap": false,
       "search_scope": "niet_indexeren"
     },
@@ -1196,12 +1196,13 @@
       "file": "tools/eaispeak/index.html",
       "title": "EAIspeak | praten, vertalen en luisteren",
       "kind": "toepassing",
-      "category": "Hulpmiddelen · Vrij spreken en vertalen",
-      "review": "proef_zelfstandig_gepubliceerd",
+      "category": "Hulpmiddelen · Spraak en vertalen",
+      "review": "opgenomen_in_algemeen_hulpmiddelenoverzicht",
       "parent": "page:/tools/",
       "family": "hulpmiddelen",
-      "in_committed_sitemap": false,
-      "search_scope": "via_verwijzing"
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen",
+      "public_title_nl": "EAIspeak"
     },
     {
       "id": "page:/tools/abyss/",

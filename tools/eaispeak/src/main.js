@@ -3,10 +3,12 @@ import {startSpeechBridge,probeSpeechBridge} from './speech-bridge.mjs';
 import {validateSpeechPair} from './speech-engines.mjs';
 import {validateTranslationPair,localTranscriptEndpoint,captionLines,createFinalQueue} from './live-session.mjs';
 import {createPhononVoice} from './phonon-voice.js';
+import {activationGate,liveKey,liveNeedsModel,ROUTES,LIVE_SAMPLES,guidance} from './activation.mjs';
 const $ = id => document.getElementById(id);
 const stage=$('stage'), surface=$('displayText');
 const synth=window.speechSynthesis;
 let active=null, generation=0, translator=null, translatorKey='', preparing=null;
+const liveGate=activationGate();
 let microphoneTest=null, microphoneTimer=null, finalLines=[], draftText='', records=[], voicePending=0, reading=false;
 const phonon=createPhononVoice({status:(m,t)=>feedback('frenchStatus',m,t),onReady:()=>componentStatus('frenchStatus','ready','Franse audiobuffer geproduceerd'),latency:m=>feedback('latencyStatus',m)});
 function feedback(id,message,type=''){
@@ -55,11 +57,23 @@ function syncSettings(){
   $('stageStop').hidden=!active;$('stageStop').disabled=Boolean(active?.finishing);
   $('prepareTranslate').disabled=Boolean(active||preparing);
   $('downloadTranscript').disabled=!records.length;
+  const route=ROUTES[s.recognition],verified=liveGate.has(liveKey(s)),needs=liveNeedsModel(s);
+  $('liveGuideChoice').textContent=route.name+(s.mode==='translate'&&!isNative?' · '+(s.route==='chrome'?'Chrome Translator':'Lokaal NL→FR model'):'')+'. '+route.help;
+  $('liveGuideHelp').hidden=!route.url;
+  $('liveGuideInstructions').textContent=(route.command||route.help)+'\nLaat de server draaien. Controleer het adres bij Spraak en vertaling. Een HTTPS-browser kan een vertrouwde lokale WSS-verbinding vereisen.';
+  if(route.url)$('liveGuideDocs').href=route.url;
+  $('liveGuideSettings').disabled=Boolean(active||preparing);
+  if(preparing){guidance($('liveGuideStatus'),'Bezig met verbinden en testen…','busy');}
+  else if(verified){guidance($('liveGuideStatus'),'Gekozen route gecontroleerd. Spraakproef volgt bij Start.','ready');}
+  else if(!needs){guidance($('liveGuideStatus'),'Geen model laden nodig. De microfoon wordt bij Start geopend.');}
+  else if($('liveGuideStatus').dataset.state!=='error'){guidance($('liveGuideStatus'),'Verbind en bereid de gekozen route voor.');}
+  $('start').textContent=needs&&!verified?'Verbind en bereid voor':'Start';
+  $('liveGuideNext').textContent=needs&&!verified?'Bereid eerst de gekozen route voor.':'Start en geef de microfoon toestemming. Stop blijft beschikbaar.';
 }
 for(const id of ['liveMode','liveSource','liveTarget','translationEngine','translationDrafts','liveSpeak','liveRecognition','liveEndpoint']){
   $(id).addEventListener('change',()=>{
     if(id==='liveRecognition')$('liveEndpoint').value=['whisper','apple'].includes($('liveRecognition').value)?'ws://localhost:8766/eaispeak':'ws://localhost:8765/eaispeak';
-    feedback('translationStatus','Instellingen gewijzigd. Bereid de gekozen route zo nodig voor.');syncSettings();
+    liveGate.clear();guidance($('liveGuideStatus'),'Instellingen gewijzigd. Controleer de nieuwe route.');feedback('translationStatus','Instellingen gewijzigd. Bereid de gekozen route zo nodig voor.');syncSettings();
   });
 }
 async function getTranslator(s){
@@ -80,22 +94,26 @@ async function getTranslator(s){
 }
 async function prepareTranslation(){
   if(active||preparing)return;
-  const s=settings();
+  const s=settings(),key=liveKey(s);liveGate.clear();
   preparing=(async()=>{
     validate(s);componentStatus('translationStatus','busy','Gekozen route voorbereiden');
+    if(s.recognition==='browser'&&!(window.SpeechRecognition||window.webkitSpeechRecognition))throw new Error('Deze browser heeft geen spraakherkenning. Kies Apple of Whisper via Spraak en vertaling.');
     if(s.recognition!=='browser'){
       const target=native(s)?s.target:s.source;
       const probe=await probeSpeechBridge({endpoint:local(s)?localTranscriptEndpoint(s.endpoint):s.endpoint,engine:s.recognition,sourceLanguage:s.source,targetLanguage:target,onStatus:m=>feedback('translationStatus',m)});s.provider=probe.provider;
     }
-    if(s.mode==='translate'&&!native(s))await getTranslator(s);
+    if(s.mode==='translate'&&!native(s)){const t=await getTranslator(s);const answer=await t.translate(LIVE_SAMPLES[s.source]);if(typeof answer!=='string'||!answer.trim())throw new Error('Het vertaalmodel gaf geen tekst terug.');}
+    if(key!==liveKey(settings()))throw new Error('Instellingen gewijzigd. Verbind opnieuw.');
+    liveGate.mark(key);
     feedback('translationStatus','Route voorbereid'+(s.provider?' · '+s.provider:'')+'. Nog geen live audio getest.','good');
     componentStatus('translationStatus','idle','Route voorbereid, nog niet live getest');
   })();
   syncSettings();
-  try{await preparing;}catch(e){feedback('translationStatus',e.message,'bad');componentStatus('translationStatus','error','Voorbereiding mislukt',e);}
+  try{await preparing;}catch(e){liveGate.clear();guidance($('liveGuideStatus'),e.message+' Bekijk de gekozen route of installatiehulp en probeer opnieuw.','error');feedback('translationStatus',e.message,'bad');componentStatus('translationStatus','error','Voorbereiding mislukt',e);}
   finally{preparing=null;syncSettings();}
 }
 $('prepareTranslate').onclick=prepareTranslation;
+$('liveGuideSettings').onclick=()=>{$('liveRouteSettings').open=true;$('liveRecognition').focus();};
 function renderCaptions(){
   stage.dataset.display='captions';
   if(!surface.classList.contains('caption-layout')){
@@ -156,7 +174,7 @@ async function completeSession(s){
   await s.queue.idle();
   if(active===s)stopLive('Gestopt. Laatste tekst verwerkt.');
 }
-function fail(error){stopLive(error.message||String(error));feedback('runtimeStatus',error.message||String(error),'bad');panel(true);}
+function fail(error){liveGate.clear();guidance($('liveGuideStatus'),error.message||String(error),'error');stopLive(error.message||String(error));feedback('runtimeStatus',error.message||String(error),'bad');panel(true);}
 function submitFinal(text,s){const clean=text.trim();if(active!==s||!clean)return;s.draftVersion++;clearTimeout(s.draftTimer);draftText='';s.queue.add(clean);}
 function submitDraft(text,s){
   if(active!==s||s.finishing||!s.settings.drafts)return;
@@ -187,7 +205,7 @@ async function startLive(){
   let config;
   try{
     config=validate(settings());
-    if(config.mode==='translate'&&!native(config)&&translatorKey!==config.route+':'+config.source+':'+config.target){feedback('runtimeStatus','Klik eerst op Voorbereiden om het vertaalmodel te laden.','bad');return;}
+    if(liveNeedsModel(config)&&!liveGate.has(liveKey(config))){await prepareTranslation();if(liveGate.has(liveKey(config)))feedback('runtimeStatus','Route gecontroleerd. Klik op Start om de microfoon te openen.','good');return;}
     if(config.recognition==='browser'&&!(window.SpeechRecognition||window.webkitSpeechRecognition))throw new Error('Browserherkenning is niet beschikbaar.');
     window.dispatchEvent(new Event('eaispeak-stop-conversation'));stopReading();stopMicTest();
     const s={settings:config,abort:new AbortController(),draftVersion:0,draftTimer:null,recognition:null,bridge:null};
@@ -265,6 +283,32 @@ $('readStart').onclick=()=>{
   const error=e=>{if(reading){reading=false;feedback('readStatus',e.message,'bad');}};
   if($('readEngine').value==='phonon')phonon.speak(text).then(finish,error);else speakBrowser(text,lang,{onEnd:finish,onError:error});
 };
+function syncReadGuide(){
+  const lang=$('readLanguage').value,local=$('readEngine').value==='phonon';
+  $('readGuideChoice').textContent=local?'Phonon · Frans. Eerste download nodig; je kunt ook eigen modelbestanden kiezen.':'Browserstem · '+$('readLanguage').selectedOptions[0].textContent+'. Geen apart model installeren.';
+  $('readGuideLoad').hidden=!local;$('readGuideSettings').hidden=!local;$('readGuideLoad').disabled=phonon.isLoading();
+  $('readGuideNext').textContent='Typ of plak eigen tekst en kies Lees voor.';
+  guidance($('readGuideStatus'),local?(lang!=='fr-FR'?'Kies Frans voor deze stem.':phonon.isReady()?'Franse stem geladen. Test de stem.':'Laad eerst het Franse stemmodel.'):'Klik op Test gekozen stem om te luisteren.');
+}
+for(const id of ['readLanguage','readEngine'])$(id).addEventListener('change',()=>{stopReading();syncReadGuide();});
+$('readGuideSettings').onclick=()=>{$('tab-stem').click();$('modelFolder').scrollIntoView({block:'center'});};
+$('readGuideLoad').onclick=async()=>{
+  if($('readLanguage').value!=='fr-FR'){guidance($('readGuideStatus'),'Kies eerst Frans.','error');return;}
+  $('readGuideLoad').disabled=true;guidance($('readGuideStatus'),'Franse stem laden…','busy');
+  await phonon.loadPublic();syncReadGuide();
+  if(!phonon.isReady())guidance($('readGuideStatus'),'Laden mislukt. Bekijk Stem voor de foutmelding of kies de browserstem.','error');
+};
+$('readPrepare').onclick=()=>{
+  if(active)stopLive();window.dispatchEvent(new Event('eaispeak-stop-conversation'));stopReading();
+  const lang=$('readLanguage').value,local=$('readEngine').value==='phonon';
+  const ok=()=>guidance($('readGuideStatus'),'Voorbeeld afgespeeld. Controleer zelf of je de stem hoort.','ready');
+  const error=e=>guidance($('readGuideStatus'),String(e.message||e),'error');
+  if(local){
+    if(lang!=='fr-FR'||!phonon.isReady()){error(new Error('Kies Frans en laad eerst de Phonon-stem.'));return;}
+    guidance($('readGuideStatus'),'Voorbeeld afspelen…','busy');phonon.speak(LIVE_SAMPLES[lang]).then(ok,error);
+  }else{guidance($('readGuideStatus'),'Voorbeeld afspelen…','busy');speakBrowser(LIVE_SAMPLES[lang],lang,{onEnd:ok,onError:error});}
+};
+$('tab-sessie').addEventListener('click',syncReadGuide);syncReadGuide();
 $('fullscreen').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.();
 syncSettings();
 panel(true);

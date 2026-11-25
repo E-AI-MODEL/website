@@ -42,10 +42,10 @@ try{
       await page.waitForFunction(()=>document.querySelector('#phaseStatus').textContent==='Gestopt');
       assert.match(await page.locator('#liveTranscript').inputValue(),/laatste woorden/);
       await page.locator('#liveMode').selectOption('translate');
-      const settings=page.locator('#page-podium details').first();
-      await settings.locator('summary').click();
-      await page.locator('#prepareTranslate').click();
+      assert.equal(await page.locator('#start').textContent(),'Verbind en bereid voor');
+      await page.locator('#start').click();
       await page.waitForFunction(()=>document.querySelector('#translationStatus').textContent.includes('Route voorbereid'));
+      assert.equal(await page.evaluate(()=>window.__recognition),null,'preparation does not open the mic');
       await page.locator('#start').click();
       await page.waitForFunction(()=>document.querySelector('#stage').dataset.phase==='live' && window.__recognition);
       await page.evaluate(()=>window.__recognition.emit('Goedemorgen.'));
@@ -57,6 +57,24 @@ try{
       await page.locator('.mist-voice-portal').waitFor({state:'visible'});
       assert.equal(await page.locator('#freeTalkInputLang').count(),1);
       await page.locator('#freeTalkMenuClose').click();
+      assert.ok(await page.locator('#freeTalkSpeak').isDisabled());
+      await page.route('http://localhost:11434/**',async route=>{
+        const url=route.request().url();
+        const headers={'access-control-allow-origin':'*','access-control-allow-headers':'content-type','access-control-allow-methods':'GET, POST, OPTIONS'};
+        if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers});
+        if(url.endsWith('/api/tags'))return route.fulfill({json:{models:[{name:'test:local'}]},headers});
+        if(url.endsWith('/api/generate'))return route.fulfill({json:{response:'De verbinding werkt.'},headers});
+        return route.abort();
+      });
+      await page.evaluate(()=>{const e=document.getElementById('freeTalkEngine');e.value='ollama';e.dispatchEvent(new Event('change',{bubbles:true}));});
+      await page.locator('#talkGuidePrepare').click();
+      await page.waitForFunction(()=>document.getElementById('freeTalkOllamaModel').value==='test:local');
+      await page.locator('#freeTalkMenuClose').click();
+      await page.locator('#talkGuidePrepare').click();
+      await page.waitForFunction(()=>document.getElementById('talkGuideStatus').dataset.state==='ready');
+      assert.equal(await page.locator('#freeTalkSpeak').isDisabled(),false);
+      await page.evaluate(()=>{const e=document.getElementById('freeTalkOutputLang');e.value=e.value==='nl-NL'?'en-US':'nl-NL';e.dispatchEvent(new Event('change',{bubbles:true}));});
+      assert.ok(await page.locator('#freeTalkSpeak').isDisabled());
       await page.locator('#extraStudioTabs > summary').click();
       await page.locator('#tab-sessie').click();
       await page.locator('#readText').fill('Een eigen tekst.');

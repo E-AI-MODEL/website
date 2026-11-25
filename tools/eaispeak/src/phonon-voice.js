@@ -41,5 +41,5 @@ export function createPhononVoice({status=()=>{},onReady=()=>{},latency=()=>{}}=
       if(!own.signal.aborted)status('Stem afgespeeld.','good');
     }finally{if(controller===own)stop();}
   }
-  return {loadPublic,loadFiles,speak,stop};
+  return {loadPublic,loadFiles,speak,stop,isReady:()=>Boolean(model)&&!loading,isLoading:()=>loading};
 }

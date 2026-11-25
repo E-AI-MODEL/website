@@ -2,9 +2,9 @@
 import json
 import os
 
-ALWAYS = ("scope", "source-checks", "build-check", "ui-check", "register-check")
+ALWAYS = ("scope", "source-checks", "build-check", "ui-check", "register-check", "eaispeak-check")
 SCOPED = {"ict-check": "ictscan", "ict-webkit": "ictscan",
-          "topo-check": "topo", "anatomy-webkit": "anatomy", "eaigit-check": "eaigit", "eaispeak-check": "eaispeak"}
+          "topo-check": "topo", "anatomy-webkit": "anatomy", "eaigit-check": "eaigit"}
 
 
 def failures(needs, skip_topo=False):
