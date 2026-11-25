@@ -44,10 +44,13 @@ def main():
     parser.add_argument("--output", required=True)
     parser.add_argument("--all", action="store_true")
     parser.add_argument("--published")
+    parser.add_argument("--include-topo", action="store_true")
     parser.add_argument("changed_files", nargs="*")
     args = parser.parse_args()
     paths = args.changed_files if args.published is None else changes_since(args.published)
     selected = set(SUITES) if args.all else affected_suites(paths)
+    if args.include_topo:
+        selected.add("topo")
     flags = {suite: str(suite in selected).lower() for suite in SUITES}
     with open(args.output, "a", encoding="utf-8") as out:
         for key, value in flags.items():

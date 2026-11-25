@@ -25,7 +25,7 @@ class PublicationOwnershipTests(unittest.TestCase):
                 source = (WORKFLOWS / workflow).read_text(encoding="utf-8")
                 self.assertRegex(
                     source,
-                    r"(?m)^concurrency:\s*\n\s+group:\s*theory7-production\s*\n\s+cancel-in-progress:\s*false",
+                    r"(?m)^\s*concurrency:\s*\n\s+group:\s*theory7-production\s*\n\s+cancel-in-progress:\s*false",
                 )
 
     def test_build_job_never_pushes_generated_pages_to_main(self):
@@ -34,10 +34,10 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertNotIn("rm -rf assets publicaties tools", source)
         self.assertIn("contents: read", source)
         deploy = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
-        self.assertIn("uses: ./.github/workflows/site-check.yml", deploy)
-        self.assertIn("needs: release-check", deploy)
-        self.assertIn("actions/download-artifact@v4", deploy)
-        self.assertIn("scripts/release_artifact.py verify", deploy)
+        validate = (WORKFLOWS / "validate-main.yml").read_text()
+        self.assertIn("uses: ./.github/workflows/site-check.yml", validate)
+        self.assertIn("scripts/release_candidate.py", deploy)
+        self.assertNotIn("uses: ./.github/workflows/site-check.yml", deploy)
         self.assertNotIn("python scripts/build_site.py", deploy)
         ui = (WORKFLOWS / "build-site.yml").read_text(encoding="utf-8")
         self.assertIn("scripts/release_artifact.py create", ui)
@@ -76,7 +76,7 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertIn("group: topo-production", source)
         self.assertNotIn("group: theory7-production", source)
         general = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
-        self.assertIn("- 'topo/**'", general)
+        self.assertIn("--exclude-glob topo/", general)
 
     def test_quick_recovery_uploads_are_manual_only(self):
         for workflow in (
@@ -92,11 +92,13 @@ class PublicationOwnershipTests(unittest.TestCase):
                 self.assertIn("  workflow_dispatch:", events)
                 self.assertNotIn("  push:", events)
 
-    def test_main_site_release_is_still_automatic(self):
+    def test_main_validation_is_automatic_and_publication_requires_the_owner(self):
         source = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
         events = source.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
-        self.assertIn("  push:", events)
-        self.assertIn("branches: [main]", events)
+        self.assertNotIn("  push:", events)
+        self.assertIn("github.actor == github.repository_owner", source)
+        self.assertIn("github.triggering_actor == github.repository_owner", source)
+        self.assertIn("  push:", (WORKFLOWS / "validate-main.yml").read_text())
 
     def test_release_gate_and_topo_browser_cannot_be_bypassed(self):
         gate = (WORKFLOWS / "site-check.yml").read_text(encoding="utf-8")
@@ -105,8 +107,8 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertIn("always()", gate)
         self.assertIn("scripts/check_release_gate.py", gate)
         topo = (WORKFLOWS / "deploy-topo-theory7.yml").read_text(encoding="utf-8")
-        self.assertIn("needs: browser-check", topo)
-        self.assertIn("uses: ./.github/workflows/topo-mobile-verify.yml", topo)
+        self.assertIn("scripts/release_candidate.py", topo)
+        self.assertIn("uses: ./.github/workflows/topo-mobile-verify.yml", gate)
         delf = (WORKFLOWS / "deploy-delf-preview.yml").read_text(encoding="utf-8")
         self.assertNotIn("Wait until main-site deployment is finished", delf)
 

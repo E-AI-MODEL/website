@@ -33,10 +33,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           published=""
+          args=()
           if [[ "$GITHUB_EVENT_NAME" == pull_request || "$GITHUB_EVENT_NAME" == push ]]; then
-            published=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/deploy-theory7.yml/runs?branch=main&status=success&per_page=1" --jq '.workflow_runs[0].head_sha // empty') || published=""
+            delivery=$(gh api "repos/$GITHUB_REPOSITORY/deployments?environment=theory7-site&per_page=1" --jq '.[0].id // empty') || delivery=""
+            if [[ -n "$delivery" ]]; then
+              status=$(gh api "repos/$GITHUB_REPOSITORY/deployments/$delivery/statuses?per_page=1" --jq '.[0].state') || status=""
+              if [[ "$status" == success ]]; then
+                published=$(gh api "repos/$GITHUB_REPOSITORY/deployments/$delivery" --jq .sha) || published=""
+              fi
+            fi
           fi
-          python3 scripts/ci_pr_scope.py --published "$published" --output "$GITHUB_OUTPUT"
+          if [[ "$GITHUB_EVENT_NAME" == push ]]; then args+=(--include-topo); fi
+          python3 scripts/ci_pr_scope.py --published "$published" --output "$GITHUB_OUTPUT" "${args[@]}"
+
   build-check:
     needs: scope
     with:

@@ -8,19 +8,18 @@ permissions:
   contents: read
   actions: read
 
-concurrency:
-  group: theory7-production
-  cancel-in-progress: false
 
 jobs:
-  publish:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
+      - uses: actions/checkout@v4
       - name: Checkout tested DELF version
         uses: actions/checkout@v4
         with:
+          path: pinned-delf
           ref: 446e5e24929521f70c94092bd07cf959a0c92794
 
       - name: Node.js
@@ -31,6 +30,8 @@ jobs:
       - name: Build and test DELF only
         run: |
           set -euo pipefail
+          mkdir -p tools
+          cp -R pinned-delf/tools/delf-live tools/delf-live
           npm install --prefix tools/delf-live --no-audit --no-fund
           npm run test --prefix tools/delf-live
           npm run build --prefix tools/delf-live
@@ -42,6 +43,40 @@ jobs:
 
       # De gedeelde concurrency-groep serialiseert de publicatie al.
 
+      - name: Leg de vooraf gecontroleerde overdrachtsbestanden vast
+        run: python3 scripts/recovery_files.py create tools/delf-live/dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            recovery-files/
+            recovery-manifest.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+  publish:
+    needs: prepare
+    environment: theory7-herstel
+    concurrency:
+      group: theory7-production
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controleer de goedkeuring van de eigenaar
+        env:
+          OWNER_ID: ${{ github.repository_owner_id }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" |
+            jq -e --arg id "$OWNER_ID" 'any(.[]; .state == "approved" and (.user.id|tostring) == $id and any(.environments[]; .name == "theory7-herstel"))'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: python3 scripts/recovery_files.py verify
+      - run: cp -a recovery-files/. .
       - name: Install FTPS client
         run: |
           sudo apt-get update
@@ -66,6 +101,7 @@ jobs:
           HOST: ftp.eaimodel.nl
           FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        working-directory: recovery-files
         run: |
           set -euo pipefail
           test -n "$FTP_USER"
