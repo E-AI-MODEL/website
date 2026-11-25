@@ -51,6 +51,7 @@ jobs:
     with:
       selection: ${{ needs.scope.outputs.selection }}
       eaispeak_artifact: true
+      central_validation: true
     uses: ./.github/workflows/build-site.yml
   ui-check:
     needs: [scope, build-check]
@@ -159,9 +160,12 @@ jobs:
     uses: ./.github/workflows/astronomy-validation.yml
   source-checks:
     needs: scope
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Check EAIgit ZIP and GitHub journey
         if: ${{ fromJSON(needs.scope.outputs.selection).eaigit == 'true' }}
         run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs

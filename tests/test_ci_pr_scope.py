@@ -52,10 +52,17 @@ class CiPrScopeTests(unittest.TestCase):
     def test_ict_build_checks_keep_publication_protection_unconditional(self):
         root = Path(__file__).resolve().parents[1]
         build = (root / ".github/workflows/build-site.yml").read_text(encoding="utf-8")
-        for name in ("Check local-only ICT scan publishing", "Controleer verborgen lokale ICT-scan"):
-            step = build.split("      - name: " + name + "\n", 1)[1].split("      - name:", 1)[0]
-            self.assertNotIn("if:", step)
-            self.assertIn("test_ict_scan_publish.py", step)
+        source = build.split("      - name: Check local-only ICT scan publishing\n", 1)[1].split("      - name:", 1)[0]
+        output = build.split("      - name: Controleer verborgen lokale ICT-scan\n", 1)[1].split("      - name:", 1)[0]
+        self.assertNotIn("if:", source)
+        self.assertNotIn("if:", output)
+        self.assertIn("test_ict_scan_publish.py", source)
+        self.assertEqual(build.count("test_ict_scan_publish.py"), 1)
+        self.assertIn("test ! -e site-build/tools/ict-scan/bronnen", output)
+        self.assertIn("test -s site-build/tools/ict-scan/index.html", output)
+        self.assertIn("test_ict_scan_github_sync.mjs", output)
+        self.assertEqual(build.count("test_ict_scan_github_sync.mjs"), 1)
+        self.assertIn("site-build/sitemap.xml", output)
         for name in ("Test ICT scan Excel reports and AI categorization", "Controleer de brondata en JSON-import van Applicatielandschap 2026"):
             step = build.split("      - name: " + name + "\n", 1)[1].split("      - name:", 1)[0]
             self.assertIn("steps.scope.outputs.ictscan == 'true'", step)

@@ -113,3 +113,34 @@ class ReleaseGateTests(unittest.TestCase):
         for name in ("lo-calm-mobile", "lo-easteregg-verify", "lo-v13-verify", "lo-zone-verify"):
             self.assertNotIn(name, SCOPED)
             self.assertIn("workflow_dispatch:", (root / ".github/workflows" / (name + ".yml")).read_text())
+
+    def test_shared_source_tests_still_run_under_the_central_gate(self):
+        root = Path(__file__).resolve().parents[1]
+        gate = (root / ".github/workflows/site-check.yml").read_text()
+        build = (root / ".github/workflows/build-site.yml").read_text()
+        ui = (root / ".github/workflows/verify-ui.yml").read_text()
+        self.assertIn("central_validation: true", gate)
+        self.assertIn("source-checks", ALWAYS)
+        self.assertIn("ui-check", ALWAYS)
+        self.assertIn("test-html-gallery-auth", ALWAYS)
+        for test in (
+            "test_projecthulp.mjs", "test_eaigit_help.mjs", "test_eaigit_single_file.mjs",
+            "test_science_physics_models.mjs", "test_science_physics_round3.mjs",
+            "test_science_physics_insights.mjs", "test_science_physics_evidence.mjs",
+            "test_science_physics_reference_48.mjs", "test_science_physics_visual_fidelity.mjs",
+            "test_science_physical_graphs.mjs", "test_science_graph_animation_alignment.mjs",
+            "test_science_inquiry_variants.mjs", "test_leif_kei.mjs", "test_leif_multitenant.mjs",
+            "test_ci_pr_scope.py",
+        ):
+            self.assertIn(test, gate)
+            self.assertIn(test, build)
+        for test in ("test_dashboard_cards.py", "test_story_cards.py"):
+            self.assertIn(test, ui)
+        # These are different test objects before and after site preparation.
+        for test in ("test_tool_launch.py", "test_llm_observatorium_source.py"):
+            self.assertIn(test, build)
+        self.assertIn("test_tool_launch.py", ui)
+        self.assertIn("test_llm_observatorium_source.py", (root / ".github/workflows/llm-observatorium-ui.yml").read_text())
+        for test in ("test_html_galerij_admin.mjs", "test_eai_site_admin.mjs", "test_html_gallery_sqlite.mjs"):
+            self.assertIn(test, (root / ".github/workflows/test-html-gallery-auth.yml").read_text())
+        self.assertIn("test_eaigame.mjs", (root / ".github/workflows/eaigame.yml").read_text())
