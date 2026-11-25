@@ -1,0 +1,146 @@
+bestand,workflow/job#stap (zie stappen.csv),letterlijke paden in test; dynamische paden vereisen brede selectie
+scripts/audit_anatomie_content.py,anatomie-webkit/webkit#5,content/anatomie/guide.js | content/anatomie/sourceMap.js | content/anatomie/synonyms.nl.json | tools/anatomie/data
+scripts/audit_archive.py,audit-archive/audit#5,
+scripts/audit_archive_functional.mjs,audit-archive/audit#7,
+scripts/audit_archive_ui.mjs,audit-archive/audit#6,
+scripts/audit_hart_glb.mjs,anatomie-webkit/webkit#9,tools/anatomie/models/cardiovascular.glb
+scripts/build_anatomie.py,anatomie-webkit/webkit#13 | audit-archive/audit#4 | build-site/build#30 | verify-ui/verify#8,./ui/eaiExplore.js | ./ui/sidebar.js | site-build/tools/anatomie | tools/anatomie | tools/eai-extract-hart-rich.mjs | tools/eai-extract-hart.mjs
+scripts/build_site.py,audit-archive/audit#4 | build-site/build#27 | check-eaiwork-dashboard/visual-dashboard#5 | check-own-exports/exports#4 | deploy-vakinhoud-quick/publish#3 | ict-scan-webkit/webkit#4 | llm-observatorium-ui/llm-browser#5 | schuine-worp-studio/browser#5 | science-fixed-workspace/physics-fixed#5 | science-studio-webkit/studio-webkit#5 | science-webkit/mobile-webkit#5 | verify-live-cloudflare/verify#2 | verify-ui/verify#7 | verify-wihtml/wihtml#5,assets/article-chrome.css | assets/eai-logo.svg | assets/eaigit/wizard.mjs | assets/editorial-finish.css | assets/projecthulp/analyse.mjs | assets/projecthulp/inhoudscontrole.mjs | assets/projecthulp/onderzoek-worker.mjs | assets/site.css | content/de-vraag-die-we-vergeten.html | content/didactic-models.json | content/eaiwork-dashboard.html | content/legacy | content/workforms.json | tools/abyss/index.html | tools/beyond-explainability/index.html | tools/eaigit/hulp/index.html | tools/eaigit/index.html | tools/eaigit/prompts/index.html | tools/eaimesh/index.html | tools/eaistudio/index.html | tools/eaiwork/index.html | tools/index.html | tools/llm-observatorium/index.html | tools/lo-aanvalslab/index.html | tools/melkweg-lab/index.html | tools/projecthulp/index.html | tools/prompt-framework/index.html | tools/science-observatory/index.html | tools/van-proces-naar-prompt/index.html | tools/wihtml/bibliotheek/ | tools/wihtml/bibliotheek/index.html | tools/wihtml/index.html | tools/wihtml/studio/index.html | tools/wihtml/voorbeeld-lesinhoud.json | tools/wihtml/voorbeeld/index.html
+scripts/check_ict_assurance.mjs,check-ict-assurance/check#6,../tools/ict-scan/assurance/adapter.js | ../tools/ict-scan/assurance/engine.js | ../tools/ict-scan/assurance/profile.js | tools/ict-scan/assurance/adapter.js | tools/ict-scan/assurance/engine.js | tools/ict-scan/assurance/evaluation-corpus.json | tools/ict-scan/assurance/profile.js | tools/ict-scan/assurance/profiles/emmauscollege.json | tools/ict-scan/assurance/source-register.js | tools/ict-scan/frameworks.json
+scripts/check_own_exports.mjs,check-own-exports/exports#5,
+scripts/check_own_verifier.mjs,check-own-exports/exports#6,
+scripts/check_release_gate.py,site-check/static-checks#2,
+scripts/check_website_register.py,check-website-register/register#3,assets/eaigame-questions.js | catalog/taxonomie.json | catalog/website-register.json | content/abyss/ABYSS.html | content/eaimesh/start.html | content/eaistudio/studio.html | content/eaiwork-dashboard.html | content/llm-observatorium/index.html | content/melkweg-lab/index.html | content/science-observatory/labs/gravitatie-banen.html | content/science-observatory/labs/leeuw.html | content/science-observatory/labs/melkweg.html | content/science-observatory/labs/natuurkunde.html | content/taalwerkvormen-page.html | content/wihtml/bibliotheek | content/wihtml/studio.html | content/workforms.json | tools/lo-aanvalslab/index.html | tools/van-proces-naar-prompt/index.html
+scripts/prepare_ui.py,audit-archive/audit#4 | check-own-exports/exports#4 | deploy-vakinhoud-quick/publish#3 | llm-observatorium-ui/llm-browser#6 | verify-ui/verify#10 | verify-wihtml/wihtml#6,
+scripts/test_anatomie_3d.mjs,verify-ui/verify#21,
+scripts/test_anatomie_browser.mjs,verify-ui/verify#31,
+scripts/test_anatomie_sources.mjs,anatomie-webkit/webkit#10,content/anatomie/guide.js | content/anatomie/sourceMap.js | tools/anatomie/data/systems.json
+scripts/test_anatomie_teaching.mjs,anatomie-webkit/webkit#11,content/anatomie/synonyms.nl.json | content/anatomie/teaching.js | tools/anatomie/data/systems.json
+scripts/test_anatomie_webkit.mjs,anatomie-webkit/webkit#16,
+scripts/test_dashboard_cards_browser.mjs,verify-ui/verify#24,
+scripts/test_eaigame_browser.mjs,eaigame/gameplay#3 | eaigame/gameplay#6 | verify-ui/verify#27,
+scripts/test_eaiwork_mobile.mjs,check-eaiwork-dashboard/visual-dashboard#8 | verify-ui/verify#30,
+scripts/test_hartslaglab_browser.mjs,anatomie-webkit/webkit#17 | verify-ui/verify#32,
+scripts/test_hartslaglab_cycle.mjs,anatomie-webkit/webkit#7 | build-site/build#31,content/anatomie/labs/hartslag/cycle.js
+scripts/test_hartslaglab_geometry.mjs,anatomie-webkit/webkit#8 | build-site/build#32,content/anatomie/labs/hartslag/anatomyGeometry.js
+scripts/test_ict_scan_browser.mjs,ict-scan-webkit/webkit#6 | verify-ui/verify#20,../tools/ict-scan/inventory-index.js | ../tools/ict-scan/record-taxonomy.js | ./assurance/profile.js | tools/ict-scan/assurance/profile.js | tools/ict-scan/bronnen/ | tools/ict-scan/bronnen/manifest.json | tools/ict-scan/dashboard-layouts/layouts.json
+scripts/test_leeuw_console.mjs,leeuw-console/browser#5,
+scripts/test_leif_continue.mjs,verify-ui/verify#36,leif/continue/index.html | leif/tekstbeheer.js | leif/tekstvelden.js
+scripts/test_leif_landing_ui.mjs,verify-ui/verify#41,
+scripts/test_leif_magic_login.mjs,verify-ui/verify#38,
+scripts/test_leif_mobile_questions.mjs,verify-ui/verify#40,
+scripts/test_leif_site_editor.mjs,verify-ui/verify#37,leif/index.html
+scripts/test_leif_studio_ui.mjs,verify-ui/verify#39,
+scripts/test_llm_learning_math.mjs,llm-observatorium-ui/llm-browser#7,../assets/llm-learning-math.js
+scripts/test_llm_mobile_webkit.mjs,llm-observatorium-ui/llm-browser#14,
+scripts/test_llm_observatorium.mjs,llm-observatorium-ui/llm-browser#12 | verify-ui/verify#33,
+scripts/test_llm_real_trace.py,llm-observatorium-ui/llm-browser#8 | llm-real-trace/measure#5,
+scripts/test_llmscan_browser.mjs,check-llmscan/check#6,
+scripts/test_lo_calm_mobile.py,lo-calm-mobile/mobiel#4 | lo-v13-verify/browser-tests#4,tools/lo-aanvalslab/index.html
+scripts/test_lo_easteregg.py,lo-easteregg-verify/test#5,tools/lo-aanvalslab/index.html
+scripts/test_lo_zone.py,lo-zone-verify/zones#4,tools/lo-aanvalslab/index.html
+scripts/test_melkweg_mobile.mjs,verify-ui/verify#34,
+scripts/test_melkweg_visual_play.mjs,verify-ui/verify#35,
+scripts/test_projecthulp_browser.mjs,projecthulp-browser/golden-path#5 | verify-ui/verify#23,../assets/eaigit/prompts-data.mjs
+scripts/test_projecthulp_eaiwork.mjs,Geen letterlijke aanroep gevonden; controleer discovery/import,../assets/eaigit/work-plan.mjs
+scripts/test_regio_design.mjs,onderwijsregio-ui/browser#5,
+scripts/test_schuine_worp_studio.mjs,schuine-worp-studio/browser#8 | science-fixed-workspace/physics-fixed#13 | science-studio-webkit/studio-webkit#8 | verify-ui/verify#28,
+scripts/test_science_fixed_workspace.mjs,science-fixed-workspace/physics-fixed#10 | science-fixed-workspace/physics-fixed#11,
+scripts/test_science_math_adaptive.mjs,science-fixed-workspace/physics-fixed#8 | science-fixed-workspace/physics-fixed#9,
+scripts/test_science_mobile_aim.mjs,science-fixed-workspace/physics-fixed#12 | science-webkit/mobile-webkit#8 | verify-ui/verify#29,
+scripts/test_story_cards_browser.mjs,verify-ui/verify#26,
+scripts/test_tool_launch.mjs,verify-ui/verify#22,
+scripts/test_topo_mobile.mjs,topo-mobile-verify/verify#7,
+scripts/test_wihtml_journey.mjs,verify-wihtml/wihtml#9,
+scripts/validate_topo_content.mjs,deploy-topo-theory7/deploy-topo#3 | topo-mobile-verify/verify#3,topo/data/provincies-2026.geojson | topo/data/shuffle-vragen.json | topo/data/taalbank.json | topo/index.html | topo/nederland/index.html
+scripts/verify_ui.py,audit-archive/audit#4 | check-own-exports/exports#4 | deploy-theory7/deploy#4 | deploy-theory7/deploy#10 | verify-ui/verify#14 | verify-ui/verify#44,assets/ui-manifest.json | leif/continue/index.html | leif/index.html | leif/verhaal/index.html | tools/eaimesh/start/index.html | tools/eaistudio/studio/icons/apple-touch-icon.png | tools/eaistudio/studio/icons/icon-192.png | tools/eaistudio/studio/icons/icon-512.png | tools/eaistudio/studio/index.html | tools/eaistudio/studio/manifest.webmanifest | tools/eaistudio/studio/service-worker.js
+tests/test_abyss_publish.py,build-site/build#39,
+tests/test_anatomie_content_audit.py,anatomie-webkit/webkit#4,content/anatomie/eaiDetail.js | content/anatomie/guide.js | scripts/audit_anatomie_content.py | scripts/build_anatomie.py
+tests/test_anatomie_picking.mjs,anatomie-webkit/webkit#12,../content/anatomie/picking.js
+tests/test_anatomie_publish.py,build-site/build#33 | verify-ui/verify#9,content/anatomie/depthSlider.js | content/anatomie/dragMode.js | content/anatomie/eaiDetail.js | content/anatomie/guide.js | content/anatomie/layout.css | content/anatomie/picking.js | content/anatomie/synonyms.nl.json | scripts/anatomie_refine.py | scripts/build_site.py | scripts/prepare_ui.py | tools/index.html
+tests/test_archive_review.py,audit-archive/audit#4,
+tests/test_audit_advice.mjs,projecthulp-browser/golden-path#3,../assets/eaigit/audit-advice.mjs | ../assets/eaigit/help-topics.mjs | ../assets/eaigit/journey.mjs
+tests/test_ci_pr_scope.py,build-site/build#3 | site-check/source-checks#18 | verify-ui/verify#3,../tools/anatomie/index.html | assets/eaigit/github-checks.mjs | assets/eaigit/wizard.mjs | assets/site-refresh.js | content/science-observatory/labs/natuurkunde.html | leif/index.html | scripts/build_anatomie.py | scripts/test_topo_mobile.mjs | tests/test_eaigit_github_checks.mjs | tests/test_ict_scan_export.mjs | tests/test_unlisted_feature.py | tools/delf-live/index.html | tools/eaigame/index.html | tools/eaigit/index.html | tools/ict-scan/app.js | topo/instellingen/index.html
+tests/test_cloudflare_beacon.py,build-site/build#12,
+tests/test_dashboard_cards.py,build-site/build#10 | verify-ui/verify#12,content/home-model/home-nl.html
+tests/test_dictionary_and_menu.py,build-site/build#21,
+tests/test_eai_site_admin.mjs,build-site/build#36 | test-html-gallery-auth/auth#5,../services/html-galerij/src/admin-client.js | ../services/html-galerij/src/admin.js | ../services/html-galerij/src/dashboard.js
+tests/test_eai_site_admin_publish.py,build-site/build#35,services/html-galerij/src | site-build/beheer | site-build/beheer/index.html
+tests/test_eaigame.mjs,build-site/build#26 | eaigame/gameplay#4,../assets/eaigame-ai.js | ../assets/eaigame-logic.js | ../assets/eaigame-questions.js | ../assets/eaigame-random.js | ../assets/eaigame-randomizer.js
+tests/test_eaigit_help.mjs,build-site/build#25 | projecthulp-browser/golden-path#3 | site-check/source-checks#2,../assets/eaigit/help-topics.mjs | ../assets/eaigit/journey.mjs | ../assets/eaigit/prompts-data.mjs | ../assets/eaigit/wizard.mjs | ../assets/eaigit/work-plan.mjs | ../catalog/website-register.json | ../scripts/build_site.py | ../sitemap.xml | ../tools/eaigit/hulp/index.html | ../tools/eaigit/index.html | ../tools/eaigit/prompts/index.html
+tests/test_eaigit_single_file.mjs,build-site/build#25 | projecthulp-browser/golden-path#3 | site-check/source-checks#2,../assets/eaigit/audit-advice.mjs | ../assets/eaigit/journey.mjs | ../assets/eaigit/wizard.mjs | ../assets/eaigit/work-plan.mjs | ../assets/projecthulp/begeleiding.mjs | ../assets/projecthulp/los-bestand.mjs | ../assets/projecthulp/onderzoek-worker.mjs | ../fout.js | ../tools/eaigit/index.html
+tests/test_eaiwork_dashboard_publish.py,build-site/build#24 | check-eaiwork-dashboard/visual-dashboard#6,content/eaiwork-dashboard.html | scripts/build_site.py | tools/eaiwork/index.html
+tests/test_eaiwork_public_entry.py,build-site/build#23,catalog/website-register.json | scripts/build_site.py
+tests/test_first_party_analytics.py,build-site/build#16 | deploy-analytics-dashboard/deploy#2,
+tests/test_header_upload_link.py,build-site/build#34,assets/site-redesign.css | scripts/prepare_ui.py | tools/html-galerij/index.html
+tests/test_home_model.py,build-site/build#9,
+tests/test_html_galerij_admin.mjs,build-site/build#36 | test-html-gallery-auth/auth#4,../services/html-galerij/src/index.js | ../services/html-galerij/src/ui.js | ../tools/html-galerij/index.html
+tests/test_html_galerij_publish.py,build-site/build#35,services/html-galerij/schema.sql | services/html-galerij/src | site-build/tools/html-galerij/index.html | tools/html-galerij/index.html
+tests/test_html_gallery_live.mjs,test-html-gallery-auth/live-anonymous#3,
+tests/test_html_gallery_sqlite.mjs,build-site/build#36 | test-html-gallery-auth/auth#6,../services/html-galerij/schema.sql | ../services/html-galerij/src/index.js
+tests/test_hub_structure.py,verify-ui/verify#11,catalog/website-register.json | tools/anatomie/index.html | tools/eaigit/index.html
+tests/test_ict_scan_2026_data.mjs,build-site/build#15,tools/ict-scan/app.js | tools/ict-scan/bronnen/2026-applicatielandschap.json | tools/ict-scan/bronnen/2026-bronnenregister.json | tools/ict-scan/bronnen/2026-faq.json | tools/ict-scan/bronnen/2026-werkregister.json | tools/ict-scan/bronnen/manifest.json | tools/ict-scan/github-sync.js | tools/ict-scan/index.html
+tests/test_ict_scan_answers.mjs,build-site/build#15,../tools/ict-scan/inventory-index.js | ./answer-engine.css | ./answer-engine.js | tools/ict-scan/answer-engine.js | tools/ict-scan/app.js | tools/ict-scan/bronnen/2026-applicatielandschap.json | tools/ict-scan/bronnen/2026-bronnenregister.json | tools/ict-scan/bronnen/2026-faq.json | tools/ict-scan/bronnen/2026-werkregister.json | tools/ict-scan/enhancements.js | tools/ict-scan/index.html
+tests/test_ict_scan_assurance.mjs,check-ict-assurance/check#3,../tools/ict-scan/assurance/engine.js | ../tools/ict-scan/assurance/source-register.js | tools/ict-scan/assurance/engine.js | tools/ict-scan/assurance/evaluation-corpus.json | tools/ict-scan/assurance/source-register.js
+tests/test_ict_scan_assurance_binding.mjs,check-ict-assurance/check#3,../tools/ict-scan/assurance/engine.js | ../tools/ict-scan/assurance/source-register.js | tools/ict-scan/assurance/engine.js | tools/ict-scan/assurance/source-register.js
+tests/test_ict_scan_assurance_cli.mjs,check-ict-assurance/check#3,../scripts/check_ict_assurance.mjs | ../tools/ict-scan/assurance/adapter.js | ../tools/ict-scan/assurance/engine.js | ../tools/ict-scan/assurance/profile.js | ../tools/ict-scan/assurance/source-register.js | scripts/check_ict_assurance.mjs | tools/ict-scan/assurance/evaluation-corpus.json | tools/ict-scan/assurance/profiles/example-organisation.json | tools/ict-scan/bronnen/manifest.json | tools/ict-scan/frameworks.json
+tests/test_ict_scan_assurance_documents.mjs,check-ict-assurance/check#3,scripts/build_site.py | tools/ict-scan/docs/ | tools/ict-scan/docs/catalog.json | tools/ict-scan/document-library.css | tools/ict-scan/document-library.js | tools/ict-scan/index.html
+tests/test_ict_scan_assurance_editor.mjs,check-ict-assurance/check#3,tools/ict-scan/assurance/ | tools/ict-scan/assurance/adapter.js | tools/ict-scan/assurance/engine.js | tools/ict-scan/assurance/profile.js | tools/ict-scan/assurance/profiles/emmauscollege.json | tools/ict-scan/assurance/record-contract.js | tools/ict-scan/assurance/source-register.js | tools/ict-scan/bronnen/2026-bronnenregister.json | tools/ict-scan/frameworks.json | tools/ict-scan/record-cards.js | tools/ict-scan/record-github.js | tools/ict-scan/record-taxonomy.js
+tests/test_ict_scan_assurance_portal.mjs,check-ict-assurance/check#3,../services/html-galerij/schema.sql | ../services/html-galerij/src/auth.js | ../services/html-galerij/src/ict-editor.js
+tests/test_ict_scan_assurance_profiles.mjs,check-ict-assurance/check#3,../other.json | ../outside.json | ../private | tools/ict-scan/assurance/
+tests/test_ict_scan_assurance_relationships.mjs,check-ict-assurance/check#3,tools/ict-scan/bronnen/ | tools/ict-scan/dashboard-composer.js | tools/ict-scan/frameworks.json
+tests/test_ict_scan_assurance_security.mjs,check-ict-assurance/check#3,tools/ict-scan/assurance/adapter.js | tools/ict-scan/assurance/engine.js | tools/ict-scan/assurance/profile.js | tools/ict-scan/assurance/profiles/emmauscollege.json | tools/ict-scan/assurance/profiles/example-organisation.json | tools/ict-scan/assurance/record-contract.js | tools/ict-scan/assurance/source-register.js | tools/ict-scan/edit-gate.js | tools/ict-scan/frameworks.json | tools/ict-scan/index.html | tools/ict-scan/record-cards.js | tools/ict-scan/record-github.js | tools/ict-scan/record-taxonomy.js
+tests/test_ict_scan_assurance_snapshots.mjs,check-ict-assurance/check#3,../tools/ict-scan/assurance/adapter.js | ../tools/ict-scan/assurance/profile.js | tools/ict-scan/assurance/profiles/ | tools/ict-scan/enhancements.js | tools/ict-scan/frameworks.json
+tests/test_ict_scan_assurance_sources.mjs,check-ict-assurance/check#3,../tools/ict-scan/assurance/adapter.js | ../tools/ict-scan/assurance/profile.js | ../tools/ict-scan/assurance/source-register.js | tools/ict-scan/app.js | tools/ict-scan/assurance/profiles/emmauscollege.json | tools/ict-scan/assurance/source-register.js | tools/ict-scan/frameworks.json
+tests/test_ict_scan_cards.mjs,build-site/build#15 | check-ict-assurance/check#3,./record-cards.css | ./record-cards.js | ./record-github.js | tools/ict-scan/app.js | tools/ict-scan/assurance/adapter.js | tools/ict-scan/assurance/engine.js | tools/ict-scan/assurance/profile.js | tools/ict-scan/assurance/profiles/emmauscollege.json | tools/ict-scan/assurance/record-contract.js | tools/ict-scan/assurance/source-register.js | tools/ict-scan/bronnen/2026-applicatielandschap.json | tools/ict-scan/bronnen/2026-bronnenregister.json | tools/ict-scan/bronnen/2026-faq.json | tools/ict-scan/bronnen/2026-werkregister.json | tools/ict-scan/frameworks.json | tools/ict-scan/index.html | tools/ict-scan/inventory-index.js | tools/ict-scan/record-cards.js | tools/ict-scan/record-github.js | tools/ict-scan/scene-navigation.js
+tests/test_ict_scan_edit_api.php,check-ict-assurance/check#3,
+tests/test_ict_scan_export.mjs,build-site/build#14 | check-ict-assurance/check#3,../tools/ict-scan/app.js | ../tools/ict-scan/record-taxonomy.js
+tests/test_ict_scan_github_sync.mjs,build-site/build#15 | build-site/build#28 | check-ict-assurance/check#3,../geheim | ../tools/ict-scan/inventory-index.js | tools/ict-scan/github-sync.js
+tests/test_ict_scan_inventory_index.mjs,Geen letterlijke aanroep gevonden; controleer discovery/import,../tools/ict-scan/inventory-index.js | tools/ict-scan/bronnen/ | tools/ict-scan/frameworks.json
+tests/test_ict_scan_publish.py,build-site/build#13 | build-site/build#28 | check-ict-assurance/check#3,./dashboard-composer.css | ./dashboard-composer.js | ./evidence-experience.css | ./evidence-experience.js | ./relationship-orbit.css | ./role-modes.css | ./role-modes.js | ./scene-navigation.css | ./scene-navigation.js | ./studio-interface.css | ./ux-clarity.css | scripts/check_release_gate.py | site-build/tools/ict-scan/.htaccess | tools/ict-scan/bronnen
+tests/test_ict_scan_taxonomy.mjs,check-ict-assurance/check#3,scripts/build_site.py | tools/ict-scan/app.js | tools/ict-scan/bronnen/2026-applicatielandschap.json | tools/ict-scan/index.html | tools/ict-scan/record-cards.js | tools/ict-scan/record-taxonomy.js | tools/ict-scan/visual-explorer.js
+tests/test_ict_scan_visuals.mjs,build-site/build#15,../tools/ict-scan/inventory-index.js | ./visual-explorer.css | ./visual-explorer.js | tools/ict-scan/bronnen/ | tools/ict-scan/bronnen/2026-applicatielandschap.json | tools/ict-scan/index.html | tools/ict-scan/relationship-atlas.css | tools/ict-scan/relationship-atlas.js | tools/ict-scan/visual-explorer.css | tools/ict-scan/visual-explorer.js
+tests/test_leif_account.mjs,deploy-leif-quick/publish-leif#2 | site-check/source-checks#17,../leif/multitenant/edge-admin-console.ts
+tests/test_leif_admin_session.mjs,deploy-leif-quick/publish-leif#2 | site-check/source-checks#17,../leif/beheersessie.js
+tests/test_leif_ereader.mjs,deploy-leif-quick/publish-leif#2 | site-check/source-checks#16,../leif/index.html | ../leif/verhaal/index.html | ../leif/verhaal/tekstcorrecties.enc
+tests/test_leif_kei.mjs,build-site/build#11 | deploy-leif-quick/publish-leif#2 | site-check/source-checks#15,../leif/index.html | ../leif/verhaal/index.html
+tests/test_leif_multitenant.mjs,build-site/build#11 | deploy-leif-quick/publish-leif#2 | site-check/source-checks#17,leif/beheer/index.html | leif/index.html | leif/mijn/index.html | leif/multitenant/edge-admin-console.ts | leif/multitenant/edge-personal-session.ts | leif/multitenant/schema.sql
+tests/test_leif_question_copy_mobile.mjs,deploy-leif-quick/publish-leif#2 | site-check/source-checks#16,leif/continue/index.html | leif/index.html | leif/mijn/index.html
+tests/test_leif_site_texts.mjs,build-site/build#11 | deploy-leif-quick/publish-leif#2,leif/beheer/index.html | leif/beheer/teksteditor.js | leif/continue/index.html | leif/index.html | leif/mijn/index.html | leif/multitenant/edge-admin-console.ts | leif/multitenant/site-texts.sql | leif/tekstbeheer.js | leif/verhaal/index.html
+tests/test_leif_studio.mjs,deploy-leif-quick/publish-leif#2 | site-check/source-checks#17,leif/beheer/index.html | leif/beheer/studio.css | leif/beheer/studio.js | leif/continue/index.html | leif/mijn/index.html | leif/multitenant/edge-admin-console.ts | leif/multitenant/edge-demo-session.ts | leif/multitenant/edge-personal-session.ts | leif/multitenant/studio-legacy-additive.sql
+tests/test_leif_testers.mjs,build-site/build#11 | deploy-leif-quick/publish-leif#2,leif/beheer/index.html | leif/continue/index.html | leif/index.html | leif/multitenant/demo-testers.sql | leif/multitenant/edge-admin-console.ts
+tests/test_leif_unified_login.mjs,build-site/build#11 | deploy-leif-quick/publish-leif#2,leif/beheer/index.html | leif/continue/index.html | leif/index.html | leif/mijn/index.html | leif/multitenant/edge-personal-session.ts | leif/verhaal/index.html
+tests/test_llm_observatorium_source.py,build-site/build#38 | llm-observatorium-ui/llm-browser#9,site-build/sitemap.xml | site-build/tools/llm-observatorium/index.html
+tests/test_llmscan_standalone.py,check-llmscan/check#4,../updates.js
+tests/test_lo_evidence_publish.py,lo-easteregg-verify/test#4,scripts/build_site.py | tools/lo-aanvalslab/index.html | tools/lo-aanvalslab/onderbouwing/index.html
+tests/test_melkweg_lab_publish.py,build-site/build#52,
+tests/test_projecthulp.mjs,build-site/build#25 | projecthulp-browser/golden-path#3 | site-check/source-checks#2,../assets/eaigit/journey.mjs | ../assets/eaigit/wizard.mjs | ../assets/projecthulp/analyse.mjs | ../assets/projecthulp/begeleiding.mjs | ../assets/projecthulp/doelcontrole.mjs | ../assets/projecthulp/inhoudscontrole.mjs | ../assets/projecthulp/onderzoek-worker.mjs | ../assets/projecthulp/projectcheck.mjs | ../assets/projecthulp/zip.mjs | ../secret.txt | ../tools/eaigit/index.html | ../tools/projecthulp/index.html | ./scripts/ontbreekt.js | assets/app.mjs | assets/ontbreekt.png | scripts/controle.py
+tests/test_public_analytics.py,build-site/build#17 | publish-public-analytics/refresh#3,
+tests/test_public_analytics_ui.mjs,build-site/build#18 | deploy-analytics-dashboard/deploy#2,
+tests/test_publication_ownership.py,site-check/source-checks#4,scripts/check_release_gate.py
+tests/test_release_artifact.py,site-check/source-checks#18,
+tests/test_release_gate.py,site-check/source-checks#18,
+tests/test_science_adaptive_workspaces.mjs,build-site/build#41,../content/science-observatory/labs/
+tests/test_science_graph_animation_alignment.mjs,build-site/build#49 | site-check/source-checks#13,../content/science-observatory/labs/natuurkunde.html
+tests/test_science_inquiry_variants.mjs,build-site/build#50 | site-check/source-checks#14,../content/science-observatory/labs/natuurkunde.html
+tests/test_science_observatory_navigation.mjs,site-check/source-checks#5,assets/site-navigation.js | assets/site-refresh.js | content/melkweg-lab/index.html | content/science-observatory/labs/leeuw.html | content/science-observatory/labs/melkweg.html | content/science-observatory/labs/natuurkunde.html | content/science-observatory/labs/wiskunde-a.html | content/science-observatory/labs/wiskunde-b.html | content/science-observatory/landing.html | scripts/build_site.py | scripts/prepare_ui.py | tools/science-observatory/labs/leeuw/index.html
+tests/test_science_observatory_publish.py,build-site/build#40,tools/index.html
+tests/test_science_physical_graphs.mjs,build-site/build#48 | site-check/source-checks#12,../content/science-observatory/labs/natuurkunde.html
+tests/test_science_physics_evidence.mjs,build-site/build#45 | site-check/source-checks#9,../content/science-observatory/labs/natuurkunde.html | ../content/science-observatory/natuurkunde-kwaliteit.json
+tests/test_science_physics_insights.mjs,build-site/build#44 | site-check/source-checks#8,../content/science-observatory/labs/natuurkunde.html
+tests/test_science_physics_models.mjs,build-site/build#42 | site-check/source-checks#6,../content/science-observatory/labs/natuurkunde.html
+tests/test_science_physics_reference_48.mjs,build-site/build#46 | site-check/source-checks#10,../content/science-observatory/labs/natuurkunde.html | ../content/science-observatory/natuurkunde-kwaliteit.json
+tests/test_science_physics_round3.mjs,build-site/build#43 | site-check/source-checks#7,../content/science-observatory/labs/natuurkunde.html
+tests/test_science_physics_visual_fidelity.mjs,build-site/build#47 | site-check/source-checks#11,../content/science-observatory/labs/natuurkunde.html
+tests/test_science_quality_register.mjs,build-site/build#51,../content/science-observatory/labs/natuurkunde.html | ../content/science-observatory/natuurkunde-kwaliteit.json
+tests/test_site_insights.py,build-site/build#19,assets/site-insights.js | assets/site-refresh.js | backend/site-insights/index.ts | leif/index.html | scripts/build_site.py
+tests/test_site_menu_groups.py,build-site/build#20,
+tests/test_static_audit.mjs,projecthulp-browser/golden-path#3,../assets/projecthulp/static-audit.mjs | ./other.mjs
+tests/test_story_cards.py,build-site/build#22 | verify-ui/verify#13,site-build/nl/tools/index.html
+tests/test_theory7_cloudflare_hash.py,build-site/build#7,leif/continue/index.html | leif/index.html | leif/verhaal/index.html | tools/eaimesh/start/index.html | tools/eaistudio/studio/index.html
+tests/test_tool_launch.py,build-site/build#53 | verify-ui/verify#19,assets/site-refresh.js | content/eaimesh/start.html | content/eaistudio/studio.html | tools/eaimesh/start/index.html | tools/eaistudio/studio | tools/eaistudio/studio/index.html | tools/index.html
+tests/test_ui_release.py,verify-ui/verify#16,../index.html | leif/continue/index.html | leif/index.html | leif/verhaal/index.html
+tests/test_website_register.py,check-website-register/register#3,catalog/taxonomie.json | catalog/website-register.json
+tests/test_wihtml_publish.py,build-site/build#37,content/wihtml/bibliotheek | content/wihtml/studio.html | content/wihtml/verdubbelen-halveren-v9.html | content/wihtml/voorbeeld-lesinhoud.json | tools/index.html | tools/wihtml/bibliotheek | tools/wihtml/bibliotheek/index.html | tools/wihtml/index.html | tools/wihtml/studio/index.html | tools/wihtml/voorbeeld-lesinhoud.json | tools/wihtml/voorbeeld/index.html
+tests/test_zhang_workflow_isolation.py,build-site/build#8,assets/research/zhang-genai-l2-review- | assets/site-refresh.js
+tests/verify_ict_assurance_browser.mjs,check-ict-assurance/check#5,tools/ict-scan/.htaccess | tools/ict-scan/assurance/evaluation-corpus.json | tools/ict-scan/bronnen | tools/ict-scan/bronnen/manifest.json
