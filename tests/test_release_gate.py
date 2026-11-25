@@ -89,3 +89,27 @@ class ReleaseGateTests(unittest.TestCase):
             self.assertNotIn(f"  {job}:\n", workflow)
             standalone = root / ".github/workflows" / (job + ".yml")
             self.assertIn("workflow_dispatch:", standalone.read_text())
+
+    def test_lo_consolidation_retains_every_independent_probe(self):
+        root = Path(__file__).resolve().parents[1]
+        combined = (root / ".github/workflows/lo-aanvalslab.yml").read_text()
+        self.assertEqual(combined.count("python -m playwright install"), 1)
+        self.assertIn("fetch-depth: 0", combined)
+        for command in (
+            "python scripts/test_lo_calm_mobile.py",
+            "test_lo_evidence_publish.py",
+            "python scripts/test_lo_easteregg.py",
+            "python scripts/test_lo_v13_simulations.py",
+            "python scripts/test_lo_zone.py",
+            "'zonecompact','zoneschuif','zonelijn'",
+        ):
+            self.assertEqual(combined.count(command), 1, command)
+        self.assertGreaterEqual(combined.count("!cancelled()"), 6)
+        self.assertNotIn("continue-on-error", combined)
+        self.assertEqual(set(REGISTRY["groups"]["lo"]), {"lo-aanvalslab", "lo-tactics-source"})
+        self.assertTrue(job_selection({"lo"})["lo-aanvalslab"])
+        self.assertTrue(job_selection({"lo"})["lo-tactics-source"])
+        self.assertIn("assert results['runs']==64", (root / "scripts/test_lo_v13_simulations.py").read_text())
+        for name in ("lo-calm-mobile", "lo-easteregg-verify", "lo-v13-verify", "lo-zone-verify"):
+            self.assertNotIn(name, SCOPED)
+            self.assertIn("workflow_dispatch:", (root / ".github/workflows" / (name + ".yml")).read_text())

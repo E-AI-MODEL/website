@@ -132,26 +132,14 @@ jobs:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['check-llmscan'] }}
     uses: ./.github/workflows/check-llmscan.yml
-  lo-calm-mobile:
+  lo-aanvalslab:
     needs: scope
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-calm-mobile'] }}
-    uses: ./.github/workflows/lo-calm-mobile.yml
-  lo-easteregg-verify:
-    needs: scope
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-easteregg-verify'] }}
-    uses: ./.github/workflows/lo-easteregg-verify.yml
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-aanvalslab'] }}
+    uses: ./.github/workflows/lo-aanvalslab.yml
   lo-tactics-source:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-tactics-source'] }}
     uses: ./.github/workflows/lo-tactics-source.yml
-  lo-v13-verify:
-    needs: scope
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-v13-verify'] }}
-    uses: ./.github/workflows/lo-v13-verify.yml
-  lo-zone-verify:
-    needs: scope
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-zone-verify'] }}
-    uses: ./.github/workflows/lo-zone-verify.yml
   onderwijsregio-ui:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['onderwijsregio-ui'] }}
@@ -232,7 +220,7 @@ jobs:
   static-checks:
     name: static-checks
     runs-on: ubuntu-latest
-    needs: [scope, source-checks, build-check, ui-check, register-check, eaispeak-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, llm-observatorium-ui, check-llmscan, lo-calm-mobile, lo-easteregg-verify, lo-tactics-source, lo-v13-verify, lo-zone-verify, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth, astronomy-validation]
+    needs: [scope, source-checks, build-check, ui-check, register-check, eaispeak-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, llm-observatorium-ui, check-llmscan, lo-aanvalslab, lo-tactics-source, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth, astronomy-validation]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@v4
