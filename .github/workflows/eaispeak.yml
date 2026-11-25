@@ -1,0 +1,98 @@
+name: EAIspeak
+
+on:
+  pull_request:
+    paths:
+      - 'tools/eaispeak/**'
+      - '.github/workflows/eaispeak.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'tools/eaispeak/**'
+      - '.github/workflows/eaispeak.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  bridge-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/eaispeak/bridge
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python audio bridge dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run audio, protocol and security tests
+        run: |
+          python -m compileall -q server.py transcribe.py tests
+          python -m pytest -q tests
+
+  check-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/eaispeak
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Controleer en bouw EAIspeak
+        run: |
+          npm install --no-audit --no-fund
+          node --check src/main.js
+          npm test
+          npm run build
+          test -s dist/index.html
+          find dist/assets -name '*.js' -type f | grep -q .
+      - name: Maak gecontroleerd publicatiepakket
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p release/tools/eaispeak release/tools/delf-live
+          cp -a dist/. release/tools/eaispeak/
+          printf '%s\n' '<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=/tools/eaispeak/"><link rel="canonical" href="https://eaimodel.nl/tools/eaispeak/"><title>EAIspeak</title></head><body><a href="/tools/eaispeak/">Open EAIspeak</a></body></html>' > release/tools/delf-live/index.html
+          printf '%s\n' "$SOURCE_SHA" > release/source-sha.txt
+          git rev-parse HEAD > release/build-sha.txt
+          test ! -e release/tools/eaispeak/audio
+          test ! -e release/tools/eaispeak/mobile-preview.html
+          grep -q 'id="liveMode"' release/tools/eaispeak/index.html
+          grep -q 'url=/tools/eaispeak/' release/tools/delf-live/index.html
+          (cd release && find tools -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS && sha256sum -c SHA256SUMS)
+      - name: Bewaar de geteste build
+        uses: actions/upload-artifact@v4
+        with:
+          name: eaispeak-tested-build
+          path: tools/eaispeak/release/
+          if-no-files-found: error
+
+
+  apple-compile:
+    runs-on: macos-26
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/eaispeak/bridge/apple
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Apple speech adapter with the macOS SDK
+        run: |
+          xcrun swiftc -swift-version 5 -target arm64-apple-macos26.0 main.swift -o eaispeak-apple
+      - name: Check argument validation
+        run: |
+          if ./eaispeak-apple > invalid.json; then exit 1; fi
+          python3 -c 'import json; assert json.load(open("invalid.json"))["type"] == "error"'
+      - name: Check runtime locale and asset reporting without downloads
+        run: |
+          ./eaispeak-apple --probe nl-NL 48000 > probe.json || true
+          python3 -c 'import json; d=json.load(open("probe.json")); assert d["type"] in ("ready","error"); assert d.get("provider") in ("SpeechTranscriber","DictationTranscriber") if d["type"]=="ready" else bool(d.get("message")); print(d)'

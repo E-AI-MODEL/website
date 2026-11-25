@@ -16,7 +16,8 @@ SUITES = (
 
 # Changes to these standalone areas do not affect shared site components.
 AREAS = (
-    ("tools/delf-live/", ()),
+    ("tools/delf-live/", ()),  # old route migration
+    ("tools/eaispeak/", ()),
     ("assets/delf-", ()),
     ("scripts/test_delf_", ()),
     ("tools/anatomie/", ("anatomy",)),

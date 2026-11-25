@@ -8,7 +8,7 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 SHARED_THEORY7_UPLOADS = (
     "deploy-theory7.yml",
-    "deploy-delf-preview.yml",
+    "deploy-eaispeak.yml",
     "deploy-zhang-review-rapid.yml",
     "deploy-analytics-dashboard.yml",
     "deploy-eaiwork-theory7.yml",
@@ -39,7 +39,7 @@ class PublicationOwnershipTests(unittest.TestCase):
 
     def test_manual_recovery_publishers_do_not_compete_automatically(self):
         for workflow in (
-            "deploy-delf-preview.yml",
+            "deploy-eaispeak.yml",
             "deploy-zhang-review-rapid.yml",
             "deploy-analytics-dashboard.yml",
             "deploy-eaiwork-theory7.yml",

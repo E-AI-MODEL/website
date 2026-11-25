@@ -2836,12 +2836,13 @@ def build(sources: Path, out: Path) -> None:
     leif_source = repo_root / "leif"
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
-    # The independent EAIspeak bundle is also published at the old DELF address.
-    # Never copy unbuilt source into a live route.
-    delf_dist = repo_root / "tools" / "delf-live" / "dist"
-    if (delf_dist / "index.html").is_file():
-        for route in ("eaispeak", "delf-live"):
-            shutil.copytree(delf_dist, out / "tools" / route, dirs_exist_ok=True)
+    # Only the built EAIspeak application is copied. The former address redirects.
+    eaispeak_dist = repo_root / "tools" / "eaispeak" / "dist"
+    if (eaispeak_dist / "index.html").is_file():
+        shutil.copytree(eaispeak_dist, out / "tools" / "eaispeak", dirs_exist_ok=True)
+        old_route = out / "tools" / "delf-live"
+        old_route.mkdir(parents=True, exist_ok=True)
+        (old_route / "index.html").write_text(redirect("/tools/eaispeak/"), encoding="utf-8")
     finish_generated_pages(out)
     # Standalone local-only school ICT scan. Not part of navigation or sitemap.
     ict_scan_source = repo_root / "tools" / "ict-scan"

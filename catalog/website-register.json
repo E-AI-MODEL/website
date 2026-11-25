@@ -1152,10 +1152,10 @@
       "search_scope": "niet_indexeren"
     },
     {
-      "id": "page:/tools/delf-live/",
-      "url": "/tools/delf-live/",
-      "file": "tools/delf-live/index.html",
-      "title": "EAIspeak | praten, vertalen en presenteren",
+      "id": "page:/tools/eaispeak/",
+      "url": "/tools/eaispeak/",
+      "file": "tools/eaispeak/index.html",
+      "title": "EAIspeak | praten, vertalen en luisteren",
       "kind": "toepassing",
       "category": "Hulpmiddelen · Vrij spreken en vertalen",
       "review": "proef_zelfstandig_gepubliceerd",
@@ -7102,9 +7102,6 @@
     },
     {
       "path": "content/wihtml/verdubbelen-halveren-v9.html"
-    },
-    {
-      "path": "tools/delf-live/mobile-preview.html"
     }
   ],
   "audit": {

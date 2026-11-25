@@ -2,7 +2,7 @@
 # Run on a Mac with Apple Silicon. This launches model and bridge locally.
 set -euo pipefail
 if [[ $# -ne 1 ]]; then
-  echo 'Gebruik: bash tools/delf-live/bridge/start-macos.sh moshi|hibiki' >&2
+  echo 'Gebruik: bash tools/eaispeak/bridge/start-macos.sh moshi|hibiki' >&2
   exit 2
 fi
 ENGINE="$1"

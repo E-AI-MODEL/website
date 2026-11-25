@@ -1,6 +1,6 @@
 # EAIspeak · Moshi, Hibiki, Hibiki-Zero en Dessa
 
-Deze vier keuzes staan onder **Vrij praten > Taal en model > Model draait**, naast WebLLM, Ollama en Puter. Ze veranderen de bestaande podiumvoorstelling niet.
+Deze vier keuzes staan onder **Vrij praten > Taal en model > Model draait**, naast WebLLM, Ollama en Puter. Dezelfde engines zijn ook bruikbaar voor hun specifieke ondersteunde taalrichtingen.
 
 | Engine | Functie | Talen | Status |
 | --- | --- | --- | --- |
@@ -13,10 +13,10 @@ Deze vier keuzes staan onder **Vrij praten > Taal en model > Model draait**, naa
 
 ## Aansluiten
 
-De browser heeft een generieke **EAIspeak PCM WebSocket v1**-client. Moshi, Hibiki en Hibiki-Zero spreken *niet rechtstreeks* dit protocol. De map `tools/delf-live/bridge/` bevat nu een Python-adapter die via het native Kyutai-WebSocket-protocol audio vertaalt en doorstuurt. Het selectievakje is geen modelinstallatie, en een groene frontendtest is geen bewijs dat de audio met een modelserver werkt.
+De browser heeft een generieke **EAIspeak PCM WebSocket v1**-client. Moshi, Hibiki en Hibiki-Zero spreken *niet rechtstreeks* dit protocol. De map `tools/eaispeak/bridge/` bevat nu een Python-adapter die via het native Kyutai-WebSocket-protocol audio vertaalt en doorstuurt. Het selectievakje is geen modelinstallatie, en een groene frontendtest is geen bewijs dat de audio met een modelserver werkt.
 
 1. Start de passende Moshi/Hibiki-server volgens zijn officiële repository en controleer het licentiegebruik.
-2. Installeer de meegeleverde bridge met `python -m pip install -r tools/delf-live/bridge/requirements.txt` en start `python tools/delf-live/bridge/server.py` na het instellen van de upstream-URL. De bridge luistert standaard alleen op `127.0.0.1:8765`.
+2. Installeer de meegeleverde bridge met `python -m pip install -r tools/eaispeak/bridge/requirements.txt` en start `python tools/eaispeak/bridge/server.py` na het instellen van de upstream-URL. De bridge luistert standaard alleen op `127.0.0.1:8765`.
 3. Stel in EAIspeak het bridge-adres in, bijvoorbeeld `ws://localhost:8765/eaispeak` op de eigen computer, of `wss://spraak.example.nl/eaispeak` met een correct geconfigureerde HTTPS reverse proxy.
 4. Kies de ondersteunde bron- en antwoordtaal, kies **Begin met spreken** en geef microfoontoestemming. **Stop gesprek** sluit de socket en microfoon.
 
@@ -49,16 +49,16 @@ Moshi en Hibiki-Zero gebruiken in deze configuratie standaard dezelfde poort. St
 Start de bridge in een **andere terminal** met de juiste model-URL:
 
 ```bash
-python -m pip install -r tools/delf-live/bridge/requirements.txt
+python -m pip install -r tools/eaispeak/bridge/requirements.txt
 export EAISPEAK_MOSHI_WS=ws://localhost:8998/api/chat
 export EAISPEAK_HIBIKI_WS=ws://localhost:8999/api/chat
 export EAISPEAK_HIBIKI_ZERO_WS=ws://localhost:9000/api/chat
-python tools/delf-live/bridge/server.py
+python tools/eaispeak/bridge/server.py
 ```
 
 De drie omgevingsvariabelen zijn onafhankelijk. Laat een niet-gebruikte engine weg. Een ingestelde URL garandeert niet dat het model draait: de bridge controleert dat bij verbinden. De bridge ondersteunt ook een beperkte herkomstlijst, te configureren met `EAISPEAK_ALLOWED_ORIGINS`, met komma's tussen de volledige origins. De standaardlijst bevat de EAIspeak-site en lokale Vite-ontwikkelservers.
 
-De controle-URL is `http://127.0.0.1:8765/health`. Voer de tests uit met `python -m pytest -q tools/delf-live/bridge/tests`.
+De controle-URL is `http://127.0.0.1:8765/health`. Voer de tests uit met `python -m pytest -q tools/eaispeak/bridge/tests`.
 
 De Python-server kan niet in een gewone mobiele browser draaien. EAIspeak op een telefoon kan wel verbinden met een beveiligde bridge op een andere machine. De bridge is standaard alleen via localhost bereikbaar. Een eigen, beveiligde reverse proxy is nodig voor externe apparaten.
 
@@ -111,9 +111,9 @@ De knop **Controleer modelverbinding** staat onder **Vrij praten → Taal en mod
 Een **Mac met Apple Silicon** kan voor Moshi of Hibiki de lokale modelserver en bridge starten met één opdracht vanuit de root van de repository:
 
 ```bash
-bash tools/delf-live/bridge/start-macos.sh moshi
+bash tools/eaispeak/bridge/start-macos.sh moshi
 # Of:
-bash tools/delf-live/bridge/start-macos.sh hibiki
+bash tools/eaispeak/bridge/start-macos.sh hibiki
 ```
 
 Het script vereist Python 3.12, installeert twee **gescheiden virtuele omgevingen** en downloadt het gekozen model via de officiële PyPI- en Hugging Face-pakketten. Het draait beide processen lokaal; het installeert **geen** service, maakt **geen** publieke tunnel en start **geen** GPU in de cloud. Stoppen met Ctrl-C sluit beide af. De eerste download kan meerdere gigabytes kosten aan schijfruimte en tijd. Het opstartscript is een hulpmiddel, **nog geen bevestigde Mac-proef**.
