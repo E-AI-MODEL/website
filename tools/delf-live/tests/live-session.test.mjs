@@ -11,3 +11,9 @@ test('stopped or obsolete requests cannot show a translation',async()=>{let rele
 test('queue reports errors and has a bound',async()=>{let release;let errors=[];const q=createFinalQueue({maxPending:1,translate:()=>new Promise(r=>release=r),onFinal:()=>{},onError:e=>errors.push(e)});assert.equal(q.add('one'),true);assert.equal(q.add('two'),false);await Promise.resolve();release('');await q.idle();assert.equal(errors.length,2);});
 test('model files remain explicitly required',()=>{assert.equal(modelFiles([]).missing.length,4);assert.equal(modelFiles(['model.q8.gguf','config.json','tokenizer.json','default-voice.safetensors'].map(name=>({name}))).missing.length,0);});
 test('stop aborts both microphone routes and no transcript is stored automatically',()=>{assert.match(main,/s\.abort\.abort\(\)/);assert.match(main,/s\.recognition\?\.abort\(\)/);assert.match(main,/s\.bridge\?\.stop\(\)/);assert.doesNotMatch(main,/localStorage\.setItem/);assert.match(main,/new Blob\(\[\$\('liveTranscript'\)\.value\]/);});
+
+test('Apple handshake requires matching source and target; final stop drains input',()=>{
+  assert.equal(bridgeHandshake({engine:'apple',sourceLanguage:'nl-NL',targetLanguage:'nl-NL',sampleRate:48000}).engine,'apple');
+  assert.throws(()=>bridgeHandshake({engine:'apple',sourceLanguage:'nl-NL',targetLanguage:'fr-FR',sampleRate:48000}));
+  assert.match(main,/finishInput\(\)/);assert.match(main,/await s\.queue\.idle\(\)/);
+});

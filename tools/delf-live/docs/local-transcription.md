@@ -1,7 +1,21 @@
-# Local transcription in EAIspeak
+# Lokale transcriptie
 
-Cicada (https://github.com/wquguru/cicada) inspired the separation of recognition and translation. This implementation is independent; it does not embed Cicada or its providers.
+De techniek is onafhankelijk gebouwd; [Cicada](https://github.com/wquguru/cicada) is de inspiratie voor gescheiden spraakherkenning en vertaling. Er is geen Ling-, Ming- of Google-integratie.
 
-Install the bridge dependencies and requirements-whisper.txt in a virtual environment. Obtain a multilingual faster-whisper CTranslate2 model separately, set EAISPEAK_WHISPER_MODEL to its local directory, then run python transcribe.py from bridge/. The service binds to 127.0.0.1:8766, allows only explicit origins and accepts mono PCM. Choose Whisper in Studio. Audio is processed in four-second chunks, not continuously revised; words crossing chunk boundaries and the last partial chunk may be lost. No audio files are written. Actual microphone latency and recognition accuracy are not yet verified.
+## Apple (macOS 26 of hoger)
+Gebruik een Mac met recente Xcode-commandline-tools. Vanuit de map bridge:
+```bash
+xcrun swiftc -swift-version 5 -target arm64-apple-macos26.0 apple/main.swift -o apple/eaispeak-apple
+./apple/eaispeak-apple --probe nl-NL 48000
+# Alleen wanneer je het taalmodel wilt installeren:
+./apple/eaispeak-apple --install nl-NL 48000
+python -m pip install -r requirements.txt
+python transcribe.py --engine apple
+```
+De probe controleert de ondersteunde taal en geïnstalleerde assets. SpeechTranscriber krijgt voorrang, anders DictationTranscriber. De helper stuurt voorlopige en definitieve resultaten uit een doorlopende analyzer via stdin/stdout; de bridge schrijft geen audiobestanden. De ondersteunde taal en echte audiokwaliteit moeten op je Mac worden vastgesteld. Apple-assetdownloads gebeuren alleen met --install. Kies Apple in Studio. De gekozen bridge luistert op 127.0.0.1:8766.
 
-Apple SpeechTranscriber and DictationTranscriber are future native adapters; their supported locales must be queried on the device. Browser translation is separate and may need a compatible browser or model. No automatic substitution with a cloud provider.
+## Whisper
+Installeer requirements.txt en requirements-whisper.txt in een virtualenv. Download een meertalig faster-whisper CTranslate2-model op eigen initiatief en zet EAISPEAK_WHISPER_MODEL op het lokale modelpad. Start python transcribe.py --engine whisper. Kies Whisper in Studio.
+Het model verwerkt een schuivend venster van vier seconden met telkens maximaal een seconde context voor en na de vastgelegde woorden; woordtijdstempels bepalen welke resultaten bij het interval horen. Stop sluit de microfoon en verwerkt het laatste korte stuk. Dit voorkomt het planmatig weggooien van audiobufferrestanten; het garandeert niet dat elk woord goed wordt herkend of dat tijdstempels exact zijn. Vertraging en grensherkenning moeten met echte spraak worden gemeten.
+
+Beide services zijn lokaal, met expliciete browser-Origin-controle. Geen automatische fallback naar cloud. Op sommige browsers vereist de verbinding vanaf HTTPS een lokaal vertrouwde WSS-proxy; de lokale Vite-omgeving werkt als alternatief. Geen opname of transcript wordt door de bridge op schijf opgeslagen.

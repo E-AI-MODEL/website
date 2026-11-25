@@ -10,7 +10,7 @@ export function validateTranslationPair(route,source,target){
 }
 export function localTranscriptEndpoint(value){
   const url=new URL(value);
-  if(!['ws:','wss:'].includes(url.protocol)||!['localhost','127.0.0.1','[::1]'].includes(url.hostname)||url.username||url.password||url.search||url.hash)throw new Error('De Whisper-bridge moet op deze computer draaien, zonder tokens in de URL.');
+  if(!['ws:','wss:'].includes(url.protocol)||!['localhost','127.0.0.1','[::1]'].includes(url.hostname)||url.username||url.password||url.search||url.hash)throw new Error('De lokale transcriptiebridge moet op deze computer draaien, zonder tokens in de URL.');
   return url.toString();
 }
 export function captionLines(text,max=88){

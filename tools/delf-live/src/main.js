@@ -34,11 +34,12 @@ document.addEventListener('keydown',event=>{
 function settings(){
   return {mode:$('liveMode').value,source:$('liveSource').value,target:$('liveTarget').value,route:$('translationEngine').value,recognition:$('liveRecognition').value,endpoint:$('liveEndpoint').value,drafts:$('translationDrafts').checked,speak:$('liveSpeak').checked};
 }
+function local(s){return ['whisper','apple'].includes(s.recognition);}
 function native(s){return s.recognition==='hibiki'||s.recognition==='hibiki-zero';}
 function validate(s){
   if(native(s)){if(s.mode!=='translate')throw new Error('Kies live vertalen voor Hibiki.');validateSpeechPair(s.recognition,s.source,s.target);}
   else if(s.mode==='translate')validateTranslationPair(s.route,s.source,s.target);
-  if(s.recognition==='whisper')localTranscriptEndpoint(s.endpoint);
+  if(local(s))localTranscriptEndpoint(s.endpoint);
   return s;
 }
 function syncSettings(){
@@ -47,17 +48,17 @@ function syncSettings(){
   $('liveTranslationRow').hidden=!translated||isNative;
   $('liveVoiceRow').hidden=!translated||isNative;
   $('liveEndpointRow').hidden=s.recognition==='browser';
-  $('liveRouteHint').textContent=s.recognition==='whisper'?'Microfoon naar de eigen Whisper-bridge. Geen opslag op die bridge.':isNative?'Vereist een eigen draaiende modelserver. Alleen de ondersteunde taalrichting werkt.':'Browserherkenning kan een online dienst gebruiken.';
+  $('liveRouteHint').textContent=s.recognition==='apple'?'macOS 26 of nieuwer: gebruikt een geïnstalleerd Apple-taalmodel, indien beschikbaar.':s.recognition==='whisper'?'Microfoon naar de eigen Whisper-bridge. Geen opslag op die bridge.':isNative?'Vereist een eigen draaiende modelserver. Alleen de ondersteunde taalrichting werkt.':'Browserherkenning kan een online dienst gebruiken.';
   for(const id of ['liveMode','liveSource','liveTarget','liveRecognition','liveEndpoint','translationEngine','translationDrafts','liveSpeak'])$(id).disabled=Boolean(active||preparing);
   $('start').disabled=Boolean(active||preparing);
-  $('panic').disabled=!active;
-  $('stageStop').hidden=!active;
+  $('panic').disabled=!active||Boolean(active?.finishing);
+  $('stageStop').hidden=!active;$('stageStop').disabled=Boolean(active?.finishing);
   $('prepareTranslate').disabled=Boolean(active||preparing);
   $('downloadTranscript').disabled=!records.length;
 }
 for(const id of ['liveMode','liveSource','liveTarget','translationEngine','translationDrafts','liveSpeak','liveRecognition','liveEndpoint']){
   $(id).addEventListener('change',()=>{
-    if(id==='liveRecognition')$('liveEndpoint').value=$('liveRecognition').value==='whisper'?'ws://localhost:8766/eaispeak':'ws://localhost:8765/eaispeak';
+    if(id==='liveRecognition')$('liveEndpoint').value=['whisper','apple'].includes($('liveRecognition').value)?'ws://localhost:8766/eaispeak':'ws://localhost:8765/eaispeak';
     feedback('translationStatus','Instellingen gewijzigd. Bereid de gekozen route zo nodig voor.');syncSettings();
   });
 }
@@ -84,10 +85,10 @@ async function prepareTranslation(){
     validate(s);componentStatus('translationStatus','busy','Gekozen route voorbereiden');
     if(s.recognition!=='browser'){
       const target=native(s)?s.target:s.source;
-      await probeSpeechBridge({endpoint:s.recognition==='whisper'?localTranscriptEndpoint(s.endpoint):s.endpoint,engine:s.recognition,sourceLanguage:s.source,targetLanguage:target,onStatus:m=>feedback('translationStatus',m)});
+      const probe=await probeSpeechBridge({endpoint:local(s)?localTranscriptEndpoint(s.endpoint):s.endpoint,engine:s.recognition,sourceLanguage:s.source,targetLanguage:target,onStatus:m=>feedback('translationStatus',m)});s.provider=probe.provider;
     }
     if(s.mode==='translate'&&!native(s))await getTranslator(s);
-    feedback('translationStatus','Route voorbereid. Nog geen live audio getest.','good');
+    feedback('translationStatus','Route voorbereid'+(s.provider?' · '+s.provider:'')+'. Nog geen live audio getest.','good');
     componentStatus('translationStatus','idle','Route voorbereid, nog niet live getest');
   })();
   syncSettings();
@@ -123,20 +124,42 @@ function showFinal(text,translated,session){
   draftText='';finalLines.push(...captionLines(translated));finalLines=finalLines.slice(-2);record(text,translated);
   renderCaptions();
   if(session.settings.mode==='translate')componentStatus('translationStatus','ready','Live vertaling ontvangen');
-  if(session.settings.speak&&!native(session.settings)&&voicePending<3){
+  if(!session.finishing&&session.settings.speak&&!native(session.settings)&&voicePending<3){
     voicePending++;speakBrowser(translated,session.settings.target,{onEnd:()=>{if(active===session)voicePending=Math.max(0,voicePending-1);},onError:e=>{if(active===session){voicePending=Math.max(0,voicePending-1);feedback('runtimeStatus',e.message,'bad');}}});
-  }else if(session.settings.speak&&!native(session.settings)&&voicePending>=3)feedback('runtimeStatus','Spraakuitvoer loopt achter. Tekst blijft beschikbaar.','bad');
+  }else if(!session.finishing&&session.settings.speak&&!native(session.settings)&&voicePending>=3)feedback('runtimeStatus','Spraakuitvoer loopt achter. Tekst blijft beschikbaar.','bad');
 }
 function stopLive(message='Gestopt.'){
   const s=active;active=null;generation++;
-  if(s){clearTimeout(s.draftTimer);s.queue?.stop();s.abort.abort();try{s.recognition?.abort();}catch{}s.bridge?.stop();if(s.settings.speak||native(s.settings))synth?.cancel();}
+  if(s){clearTimeout(s.finishTimer);clearTimeout(s.draftTimer);s.queue?.stop();s.abort.abort();try{s.recognition?.abort();}catch{}s.bridge?.stop();if(s.settings.speak||native(s.settings))synth?.cancel();}
   voicePending=0;stage.dataset.phase='stopped';draftText='';if(finalLines.length)renderCaptions();
   feedback('phaseStatus','Gestopt');feedback('runtimeStatus',message);syncSettings();
+}
+function requestStop(){
+  const s=active;if(!s||s.finishing)return;
+  if(local(s.settings)&&s.bridge?.finishInput()){
+    s.finishing=true;clearTimeout(s.draftTimer);s.draftVersion++;synth?.cancel();
+    feedback('phaseStatus','Laatste audio verwerken…');feedback('runtimeStatus','Microfoon uit. Laatste woorden worden verwerkt.');
+    $('stageStop').disabled=true;$('panic').disabled=true;return;
+  }
+  if(s.settings.recognition==='browser'&&s.recognition){
+    s.finishing=true;clearTimeout(s.draftTimer);s.draftVersion++;synth?.cancel();
+    feedback('phaseStatus','Laatste woorden verwerken…');$('stageStop').disabled=true;$('panic').disabled=true;
+    s.finishTimer=setTimeout(()=>{if(active===s)void completeSession(s);},2000);
+    try{s.recognition.stop();}catch{void completeSession(s);}return;
+  }
+  stopLive();
+}
+async function completeSession(s){
+  if(active!==s||s.completing)return;
+  s.completing=true;s.finishing=true;clearTimeout(s.finishTimer);clearTimeout(s.draftTimer);
+  s.finishTimer=setTimeout(()=>{if(active===s)fail(new Error('Laatste vertaling duurde te lang.'));},45000);
+  await s.queue.idle();
+  if(active===s)stopLive('Gestopt. Laatste tekst verwerkt.');
 }
 function fail(error){stopLive(error.message||String(error));feedback('runtimeStatus',error.message||String(error),'bad');panel(true);}
 function submitFinal(text,s){const clean=text.trim();if(active!==s||!clean)return;s.draftVersion++;clearTimeout(s.draftTimer);draftText='';s.queue.add(clean);}
 function submitDraft(text,s){
-  if(active!==s||!s.settings.drafts)return;
+  if(active!==s||s.finishing||!s.settings.drafts)return;
   const version=++s.draftVersion;clearTimeout(s.draftTimer);
   s.draftTimer=setTimeout(async()=>{if(active!==s||s.queue.pending)return;try{const result=await s.translate(text);if(active===s&&s.draftVersion===version&&!s.queue.pending){draftText=captionLines(result).at(-1)||'';renderCaptions();}}catch{/* A preliminary result is optional; the final queue reports errors. */}},380);
 }
@@ -144,7 +167,7 @@ function startBrowser(s){
   const SR=window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR)throw new Error('Deze browser heeft geen spraakherkenning. Kies de lokale Whisper-bridge.');
   function listen(){
-    if(active!==s||document.hidden)return;
+    if(active!==s||s.finishing||document.hidden)return;
     const instance=new SR();s.recognition=instance;instance.lang=s.settings.source;instance.continuous=true;instance.interimResults=s.settings.drafts;
     instance.onresult = event => {
       if(active!==s)return;
@@ -154,7 +177,7 @@ function startBrowser(s){
     };
     instance.onstart=()=>{if(active===s){feedback('phaseStatus','Luistert');componentStatus('microphoneStatus','idle','Luistert; nog geen tekst ontvangen');}};
     instance.onerror=e=>{if(active===s&&e.error!=='aborted'&&e.error!=='no-speech')fail(new Error('Spraakherkenning: '+e.error));};
-    instance.onend=()=>{if(active===s)setTimeout(()=>{if(active===s)try{listen();}catch(e){fail(e);}},250);};
+    instance.onend=()=>{if(active===s&&s.finishing){void completeSession(s);return;}if(active===s)setTimeout(()=>{if(active===s)try{listen();}catch(e){fail(e);}},250);};
     instance.start();
   }
   listen();
@@ -173,13 +196,13 @@ async function startLive(){
     s.queue=createFinalQueue({translate:s.translate,onFinal:(text,out)=>showFinal(text,out,s),onError:e=>{if(active===s)fail(e);}});
     stage.dataset.phase='live';feedback('phaseStatus','Starten…');feedback('runtimeStatus','Microfoon openen…');syncSettings();
     if(config.recognition==='browser'){startBrowser(s);panel(false);feedback('runtimeStatus','Live sessie gestart.');return;}
-    const bridge=await startSpeechBridge({endpoint:config.recognition==='whisper'?localTranscriptEndpoint(config.endpoint):config.endpoint,engine:config.recognition,sourceLanguage:config.source,targetLanguage:native(config)?config.target:config.source,signal:s.abort.signal,onStatus:m=>{if(active===s){feedback('runtimeStatus',m);if(m.startsWith('Verbonden')){feedback('phaseStatus','Luistert');panel(false);}}},onTranscript:text=>{if(active===s&&!native(config))submitFinal(text,s);},onTranslation:text=>{if(active===s&&native(config)){draftText='';finalLines.push(...captionLines(text));finalLines=finalLines.slice(-2);record('',text);renderCaptions();}},onEnd:m=>{if(active===s)fail(new Error(m));}});
+    const bridge=await startSpeechBridge({endpoint:local(config)?localTranscriptEndpoint(config.endpoint):config.endpoint,engine:config.recognition,sourceLanguage:config.source,targetLanguage:native(config)?config.target:config.source,signal:s.abort.signal,onStatus:m=>{if(active===s){feedback('runtimeStatus',m);if(m.startsWith('Verbonden')){feedback('phaseStatus','Luistert');panel(false);}}},onTranscript:text=>{if(active===s&&!native(config))submitFinal(text,s);},onDraft:text=>submitDraft(text,s),onTranslation:text=>{if(active===s&&native(config)){draftText='';finalLines.push(...captionLines(text));finalLines=finalLines.slice(-2);record('',text);renderCaptions();}},onEnd:(m,completed)=>{if(active===s){if(completed&&s.finishing)void completeSession(s);else fail(new Error(m));}}});
     if(active!==s)bridge.stop();else s.bridge=bridge;
   }catch(e){fail(e);}
 }
 $('start').onclick=startLive;
-$('panic').onclick=()=>stopLive();
-$('stageStop').onclick=()=>{stopLive();panel(true);};
+$('panic').onclick=requestStop;
+$('stageStop').onclick=()=>{requestStop();panel(true);};
 window.addEventListener('eaispeak-stop-live',()=>{if(active)stopLive();if(reading)stopReading();});
 for(const tab of document.querySelectorAll('.studio-tab:not(#tab-podium)'))tab.addEventListener('click',()=>{if(active)stopLive();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(active)stopLive();stopMicTest();stopReading();}});
@@ -202,7 +225,7 @@ $('prepareMic').onclick=async()=>{
     const openedStream=await navigator.mediaDevices.getUserMedia({audio:true});
     openedStream.getTracks().forEach(track=>track.stop());
     feedback('microphoneDeviceStatus','Microfoon bereikbaar: toestemming en audiotrack.','good');
-    if(s.recognition!=='browser'){await probeSpeechBridge({endpoint:s.recognition==='whisper'?localTranscriptEndpoint(s.endpoint):s.endpoint,engine:s.recognition,sourceLanguage:s.source,targetLanguage:native(s)?s.target:s.source});feedback('microphoneStatus','Bridge gereed. Test echte audio via Live.','good');return;}
+    if(s.recognition!=='browser'){await probeSpeechBridge({endpoint:local(s)?localTranscriptEndpoint(s.endpoint):s.endpoint,engine:s.recognition,sourceLanguage:s.source,targetLanguage:native(s)?s.target:s.source});feedback('microphoneStatus','Bridge gereed. Test echte audio via Live.','good');return;}
     const SR=window.SpeechRecognition || window.webkitSpeechRecognition;if(!SR)throw new Error('Spraakherkenning ontbreekt.');
     const instance=new SR();microphoneTest=instance;instance.lang=s.source;instance.continuous=false;instance.interimResults=false;
     instance.onresult = event => {if(microphoneTest!==instance)return;const words=event.results[0][0].transcript;feedback('recognizedDutch',words);feedback('microphoneStatus','Spraakherkenning: woorden ontvangen.','good');componentStatus('microphoneStatus','ready','Woorden ontvangen');stopMicTest();};

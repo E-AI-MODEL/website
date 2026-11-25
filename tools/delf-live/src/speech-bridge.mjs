@@ -36,7 +36,7 @@ export function parseBridgeMessage(text){
 }
 export async function startSpeechBridge({
   endpoint,engine,sourceLanguage,targetLanguage,signal,onStatus=()=>{},onTranscript=()=>{},
-  onTranslation=()=>{},onActivity=()=>{},onEnd=()=>{}
+  onTranslation=()=>{},onActivity=()=>{},onEnd=()=>{},onDraft=()=>{}
 }){
   const target=validateSpeechEndpoint(endpoint);
   validateBridgePair(engine,sourceLanguage,targetLanguage);
@@ -49,21 +49,22 @@ export async function startSpeechBridge({
   const resume=context.resume();
   let stream=null,source=null,processor=null,socket=null,ended=false,ready=false;
   let nextAudioAt=0,outputRate=24000;
-  let connectionTimeout=null;
+  let connectionTimeout=null,finishTimeout=null,finishing=false;
+  const localTranscript=['whisper','apple'].includes(engine);
   const onAbort=()=>finish('Spraaksessie geannuleerd.');
   signal?.addEventListener('abort',onAbort,{once:true});
-  function finish(message){
+  function finish(message,completed=false){
     if(ended)return;
     ended=true;
     ready=false;
-    clearTimeout(connectionTimeout);
+    clearTimeout(connectionTimeout);clearTimeout(finishTimeout);
     signal?.removeEventListener('abort',onAbort);
     try{processor?.disconnect();source?.disconnect();}catch{}
     for(const track of stream?.getTracks()||[])track.stop();
     try{if(socket&&socket.readyState<2)socket.close(1000,'Stopped');}catch{}
     void context.close().catch(()=>{});
     onActivity('idle');
-    onEnd(message);
+    onEnd(message,completed);
   }
   function playPCM(buffer){
     if(ended)return;
@@ -95,7 +96,7 @@ export async function startSpeechBridge({
     processor=context.createScriptProcessor(2048,1,1);
     processor.onaudioprocess=e=>{
       if(!ready||socket?.readyState!==WebSocket.OPEN)return;
-      if(socket.bufferedAmount>256*1024)return; // backpressure: do not build up seconds of audio
+      if(socket.bufferedAmount>256*1024){finish('Spraakserver kan de audio niet bijhouden.');return;}
       const pcm=floatToPcm16(e.inputBuffer.getChannelData(0));
       socket.send(pcm.buffer);
       e.outputBuffer.getChannelData(0).fill(0);
@@ -125,20 +126,29 @@ export async function startSpeechBridge({
             outputRate=msg.output_sample_rate;
           }
           ready=true;clearTimeout(connectionTimeout);
-          onStatus('Verbonden. Je kunt praten.');onActivity('listening');
+          onStatus('Verbonden'+(msg.provider?' · '+String(msg.provider).slice(0,80):'')+'. Je kunt praten.');onActivity('listening');
         }else if(msg.type==='status'){onStatus(String(msg.message||'Spraakserver bezig.').slice(0,250));}
-        else if(msg.type==='transcript'){onTranscript(String(msg.text||'').slice(0,5000));}
+        else if(msg.type==='transcript'){const text=String(msg.text||'').slice(0,5000);if(msg.final===false)onDraft(text);else onTranscript(text);}
         else if(msg.type==='translation'){onTranslation(String(msg.text||'').slice(0,5000));}
         else if(msg.type==='audio'){
           if(Number.isInteger(msg.sample_rate)&&msg.sample_rate>=8000&&msg.sample_rate<=96000)outputRate=msg.sample_rate;
         }
         else if(msg.type==='error')finish('Spraakserver: '+String(msg.message||'onbekende fout').slice(0,250));
-        else if(msg.type==='end')finish('Spraaksessie voltooid.');
+        else if(msg.type==='end')finish('Spraaksessie voltooid.',true);
       }catch(error){finish('Bridge-protocol: '+String(error?.message||error));}
     });
     socket.addEventListener('error',()=>finish('Kan de spraakserver niet bereiken. Controleer de URL en de installatie.'));
     socket.addEventListener('close',e=>{if(!ended)finish('Spraakverbinding verbroken ('+e.code+').');});
-    return {stop:()=>finish('Gesprek gestopt.'),get active(){return !ended;}};
+    return {stop:()=>finish('Gesprek gestopt.'),finishInput(){
+      if(!localTranscript||!ready||ended||finishing)return false;
+      finishing=true;ready=false;
+      try{processor?.disconnect();source?.disconnect();}catch{}
+      for(const track of stream?.getTracks()||[])track.stop();
+      try{socket.send(JSON.stringify({type:'finish'}));}
+      catch{finish('Laatste audio kon niet worden afgerond.');return false;}
+      finishTimeout=setTimeout(()=>finish('Afronding laatste audio duurde te lang.'),40000);
+      return true;
+    },get active(){return !ended;}};
   }catch(error){
     finish('Verbinden mislukt.');
     throw error;
@@ -186,7 +196,7 @@ export async function probeSpeechBridge({
           if(msg.type==='error')throw new Error('Modelserver: '+String(msg.message||'onbekende fout').slice(0,250));
           if(msg.type==='ready'){
             if(msg.protocol!=='eaispeak-pcm-v1'||msg.probe!==true)throw new Error('De server ondersteunt de veilige EAIspeak-modelcontrole niet.');
-            done(null,{engine,sourceLanguage,targetLanguage});
+            done(null,{engine,sourceLanguage,targetLanguage,...(msg.provider?{provider:String(msg.provider).slice(0,80),locale:String(msg.locale||sourceLanguage)}:{})});
           }else if(msg.type==='end')throw new Error('De modelserver sloot de controle af zonder gereedmelding.');
         }catch(error){done(error);}
       });

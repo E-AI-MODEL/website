@@ -46,7 +46,7 @@ export function validateSpeechEndpoint(input){
 
 export const TRANSCRIPT_LANGUAGES=Object.freeze(['nl-NL','en-US','fr-FR','de-DE','es-ES','pt-PT']);
 export function validateBridgePair(engine,source,target){
-  if(engine!=='whisper')return validateSpeechPair(engine,source,target);
-  if(source!==target||!TRANSCRIPT_LANGUAGES.includes(source))throw new Error('Whisper herkent de brontaal; vertalen gebeurt afzonderlijk.');
-  return {kind:'transcription',label:'Lokale Whisper'};
+  if(!['whisper','apple'].includes(engine))return validateSpeechPair(engine,source,target);
+  if(source!==target||!TRANSCRIPT_LANGUAGES.includes(source))throw new Error('Lokale transcriptie herkent de brontaal; vertalen gebeurt afzonderlijk.');
+  return {kind:'transcription',label:engine==='apple'?'Apple spraakherkenning':'Lokale Whisper'};
 }
