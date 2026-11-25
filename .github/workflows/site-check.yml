@@ -41,19 +41,22 @@ jobs:
             mapfile -d '' changed < "$RUNNER_TEMP/changed-files"
             python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
           fi
-  build-check:
-    uses: ./.github/workflows/build-site.yml
+  # EAIspeak is a public navigation target, so its tested bundle is required
+  # even for changes elsewhere on the website.
   eaispeak-check:
     needs: scope
-    if: ${{ needs.scope.outputs.eaispeak == 'true' }}
     uses: ./.github/workflows/eaispeak.yml
+  build-check:
+    needs: eaispeak-check
+    uses: ./.github/workflows/build-site.yml
+    with:
+      eaispeak_artifact: true
   ui-check:
     needs: [scope, eaispeak-check]
-    if: ${{ always() && needs.scope.result == 'success' && (needs.eaispeak-check.result == 'success' || needs.eaispeak-check.result == 'skipped') }}
     uses: ./.github/workflows/verify-ui.yml
     with:
       release_artifact: ${{ inputs.release_artifact == true }}
-      eaispeak_artifact: ${{ needs.eaispeak-check.result == 'success' }}
+      eaispeak_artifact: true
   register-check:
     uses: ./.github/workflows/check-website-register.yml
   ict-check:
