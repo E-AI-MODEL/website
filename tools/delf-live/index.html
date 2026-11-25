@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fbfbf9">
-<title>EAIspeak | praten, vertalen en presenteren</title>
+<title>EAIspeak | praten, vertalen en luisteren</title>
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./cloud-shell.css">
 <script type="module" src="./src/main.js"></script>
@@ -16,98 +16,72 @@
 <body>
 <div class="stage" id="stage" data-phase="intro" tabindex="-1" data-display="statement">
   <div class="cloud-atmosphere" aria-hidden="true"><i class="cloud-layer cloud-layer-a"></i><i class="cloud-layer cloud-layer-b"></i><i class="cloud-layer cloud-layer-c"></i><i class="cloud-layer cloud-layer-d"></i></div>
-  <canvas id="voiceVisual" class="voice-visual" aria-hidden="true"></canvas>
-  <div id="arrowWave" class="arrow-wave" aria-hidden="true"></div>
   <button id="mobileSettings" class="mobile-settings cloud-entry" type="button" aria-label="Studio openen" aria-controls="panel" aria-expanded="false">
     <span class="mobile-settings-lines" aria-hidden="true"><span></span><span></span></span>
     <span class="sr-only">Studio openen</span>
   </button>
-  <main class="centerpiece" aria-label="Franse ondertiteling" aria-live="polite">
+  <main class="centerpiece" aria-label="Live tekst" aria-live="polite">
     <div class="display-surface" id="displayText"></div>
     <p class="translation-meta sr-only" id="translationMeta"></p>
   </main>
+  <button id="stageStop" class="action stage-stop" type="button" hidden>Stop</button>
 </div>
 <aside id="panel" class="panel cloud-studio" role="dialog" aria-modal="true" aria-label="EAIspeak studio" aria-hidden="true" inert>
   <div class="studio-clouds" aria-hidden="true"></div>
   <header class="studio-header">
-    <button id="panelClose" class="close studio-return" type="button" aria-label="Terug naar het podium">
-      <span class="close-strokes" aria-hidden="true"></span><span>Podium</span>
+    <button id="panelClose" class="close studio-return" type="button" aria-label="Terug naar het scherm">
+      <span class="close-strokes" aria-hidden="true"></span><span>Scherm</span>
     </button>
     <span class="studio-current" id="studioSessionLabel" hidden aria-hidden="true"></span>
     <span class="studio-mark" aria-hidden="true">·</span>
   </header>
   <nav class="studio-nav" role="tablist" aria-label="Studio-onderdelen">
-    <button class="studio-tab" role="tab" type="button" data-studio-view="podium" id="tab-podium" aria-controls="page-podium" aria-selected="true">Podium</button>
+    <button class="studio-tab" role="tab" type="button" data-studio-view="podium" id="tab-podium" aria-controls="page-podium" aria-selected="true">Live</button>
     <button class="studio-tab" role="tab" type="button" data-studio-view="gesprek" id="tab-gesprek" aria-controls="page-gesprek" aria-selected="false" tabindex="-1">Vrij praten</button>
     <button class="studio-tab" role="tab" type="button" data-studio-view="taal" id="tab-taal" aria-controls="page-taal" aria-selected="false" tabindex="-1">Instellingen</button>
     <details id="extraStudioTabs" class="studio-more-tabs">
       <summary aria-label="Overige studio-onderdelen" aria-haspopup="true"><span id="studioMoreLabel">Overige opties</span></summary>
       <div class="studio-extra-links">
         <button class="studio-tab" role="tab" type="button" data-studio-view="stem" id="tab-stem" aria-controls="page-stem" aria-selected="false" tabindex="-1">Stem</button>
-        <button class="studio-tab" role="tab" type="button" data-studio-view="sessie" id="tab-sessie" aria-controls="page-sessie" aria-selected="false" tabindex="-1">Sessie</button>
+        <button class="studio-tab" role="tab" type="button" data-studio-view="sessie" id="tab-sessie" aria-controls="page-sessie" aria-selected="false" tabindex="-1">Voorlezen</button>
         <button class="studio-tab" role="tab" type="button" data-studio-view="meer" id="tab-meer" aria-controls="page-meer" aria-selected="false" tabindex="-1">Techniek</button>
       </div>
     </details>
   </nav>
   <div class="studio-scroll" id="studioScroll">
     <div class="studio-page" id="page-podium" role="tabpanel" aria-labelledby="tab-podium" data-studio-page="podium">
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">EAISPEAK / PODIUM</span><h1 class="cloud-heading">Podium</h1>
-        <p class="cloud-intro">Jij spreekt. Het Frans verschijnt.</p></div>
-      <div class="studio-status cloud-reveal" role="status"><span class="status-breath" aria-hidden="true"></span><p class="feedback" id="phaseStatus">Klaar om te beginnen</p></div>
-      <p class="feedback studio-live-feedback cloud-reveal" id="runtimeStatus" aria-live="assertive">Klik op Voorbereiden, daarna op Start voorstelling. Meer hoeft niet.</p>
-      <div class="studio-action-grid cloud-reveal">
-        <button id="prepareShow" class="action studio-action studio-action-emphasis" type="button">Voorbereiden</button>
-        <span id="showReadyStatus" class="studio-support" role="status" aria-live="polite">Klik op Voorbereiden</span>
-      </div>
-      <section class="studio-section cloud-reveal" id="scriptedShow">
-        <div class="studio-section-top"><span class="studio-section-no">02</span><h2>De voorstelling</h2></div>
-        <p class="studio-support">Start de Nederlandse ondertiteling. → speelt scène 1. Jij antwoordt zelf, zonder microfoon of timer. → speelt scène 2. Aan het einde bevestigt een zachte golf dat jij kunt afsluiten.</p>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">EAISPEAK / LIVE</span><h1 class="cloud-heading">Live</h1><p class="cloud-intro">Spreek, vertaal of leg tekst vast.</p></div>
+      <section class="studio-section cloud-reveal">
+        <label class="studio-field">Wat wil je doen?
+          <select id="liveMode"><option value="translate">Live vertalen</option><option value="captions">Live ondertitelen</option><option value="transcribe">Transcriberen</option></select>
+        </label>
         <div class="studio-action-grid">
-          <button id="scriptedStart" class="action studio-action studio-action-emphasis" type="button">Start voorstelling</button>
-          <button id="scriptedNext" class="action studio-action" type="button">Volgende scène →</button>
+          <label class="studio-field">Ik spreek<select id="liveSource"><option value="nl-NL" selected>Nederlands</option><option value="en-US">Engels</option><option value="fr-FR">Frans</option><option value="de-DE">Duits</option><option value="es-ES">Spaans</option><option value="pt-PT">Portugees</option></select></label>
+          <label class="studio-field" id="liveTargetRow">Vertaal naar<select id="liveTarget"><option value="nl-NL">Nederlands</option><option value="en-US">Engels</option><option value="fr-FR" selected>Frans</option><option value="de-DE">Duits</option><option value="es-ES">Spaans</option><option value="pt-PT">Portugees</option></select></label>
         </div>
-        <p class="feedback" id="scriptedStatus" role="status" aria-live="polite">Franse opnamen worden automatisch geladen.</p>
-        <div class="studio-action-grid studio-secondary-actions">
-          <button id="panic" class="action studio-action studio-action-quiet">Stop</button>
-          <button id="reset" class="action studio-action studio-action-quiet">Opnieuw</button>
-        </div>
-        <details class="studio-disclosure"><summary>Andere audio kiezen (optioneel)</summary>
-          <p class="studio-support">Beide Franse opnamen zijn inbegrepen. Hier kun je eventueel zelf een andere MP3 of WAV kiezen. De gekozen bestanden worden in Safari bewaard.</p>
-          <label class="studio-field">Scène 1 · Franse onderbreking <input id="scriptedAudioOne" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/ogg,audio/mp4,.mp3,.wav,.m4a,.ogg"></label>
-          <label class="studio-field">Scène 2 · Franse speech en teruggave <input id="scriptedAudioTwo" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/ogg,audio/mp4,.mp3,.wav,.m4a,.ogg"></label>
-          <details><summary>Teksten voor je opnames</summary>
-            <p class="studio-support">Scène 1: Un instant ! Pardon, mais ça ne va pas du tout ! Ces élèves viennent de réussir leur DELF scolaire, un diplôme de français, et leur conrecteur leur fait un discours... en néerlandais ? C'est quand même incroyable ! Le français mérite mieux que ça, non ?</p>
-            <p class="studio-support">Jouw reactie, live: Je hebt helemaal gelijk. Wil jij anders wat moois tegen de leerlingen vertellen?</p>
-            <p class="studio-support">Scène 2: Gebruik de bestaande Franse DELF-speech. Voeg als laatste toe: « Et maintenant, je vous rends la parole. Merci à tous, et encore toutes mes félicitations ! »</p>
-          </details>
+        <details class="studio-disclosure"><summary>Spraak en vertaling</summary>
+          <label class="studio-field">Spraakherkenning<select id="liveRecognition"><option value="browser">Browser</option><option value="whisper">Whisper op mijn computer</option><option value="hibiki">Hibiki · spraakvertaling</option><option value="hibiki-zero">Hibiki-Zero · spraakvertaling</option></select></label>
+          <p class="studio-support" id="liveRouteHint">Browserherkenning kan een online dienst gebruiken.</p>
+          <label class="studio-field" id="liveEndpointRow" hidden>Lokale spraakbridge<input id="liveEndpoint" type="url" value="ws://localhost:8766/eaispeak" autocomplete="off" spellcheck="false"></label>
+          <label class="studio-field" id="liveTranslationRow">Vertaalroute<select id="translationEngine"><option value="chrome">Chrome Translator</option><option value="onnx">Lokaal browsermodel · NL → FR</option></select></label>
+          <label class="studio-field"><input id="translationDrafts" type="checkbox"> Toon voorlopige tekst tijdens het spreken</label>
+          <label class="studio-field" id="liveVoiceRow"><input id="liveSpeak" type="checkbox"> Spreek definitieve vertalingen uit (gebruik een hoofdtelefoon)</label>
+          <button id="prepareTranslate" class="action studio-action" type="button">Voorbereiden</button>
+          <p class="feedback" id="translationStatus" aria-live="polite">Nog niet voorbereid</p>
         </details>
+        <div class="studio-status cloud-reveal" role="status"><span class="status-breath" aria-hidden="true"></span><p class="feedback" id="phaseStatus">Klaar om te beginnen</p></div>
+        <p class="feedback studio-live-feedback" id="runtimeStatus" aria-live="polite">Kies een functie en druk op Start.</p>
+        <div class="studio-action-grid">
+          <button id="start" class="action studio-action studio-action-emphasis" type="button">Start</button>
+          <button id="panic" class="action studio-action studio-action-quiet" type="button">Stop</button>
+        </div>
       </section>
-      <details class="studio-disclosure cloud-reveal"><summary>Andere bedieningsmogelijkheden</summary>
-      <div class="studio-action-grid cloud-reveal">
-        <button id="start" class="action studio-action studio-action-emphasis">Start Nederlands <span class="action-stroke" aria-hidden="true"></span></button>
-        <button id="interrupt" class="action studio-action">Franse speech <span class="action-stroke" aria-hidden="true"></span></button>
-      </div>
- 
-      <details class="studio-disclosure cloud-reveal" id="reserveProgramme">
-        <summary>Noodbediening</summary>
-        <p class="studio-support">Geen Ollama nodig. De vaste Franse speech kan ook zonder Ollama of live vertaling worden gestart. De knop hieronder werkt onafhankelijk van het AI-gesprek.</p>
-        <div class="studio-action-grid">
-          <button id="reserveSpeech" class="action studio-action" type="button">Start Franse speech</button>
-          <button id="reserveTakeBack" class="action studio-action studio-action-quiet" type="button">Woord terugnemen</button>
-        </div>
-        <p class="studio-support">De speech wordt niet vertaald of herschreven. De tekst uit de gekozen sessie wordt woordelijk uitgesproken. Je kunt eerder het woord terugnemen.</p>
-      </details>
-      <details class="studio-disclosure cloud-reveal" id="speechNavigation">
-        <summary>Franse speech bedienen</summary>
-        <p class="studio-support" id="speechProgress" aria-live="polite">Franse speech nog niet begonnen</p>
-        <div class="studio-action-grid">
-          <button id="previousFrenchPassage" class="action studio-action studio-action-quiet" type="button">Vorige passage</button>
-          <button id="nextFrenchPassage" class="action studio-action studio-action-quiet" type="button">Volgende passage</button>
-        </div>
-        <p class="studio-support">Op het podium: ← en → voor passages, spatie om te pauzeren. De speechtekst blijft vaststaan.</p>
-      </details>
-      </details>
-      <p class="studio-aside cloud-reveal">→ onderbreking · → na jouw antwoord · zachte golf bij teruggave</p>
+      <section class="studio-section cloud-reveal">
+        <div class="studio-section-top"><span class="studio-section-no">02</span><h2>Transcript</h2></div>
+        <p class="studio-support">Alleen in deze sessie. Audio wordt niet opgeslagen door EAIspeak. Download tekst alleen wanneer je dat zelf wilt.</p>
+        <label class="studio-field">Herkende tekst<textarea id="liveTranscript" rows="6" readonly></textarea></label>
+        <div class="studio-action-grid"><button id="downloadTranscript" class="action studio-action" type="button">Download tekst</button><button id="reset" class="action studio-action studio-action-quiet" type="button">Wis tekst</button></div>
+      </section>
     </div>
 
     <div class="studio-page" id="page-gesprek" role="tabpanel" aria-labelledby="tab-gesprek" data-studio-page="gesprek" hidden>
@@ -260,45 +234,37 @@
           </div>
         </div>
         <details class="studio-disclosure mist-talk-typing"><summary>Typ een zin als de microfoon niet werkt</summary>
-          <label class="studio-field">Jouw zin <textarea id="freeTalkTyped" rows="2" placeholder="Wat vind jij van deze diploma-uitreiking?"></textarea></label>
+          <label class="studio-field">Jouw zin <textarea id="freeTalkTyped" rows="2" placeholder="Waar wil je over praten?"></textarea></label>
           <button id="freeTalkSend" type="button" class="action studio-action studio-action-quiet">Verstuur</button>
         </details>
         <p class="studio-support mist-talk-footnote">De microfoon start pas als je op Spreken klikt. Stop gesprek sluit hem weer.</p>
       </section>
     </div>
     <div class="studio-page" id="page-taal" role="tabpanel" aria-labelledby="tab-taal" data-studio-page="taal" hidden>
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">NL → FR</span><h1 class="cloud-heading">Taal</h1>
-        <p class="cloud-intro">Van je stem naar Franse tekst.</p></div>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">INSTELLINGEN</span><h1 class="cloud-heading">Microfoon en taal</h1><p class="cloud-intro">Controleer je gekozen route voordat je begint.</p></div>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Microfoon</h2></div>
-        <p class="studio-support">Spreek een korte zin.</p>
-        <button id="prepareMic" class="action studio-action">Test microfoon</button>
+        <button id="prepareMic" class="action studio-action" type="button">Test microfoon</button>
         <p class="feedback" id="microphoneStatus" aria-live="polite">Nog niet getest</p>
-        <p class="studio-support" id="microphoneDeviceStatus" aria-live="polite">Safari vraagt bij de test om toestemming.</p>
+        <p class="studio-support" id="microphoneDeviceStatus" aria-live="polite">Je browser vraagt toestemming.</p>
+        <p class="feedback" id="recognizedDutch">Nog geen woorden herkend.</p>
       </section>
-      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Vertaling</h2></div>
-        <p class="studio-support">Eerste keer laden via wifi.</p>
-        <button id="prepareTranslate" class="action studio-action">Laad vertaling</button>
-        <p class="feedback" id="translationStatus" aria-live="polite">Nog niet geladen</p>
-        <label class="studio-field">Vertaalroute<select id="translationEngine"><option value="chrome">Chrome Translator</option><option value="onnx">Lokaal browsermodel</option></select></label>
-        <label class="studio-field"><input id="translationDrafts" type="checkbox"> Toon voorlopige vertalingen tijdens het spreken (sneller, minder stabiel)</label>
-        <p class="studio-support">Laatst herkend Nederlands:</p><p class="feedback" id="recognizedDutch">Nog geen woorden herkend.</p>
-      </section>
-      <details class="studio-disclosure cloud-reveal"><summary>Vertaling proberen</summary>
-        <label class="studio-field">Nederlandse tekst<textarea id="testDutch" rows="3">Goedemiddag allemaal. Vandaag feliciteren we leerlingen met hun DELF scolaire-diploma.</textarea></label>
-        <button id="testTranslate" class="action studio-action">Vertaal deze zin</button>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Vertaaltest</h2></div>
+        <p class="studio-support">Gebruikt de talen en vertaalroute die je bij Live hebt gekozen. De test verschijnt niet op het scherm.</p>
+        <label class="studio-field">Tekst<textarea id="testDutch" rows="3" placeholder="Typ een zin in de gekozen brontaal."></textarea></label>
+        <button id="testTranslate" class="action studio-action" type="button">Vertaal deze zin</button>
         <p id="translationTestResult" class="studio-translation-result" aria-live="polite"></p>
-      </details>
+      </section>
     </div>
 
     <div class="studio-page" id="page-stem" role="tabpanel" aria-labelledby="tab-stem" data-studio-page="stem" hidden>
       <div class="studio-hero cloud-reveal"><span class="studio-overline">AUDIO</span><h1 class="cloud-heading">Stem</h1>
-        <p class="cloud-intro">Kies een browserstem voor Nederlands en Engels. De Franse podiumstem blijft apart instelbaar.</p></div>
+        <p class="cloud-intro">Kies een browserstem voor Nederlands en Engels. Phonon is een aparte Franse stem.</p></div>
       <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Frans</h2></div>
         <button id="loadPublicFrench" class="action studio-action">Laad Franse stem</button>
         <button id="previewFrench" class="action studio-action studio-action-quiet">Luister Frans</button>
         <p class="feedback" id="frenchStatus" aria-live="polite">Nog niet geladen</p>
       </section>
-      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Optionele Nederlandse aankondiging</h2></div>
+      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">02</span><h2>Nederlandse stem</h2></div>
         <label class="studio-field">Nederlandse stem<select id="nlVoice"><option value="">Kies een aanwezige stem</option></select></label>
         <button id="previewDutch" class="action studio-action studio-action-quiet">Luister Nederlands</button>
         <p class="feedback" id="dutchStatus">Kies een stem</p>
@@ -320,44 +286,14 @@
     </div>
 
     <div class="studio-page" id="page-sessie" role="tabpanel" aria-labelledby="tab-sessie" data-studio-page="sessie" hidden>
-      <div class="studio-hero cloud-reveal"><span class="studio-overline">TEKST</span><h1 class="cloud-heading">Sessies</h1>
-        <p class="cloud-intro">Kies of bewaar een tekst.</p></div>
-      <section class="studio-section cloud-reveal"><div class="studio-section-top"><span class="studio-section-no">01</span><h2>Gekozen tekst</h2></div>
-        <label class="studio-field">Kies een sessie<select id="sessionSelect"><option value="delf">DELF scolaire</option></select></label>
-        <div class="studio-action-grid">
-          <button id="newSession" class="action studio-action">Nieuwe tekst</button>
-          <button id="exportSession" class="action studio-action studio-action-quiet">Exporteren</button>
-        </div>
-        <p id="sessionStatus" class="feedback" aria-live="polite">DELF scolaire is klaar voor gebruik.</p>
-        <details class="studio-disclosure">
-          <summary>Beheer</summary>
-          <div class="studio-action-grid">
-            <button id="editSession" class="action studio-action studio-action-quiet">Bewerk sessie</button>
-            <button id="deleteSession" class="action studio-action studio-action-quiet">Verwijder sessie</button>
-            <button id="importSession" class="action studio-action studio-action-quiet">Importeer bestand</button>
-            <input id="sessionImportFile" type="file" accept=".json,application/json" hidden>
-          </div>
-          <p class="studio-support">Bewaar een bestand om je teksten mee te nemen.</p>
-        </details>
+      <div class="studio-hero cloud-reveal"><span class="studio-overline">EAISPEAK / STEM</span><h1 class="cloud-heading">Voorlezen</h1><p class="cloud-intro">Laat je eigen tekst uitspreken.</p></div>
+      <section class="studio-section cloud-reveal">
+        <label class="studio-field">Taal<select id="readLanguage"><option value="nl-NL" selected>Nederlands</option><option value="en-US">Engels</option><option value="fr-FR">Frans</option><option value="de-DE">Duits</option><option value="es-ES">Spaans</option><option value="pt-PT">Portugees</option></select></label>
+        <label class="studio-field">Stem<select id="readEngine"><option value="browser">Browserstem</option><option value="phonon">Phonon · Frans (eerst laden bij Stem)</option></select></label>
+        <label class="studio-field">Tekst<textarea id="readText" maxlength="12000" rows="9" placeholder="Typ of plak je tekst."></textarea></label>
+        <div class="studio-action-grid"><button id="readStart" class="action studio-action studio-action-emphasis" type="button">Lees voor</button><button id="readStop" class="action studio-action studio-action-quiet" type="button">Stop</button></div>
+        <p class="feedback" id="readStatus" role="status">Klaar om voor te lezen.</p>
       </section>
-      <div id="sessionEditor" class="session-editor cloud-reveal" hidden>
-        <div class="studio-section-top"><span class="studio-section-no">02</span><h2>Tekst maken</h2></div>
-        <p class="studio-support">Je opening en slot blijven live. De AI-tekst staat vast.</p>
-        <label class="studio-field">Naam van de sessie<input id="sessionTitle" type="text" maxlength="80" placeholder="Bijvoorbeeld: diploma-uitreiking"></label>
-        <label class="studio-field">Jouw opening<textarea id="editOpening" rows="4"></textarea></label>
-        <label class="studio-field">Jouw reactie<textarea id="editReply" rows="2"></textarea></label>
-        <label class="studio-field">Nederlandse onderbreking<textarea id="editInterrupt" rows="4"></textarea></label>
-        <label class="studio-field">Franse speech<textarea id="editSpeech" rows="8" lang="fr"></textarea></label>
-        <label class="studio-field">Nederlandse teruggave<textarea id="editHandback" rows="3"></textarea></label>
-        <label class="studio-field">Jouw slot<textarea id="editClosing" rows="4"></textarea></label>
-        <div class="studio-action-grid"><button id="saveSession" class="action studio-action">Sessie bewaren</button><button id="cancelSession" class="action studio-action studio-action-quiet">Annuleren</button></div>
-      </div>
-      <details class="studio-disclosure cloud-reveal"><summary>Teksten bekijken</summary>
-        <label class="studio-field">Jouw opening<textarea id="openingText" rows="7" readonly></textarea></label>
-        <p class="studio-support">Jouw reactie: <span id="replyText"></span></p>
-        <label class="studio-field">Jouw slot<textarea id="closingText" rows="7" readonly></textarea></label>
-        <label class="studio-field">Franse AI-speech<textarea id="speechText" rows="13" spellcheck="false" readonly></textarea></label>
-      </details>
     </div>
 
     <div class="studio-page" id="page-meer" role="tabpanel" aria-labelledby="tab-meer" data-studio-page="meer" hidden>
@@ -366,9 +302,6 @@
       <section class="studio-section cloud-reveal">
         <div class="studio-section-top"><span class="studio-section-no">01</span><h2>Bediening</h2></div>
         <div class="studio-action-grid">
-          <button id="french" class="action studio-action studio-action-quiet">Franse speech</button>
-          <button id="handback" class="action studio-action studio-action-quiet">Woord teruggeven</button>
-          <button id="finish" class="action studio-action studio-action-quiet">Nederlands slot</button>
           <button id="fullscreen" class="action studio-action studio-action-quiet">Schermvullend</button>
         </div>
       </section>
@@ -384,7 +317,7 @@
           </select>
         </label>
         <p class="feedback" id="latencyStatus">Nog geen stemmeting</p>
-        <p class="studio-support">MacBook: 1 start, → overname. Tijdens de Franse speech: ← vorige, → volgende passage, spatie pauze. X stopt, 0 opnieuw, Esc opent de studio.</p>
+        <p class="studio-support">Esc opent of sluit Studio. Stop blijft zichtbaar tijdens een live sessie.</p>
       </section>
     </div>
   </div>

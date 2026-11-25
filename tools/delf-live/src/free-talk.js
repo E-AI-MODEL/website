@@ -605,6 +605,9 @@ document.addEventListener('visibilitychange',()=>{
   if(document.hidden){handsfree=false;if(speechSession||speechStarting)stopConversation();releaseMicrophone();if(recognition){try{recognition.abort();}catch{}}}
 });
 
-// Het vrije gesprek stopt bij weggaan, zonder de vaste podiumvoorstelling te beïnvloeden.
+// Stop een gesprek bij een andere functie.
 $('tab-podium').addEventListener('click',()=>{if(handsfree||recognition||speechSession||speechStarting)stopConversation();});
 for(const tab of document.querySelectorAll('.studio-tab:not(#tab-gesprek)'))tab.addEventListener('click',()=>{if(handsfree||recognition||speechSession||speechStarting)stopConversation();});
+
+window.addEventListener('eaispeak-stop-conversation',stopConversation);
+for(const button of [speak,send])button?.addEventListener('click',()=>window.dispatchEvent(new Event('eaispeak-stop-live')),{capture:true});

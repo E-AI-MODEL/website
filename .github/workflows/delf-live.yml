@@ -1,4 +1,4 @@
-name: DELF podiumapp
+name: EAIspeak
 
 on:
   pull_request:
@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   actions: read
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Controleer en bouw de podiumapp
+      - name: Controleer en bouw EAIspeak
         run: |
           npm install --no-audit --no-fund
           node --check src/main.js
@@ -56,208 +56,11 @@ jobs:
           npm run build
           test -s dist/index.html
           find dist/assets -name '*.js' -type f | grep -q .
-      - name: Bewaar de gebouwde podiumapp voor controle
+      - name: Bewaar de geteste build
         uses: actions/upload-artifact@v4
         with:
-          name: delf-podiumapp-preview
+          name: eaispeak-tested-build
           path: tools/delf-live/dist/
           if-no-files-found: error
 
-  deploy-preview:
-    needs: check-and-build
-    # Preview mag ook na een interne PR-update op de vaste DELF-branch publiceren.
-    # Publicatie van andere PR's en forks blijft uitgeschakeld.
-    if: >-
-      (github.event_name == 'push' && github.ref == 'refs/heads/feature/delf-live-stage-2026-11-19')
-      || (github.event_name == 'pull_request'
-          && github.head_ref == 'feature/delf-live-stage-2026-11-19'
-          && github.base_ref == 'main'
-          && github.event.pull_request.head.repo.full_name == github.repository)
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - name: Checkout tested DELF version
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Build and test DELF only
-        run: |
-          set -euo pipefail
-          npm install --prefix tools/delf-live --no-audit --no-fund
-          npm run test --prefix tools/delf-live
-          npm run build --prefix tools/delf-live
-          test -s tools/delf-live/dist/index.html
-          test -s tools/delf-live/dist/mobile-preview.html
-          grep -q 'DELF · Franse modelproef' tools/delf-live/dist/mobile-preview.html
-          test -d tools/delf-live/dist/assets
-          grep -q 'DELF scolaire' tools/delf-live/dist/index.html
-
-      - name: Wait until main-site deployment is finished
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python - <<'PY'
-          import json, os, time
-          from urllib.request import Request, urlopen
-          api = 'https://api.github.com/repos/' + os.environ['GITHUB_REPOSITORY'] + '/actions/workflows/deploy-theory7.yml/runs?per_page=35'
-          pending = {'queued', 'pending', 'in_progress', 'waiting', 'requested'}
-          for attempt in range(38):
-              req = Request(api, headers={
-                  'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
-                  'Accept': 'application/vnd.github+json',
-                  'User-Agent': 'DELF-cloud-publisher'
-              })
-              with urlopen(req, timeout=20) as response:
-                  data = json.load(response)
-              active = [str(r['id']) for r in data['workflow_runs'] if r['status'] in pending]
-              if not active:
-                  print('Full website publishing is finished; DELF preview can now upload.')
-                  break
-              print('Waiting for full website publisher:', ', '.join(active), flush=True)
-              time.sleep(15)
-          else:
-              raise RuntimeError('Main publisher remained busy; no partial DELF upload attempted.')
-          PY
-
-      - name: Install FTPS client
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lftp openssl
-
-      - name: Verify Theory7 FTPS certificate
-        shell: bash
-        env:
-          HOST: ftp.eaimodel.nl
-        run: |
-          set -euo pipefail
-          expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
-          actual="$(openssl s_client -starttls ftp -connect "$HOST:21" -servername "$HOST" </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
-          if [ "$actual" != "$expected" ]; then
-            echo "Unexpected FTPS certificate fingerprint"
-            exit 1
-          fi
-
-      - name: Publish only DELF test folder
-        shell: bash
-        env:
-          HOST: ftp.eaimodel.nl
-          FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
-          FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
-        run: |
-          set -euo pipefail
-          test -n "$FTP_USER"
-          test -n "$FTP_PASSWORD"
-          lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'
-          set cmd:fail-exit yes
-          set ftp:ssl-force true
-          set ftp:ssl-protect-data true
-          set ssl:verify-certificate false
-          set net:timeout 20
-          set net:max-retries 1
-          # Theory7 FTPS rejects lftp's .in.* temporary filenames for larger media.
-          # Upload directly and rely on the existing post-upload byte-for-byte checks.
-          set xfer:use-temp-file no
-          set net:connection-limit 4
-          mkdir -p /tools/eaispeak
-          mirror -R --parallel=3 --verbose tools/delf-live/dist/ /tools/eaispeak/
-          mkdir -p /tools/delf-live
-          mirror -R --parallel=3 --verbose tools/delf-live/dist/ /tools/delf-live/
-          bye
-          EOF
-
-      - name: Verify public test page and assets
-        shell: bash
-        run: |
-          python - <<'PY'
-          from urllib.request import Request, urlopen
-          from urllib.parse import urljoin
-          from pathlib import Path
-          import re
-          import time
-          base = 'https://eaimodel.nl/tools/eaispeak/'
-          expected = (Path('tools/delf-live/dist/index.html')).read_bytes()
-          urls = re.findall(rb'(?:src|href)="([^"]+)"', expected)
-          assets = [url.decode() for url in urls if b'/assets/' in url]
-          assert assets, 'No Vite assets in the HTML'
-          for attempt in range(12):
-              try:
-                  with urlopen(Request(base, headers={'Cache-Control':'no-cache','User-Agent':'DELF-preview-check/1.0'}), timeout=20) as res:
-                      page = res.read()
-                      assert res.status == 200
-                  # Hosting may inject analytics or modify markup after upload.
-                  # Check the app identity and exact versioned asset references instead.
-                  title = re.search(rb'<title>[^<]+</title>', expected)
-                  assert title, 'Built DELF app has no title'
-                  markers = (title.group(0),
-                             b'id="displayText"', b'id="speechText"')
-                  if all(marker in page for marker in markers) and all(asset.encode() in page for asset in assets):
-                      break
-              except Exception as err:
-                  print('Test page not ready:', err)
-              time.sleep(5)
-          else:
-              raise SystemExit('Published DELF page missing or referencing different app assets')
-          for asset in assets:
-              local = Path('tools/delf-live/dist') / asset.lstrip('./')
-              with urlopen(Request(urljoin(base, asset), headers={'Cache-Control':'no-cache','User-Agent':'DELF-preview-check/1.0'}), timeout=30) as res:
-                  data = res.read()
-                  assert res.status == 200
-              assert data == local.read_bytes(), 'Asset differs: ' + asset
-              print('OK:', asset, len(data), 'bytes')
-          with urlopen(Request(base + 'mobile-preview.html', headers={'Cache-Control':'no-cache','User-Agent':'DELF-preview-check/1.0'}), timeout=30) as res:
-              mobile_page = res.read()
-              assert res.status == 200
-          assert b'DELF' in mobile_page and b'Franse modelproef' in mobile_page
-          assert b'/assets/' in mobile_page, 'Mobile model JS not linked'
-          old_base = 'https://eaimodel.nl/tools/delf-live/'
-          with urlopen(Request(old_base, headers={'Cache-Control':'no-cache','User-Agent':'EAIspeak-legacy-check/1.0'}), timeout=30) as res:
-              old_page = res.read()
-              assert res.status == 200
-          assert b'id="scriptedStart"' in old_page, 'Original DELF route no longer works'
-          print('EAIspeak page published at', base, 'and legacy DELF route preserved:', old_base)
-          PY
-
-  # Eenmalig: bouw de definitieve Franse opnamen in GitHub, niet op de Mac.
-  generate-french-scenes:
-    if: github.event_name == 'pull_request' && github.head_ref == 'fix/delf-bundled-french-audio-20261120'
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          persist-credentials: true
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Installeer Franse stem
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq espeak-ng ffmpeg
-          python -m pip install --upgrade pip
-          python -m pip install 'kokoro==0.9.4' numpy soundfile
-      - name: Maak de twee opgenomen Franse scènes
-        run: python tools/delf-live/scripts/generate_scene_audio.py
-      - name: Controleer opnamebestanden
-        run: |
-          set -euo pipefail
-          for f in tools/delf-live/public/audio/*.mp3; do
-            test -s "$f"
-            ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 "$f"
-          done
-      - name: Bewaar de opnamen in dezelfde branch
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tools/delf-live/public/audio/
-          git diff --cached --quiet || git commit -m 'DELF: bundle French speech recordings'
-          git fetch origin "${{ github.head_ref }}"
-          git rebase FETCH_HEAD
-          git push origin HEAD:${{ github.head_ref }}
+  # Publication is intentionally separate: an owner-approved deployment must use the tested artifact.

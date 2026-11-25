@@ -1,7 +1,3 @@
-import {
-  getActiveSession, listSessions, selectSession, storeSession, deleteSession,
-  exportSessionData, importSessionData
-} from './session-store.js';
 import {initMistVoiceUI} from './mist-voice-ui.mjs';
 
 const $ = id => document.getElementById(id);
@@ -14,7 +10,7 @@ const moreMenu=$('extraStudioTabs'),moreLabel=$('studioMoreLabel');
 const moreSummary=moreMenu.querySelector('summary'),moreLinks=moreMenu.querySelector('.studio-extra-links');
 let moreClosingTimer=null;
 const extraViews=new Set(['stem','sessie','meer']);
-const extraNames={stem:'Stem',sessie:'Sessie',meer:'Techniek'};
+const extraNames={stem:'Stem',sessie:'Voorlezen',meer:'Techniek'};
 function positionMoreMenu(){
   if(!moreMenu.open)return;
   const anchor=moreSummary.getBoundingClientRect();
@@ -50,7 +46,6 @@ let idleControlsTimer = null;
 let idleCaptionsTimer = null;
 let idleStudioTimer = null;
 let captionIdleSeconds = 6;
-let editingId = null;
 let lastOpenState = null;
 
 try {
@@ -287,136 +282,6 @@ function onStudioVisibility() {
 new MutationObserver(onStudioVisibility).observe(panel,{attributes:true,attributeFilter:['class']});
 onStudioVisibility();
 markActivity();
-
-// Bescheiden, herbruikbare sessies. De standaard DELF-tekst wordt nooit gewijzigd.
-const sessionSelect = $('sessionSelect');
-const editor = $('sessionEditor');
-const status = $('sessionStatus');
-const fields = {
-  name:$('sessionTitle'),
-  opening:$('editOpening'),
-  reply:$('editReply'),
-  interrupt:$('editInterrupt'),
-  speech:$('editSpeech'),
-  handback:$('editHandback'),
-  closing:$('editClosing')
-};
-function report(message,kind='') {
-  status.textContent = message;
-  status.classList.remove('good','bad');
-  if (kind) status.classList.add(kind);
-}
-function canEditSession() {
-  if (['intro','stopped'].includes(stage.dataset.phase)) return true;
-  report('Stop eerst de lopende voorstelling. Daarna kun je een sessie kiezen.','bad');
-  return false;
-}
-function syncSessionUI() {
-  const chosen = getActiveSession();
-  sessionSelect.replaceChildren();
-  listSessions().forEach(item => {
-    const option = new Option(item.name, item.id, false, item.id === chosen.id);
-    sessionSelect.add(option);
-  });
-  $('studioSessionLabel').textContent = chosen.name;
-  if (!editor.hidden && editingId === chosen.id) {
-    // Do not overwrite changes in the editor while the user is typing.
-    return;
-  }
-  report(chosen.id === 'delf' ? 'DELF · vaste tekst' : 'Lokaal bewaard · export mogelijk','');
-}
-sessionSelect.addEventListener('change',() => {
-  if (!canEditSession()) { syncSessionUI(); return; }
-  try {
-    selectSession(sessionSelect.value);
-    editor.hidden = true;editingId = null;
-    report('Sessie geopend. De teksten voor de AI-overname zijn aangepast.','good');
-  } catch(error){report(error.message,'bad');syncSessionUI();}
-});
-function showEditor(mode) {
-  if (!canEditSession()) return;
-  const current = getActiveSession();
-  editingId = mode === 'edit' && current.id !== 'delf' ? current.id : null;
-  const from = editingId ? current : {
-    name:'',opening:'',reply:'',interrupt:'',speech:'',handback:'',closing:''
-  };
-  for (const [key,element] of Object.entries(fields)) element.value = from[key] || '';
-  editor.hidden = false;
-  editor.classList.add('is-revealed');
-  scrollToEditor();
-}
-function scrollToEditor() {
-  requestAnimationFrame(() => {
-    editor.scrollIntoView({behavior:reduceMotion.matches?'auto':'smooth',block:'start'});
-  });
-}
-$('newSession').addEventListener('click',()=>showEditor('new'));
-$('cancelSession').addEventListener('click',()=>{
-  editor.hidden = true;
-  editingId = null;
-  report('Niet opgeslagen.');
-});
-$('saveSession').addEventListener('click',() => {
-  if (!canEditSession()) return;
-  const values = Object.fromEntries(Object.entries(fields).map(([key,element]) => [key,element.value]));
-  try {
-    const saved = storeSession(values,editingId);
-    editor.hidden = true; editingId = null;
-    syncSessionUI();
-    report('Sessie '+saved.name+' is bewaard op dit apparaat.','good');
-  } catch(error){report(error.message,'bad');}
-});
-$('exportSession').addEventListener('click',() => {
-  try {
-    const current = getActiveSession();
-    const blob = new Blob([exportSessionData()],{type:'application/json;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href=url;
-    a.download='podium-'+current.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40)+'.json';
-    document.body.append(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),3000);
-    report('Sessie opgeslagen als bestand.','good');
-  } catch(error){report(error.message,'bad');}
-});
-$('editSession').addEventListener('click',() => {
-  if (getActiveSession().id === 'delf') {
-    report('Maak een nieuwe sessie om de goedgekeurde DELF-tekst te behouden.','bad');
-    return;
-  }
-  showEditor('edit');
-});
-$('deleteSession').addEventListener('click',() => {
-  if (!canEditSession()) return;
-  const current = getActiveSession();
-  if (current.id === 'delf') {
-    report('De DELF-sessie kan niet worden verwijderd.','bad');return;
-  }
-  if (!confirm('Sessie "'+current.name+'" van dit apparaat verwijderen?')) return;
-  try {
-    deleteSession(current.id);
-    syncSessionUI();
-    report('De sessie is verwijderd. DELF scolaire is weer geselecteerd.','good');
-  } catch(error){report(error.message,'bad');}
-});
-$('importSession').addEventListener('click',()=>$('sessionImportFile').click());
-$('sessionImportFile').addEventListener('change',async event=>{
-  const file=event.target.files?.[0];
-  if (!file) return;
-  if (!canEditSession()) {event.target.value='';return;}
-  try {
-    if (file.size>200000) throw new Error('Dit bestand is te groot.');
-    const imported=importSessionData(await file.text());
-    editor.hidden=true;editingId=null;
-    syncSessionUI();
-    report('Sessie '+imported.name+' is geladen.','good');
-  } catch(error){report(error.message,'bad');}
-  finally{event.target.value='';}
-});
-window.addEventListener('cloud-session-change',syncSessionUI);
-syncSessionUI();
 
 // Vrije keuze van stilstandduur voor podiumtekst. Geen vooraf ingevulde ondertitels.
 const captionSelect = $('idleCaptionSeconds');

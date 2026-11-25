@@ -1,10 +1,10 @@
 // Alleen ingeschakelde functies worden getest. Een statische browsercontrole start geen model.
 export const SERVICES = [
-  {id:'mic', name:'Spraakherkenning', hint:'Microfoon en browser', action:'Test via Taal'},
-  {id:'translation',name:'Vertaling',hint:'Chrome Translator of lokaal browsermodel',action:'Laad en test via Taal'},
+  {id:'mic', name:'Spraakherkenning', hint:'Microfoon en browser', action:'Test via Instellingen'},
+  {id:'translation',name:'Vertaling',hint:'Chrome Translator of lokaal browsermodel',action:'Laad via Live en test via Instellingen'},
   {id:'french',name:'Franse stem',hint:'Phonon op dit apparaat',action:'Laad en beluister via Stem'},
   {id:'dutch',name:'Nederlandse stem',hint:'Systeemstem van de browser',action:'Kies en beluister via Stem'},
-  {id:'sessions',name:'Sessies',hint:'Opslag op dit apparaat',action:'Controleer opslag'},
+  {id:'sessions',name:'Lokale voorkeuren',hint:'Opslag op dit apparaat',action:'Controleer opslag'},
   {id:'ollama',name:'Ollama',hint:'Optionele lokale modelserver',action:'Test verbinding'},
   {id:'lmstudio',name:'LM Studio',hint:'Optionele lokale modelserver',action:'Test verbinding'},
   {id:'llamacpp',name:'llama.cpp',hint:'Optionele lokale modelserver',action:'Test verbinding'}

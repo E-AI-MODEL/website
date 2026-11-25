@@ -17,8 +17,8 @@ test('podium is werkelijk leeg en open studio is geen zijpaneel',()=>{
   assert.ok(main.includes("$('panel').inert = !open;"));
 });
 
-test('vijf afzonderlijke studio-onderdelen zijn toegankelijk met toetsen en aanraking',()=>{
-  const names=['podium','taal','stem','sessie','meer'];
+test('algemene studio-onderdelen zijn toegankelijk met toetsen en aanraking',()=>{
+  const names=['podium','gesprek','taal','stem','sessie','meer'];
   for(const name of names){
     assert.ok(html.includes('data-studio-view="'+name+'"'),name+' tab');
     assert.ok(html.includes('data-studio-page="'+name+'"'),name+' page');
@@ -35,8 +35,8 @@ test('geen verloren bediening bij een open of gesloten studio',()=>{
   const all=[...html.matchAll(/\bid="([^"]+)"/g)].map(x=>x[1]);
   assert.equal(new Set(all).size,all.length,'alle id-attributen zijn uniek');
   for(const id of ['stage','mobileSettings','panel','panelClose','prepareMic','prepareTranslate',
-    'loadPublicFrench','previewFrench','previewDutch','nlVoice','start','interrupt','panic',
-    'reset','french','handback','finish','fullscreen','runtimeStatus','translationStatus']){
+    'loadPublicFrench','previewFrench','previewDutch','nlVoice','start','panic',
+    'reset','stageStop','readStart','readStop','fullscreen','runtimeStatus','translationStatus']){
     assert.ok(all.includes(id),'geen ontbrekende bediening: '+id);
   }
   assert.ok(html.includes('id="panel" class="panel cloud-studio"'));
@@ -69,15 +69,15 @@ test('geen vooraf gemaakte vertaaltekst op het podium door studio-proef',()=>{
   assert.ok(html.includes('id="translationTestResult"'));
   assert.ok(main.includes("$('translationTestResult').textContent = translated;"));
   assert.ok(!main.includes("screen(await translator.translate($('testDutch').value)"));
-  assert.ok(main.includes('translateFinal(words)'));
-  assert.ok(main.includes('translatePreview(interim)'));
+  assert.ok(main.includes('submitFinal(words,s)'));
+  assert.ok(main.includes('submitDraft(interim.trim(),s)'));
 });
 
 test('pijltoetsen in Cloud Studio kunnen de AI niet overnemen',()=>{
   assert.ok(main.includes("if ($('panel').classList.contains('open')) return;"));
   assert.ok(main.includes('stage.inert = open;'));
   const keyboard = main.slice(main.lastIndexOf("document.addEventListener('keydown'"));
-  assert.ok(keyboard.indexOf("if ($('panel').classList.contains('open')) return;") < keyboard.indexOf("if (event.code === 'ArrowRight')"));
+  assert.ok(!keyboard.includes("if (event.code === 'ArrowRight')"));
 });
 
 
@@ -87,7 +87,7 @@ test('compacte techstudio en ronde knoppen zijn geen zware kaarten',()=>{
   assert.ok(css.includes('border-radius:999px'));
   assert.ok(css.includes('.cloud-studio .cloud-heading{'));
   assert.ok(css.includes('font:400 clamp(20px,2.7vw,27px)'));
-  assert.ok(html.includes('Jij spreekt. Het Frans verschijnt.'));
+  assert.ok(html.includes('Spreek, vertaal of leg tekst vast.'));
 });
 
 test('menu-inhoud komt uit mist en verdampt ook weer bij sluiten',()=>{

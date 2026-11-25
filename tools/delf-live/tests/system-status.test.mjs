@@ -16,7 +16,7 @@ test('geen automatische verbinding en duidelijke beginstatus',()=>{
   assert.match(panel,/systemConnect'\)\.disabled=true/);
   assert.match(panel,/Niet gecontroleerd/);
   assert.match(panel,/Laatste gebeurtenissen/);
-  assert.match(main,/componentStatus\('translationStatus','idle','Browsermodel geladen/);
+  assert.match(main,/componentStatus\('translationStatus','idle','Route voorbereid/);
   assert.match(main,/componentStatus\('frenchStatus','ready','Franse audiobuffer geproduceerd/);
 });
 

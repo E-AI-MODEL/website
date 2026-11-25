@@ -1663,3 +1663,8 @@ body.cloud-studio-idle.panel-visible:has(.mist-voice-console[open]) .cloud-studi
   #page-gesprek .mist-talk-actions .action{min-height:37px;padding:8px 11px}
   #page-gesprek .mist-talk-dialogue{margin-top:0}
 }
+
+/* Generic EAIspeak live screen: always provide a visible stop while listening. */
+.stage .stage-stop{position:fixed;bottom:max(22px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:20;border-radius:999px;padding:10px 24px;background:rgba(250,252,251,.94);color:#465768;border:1px solid rgba(97,117,137,.3);font-size:14px;cursor:pointer;opacity:1!important}
+.stage .stage-stop[hidden]{display:none!important}
+.cloud-studio select:disabled,.cloud-studio button:disabled{opacity:.5}

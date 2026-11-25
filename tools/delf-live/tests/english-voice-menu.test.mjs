@@ -15,7 +15,7 @@ test('Engelse stemmen zijn zichtbaar en beluisterbaar in de eigen Stem-pagina',(
     assert.ok(html.includes('id="'+id+'"'),id);
   }
   assert.ok(html.includes('>Engelse stem</h2>'));
-  assert.ok(main.includes("availableVoices(window.speechSynthesis,'en')"));
+  assert.ok(main.includes("refreshVoice($('enVoice'),'en')"));
   assert.ok(main.includes('previewEnglish'));
   assert.ok(main.includes("Good evening, everyone."));
   assert.ok(main.includes("utterance.voice=chosen"));

@@ -1,7 +1,7 @@
 // Browser audio transport for a self-hosted EAIspeak bridge.
 // This is NOT the native Moshi or Hibiki websocket protocol.
 // The server must translate between this documented protocol and the selected model.
-import {validateSpeechEndpoint,validateSpeechPair} from './speech-engines.mjs';
+import {validateSpeechEndpoint,validateBridgePair} from './speech-engines.mjs';
 
 export function floatToPcm16(samples){
   const output=new Int16Array(samples.length);
@@ -18,7 +18,7 @@ export function pcm16ToFloat(buffer){
   return samples;
 }
 export function bridgeHandshake({engine,sourceLanguage,targetLanguage,sampleRate}){
-  validateSpeechPair(engine,sourceLanguage,targetLanguage);
+  validateBridgePair(engine,sourceLanguage,targetLanguage);
   if(!Number.isFinite(sampleRate)||sampleRate<8000||sampleRate>192000)throw new Error('Ongeldige microfoonfrequentie.');
   return {
     type:'start',protocol:'eaispeak-pcm-v1',engine,
@@ -39,7 +39,7 @@ export async function startSpeechBridge({
   onTranslation=()=>{},onActivity=()=>{},onEnd=()=>{}
 }){
   const target=validateSpeechEndpoint(endpoint);
-  validateSpeechPair(engine,sourceLanguage,targetLanguage);
+  validateBridgePair(engine,sourceLanguage,targetLanguage);
   if(!navigator.mediaDevices?.getUserMedia)throw new Error('Deze browser kan de microfoon niet openen.');
   if(!window.AudioContext&&!window.webkitAudioContext)throw new Error('Deze browser ondersteunt geen Web Audio.');
   // AudioContext must be opened during the user's button click for Safari/iOS.
@@ -156,7 +156,7 @@ export async function probeSpeechBridge({
   timeoutMs=20000,WebSocketClass=globalThis.WebSocket
 }){
   const url=validateSpeechEndpoint(endpoint);
-  validateSpeechPair(engine,sourceLanguage,targetLanguage);
+  validateBridgePair(engine,sourceLanguage,targetLanguage);
   if(typeof WebSocketClass!=='function')throw new Error('Deze browser ondersteunt geen WebSocket.');
   if(!Number.isFinite(timeoutMs)||timeoutMs<1000||timeoutMs>120000)throw new Error('Ongeldige verbindingstimeout.');
   return new Promise((resolve,reject)=>{
@@ -175,7 +175,7 @@ export async function probeSpeechBridge({
         const hello=bridgeHandshake({engine,sourceLanguage,targetLanguage,sampleRate:48000});
         hello.type='probe';
         socket.send(JSON.stringify(hello));
-        onStatus('Kyutai-model controleren…');
+        onStatus('Spraakmodel controleren…');
       });
       socket.addEventListener('message',event=>{
         if(settled)return;
