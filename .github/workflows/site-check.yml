@@ -43,9 +43,10 @@ jobs:
       selection: ${{ needs.scope.outputs.selection }}
     uses: ./.github/workflows/build-site.yml
   ui-check:
-    needs: scope
+    needs: [scope, build-check]
     uses: ./.github/workflows/verify-ui.yml
     with:
+      reuse_build: true
       selection: ${{ needs.scope.outputs.selection }}
       release_artifact: ${{ inputs.release_artifact == true }}
   register-check:
@@ -55,37 +56,47 @@ jobs:
     if: ${{ fromJSON(needs.scope.outputs.jobs)['ict-check'] }}
     uses: ./.github/workflows/check-ict-assurance.yml
   ict-webkit:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['ict-webkit'] }}
     uses: ./.github/workflows/ict-scan-webkit.yml
+    with:
+      reuse_build: true
   topo-check:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['topo-check'] && inputs.skip_topo != true }}
     uses: ./.github/workflows/topo-mobile-verify.yml
   anatomy-webkit:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['anatomy-webkit'] }}
     uses: ./.github/workflows/anatomie-webkit.yml
+    with:
+      reuse_build: true
   eaigit-check:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['eaigit-check'] }}
     uses: ./.github/workflows/projecthulp-browser.yml
   audit-archive:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['audit-archive'] }}
     uses: ./.github/workflows/audit-archive.yml
+    with:
+      reuse_build: true
   check-own-exports:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['check-own-exports'] }}
     uses: ./.github/workflows/check-own-exports.yml
+    with:
+      reuse_build: true
   projecthulp-eaiwork-proof:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['projecthulp-eaiwork-proof'] }}
     uses: ./.github/workflows/projecthulp-eaiwork-proof.yml
   check-eaiwork-dashboard:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['check-eaiwork-dashboard'] }}
     uses: ./.github/workflows/check-eaiwork-dashboard.yml
+    with:
+      reuse_build: true
   eaigame:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['eaigame'] }}
@@ -95,25 +106,35 @@ jobs:
     if: ${{ fromJSON(needs.scope.outputs.jobs)['leeuw-console'] }}
     uses: ./.github/workflows/leeuw-console.yml
   science-fixed-workspace:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['science-fixed-workspace'] }}
     uses: ./.github/workflows/science-fixed-workspace.yml
+    with:
+      reuse_build: true
   science-studio-webkit:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['science-studio-webkit'] }}
     uses: ./.github/workflows/science-studio-webkit.yml
+    with:
+      reuse_build: true
   science-webkit:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['science-webkit'] }}
     uses: ./.github/workflows/science-webkit.yml
+    with:
+      reuse_build: true
   schuine-worp-studio:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['schuine-worp-studio'] }}
     uses: ./.github/workflows/schuine-worp-studio.yml
+    with:
+      reuse_build: true
   llm-observatorium-ui:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['llm-observatorium-ui'] }}
     uses: ./.github/workflows/llm-observatorium-ui.yml
+    with:
+      reuse_build: true
   check-llmscan:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['check-llmscan'] }}
@@ -143,9 +164,11 @@ jobs:
     if: ${{ fromJSON(needs.scope.outputs.jobs)['onderwijsregio-ui'] }}
     uses: ./.github/workflows/onderwijsregio-ui.yml
   verify-wihtml:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['verify-wihtml'] }}
     uses: ./.github/workflows/verify-wihtml.yml
+    with:
+      reuse_build: true
   test-html-gallery-auth:
     needs: scope
     uses: ./.github/workflows/test-html-gallery-auth.yml

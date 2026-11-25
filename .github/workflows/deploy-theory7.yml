@@ -41,7 +41,7 @@ jobs:
       - name: Download exact de geteste productiebuild
         uses: actions/download-artifact@v4
         with:
-          name: site-release-${{ github.run_id }}
+          name: site-release-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Verifieer commit en alle bestanden voor upload
         run: |
           pip install beautifulsoup4

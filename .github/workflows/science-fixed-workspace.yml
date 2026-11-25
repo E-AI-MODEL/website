@@ -1,6 +1,10 @@
 name: Test fixed physics laboratory
 on:
   workflow_call:
+    inputs:
+      reuse_build:
+        type: boolean
+        default: false
   workflow_dispatch:
 
 permissions:
@@ -18,7 +22,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install beautifulsoup4
-      - run: python scripts/build_site.py --sources content/legacy --out site-build
+      - uses: ./.github/actions/checked-build
+        with:
+          reuse: ${{ inputs.reuse_build }}
       - run: npm install --no-save playwright@1.56.1
       - run: npx playwright install --with-deps chromium webkit
       - name: Mathematics viewport and navigation in Chromium

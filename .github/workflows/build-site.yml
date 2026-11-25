@@ -339,3 +339,20 @@ jobs:
               raise SystemExit("\\n".join(problems))
           print("Visitor route and shared styling checks passed")
           PY
+
+      - name: Bereid de definitieve site voor en leg de bestanden vast
+        run: |
+          python scripts/prepare_ui.py --root site-build
+          python scripts/verify_ui.py --root site-build
+          python scripts/release_artifact.py create --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
+      - name: Bewaar de bouw voor alle testjobs in deze run
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            site-build/
+            release-manifest.json
+          if-no-files-found: error
+          include-hidden-files: true
+          compression-level: 1
+          retention-days: 30
