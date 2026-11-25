@@ -4,17 +4,16 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
 
 # One upload queue for all jobs writing site-wide Theory7 files.
-concurrency:
-  group: theory7-production
-  cancel-in-progress: false
 
 jobs:
-  publish-dashboard:
+  prepare:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Verify self-contained dashboard source
@@ -24,6 +23,40 @@ jobs:
           grep -q 'function compactDashboard(live)' content/eaiwork-dashboard.html
           grep -q 'function dashRing(' content/eaiwork-dashboard.html
           grep -q 'registratie:registration' content/eaiwork-dashboard.html
+      - name: Leg de vooraf gecontroleerde overdrachtsbestanden vast
+        run: python3 scripts/recovery_files.py create content/eaiwork-dashboard.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            recovery-files/
+            recovery-manifest.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+  publish:
+    needs: prepare
+    environment: theory7-herstel
+    concurrency:
+      group: theory7-production
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controleer de goedkeuring van de eigenaar
+        env:
+          OWNER_ID: ${{ github.repository_owner_id }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" |
+            jq -e --arg id "$OWNER_ID" 'any(.[]; .state == "approved" and (.user.id|tostring) == $id and any(.environments[]; .name == "theory7-herstel"))'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: python3 scripts/recovery_files.py verify
+      - run: cp -a recovery-files/. .
       - name: Install FTPS client
         run: |
           sudo apt-get update
@@ -40,6 +73,7 @@ jobs:
         env:
           FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        working-directory: recovery-files
         run: |
           set -euo pipefail
           lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://ftp.eaimodel.nl:21" <<'EOF'

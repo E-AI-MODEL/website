@@ -165,11 +165,11 @@ class ICTScanTests(unittest.TestCase):
                           if command[0] == 'put' and any('.htaccess' in word for word in command)]
         self.assertEqual(len(header_uploads), 1, 'Only the ICT directory headers may be uploaded explicitly')
         upload_index, upload = header_uploads[0]
-        self.assertEqual(upload, ['put', 'site-build/tools/ict-scan/.htaccess', '-o', '/tools/ict-scan/.htaccess'])
+        self.assertEqual(upload, ['put', 'candidate/site-build/tools/ict-scan/.htaccess', '-o', '/tools/ict-scan/.htaccess'])
         directory_index = commands.index(['mkdir', '-p', '/tools/ict-scan'])
         self.assertLess(directory_index, upload_index)
         site_mirrors = [(index, command) for index, command in enumerate(commands)
-                        if command[0] == 'mirror' and command[-2:] == ['site-build/', '/']]
+                        if command[0] == 'mirror' and command[-2:] == ['candidate/site-build/', '/']]
         self.assertEqual(len(site_mirrors), 1)
         mirror_index, mirror = site_mirrors[0]
         self.assertLess(upload_index, mirror_index, 'Directory headers must precede the HTML publication')
@@ -196,8 +196,14 @@ class ICTScanTests(unittest.TestCase):
         deploy = (ROOT / '.github' / 'workflows' / 'deploy-theory7.yml').read_text(encoding='utf-8')
         checks = (ROOT / '.github' / 'workflows' / 'check-ict-assurance.yml').read_text(encoding='utf-8')
         gate = (ROOT / '.github' / 'workflows' / 'site-check.yml').read_text(encoding='utf-8')
-        self.assertIn('uses: ./.github/workflows/site-check.yml', deploy)
-        self.assertIn('needs: release-check', deploy)
+        candidate = (ROOT / 'scripts' / 'release_candidate.py').read_text(encoding='utf-8')
+        validation = (ROOT / '.github' / 'workflows' / 'validate-main.yml').read_text(encoding='utf-8')
+        self.assertIn('uses: ./.github/workflows/site-check.yml', validation)
+        self.assertIn('python scripts/release_candidate.py', deploy)
+        self.assertIn('validate_run(run, repo, jobs)', candidate)
+        self.assertIn('gates[0]["conclusion"] != "success"', candidate)
+        self.assertIn('validated_manifest(dest / folder', candidate)
+        self.assertIn('same_tree(tree, current)', candidate)
         self.assertIn('uses: ./.github/workflows/check-ict-assurance.yml', gate)
         self.assertIn('uses: ./.github/workflows/ict-scan-webkit.yml', gate)
         self.assertIn('ict-check, ict-webkit', gate)

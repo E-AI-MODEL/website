@@ -1,24 +1,13 @@
-name: Publish EAI on owner request
-
+name: Open de geteste publicatieversie
 on:
   issue_comment:
     types: [created]
-
 permissions: {}
-
 jobs:
   request-publication:
-    if: >-
-      github.event.comment.body == '/publish-eai' &&
-      github.event.comment.user.login == github.repository_owner &&
-      github.event.comment.author_association == 'OWNER'
+    if: github.event.comment.body == '/publish-eai' && github.event.comment.user.login == github.repository_owner && github.event.comment.author_association == 'OWNER'
     runs-on: ubuntu-latest
-    timeout-minutes: 3
-    permissions:
-      actions: write
     steps:
-      - name: Dispatch the existing production workflow on main
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: gh workflow run deploy-theory7.yml --ref main --repo "$GH_REPO"
+      - name: Toon het formulier voor toestemming op een specifieke testversie
+        run: |
+          echo "[Kies de gevalideerde run en bevestig de publicatie](https://github.com/$GITHUB_REPOSITORY/actions/workflows/deploy-theory7.yml)." >> "$GITHUB_STEP_SUMMARY"

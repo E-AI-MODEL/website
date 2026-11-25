@@ -12,13 +12,17 @@ class EAIspeakPublishTests(unittest.TestCase):
         self.assertFalse((WORKFLOWS/"deploy-delf-preview.yml").exists())
 
     def test_publish_consumes_verified_artifact_without_rebuilding(self):
+        build=(WORKFLOWS/"build-site.yml").read_text()
         ui=(WORKFLOWS/"verify-ui.yml").read_text()
+        candidate=(ROOT/"scripts/release_candidate.py").read_text()
         deploy=(WORKFLOWS/"deploy-theory7.yml").read_text()
-        self.assertIn("name: eaispeak-tested-build",ui)
-        self.assertIn('test "$(cat "$bundle/build-sha.txt")" = "$GITHUB_SHA"',ui)
-        self.assertIn('sha256sum -c "$bundle/SHA256SUMS"',ui)
-        self.assertLess(ui.index("Voeg EAIspeak exact"),ui.index("scripts/release_artifact.py create"))
-        self.assertIn("scripts/release_artifact.py verify",deploy)
+        self.assertIn("name: eaispeak-tested-build-",build)
+        self.assertIn('test "$(cat "$bundle/build-sha.txt")" = "$GITHUB_SHA"',build)
+        self.assertIn('sha256sum -c "$bundle/SHA256SUMS"',build)
+        self.assertLess(build.index('sha256sum -c "$bundle/SHA256SUMS"'),build.index("scripts/release_artifact.py create"))
+        self.assertIn("scripts/release_artifact.py verify",ui)
+        self.assertIn("scripts/release_candidate.py",deploy)
+        self.assertIn("validated_manifest",candidate)
         self.assertIn("scripts/verify_eaispeak_live.py",deploy)
         self.assertIn("site-build/tools/eaispeak/ /tools/eaispeak/",deploy)
         self.assertNotIn("npm install",deploy)
@@ -28,7 +32,7 @@ class EAIspeakPublishTests(unittest.TestCase):
         gate=(WORKFLOWS/"site-check.yml").read_text()
         self.assertIn("eaispeak-check:",gate)
         self.assertIn("uses: ./.github/workflows/eaispeak.yml",gate)
-        self.assertIn("eaigit-check, eaispeak-check]",gate)
+        self.assertIn("eaispeak-check",gate.split("  static-checks:",1)[1].split("if:",1)[0])
 
     def test_public_links_depend_on_tested_eaispeak_bundle(self):
         from sys import path
@@ -36,11 +40,13 @@ class EAIspeakPublishTests(unittest.TestCase):
         from check_release_gate import ALWAYS
         self.assertIn("eaispeak-check",ALWAYS)
         gate=(WORKFLOWS/"site-check.yml").read_text()
-        self.assertIn("  build-check:\n    needs: eaispeak-check",gate)
-        self.assertIn("  ui-check:\n    needs: [scope, eaispeak-check]",gate)
-        for workflow in ("build-site.yml","verify-ui.yml"):
-            content=(WORKFLOWS/workflow).read_text()
-            self.assertLess(content.index('name: eaispeak-tested-build'),content.index('python scripts/build_site.py --sources'))
-            self.assertIn('cp -a "$bundle/tools/eaispeak/." tools/eaispeak/dist/',content)
+        self.assertIn("  build-check:\n    needs: [scope, eaispeak-check]",gate)
+        self.assertIn("  ui-check:\n    needs: [scope, build-check]",gate)
+        self.assertIn("eaispeak_artifact: true",gate)
+        build=(WORKFLOWS/"build-site.yml").read_text()
+        self.assertLess(build.index("name: eaispeak-tested-build"),build.index("python scripts/build_site.py --sources"))
+        self.assertIn('cp -a "$bundle/tools/eaispeak/." tools/eaispeak/dist/',build)
+        self.assertLess(build.index("python scripts/prepare_ui.py"),build.index('cp -a "$bundle/tools/eaispeak/." site-build/tools/eaispeak/'))
         ui=(WORKFLOWS/"verify-ui.yml").read_text()
-        self.assertLess(ui.index("Voeg EAIspeak exact"),ui.index("Verify one canonical hub"))
+        self.assertIn("uses: ./.github/actions/checked-build",ui)
+        self.assertNotIn("scripts/build_site.py",ui)

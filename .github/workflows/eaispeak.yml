@@ -68,7 +68,7 @@ jobs:
       - name: Bewaar de geteste build
         uses: actions/upload-artifact@v4
         with:
-          name: eaispeak-tested-build
+          name: eaispeak-tested-build-${{ github.run_id }}-${{ github.run_attempt }}
           path: tools/eaispeak/release/
           if-no-files-found: error
 
@@ -111,7 +111,7 @@ jobs:
           node-version: '22'
       - uses: actions/download-artifact@v4
         with:
-          name: eaispeak-tested-build
+          name: eaispeak-tested-build-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/eaispeak-release
       - name: Verify exact build and website registration
         run: |

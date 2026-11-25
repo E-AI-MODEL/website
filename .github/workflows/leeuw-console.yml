@@ -1,13 +1,8 @@
 name: Leeuw vaste onderzoeksconsole
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'content/science-observatory/labs/leeuw.html'
-      - 'tools/science-observatory/labs/leeuw/index.html'
-      - 'scripts/test_leeuw_console.mjs'
-      - '.github/workflows/leeuw-console.yml'
+  workflow_call:
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

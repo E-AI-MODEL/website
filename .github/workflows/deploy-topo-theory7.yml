@@ -1,44 +1,56 @@
 name: Deploy TOPO independently
-
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'topo/**'
-      - '.github/workflows/deploy-topo-theory7.yml'
-      - 'scripts/validate_topo_content.mjs'
   workflow_dispatch:
-
+    inputs:
+      validation_run:
+        description: Runnummer van de geslaagde hoofdversie die je wilt publiceren
+        type: string
+        required: true
 permissions:
   contents: read
-
-# TOPO has its own publishing queue. A failure in another application must not block it.
+  actions: read
+  deployments: write
 concurrency:
   group: topo-production
   cancel-in-progress: false
-
 jobs:
-  browser-check:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    uses: ./.github/workflows/topo-mobile-verify.yml
-  deploy-topo:
-    needs: browser-check
-    if: ${{ github.ref == 'refs/heads/main' && needs.browser-check.result == 'success' }}
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.actor == github.repository_owner && github.triggering_actor == github.repository_owner
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET: topo
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Controleer vertrouwde workflow, tests, bronboom en bestandshashes
+        id: release
+        env:
+          VALIDATION_RUN: ${{ inputs.validation_run }}
+        run: python scripts/release_candidate.py "$VALIDATION_RUN" "$TARGET"
+      - name: Registreer de upload onder de bestaande publicatiewachtrij
+        id: deployment
+        env:
+          TREE: ${{ steps.release.outputs.tree }}
+          COMMIT: ${{ steps.release.outputs.commit }}
+        run: python scripts/release_deployment.py begin
       - name: Check TOPO sources and nationwide map
+        if: steps.deployment.outputs.id != ''
         run: |
           set -euo pipefail
-          test -s topo/index.html
-          test -s topo/instellingen/index.html
-          test -s topo/nederland/index.html
-          test -s topo/data/provincies-2026.geojson
+          test -s candidate/topo/index.html
+          test -s candidate/topo/instellingen/index.html
+          test -s candidate/topo/nederland/index.html
+          test -s candidate/topo/data/provincies-2026.geojson
           python3 - <<'PY'
           import json
           from pathlib import Path
-          root = Path('topo')
+          root = Path('candidate/topo')
           geo = json.loads((root / 'data/provincies-2026.geojson').read_text())
           assert len(geo['features']) == 12, 'Expected twelve province boundaries'
           for file in ('index.html', 'instellingen/index.html', 'nederland/index.html'):
@@ -48,19 +60,28 @@ jobs:
           print('TOPO sources and 12 province boundaries OK')
           PY
       - name: Verify map, capitals, water sources and approved TOPO copy
+        if: steps.deployment.outputs.id != ''
         run: node scripts/validate_topo_content.mjs
       - name: Install FTPS client
+        if: steps.deployment.outputs.id != ''
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq lftp openssl
       - name: Verify Theory7 FTPS certificate fingerprint
+        if: steps.deployment.outputs.id != ''
         shell: bash
         run: |
           set -euo pipefail
           expected="4D:F5:15:4C:F3:11:5E:5B:DD:91:BD:5F:BD:0F:0E:A7:35:71:5C:32"
           actual="$(openssl s_client -starttls ftp -connect ftp.eaimodel.nl:21 -servername ftp.eaimodel.nl </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha1 | cut -d= -f2)"
           test "$actual" = "$expected" || { echo "Unexpected FTPS certificate fingerprint"; exit 1; }
+      - name: Controleer main direct voor de eerste overdracht
+        if: steps.deployment.outputs.id != ''
+        env:
+          TREE: ${{ steps.release.outputs.tree }}
+        run: test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .commit.tree.sha)" = "$TREE"
       - name: Publish TOPO only (no deletion, no other site folders)
+        if: steps.deployment.outputs.id != ''
         shell: bash
         env:
           HOST: ftp.eaimodel.nl
@@ -78,10 +99,11 @@ jobs:
           set net:max-retries 1
           set xfer:use-temp-file yes
           set net:connection-limit 3
-          mirror -R --parallel=2 --transfer-all --verbose topo/ /topo/
+          mirror -R --parallel=2 --transfer-all --verbose candidate/topo/ /topo/
           bye
           EOF
       - name: Verify three published pages and map independently
+        if: steps.deployment.outputs.id != ''
         env:
           RELEASE_SHA: ${{ github.sha }}
         run: |
@@ -99,7 +121,7 @@ jobs:
                   assert reply.status == 200, (relative, reply.status)
                   return reply.read()
 
-          root = Path('topo')
+          root = Path('candidate/topo')
           for rel in ('index.html', 'instellingen/index.html', 'nederland/index.html'):
               local = (root / rel).read_text(encoding='utf-8')
               remote = fetch(rel).decode('utf-8')
@@ -119,3 +141,10 @@ jobs:
           assert len(json.loads(remote_map)['features']) == 12
           print('Published 2026 province boundaries confirmed')
           PY
+
+      - name: Registreer de uitkomst na de livecontroles
+        if: always() && steps.deployment.outputs.id != ''
+        env:
+          ID: ${{ steps.deployment.outputs.id }}
+          RESULT: ${{ job.status }}
+        run: python scripts/release_deployment.py finish
