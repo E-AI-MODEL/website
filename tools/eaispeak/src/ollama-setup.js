@@ -120,9 +120,9 @@ if(host) {
         setup.append(line('p','Installeer Caddy als je Homebrew hebt. Is Homebrew niet aanwezig, gebruik de officiële instructies van caddyserver.com. Voer de opdrachten één voor één uit.','studio-support'));
         setup.append(terminal('brew install caddy'));
         setup.append(line('p','Maak een configuratie die uitsluitend luistert op je eigen Mac:','studio-support'));
-        setup.append(terminal('mkdir -p "$HOME/.config/delf-live" && printf "%s\\n" "https://localhost:11435 {" "  bind 127.0.0.1" "  tls internal" "  reverse_proxy 127.0.0.1:11434" "}" > "$HOME/.config/delf-live/Caddyfile"'));
+        setup.append(terminal('mkdir -p "$HOME/.config/eaispeak" && printf "%s\\n" "https://localhost:11435 {" "  bind 127.0.0.1" "  tls internal" "  reverse_proxy 127.0.0.1:11434" "}" > "$HOME/.config/eaispeak/Caddyfile"'));
         setup.append(line('p','Laat Ollama op poort 11434 draaien. Start in een tweede Terminal-venster deze HTTPS-verbinding:','studio-support'));
-        setup.append(terminal('caddy run --config "$HOME/.config/delf-live/Caddyfile"'));
+        setup.append(terminal('caddy run --config "$HOME/.config/eaispeak/Caddyfile"'));
         setup.append(line('p','Caddy kan om toestemming vragen om het lokale certificaat op je Mac te vertrouwen. Geef die toestemming uitsluitend als je Caddy zelf hebt geïnstalleerd. Laat ook dit Terminal-venster open.','studio-support'));
         setup.append(line('p','Open https://localhost:11435/api/tags eerst rechtstreeks in Safari. De pagina moet zonder certificaatwaarschuwing laden. Pas daarna heeft de test vanuit de website zin.','studio-support'));
         setup.append(line('p','De lokale HTTPS-poort is niet vanaf internet toegankelijk. Deze configuratie bindt aan 127.0.0.1.','studio-support'));
@@ -152,7 +152,7 @@ if(host) {
         select.addEventListener('change',()=>{selected=select.value;verified=false;modelReply='';next.disabled=false;});
         label.append(select);contentElement.append(label);
       }else contentElement.append(line('p','De server is bereikbaar, maar er staat nog geen model op je Mac.','studio-support'));
-      addCommand('Een relatief licht model voor een eerste Franse test (ongeveer 2,5 GB download):','ollama pull qwen3:4b');
+      addCommand('Een relatief licht model voor een eerste modeltest (ongeveer 2,5 GB download):','ollama pull qwen3:4b');
       contentElement.append(action('Zoek opnieuw naar lokale modellen',async()=>{
         const ok=await checkServer();
         if(ok)render();
@@ -160,12 +160,12 @@ if(host) {
       contentElement.append(line('p','Een download wordt nooit vanuit de website gestart. Je kunt ook een ander model gebruiken dat al geïnstalleerd is.','studio-support'));
     }
     if(index===4){
-      contentElement.append(line('p','Te testen model: '+(selected||'geen')+'. De controle vraagt een Franse zin op. Dit test tekst, nog geen gesproken gesprek.','studio-support'));
-      contentElement.append(action('Test Frans modelantwoord',checkAnswer));
+      contentElement.append(line('p','Te testen model: '+(selected||'geen')+'. De controle vraagt een korte zin op. Dit test tekst, nog geen gesproken gesprek.','studio-support'));
+      contentElement.append(action('Test modelantwoord',checkAnswer));
       if(modelReply) contentElement.append(line('blockquote',modelReply,'ollama-reply'));
 
       contentElement.append(line('p',verified?'Het model gaf tekst terug. De lokale verbinding is klaar voor verdere integratie.':'De verbinding is pas klaar na een ontvangen antwoord.','studio-support'));
-      contentElement.append(line('p','De microfoon, het realtime gesprek en de Franse stem hebben elk een eigen test nodig. Dit is nog geen volledige stemgesprektest.','studio-support'));
+      contentElement.append(line('p','De microfoon, het realtime gesprek en de stem hebben elk een eigen test nodig. Dit is nog geen volledige stemgesprektest.','studio-support'));
     }
   }
   async function checkServer(){
@@ -187,9 +187,9 @@ if(host) {
   }
   async function checkAnswer(){
     if(busy||!selected)return;
-    busy=true;verified=false;notify('Frans modelantwoord opvragen…');render();
+    busy=true;verified=false;notify('Modelantwoord opvragen…');render();
     try{
-      const result=await probeLocalModel('ollama',server,selected,'Réponds en français, avec une phrase simple, pour féliciter les élèves qui ont obtenu leur diplôme DELF.');
+      const result=await probeLocalModel('ollama',server,selected,'Antwoord met één korte zin dat de verbinding werkt.');
       if(!result.answer.trim()) throw new Error('Geen antwoord');
       verified=true;
       modelReply=result.answer;
@@ -207,7 +207,7 @@ if(host) {
     else if(index===1&&installAcknowledged)index=2;
     else if(index===2&&serverReady)index=3;
     else if(index===3&&selected)index=4;
-    else if(index===4&&verified)notify('Ollama gecontroleerd. Je kunt de studio blijven gebruiken. De Franse gespreksfunctie moet nog gekoppeld worden.');
+    else if(index===4&&verified){notify('Ollama gecontroleerd. Open Vrij praten met dit model.');window.dispatchEvent(new CustomEvent('cloud-ollama-use'));}
     render();
   });
   render();

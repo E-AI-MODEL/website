@@ -25,3 +25,6 @@ Tests en build draaien in GitHub Actions. Een goedgekeurde merge naar main is de
 
 ## Nog te meten
 Herkenning, vertaalbetekenis, hoorbare stemmen, vertraging en browsergedrag op echte MacBooks, iPhones en andere apparaten. Apple-modellen en taalbeschikbaarheid zijn runtime-eigenschappen, niet gegarandeerd door de build.
+
+## Begeleide start
+Kies de functie, taal en spraakroute. De zichtbare voorbereidingsstappen controleren de gekozen modelverbinding zonder de microfoon te openen. Vrij praten vereist een modelantwoord of native handshake voordat de startknoppen actief zijn. De status is alleen geldig voor de huidige instellingen. De browser vraagt zelf microfoontoestemming. Apple, Whisper en Kyutai vereisen eigen lokale of expliciet gekozen servers; installatiehulp linkt naar de actuele broninstructies. Een browser kan die servers niet zelfstandig installeren of starten.

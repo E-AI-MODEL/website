@@ -2,7 +2,8 @@
 import {localReply,interruptBrowserReply,ensureBrowserModel,browserModelStatus} from './browser-llm.js';
 import {checkWebGpuAvailability} from './gpu-capability.mjs';
 import {availableVoices,readVoicePreference,saveVoicePreference,voiceLanguage} from './browser-voice-choice.mjs';
-import {listLocalModels,validateLocalEndpoint} from './system-probes.mjs';
+import {listLocalModels,validateLocalEndpoint,probeLocalModel} from './system-probes.mjs';
+import {activationGate,talkKey,ROUTES,guidance} from './activation.mjs';
 import {describeDevice,suggestDeviceSetup,modelDeviceAdvice} from './device-profile.mjs';
 import {isSpeechEngine,speechEngine,validateSpeechPair} from './speech-engines.mjs';
 import {startSpeechBridge,probeSpeechBridge} from './speech-bridge.mjs';
@@ -99,6 +100,7 @@ function afterResponse(own,message='Jij bent weer aan zet.'){
 let recognition=null,audio=null,utterance=null,pending=false,turn=0,lastAnswer='';
 let puterSdk=null,puterLoad=null,gpuProbeSequence=0;
 const history=[];
+const talkGate=activationGate();let talkPreparing=false,talkGuideError='',talkGuideEvidence='';
 const languages={'nl-NL':'Nederlands','en-US':'Engels','fr-FR':'Frans','es-ES':'Spaans','pt-PT':'Portugees','de-DE':'Duits'};
 const hasMicrophone=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
 const hasBrowserVoice=!!(window.speechSynthesis&&window.SpeechSynthesisUtterance);
@@ -154,14 +156,30 @@ function setStatus(message,kind=''){
   status.textContent=message;
   status.dataset.kind=kind;
 }
+function talkSettings(){
+  const route=engine.value;
+  return {engine:route,model:route==='browser'?browserModel.value:route==='ollama'?ollamaModel.value:route==='puter'?cloudModel.value:route,endpoint:route==='ollama'?ollamaEndpoint.value:isSpeechEngine(route)?speechEndpoint.value:'',source:inputLang.value,target:outputLang.value,voice:voice.value};
+}
+function talkVerified(){return talkGate.has(talkKey(talkSettings()));}
+function refreshTalkGuide(){
+  const s=talkSettings(),route=s.engine,info=ROUTES[route],verified=talkVerified();
+  $('talkGuideChoice').textContent=(route==='browser'?'WebLLM · op dit apparaat. Eerste modeldownload nodig.':route==='ollama'?'Ollama · een model op je eigen computer.':route==='puter'?'Puter · online. Account nodig; een test of gesprek kan kosten meebrengen.':info.name+'. '+info.help)+' '+languages[s.source]+' → '+languages[s.target]+'.';
+  $('talkGuideOllama').hidden=route!=='ollama';$('talkGuideHelp').hidden=!info?.url;
+  if(info?.url){$('talkGuideDocs').href=info.url;$('talkGuideInstructions').textContent=(info.command||info.help)+'\nVul het serveradres bij Taal en model in. Verbind pas met een server die je vertrouwt.';}
+  const button=$('talkGuidePrepare');
+  button.disabled=talkPreparing||pending||Boolean(recognition)||route==='dessa'||(route==='browser'&&gpuSupport?.usable===false);
+  button.textContent=talkPreparing?'Bezig met testen…':route==='puter'&&!puterSdk?.auth?.isSignedIn()?'Verbind met Puter':route==='ollama'&&!ollamaModel.value?'Zoek geïnstalleerde modellen':verified?'Test verbinding opnieuw':'Verbind en test model';
+  guidance($('talkGuideStatus'),talkPreparing?'De gekozen route wordt gecontroleerd…':verified?talkGuideEvidence:talkGuideError||'Nog niet getest. Kies een route en controleer de verbinding.',talkPreparing?'busy':verified?'ready':talkGuideError?'error':'idle');
+  $('talkGuideNext').textContent=verified?'Begin met spreken of typ een zin. Microfoon en stem zijn nog niet fysiek getest.':'Test eerst de gekozen verbinding. Daarna kun je beginnen.';
+}
 function ready(){
   pending=false;
   const speechModel=isSpeechEngine(engine.value);
   const micAvailable=speechModel?!!navigator.mediaDevices?.getUserMedia:hasMicrophone;
-  speak.disabled=!micAvailable||engine.value==='dessa';
+  speak.disabled=!micAvailable||engine.value==='dessa'||!talkVerified()||talkPreparing;
   speak.textContent=engine.value==='dessa'?'Nog niet beschikbaar'
     :micAvailable?(handsfree?'Ik luister':'Begin met spreken'):'Geen microfoon beschikbaar';
-  send.disabled=speechModel;
+  send.disabled=speechModel||!talkVerified()||talkPreparing;refreshTalkGuide();
 }
 function cancelSound(){
   if(audio){audio.onended=null;audio.onerror=null;audio.pause();audio=null;}
@@ -239,6 +257,7 @@ async function probeGpu(){
   preloadStatus.textContent=support.message;
 }
 function syncChanges(){
+  talkGate.clear();talkGuideError='';talkGuideEvidence='';
   if(pending||recognition||speechSession||speechStarting)stopConversation();
   history.length=0;
   updateControls();
@@ -246,9 +265,9 @@ function syncChanges(){
 for(const control of [cloudModel,inputLang,outputLang,voice])control.addEventListener('change',syncChanges);
 voiceName.addEventListener('change',()=>{preferredVoiceURI=voiceName.value;saveVoicePreference(outputLang.value,voiceName.value);persist();});
 autoListen.addEventListener('change',persist);
-ollamaEndpoint.addEventListener('change',persist);
+ollamaEndpoint.addEventListener('change',()=>{ollamaModel.replaceChildren(new Option('Nog geen modellen gevonden',''));syncChanges();});
 speechEndpoint.addEventListener('change',()=>{
-  persist();
+  syncChanges();
   speechConnection.textContent='Het serveradres is gewijzigd. Controleer de verbinding opnieuw.';
 });
 speechProbe.addEventListener('click',async()=>{
@@ -266,6 +285,7 @@ speechProbe.addEventListener('click',async()=>{
       if(stillSelected())speechConnection.textContent=message;
     }});
     if(stillSelected()){
+      talkGate.mark(talkKey(talkSettings()));talkGuideEvidence='Modelserver reageert. Audio nog niet getest.';talkGuideError='';ready();
       speechConnection.textContent='Modelserver reageert. Microfoon en spraakuitvoer zijn nog niet getest.';
       setStatus('Modelserver bereikbaar. Kies Begin met spreken voor een echte spraakproef.','ready');
     }
@@ -288,7 +308,7 @@ ollamaConnect.addEventListener('click',async()=>{
     ollamaModel.value=models.includes(chosenOllamaModel)?chosenOllamaModel:models[0];
     chosenOllamaModel=ollamaModel.value;
     ollamaStatus.textContent=models.length+' modellen gevonden. Kies een geschikt model voor Nederlands en Frans.';
-    persist();
+    syncChanges();
   }catch(error){ollamaStatus.textContent='Ollama niet bereikbaar: '+String(error?.message||error)+'. Controleer lokale HTTPS, CORS en de installatie onder Techniek.';}
   finally{ollamaConnect.disabled=false;}
 });
@@ -362,12 +382,12 @@ function primePuter(){
     connect.textContent=signed?'Puter verbonden':'Aanmelden bij Puter';
     connectStatus.textContent=signed?'Verbonden met Puter.':'Klaar voor aanmelden. Klik op Aanmelden bij Puter.';
     if(signed)void listOnlineModels(api);
-    return api;
+    refreshTalkGuide();return api;
   }).catch(error=>{
     connect.disabled=false;
     connect.textContent='Puter opnieuw laden';
     connectStatus.textContent='Puter kon niet laden: '+String(error?.message||error);
-    return null;
+    talkGuideError=connectStatus.textContent;refreshTalkGuide();return null;
   });
 }
 async function ensurePuter(required){
@@ -395,6 +415,7 @@ async function listOnlineModels(api){
       cloudModel.append(option);
     }
     if(ids.includes(selected))cloudModel.value=selected;
+    if(cloudModel.value!==selected)syncChanges();
     connectStatus.textContent='Puter verbonden · '+ids.length+' online modellen gevonden. Gebruik kan kosten meebrengen.';
   }catch{
     connectStatus.textContent='Puter verbonden. De online modellenlijst kon niet worden geladen; het standaardmodel blijft beschikbaar.';
@@ -418,8 +439,66 @@ connect.addEventListener('click',()=>{
     void listOnlineModels(api);
   }).catch(error=>{
     connectStatus.textContent='Aanmelden is gestopt: '+String(error?.msg||error?.message||error);
-  }).finally(()=>{connect.disabled=false;});
+  }).finally(()=>{connect.disabled=false;refreshTalkGuide();});
 });
+$('talkGuideSettings').onclick=()=>{$('freeTalkOptions').open=true;};
+$('talkGuideOllama').onclick=()=>{$('tab-meer').click();const section=$('ollamaSetup');if(section){section.querySelector('details').open=true;section.scrollIntoView({block:'start'});}};
+window.addEventListener('cloud-ollama-ready',event=>{
+  const detail=event.detail||{};
+  try{validateLocalEndpoint(detail.endpoint);}catch{return;}
+  if(typeof detail.model!=='string'||!detail.model)return;
+  engine.value='ollama';userSelectedEngine=true;ollamaEndpoint.value=detail.endpoint;
+  ollamaModel.replaceChildren(new Option(detail.model,detail.model));chosenOllamaModel=detail.model;
+  syncChanges();talkGuideEvidence='Ollama gaf een modelantwoord. De microfoon en stem moeten nog worden getest.';
+  talkGate.mark(talkKey(talkSettings()));ready();
+});
+window.addEventListener('cloud-ollama-use',()=>{$('tab-gesprek').click();});
+$('talkGuidePrepare').onclick=()=>{
+  if(talkPreparing||pending||recognition)return;
+  if(engine.value==='puter'&&!puterSdk?.auth?.isSignedIn()){
+    talkGuideError='';guidance($('talkGuideStatus'),'Meld je aan bij Puter. Klik daarna opnieuw om een modelantwoord te testen.');connect.click();return;
+  }
+  void prepareTalk();
+};
+async function prepareTalk(){
+  const before=talkSettings(),key=talkKey(before);
+  talkPreparing=true;talkGate.clear();talkGuideError='';talkGuideEvidence='';ready();
+  try{
+    let evidence='';
+    const question='Antwoord met één korte zin in '+languages[before.target]+'. Zeg dat de verbinding werkt.';
+    if(before.engine==='browser'){
+      const text=await localReply([{role:'user',content:question}],before.model,message=>{if(key===talkKey(talkSettings()))guidance($('talkGuideStatus'),message,'busy');});
+      if(!text.trim())throw new Error('Browsermodel gaf geen tekst terug.');
+      evidence='Browsermodel heeft een testantwoord gegeven. Geen account nodig.';
+    }else if(before.engine==='ollama'){
+      if(!before.model){
+        const models=await listLocalModels('ollama',before.endpoint);
+        if(key!==talkKey(talkSettings()))return;
+        ollamaModel.replaceChildren(...models.map(name=>new Option(name,name)));
+        ollamaModel.value=models.includes(chosenOllamaModel)?chosenOllamaModel:models[0];chosenOllamaModel=ollamaModel.value;
+        persist();$('freeTalkOptions').open=true;
+        talkGuideError='Kies het gewenste gevonden model en klik opnieuw op Verbind en test model.';
+        ollamaStatus.textContent=models.length+' modellen gevonden. Kies een model en test de verbinding.';
+        return;
+      }
+      const result=await probeLocalModel('ollama',before.endpoint,before.model,question);
+      if(!result.answer.trim())throw new Error('Ollama gaf geen tekst terug.');
+      evidence='Ollama gaf een testantwoord met '+result.model+'.';
+    }else if(before.engine==='puter'){
+      const api=await ensurePuter(true);
+      if(key!==talkKey(talkSettings()))return;
+      const result=await api.ai.chat([{role:'user',content:question}],{model:before.model,normalize:true});
+      if(!extractResponse(result))throw new Error('Online model gaf geen tekst terug.');
+      evidence='Puter is verbonden en het gekozen model gaf een testantwoord.';
+    }else if(isSpeechEngine(before.engine)){
+      validateSpeechPair(before.engine,before.source,before.target);
+      await probeSpeechBridge({endpoint:before.endpoint,engine:before.engine,sourceLanguage:before.source,targetLanguage:before.target});
+      evidence='Modelserver reageert op de spraak-handshake. Audio nog niet getest.';
+    }else throw new Error('Kies een beschikbare route.');
+    if(key===talkKey(talkSettings())){talkGate.mark(key);talkGuideEvidence=evidence;}
+  }catch(error){if(key===talkKey(talkSettings()))talkGuideError=String(error?.message||error)+' Controleer de gekozen route en probeer opnieuw.';}
+  finally{talkPreparing=false;ready();}
+}
 function extractResponse(result){
   const c=result?.message?.content;
   if(typeof c==='string')return c.trim();
@@ -499,7 +578,7 @@ async function ask(question){
     await speakAnswer(text,own);
   }catch(error){
     if(own!==turn)return;
-    ready();handsfree=false;releaseMicrophone();setSpeechActivity('idle');setStatus('Het gesprek liep vast: '+String(error?.message||error)+'. Controleer de gekozen verbinding of stem.','error');
+    talkGate.clear();talkGuideError='Modelantwoord mislukt. Test de verbinding opnieuw.';ready();handsfree=false;releaseMicrophone();setSpeechActivity('idle');setStatus('Het gesprek liep vast: '+String(error?.message||error)+'. Controleer de gekozen verbinding of stem.','error');
   }
 }
 play.addEventListener('click',()=>{
@@ -552,6 +631,7 @@ async function startSpeechSession(){
   }finally{if(own===turn)speechStarting=false;}
 }
 function startListening(){
+  if(!talkVerified()){setStatus('Test eerst de gekozen verbinding.','error');return;}
   if(isSpeechEngine(engine.value)){void startSpeechSession();return;}
   if(pending||recognition)return;
   if(engine.value==='puter'&&!puterSdk?.auth?.isSignedIn()){
@@ -582,7 +662,7 @@ function startListening(){
   catch(e){recognition=null;handsfree=false;releaseMicrophone();ready();setSpeechActivity('idle');setStatus('Microfoon kon niet starten: '+String(e?.message||e),'error');}
 }
 speak.addEventListener('click',()=>{
-  if(pending)return;
+  if(pending||!talkVerified())return;
   if(isSpeechEngine(engine.value)){void startSpeechSession();return;}
   if(recognition){recognition.stop();return;}
   handsfree=autoListen.checked;manualReplay=false;
@@ -590,6 +670,7 @@ speak.addEventListener('click',()=>{
   startListening();
 });
 send.addEventListener('click',()=>{
+  if(!talkVerified()){setStatus('Test eerst de gekozen verbinding.','error');return;}
   if(isSpeechEngine(engine.value)){setStatus('Deze engine werkt rechtstreeks met microfoonaudio. Kies Begin met spreken.');return;}
   if(pending)return;
   const q=typed.value.trim();
