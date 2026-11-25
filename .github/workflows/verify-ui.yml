@@ -45,6 +45,11 @@ jobs:
       - uses: ./.github/actions/checked-build
         with:
           reuse: ${{ inputs.reuse_build }}
+      - name: Cache Playwright browser binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-ubuntu-24.04-${{ runner.arch }}-1.56.1-chromium
       - run: npm install --no-save --ignore-scripts playwright@1.56.1
       - run: npx playwright install chromium
       - name: Test de geselecteerde toepassing
@@ -86,6 +91,11 @@ jobs:
           test -s site-build/leif/index.html
           cmp leif/index.html site-build/leif/index.html
       - run: python -m unittest discover -s tests -p 'test_ui_release.py'
+      - name: Cache Playwright browser binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-ubuntu-24.04-${{ runner.arch }}-1.56.1-chromium
       - run: npm install --no-save playwright@1.56.1
       - name: Install browser for UI tests
         run: npx playwright install chromium
