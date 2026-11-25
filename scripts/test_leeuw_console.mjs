@@ -73,8 +73,65 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     await fixed(p,w,h,mobile);assert.deepEqual(errors,[],'Browserfouten op '+engine+'/'+w);
     await ctx.close();
   }
+
+  // The public route is now a film. Verify the actual rendered scene, not just its text.
+  for(const [w,h] of [[1440,900],[390,760],[320,640]]){
+    const mobile=w<850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
+    const p=await ctx.newPage(),errors=[];
+    p.on('pageerror',e=>errors.push(e.message));
+    await p.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
+    await p.goto(base+path,{waitUntil:'load'});
+    await p.waitForFunction(()=>window.LEO_VOYAGE_STATE?.().frame>3);
+    assert.equal(await p.locator('#voyage').isVisible(),true);
+    assert.equal(await p.locator('#app').isVisible(),false);
+    assert.equal(await p.locator('.voyage-chapter').count(),5);
+    const vs=()=>p.evaluate(()=>window.LEO_VOYAGE_STATE());
+    const shot=async name=>{await p.waitForFunction(()=>Number(getComputedStyle(document.querySelector('#voyageCopy')).opacity)>.98);await p.screenshot({path:'test-results/leeuw-'+engine+'-'+w+'-reis-'+name+'.png'})};
+    const seek=async v=>{const before=(await vs()).frame;await p.locator('#voyageSeek').evaluate((el,v)=>{el.value=v;el.dispatchEvent(new Event('input',{bubbles:true}))},v);await p.waitForFunction(frame=>window.LEO_VOYAGE_STATE().frame>frame,before)};
+    const visible=async()=>{
+      const m=await p.evaluate(()=>{
+        const box=s=>{const r=document.querySelector(s).getBoundingClientRect();return {x:r.x,y:r.y,r:r.right,b:r.bottom,w:r.width,h:r.height}};
+        const all=[...document.querySelectorAll('#voyage .voyage-button,#voyage .voyage-lab,#voyage .voyage-chapter')].filter(x=>!x.disabled);
+        return {scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight,canvas:box('#voyageCanvas'),copy:box('#voyageCopy'),foot:box('.voyage-footer'),top:box('.voyage-top'),hit:all.every(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})};
+      });
+      assert.ok(m.scrollWidth<=w+1&&m.scrollHeight<=h+1,'Reis mag niet scrollen');
+      assert.ok(m.canvas.w>=w-1&&m.canvas.h>=h-1,'Canvas vult viewport');
+      assert.ok(m.copy.b<=m.foot.y+1&&m.copy.y>=m.top.b-1&&m.hit,'Uitleg en bediening overlappen of zijn onbereikbaar: '+JSON.stringify(m));
+    };
+    await p.locator('#voyagePlay').click();
+    let first=await vs();assert.equal(first.playing,false);
+    await p.waitForTimeout(250);assert.equal((await vs()).time,first.time);
+    await seek(9);await visible();assert.equal((await vs()).chapter,0);await shot('hemel');
+    const earth=await p.locator('#voyageCanvas').evaluate(c=>c.toDataURL());
+    await seek(31);await visible();const side=await vs();assert.equal(side.chapter,1);assert.ok(Math.hypot(...side.position)>100);
+    assert.notEqual(await p.locator('#voyageCanvas').evaluate(c=>c.toDataURL()),earth,'Echte camera moet ander beeld tonen');
+    await shot('opzij');
+    await seek(48);await visible();assert.equal((await vs()).focus,49669);assert.ok((await vs()).projected>=1);assert.ok((await vs()).portrait>.99);assert.match(await p.locator('#voyageSceneLabel').textContent(),/ILLUSTRATIEF DETAILBEELD/);await shot('regulus');
+    await seek(72);await visible();assert.equal((await vs()).focus,49583);assert.ok(Math.hypot(...(await vs()).position)>1000);await shot('eta');
+    await seek(94);await visible();assert.equal((await vs()).chapter,4);assert.ok(Math.hypot(...(await vs()).position)<1);await shot('terug');
+    await p.locator('.voyage-chapter').nth(1).click();assert.equal((await vs()).chapter,1);
+    await p.locator('#voyageNext').click();assert.equal((await vs()).chapter,2);
+    await p.locator('#voyagePlay').click();const before=(await vs()).time;await p.waitForFunction(t=>window.LEO_VOYAGE_STATE().time>t+.2,before);
+    await p.locator('#openLab').click();
+    await p.waitForFunction(()=>!window.LEO_VOYAGE_STATE().visible&&window.LEO_STATE().mode==='hemel');
+    assert.equal(await p.locator('#app').isVisible(),true);
+    await p.locator('#returnVoyageTop').click();
+    await p.waitForFunction(()=>window.LEO_VOYAGE_STATE().visible);
+    assert.equal(await p.locator('#voyage').isVisible(),true);
+    await p.locator('#voyageSources').click();await p.waitForFunction(()=>!window.LEO_VOYAGE_STATE().visible&&document.querySelector('#bronnen details').open);assert.equal(await p.locator('#bronnen').isVisible(),true);
+    assert.deepEqual(errors,[],'Reis browserfouten op '+engine+'/'+w);
+    await ctx.close();
+  }
+  const still=await browser.newContext({viewport:{width:390,height:760},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+  const film=await still.newPage();await film.goto(base+path,{waitUntil:'load'});
+  await film.waitForFunction(()=>window.LEO_VOYAGE_STATE?.().frame>0);
+  const v=await film.evaluate(()=>window.LEO_VOYAGE_STATE());
+  assert.equal(v.playing,false,'Verminderde beweging start zonder film');assert.equal(v.time,9);
+  await film.locator('#voyageNext').click();assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().chapter),1);assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().time),31);
+  await still.close();
+
   const reduced=await browser.newContext({viewport:{width:390,height:760},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
-  const p=await reduced.newPage();await p.goto(base+path,{waitUntil:'load'});await p.waitForFunction(()=>window.LEO_STATE?.().points===9);
+  const p=await reduced.newPage();await p.goto(base+path+'#ruimte',{waitUntil:'load'});await p.waitForFunction(()=>window.LEO_STATE?.().points===9);
   const r=await state(p);assert.equal(r.blend,1);assert.equal(r.animating,false,'Respecteer verminderde beweging');await reduced.close();
   console.log('Leeuw '+engine+': vast scherm, zeven onderwerpen, 3D-overgang, rotatie, pauze, schuif, metingen, grafiek en verminderde beweging geslaagd.');
 }
@@ -83,7 +140,7 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const server=spawn('python3',['-m','http.server','8797','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
   let browser;
   try{
-    let ready=false;for(let i=0;i<60;i++){try{ready=(await fetch(base+path)).ok}catch{}if(ready)break;await new Promise(r=>setTimeout(r,100))}
+    let ready=false;for(let i=0;i<60;i++){try{ready=(await fetch(base+path,{method:'HEAD'})).ok}catch{}if(ready)break;await new Promise(r=>setTimeout(r,100))}
     assert.ok(ready,'Leeuw ontbreekt');
     browser=await (engine==='webkit'?webkit:chromium).launch({headless:true});await runLeeuwConsoleChecks(browser,base,engine);
   }finally{if(browser)await browser.close();server.kill()}
