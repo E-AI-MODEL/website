@@ -2,6 +2,9 @@ name: Generated source ownership proof
 on:
   push:
     branches: [audit/generated-source-ownership]
+    paths:
+      - .github/workflows/audit-generated-sources.yml
+      - scripts/audit_generated_sources.py
   workflow_dispatch:
 
 permissions:
