@@ -29,7 +29,20 @@ test('de vrije spreekstudio gebruikt één mistpalet, zonder zichtbaar native mo
   assert.match(html,/data-mist-route="speech"/);
   assert.match(html,/mist-talk-dialogue/);
   assert.match(html,/id="freeTalkVoiceLines"/);
-  assert.ok(!html.includes('class="studio-action-grid">\n          <label class="studio-field">Ik spreek'));
+  // This regression concerns the conversation UI, not the separate Live tools.
+  const start=html.indexOf('id="page-gesprek"');
+  const end=html.indexOf('id="page-taal"',start);
+  assert.ok(start>=0 && end>start,'conversation section exists');
+  const conversation=html.slice(start,end);
+  assert.ok(!conversation.includes('class="studio-action-grid">\n          <label class="studio-field">Ik spreek'));
+  const menuStart=conversation.indexOf('id="freeTalkOptions"');
+  const menuEnd=conversation.indexOf('id="freeTalkSpeak"',menuStart);
+  assert.ok(menuStart>=0 && menuEnd>menuStart);
+  for(const id of ['freeTalkInputLang','freeTalkOutputLang','freeTalkEngine']){
+    assert.ok(conversation.slice(menuStart,menuEnd).includes('id="'+id+'"'),id+' is in the mist settings');
+    assert.equal((conversation.match(new RegExp('id="'+id+'"','g'))||[]).length,1);
+  }
+  assert.doesNotMatch(conversation,/id="liveSource"|id="liveTarget"/);
 });
 
 test('alle instellingen hebben precies één ID: geen verborgen dubbele formulieren',()=>{
