@@ -1,9 +1,13 @@
 name: Deploy to Theory7
 on:
+  workflow_run:
+    workflows: [Valideer de publicatieversie]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       validation_run:
-        description: Runnummer van de geslaagde hoofdversie die je wilt publiceren
+        description: Alleen voor herstel; runnummer van de geslaagde hoofdversie
         type: string
         required: true
 permissions:
@@ -15,7 +19,16 @@ concurrency:
   cancel-in-progress: false
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/main' && github.actor == github.repository_owner && github.triggering_actor == github.repository_owner
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      ((github.event_name == 'workflow_run' &&
+        github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_repository.full_name == github.repository) ||
+       (github.event_name == 'workflow_dispatch' &&
+        github.actor == github.repository_owner &&
+        github.triggering_actor == github.repository_owner))
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
@@ -24,6 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
@@ -31,7 +45,7 @@ jobs:
       - name: Controleer vertrouwde workflow, tests, bronboom en bestandshashes
         id: release
         env:
-          VALIDATION_RUN: ${{ inputs.validation_run }}
+          VALIDATION_RUN: ${{ github.event.workflow_run.id || inputs.validation_run }}
         run: python scripts/release_candidate.py "$VALIDATION_RUN" "$TARGET"
       - name: Registreer de upload onder de bestaande publicatiewachtrij
         id: deployment
@@ -73,6 +87,8 @@ jobs:
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
         run: |
           set -euo pipefail
+          # The retired route must not be present in the validated release.
+          test ! -e candidate/site-build/tools/science-observatory/labs/schuine-worp
           lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'
           set cmd:fail-exit yes
           set ftp:ssl-force true
@@ -101,8 +117,48 @@ jobs:
           put candidate/site-build/tools/ict-scan/.htaccess -o /tools/ict-scan/.htaccess
           # TOPO is published independently and cannot be overwritten by a whole-site deploy.
           mirror -R --parallel=3 --verbose --exclude-glob topo/ --exclude-glob 'topo/**' --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ candidate/site-build/ /
+          # The general mirror intentionally preserves unrelated server files.
+          # Remove only the explicitly retired standalone projectile directory.
+          rm -r -f /tools/science-observatory/labs/schuine-worp
           bye
           EOF
+      - name: Verify the retired projectile route and retained physics lab
+        if: steps.deployment.outputs.id != ''
+        run: |
+          python - <<'PY'
+          import time
+          from pathlib import Path
+          from urllib.error import HTTPError
+          from urllib.request import Request, build_opener, HTTPRedirectHandler
+
+          class NoRedirect(HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+
+          opener = build_opener(NoRedirect())
+          base = "https://eaimodel.nl"
+          old = "/tools/science-observatory/labs/schuine-worp/"
+          current = "/tools/science-observatory/labs/natuurkunde/"
+          built = (Path("candidate/site-build") / current.strip("/") / "index.html").read_bytes()
+          def read(route):
+              req = Request(base + route + "?release-check=" + str(time.time_ns()),
+                            headers={"Cache-Control": "no-cache", "User-Agent": "EAI-release-check/1.0"})
+              try:
+                  with opener.open(req, timeout=30) as resp:
+                      return resp.status, resp.read()
+              except HTTPError as exc:
+                  return exc.code, b""
+
+          for attempt in range(5):
+              statuses = [read(old)[0], read(old + "index.html")[0]]
+              status, body = read(current)
+              if all(code in (404, 410) for code in statuses) and status == 200 and body == built:
+                  print("Standalone projectile route gone; integrated physics matches validated build")
+                  break
+              if attempt == 4:
+                  raise AssertionError(f"Retirement not verified: legacy={statuses}, physics={status}, exact={body == built}")
+              time.sleep(4)
+          PY
       - name: Verify exact live EAIspeak files and legacy redirect
         if: steps.deployment.outputs.id != ''
         run: python scripts/verify_eaispeak_live.py --root candidate/site-build --url https://eaimodel.nl

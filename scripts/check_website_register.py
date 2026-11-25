@@ -271,8 +271,47 @@ def extract_workforms(root: Path) -> set[str]:
     return {f"/werkvormen/{slug}/" for slug in slugs}
 
 
+def generated_sources(root: Path, errors: list[str]) -> dict[str, str]:
+    """Explicit generator ownership; never treat an arbitrary absent file as generated."""
+    manifest = root / "catalog/generated-tool-sources.json"
+    if not manifest.is_file():
+        errors.append("Generatorregister ontbreekt")
+        return {}
+    try:
+        entries = load(manifest)["generated"]
+        if not isinstance(entries, list) or not entries:
+            raise ValueError("lege of ongeldige bronlijst")
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        errors.append("Generatorregister niet leesbaar: " + str(exc))
+        return {}
+    mapping = {}
+    for item in entries:
+        if not isinstance(item, dict):
+            errors.append("Generatorregister: ongeldige regel")
+            continue
+        output, source = item.get("output"), item.get("source")
+        def valid_path(value, prefix):
+            return (isinstance(value, str) and value.startswith(prefix)
+                    and all(p not in ("", ".", "..") for p in value.split("/"))
+                    and chr(92) not in value)
+        if not valid_path(output, "tools/") or not valid_path(source, "content/"):
+            errors.append("Generatorregister: ongeldig pad")
+            continue
+        if output in mapping:
+            errors.append("Generatorregister: dubbel uitvoerbestand: " + output)
+            continue
+        mapping[output] = source
+        if not (root / source).is_file() or (root / source).is_symlink():
+            errors.append("Generatorregister: bron ontbreekt: " + source)
+        if (root / output).exists() or (root / output).is_symlink():
+            errors.append("Generatorregister: uitvoerkopie staat opnieuw in Git: " + output)
+    return mapping
+
+
 def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
     errors: list[str] = []
+    generated = generated_sources(root, errors)
+    generated_html = {output: source for output, source in generated.items() if output.endswith(".html")}
     pages = register.get("pages", [])
     items = register.get("embedded_items", [])
     sources = register.get("html_sources", [])
@@ -309,8 +348,14 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
             errors.append(f"Pagina: familie ontbreekt of onbekend bij {p['id']}")
         if not p.get("title"):
             errors.append(f"Pagina: titel ontbreekt bij {p['id']}")
-        if p.get("file") and not (root / p["file"]).is_file():
-            errors.append(f"Pagina: bronbestand bestaat niet: {p['file']}")
+        file = p.get("file")
+        if file in generated_html:
+            if p.get("generated_from") != generated_html[file]:
+                errors.append(f"Pagina: gegenereerde bron wijkt af: {file}")
+        elif p.get("generated_from"):
+            errors.append(f"Pagina: generatorbron ontbreekt in register: {file}")
+        elif file and not (root / file).is_file():
+            errors.append(f"Pagina: bronbestand bestaat niet: {file}")
 
     collections = register.get("collections", [])
     unique([c["id"] for c in collections], "Verzameling")
@@ -359,7 +404,12 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
         errors.append(f"Sitemap: bestand niet leesbaar: {exc}")
 
     actual_page_files = visible_pages(root)
-    registered_page_files = {p["file"] for p in pages if p.get("file")}
+    registered_outputs = {p["file"] for p in pages if p.get("file")}
+    registered_sources = {s["path"] for s in sources}
+    for output, source in generated_html.items():
+        if output not in registered_outputs or source not in registered_sources:
+            errors.append("Generatorregister: HTML-bron of route ontbreekt in website-register: " + output)
+    registered_page_files = registered_outputs - set(generated_html)
     if actual_page_files != registered_page_files:
         errors.append("Pagina-inventaris wijkt af; niet opgenomen: "
                       + repr(sorted(actual_page_files - registered_page_files))

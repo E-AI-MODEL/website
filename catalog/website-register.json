@@ -1218,7 +1218,8 @@
       "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
       "in_committed_sitemap": true,
       "public_title_nl": "Oceanografie",
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/abyss/ABYSS.html"
     },
     {
       "id": "page:/tools/anatomie/",
@@ -1380,7 +1381,8 @@
         "not_individual_content": true
       },
       "in_committed_sitemap": true,
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/eaimesh/start.html"
     },
     {
       "id": "page:/tools/eaistudio/",
@@ -1407,7 +1409,8 @@
       "family": "hulpmiddelen",
       "embedded_inventory": "40_componenten_3_startvoorbeelden_8_scenesjablonen",
       "in_committed_sitemap": true,
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/eaistudio/studio.html"
     },
     {
       "id": "page:/tools/eaiwork/",
@@ -1513,7 +1516,8 @@
       "content_collection": "melkweg",
       "in_committed_sitemap": true,
       "public_title_nl": "De Melkweg",
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/melkweg-lab/index.html"
     },
     {
       "id": "page:/tools/projecthulp/",
@@ -1578,7 +1582,8 @@
       "family": "heelal",
       "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
       "in_committed_sitemap": true,
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/science-observatory/labs/gravitatie-banen.html"
     },
     {
       "id": "page:/tools/science-observatory/labs/melkweg/",
@@ -1594,7 +1599,8 @@
       "content_collection": "melkweg",
       "in_committed_sitemap": true,
       "public_title_nl": "De Melkweg",
-      "search_scope": "via_verwijzing"
+      "search_scope": "via_verwijzing",
+      "generated_from": "content/science-observatory/labs/melkweg.html"
     },
     {
       "id": "page:/tools/science-observatory/labs/natuurkunde/",
@@ -1609,20 +1615,8 @@
       "family": "natuurkunde",
       "in_committed_sitemap": true,
       "public_title_nl": "Natuurkunde",
-      "search_scope": "algemeen"
-    },
-    {
-      "id": "page:/tools/science-observatory/labs/schuine-worp/",
-      "url": "/tools/science-observatory/labs/schuine-worp/",
-      "file": "tools/science-observatory/labs/schuine-worp/index.html",
-      "title": "Schuine worp",
-      "kind": "toepassing",
-      "category": "TOOLS",
-      "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/science-observatory/",
-      "family": "hulpmiddelen",
-      "in_committed_sitemap": false,
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/science-observatory/labs/natuurkunde.html"
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-a/",
@@ -1637,7 +1631,8 @@
       "family": "wiskunde",
       "in_committed_sitemap": true,
       "public_title_nl": "Wiskunde A",
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/science-observatory/labs/wiskunde-a.html"
     },
     {
       "id": "page:/tools/science-observatory/labs/wiskunde-b/",
@@ -1652,7 +1647,8 @@
       "family": "wiskunde",
       "in_committed_sitemap": true,
       "public_title_nl": "Wiskunde B",
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/science-observatory/labs/wiskunde-b.html"
     },
     {
       "id": "page:/tools/sport-en-bewegen/",
@@ -1734,7 +1730,8 @@
       "family": "hulpmiddelen",
       "embedded_inventory": "tien_lesonderdeeltypen",
       "in_committed_sitemap": true,
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/wihtml/studio.html"
     },
     {
       "id": "page:/tools/wihtml/voorbeeld/",
@@ -1747,7 +1744,8 @@
       "parent": "page:/tools/wihtml/",
       "family": "hulpmiddelen",
       "in_committed_sitemap": true,
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/wihtml/verdubbelen-halveren-v9.html"
     },
     {
       "id": "page:/topo/",
@@ -2596,7 +2594,8 @@
       "embedded_inventory": "afzonderlijke_keuzes_brongecontroleerd",
       "public_title_nl": "Leeuw in 3D",
       "in_committed_sitemap": true,
-      "search_scope": "algemeen"
+      "search_scope": "algemeen",
+      "generated_from": "content/science-observatory/labs/leeuw.html"
     }
   ],
   "embedded_items": [
@@ -7242,9 +7241,6 @@
       "path": "content/science-observatory/labs/natuurkunde.html"
     },
     {
-      "path": "content/science-observatory/labs/schuine-worp.html"
-    },
-    {
       "path": "content/science-observatory/labs/wiskunde-a.html"
     },
     {
@@ -7273,9 +7269,9 @@
     }
   ],
   "audit": {
-    "tracked_html_files": 222,
-    "public_page_files": 181,
-    "generated_pages": 2,
+    "tracked_html_files": 215,
+    "public_page_files": 175,
+    "generated_pages": 14,
     "search_index_entries": 290,
     "embedded_items_in_search": 144,
     "taalwerkvormen": 15,
@@ -7317,8 +7313,8 @@
       "/verdieping/"
     ],
     "orphan_items": [],
-    "additional_html_files": 41,
-    "all_html_files": 222,
+    "additional_html_files": 40,
+    "all_html_files": 215,
     "pages_not_in_public_search": 37,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
@@ -7364,7 +7360,7 @@
     "sitemap_from_main": {
       "source": "sitemap.xml",
       "registered_urls": 149,
-      "registered_missing": 31,
+      "registered_missing": 30,
       "examples_not_in_sitemap": [
         "/eai-blog/",
         "/eai-blog/eai-balans/",
@@ -7395,7 +7391,6 @@
         "/toepassingen/saga-legal-ai/",
         "/tools/lo-aanvalslab/onderbouwing/",
         "/tools/projecthulp/",
-        "/tools/science-observatory/labs/schuine-worp/",
         "/tools/van-proces-naar-prompt/"
       ],
       "important_generated_pages_missing": [],

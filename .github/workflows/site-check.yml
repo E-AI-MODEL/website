@@ -111,9 +111,11 @@ jobs:
     if: ${{ fromJSON(needs.scope.outputs.jobs)['eaigame'] }}
     uses: ./.github/workflows/eaigame.yml
   leeuw-console:
-    needs: scope
+    needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['leeuw-console'] }}
     uses: ./.github/workflows/leeuw-console.yml
+    with:
+      reuse_build: true
   science-fixed-workspace:
     needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['science-fixed-workspace'] }}

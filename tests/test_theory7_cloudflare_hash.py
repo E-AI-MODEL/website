@@ -66,7 +66,7 @@ class CloudflareLiveHashTests(unittest.TestCase):
 
     def test_standalone_tool_html_accepts_only_single_beacon(self):
         root = Path(__file__).resolve().parents[1]
-        for relative in ('tools/eaimesh/start/index.html', 'tools/eaistudio/studio/index.html'):
+        for relative in ('content/eaimesh/start.html', 'content/eaistudio/studio.html'):
             with self.subTest(relative=relative):
                 source = (root / relative).read_bytes()
                 digest = hashlib.sha256(source).hexdigest()

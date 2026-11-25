@@ -15,6 +15,17 @@ for (const language of ['en', 'nl']) {
 }
 // Deze routes worden door scripts/build_site.py gemaakt en apart getest.
 const generatedRoutes = new Set(["/nl/model/", "/en/model/", "/tools/eaimesh/", "/tools/eaistudio/", "/tools/wihtml/", "/tools/wihtml/studio/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/", "/tools/llm-observatorium/", "/tools/abyss/"]);
+const generator = JSON.parse(readFileSync(join(root, 'catalog/generated-tool-sources.json'), 'utf8')).generated;
+const mappedOutputs = new Set();
+for (const {output, source} of generator) {
+  if (typeof output !== 'string' || typeof source !== 'string' ||
+      !output.startsWith('tools/') || !source.startsWith('content/') ||
+      [output, source].some(p => p.split('/').some(x => !x || x === '.' || x === '..') || p.includes(String.fromCharCode(92))) ||
+      mappedOutputs.has(output) || !existsSync(join(root, source)) || existsSync(join(root, output))) {
+    throw Error('Invalid generated source mapping: ' + output);
+  }
+  mappedOutputs.add(output);
+}
 let errors = 0;
 for (const path of paths) {
   const html = readFileSync(join(root, path), 'utf8');
@@ -47,7 +58,7 @@ for (const path of paths) {
     if (!url.startsWith('/') || url.startsWith('//')) continue;
     const pathname = url.split(/[?#]/)[0];
     const localFile = pathname.endsWith('/') ? pathname.slice(1) + 'index.html' : pathname.slice(1);
-    if (!existsSync(resolve(root, localFile)) && !generatedRoutes.has(pathname)) fail('broken URL: ' + url);
+    if (!existsSync(resolve(root, localFile)) && !mappedOutputs.has(localFile) && !generatedRoutes.has(pathname)) fail('broken URL: ' + url);
   }
 }
 console.log('Checked ' + paths.length + ' bilingual pages. Errors: ' + errors);

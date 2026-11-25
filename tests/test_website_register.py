@@ -5,12 +5,13 @@ import copy
 import json
 import sys
 import unittest
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from check_website_register import (check, extract_physics, extract_math, extract_taal, extract_llmscan,
+from check_website_register import (check, generated_sources, extract_physics, extract_math, extract_taal, extract_llmscan,
                                     extract_glossary, extract_wihtml, extract_abyss,
                                     extract_gravity, extract_sport_modes, extract_process_modes,
                                     extract_game, extract_studio, extract_wihtml_slide_types,
@@ -25,6 +26,38 @@ class WebsiteRegisterTests(unittest.TestCase):
 
     def test_complete_register_matches_sources(self):
         self.assertEqual([], check(ROOT, self.register, self.taxonomy))
+
+    def test_generated_sources_require_existing_canonical_files_and_no_git_copy(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "catalog").mkdir()
+            (root / "content").mkdir()
+            (root / "tools").mkdir()
+            manifest = root / "catalog/generated-tool-sources.json"
+            mapping = {"output": "tools/index.html", "source": "content/source.html"}
+            manifest.write_text(json.dumps({"generated": [mapping]}))
+            errors = []
+            generated_sources(root, errors)
+            self.assertTrue(any("bron ontbreekt" in error for error in errors))
+            (root / mapping["source"]).write_text("source")
+            errors = []
+            self.assertEqual(generated_sources(root, errors), {mapping["output"]: mapping["source"]})
+            self.assertEqual(errors, [])
+            (root / mapping["output"]).write_text("duplicate")
+            errors = []
+            generated_sources(root, errors)
+            self.assertTrue(any("uitvoerkopie" in error for error in errors))
+            (root / mapping["output"]).unlink()
+            manifest.write_text(json.dumps({"generated": [mapping, mapping]}))
+            errors = []
+            generated_sources(root, errors)
+            self.assertTrue(any("dubbel uitvoerbestand" in error for error in errors))
+
+    def test_generated_public_page_requires_the_mapped_source(self):
+        changed = copy.deepcopy(self.register)
+        page = next(p for p in changed["pages"] if p.get("generated_from"))
+        page["generated_from"] = "content/not-the-source.html"
+        self.assertTrue(any("gegenereerde bron wijkt af" in e for e in check(ROOT, changed, self.taxonomy)))
 
     def test_all_known_catalogues_have_expected_numbers(self):
         self.assertEqual(53, len(extract_physics(ROOT)))

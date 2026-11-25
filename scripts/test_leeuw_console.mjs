@@ -136,7 +136,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
   console.log('Leeuw '+engine+': vast scherm, zeven onderwerpen, 3D-overgang, rotatie, pauze, schuif, metingen, grafiek en verminderde beweging geslaagd.');
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
-  const root=resolve(process.argv[2]||'.'),engine=process.argv[3]||'chromium',base='http://127.0.0.1:8797';
+  const root=resolve(process.argv[2]||'site-build'),engine=process.argv[3]||'chromium',base='http://127.0.0.1:8797';
   const server=spawn('python3',['-m','http.server','8797','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
   let browser;
   try{

@@ -95,7 +95,10 @@ test('Compact hoofdmenu behoudt de volledige proefcatalogus in zoeken', () => {
 test('Leeuw: bronrecords, publicatieroute, zeven standen en onafhankelijke rekenwaarden', () => {
   const route = '/tools/science-observatory/labs/leeuw/';
   const html = load('content/science-observatory/labs/leeuw.html');
-  assert.equal(html, load('tools/science-observatory/labs/leeuw/index.html'));
+  const generated = JSON.parse(load('catalog/generated-tool-sources.json')).generated;
+  assert.deepEqual(generated.find(item=>item.output==='tools/science-observatory/labs/leeuw/index.html'),
+    {output:'tools/science-observatory/labs/leeuw/index.html',source:'content/science-observatory/labs/leeuw.html'});
+  // The exact generated copy is checked on the final site-release, not the Git checkout.
   assert.ok(load('content/science-observatory/landing.html').includes(route));
   assert.ok(load('scripts/prepare_ui.py').includes(route));
   assert.ok(load('sitemap.xml').includes('https://eaimodel.nl' + route));
