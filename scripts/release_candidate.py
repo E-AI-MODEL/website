@@ -41,21 +41,55 @@ def api(path, *args):
     return json.loads(raw) if raw else None
 
 
-def authorize(event, ref, actor, triggering_actor, owner):
-    if (not owner or event != "workflow_dispatch" or ref != "refs/heads/main"
-            or actor != owner or triggering_actor != owner):
-        raise ValueError("Expliciete toestemming van de eigenaar op main ontbreekt")
+def authorize(event, ref, actor, triggering_actor, owner, delivery=None, repo=None, run_id=None):
+    """A successful trusted main validation is the normal publication authorization.
+
+    Retain an owner-only manual recovery route. Neither PR runs nor workflow
+    dispatch on feature branches can authorize production.
+    """
+    if ref != "refs/heads/main":
+        raise ValueError("Publicatie buiten main is niet toegestaan")
+    if event == "workflow_dispatch":
+        if not owner or actor != owner or triggering_actor != owner:
+            raise ValueError("Alleen de eigenaar kan een publicatie handmatig herstellen")
+        return
+    if event != "workflow_run" or not isinstance(delivery, dict):
+        raise ValueError("Geen vertrouwde automatische publicatie")
+    source = delivery.get("workflow_run") or {}
+    if (delivery.get("action") != "completed"
+            or not repo or (delivery.get("repository") or {}).get("full_name") != repo
+            or source.get("name") != "Valideer de publicatieversie"
+            or source.get("event") != "push"
+            or source.get("head_branch") != "main"
+            or source.get("status") != "completed"
+            or source.get("conclusion") != "success"
+            or (source.get("head_repository") or {}).get("full_name") != repo
+            or str(source.get("id")) != run_id
+            or not re.fullmatch(r"[0-9a-f]{40}", str(source.get("head_sha", "")))
+            or type(source.get("run_attempt")) is not int or source["run_attempt"] < 1):
+        raise ValueError("De automatische publicatie komt niet uit een geslaagde main-validatie")
+    return source
+
+
+def match_trigger(source, run):
+    if source is not None and any(source.get(key) != run.get(key)
+                                  for key in ("id", "head_sha", "run_attempt")):
+        raise ValueError("De validatierun of poging is veranderd sinds de publicatietrigger")
 
 
 def retrieve(run_id, target):
-    authorize(os.environ["GITHUB_EVENT_NAME"], os.environ["GITHUB_REF"],
-              os.environ["GITHUB_ACTOR"], os.environ["GITHUB_TRIGGERING_ACTOR"],
-              os.environ["GITHUB_REPOSITORY_OWNER"])
     if not re.fullmatch("[1-9][0-9]*", run_id) or target not in ("site", "topo"):
         raise ValueError("Ongeldig runnummer of publicatiedoel")
     repo = os.environ["GITHUB_REPOSITORY"]
+    event = os.environ["GITHUB_EVENT_NAME"]
+    delivery = (json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+                if event == "workflow_run" else None)
+    source = authorize(event, os.environ["GITHUB_REF"],
+                       os.environ["GITHUB_ACTOR"], os.environ["GITHUB_TRIGGERING_ACTOR"],
+                       os.environ["GITHUB_REPOSITORY_OWNER"], delivery, repo, run_id)
     prefix = f"repos/{repo}"
     run = api(f"{prefix}/actions/runs/{run_id}")
+    match_trigger(source, run)
     attempt = run["run_attempt"]
     pages = api(f"{prefix}/actions/runs/{run_id}/attempts/{attempt}/jobs?per_page=100", "--paginate", "--slurp")
     jobs = [job for page in pages for job in page["jobs"]]

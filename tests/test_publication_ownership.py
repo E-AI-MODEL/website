@@ -90,12 +90,23 @@ class PublicationOwnershipTests(unittest.TestCase):
                 self.assertIn("  workflow_dispatch:", events)
                 self.assertNotIn("  push:", events)
 
-    def test_main_validation_is_automatic_and_publication_requires_the_owner(self):
-        source = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
-        events = source.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
-        self.assertNotIn("  push:", events)
-        self.assertIn("github.actor == github.repository_owner", source)
-        self.assertIn("github.triggering_actor == github.repository_owner", source)
+    def test_main_validation_authorizes_publication_and_manual_recovery_stays_owner_only(self):
+        for name in ("deploy-theory7.yml", "deploy-topo-theory7.yml"):
+            source = (WORKFLOWS / name).read_text(encoding="utf-8")
+            events = source.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
+            self.assertNotIn("  push:", events)
+            self.assertIn("  workflow_run:", events)
+            self.assertIn("workflows: [Valideer de publicatieversie]", events)
+            self.assertIn("types: [completed]", events)
+            self.assertIn("branches: [main]", events)
+            self.assertIn("github.event.workflow_run.event == 'push'", source)
+            self.assertIn("github.event.workflow_run.head_branch == 'main'", source)
+            self.assertIn("github.event.workflow_run.conclusion == 'success'", source)
+            self.assertIn("github.event.workflow_run.head_repository.full_name == github.repository", source)
+            self.assertIn("github.event.workflow_run.id || inputs.validation_run", source)
+            self.assertIn("github.event.workflow_run.head_sha || github.sha", source)
+            self.assertIn("github.actor == github.repository_owner", source)
+            self.assertIn("github.triggering_actor == github.repository_owner", source)
         self.assertIn("  push:", (WORKFLOWS / "validate-main.yml").read_text())
 
     def test_release_gate_and_topo_browser_cannot_be_bypassed(self):
