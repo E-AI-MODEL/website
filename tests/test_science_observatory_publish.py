@@ -81,6 +81,13 @@ class ObservatoryPublicationTests(unittest.TestCase):
         register = json.loads((ROOT / "catalog/website-register.json").read_text(encoding="utf-8"))
         self.assertFalse(any(p["url"] == old for p in register["pages"]))
         self.assertTrue(any(p.get("url") == target for p in register["embedded_items"]))
+        for rel in ("nl/tools/index.html", "en/tools/index.html"):
+            for root in (ROOT, BUILD):
+                with self.subTest(page=rel, root=root):
+                    parser = Anchors()
+                    parser.feed((root / rel).read_text(encoding="utf-8"))
+                    self.assertNotIn(old, parser.hrefs)
+                    self.assertIn(target, parser.hrefs)
 
     def test_names_and_model_limits_are_visible_without_internal_labels(self):
         catalog = (PUBLISHED / "index.html").read_text(encoding="utf-8")
