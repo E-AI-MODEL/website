@@ -173,6 +173,17 @@ class RetryArtifactScenarios(unittest.TestCase):
                                             earlier=lambda _: self.fail("No earlier lookup"), target=target),
                                  (a, 3))
 
+    def test_fractional_seconds_and_offset_timestamps_from_github(self):
+        job = self.producer()
+        a = self.artifact()
+        a["created_at"] = "2026-11-25T13:36:34.125-08:00"
+        job["steps"][0]["started_at"] = "2026-11-25T13:36:31.000-08:00"
+        job["steps"][0]["completed_at"] = "2026-11-25T13:36:35.000-08:00"
+        self.assertEqual(self.select([a], jobs=[job]), (a, 1))
+        for invalid in ("2026-11-25T21:36:34", "not-a-timestamp"):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                self.select([{**a, "created_at": invalid}])
+
     def test_missing_rebuilt_artifact_never_falls_back_to_stale_build(self):
         with self.assertRaises(ValueError):
             self.select([self.artifact()], jobs=[self.producer(3, minute="48")])
