@@ -1,5 +1,5 @@
 // Run after prepare_ui.py. Usage: node scripts/ui_smoke.mjs [site-build]
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -18,7 +18,7 @@ try {
     await new Promise(r => setTimeout(r, 100));
   }
   assert(ready, 'Preview server did not start');
-  browser = await chromium.launch({ headless: true });
+  browser = await ({ chromium, firefox, webkit })[process.env.UI_BROWSER || "chromium"].launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
