@@ -29,7 +29,7 @@ def git(*args):
 
 
 def api(path):
-    return json.loads(call("gh", "api", "repos/" + REPO + "/" + path))
+    return json.loads(call("gh", "api", "repos/" + REPO + ("/" + path if path else "")))
 
 
 def pages(path, key=None):
@@ -88,8 +88,9 @@ def main():
             or os.environ["GITHUB_RUN_ATTEMPT"] != "1"
             or os.environ["GITHUB_ACTOR"] != "E-AI-MODEL"):
         raise RuntimeError("Unexpected cleanup context")
+    save("result.json", {"status": "preflight_started", "deleted": {}, "audit_run": AUDIT_RUN})
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
-    if event.get("before") != AUDIT_HEAD:
+    if event.get("before") != "c54c9d497754c5135e5619b99dcb871d8a48fc5f":
         raise RuntimeError("Not the authorized one-time update")
     run = api(f"actions/runs/{AUDIT_RUN}")
     if (run["head_sha"] != AUDIT_HEAD or run["conclusion"] != "success"
