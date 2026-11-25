@@ -38,3 +38,19 @@
 @media(max-width:930px){.eai-explore-choices{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:570px){.eai-explore-hero{padding:28px 0 16px}.eai-explore-choices,.eai-explore-links,.eai-explore-physics{grid-template-columns:1fr}.eai-explore-choice{min-height:112px;padding:17px 36px 17px 16px}.eai-explore-choice .eai-explore-chevron{right:12px;bottom:50%;transform:translateY(50%)}.eai-explore-detail{padding-top:23px}.eai-explore-other{margin-bottom:30px}}
 @media(prefers-reduced-motion:reduce){.eai-explore-choice{transition:none}}
+
+
+/* Four distinct astronomy entrances; scoped to the space subject page. */
+#vak-heelal .heelal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:24px 0 12px}
+#vak-heelal .heelal-card{display:grid;grid-template-columns:76px minmax(0,1fr) 19px;align-items:center;gap:14px;min-width:0;min-height:116px;padding:14px;border:1px solid #d2dedf;border-radius:9px;text-decoration:none;background:#fff;color:#233c42;transition:border-color .15s,background-color .15s}
+#vak-heelal .heelal-card:hover{border-color:#79a7a2;background:#f7fbfa}
+#vak-heelal .heelal-card:focus-visible{outline:3px solid #397e8b;outline-offset:3px}
+#vak-heelal .heelal-art{width:76px;height:76px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:6px;background:radial-gradient(ellipse at 47% 44%,#203c50,#0b192b 65%,#07111e)}
+#vak-heelal .heelal-art svg{display:block;width:100%;height:100%}
+#vak-heelal .heelal-copy{display:flex;flex-direction:column;min-width:0;gap:5px}
+#vak-heelal .heelal-copy strong{font-size:1.01rem;line-height:1.28;font-weight:720;letter-spacing:-.018em;color:#203b37}
+#vak-heelal .heelal-copy small{display:block;font-size:.82rem;line-height:1.42;color:#566d65;font-weight:400}
+#vak-heelal .heelal-meta{display:block;color:#48746d;font-size:.69rem;font-weight:650;line-height:1.3;margin-top:2px}
+#vak-heelal .heelal-arrow{font-size:1.14rem;color:#547b85;justify-self:end}
+@media(max-width:760px){#vak-heelal .heelal-grid{grid-template-columns:1fr;gap:9px;margin-top:19px}#vak-heelal .heelal-card{min-height:100px;padding:11px;grid-template-columns:61px minmax(0,1fr) 15px;gap:11px}#vak-heelal .heelal-art{width:61px;height:66px}#vak-heelal .heelal-copy strong{font-size:.98rem}#vak-heelal .heelal-copy small{font-size:.78rem}#vak-heelal .eai-explore-back{margin-bottom:24px}#vak-heelal .eai-explore-detail-head{padding-bottom:17px}}
+@media(max-width:350px){#vak-heelal .heelal-card{grid-template-columns:48px minmax(0,1fr) 12px;gap:8px;padding:9px}#vak-heelal .heelal-art{width:48px;height:56px}}
