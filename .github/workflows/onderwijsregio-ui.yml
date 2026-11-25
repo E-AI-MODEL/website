@@ -1,15 +1,8 @@
 name: Onderwijsregio mobile and publication check
 on:
-  pull_request:
-    paths:
-      - 'nl/onderwijsregio-proef/**'
-      - 'scripts/test_regio_design.mjs'
-      - '.github/workflows/onderwijsregio-ui.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'nl/onderwijsregio-proef/**'
+  workflow_call:
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

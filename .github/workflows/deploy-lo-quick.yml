@@ -4,16 +4,15 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
 
-concurrency:
-  group: theory7-production
-  cancel-in-progress: false
 
 jobs:
-  publish-lo:
-    runs-on: ubuntu-latest
-    timeout-minutes: 8
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -25,6 +24,40 @@ jobs:
           grep -q 'startRealtime' tools/lo-aanvalslab/index.html
           grep -q 'onlineChoice' tools/lo-aanvalslab/index.html
 
+      - name: Leg de vooraf gecontroleerde overdrachtsbestanden vast
+        run: python3 scripts/recovery_files.py create tools/lo-aanvalslab/index.html tools/lo-aanvalslab/onderbouwing/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            recovery-files/
+            recovery-manifest.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+  publish:
+    needs: prepare
+    environment: theory7-herstel
+    concurrency:
+      group: theory7-production
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controleer de goedkeuring van de eigenaar
+        env:
+          OWNER_ID: ${{ github.repository_owner_id }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" |
+            jq -e --arg id "$OWNER_ID" 'any(.[]; .state == "approved" and (.user.id|tostring) == $id and any(.environments[]; .name == "theory7-herstel"))'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: python3 scripts/recovery_files.py verify
+      - run: cp -a recovery-files/. .
       - name: Installeer FTPS-client
         run: |
           sudo apt-get update -qq
@@ -46,6 +79,7 @@ jobs:
           FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
         shell: bash
+        working-directory: recovery-files
         run: |
           set -euo pipefail
           lftp -u "$FTP_USER","$FTP_PASSWORD" "ftp://$HOST:21" <<'EOF'

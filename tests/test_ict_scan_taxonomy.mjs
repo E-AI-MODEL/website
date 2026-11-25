@@ -54,3 +54,12 @@ test('Kaart, grafieken en rapportage gebruiken dezelfde betekenisregels',()=>{
   assert.ok(app.includes('IctScanTaxonomy.isSchoolAi('));
   assert.ok(!visual.includes("item.phase||'Niet ingedeeld'"));
 });
+
+test('Ontbrekende lesfase is alleen een grafiekcategorie voor onderwijsfuncties',()=>{
+  const missing={id:'AI-X',domain:'Onderwijsleerproces',phase:''};
+  const school={id:'AI-Y',domain:'Organisatie en beheer',phase:''};
+  assert.equal(taxonomy.phases(missing).length,0);
+  assert.deepEqual(Array.from(taxonomy.chartPhases(missing)),['Niet vastgelegd']);
+  assert.equal(taxonomy.chartPhases(school).length,0);
+  assert.ok(app.includes("state.phase==='Niet vastgelegd'&&IctScanTaxonomy.chartPhases(x).includes(state.phase)"));
+});

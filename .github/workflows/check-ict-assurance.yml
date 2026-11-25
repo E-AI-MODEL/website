@@ -36,7 +36,9 @@ jobs:
           package-manager-cache: false
       - name: Controleer regels, bronimport en kaartwijzigingen
         run: |
-          node --test tests/test_ict_scan_assurance*.mjs tests/test_ict_scan_cards.mjs tests/test_ict_scan_github_sync.mjs tests/test_ict_scan_taxonomy.mjs
+          php -l tools/ict-scan/edit-api.php
+          php tests/test_ict_scan_edit_api.php
+          node --test tests/test_ict_scan_assurance*.mjs tests/test_ict_scan_cards.mjs tests/test_ict_scan_github_sync.mjs tests/test_ict_scan_taxonomy.mjs tests/test_ict_scan_inventory_index.mjs
           node tests/test_ict_scan_export.mjs
           python3 -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
       - name: Installeer de browser voor de gebruikersproef

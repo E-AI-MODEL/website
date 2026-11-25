@@ -33,6 +33,37 @@ class Links(HTMLParser):
 
 
 class AnatomyPublishTests(unittest.TestCase):
+    def test_checkout_uses_pinned_commit_even_after_upstream_advances(self):
+        import subprocess
+        import sys
+        import tempfile
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from build_anatomie import checkout_pinned_source
+
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            upstream = root / "upstream"
+            upstream.mkdir()
+
+            def git(*args):
+                return subprocess.check_output(["git", *args], cwd=upstream, text=True).strip()
+
+            git("init", "-b", "master")
+            git("config", "user.name", "Anatomy fixture")
+            git("config", "user.email", "fixture@example.invalid")
+            (upstream / "fixture.txt").write_text("reviewed")
+            git("add", "fixture.txt")
+            git("commit", "-m", "Reviewed commit")
+            pinned = git("rev-parse", "HEAD")
+            (upstream / "fixture.txt").write_text("new, unreviewed")
+            git("commit", "-am", "Advance upstream")
+            self.assertNotEqual(git("rev-parse", "HEAD"), pinned)
+            checkout = root / "checkout"
+            checkout_pinned_source(checkout, upstream.as_uri(), pinned)
+            self.assertEqual((checkout / "fixture.txt").read_text(), "reviewed")
+            self.assertEqual(subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=checkout, text=True).strip(), pinned)
+
     def test_website_has_anatomy_route(self):
         page = ATLAS / "index.html"
         self.assertTrue(page.is_file(), "3D-atlas niet gebouwd")

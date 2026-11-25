@@ -1,12 +1,7 @@
 name: LO rustige mobiele bediening
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'tools/lo-aanvalslab/index.html'
-      - 'scripts/test_lo_calm_mobile.py'
-      - '.github/workflows/lo-calm-mobile.yml'
+  workflow_call:
   workflow_dispatch:
 
 permissions:

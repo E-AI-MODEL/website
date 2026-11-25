@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "site-build"
 SOURCE = ROOT / "content" / "science-observatory"
 PUBLISHED = BUILD / "tools" / "science-observatory"
-SLUGS = ("melkweg", "gravitatie-banen", "natuurkunde", "wiskunde-a", "wiskunde-b")
+SLUGS = ("melkweg", "gravitatie-banen", "natuurkunde", "wiskunde-a", "wiskunde-b", "leeuw")
 PUBLISHED_LABS = SLUGS + ("schuine-worp",)
 
 
