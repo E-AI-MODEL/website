@@ -1,0 +1,233 @@
+name: Archive and prune audited historical branches (one time)
+on:
+  push:
+    branches: [audit/generated-source-ownership]
+    paths: ['.github/workflows/archive-historical-branches-once.yml']
+
+permissions:
+  contents: write
+  actions: read
+  pull-requests: read
+
+jobs:
+  archive-prune:
+    if: github.repository == 'E-AI-MODEL/website' && github.actor == 'E-AI-MODEL' && github.event.before == 'a1a5921f7d1329fd9c438b2688084b00ec68c5ce' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    concurrency:
+      group: verified-historical-branch-cleanup
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+      - uses: actions/download-artifact@v4
+        with:
+          name: branch-recovery-45660772038-1
+          run-id: 45660772038
+          github-token: ${{ github.token }}
+          path: prior-audit/
+      - name: Archive exact audited tips, then prune unchanged eligible refs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, subprocess
+          from pathlib import Path
+          from collections import Counter
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          baseline = "27410e187648d211849eb7d83e2f00844baf5988"
+          tag = "archive/branch-backlog-20261125-45660772038"
+          tagref = "refs/tags/" + tag
+          out = Path("cleanup-evidence")
+          out.mkdir(exist_ok=True)
+          result = {"audit_run": 45660772038, "audit_artifact": 15043379777,
+                    "baseline": baseline, "tag": tag, "archive_sha": None,
+                    "selected": [], "skipped": [], "deleted": [], "error": None}
+
+          def save():
+              (out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
+
+          def run(*args, data=None):
+              return subprocess.check_output(args, input=data, stderr=subprocess.PIPE)
+
+          def git(*args, data=None):
+              return run("git", *args, data=data).decode().strip()
+
+          def pages(path):
+              response = json.loads(run("gh", "api", "--paginate", "--slurp",
+                                         "repos/" + repo + "/" + path))
+              if not isinstance(response, list) or not response or not all(isinstance(p, list) for p in response):
+                  raise RuntimeError("Incomplete paginated API response")
+              return [v for page in response for v in page]
+
+          def live():
+              branches = {b["name"]: b for b in pages("branches?per_page=100")}
+              prs = pages("pulls?state=open&per_page=100")
+              held = {"main", "audit/generated-source-ownership", "ci/audit-20261125"}
+              for p in prs:
+                  for side in ("head", "base"):
+                      s = p[side]
+                      if (s.get("repo") or {}).get("full_name") == repo:
+                          held.add(s["ref"])
+              return branches, held
+
+          def reason(row, branches, held):
+              n = row["branch"]
+              if n in held or row["protected_or_open"] or "ict" in n.casefold() or "ICT (excluded from edits)" in row["areas"]:
+                  return "protected, ICT or open PR at audit/current snapshot"
+              b = branches.get(n)
+              if b is None:
+                  return "already absent"
+              if b["protected"]:
+                  return "currently protected"
+              if b["commit"]["sha"] != row["sha"]:
+                  return "branch tip changed"
+              return None
+
+          def remote_tag():
+              return git("ls-remote", "--refs", "origin", tagref)
+
+          def require_archive(commit):
+              if remote_tag() != commit + "\t" + tagref:
+                  raise RuntimeError("Remote archive tag missing or changed")
+
+          def ancestor(sha, target):
+              subprocess.run(["git", "merge-base", "--is-ancestor", sha, target],
+                             check=True, stdout=subprocess.DEVNULL)
+
+          def remote_heads():
+              return {ref.removeprefix("refs/heads/"): sha for sha, ref in
+                      (line.split("\t", 1) for line in git("ls-remote", "--heads", "origin").splitlines())}
+
+          try:
+              if repo != "E-AI-MODEL/website":
+                  raise RuntimeError("Wrong repository")
+              rows = json.loads(Path("prior-audit/branches.json").read_text())
+              summary = json.loads(Path("prior-audit/summary.json").read_text())
+              allowed = {"all_noncurrent_states_seen_in_main_history", "net_already_present_unique_history"}
+              candidates = [r for r in rows if r["review"] in allowed]
+              if summary["main_sha"] != baseline or summary["main_ancestors_examined"] != 1285 or len(rows) != 366:
+                  raise RuntimeError("Unexpected original audit snapshot")
+              if Counter(r["review"] for r in candidates) != {
+                  "all_noncurrent_states_seen_in_main_history": 249,
+                  "net_already_present_unique_history": 7
+              } or len({r["branch"] for r in candidates}) != 256:
+                  raise RuntimeError("Unexpected audited candidate set")
+              if any(r["main_sha"] != baseline or r["unseen_clean"] or r["unseen_overlap"] or r["unseen_deletions"]
+                     or r["changed"] != r["already_exact"] + r["historical_only"]
+                     or not re.fullmatch(r"[0-9a-f]{40}", r["sha"]) for r in candidates):
+                  raise RuntimeError("Candidate state mismatch")
+              git("fetch", "--no-tags", "--filter=blob:none", "origin",
+                  "+refs/heads/*:refs/remotes/origin/*")
+              branches, held = live()
+              main = branches["main"]["commit"]["sha"]
+              ancestor(baseline, main)
+              eligible = []
+              for r in candidates:
+                  why = reason(r, branches, held)
+                  if why:
+                      result["skipped"].append({"branch": r["branch"], "sha": r["sha"], "reason": why})
+                      continue
+                  local = git("rev-parse", "--verify", "refs/remotes/origin/" + r["branch"] + "^{commit}")
+                  if local != r["sha"]:
+                      result["skipped"].append({"branch": r["branch"], "sha": r["sha"], "reason": "local/remote snapshot differs"})
+                      continue
+                  eligible.append(r)
+              result["selected"] = [{"branch": r["branch"], "sha": r["sha"],
+                                      "review": r["review"], "branch_only_commits": r["branch_only_commits"]}
+                                     for r in eligible]
+              save()
+
+              if eligible:
+                  if remote_tag():
+                      raise RuntimeError("Archive tag already exists; refusing to overwrite")
+                  manifest = {"schema": 1, "repository": repo, "audit_run": 45660772038,
+                              "audit_artifact": 15043379777, "audit_main": baseline,
+                              "archive_parent_main": main, "tag": tag,
+                              "archived": result["selected"], "excluded": result["skipped"],
+                              "restore": "git push origin <sha>:refs/heads/<original-branch>"}
+                  manifest_bytes = (json.dumps(manifest, indent=2) + "\n").encode()
+                  (out / "branch-archive-manifest.json").write_bytes(manifest_bytes)
+                  blob = git("hash-object", "-w", "--stdin", data=manifest_bytes)
+                  tree = git("mktree", data=("100644 blob " + blob + "\tbranch-archive-manifest.json\n").encode())
+                  git("config", "user.name", "github-actions[bot]")
+                  git("config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
+                  tips = list(dict.fromkeys(r["sha"] for r in eligible if r["sha"] != main))
+                  archive = main
+                  for start in range(0, len(tips), 24):
+                      args = ["commit-tree", tree, "-p", archive]
+                      for sha in tips[start:start+24]:
+                          if sha != archive:
+                              args.extend(["-p", sha])
+                      args.extend(["-m", "Preserve audited branch histories: group " + str(start//24+1)])
+                      archive = git(*args)
+                  if archive == main:
+                      archive = git("commit-tree", tree, "-p", main, "-m", "Preserve audited branch history manifest")
+                  for r in eligible:
+                      ancestor(r["sha"], archive)
+                  git("push", "origin", archive + ":" + tagref)
+                  require_archive(archive)
+                  git("fetch", "--no-tags", "origin", tagref + ":" + tagref)
+                  if git("rev-parse", "--verify", tagref + "^{commit}") != archive:
+                      raise RuntimeError("Fetched archive commit mismatch")
+                  if git("rev-parse", archive + ":branch-archive-manifest.json") != blob:
+                      raise RuntimeError("Archive manifest mismatch")
+                  for r in eligible:
+                      ancestor(r["sha"], archive)
+                  result["archive_sha"] = archive
+                  save()
+
+                  for start in range(0, len(eligible), 20):
+                      require_archive(archive)
+                      branches, held = live()
+                      batch = []
+                      for r in eligible[start:start+20]:
+                          why = reason(r, branches, held)
+                          if why:
+                              result["skipped"].append({"branch": r["branch"], "sha": r["sha"], "reason": why})
+                          else:
+                              batch.append(r)
+                      if not batch:
+                          continue
+                      args = ["push", "--atomic"]
+                      for r in batch:
+                          args.append("--force-with-lease=refs/heads/" + r["branch"] + ":" + r["sha"])
+                      args.append("origin")
+                      args.extend(":refs/heads/" + r["branch"] for r in batch)
+                      try:
+                          git(*args)
+                      except subprocess.CalledProcessError as e:
+                          result["error"] = "Atomic deletion batch rejected: " + e.stderr.decode(errors="replace")[-2000:]
+                          save()
+                          raise RuntimeError(result["error"])
+                      current = remote_heads()
+                      for r in batch:
+                          if r["branch"] in current:
+                              raise RuntimeError("Branch still exists after successful push: " + r["branch"])
+                          result["deleted"].append({"branch": r["branch"], "sha": r["sha"]})
+                      save()
+                  require_archive(archive)
+              print("Archive:", result["archive_sha"], "deleted:", len(result["deleted"]), "skipped:", len(result["skipped"]))
+          except Exception as e:
+              result["error"] = result["error"] or str(e)
+              raise
+          finally:
+              save()
+              with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+                  f.write("# Historical branch cleanup\n\n")
+                  f.write("Audit run: 45660772038. Selected: " + str(len(result["selected"])) +
+                          ". Deleted: " + str(len(result["deleted"])) +
+                          ". Skipped: " + str(len(result["skipped"])) + ".\n\n")
+                  f.write("Archive tag: " + tag + "\n\nArchive SHA: " + str(result["archive_sha"]) + "\n\n")
+                  f.write("Error: " + str(result["error"]) + "\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: historical-branch-cleanup-${{ github.run_id }}
+          path: cleanup-evidence/
+          if-no-files-found: error
+          retention-days: 90
