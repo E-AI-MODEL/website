@@ -47,6 +47,7 @@ jobs:
         run: |
           npm install --no-save playwright@1.56.1
           npx playwright install --with-deps chromium webkit
+          node scripts/audit_archive_session_test.mjs
           node scripts/audit_archive_ui.mjs
       - name: Test local tool workflows with synthetic inputs
         run: node scripts/audit_archive_functional.mjs
