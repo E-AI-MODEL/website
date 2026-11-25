@@ -1,0 +1,1549 @@
+{
+  "schema": 1,
+  "repository": "E-AI-MODEL/website",
+  "audit_run": 45660772038,
+  "audit_artifact": 15043379777,
+  "audit_main": "27410e187648d211849eb7d83e2f00844baf5988",
+  "archive_parent_main": "43592dbe2d994c662723809114acb4b74e89acf5",
+  "tag": "archive/branch-backlog-20261125-45660772038",
+  "archived": [
+    {
+      "branch": "add-eai-prompt-framework",
+      "sha": "e602307823e5605544bc60bb9cd6672d53484433",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "article-leerstap-terminology",
+      "sha": "dbe91de1878508f5715b0cc6978f91d8a38ef6be",
+      "review": "net_already_present_unique_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "audit-archive-tools-20261021",
+      "sha": "12d304ee1530d26b4ae0b2d0d28eb760c9a18051",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "canonical-leerstap-language",
+      "sha": "ff086905eccce528bb3f360d75053a1a0c22a66a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 6
+    },
+    {
+      "branch": "check-own-exports-20261021",
+      "sha": "628407669127a4ba29a1b8d669542eef52dfb40e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "ci/publish-analytics-demo-quick",
+      "sha": "de279a4c0c80f3e00649d0076308f37dfecab970",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "codex/leif-blijvende-beheerlogin",
+      "sha": "008e4fd0263f01b171e0f6f9f9a48bd24d8669cc",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "codex/leif-inlog-altijd-bereikbaar",
+      "sha": "9f4d55a4812a8b8caf1a60e0e99ec0b36ae55e0f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "copy/vakinhoud-in-plaats-van-proeven-20261115",
+      "sha": "81105f884febe87da46b1e31bf27883676ecaff3",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "design/coherent-analytics-dashboard",
+      "sha": "b4b0b92dde597f43f86b705cc04c4b5322a9891d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "design/eaigit-prompt-dashboard-quality-20261118",
+      "sha": "2cf94bbaa938dff1a1c93b0ce68ccd53e5a7d20a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 23
+    },
+    {
+      "branch": "design/header-menu-homepage-20261117",
+      "sha": "7e78f73e4e8231823207f47d7a2bf8c8ae7c9f8e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 12
+    },
+    {
+      "branch": "design/llm-ui-editorial-hairlines-20261117",
+      "sha": "456bb0fdcc2d76686ec09e082ff520ecde953751",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "didactic-model-adapters-fix",
+      "sha": "a728855a76e73bcba94bc47fcc9379ba93f7f247",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "didactic-model-catalog-boundary",
+      "sha": "d374a9ae73651fb2fb8c264d86d8cc72c0721ff7",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "eai-humanizer-nl-redactie",
+      "sha": "366cebfd148fb34a2e7c99427adf4a64b13b9440",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "edit/watermerk-idealens-analyse-cta-20261122",
+      "sha": "51dee35da9cfae419293be62cbffdeefaeb1e992",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "edit/zhang-english-copy-20261114",
+      "sha": "b64c2f0e9786f78d0a511c15cbaa6dcfc3e3cd75",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "edit/zhang-review-webcopy-20261114",
+      "sha": "b9301e550194c1d547da2d91423b03442e42f24d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "editorial-navigation-20261021",
+      "sha": "c29960fd2e0f6704a959ce1503bf14ca7ce04008",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "editorial/eai-humanizer-sitewide-20261013",
+      "sha": "cae0648395df2cf0d3e4826269411bb74c43bb71",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 107
+    },
+    {
+      "branch": "editorial/homepage-blindspot-reset-20261014",
+      "sha": "d3296f67e8c6f2864da958feea58394987998032",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "embed-model-monitor",
+      "sha": "48d055fbe0eff4325d699debe12f1e35441d2cae",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feat/analytics-demo-page-metrics",
+      "sha": "ad6fa115ce6ea986ac99266d23c0810cb8e16dfe",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "feat/anatomie-broncontrole-structuren-r3",
+      "sha": "738d2093c9b0dadd17794374112c0494225fd63f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "feat/anatomie-hart-direct-naar-hartslaglab",
+      "sha": "124a2addfe4d3acdcb47d0e06a839a0fdc57102e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feat/anatomie-informatie-en-weergave-20261109",
+      "sha": "2ebe95b5ee7e86c376cb967e06f3030d9e4758cc",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 53
+    },
+    {
+      "branch": "feat/anatomie-informatie-zonder-modelverlies",
+      "sha": "6bd6ff0f8eb301a666b89fe34d056c5815cd345d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 15
+    },
+    {
+      "branch": "feat/anatomie-inhoud-afronding-20261109",
+      "sha": "a45723010da73eba2d0589174b36e630103582ca",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 18
+    },
+    {
+      "branch": "feat/anatomie-inhoud-audit-havo-vwo",
+      "sha": "f68267ec6fe83ca41c04ae418ff75674647f0183",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "feat/anatomie-lexicon-nl-r2",
+      "sha": "30d46473999b6f7c1ada42a6e53a6930c1a27468",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 34
+    },
+    {
+      "branch": "feat/anatomie-model-slepen-20261110",
+      "sha": "69de56175f10561653c5342a06c66d295e1eae44",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "feat/anatomie-navigatie-v2-20261110",
+      "sha": "43f8da2a5538593fbd2bb64474a2570d01df5931",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "feat/anatomie-onderzoeksatlas-20261109",
+      "sha": "8e0dec9380e54c8621853664dfcd27fd9374506b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 12
+    },
+    {
+      "branch": "feat/anatomie-ontleden-kleuren-20261109",
+      "sha": "13805122e6dbf5d9ba4e6b57e76a35f0dbb771c5",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "feat/anatomie-zoom-naar-aanwijzer-20261110",
+      "sha": "c0e1664d6a606158fd7206c92f9fa9ab2e14be20",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feat/anatomisch-observatorium-20261109",
+      "sha": "3738b1e52c3e6f08263538a8b4c77220bdb97d4d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 26
+    },
+    {
+      "branch": "feat/cloudflare-beacon-public-pages",
+      "sha": "90e71a33d28eb35db16c6c9edc2f8b247a7605b5",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "feat/dashboard-cards-ui-sitewide-20261115",
+      "sha": "1bd565380d3efdaa5a34a101b98d13acd8a64765",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 16
+    },
+    {
+      "branch": "feat/doorzoekbare-navigatie-subproeven-20261115",
+      "sha": "50a31d214f40757fbec0efcf9a73b8bd48920ca0",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 33
+    },
+    {
+      "branch": "feat/eai-site-insights-menu-20261106",
+      "sha": "4317516cf8484b5f5715a1729cbbce95ca67875d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 25
+    },
+    {
+      "branch": "feat/eai-tools-finish-20261106",
+      "sha": "4185ac34594e04a3ec443719c1dc7c42b3e7a8bb",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "feat/eaigame-expedition",
+      "sha": "2e89fbef5e6451c96e8fe1366db9b84396d3c39f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 39
+    },
+    {
+      "branch": "feat/eaigit-single-file-offline-routes-20261118",
+      "sha": "c77233998b8d0f9f6ffb3dd9db7bc07fefc17d18",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 27
+    },
+    {
+      "branch": "feat/eaiwork-compact-control-dashboard-20261110",
+      "sha": "45d82724fc36d3e68db0566800ef15cc67a6ff2e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "feat/eaiwork-targeted-theory7-deploy-20261110",
+      "sha": "e5a74bd37fb907bd54c1616afd274cafa24b1096",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "feat/first-party-visitor-events",
+      "sha": "1e468d6b935e417f3862af99177595896e57fc5d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 23
+    },
+    {
+      "branch": "feat/hartslag-3d-bediening-bloedstroom-20261114",
+      "sha": "363d977de4c8ba2b56e2a79cd34e542d233a71cc",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 15
+    },
+    {
+      "branch": "feat/hartslag-clickable-anatomy-layers-20261114",
+      "sha": "f12c7a91f553a072a34b81b7dbcc1c6815832e7f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "feat/hartslag-loop-ux-20261114",
+      "sha": "158f007e7e2feac964f397d7b5410ac895839188",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "feat/hartslag-transparante-buitenlaag-20261114",
+      "sha": "24721f9a7f652374edc28cd16d7d7f2a8bd5366f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "feat/homepage-continuity-public-pages",
+      "sha": "509d586038fcb54d5e686792c4f63777480c93f6",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 7
+    },
+    {
+      "branch": "feat/hoofdpaginas-sitehierarchie-20261116",
+      "sha": "5b8d7f1cc9f2d84b7c006e6c4b9cca17ed9adb8a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 48
+    },
+    {
+      "branch": "feat/leeuw-observatorium-20261124",
+      "sha": "5e3c0405ce7e97ea1b7ded5c4ba204dc4b2799c5",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "feat/leeuw-ruimteverhaal-20261124",
+      "sha": "019a8ce6f4516ac1a8f632306b12d2d85f50ee89",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 12
+    },
+    {
+      "branch": "feat/leif-compact-personal-studio-20261106",
+      "sha": "67ec6f0c601d20d3c0c91d489fa893b5c5f1758f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 26
+    },
+    {
+      "branch": "feat/leif-ereader-tekstmuziek-20261105",
+      "sha": "db48fb9caf1156b4e3eb092efe43f4b4fdca443f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "feat/leif-gesprek-kei-20261104",
+      "sha": "25fee772ec527288cf70406ae3d0620f8c55628f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "feat/leif-hervatten-concept-20261104",
+      "sha": "d0de639ac3b2cb4ca0d89133b5a57474a15c754b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "feat/leif-kei-20261104",
+      "sha": "e0891981e373b101a16e5aafc43eac83ca9a0a51",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "feat/leif-persoonlijk-leesverhaal-20261105",
+      "sha": "9fd0329ef4bb1ec41e41ed62b03bddaa91598886",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 6
+    },
+    {
+      "branch": "feat/leif-persoonlijke-omgeving-opslag-20261105",
+      "sha": "12349b342be9cec0e69cba1dfbb08bb58ad058bf",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 31
+    },
+    {
+      "branch": "feat/leif-tekstbeheer-en-rustige-ingang-20261105",
+      "sha": "7d57ac40902e93711d5ad7da02de12cef39d732b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 42
+    },
+    {
+      "branch": "feat/leif-warm-landing-after-login-20261106",
+      "sha": "a900f7e4f0bd215e3f81a28366fa16ac03197da6",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 10
+    },
+    {
+      "branch": "feat/llm-animated-architecture-story-20261114",
+      "sha": "024a19f0cd3bb8c661f2d4d3d2ae4447af4d308a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "feat/llm-observatorium-lagen-in-plaats-van-ringen",
+      "sha": "7de3b1444cc5cc9ae8a444404f1cce10923b96c6",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "feat/llm-uitleg-eerst-de-vraag",
+      "sha": "e9e4619019e38aecbdb6de73bbf4be729a8fc9b6",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 18
+    },
+    {
+      "branch": "feat/llm-uitleg-voor-beginners-20261114",
+      "sha": "873cca8c96e9aee607ea8586c8e27adcf567217d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "feat/lo-quiet-accordions-mobile-20261113",
+      "sha": "d4d84bbaca66e589ec9f7ef448766ccacca9de78",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 16
+    },
+    {
+      "branch": "feat/observatory-adaptive-workspaces-2026",
+      "sha": "64d2d3ee5f9853378f6c726cab3aa746af62a9e7",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 37
+    },
+    {
+      "branch": "feat/physics-lab-specific-views-20261113",
+      "sha": "1d2486839bc2a9976be1df94b67716957656b65a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "feat/public-cloudflare-statistieken",
+      "sha": "8906aa332a56c5711b29d9efd62727a7d9b05b98",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "feat/publieke-indeling-vakgebieden-20261116",
+      "sha": "0cd018c512d8911a9adc7b35138242e574969d78",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 24
+    },
+    {
+      "branch": "feat/science-overzicht-onderwerpen-20261113",
+      "sha": "b1422f5343d144ffaa4a2b6865b5c533ef37a8a9",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "feat/science-physics-evidence-20261113",
+      "sha": "3371b08619decce9b67c68425cf73acbc2218794",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 10
+    },
+    {
+      "branch": "feat/science-physics-evidence-all-53-20261113",
+      "sha": "568fac327a52c7891810feee933bab365d945b8b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "feat/standalone-llmscan-20261113",
+      "sha": "697aeb60ca96b017714f9a6ae0d0de1db293b41d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 33
+    },
+    {
+      "branch": "feat/website-bilingual-refresh-20261013",
+      "sha": "7acb26726e4067326f9d38425e6097b6db8da03d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 7
+    },
+    {
+      "branch": "feat/website-inhoudsregister-20261116",
+      "sha": "7b3c846fe68e8b5ea654a6ea9af1e7f5f7ce367f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 15
+    },
+    {
+      "branch": "feat/website-register-verdieping-20261116",
+      "sha": "4c7f31870c95514c5fec0cc5badf4ca29fdd1222",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 20
+    },
+    {
+      "branch": "feat/wihtml-compact-standalone-release-20261105",
+      "sha": "7ad7b616e973c779005252c422a3d0c5902a5590",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feat/wihtml-docentenstudio",
+      "sha": "fb86ca2f5597cedbde7e98e8fcffac852fb119d4",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 26
+    },
+    {
+      "branch": "feat/wihtml-guided-lesson-flow-20261105",
+      "sha": "c1b3e767cf2a6be5eb4168e74f8cf281511ceb4b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "feat/wihtml-rustige-volledige-lesroute-20261105",
+      "sha": "328c51ddfddad88b3767fe288de1f6857d9f7db9",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 29
+    },
+    {
+      "branch": "feat/wihtml-start-library-20261105",
+      "sha": "dcbcb60c312a1613214200e51e572d7ff7eb049f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "feat/wihtml-visual-studio",
+      "sha": "e428444063aea43f3f5f3f2bbb8ef3360835ad84",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 6
+    },
+    {
+      "branch": "feature/abyss-observatorium-proef-20261106",
+      "sha": "9f947de122bfcee918adc1585ae29a0543b43d7f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "feature/eai-llmscan-embed",
+      "sha": "5c48439a0a74dc4fc2ace32804b0ab6829fec81e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "feature/eai-provenance-verify",
+      "sha": "4b98ca02a381344451d2f9f9155570e6599d2607",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feature/eai-site-beheerconsole-20261115",
+      "sha": "95f7c635d45f7f3db48f7e511f51d4f02692d9b7",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 63
+    },
+    {
+      "branch": "feature/eaigit-browser-static-audit-20261118",
+      "sha": "f9067567bd93704777ab2c535d0bd919355c730b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 32
+    },
+    {
+      "branch": "feature/eaiwork-public-dashboard-20261110",
+      "sha": "8646124e3f66959fe1eaffe160152fb883620146",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "feature/header-html-upload",
+      "sha": "eaad47469d38473aa588329bbdab9cb66bd461b3",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feature/hefboom-steunpunt-slepen-20261112",
+      "sha": "2175b14ec668e2e86be56eb04c967b15ca5039d2",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feature/html-galerij-uploads",
+      "sha": "4088ceecdb06cda27972c500b3f58d77ac3d0faa",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 19
+    },
+    {
+      "branch": "feature/html-gallery-polish-private-admin",
+      "sha": "6fdd4be45b61d9dc7868519b9aded5da6b85b8d4",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 10
+    },
+    {
+      "branch": "feature/llm-layer-inspector-20261106",
+      "sha": "66b514ef13e05edced5c59dd3c3a10e07fd7738c",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 12
+    },
+    {
+      "branch": "feature/llmscan-main-navigation",
+      "sha": "149d8f101c51d424610c354d95dea9967ebdb7d5",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 39
+    },
+    {
+      "branch": "feature/lo-spelanalyse-easteregg",
+      "sha": "1f599fd332b4a7e38bd9c0383b4a398034fde45b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 16
+    },
+    {
+      "branch": "feature/lo-zone-defence-modes",
+      "sha": "b4d17c5a7b715ad9c90cf8299d6e015433d8b720",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 7
+    },
+    {
+      "branch": "feature/natuurkunde-proefinteractie-verfijning-20261112",
+      "sha": "f00dcf7907bd7b57150b2e631ea652b0bac94f81",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 16
+    },
+    {
+      "branch": "feature/physics-lever-responds-to-torque-2026-11-13",
+      "sha": "b266fde9a3e4e6863eabb741bd7a272889671d27",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 16
+    },
+    {
+      "branch": "feature/physics-mobile-usable-layout-2026-11-13",
+      "sha": "ff7489baa60d9d9e3d50e408696701dd272bb029",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feature/physics-panels-on-latest-main-2026-11-13",
+      "sha": "a3634b4ea2c7aba212c6981d05384a2a0075e72a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "feature/projecthulp-zip-github-zonder-ai-20261115",
+      "sha": "03b70e6a7f15c1c943da422342092978b27c07fb",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 179
+    },
+    {
+      "branch": "feature/schuine-worp-studio-refine-20261112",
+      "sha": "f6f59c8e572ac8ed003d842e76d641d4d52950d3",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "feature/science-53-ontdekken-graph-controls-20261112",
+      "sha": "c21296bc0e9c7fcefeebc81bf6a29b7c6ab99729",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 35
+    },
+    {
+      "branch": "feature/science-fixed-workspace-compact-controls-20261112",
+      "sha": "3603da603274e391a0290b262cc4499a084c443a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "feature/science-observatory-pilot-20261106",
+      "sha": "377b0f5f896d02a8a91f5d328436a61b27c23c9e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 20
+    },
+    {
+      "branch": "feature/science-three-inquiry-modes-20261111",
+      "sha": "2e3794c04965d2bafefd4d516f8a3688b1c095ac",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 15
+    },
+    {
+      "branch": "feature/sport-opstellingen-6-11-20261115",
+      "sha": "3bdc90f8b9a1d9ca3315e054e2e5d40a56bce63f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "feature/watermerk-visueel-bewijs-20261123",
+      "sha": "3aa52bac5a2f415247fd42e3865d65265f8bdbb7",
+      "review": "net_already_present_unique_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "feature/what-the-watermerk-complete-en-20261122",
+      "sha": "d1ce81a8492fc581e99c7e6efd98524aa81fafca",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "final-leerstap-cleanup",
+      "sha": "378d4e045a4bef815311ebad921d3124bd43d33a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "finish-archive-checks-20261021",
+      "sha": "12d304ee1530d26b4ae0b2d0d28eb760c9a18051",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "finish-specific-microcopy",
+      "sha": "d92cb23b976148eb644f7150fb3bdbd8cdb5025c",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix-bronnen-build-metadata",
+      "sha": "abb3eb01f1718e9fe4daf1a06d018c9ee7179f68",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix-codex-homepage-review-20261101",
+      "sha": "60e6b7febfffc282e26f7630f2f0f4dd4c3d40a6",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "fix-home-model-source-20261101",
+      "sha": "0126b065300b7a1a4b60bd70e2da4a7ebc1a6d16",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix-homepage-structure-20261101",
+      "sha": "7595a07dd530a3a1fa80f58565f54d0118d9f5c2",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "fix-melkweg-mobile-layout-20261106",
+      "sha": "208a21884a2a9e4fe47c5a9fac62e65bc135a1fd",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "fix-public-ui-20261021",
+      "sha": "44a4240bd8588c05a523183870ed626c2cd6461f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "fix-site-build-pipeline",
+      "sha": "e65ec37985800a2aa277055af51246a941242a78",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "fix/anatomie-brongebonden-inhoud",
+      "sha": "ea20fd760ae5154145828dcd9f0a3d36b0dc8e9d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "fix/anatomie-cameraherstel-20261114",
+      "sha": "98d0cfdb6c704580b4a18e6c442e8b45903d4897",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/anatomie-direct-touch-20261110",
+      "sha": "5d42f088cd91534b5eccc5f2acd3e6838402e6e4",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 12
+    },
+    {
+      "branch": "fix/anatomie-fascia-picking-20261110",
+      "sha": "5ddcb55b5037b91f0a221fe262367854bdcc08ff",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "fix/anatomie-laden-mobiel-20261109",
+      "sha": "e80d2b3b9ba3228b10c973625646615757922159",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 7
+    },
+    {
+      "branch": "fix/anatomie-layout-20261109",
+      "sha": "0f8ce7b88096dd35389424ca7152ae0b60b75e0a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "fix/anatomie-lesuitleg-publicatietest",
+      "sha": "5d7c421eff187aad5314d69714d10eee1b3bf85c",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/anatomie-live-request-headers-20261116",
+      "sha": "1612de48fc0a256ff891385462d2c306f591b85f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "fix/anatomie-menu-uniek-20261109",
+      "sha": "727724f5562dea43e4216f26a00e226c47ebea00",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "fix/anatomie-runtime-nl-20261109",
+      "sha": "5e8424fef5c577ac915ae871dd6145c332f75225",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/anatomie-spieren-rood-20261109",
+      "sha": "29ea751e334a224daee969aeb77ae2b3a7a5a240",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "fix/anatomie-theory7-deploy-20261109",
+      "sha": "505e5143db9437776a8828a67d3e7cd146bf77e1",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/anatomie-ux-herbouw-20261109",
+      "sha": "93d864ec00c45b860692b30d464b80d911cf0fce",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "fix/ci-isolation-eaigit-20261120",
+      "sha": "e1d76194c0708539605e644c78501efa088216f8",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "fix/ci-publication-ownership-delf-20261120",
+      "sha": "6209dac5b51c6d69d35711c3d9920bcfeaf5ffec",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/cloudflare-graphql-query",
+      "sha": "88e97d0f4eb765d75206e5f105efe8c2d790cf63",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/cloudflare-live-check-no-dependencies",
+      "sha": "0e04a754f34bd9e908a9f790f0a9527f014b5daa",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/diagnose-live-html-theory7-20261116",
+      "sha": "7cd54b379a58b0f440976d6f7fba52a575288fa7",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 10
+    },
+    {
+      "branch": "fix/eai-generated-site-publish-20261106",
+      "sha": "607de0ab6bead75862de378b4730b5decfb558bd",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/eai-published-menu-groups-20261106",
+      "sha": "80d78c4b6f4e5a577a227d54a8b4a3613762cd67",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/eai-unified-hamburger-navigation-20261106",
+      "sha": "40f1843fec8ef7dc849c11163f581622ee172869",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/eaigame-board-overview-sites",
+      "sha": "776caa41e75415e1f2d153891756d799cb2d5b1b",
+      "review": "net_already_present_unique_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "fix/eaigit-github-help-public-ready-20261118",
+      "sha": "4e73a65aadbf9bcec3449784d058aa5627cdbf3a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 16
+    },
+    {
+      "branch": "fix/eaigit-privacy-preserve-no-tracking-20261118",
+      "sha": "8a7424f5d2cda99e738856e4b8c9c3b6f699e163",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 7
+    },
+    {
+      "branch": "fix/eaispeak-english-voices-nav-popovers-20261121",
+      "sha": "13bc6aaddd139a31c1d7b6aea6bef9a73621ce99",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "fix/eaispeak-scoped-preview-publish-20261121",
+      "sha": "ca4cd844855ff6dd9b9366b595e45c41f3d25e3e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/eaispeak-voice-layout-20261120",
+      "sha": "2b3d044d8da2eb7d0cc39364788c36e9bab2c625",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "fix/eaiwork-mobile-layout-20261110",
+      "sha": "13cf39fcc64e8e27c77cf94da5c157bbf5da10d3",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 6
+    },
+    {
+      "branch": "fix/eaiwork-visual-check-dependency-20261110",
+      "sha": "cf2797cec78c4fd5598a3a4c7c26bccb7d13c30c",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/editorial-remove-duplicate-choices-20261116",
+      "sha": "0a339cbf1943a5770f355b2202de61e3823417b3",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "fix/gallery-three-click-delete",
+      "sha": "d4c35855fd1480868222c86c677d784094a03898",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 7
+    },
+    {
+      "branch": "fix/hartslag-live-asset-check-20261120",
+      "sha": "4d23c7614ab527bab1c63a74ac12e001bdabe162",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/hartslag-real-anatomy-slow-motion-20261114",
+      "sha": "96acd5aa08ac2d31ada573997f06da6eff8f7e72",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 12
+    },
+    {
+      "branch": "fix/html-galerij-teksten",
+      "sha": "31facbd90ee4ae1d53e59dc022ef9ec85dc01a39",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/html-gallery-hidden-cache",
+      "sha": "37a99c9fea569d7792762593adc4ebf4e2094225",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/html-gallery-turnstile-errors",
+      "sha": "a32c557fb2614fc6a5bf665bb604937cf2100606",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "fix/leeuw-console-v2-20261124",
+      "sha": "48608d2bedf5c281e81e3a7cd42a476c061b0d71",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "fix/leif-admin-password-min-six",
+      "sha": "ec353bca4543e4b8709092b9f56d4fa60f0b5ad8",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/leif-bestaande-proef-extra-testers-20261105",
+      "sha": "92678f660db7dff3a9da9033f8a2a7ece7f24601",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "fix/leif-compact-unified-admin-20261106",
+      "sha": "7be6930585ff37d9f3715deae5c7c3eec1b3357a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "fix/leif-direct-publish-20261105",
+      "sha": "e11ce7bcb171fd571029528decc4fd75e373b497",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/leif-een-inlog-kei-lis-vis-20261105",
+      "sha": "096117512fa6e96535b07e7d1d82d29722fc43ed",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "fix/leif-kei-route-uitleg-20261105",
+      "sha": "30ebc08d9578f8709e7216e6a0a9259c9dab6dae",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "fix/leif-live-byte-identity-20261116",
+      "sha": "fc9ad86893a3d037705456c71525a768448596c0",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 6
+    },
+    {
+      "branch": "fix/leif-testers-antwoorden-verhalen-20261105",
+      "sha": "bc10d4f65b48a6373af5166cc41fa6cf47754635",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "fix/leif-vraaghints-mobiel-schrijven-20261106",
+      "sha": "4b5e7fc8357f8bafd7210cfd254f8907f68e6825",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 10
+    },
+    {
+      "branch": "fix/llm-observatorium-calm-seven-modes-20261106",
+      "sha": "9080d39504ff0b71e82d75f00d7bd98cf6bfdbf0",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 6
+    },
+    {
+      "branch": "fix/llm-trace-rerender-20261124",
+      "sha": "5d72a53e19888c141a350589fc55d9dd24045a34",
+      "review": "net_already_present_unique_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/lo-mobile-inline-controls-20261113",
+      "sha": "87d3d670f2102692f5173ad45a485afd347b72c9",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "fix/lo-mobile-one-screen-20261113",
+      "sha": "bb71a8582f3cd030e7b9db05532f66f7b1e3ff11",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "fix/melkweg-lab-compact-mobile-20261106",
+      "sha": "e0f7bfa61067aa7f9c31560c90440303ad8c8123",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "fix/melkweg-pure-visuals-dismissable-labels-20261106",
+      "sha": "9ea5e724f633c608f7f87af94f27ca82f59a3536",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 10
+    },
+    {
+      "branch": "fix/melkweg-zonpin-smalle-telefoons-20261106",
+      "sha": "8fb6a011dbc3536dbf69653389f5e428022461c6",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/mobile-search-menu-safe-margin-20261115",
+      "sha": "4c54442d37961116139206fed769b760bb25234b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/natuurkunde-incline-panels-main-20261113",
+      "sha": "5fa8bbf161fef120ebf531ec4e59fdd822370010",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/natuurkunde-stabiele-tijd-3d-grip-20261112",
+      "sha": "3aaaaa249ac851426a7b93d193ff5d103e63f179",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "fix/onderwijsregio-mobiel",
+      "sha": "41d9a60acb00b0c8d21d90d1132f0ed2af642768",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/physics-student-first-projectile-20261111",
+      "sha": "6100ea7293d6b83fc6876c60dcf347384c48ccf4",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 15
+    },
+    {
+      "branch": "fix/physics-visual-truth-20261113",
+      "sha": "3c6e4df6c8f354ea92798e324d71db3c6442c597",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "fix/public-analytics-theory7-publish",
+      "sha": "6870deb14ce31fa323d37c98a3024dc98f714312",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/publicatie-controles-isoleren-20261120",
+      "sha": "1b4fe92a6882caffd08ced83e85e968118ed38c1",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 36
+    },
+    {
+      "branch": "fix/publish-eai-tools-static-20261106",
+      "sha": "571895832d9066f7247565fa0f20bd2cd509d140",
+      "review": "net_already_present_unique_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/publish-leif-theory7-20261104",
+      "sha": "e47b28ce84520d1adf26f1d27effc1330158ae2d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "fix/regio-navigatie",
+      "sha": "89d75250d0ea765ef7181bcacec9a4de17986fe5",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/schuine-worp-meetbalk-20261112",
+      "sha": "0cd14900d6710f7a27df8da273b1e7d521636a15",
+      "review": "net_already_present_unique_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/science-mobile-projection-touch-20261111",
+      "sha": "6a14d23e466bc0ecb37f545ff8aa057a3ad95a41",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 13
+    },
+    {
+      "branch": "fix/sport-even-bewegen-startopstellingen-20261113",
+      "sha": "74463317e7ec44bd0028754639c988903084089e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 16
+    },
+    {
+      "branch": "fix/standalone-html-cloudflare-20261116",
+      "sha": "abf5140774e0ee34022a213913f5911a1b2bed31",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/theory7-cloudflare-live-verify-20261116",
+      "sha": "940e930fa1e02d3bc23cdba09475e0ec7801a33d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 6
+    },
+    {
+      "branch": "fix/theory7-legacy-hub-live-verification-20261116",
+      "sha": "9e287ec37bee522697d6a50f6f81e4414c655078",
+      "review": "net_already_present_unique_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/theory7-serial-deploys-20261106",
+      "sha": "de73da8f5ba3255d2fa21041b930028896078da4",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/uitnodigende-intro-onderzoek-20261113",
+      "sha": "b901f9e84ba7bc0129494155882996b4f1055e9d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "fix/watermerk-bronprecisie-20261122",
+      "sha": "cb997847cf72f9436f75cd71fd5bfb7731c476dd",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/watermerk-redactie-dualcoding-20261122",
+      "sha": "a54e6c30f4741978be77c9453dac4abdd0656165",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "fix/wihtml-codex-css-drafts-20261105",
+      "sha": "f63c575b9af25b86bb185fc992fd9ffef0d1813d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "fix/wihtml-rich-export-v9",
+      "sha": "37cc8dbd1efaadff27a7476cb948c01328565b48",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "fix/zhang-review-no-shared-html-20261116",
+      "sha": "a08e3a223c6616e77e90e7018654ae4fbb90f2cd",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "guided-site-journeys",
+      "sha": "5cb5b1f7f6e8e5cfa190b5d07d9e689f566a101b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "homepage-domain-overstijgend",
+      "sha": "91c946e5ce4c88dee89ce629a01baabef0f9f656",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "homepage-model-publication-20261021",
+      "sha": "1cc207a1e7f5c35c7edf666d517ce7e5fcd7d80f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "homepage-school-wide-20261101",
+      "sha": "c900293fa85bdd376c1eef4f08568de8fc19a660",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "homepage-schoolkeuzes-playground-20261103",
+      "sha": "57878defda1c76fb306fad189d56aa261c7bd168",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "homepage-zero-context",
+      "sha": "2dd08045ede6bf20853a11823f7f68180ebb2d47",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "improve-about-navigation-20261019",
+      "sha": "826764c1ed4fe3e6c80a7dc08a25601bd2fdc363",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "improve-llm-learning-journey-20261117",
+      "sha": "8c6492108e03747920cfcbf9607cae3f08e654eb",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 103
+    },
+    {
+      "branch": "improve/natuurkunde-incline-derivation-20261113",
+      "sha": "43c314917657f5188e808504266b904b7b084b44",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "lo-aanvalslab-wetenschappelijke-onderbouwing-20261112",
+      "sha": "9910d5d6aaf2d291d86d3ed805eccae75369510c",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "lo-docent-waarom-en-praktijkproeven-20261113",
+      "sha": "5dfe283e73974372eb3c8f9ba0294a5d7db59408",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "lo-pauze-coach-hernemen-footer-20261113",
+      "sha": "c9ba6d605cff76be4a3329d836e843023680c622",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 6
+    },
+    {
+      "branch": "lo-tactische-coach-chips-20261112",
+      "sha": "8a5a4035d832769e4f56ce0d6be05c59545a5484",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 19
+    },
+    {
+      "branch": "lo-welcome-help-teacher-20261113",
+      "sha": "224b74d22b30abd77c24dd44cdedf289f9b49ef7",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "long-page-section-rhythm",
+      "sha": "91444c0721750e7621a9b601300c70f116138ea3",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "melkweg-real-discovery-feedback-20261106",
+      "sha": "4587aa6e8ed0daf38d1c8a16a25ed6eed3da26ca",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "melkweg-visual-play-after-v9",
+      "sha": "b7e95d3277a01195418344eab3266241a5c76f66",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "proef/onderwijsregio-kennis-en-afspraak",
+      "sha": "73be35bd55c6b1fdd7ce2951c61b54b56db69de2",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "proef/onderwijsregio-rotterdam",
+      "sha": "4cf35c831b65ccc3f22d64d1df692cebf186febd",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "prompt-framework-main-nav",
+      "sha": "c34eda0622a6272945663aaaba87b4aee9fe5ce3",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "publish-hot-share-20261019",
+      "sha": "631c48aa84e79756dc0d0705f49fecc744431636",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "publish-live-practice",
+      "sha": "ea990e37e2c4f400bf8836049cf9f4bd4d56fe88",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "publish-melkweg-lab-20261106",
+      "sha": "1ed00cb816de6f2703c0207ff689d80c53d84a30",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "publish-model-monitor",
+      "sha": "c5eac2ca00817e89c4bd012cd27005b622e91f37",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "publish-new-site-hubs",
+      "sha": "ab20082535f393ba431f278c3c8c002e32589b94",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "publish-what-the-watermerk-20261122",
+      "sha": "a69facfeda4993f10a138f7f8d2d2188ca2ae3b7",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 3
+    },
+    {
+      "branch": "publish/eaiwork-entry-clean-20261120",
+      "sha": "e2896fbf63c03b2b208b6e9e652e179a5cfda1a5",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "publish/zhang-english-final-2026",
+      "sha": "ea8289bcc83a3b1a39d3131a0000cba3ce9ad0c2",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 7
+    },
+    {
+      "branch": "publish/zhang-l2-review-nl-en-20261114",
+      "sha": "2f7d39e3e09f649cf4e12840283a2ab7cf0a0716",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "publish/zhang-review-final-2026",
+      "sha": "1cbd2d222d77e99fe418d75a9136aa15bf210de6",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "rebuild/eaigit-guided-local-core-20261118",
+      "sha": "03bbd72905ba97ab22234e87af300ef61dce7037",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 37
+    },
+    {
+      "branch": "redesign/melkweg-immersive-mobile-v9",
+      "sha": "a68ea4f5ee912be49c11ed903bb01cdc44f67633",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "redesign/melkweg-observatorium-fijnlijn-v12",
+      "sha": "9ab5a2ba1678347f425b8ce2e450ea68efb4eff0",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 17
+    },
+    {
+      "branch": "refactor/menu-taal-betekenis-en-woordenboek-20261115",
+      "sha": "c16bb3536dfac98740542c5096329f264069c5ba",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 30
+    },
+    {
+      "branch": "remove-google-site-build-dependency",
+      "sha": "e925d7cab4a06cb5e04c0b7e0a031e4ed911f336",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 15
+    },
+    {
+      "branch": "research/lo-aanvalslab-v13",
+      "sha": "5628c1f19b025851a94934c725832d33eb39b01f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 7
+    },
+    {
+      "branch": "site-architecture-cleanup",
+      "sha": "be4905cb2a1feb6ecd848668756fcc5ed397545f",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 5
+    },
+    {
+      "branch": "site-information-architecture",
+      "sha": "efc8dff293324efb1b5e01b0f1d29056254917cd",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "site-interface-v4",
+      "sha": "b3d3be24a9efc9b1dabd06a7a20b879898a3e66b",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 9
+    },
+    {
+      "branch": "site-language-alignment",
+      "sha": "d6f1b510097c2083a1d196068a4a26c109957026",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 11
+    },
+    {
+      "branch": "site-linkedin-primary-contact",
+      "sha": "f39e0d4ac247c3f13070d7f1e5de9153b56c2acc",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 59
+    },
+    {
+      "branch": "site-section-boundaries",
+      "sha": "2d0d8c794a090e08005188dd14a0822a151ca63a",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "site-sources-taalwerkvormen",
+      "sha": "600d2700512b1b1e43f9dad9dbd9a59c18410275",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 8
+    },
+    {
+      "branch": "site-ux-content-growth",
+      "sha": "c34fb480a9612adb1328e27efa0c8f556590215e",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 87
+    },
+    {
+      "branch": "site-v3-cohesion",
+      "sha": "4868a5a923f489bf6c87903ffc2035c839c3cef7",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 14
+    },
+    {
+      "branch": "sitewide-microcopy-cleanup",
+      "sha": "9b5dffd09ba893cd83b0c59eff64878180dc42b9",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "ui-pdf-editorial",
+      "sha": "482be9963c88a70e61e051b4fb02b9cf1710d7e1",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 16
+    },
+    {
+      "branch": "verify-entire-ui-release-20261021",
+      "sha": "12a12a4e4c8dba55fa3df7e6da5a87696eba9096",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 1
+    },
+    {
+      "branch": "workform-card-rich-language",
+      "sha": "b5ee32f4b617529f5574b0d7c20aa0b0a215da6d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "workform-card-teacher-explanation",
+      "sha": "856093527cda617e015bf63d50c677e1df33f6ed",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 2
+    },
+    {
+      "branch": "workforms-action-ux",
+      "sha": "cac33f831aae7005a9501482348521bf16cfa799",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 19
+    },
+    {
+      "branch": "workforms-concrete-actions",
+      "sha": "a497b1200e77b3a362d9b9e54fe4ad6715191188",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "workforms-education-language",
+      "sha": "9c2d2bba44a387e6d67a969ef84a9869d3198637",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "workforms-professional-judgement",
+      "sha": "8d2c8db810e9ddb8b2d65b87adfd1fca0a12c78d",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "workforms-toolbox-phase2",
+      "sha": "b520ac2134d4d310a17f9af9b25c99639cce0db7",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    },
+    {
+      "branch": "workforms-visual-support",
+      "sha": "550c0bb793d61cd6f91f69011d92dc63b92fc899",
+      "review": "all_noncurrent_states_seen_in_main_history",
+      "branch_only_commits": 4
+    }
+  ],
+  "excluded": [],
+  "restore": "git push origin <sha>:refs/heads/<original-branch>"
+}
