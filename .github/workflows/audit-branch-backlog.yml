@@ -5,12 +5,11 @@ on:
     paths:
       - .github/workflows/audit-branch-backlog.yml
       - scripts/audit_branch_backlog.py
+      - scripts/review_branch_backlog.py
   workflow_dispatch:
-
 permissions:
   contents: read
   pull-requests: read
-
 jobs:
   inspect:
     runs-on: ubuntu-24.04
@@ -23,14 +22,14 @@ jobs:
           filter: blob:none
       - name: Fetch branch tips and history
         run: git fetch --no-tags --filter=blob:none origin '+refs/heads/*:refs/remotes/origin/*'
-      - name: Compare exact branch tips and file states
+      - name: Compare current and historical file states
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/audit_branch_backlog.py --out branch-audit
+        run: python3 scripts/review_branch_backlog.py --out branch-recovery
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: branch-backlog-${{ github.run_id }}-${{ github.run_attempt }}
-          path: branch-audit/
+          name: branch-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: branch-recovery/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
