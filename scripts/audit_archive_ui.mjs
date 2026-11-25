@@ -21,9 +21,22 @@ try {
    const entry={path:item.path,engine:engine.name(),width};
    try{
     await page.goto(base+'/'+item.path,{waitUntil:'domcontentloaded',timeout:12000});
+    // Do not measure a half-loaded redirect. The former modules page must
+    // reach the actual tools hub, and that hub must pass the same layout checks.
+    if(item.path==='eai-tools-modules/index.html'){
+     await page.waitForURL(url=>url.origin===base&&url.pathname==='/nl/tools/',{waitUntil:'load',timeout:12000});
+     await page.locator('[data-eai-explore]').waitFor({state:'visible',timeout:12000});
+     await page.evaluate(()=>document.fonts.ready);
+    }
     await page.waitForTimeout(60);
+    entry.finalUrl=page.url();
     Object.assign(entry,await page.evaluate(()=>({
      horizontalOverflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+2,
+     viewportWidth:document.documentElement.clientWidth,
+     documentWidth:document.documentElement.scrollWidth,
+     overflowingElements:document.documentElement.scrollWidth>document.documentElement.clientWidth+2
+      ?[...document.querySelectorAll('body *')].map(e=>({tag:e.tagName,id:e.id,className:String(e.getAttribute('class')||''),r:e.getBoundingClientRect()})).filter(e=>e.r.width>0&&e.r.right>document.documentElement.clientWidth+2).sort((a,b)=>b.r.right-a.r.right).slice(0,10).map(e=>({tag:e.tag,id:e.id,className:e.className,right:Math.round(e.r.right),width:Math.round(e.r.width)}))
+      :[],
      h1:document.querySelector('h1')?.textContent,
      menu:!!document.querySelector('.eai-site-menu'),
      oldHeaders:document.querySelectorAll('header.site-header,header.eai-site-nav').length,
@@ -71,5 +84,5 @@ try {
  writeFileSync('audit-results/render-failures.json',JSON.stringify(failed,null,2));
  console.log(JSON.stringify({renders:reports.length,overflow:reports.filter(x=>x.horizontalOverflow).length,errors:reports.filter(x=>x.jsErrors?.length||x.failure).length,external:external.length,localFailures:failed.length}));
  // External access controls are neither proof of a broken tool nor approval.
- if(failed.length){console.error('Local rendering checks failed: '+failed.map(x=>x.engine+': '+x.path).join(', '));process.exitCode=1;}
+ if(failed.length){console.error('Local rendering checks failed: '+failed.map(x=>x.engine+': '+x.path).join(', '));console.error(JSON.stringify(failed.map(x=>({path:x.path,engine:x.engine,finalUrl:x.finalUrl,viewportWidth:x.viewportWidth,documentWidth:x.documentWidth,overflowingElements:x.overflowingElements,failure:x.failure,jsErrors:x.jsErrors,menuWithinViewport:x.menuWithinViewport})),null,2));process.exitCode=1;}
 }

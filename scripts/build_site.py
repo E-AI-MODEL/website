@@ -2209,7 +2209,7 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
 
 def redirect(target: str) -> str:
     canonical = target if target.startswith("http") else f"{BASE_URL}{target}"
-    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={esc(target)}"><link rel="canonical" href="{esc(canonical)}"><title>Doorsturen…</title></head><body><p><a href="{esc(target)}">Ga verder</a></p></body></html>'
+    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={esc(target)}"><link rel="canonical" href="{esc(canonical)}"><title>Doorsturen…</title></head><body><p><a href="{esc(target)}">Ga verder</a></p></body></html>'
 
 def require_sources(sources: Path) -> None:
     required = [file for _, _, file, _ in PUBLICATIONS] + ["onderwijsin-embed1.html", "onderwijsin-3d.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
@@ -2758,7 +2758,7 @@ def build(sources: Path, out: Path) -> None:
     write(out, "tools/eaimesh/index.html", doc('EAImesh', '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">EAImesh</div><h1>Bekijk hoe een GitHub-repository in elkaar zit.</h1><p class="lede">EAImesh leest een openbare GitHub-repository en maakt de bestanden en hun samenhang zichtbaar. Kies wat je wilt bekijken en hoeveel detail je nodig hebt.</p><div class="button-row"><a class="button" href="/tools/eaimesh/start/">Open EAImesh</a><a class="button secondary" href="/nl/tools/">Alle tools</a></div></div></section><section class="section"><div class="wrap"><h2>Zo begin je</h2><p>Sleep de EAImesh-knop op de startpagina naar je bladwijzerbalk. Open daarna een openbare GitHub-repository en klik op die bladwijzer. EAImesh 0.6.1 draait daar in je browser; je hebt geen account bij EAI nodig.</p></div></section></main>', "/tools/eaimesh/", "tools", 'EAImesh leest een openbare GitHub-repository en maakt de bestanden en hun samenhang zichtbaar. Kies wat je wilt bekijken en hoeveel detail je nodig hebt.'))
     write(out, "tools/prompt-framework/index.html", doc("EAI Prompt Framework", load_content_fragment("prompt-framework-page.html"), "/tools/prompt-framework/", "prompt-framework", "Ontwerp een complete EAI-instructie vanuit doel, menselijke stap, AI-hulp, grenzen en controle."))
     write(out, "model-monitor/index.html", doc("AI (Act) Model Monitor", load_content_fragment("model-monitor-page.html"), "/model-monitor/", "model-monitor", "Vergelijk AI-modellen en landen, bekijk gebruik en incidenten, volg onderwijsontwikkelingen en de EU AI Act, en traceer cijfers naar hun bron."))
-    write(out, "eai-tools-modules/index.html", redirect("/tools/"))
+    write(out, "eai-tools-modules/index.html", redirect("/nl/tools/"))
 
     toolkit = sources / "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"
     write(out, "tools/beyond-explainability/index.html", inject_embed(toolkit, "/tools/beyond-explainability/", "EAI Toolkit: Beyond Explainability", "/tools/"))
