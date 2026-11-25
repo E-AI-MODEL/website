@@ -31,11 +31,70 @@ export async function inspectIsolatedPage(browser, options, entry, inspect, loca
   return entry;
 }
 
-export async function waitForArchivePage(page, path, base){
+// Each isolated audit context starts without a LEIF session. These protected
+// routes intentionally redirect to the login page; a commit of the initial
+// document is not a signal that it is ready to measure.
+const guestTargets=new Map([
+  ['leif/continue/index.html','/leif/'],
+  ['leif/verhaal/index.html','/leif/'],
+  ['leif/mijn/index.html','/leif/'],
+  ['leif/beheer/index.html','/leif/?beheer=1'],
+]);
+
+export async function openArchivePage(page,path,base,timeout=12000){
+  await page.goto(base+'/'+path,{
+    waitUntil:guestTargets.has(path)?'commit':'domcontentloaded',
+    timeout
+  });
+  return waitForArchivePage(page,path,base,timeout);
+}
+
+export async function waitForArchivePage(page, path, base, timeout=12000){
+  const guestTarget=guestTargets.get(path);
+  if(guestTarget){
+    const expected=new URL(guestTarget,base);
+    await page.waitForURL(url=>url.origin===expected.origin&&
+      url.pathname===expected.pathname&&url.search===expected.search&&
+      !url.hash,{waitUntil:'load',timeout});
+    await page.locator('#accessGate').waitFor({state:'visible',timeout});
+    const admin=expected.searchParams.has('beheer');
+    await page.locator(admin?'#adminLoginForm':'#accessForm').waitFor({state:'visible',timeout});
+    const other=page.locator(admin?'#accessForm':'#adminLoginForm');
+    await other.waitFor({state:'attached',timeout});
+    await other.waitFor({state:'hidden',timeout});
+    const privateContent=page.locator('#appRoot');
+    await privateContent.waitFor({state:'attached',timeout});
+    await privateContent.waitFor({state:'hidden',timeout});
+    return {guestRedirect:page.url()};
+  }
   if(path==='eai-tools-modules/index.html'){
     await page.waitForURL(url=>url.origin===base&&url.pathname==='/nl/tools/',{waitUntil:'load',timeout:12000});
     await page.locator('[data-eai-explore]').waitFor({state:'visible',timeout:12000});
     await page.evaluate(()=>document.fonts.ready);
+  }
+  if(path==='eai-blog/rapportage-wang-fan-2025/index.html'||path==='publicaties/wang-fan-2025/index.html'){
+    await page.waitForURL(url=>url.origin===base&&url.pathname.replace(/index\.html$/,'')==='/publicaties/wang-fan-2025/',{waitUntil:'load',timeout:12000});
+    await page.locator('#archive-review-note').waitFor({state:'visible',timeout:12000});
+    await page.evaluate(()=>document.fonts.ready);
+    const details=page.locator('details.archive-original');
+    const summary=details.locator('summary');
+    if(await details.getAttribute('open')!==null)throw Error('Historical text must be collapsed by default');
+    await summary.click();
+    const table=details.locator('.archive-table-scroll > table');
+    await table.waitFor({state:'visible'});
+    const layout=await table.evaluate(el=>{
+      const wrap=el.parentElement;
+      return {viewport:document.documentElement.clientWidth,document:document.documentElement.scrollWidth,
+        tableWidth:el.getBoundingClientRect().width,containerWidth:wrap.clientWidth,scrollWidth:wrap.scrollWidth,
+        overflow:getComputedStyle(wrap).overflowX,rows:el.rows.length};
+    });
+    if(layout.rows<2||layout.document>layout.viewport+2||
+       (layout.tableWidth>layout.containerWidth+2&&(layout.overflow!=='auto'&&layout.overflow!=='scroll'||layout.scrollWidth<layout.tableWidth-2))){
+      throw Error('Historical article table is not accessible within the viewport: '+JSON.stringify(layout));
+    }
+    await summary.click();
+    if(await details.getAttribute('open')!==null)throw Error('Historical text could not be collapsed');
+    return {historicalTable:layout};
   }
   // This lab fetches its large, local atlas after DOMContentLoaded. Test the
   // actual loaded model before collecting layout evidence or closing the page.

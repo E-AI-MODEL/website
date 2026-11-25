@@ -1,29 +1,16 @@
 name: Test fixed physics laboratory
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'content/science-observatory/labs/natuurkunde.html'
-      - 'content/science-observatory/labs/wiskunde-a.html'
-      - 'content/science-observatory/labs/wiskunde-b.html'
-      - 'scripts/test_science_math_adaptive.mjs'
-      - 'content/science-observatory/labs/schuine-worp.html'
-      - 'scripts/test_science_fixed_workspace.mjs'
-      - 'scripts/test_science_mobile_aim.mjs'
-      - 'scripts/test_schuine_worp_studio.mjs'
-      - '.github/workflows/science-fixed-workspace.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'content/science-observatory/labs/natuurkunde.html'
-      - 'content/science-observatory/labs/wiskunde-a.html'
-      - 'content/science-observatory/labs/wiskunde-b.html'
-      - 'scripts/test_science_math_adaptive.mjs'
-      - 'content/science-observatory/labs/schuine-worp.html'
-      - 'scripts/test_science_fixed_workspace.mjs'
-      - 'scripts/test_science_mobile_aim.mjs'
-      - 'scripts/test_schuine_worp_studio.mjs'
-      - '.github/workflows/science-fixed-workspace.yml'
+  workflow_call:
+    inputs:
+      reuse_build:
+        type: boolean
+        default: false
+      skip_duplicate_chromium:
+        description: De centrale Chromium-matrix draait dezelfde proef op dezelfde build
+        type: boolean
+        default: false
+  workflow_dispatch:
+
 permissions:
   contents: read
 jobs:
@@ -39,7 +26,14 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install beautifulsoup4
-      - run: python scripts/build_site.py --sources content/legacy --out site-build
+      - uses: ./.github/actions/checked-build
+        with:
+          reuse: ${{ inputs.reuse_build }}
+      - name: Cache Playwright browser binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-ubuntu-24.04-${{ runner.arch }}-1.56.1-chromium-webkit
       - run: npm install --no-save playwright@1.56.1
       - run: npx playwright install --with-deps chromium webkit
       - name: Mathematics viewport and navigation in Chromium
@@ -53,6 +47,7 @@ jobs:
       - name: Mobile shooting and scale
         run: node scripts/test_science_mobile_aim.mjs site-build webkit
       - name: Compact studio and physics values
+        if: ${{ !inputs.skip_duplicate_chromium }}
         run: node scripts/test_schuine_worp_studio.mjs site-build chromium
       - uses: actions/upload-artifact@v4
         if: always()
@@ -61,3 +56,5 @@ jobs:
           path: |
             test-results/physics-*.png
             test-results/math-*.png
+            test-results/science-*.png
+            test-results/worp-studio-*.png

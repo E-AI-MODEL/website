@@ -1,6 +1,7 @@
 name: Controleer Cloudflare-meting op de live website
 
 on:
+  workflow_call:
   push:
     branches: [main]
     paths:

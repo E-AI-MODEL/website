@@ -24,7 +24,7 @@ class PublicationOwnershipTests(unittest.TestCase):
                 source = (WORKFLOWS / workflow).read_text(encoding="utf-8")
                 self.assertRegex(
                     source,
-                    r"(?m)^concurrency:\s*\n\s+group:\s*theory7-production\s*\n\s+cancel-in-progress:\s*false",
+                    r"(?m)^\s*concurrency:\s*\n\s+group:\s*theory7-production\s*\n\s+cancel-in-progress:\s*false",
                 )
 
     def test_build_job_never_pushes_generated_pages_to_main(self):
@@ -33,28 +33,29 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertNotIn("rm -rf assets publicaties tools", source)
         self.assertIn("contents: read", source)
         deploy = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
-        self.assertIn("uses: ./.github/workflows/site-check.yml", deploy)
-        self.assertIn("needs: release-check", deploy)
-        self.assertIn("actions/download-artifact@v4", deploy)
-        self.assertIn("scripts/release_artifact.py verify", deploy)
+        validate = (WORKFLOWS / "validate-main.yml").read_text()
+        self.assertIn("uses: ./.github/workflows/site-check.yml", validate)
+        self.assertIn("scripts/release_candidate.py", deploy)
+        self.assertNotIn("uses: ./.github/workflows/site-check.yml", deploy)
         self.assertNotIn("python scripts/build_site.py", deploy)
-        ui = (WORKFLOWS / "verify-ui.yml").read_text(encoding="utf-8")
+        ui = (WORKFLOWS / "build-site.yml").read_text(encoding="utf-8")
         self.assertIn("scripts/release_artifact.py create", ui)
         self.assertIn("include-hidden-files: true", ui)
         self.assertIn("mirror -R", deploy)
 
     def test_anatomy_is_checked_before_preparation_and_manifest_on_every_run(self):
-        ui = (WORKFLOWS / "verify-ui.yml").read_text(encoding="utf-8")
-        self.assertLess(ui.index("python scripts/build_anatomie.py"), ui.index("test_anatomie_publish.py"))
-        self.assertLess(ui.index("test_anatomie_publish.py"), ui.index("python scripts/prepare_ui.py"))
-        manifest_step = ui.split("      - name: Leg de gecontroleerde build vast en toets de bestandsintegriteit", 1)[1].split("      - name:", 1)[0]
-        self.assertNotIn("if:", manifest_step)
-        self.assertIn("scripts/release_artifact.py create", manifest_step)
-        self.assertIn("scripts/release_artifact.py verify", manifest_step)
+        build = (WORKFLOWS / "build-site.yml").read_text()
+        ui = (WORKFLOWS / "verify-ui.yml").read_text()
+        self.assertLess(build.index("python scripts/build_anatomie.py"), build.index("test_anatomie_publish.py"))
+        self.assertLess(build.index("test_anatomie_publish.py"), build.index("python scripts/prepare_ui.py"))
+        self.assertLess(build.index("python scripts/prepare_ui.py"), build.index("scripts/release_artifact.py create"))
+        self.assertIn("scripts/release_artifact.py verify", ui)
+        self.assertIn("uses: ./.github/actions/checked-build", ui)
+        self.assertNotIn("scripts/build_site.py", ui)
 
     def test_manual_recovery_publishers_do_not_compete_automatically(self):
         for workflow in (
-                    "deploy-zhang-review-rapid.yml",
+            "deploy-zhang-review-rapid.yml",
             "deploy-analytics-dashboard.yml",
             "deploy-eaiwork-theory7.yml",
             "deploy-leif-quick.yml",
@@ -73,7 +74,7 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertIn("group: topo-production", source)
         self.assertNotIn("group: theory7-production", source)
         general = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
-        self.assertIn("- 'topo/**'", general)
+        self.assertIn("--exclude-glob topo/", general)
 
     def test_quick_recovery_uploads_are_manual_only(self):
         for workflow in (
@@ -89,11 +90,24 @@ class PublicationOwnershipTests(unittest.TestCase):
                 self.assertIn("  workflow_dispatch:", events)
                 self.assertNotIn("  push:", events)
 
-    def test_main_site_release_is_still_automatic(self):
-        source = (WORKFLOWS / "deploy-theory7.yml").read_text(encoding="utf-8")
-        events = source.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
-        self.assertIn("  push:", events)
-        self.assertIn("branches: [main]", events)
+    def test_main_validation_authorizes_publication_and_manual_recovery_stays_owner_only(self):
+        for name in ("deploy-theory7.yml", "deploy-topo-theory7.yml"):
+            source = (WORKFLOWS / name).read_text(encoding="utf-8")
+            events = source.split("\non:\n", 1)[1].split("\npermissions:", 1)[0]
+            self.assertNotIn("  push:", events)
+            self.assertIn("  workflow_run:", events)
+            self.assertIn("workflows: [Valideer de publicatieversie]", events)
+            self.assertIn("types: [completed]", events)
+            self.assertIn("branches: [main]", events)
+            self.assertIn("github.event.workflow_run.event == 'push'", source)
+            self.assertIn("github.event.workflow_run.head_branch == 'main'", source)
+            self.assertIn("github.event.workflow_run.conclusion == 'success'", source)
+            self.assertIn("github.event.workflow_run.head_repository.full_name == github.repository", source)
+            self.assertIn("github.event.workflow_run.id || inputs.validation_run", source)
+            self.assertIn("github.event.workflow_run.head_sha || github.sha", source)
+            self.assertIn("github.actor == github.repository_owner", source)
+            self.assertIn("github.triggering_actor == github.repository_owner", source)
+        self.assertIn("  push:", (WORKFLOWS / "validate-main.yml").read_text())
 
     def test_release_gate_and_topo_browser_cannot_be_bypassed(self):
         gate = (WORKFLOWS / "site-check.yml").read_text(encoding="utf-8")
@@ -102,8 +116,8 @@ class PublicationOwnershipTests(unittest.TestCase):
         self.assertIn("always()", gate)
         self.assertIn("scripts/check_release_gate.py", gate)
         topo = (WORKFLOWS / "deploy-topo-theory7.yml").read_text(encoding="utf-8")
-        self.assertIn("needs: browser-check", topo)
-        self.assertIn("uses: ./.github/workflows/topo-mobile-verify.yml", topo)
+        self.assertIn("scripts/release_candidate.py", topo)
+        self.assertIn("uses: ./.github/workflows/topo-mobile-verify.yml", gate)
         self.assertFalse((WORKFLOWS / "deploy-delf-preview.yml").exists())
         self.assertIn("eaispeak-check", gate)
         self.assertIn("eaispeak_artifact", gate)

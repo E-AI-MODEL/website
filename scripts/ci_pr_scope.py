@@ -1,102 +1,64 @@
-#!/usr/bin/env python3
-"""Select affected browser suites. Unknown changes always run every suite.
-
-This script does not replace the general site build, security tests, link checks
-or complete checks after merges to main.
-"""
-from __future__ import annotations
-
+"""Select suites for every changed path, including unpublished main changes."""
 import argparse
+from fnmatch import fnmatchcase
+import json
 from pathlib import Path
+import subprocess
 
-SUITES = (
-    "anatomy", "eaigit", "eaigame", "physics", "eaiwork",
-    "llm", "melkweg", "leif", "home", "ictscan", "topo", "eaispeak",
-)
+REGISTRY = json.loads(Path(__file__).with_name("ci_suites.json").read_text())
+SUITES = tuple(REGISTRY["groups"])
 
-# Changes to these standalone areas do not affect shared site components.
-AREAS = (
-    ("tools/delf-live/", ("eaispeak",)),
-    ("tools/eaispeak/", ("eaispeak",)),
-    (".github/workflows/eaispeak.yml", ("eaispeak",)),
-    ("tests/test_eaispeak_publish.py", ("eaispeak",)),
-    ("assets/delf-", ()),
-    ("scripts/test_delf_", ()),
-    ("tools/anatomie/", ("anatomy",)),
-    ("content/anatomie/", ("anatomy",)),
-    ("scripts/build_anatomie.py", ("anatomy",)),
-    ("scripts/extract_hart_", ("anatomy",)),
-    ("scripts/test_anatomie", ("anatomy",)),
-    ("scripts/test_hartslaglab", ("anatomy",)),
-    ("tests/test_anatomie", ("anatomy",)),
-    ("tools/eaigit/", ("eaigit",)),
-    ("tools/projecthulp/", ("eaigit",)),
-    ("assets/eaigit/", ("eaigit",)),
-    ("assets/projecthulp/", ("eaigit",)),
-    ("scripts/test_projecthulp_browser.mjs", ("eaigit",)),
-    (".github/workflows/projecthulp-browser.yml", ("eaigit",)),
-    ("tools/eaigame/", ("eaigame",)),
-    ("assets/eaigame", ("eaigame",)),
-    ("scripts/test_eaigame", ("eaigame",)),
-    ("tools/science-observatory/", ("physics", "melkweg")),
-    ("content/science-observatory/", ("physics", "melkweg")),
-    ("scripts/test_science_", ("physics",)),
-    ("scripts/test_schuine_worp", ("physics",)),
-    ("content/eaiwork-dashboard.html", ("eaiwork",)),
-    ("tools/eaiwork/", ("eaiwork",)),
-    ("scripts/test_eaiwork_mobile.mjs", ("eaiwork",)),
-    ("tools/llm-observatorium/", ("llm",)),
-    ("scripts/test_llm_observatorium.mjs", ("llm",)),
-    ("tools/melkweg-lab/", ("melkweg",)),
-    ("scripts/test_melkweg", ("melkweg",)),
-    ("leif/", ("leif",)),
-    ("scripts/test_leif_", ("leif",)),
-    ("topo/", ("topo",)),
-    ("scripts/test_topo_mobile.mjs", ("topo",)),
-    ("scripts/validate_topo_content.mjs", ("topo",)),
-    ("tools/ict-scan/", ("ictscan",)),
-    ("scripts/test_ict_scan_", ("ictscan",)),
-    ("scripts/check_ict_assurance.mjs", ("ictscan",)),
-    ("tests/test_ict_scan_", ("ictscan",)),
-    ("tests/verify_ict_assurance_browser.mjs", ("ictscan",)),
-    ("tests/test_eaigit_", ("eaigit",)),
-    ("tests/test_projecthulp", ("eaigit",)),
-    ("tests/test_static_audit.mjs", ("eaigit",)),
-    ("tests/test_audit_advice.mjs", ("eaigit",)),
-    ("scripts/anatomie_", ("anatomy",)),
-    ("scripts/audit_anatomie", ("anatomy",)),
-    ("scripts/audit_hart_glb", ("anatomy",)),
-    ("docs/", ()),
-    ("README.md", ()),
-)
 
-def affected_suites(paths: list[str]) -> set[str]:
-    """Fail open for tests: missing/unknown paths require all suites."""
+def affected_suites(paths):
+    selected = set()
     if not paths:
         return set(SUITES)
-    selected: set[str] = set()
     for path in paths:
-        path = path.strip()
         if not path or path.startswith("/") or ".." in Path(path).parts:
             return set(SUITES)
-        matching = [suites for prefix, suites in AREAS if path.startswith(prefix)]
-        if not matching:
+        matches = [groups for pattern, groups in REGISTRY["paths"].items()
+                   if fnmatchcase(path, pattern)]
+        if not matches:
             return set(SUITES)
-        for suites in matching:
-            selected.update(suites)
+        for groups in matches:
+            selected.update(groups)
     return selected
 
-def main() -> None:
+
+def job_selection(selected):
+    return {job: any(group in selected and job in jobs
+                     for group, jobs in REGISTRY["groups"].items())
+            for jobs in REGISTRY["groups"].values() for job in jobs}
+
+
+def changes_since(base):
+    """A missing publication record or divergent history requires every suite."""
+    if not base or subprocess.run(["git", "merge-base", "--is-ancestor", base, "HEAD"]).returncode:
+        return []
+    data = subprocess.check_output(["git", "diff", "--no-renames", "--name-only", "-z", base, "HEAD"])
+    return [p.decode("utf-8", "surrogateescape") for p in data.split(b"\0") if p]
+
+
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True)
     parser.add_argument("--all", action="store_true")
+    parser.add_argument("--published")
+    parser.add_argument("--include-topo", action="store_true")
     parser.add_argument("changed_files", nargs="*")
     args = parser.parse_args()
-    selected = set(SUITES) if args.all else affected_suites(args.changed_files)
+    paths = args.changed_files if args.published is None else changes_since(args.published)
+    selected = set(SUITES) if args.all else affected_suites(paths)
+    if args.include_topo:
+        selected.add("topo")
+    flags = {suite: str(suite in selected).lower() for suite in SUITES}
     with open(args.output, "a", encoding="utf-8") as out:
-        for suite in SUITES:
-            out.write(f"{suite}={'true' if suite in selected else 'false'}\n")
-    print("Browserproeven:", ", ".join(sorted(selected)) or "alleen algemene checks")
+        for key, value in flags.items():
+            print(f"{key}={value}", file=out)
+        print("jobs=" + json.dumps(job_selection(selected), separators=(",", ":")), file=out)
+        print("selection=" + json.dumps(flags, separators=(",", ":")), file=out)
+    print("Geselecteerd:", ", ".join(sorted(selected)) or "algemene controles")
+
 
 if __name__ == "__main__":
     main()

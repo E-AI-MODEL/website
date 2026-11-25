@@ -1,56 +1,67 @@
 name: Deploy to Theory7
-
 on:
-  push:
+  workflow_run:
+    workflows: [Valideer de publicatieversie]
+    types: [completed]
     branches: [main]
-    # TOPO publishes through deploy-topo-theory7.yml, not the site-wide pipeline.
-    paths-ignore:
-      - 'topo/**'
-      - '.github/workflows/deploy-topo-theory7.yml'
-      - '.github/workflows/topo-mobile-verify.yml'
-      - 'scripts/test_topo_mobile.mjs'
   workflow_dispatch:
-
+    inputs:
+      validation_run:
+        description: Alleen voor herstel; runnummer van de geslaagde hoofdversie
+        type: string
+        required: true
 permissions:
   contents: read
-
+  actions: read
+  deployments: write
 concurrency:
   group: theory7-production
   cancel-in-progress: false
-
 jobs:
-  release-check:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    uses: ./.github/workflows/site-check.yml
-    with:
-      release_artifact: true
-      skip_topo: true
-
   deploy:
-    needs: release-check
-    if: ${{ github.ref == 'refs/heads/main' && needs.release-check.result == 'success' }}
-    runs-on: ubuntu-latest
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      ((github.event_name == 'workflow_run' &&
+        github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_repository.full_name == github.repository) ||
+       (github.event_name == 'workflow_dispatch' &&
+        github.actor == github.repository_owner &&
+        github.triggering_actor == github.repository_owner))
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET: site
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Download exact de geteste productiebuild
-        uses: actions/download-artifact@v4
-        with:
-          name: site-release-${{ github.run_id }}
-      - name: Verifieer commit en alle bestanden voor upload
-        run: |
-          pip install beautifulsoup4
-          python scripts/release_artifact.py verify --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
-          python scripts/verify_ui.py --root site-build
+      - name: Controleer vertrouwde workflow, tests, bronboom en bestandshashes
+        id: release
+        env:
+          VALIDATION_RUN: ${{ github.event.workflow_run.id || inputs.validation_run }}
+        run: python scripts/release_candidate.py "$VALIDATION_RUN" "$TARGET"
+      - name: Registreer de upload onder de bestaande publicatiewachtrij
+        id: deployment
+        env:
+          TREE: ${{ steps.release.outputs.tree }}
+          COMMIT: ${{ steps.release.outputs.commit }}
+        run: python scripts/release_deployment.py begin
+      - run: pip install beautifulsoup4
+        if: steps.deployment.outputs.id != ''
       - name: Install FTPS client
+        if: steps.deployment.outputs.id != ''
         run: |
           sudo apt-get update
           sudo apt-get install -y lftp openssl
       - name: Verify Theory7 FTPS certificate fingerprint
+        if: steps.deployment.outputs.id != ''
         shell: bash
         env:
           HOST: web0102.theory7.net
@@ -62,13 +73,13 @@ jobs:
             echo "Unexpected FTPS certificate fingerprint."
             exit 1
           fi
-      - name: Controleer dat dit nog de actuele hoofdversie is
-        shell: bash
-        run: |
-          set -euo pipefail
-          current="$(git ls-remote --exit-code origin refs/heads/main | cut -f1)"
-          test "$current" = "$GITHUB_SHA" || { echo "Nieuwere hoofdversie aanwezig; geen oude release uploaden."; exit 1; }
+      - name: Controleer main direct voor de eerste overdracht
+        if: steps.deployment.outputs.id != ''
+        env:
+          TREE: ${{ steps.release.outputs.tree }}
+        run: test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .commit.tree.sha)" = "$TREE"
       - name: Publish assets before HTML
+        if: steps.deployment.outputs.id != ''
         shell: bash
         env:
           HOST: web0102.theory7.net
@@ -86,30 +97,31 @@ jobs:
           set net:max-retries 1
           set xfer:use-temp-file yes
           set net:connection-limit 4
-          mirror -R --parallel=3 --verbose site-build/assets/ /assets/
+          mirror -R --parallel=3 --verbose candidate/site-build/assets/ /assets/
           # The general exclude-glob assets/ also excludes nested asset folders.
           # Publish the anatomical viewer's generated JS, CSS and Draco helpers
           # explicitly, before making its HTML visible to visitors.
-          mirror -R --parallel=3 --verbose site-build/tools/anatomie/assets/ /tools/anatomie/assets/
+          mirror -R --parallel=3 --verbose candidate/site-build/tools/anatomie/assets/ /tools/anatomie/assets/
           # EAIspeak is published from the same tested release manifest.
           # Upload new hashed assets before switching the HTML; delete only inside these owned routes.
           mkdir -p /tools/eaispeak/assets
-          mirror -R --parallel=3 --verbose site-build/tools/eaispeak/assets/ /tools/eaispeak/assets/
-          mirror -R --delete --parallel=3 --verbose site-build/tools/eaispeak/ /tools/eaispeak/
+          mirror -R --parallel=3 --verbose candidate/site-build/tools/eaispeak/assets/ /tools/eaispeak/assets/
+          mirror -R --delete --parallel=3 --verbose candidate/site-build/tools/eaispeak/ /tools/eaispeak/
           mkdir -p /tools/delf-live
-          mirror -R --delete --parallel=3 --verbose site-build/tools/delf-live/ /tools/delf-live/
+          mirror -R --delete --parallel=3 --verbose candidate/site-build/tools/delf-live/ /tools/delf-live/
           # Publish the ICT directory's headers before its HTML. The host's
           # root .htaccess remains excluded from the site-wide mirror.
           mkdir -p /tools/ict-scan
-          put site-build/tools/ict-scan/.htaccess -o /tools/ict-scan/.htaccess
+          put candidate/site-build/tools/ict-scan/.htaccess -o /tools/ict-scan/.htaccess
           # TOPO is published independently and cannot be overwritten by a whole-site deploy.
-          mirror -R --parallel=3 --verbose --exclude-glob topo/ --exclude-glob 'topo/**' --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ site-build/ /
+          mirror -R --parallel=3 --verbose --exclude-glob topo/ --exclude-glob 'topo/**' --exclude-glob assets/ --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .htaccess --exclude-glob cgi-bin/ --exclude-glob .well-known/ candidate/site-build/ /
           bye
           EOF
       - name: Verify exact live EAIspeak files and legacy redirect
-        run: |
-          python scripts/verify_eaispeak_live.py --root site-build --url https://eaimodel.nl
+        if: steps.deployment.outputs.id != ''
+        run: python scripts/verify_eaispeak_live.py --root candidate/site-build --url https://eaimodel.nl
       - name: Verify live ICT-scan profile and validator version
+        if: steps.deployment.outputs.id != ''
         run: |
           python - <<'PY'
           import hashlib
@@ -119,7 +131,7 @@ jobs:
           from pathlib import Path
           from urllib.request import Request, urlopen
 
-          built = Path("site-build/tools/ict-scan")
+          built = Path("candidate/site-build/tools/ict-scan")
           built_html = (built / "index.html").read_text(encoding="utf-8")
           expected_js = (built / "assurance/profile.js").read_bytes()
           expected_profile = (built / "assurance/profiles/emmauscollege.json").read_bytes()
@@ -157,8 +169,10 @@ jobs:
               raise AssertionError("ICT-scan live niet synchroon: " + error)
           PY
       - name: Verify live HTML and exact asset hashes
-        run: python scripts/verify_ui.py --root site-build --url https://eaimodel.nl --timeout 90
+        if: steps.deployment.outputs.id != ''
+        run: python scripts/verify_ui.py --root candidate/site-build --url https://eaimodel.nl --timeout 90
       - name: Verify live anatomy JavaScript and stylesheets
+        if: steps.deployment.outputs.id != ''
         run: |
           python - <<'PY'
           import re
@@ -178,7 +192,7 @@ jobs:
               match = re.search(pattern, html)
               assert match, f'Live anatomy {kind} asset link missing'
               path = match.group(1)
-              local = Path('site-build') / path.lstrip('/')
+              local = Path('candidate/site-build') / path.lstrip('/')
               assert local.is_file(), f'Build is missing {path}'
               with release_open(base + path, timeout=35) as response:
                   content = response.read()
@@ -189,6 +203,7 @@ jobs:
               print(f'{kind}: {path} ({len(content)} bytes)')
           PY
       - name: Verify published Hartslaglab including the real 3D meshes
+        if: steps.deployment.outputs.id != ''
         run: |
           python - <<'PY'
           import hashlib
@@ -204,7 +219,7 @@ jobs:
                   'User-Agent': 'EAI-release-check/1.0',
                   'Cache-Control': 'no-cache',
               }), timeout=timeout)
-          local = Path('site-build') / relative
+          local = Path('candidate/site-build') / relative
           with release_open('https://eaimodel.nl/' + relative, timeout=35) as response:
               page = response.read().decode('utf-8')
               assert response.status == 200
@@ -253,6 +268,7 @@ jobs:
                   raise AssertionError('Live Hartslaglab verschilt: ' + last_problem)
           PY
       - name: Verify live anatomical models
+        if: steps.deployment.outputs.id != ''
         run: |
           python - <<'PY'
           from urllib.request import Request, urlopen
@@ -272,3 +288,10 @@ jobs:
                   assert response.read(4) == b'glTF', system
           print('Online anatomische modellen gecontroleerd')
           PY
+
+      - name: Registreer de uitkomst na de livecontroles
+        if: always() && steps.deployment.outputs.id != ''
+        env:
+          ID: ${{ steps.deployment.outputs.id }}
+          RESULT: ${{ job.status }}
+        run: python scripts/release_deployment.py finish

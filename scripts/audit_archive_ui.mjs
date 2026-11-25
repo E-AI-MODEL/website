@@ -3,7 +3,7 @@ import {chromium, webkit} from 'playwright';
 import {spawn} from 'node:child_process';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {inspectIsolatedPage,waitForArchivePage} from './audit_archive_browser_session.mjs';
+import {inspectIsolatedPage,openArchivePage} from './audit_archive_browser_session.mjs';
 const root=resolve('site-build'), base='http://127.0.0.1:8784';
 const inventory=JSON.parse(readFileSync('audit-results/inventory.json','utf8'));
 const server=spawn('python3',['-m','http.server','8784','--bind','127.0.0.1','--directory',root],{stdio:'ignore'});
@@ -17,8 +17,7 @@ try {
   for(const item of inventory.pages){
    const entry={path:item.path,engine:engine.name(),width};
    await inspectIsolatedPage(browser,{viewport:{width,height:900}},entry,async page=>{
-    await page.goto(base+'/'+item.path,{waitUntil:'domcontentloaded',timeout:12000});
-    Object.assign(entry,await waitForArchivePage(page,item.path,base));
+    Object.assign(entry,await openArchivePage(page,item.path,base));
     await page.waitForTimeout(60);
     entry.finalUrl=page.url();
     Object.assign(entry,await page.evaluate(()=>({

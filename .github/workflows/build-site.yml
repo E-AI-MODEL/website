@@ -3,7 +3,14 @@ name: Build EAI Site
 on:
   workflow_call:
     inputs:
+      selection:
+        type: string
+        required: true
       eaispeak_artifact:
+        type: boolean
+        default: false
+      central_validation:
+        description: De centrale site-check voert de gedeelde bron- en UI-proeven uit
         type: boolean
         default: false
   workflow_dispatch:
@@ -18,21 +25,18 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      - name: Kies de vakspecifieke tests voor gewijzigde bestanden
+      - name: Lees de centrale testselectie
         id: scope
-        shell: bash
+        env:
+          SELECTION: ${{ inputs.selection }}
         run: |
-          set -euo pipefail
-          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] || ! git rev-parse --verify HEAD^1 >/dev/null 2>&1; then
+          if [[ -z "$SELECTION" ]]; then
             python3 scripts/ci_pr_scope.py --all --output "$GITHUB_OUTPUT"
           else
-            git diff --name-only --no-renames -z HEAD^1 HEAD > "$RUNNER_TEMP/changed-files"
-            mapfile -d '' changed < "$RUNNER_TEMP/changed-files"
-            python3 scripts/ci_pr_scope.py --output "$GITHUB_OUTPUT" "${changed[@]}"
+            jq -er 'to_entries[] | "\(.key)=\(.value)"' <<<"$SELECTION" >> "$GITHUB_OUTPUT"
           fi
       - name: Controleer selectie van tests
+        if: ${{ !inputs.central_validation }}
         run: python3 -m unittest discover -s tests -p 'test_ci_pr_scope.py' -v
 
       - name: Set up Python
@@ -60,12 +64,15 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_home_model.py' -v
 
       - name: Check shared dashboard-card scope and homepage content
-        if: ${{ steps.scope.outputs.home == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.home == 'true' }}
         run: python -m unittest discover -s tests -p 'test_dashboard_cards.py' -v
 
+      - name: Check LEIF access and tenants in a standalone build
+        if: ${{ !inputs.central_validation && steps.scope.outputs.leif == 'true' }}
+        run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs
       - name: Test LEIF en het toevoegen van testers
         if: ${{ steps.scope.outputs.leif == 'true' }}
-        run: node --test tests/test_leif_kei.mjs tests/test_leif_multitenant.mjs tests/test_leif_testers.mjs tests/test_leif_unified_login.mjs tests/test_leif_site_texts.mjs
+        run: node --test tests/test_leif_testers.mjs tests/test_leif_unified_login.mjs tests/test_leif_site_texts.mjs
 
       - name: Verify Cloudflare beacon on public sitemap pages
         run: python -m unittest discover -s tests -p 'test_cloudflare_beacon.py' -v
@@ -87,7 +94,7 @@ jobs:
           node --check tools/ict-scan/record-cards.js
           node --check tools/ict-scan/record-github.js
           node --check tools/ict-scan/answer-engine.js
-          node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_github_sync.mjs tests/test_ict_scan_visuals.mjs tests/test_ict_scan_cards.mjs tests/test_ict_scan_answers.mjs
+          node --test tests/test_ict_scan_2026_data.mjs tests/test_ict_scan_visuals.mjs tests/test_ict_scan_cards.mjs tests/test_ict_scan_answers.mjs
 
       - name: Check first-party clicks and session privacy
         run: |
@@ -108,6 +115,7 @@ jobs:
       - name: Check bilingual EAI Dictionary and semantic menu links
         run: python -m unittest discover -s tests -p 'test_dictionary_and_menu.py' -v
       - name: Check editorial card scope excludes interactive labs
+        if: ${{ !inputs.central_validation }}
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
 
       - name: Check EAIwork public /work/ entry
@@ -118,21 +126,21 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_eaiwork_dashboard_publish.py' -v
 
       - name: Test EAIgit browser analysis
-        if: ${{ steps.scope.outputs.eaigit == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.eaigit == 'true' }}
         run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs
 
       - name: Check EAIgame 300 questions and gameplay mechanics
-        if: ${{ steps.scope.outputs.eaigame == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.eaigame == 'true' }}
         run: node --test tests/test_eaigame.mjs
 
       - name: Download the already browser-tested EAIspeak bundle
-        if: ${{ inputs.eaispeak_artifact == true }}
+        if: ${{ inputs.eaispeak_artifact }}
         uses: actions/download-artifact@v4
         with:
-          name: eaispeak-tested-build
+          name: eaispeak-tested-build-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/eaispeak-release
       - name: Prepare EAIspeak before generating the public site
-        if: ${{ inputs.eaispeak_artifact == true }}
+        if: ${{ inputs.eaispeak_artifact }}
         run: |
           set -euo pipefail
           bundle="$RUNNER_TEMP/eaispeak-release"
@@ -141,7 +149,7 @@ jobs:
           mkdir -p tools/eaispeak/dist
           cp -a "$bundle/tools/eaispeak/." tools/eaispeak/dist/
       - name: Build EAIspeak for standalone diagnostic run only
-        if: ${{ inputs.eaispeak_artifact != true }}
+        if: ${{ !inputs.eaispeak_artifact }}
         working-directory: tools/eaispeak
         run: |
           npm install --no-audit --no-fund
@@ -151,6 +159,7 @@ jobs:
         run: |
           python scripts/build_site.py --sources content/legacy --out site-build
           test -s site-build/tools/eaispeak/index.html
+          test -s site-build/tools/delf-live/index.html
           # TOPO is a complete, independently deployed application.
           test ! -e site-build/topo/index.html
           test -s topo/index.html
@@ -163,7 +172,6 @@ jobs:
 
       - name: Controleer verborgen lokale ICT-scan
         run: |
-          python -m unittest discover -s tests -p 'test_ict_scan_publish.py' -v
           node --test tests/test_ict_scan_github_sync.mjs
           test -s site-build/tools/ict-scan/index.html
           test -s site-build/tools/ict-scan/app.js
@@ -204,10 +212,10 @@ jobs:
         run: python scripts/build_anatomie.py --out site-build/tools/anatomie
 
       - name: Test physiological sequence in Hartslaglab
-        if: ${{ steps.scope.outputs.anatomy == 'true' }}
+        if: ${{ steps.scope.outputs.heart == 'true' }}
         run: node scripts/test_hartslaglab_cycle.mjs
       - name: Check 3D anatomy geometry in Hartslaglab
-        if: ${{ steps.scope.outputs.anatomy == 'true' }}
+        if: ${{ steps.scope.outputs.heart == 'true' }}
         run: node scripts/test_hartslaglab_geometry.mjs
       - name: Verify anatomical atlas, licensing and navigation
         run: python -m unittest discover -s tests -p 'test_anatomie_publish.py' -v
@@ -221,6 +229,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_eai_site_admin_publish.py' -v
 
       - name: Check HTML gallery admin routes and client script
+        if: ${{ !inputs.central_validation }}
         run: |
           node tests/test_html_galerij_admin.mjs
           node tests/test_eai_site_admin.mjs
@@ -237,37 +246,37 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_abyss_publish.py' -v
 
       - name: Check Science Observatory pilot publication
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ always() && !cancelled() }}
         run: python -m unittest discover -s tests -p 'test_science_observatory_publish.py' -v
       - name: Check adaptive mathematics and physics workspaces
         if: ${{ steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_adaptive_workspaces.mjs
       - name: Check physics reference values and drawings
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_models.mjs
       - name: Check wave motion and optical models
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_round3.mjs
       - name: Check 53 proefspecifieke natuurkundeberekeningen
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_insights.mjs
       - name: Check physics source references and independent calculations
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_evidence.mjs
       - name: Check independent model references for the other 48 physics labs
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_reference_48.mjs
       - name: Check physics visuals against the simulated equations
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physics_visual_fidelity.mjs
       - name: Check physical graph axes and comparisons
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_physical_graphs.mjs
       - name: Check animation, graph and measurement agreement
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_graph_animation_alignment.mjs
       - name: Check three experiment-specific inquiry methods
-        if: ${{ steps.scope.outputs.physics == 'true' }}
+        if: ${{ !inputs.central_validation && steps.scope.outputs.physics == 'true' }}
         run: node --test tests/test_science_inquiry_variants.mjs
       - name: Check quality register for all 53 physics experiments
         if: ${{ steps.scope.outputs.physics == 'true' }}
@@ -366,3 +375,32 @@ jobs:
               raise SystemExit("\\n".join(problems))
           print("Visitor route and shared styling checks passed")
           PY
+
+      - name: Bereid de definitieve site voor en leg de bestanden vast
+        run: |
+          python scripts/prepare_ui.py --root site-build
+          if [[ "${{ inputs.eaispeak_artifact }}" == "true" ]]; then
+            bundle="$RUNNER_TEMP/eaispeak-release"
+            test "$(cat "$bundle/build-sha.txt")" = "$GITHUB_SHA"
+            (cd "$bundle" && sha256sum -c SHA256SUMS)
+            mkdir -p site-build/tools/eaispeak site-build/tools/delf-live
+            cp -a "$bundle/tools/eaispeak/." site-build/tools/eaispeak/
+            cp -a "$bundle/tools/delf-live/." site-build/tools/delf-live/
+            (cd site-build && sha256sum -c "$bundle/SHA256SUMS")
+          fi
+          test -s site-build/tools/eaispeak/index.html
+          test -s site-build/tools/delf-live/index.html
+          test -d site-build/tools/eaispeak/assets
+          python scripts/verify_ui.py --root site-build
+          python scripts/release_artifact.py create --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
+      - name: Bewaar de bouw voor alle testjobs in deze run
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            site-build/
+            release-manifest.json
+          if-no-files-found: error
+          include-hidden-files: true
+          compression-level: 1
+          retention-days: 30

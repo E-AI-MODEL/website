@@ -1,0 +1,33 @@
+name: Get the build under test
+description: Controleer het artifact uit deze run of bouw voor een losse handmatige test.
+inputs:
+  reuse:
+    description: Gebruik de bouwjob van de aanroepende workflow
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Trust only the checked-out runner workspace for Git provenance
+      shell: bash
+      run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+    - if: inputs.reuse == 'true'
+      uses: actions/download-artifact@v4
+      with:
+        name: site-release-${{ github.run_id }}-${{ github.run_attempt }}
+    - if: inputs.reuse != 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - if: inputs.reuse != 'true'
+      shell: bash
+      run: |
+        (cd tools/eaispeak && npm install --no-audit --no-fund && npm test && npm run build)
+        python3 -m pip install beautifulsoup4
+        python3 scripts/build_site.py --sources content/legacy --out site-build
+        python3 scripts/build_anatomie.py --out site-build/tools/anatomie
+        python3 -m unittest discover -s tests -p 'test_anatomie_publish.py'
+        python3 scripts/prepare_ui.py --root site-build
+        python3 scripts/release_artifact.py create --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"
+    - name: Controleer alle ontvangen bestanden
+      shell: bash
+      run: python3 scripts/release_artifact.py verify --root site-build --manifest release-manifest.json --commit "$GITHUB_SHA"

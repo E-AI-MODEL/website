@@ -2,14 +2,13 @@ name: Publish Zhang Review
 on:
   workflow_dispatch:
 permissions:
-  contents: write
-concurrency:
-  group: theory7-production
-  cancel-in-progress: false
+  actions: read
+  contents: read
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Check source files
@@ -34,18 +33,41 @@ jobs:
         run: |
           python scripts/rebuild_zhang_review.py
           python scripts/rebuild_zhang_review_en.py
-      - name: Preserve definitive PDF files in repository
+      - name: Leg de vooraf gecontroleerde overdrachtsbestanden vast
+        run: python3 scripts/recovery_files.py create assets/research/zhang-genai-l2-review-en-2026.pdf assets/research/zhang-genai-l2-review-nl-2026.pdf
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            recovery-files/
+            recovery-manifest.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+  publish:
+    needs: prepare
+    environment: theory7-herstel
+    concurrency:
+      group: theory7-production
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controleer de goedkeuring van de eigenaar
+        env:
+          OWNER_ID: ${{ github.repository_owner_id }}
         run: |
-          set -euo pipefail
-          if ! git diff --quiet -- assets/research/zhang-genai-l2-review-nl-2026.pdf assets/research/zhang-genai-l2-review-en-2026.pdf; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add assets/research/zhang-genai-l2-review-nl-2026.pdf assets/research/zhang-genai-l2-review-en-2026.pdf
-            git commit -m 'docs: publish final Dutch and English Zhang reviews'
-            git push origin HEAD:main
-          else
-            echo 'Both definitive PDF files already checked in'
-          fi
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" |
+            jq -e --arg id "$OWNER_ID" 'any(.[]; .state == "approved" and (.user.id|tostring) == $id and any(.environments[]; .name == "theory7-herstel"))'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: python3 scripts/recovery_files.py verify
+      - run: python -m pip install PyMuPDF==1.26.7
+      - run: cp -a recovery-files/. .
       - name: Install FTPS
         run: sudo apt-get update && sudo apt-get install -y lftp openssl
       - name: Verify FTP certificate
@@ -58,6 +80,7 @@ jobs:
         env:
           FTP_USER: ${{ secrets.THEORY7_FTP_USER }}
           FTP_PASSWORD: ${{ secrets.THEORY7_FTP_PASSWORD }}
+        working-directory: recovery-files
         run: |
           set -euo pipefail
           lftp -u "$FTP_USER","$FTP_PASSWORD" ftp://ftp.eaimodel.nl:21 <<'EOF'

@@ -1,22 +1,8 @@
 name: Verify EAIgame expedition
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'tools/eaigame/**'
-      - 'assets/eaigame*'
-      - 'tests/test_eaigame.mjs'
-      - 'scripts/test_eaigame_browser.mjs'
-      - '.github/workflows/eaigame.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'tools/eaigame/**'
-      - 'assets/eaigame*'
-      - 'tests/test_eaigame.mjs'
-      - 'scripts/test_eaigame_browser.mjs'
-      - '.github/workflows/eaigame.yml'
+  workflow_call:
   workflow_dispatch:
+
 permissions:
   contents: read
 concurrency:

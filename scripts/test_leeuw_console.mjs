@@ -22,7 +22,7 @@ async function fixed(p,w,h,mobile){
 export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
   mkdirSync('test-results',{recursive:true});
   for(const [w,h] of [[1440,900],[390,760],[320,640]]){
-    const mobile=w<=850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
+    const mobile=w<=850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
     const p=await ctx.newPage(),errors=[];
     p.on('pageerror',e=>errors.push(e.message));
     await p.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
@@ -76,7 +76,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
 
   // The public route is now a film. Verify the actual rendered scene, not just its text.
   for(const [w,h] of [[1440,900],[390,760],[320,640]]){
-    const mobile=w<850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
+    const mobile=w<850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
     const p=await ctx.newPage(),errors=[];
     p.on('pageerror',e=>errors.push(e.message));
     await p.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
