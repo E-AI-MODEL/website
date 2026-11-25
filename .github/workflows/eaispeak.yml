@@ -25,6 +25,12 @@ jobs:
         run: |
           python -m compileall -q server.py transcribe.py tests
           python -m pytest -q tests
+      - name: Controleer lokaal Mac-startscript zonder installatie
+        run: bash -n start-macos.sh
+      - name: Controleer dat geen audio-server wordt gepubliceerd
+        run: |
+          test ! -e Dockerfile
+          echo 'Tests only. No audio server, model download or public deploy.'
 
   check-and-build:
     runs-on: ubuntu-latest
