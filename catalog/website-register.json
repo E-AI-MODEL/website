@@ -1191,6 +1191,19 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/tools/eaispeak/",
+      "url": "/tools/eaispeak/",
+      "file": "tools/eaispeak/index.html",
+      "title": "EAIspeak | praten, vertalen en luisteren",
+      "kind": "toepassing",
+      "category": "Hulpmiddelen · Vrij spreken en vertalen",
+      "review": "proef_zelfstandig_gepubliceerd",
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": false,
+      "search_scope": "via_verwijzing"
+    },
+    {
       "id": "page:/tools/abyss/",
       "url": "/tools/abyss/",
       "file": "tools/abyss/index.html",
@@ -7259,8 +7272,8 @@
     }
   ],
   "audit": {
-    "tracked_html_files": 221,
-    "public_page_files": 180,
+    "tracked_html_files": 222,
+    "public_page_files": 181,
     "generated_pages": 2,
     "search_index_entries": 290,
     "embedded_items_in_search": 144,
@@ -7304,8 +7317,8 @@
     ],
     "orphan_items": [],
     "additional_html_files": 41,
-    "all_html_files": 221,
-    "pages_not_in_public_search": 36,
+    "all_html_files": 222,
+    "pages_not_in_public_search": 37,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
     "collections": 5,

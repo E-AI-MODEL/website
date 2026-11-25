@@ -24,6 +24,7 @@ jobs:
       topo: ${{ steps.scope.outputs.topo }}
       anatomy: ${{ steps.scope.outputs.anatomy }}
       eaigit: ${{ steps.scope.outputs.eaigit }}
+      eaispeak: ${{ steps.scope.outputs.eaispeak }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,10 +43,17 @@ jobs:
           fi
   build-check:
     uses: ./.github/workflows/build-site.yml
+  eaispeak-check:
+    needs: scope
+    if: ${{ needs.scope.outputs.eaispeak == 'true' }}
+    uses: ./.github/workflows/eaispeak.yml
   ui-check:
+    needs: [scope, eaispeak-check]
+    if: ${{ always() && needs.scope.result == 'success' && (needs.eaispeak-check.result == 'success' || needs.eaispeak-check.result == 'skipped') }}
     uses: ./.github/workflows/verify-ui.yml
     with:
       release_artifact: ${{ inputs.release_artifact == true }}
+      eaispeak_artifact: ${{ needs.eaispeak-check.result == 'success' }}
   register-check:
     uses: ./.github/workflows/check-website-register.yml
   ict-check:
@@ -104,6 +112,8 @@ jobs:
         run: node --test tests/test_leif_ereader.mjs tests/test_leif_question_copy_mobile.mjs
       - name: Check separate LEIF dossiers, admin rights and codes
         run: node --test tests/test_leif_multitenant.mjs tests/test_leif_account.mjs tests/test_leif_admin_session.mjs tests/test_leif_studio.mjs
+      - name: Controleer EAIspeak-publicatiegrenzen
+        run: python3 -m unittest discover -s tests -p 'test_eaispeak_publish.py' -v
       - name: Controleer selectie en blokkering van publicaties
         run: |
           python3 -m unittest discover -s tests -p 'test_ci_pr_scope.py' -v
@@ -114,7 +124,7 @@ jobs:
   static-checks:
     name: static-checks
     runs-on: ubuntu-latest
-    needs: [scope, source-checks, build-check, ui-check, register-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check]
+    needs: [scope, source-checks, build-check, ui-check, register-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, eaispeak-check]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@v4

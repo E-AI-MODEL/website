@@ -2842,6 +2842,12 @@ def build(sources: Path, out: Path) -> None:
     leif_source = repo_root / "leif"
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
+    # Local standalone builds may be included; CI overlays the already tested bundle
+    # after preparing the shared UI, so its exact bytes never change.
+    eaispeak_dist = repo_root / "tools" / "eaispeak" / "dist"
+    if (eaispeak_dist / "index.html").is_file():
+        shutil.copytree(eaispeak_dist, out / "tools" / "eaispeak", dirs_exist_ok=True)
+        write(out, "tools/delf-live/index.html", redirect("/tools/eaispeak/"))
     finish_generated_pages(out)
     # EAIgit is a separate browser wizard: publish only its four intended pages.
     # Do not let the general site generator rewrite their UI or JavaScript.

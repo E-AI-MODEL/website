@@ -5,6 +5,9 @@ on:
       release_artifact:
         type: boolean
         default: false
+      eaispeak_artifact:
+        type: boolean
+        default: false
   workflow_dispatch:
 
 
@@ -138,6 +141,31 @@ jobs:
           name: public-ui-check
           path: test-results/
 
+      - name: Download the already browser-tested EAIspeak bundle
+        if: ${{ inputs.eaispeak_artifact == true }}
+        uses: actions/download-artifact@v4
+        with:
+          name: eaispeak-tested-build
+          path: ${{ runner.temp }}/eaispeak-release
+      - name: Voeg EAIspeak exact en zonder herschrijven toe aan de websitebuild
+        if: ${{ inputs.eaispeak_artifact == true }}
+        run: |
+          set -euo pipefail
+          bundle="$RUNNER_TEMP/eaispeak-release"
+          test "$(cat "$bundle/build-sha.txt")" = "$GITHUB_SHA"
+          (cd "$bundle" && sha256sum -c SHA256SUMS)
+          mkdir -p site-build/tools/eaispeak site-build/tools/delf-live
+          cp -a "$bundle/tools/eaispeak/." site-build/tools/eaispeak/
+          cp -a "$bundle/tools/delf-live/." site-build/tools/delf-live/
+          (cd site-build && sha256sum -c "$bundle/SHA256SUMS")
+          grep -q 'id="liveMode"' site-build/tools/eaispeak/index.html
+          grep -q 'url=/tools/eaispeak/' site-build/tools/delf-live/index.html
+      - name: Vereis EAIspeak in iedere productiebuild
+        if: ${{ inputs.release_artifact == true }}
+        run: |
+          test -s site-build/tools/eaispeak/index.html
+          test -s site-build/tools/delf-live/index.html
+          test -d site-build/tools/eaispeak/assets
       - name: Leg de gecontroleerde build vast en toets de bestandsintegriteit
         run: |
           python scripts/verify_ui.py --root site-build

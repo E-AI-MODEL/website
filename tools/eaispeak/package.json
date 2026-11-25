@@ -1,0 +1,20 @@
+{
+  "name": "eaispeak",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "phonon-tts": "0.7.1",
+    "@huggingface/transformers": "3.8.1",
+    "@mlc-ai/web-llm": "0.2.82",
+    "@heyputer/puter.js": "2.6.5"
+  },
+  "devDependencies": {
+    "vite": "5.4.21"
+  }
+}

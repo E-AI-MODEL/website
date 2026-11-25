@@ -8,7 +8,6 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 
 SHARED_THEORY7_UPLOADS = (
     "deploy-theory7.yml",
-    "deploy-delf-preview.yml",
     "deploy-zhang-review-rapid.yml",
     "deploy-analytics-dashboard.yml",
     "deploy-eaiwork-theory7.yml",
@@ -55,8 +54,7 @@ class PublicationOwnershipTests(unittest.TestCase):
 
     def test_manual_recovery_publishers_do_not_compete_automatically(self):
         for workflow in (
-            "deploy-delf-preview.yml",
-            "deploy-zhang-review-rapid.yml",
+                    "deploy-zhang-review-rapid.yml",
             "deploy-analytics-dashboard.yml",
             "deploy-eaiwork-theory7.yml",
             "deploy-leif-quick.yml",
@@ -106,8 +104,9 @@ class PublicationOwnershipTests(unittest.TestCase):
         topo = (WORKFLOWS / "deploy-topo-theory7.yml").read_text(encoding="utf-8")
         self.assertIn("needs: browser-check", topo)
         self.assertIn("uses: ./.github/workflows/topo-mobile-verify.yml", topo)
-        delf = (WORKFLOWS / "deploy-delf-preview.yml").read_text(encoding="utf-8")
-        self.assertNotIn("Wait until main-site deployment is finished", delf)
+        self.assertFalse((WORKFLOWS / "deploy-delf-preview.yml").exists())
+        self.assertIn("eaispeak-check", gate)
+        self.assertIn("eaispeak_artifact", gate)
 
     def test_public_data_keeps_its_own_publication(self):
         source = (WORKFLOWS / "publish-public-analytics.yml").read_text(encoding="utf-8")

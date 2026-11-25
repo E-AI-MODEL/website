@@ -11,12 +11,15 @@ from pathlib import Path
 
 SUITES = (
     "anatomy", "eaigit", "eaigame", "physics", "eaiwork",
-    "llm", "melkweg", "leif", "home", "ictscan", "topo",
+    "llm", "melkweg", "leif", "home", "ictscan", "topo", "eaispeak",
 )
 
 # Changes to these standalone areas do not affect shared site components.
 AREAS = (
-    ("tools/delf-live/", ()),
+    ("tools/delf-live/", ("eaispeak",)),
+    ("tools/eaispeak/", ("eaispeak",)),
+    (".github/workflows/eaispeak.yml", ("eaispeak",)),
+    ("tests/test_eaispeak_publish.py", ("eaispeak",)),
     ("assets/delf-", ()),
     ("scripts/test_delf_", ()),
     ("tools/anatomie/", ("anatomy",)),
