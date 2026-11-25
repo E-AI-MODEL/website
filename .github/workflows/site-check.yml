@@ -181,6 +181,10 @@ jobs:
   test-html-gallery-auth:
     needs: scope
     uses: ./.github/workflows/test-html-gallery-auth.yml
+  astronomy-validation:
+    needs: scope
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['astronomy-validation'] }}
+    uses: ./.github/workflows/astronomy-validation.yml
   source-checks:
     needs: scope
     runs-on: ubuntu-latest
@@ -243,7 +247,7 @@ jobs:
   static-checks:
     name: static-checks
     runs-on: ubuntu-latest
-    needs: [scope, source-checks, build-check, ui-check, register-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, check-eaiwork-dashboard, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, science-webkit, schuine-worp-studio, llm-observatorium-ui, check-llmscan, lo-calm-mobile, lo-easteregg-verify, lo-tactics-source, lo-v13-verify, lo-zone-verify, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth]
+    needs: [scope, source-checks, build-check, ui-check, register-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, check-eaiwork-dashboard, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, science-webkit, schuine-worp-studio, llm-observatorium-ui, check-llmscan, lo-calm-mobile, lo-easteregg-verify, lo-tactics-source, lo-v13-verify, lo-zone-verify, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth, astronomy-validation]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@v4
