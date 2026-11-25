@@ -14,6 +14,11 @@ permissions:
   contents: read
   actions: read
 
+# Only obsolete PR runs are cancelled. Main validation and deployments are independent.
+concurrency:
+  group: site-check-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   scope:
     runs-on: ubuntu-latest
@@ -51,6 +56,7 @@ jobs:
     with:
       selection: ${{ needs.scope.outputs.selection }}
       eaispeak_artifact: true
+      central_validation: true
     uses: ./.github/workflows/build-site.yml
   ui-check:
     needs: [scope, build-check]
@@ -100,12 +106,6 @@ jobs:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['projecthulp-eaiwork-proof'] }}
     uses: ./.github/workflows/projecthulp-eaiwork-proof.yml
-  check-eaiwork-dashboard:
-    needs: [scope, build-check]
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['check-eaiwork-dashboard'] }}
-    uses: ./.github/workflows/check-eaiwork-dashboard.yml
-    with:
-      reuse_build: true
   eaigame:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['eaigame'] }}
@@ -120,22 +120,11 @@ jobs:
     uses: ./.github/workflows/science-fixed-workspace.yml
     with:
       reuse_build: true
+      skip_duplicate_chromium: true
   science-studio-webkit:
     needs: [scope, build-check]
     if: ${{ fromJSON(needs.scope.outputs.jobs)['science-studio-webkit'] }}
     uses: ./.github/workflows/science-studio-webkit.yml
-    with:
-      reuse_build: true
-  science-webkit:
-    needs: [scope, build-check]
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['science-webkit'] }}
-    uses: ./.github/workflows/science-webkit.yml
-    with:
-      reuse_build: true
-  schuine-worp-studio:
-    needs: [scope, build-check]
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['schuine-worp-studio'] }}
-    uses: ./.github/workflows/schuine-worp-studio.yml
     with:
       reuse_build: true
   llm-observatorium-ui:
@@ -144,30 +133,19 @@ jobs:
     uses: ./.github/workflows/llm-observatorium-ui.yml
     with:
       reuse_build: true
+      skip_duplicate_chromium: true
   check-llmscan:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['check-llmscan'] }}
     uses: ./.github/workflows/check-llmscan.yml
-  lo-calm-mobile:
+  lo-aanvalslab:
     needs: scope
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-calm-mobile'] }}
-    uses: ./.github/workflows/lo-calm-mobile.yml
-  lo-easteregg-verify:
-    needs: scope
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-easteregg-verify'] }}
-    uses: ./.github/workflows/lo-easteregg-verify.yml
+    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-aanvalslab'] }}
+    uses: ./.github/workflows/lo-aanvalslab.yml
   lo-tactics-source:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-tactics-source'] }}
     uses: ./.github/workflows/lo-tactics-source.yml
-  lo-v13-verify:
-    needs: scope
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-v13-verify'] }}
-    uses: ./.github/workflows/lo-v13-verify.yml
-  lo-zone-verify:
-    needs: scope
-    if: ${{ fromJSON(needs.scope.outputs.jobs)['lo-zone-verify'] }}
-    uses: ./.github/workflows/lo-zone-verify.yml
   onderwijsregio-ui:
     needs: scope
     if: ${{ fromJSON(needs.scope.outputs.jobs)['onderwijsregio-ui'] }}
@@ -187,9 +165,12 @@ jobs:
     uses: ./.github/workflows/astronomy-validation.yml
   source-checks:
     needs: scope
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Check EAIgit ZIP and GitHub journey
         if: ${{ fromJSON(needs.scope.outputs.selection).eaigit == 'true' }}
         run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs
@@ -248,7 +229,7 @@ jobs:
   static-checks:
     name: static-checks
     runs-on: ubuntu-latest
-    needs: [scope, source-checks, build-check, ui-check, register-check, eaispeak-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, check-eaiwork-dashboard, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, science-webkit, schuine-worp-studio, llm-observatorium-ui, check-llmscan, lo-calm-mobile, lo-easteregg-verify, lo-tactics-source, lo-v13-verify, lo-zone-verify, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth, astronomy-validation]
+    needs: [scope, source-checks, build-check, ui-check, register-check, eaispeak-check, ict-check, ict-webkit, topo-check, anatomy-webkit, eaigit-check, audit-archive, check-own-exports, projecthulp-eaiwork-proof, eaigame, leeuw-console, science-fixed-workspace, science-studio-webkit, llm-observatorium-ui, check-llmscan, lo-aanvalslab, lo-tactics-source, onderwijsregio-ui, verify-wihtml, test-html-gallery-auth, astronomy-validation]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@v4

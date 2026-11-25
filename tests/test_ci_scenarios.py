@@ -81,3 +81,75 @@ class Scenarios(unittest.TestCase):
         for jobs in ([], [{"name": "validation / static-checks", "conclusion": "failure"}]):
             with self.assertRaises(ValueError):
                 validate_run(r, repo, jobs)
+
+
+class DeploymentStatusScenarios(unittest.TestCase):
+    endpoint = "repos/example/website/deployments/17/statuses"
+
+    def test_accepted_post_with_broken_response_is_not_repeated(self):
+        import subprocess
+        from unittest.mock import patch
+        import release_deployment as d
+        error = subprocess.CalledProcessError(1, ["gh", "api"])
+        with patch.object(d, "latest_state", side_effect=["pending", "success"]), \
+                patch.object(d.subprocess, "run", side_effect=error) as post, \
+                patch.object(d.time, "sleep") as sleep:
+            d.record_status(self.endpoint, "success")
+            post.assert_called_once()
+            self.assertEqual(json.loads(post.call_args.kwargs["input"]), {"state": "success"})
+            self.assertIn("--silent", post.call_args.args[0])
+            sleep.assert_not_called()
+
+    def test_existing_success_is_idempotent(self):
+        from unittest.mock import patch
+        import release_deployment as d
+        with patch.object(d, "latest_state", return_value="success"), patch.object(d.subprocess, "run") as post:
+            d.record_status(self.endpoint, "success")
+            post.assert_not_called()
+
+    def test_transient_write_failure_retries(self):
+        import subprocess
+        from unittest.mock import patch
+        import release_deployment as d
+        error = subprocess.CalledProcessError(1, ["gh", "api"])
+        with patch.object(d, "latest_state", side_effect=["pending", "pending", "pending", "success"]), \
+                patch.object(d.subprocess, "run", side_effect=[error, None]) as post, \
+                patch.object(d.time, "sleep") as sleep:
+            d.record_status(self.endpoint, "success")
+            self.assertEqual(post.call_count, 2)
+            sleep.assert_called_once_with(1)
+
+    def test_unreadable_status_is_not_assumed_success(self):
+        from unittest.mock import patch
+        import release_deployment as d
+        with patch.object(d, "latest_state", side_effect=ValueError("bad JSON")), \
+                patch.object(d.subprocess, "run") as post, patch.object(d.time, "sleep"):
+            with self.assertRaises(RuntimeError):
+                d.record_status(self.endpoint, "success")
+            post.assert_not_called()
+
+    def test_unconfirmed_write_remains_a_failure(self):
+        from unittest.mock import patch
+        import release_deployment as d
+        with patch.object(d, "latest_state", return_value="pending"), \
+                patch.object(d.subprocess, "run") as post, patch.object(d.time, "sleep"):
+            with self.assertRaises(RuntimeError):
+                d.record_status(self.endpoint, "success")
+            self.assertEqual(post.call_count, 4)
+
+    def test_failed_live_check_never_records_success(self):
+        from unittest.mock import patch
+        import release_deployment as d
+        with patch.dict(d.os.environ, {"GITHUB_REPOSITORY": "example/website", "TARGET": "site",
+                                       "ID": "17", "RESULT": "failure"}), \
+                patch.object(d, "record_status") as status:
+            d.main("finish")
+            status.assert_called_once_with(self.endpoint, "failure")
+
+    def test_malformed_read_is_rejected(self):
+        from unittest.mock import patch
+        import release_deployment as d
+        for payload in (None, {}, [{"state": "nonsense"}], [None]):
+            with self.subTest(payload=payload), patch.object(d, "api", return_value=payload):
+                with self.assertRaises(ValueError):
+                    d.latest_state(self.endpoint)

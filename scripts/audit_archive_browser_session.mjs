@@ -37,6 +37,30 @@ export async function waitForArchivePage(page, path, base){
     await page.locator('[data-eai-explore]').waitFor({state:'visible',timeout:12000});
     await page.evaluate(()=>document.fonts.ready);
   }
+  if(path==='eai-blog/rapportage-wang-fan-2025/index.html'||path==='publicaties/wang-fan-2025/index.html'){
+    await page.waitForURL(url=>url.origin===base&&url.pathname.replace(/index\.html$/,'')==='/publicaties/wang-fan-2025/',{waitUntil:'load',timeout:12000});
+    await page.locator('#archive-review-note').waitFor({state:'visible',timeout:12000});
+    await page.evaluate(()=>document.fonts.ready);
+    const details=page.locator('details.archive-original');
+    const summary=details.locator('summary');
+    if(await details.getAttribute('open')!==null)throw Error('Historical text must be collapsed by default');
+    await summary.click();
+    const table=details.locator('.archive-table-scroll > table');
+    await table.waitFor({state:'visible'});
+    const layout=await table.evaluate(el=>{
+      const wrap=el.parentElement;
+      return {viewport:document.documentElement.clientWidth,document:document.documentElement.scrollWidth,
+        tableWidth:el.getBoundingClientRect().width,containerWidth:wrap.clientWidth,scrollWidth:wrap.scrollWidth,
+        overflow:getComputedStyle(wrap).overflowX,rows:el.rows.length};
+    });
+    if(layout.rows<2||layout.document>layout.viewport+2||
+       (layout.tableWidth>layout.containerWidth+2&&(layout.overflow!=='auto'&&layout.overflow!=='scroll'||layout.scrollWidth<layout.tableWidth-2))){
+      throw Error('Historical article table is not accessible within the viewport: '+JSON.stringify(layout));
+    }
+    await summary.click();
+    if(await details.getAttribute('open')!==null)throw Error('Historical text could not be collapsed');
+    return {historicalTable:layout};
+  }
   // This lab fetches its large, local atlas after DOMContentLoaded. Test the
   // actual loaded model before collecting layout evidence or closing the page.
   // A failed/fallback model is a failure, not a waived JavaScript exception.

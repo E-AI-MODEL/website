@@ -12,6 +12,8 @@ def failures(needs, skip_topo=False):
     errors = []
     if not isinstance(needs, dict):
         return ["Missing or invalid job results"]
+    if set(needs) != set(ALWAYS) | set(SCOPED):
+        return ["Job results differ from the registered required and scoped jobs"]
     outputs = needs.get("scope", {}).get("outputs", {})
     try:
         flags = json.loads(outputs["selection"])

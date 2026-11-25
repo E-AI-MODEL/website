@@ -11,7 +11,6 @@
       "projecthulp-eaiwork-proof"
     ],
     "eaiwork": [
-      "check-eaiwork-dashboard",
       "projecthulp-eaiwork-proof"
     ],
     "eaigame": [
@@ -32,9 +31,7 @@
     ],
     "physics": [
       "science-fixed-workspace",
-      "science-studio-webkit",
-      "science-webkit",
-      "schuine-worp-studio"
+      "science-studio-webkit"
     ],
     "leif": [],
     "home": [],
@@ -53,11 +50,8 @@
       "topo-check"
     ],
     "lo": [
-      "lo-calm-mobile",
-      "lo-easteregg-verify",
-      "lo-tactics-source",
-      "lo-v13-verify",
-      "lo-zone-verify"
+      "lo-aanvalslab",
+      "lo-tactics-source"
     ],
     "regio": [
       "onderwijsregio-ui"
@@ -485,6 +479,12 @@
     ],
     "scripts/audit_archive_ui.mjs": [
       "archive"
+    ],
+    ".github/workflows/lo-aanvalslab.yml": [
+      "lo"
+    ],
+    "scripts/test_lo_v13_simulations.py": [
+      "lo"
     ]
   },
   "always": [
