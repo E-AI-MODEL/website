@@ -1,0 +1,40 @@
+name: Astronomy scientific benchmark
+on:
+  pull_request:
+    paths:
+      - 'content/science-observatory/labs/melkweg.html'
+      - 'content/science-observatory/labs/leeuw.html'
+      - 'scripts/extract_astronomy_benchmark.mjs'
+      - 'scripts/validate_astronomy.py'
+      - 'tests/fixtures/astronomy-rotation-curves.json'
+      - 'tests/requirements-astronomy.txt'
+      - '.github/workflows/astronomy-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  numerical-validation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r tests/requirements-astronomy.txt
+      - run: python scripts/validate_astronomy.py
+      - name: Summarize all observations
+        if: always()
+        run: |
+          if test -f test-results/astronomy/report.md; then
+            cat test-results/astronomy/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: astronomy-validation
+          path: test-results/astronomy/
+          if-no-files-found: warn
