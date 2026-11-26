@@ -32,7 +32,7 @@ Ontwikkel op een branch, open een pull request en merge pas na beoordeling en ge
 
 - `site-check.yml` controleert pull requests; `validate-main.yml` valideert de hoofdversie na de merge.
 - Een geslaagde main-validatie start automatisch de publicatie van het bijbehorende gecontroleerde artifact op Theory7. De publicatie controleert de bronboom, herkomst, SHA-256 en verplichte tests opnieuw, maar bouwt de website niet opnieuw.
-- TOPO behoudt een afzonderlijke workflow, wachtrij en gecontroleerd artifact.
+- TOPO behoudt een afzonderlijke workflow, wachtrij en gecontroleerd artifact. Daaronder valt ook de VO-versie (`/topo/vo/`, databank in `topo/data/vo/`).
 - Een verouderde, mislukte of niet van main afkomstige build kan niet worden gepubliceerd.
 - Alleen voor herstel kan de eigenaar de deployworkflow handmatig starten met het nummer van een geldige main-validatie. De normale route vraagt geen tweede toestemming.
 - GitHub Pages gebruikt nog een afzonderlijke publicatieprocedure. Die wordt apart beoordeeld voordat rootbestanden verdwijnen.

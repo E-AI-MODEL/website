@@ -1,0 +1,3602 @@
+{
+ "version": 1,
+ "sjabloon": "voorbeeld-van-begrip",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "voorbeeld-van-begrip-1",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Ecuador",
+   "question": "Ecuador is een voorbeeld van…",
+   "answer": "evenaar",
+   "options": [
+    "evenaar",
+    "lengtegraad",
+    "breedtegraad",
+    "thematische kaart"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "land-ecu",
+   "begripId": "begrip-evenaar"
+  },
+  {
+   "id": "voorbeeld-van-begrip-2",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Londen",
+   "question": "Londen is een voorbeeld van…",
+   "answer": "nulmeridiaan",
+   "options": [
+    "topografische kaart",
+    "nulmeridiaan",
+    "legenda",
+    "register (atlas)"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-gbr-londen",
+   "begripId": "begrip-nulmeridiaan"
+  },
+  {
+   "id": "voorbeeld-van-begrip-3",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Bangladesh",
+   "question": "Bangladesh is een voorbeeld van…",
+   "answer": "bevolkingsdichtheid",
+   "options": [
+    "migratie",
+    "pullfactor",
+    "geldovermakingen",
+    "bevolkingsdichtheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "land-bgd",
+   "begripId": "begrip-bevolkingsdichtheid"
+  },
+  {
+   "id": "voorbeeld-van-begrip-4",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Nederland",
+   "question": "Nederland is een voorbeeld van…",
+   "answer": "bevolkingsdichtheid",
+   "options": [
+    "natuurlijke groei",
+    "geldovermakingen",
+    "bevolkingsdichtheid",
+    "pushfactor"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "land-nld",
+   "begripId": "begrip-bevolkingsdichtheid"
+  },
+  {
+   "id": "voorbeeld-van-begrip-5",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Mexico",
+   "question": "Mexico is een voorbeeld van…",
+   "answer": "geldovermakingen",
+   "options": [
+    "pushfactor",
+    "demografische transitie",
+    "migratie",
+    "geldovermakingen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B1",
+    "H-B2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "land-mex",
+   "begripId": "begrip-geldovermakingen"
+  },
+  {
+   "id": "voorbeeld-van-begrip-6",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Tokyo",
+   "question": "Tokyo is een voorbeeld van…",
+   "answer": "megastad",
+   "options": [
+    "megastad",
+    "wereldstad",
+    "agglomeratie",
+    "suburbanisatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-jpn-tokio",
+   "begripId": "begrip-megastad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-7",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Mexico-Stad",
+   "question": "Mexico-Stad is een voorbeeld van…",
+   "answer": "megastad",
+   "options": [
+    "leefbaarheid",
+    "suburbanisatie",
+    "megastad",
+    "primaatstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-mex-mexico-stad",
+   "begripId": "begrip-megastad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-8",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Londen",
+   "question": "Londen is een voorbeeld van…",
+   "answer": "wereldstad",
+   "options": [
+    "wereldstad",
+    "megastad",
+    "verstedelijking",
+    "suburbanisatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-gbr-londen",
+   "begripId": "begrip-wereldstad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-9",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "New York",
+   "question": "New York is een voorbeeld van…",
+   "answer": "wereldstad",
+   "options": [
+    "favela",
+    "verstedelijking",
+    "leefbaarheid",
+    "wereldstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-new-york",
+   "begripId": "begrip-wereldstad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-10",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Buenos Aires",
+   "question": "Buenos Aires is een voorbeeld van…",
+   "answer": "primaatstad",
+   "options": [
+    "primaatstad",
+    "gentrificatie",
+    "agglomeratie",
+    "stedelijk netwerk"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-arg-buenos-aires",
+   "begripId": "begrip-primaatstad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-11",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Lima",
+   "question": "Lima is een voorbeeld van…",
+   "answer": "primaatstad",
+   "options": [
+    "agglomeratie",
+    "gentrificatie",
+    "stedelijk netwerk",
+    "primaatstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-per-lima",
+   "begripId": "begrip-primaatstad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-12",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Randstad",
+   "question": "Randstad is een voorbeeld van…",
+   "answer": "stedelijk netwerk",
+   "options": [
+    "suburbanisatie",
+    "stedelijk netwerk",
+    "gentrificatie",
+    "primaatstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E2",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-regio-randstad",
+   "begripId": "begrip-stedelijk-netwerk"
+  },
+  {
+   "id": "voorbeeld-van-begrip-13",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Rocinha",
+   "question": "Rocinha is een voorbeeld van…",
+   "answer": "favela",
+   "options": [
+    "gentrificatie",
+    "favela",
+    "stedelijk netwerk",
+    "primaatstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-favela-rocinha",
+   "begripId": "begrip-favela"
+  },
+  {
+   "id": "voorbeeld-van-begrip-14",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Rio de Janeiro",
+   "question": "Rio de Janeiro is een voorbeeld van…",
+   "answer": "favela",
+   "options": [
+    "agglomeratie",
+    "wereldstad",
+    "stedelijk netwerk",
+    "favela"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-rio-de-janeiro",
+   "begripId": "begrip-favela"
+  },
+  {
+   "id": "voorbeeld-van-begrip-15",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Rotterdam",
+   "question": "Rotterdam is een voorbeeld van…",
+   "answer": "containerisatie",
+   "options": [
+    "knelpunt (zeestraat)",
+    "tijdruimtecompressie",
+    "offshoring",
+    "containerisatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-stad-rotterdam",
+   "begripId": "begrip-containerisatie"
+  },
+  {
+   "id": "voorbeeld-van-begrip-16",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Rotterdam",
+   "question": "Rotterdam is een voorbeeld van…",
+   "answer": "mainport",
+   "options": [
+    "containerisatie",
+    "buitenlandse directe investering",
+    "mainport",
+    "Mercosur"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25C",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-stad-rotterdam",
+   "begripId": "begrip-mainport"
+  },
+  {
+   "id": "voorbeeld-van-begrip-17",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Schiphol",
+   "question": "Schiphol is een voorbeeld van…",
+   "answer": "mainport",
+   "options": [
+    "tijdruimtecompressie",
+    "Mercosur",
+    "multinational",
+    "mainport"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25C",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-luchthaven-schiphol",
+   "begripId": "begrip-mainport"
+  },
+  {
+   "id": "voorbeeld-van-begrip-18",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Suezkanaal",
+   "question": "Suezkanaal is een voorbeeld van…",
+   "answer": "knelpunt (zeestraat)",
+   "options": [
+    "handelsblok",
+    "knelpunt (zeestraat)",
+    "buitenlandse directe investering",
+    "multinational"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "kanaal-suezkanaal",
+   "begripId": "begrip-knelpunt-zeestraat"
+  },
+  {
+   "id": "voorbeeld-van-begrip-19",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Straat Malakka",
+   "question": "Straat Malakka is een voorbeeld van…",
+   "answer": "knelpunt (zeestraat)",
+   "options": [
+    "offshoring",
+    "mondialisering",
+    "knelpunt (zeestraat)",
+    "containerisatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "zeestraat-straat-malakka",
+   "begripId": "begrip-knelpunt-zeestraat"
+  },
+  {
+   "id": "voorbeeld-van-begrip-20",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Brazilië",
+   "question": "Brazilië is een voorbeeld van…",
+   "answer": "ontwikkelingsland",
+   "options": [
+    "informele sector",
+    "HDI",
+    "ontwikkelingsland",
+    "bbp per inwoner"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "land-bra",
+   "begripId": "begrip-ontwikkelingsland"
+  },
+  {
+   "id": "voorbeeld-van-begrip-21",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Ciudad Juárez",
+   "question": "Ciudad Juárez is een voorbeeld van…",
+   "answer": "maquiladora",
+   "options": [
+    "maquiladora",
+    "convergente plaatgrens",
+    "mitigatie",
+    "klimaatverandering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "stad-mex-ciudad-juarez",
+   "begripId": "begrip-maquiladora"
+  },
+  {
+   "id": "voorbeeld-van-begrip-22",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Tijuana",
+   "question": "Tijuana is een voorbeeld van…",
+   "answer": "maquiladora",
+   "options": [
+    "waterkrachtcentrale",
+    "nulmeridiaan",
+    "maquiladora",
+    "grensoverschrijdende relatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "stad-mex-tijuana",
+   "begripId": "begrip-maquiladora"
+  },
+  {
+   "id": "voorbeeld-van-begrip-23",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "El Paso",
+   "question": "El Paso is een voorbeeld van…",
+   "answer": "tweelingstad",
+   "options": [
+    "schaal",
+    "grootgrondbezit",
+    "subductie",
+    "tweelingstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "grens-el-paso",
+   "begripId": "begrip-tweelingstad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-24",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Ciudad Juárez",
+   "question": "Ciudad Juárez is een voorbeeld van…",
+   "answer": "tweelingstad",
+   "options": [
+    "tweelingstad",
+    "register (atlas)",
+    "wateroverlast",
+    "inheemse bevolking"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "stad-mex-ciudad-juarez",
+   "begripId": "begrip-tweelingstad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-25",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Brazilië",
+   "question": "Brazilië is een voorbeeld van…",
+   "answer": "Mercosur",
+   "options": [
+    "Mercosur",
+    "multinational",
+    "mondialisering",
+    "knelpunt (zeestraat)"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "land-bra",
+   "begripId": "begrip-mercosur"
+  },
+  {
+   "id": "voorbeeld-van-begrip-26",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Argentinië",
+   "question": "Argentinië is een voorbeeld van…",
+   "answer": "Mercosur",
+   "options": [
+    "Mercosur",
+    "centrum en periferie",
+    "offshoring",
+    "multinational"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "land-arg",
+   "begripId": "begrip-mercosur"
+  },
+  {
+   "id": "voorbeeld-van-begrip-27",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Andes",
+   "question": "Andes is een voorbeeld van…",
+   "answer": "convergente plaatgrens",
+   "options": [
+    "gletsjer",
+    "morene",
+    "convergente plaatgrens",
+    "plooiingsgebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-andes",
+   "begripId": "begrip-convergente-plaatgrens"
+  },
+  {
+   "id": "voorbeeld-van-begrip-28",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Himalaya",
+   "question": "Himalaya is een voorbeeld van…",
+   "answer": "convergente plaatgrens",
+   "options": [
+    "convergente plaatgrens",
+    "landdegradatie",
+    "gletsjer",
+    "tsunami"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-himalaya",
+   "begripId": "begrip-convergente-plaatgrens"
+  },
+  {
+   "id": "voorbeeld-van-begrip-29",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "IJsland",
+   "question": "IJsland is een voorbeeld van…",
+   "answer": "divergente plaatgrens",
+   "options": [
+    "platentektoniek",
+    "morene",
+    "lithosfeer",
+    "divergente plaatgrens"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "land-isl",
+   "begripId": "begrip-divergente-plaatgrens"
+  },
+  {
+   "id": "voorbeeld-van-begrip-30",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Californië",
+   "question": "Californië is een voorbeeld van…",
+   "answer": "transforme plaatgrens",
+   "options": [
+    "epicentrum",
+    "platentektoniek",
+    "transforme plaatgrens",
+    "morene"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "staat-californie",
+   "begripId": "begrip-transforme-plaatgrens"
+  },
+  {
+   "id": "voorbeeld-van-begrip-31",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Andes",
+   "question": "Andes is een voorbeeld van…",
+   "answer": "subductie",
+   "options": [
+    "aardbeving",
+    "oceanische rug",
+    "subductie",
+    "stuwwal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-andes",
+   "begripId": "begrip-subductie"
+  },
+  {
+   "id": "voorbeeld-van-begrip-32",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Nazcaplaat",
+   "question": "Nazcaplaat is een voorbeeld van…",
+   "answer": "subductie",
+   "options": [
+    "vulkanisme",
+    "verwering",
+    "subductie",
+    "transforme plaatgrens"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "plaat-nazca",
+   "begripId": "begrip-subductie"
+  },
+  {
+   "id": "voorbeeld-van-begrip-33",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Atlantische Oceaan",
+   "question": "Atlantische Oceaan is een voorbeeld van…",
+   "answer": "oceanische rug",
+   "options": [
+    "oceanische rug",
+    "vulkanisme",
+    "lithosfeer",
+    "woestijnvorming"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "oceaan-atlantische-oceaan",
+   "begripId": "begrip-oceanische-rug"
+  },
+  {
+   "id": "voorbeeld-van-begrip-34",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Grote Slenk",
+   "question": "Grote Slenk is een voorbeeld van…",
+   "answer": "slenk",
+   "options": [
+    "meander",
+    "delta",
+    "epicentrum",
+    "slenk"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "dal-grote-slenk",
+   "begripId": "begrip-slenk"
+  },
+  {
+   "id": "voorbeeld-van-begrip-35",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Hawaii",
+   "question": "Hawaii is een voorbeeld van…",
+   "answer": "hotspot",
+   "options": [
+    "verwering",
+    "morene",
+    "divergente plaatgrens",
+    "hotspot"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "eilandengroep-hawaii",
+   "begripId": "begrip-hotspot"
+  },
+  {
+   "id": "voorbeeld-van-begrip-36",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Alpen",
+   "question": "Alpen is een voorbeeld van…",
+   "answer": "plooiingsgebergte",
+   "options": [
+    "vulkanisme",
+    "slenk",
+    "plooiingsgebergte",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-alpen",
+   "begripId": "begrip-plooiingsgebergte"
+  },
+  {
+   "id": "voorbeeld-van-begrip-37",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Himalaya",
+   "question": "Himalaya is een voorbeeld van…",
+   "answer": "plooiingsgebergte",
+   "options": [
+    "verwering",
+    "plooiingsgebergte",
+    "oceanische rug",
+    "morene"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-himalaya",
+   "begripId": "begrip-plooiingsgebergte"
+  },
+  {
+   "id": "voorbeeld-van-begrip-38",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Zuidwestelijke Delta",
+   "question": "Zuidwestelijke Delta is een voorbeeld van…",
+   "answer": "delta",
+   "options": [
+    "woestijnvorming",
+    "divergente plaatgrens",
+    "erosie",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-delta-zuidwestelijke-delta",
+   "begripId": "begrip-delta"
+  },
+  {
+   "id": "voorbeeld-van-begrip-39",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Nijl",
+   "question": "Nijl is een voorbeeld van…",
+   "answer": "delta",
+   "options": [
+    "plooiingsgebergte",
+    "meander",
+    "delta",
+    "slenk"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-nijl",
+   "begripId": "begrip-delta"
+  },
+  {
+   "id": "voorbeeld-van-begrip-40",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Mississippi",
+   "question": "Mississippi is een voorbeeld van…",
+   "answer": "meander",
+   "options": [
+    "meander",
+    "oceanische rug",
+    "divergente plaatgrens",
+    "transforme plaatgrens"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-mississippi",
+   "begripId": "begrip-meander"
+  },
+  {
+   "id": "voorbeeld-van-begrip-41",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Alpen",
+   "question": "Alpen is een voorbeeld van…",
+   "answer": "gletsjer",
+   "options": [
+    "tsunami",
+    "gletsjer",
+    "platentektoniek",
+    "morene"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-alpen",
+   "begripId": "begrip-gletsjer"
+  },
+  {
+   "id": "voorbeeld-van-begrip-42",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Veluwe",
+   "question": "Veluwe is een voorbeeld van…",
+   "answer": "morene",
+   "options": [
+    "morene",
+    "vulkanisme",
+    "gesteentekringloop",
+    "convergente plaatgrens"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-regio-veluwe",
+   "begripId": "begrip-morene"
+  },
+  {
+   "id": "voorbeeld-van-begrip-43",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Veluwe",
+   "question": "Veluwe is een voorbeeld van…",
+   "answer": "stuwwal",
+   "options": [
+    "platentektoniek",
+    "hotspot",
+    "stuwwal",
+    "erosie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "nl-regio-veluwe",
+   "begripId": "begrip-stuwwal"
+  },
+  {
+   "id": "voorbeeld-van-begrip-44",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Cerrado",
+   "question": "Cerrado is een voorbeeld van…",
+   "answer": "landdegradatie",
+   "options": [
+    "plooiingsgebergte",
+    "divergente plaatgrens",
+    "landdegradatie",
+    "tsunami"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D2",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-cerrado",
+   "begripId": "begrip-landdegradatie"
+  },
+  {
+   "id": "voorbeeld-van-begrip-45",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Caatinga",
+   "question": "Caatinga is een voorbeeld van…",
+   "answer": "landdegradatie",
+   "options": [
+    "platentektoniek",
+    "landdegradatie",
+    "convergente plaatgrens",
+    "verwering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D2",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-caatinga",
+   "begripId": "begrip-landdegradatie"
+  },
+  {
+   "id": "voorbeeld-van-begrip-46",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Sahara",
+   "question": "Sahara is een voorbeeld van…",
+   "answer": "woestijnvorming",
+   "options": [
+    "oceanische rug",
+    "plooiingsgebergte",
+    "erosie",
+    "woestijnvorming"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "woestijn-sahara",
+   "begripId": "begrip-woestijnvorming"
+  },
+  {
+   "id": "voorbeeld-van-begrip-47",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Andes",
+   "question": "Andes is een voorbeeld van…",
+   "answer": "stuwingsregen",
+   "options": [
+    "savanne",
+    "luchtcirculatie",
+    "permafrost",
+    "stuwingsregen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-andes",
+   "begripId": "begrip-stuwingsregen"
+  },
+  {
+   "id": "voorbeeld-van-begrip-48",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Atlantische Oceaan",
+   "question": "Atlantische Oceaan is een voorbeeld van…",
+   "answer": "zeestroming",
+   "options": [
+    "toendra",
+    "zeestroming",
+    "savanne",
+    "El Niño"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "oceaan-atlantische-oceaan",
+   "begripId": "begrip-zeestroming"
+  },
+  {
+   "id": "voorbeeld-van-begrip-49",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Atlantische Oceaan",
+   "question": "Atlantische Oceaan is een voorbeeld van…",
+   "answer": "Golfstroom",
+   "options": [
+    "hoogtezones",
+    "Golfstroom",
+    "toendra",
+    "hogedrukgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "oceaan-atlantische-oceaan",
+   "begripId": "begrip-golfstroom"
+  },
+  {
+   "id": "voorbeeld-van-begrip-50",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Peru",
+   "question": "Peru is een voorbeeld van…",
+   "answer": "El Niño",
+   "options": [
+    "stuwingsregen",
+    "mitigatie",
+    "El Niño",
+    "ITCZ"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "land-per",
+   "begripId": "begrip-el-niño"
+  },
+  {
+   "id": "voorbeeld-van-begrip-51",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Grote (of Stille) Oceaan",
+   "question": "Grote (of Stille) Oceaan is een voorbeeld van…",
+   "answer": "El Niño",
+   "options": [
+    "ITCZ",
+    "stuwingsregen",
+    "El Niño",
+    "taiga"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "oceaan-grote-oceaan",
+   "begripId": "begrip-el-niño"
+  },
+  {
+   "id": "voorbeeld-van-begrip-52",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Amazonegebied",
+   "question": "Amazonegebied is een voorbeeld van…",
+   "answer": "tropisch regenwoud",
+   "options": [
+    "passaatwind",
+    "mitigatie",
+    "tropisch regenwoud",
+    "klimaatclassificatie van Köppen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "H-D1",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-amazonegebied",
+   "begripId": "begrip-tropisch-regenwoud"
+  },
+  {
+   "id": "voorbeeld-van-begrip-53",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Cerrado",
+   "question": "Cerrado is een voorbeeld van…",
+   "answer": "savanne",
+   "options": [
+    "mitigatie",
+    "savanne",
+    "passaatwind",
+    "hogedrukgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "H-D1",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-cerrado",
+   "begripId": "begrip-savanne"
+  },
+  {
+   "id": "voorbeeld-van-begrip-54",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Pampa",
+   "question": "Pampa is een voorbeeld van…",
+   "answer": "steppe",
+   "options": [
+    "weer en klimaat",
+    "passaatwind",
+    "adaptatie",
+    "steppe"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-pampa",
+   "begripId": "begrip-steppe"
+  },
+  {
+   "id": "voorbeeld-van-begrip-55",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Siberië",
+   "question": "Siberië is een voorbeeld van…",
+   "answer": "taiga",
+   "options": [
+    "tropisch regenwoud",
+    "taiga",
+    "broeikaseffect",
+    "passaatwind"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "regio-siberie",
+   "begripId": "begrip-taiga"
+  },
+  {
+   "id": "voorbeeld-van-begrip-56",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Siberië",
+   "question": "Siberië is een voorbeeld van…",
+   "answer": "permafrost",
+   "options": [
+    "hogedrukgebied",
+    "steppe",
+    "tropisch regenwoud",
+    "permafrost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "regio-siberie",
+   "begripId": "begrip-permafrost"
+  },
+  {
+   "id": "voorbeeld-van-begrip-57",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Andes",
+   "question": "Andes is een voorbeeld van…",
+   "answer": "hoogtezones",
+   "options": [
+    "hoogtezones",
+    "tropisch regenwoud",
+    "stuwingsregen",
+    "klimaatverandering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-C2",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-andes",
+   "begripId": "begrip-hoogtezones"
+  },
+  {
+   "id": "voorbeeld-van-begrip-58",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Rijn",
+   "question": "Rijn is een voorbeeld van…",
+   "answer": "stroomgebied",
+   "options": [
+    "meerlaagsveiligheid",
+    "gemengde rivier",
+    "stroomgebied",
+    "wateroverlast"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-rijn",
+   "begripId": "begrip-stroomgebied"
+  },
+  {
+   "id": "voorbeeld-van-begrip-59",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Maas",
+   "question": "Maas is een voorbeeld van…",
+   "answer": "stroomgebied",
+   "options": [
+    "regenrivier",
+    "getijden",
+    "stroomgebied",
+    "overstroming"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-maas",
+   "begripId": "begrip-stroomgebied"
+  },
+  {
+   "id": "voorbeeld-van-begrip-60",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Maas",
+   "question": "Maas is een voorbeeld van…",
+   "answer": "regenrivier",
+   "options": [
+    "zoetwatervoorraad",
+    "Deltawerken",
+    "wateroverlast",
+    "regenrivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-maas",
+   "begripId": "begrip-regenrivier"
+  },
+  {
+   "id": "voorbeeld-van-begrip-61",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Rijn",
+   "question": "Rijn is een voorbeeld van…",
+   "answer": "gemengde rivier",
+   "options": [
+    "gemengde rivier",
+    "overstroming",
+    "verzilting",
+    "Deltaprogramma"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-rijn",
+   "begripId": "begrip-gemengde-rivier"
+  },
+  {
+   "id": "voorbeeld-van-begrip-62",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Lobith",
+   "question": "Lobith is een voorbeeld van…",
+   "answer": "rivierafvoer",
+   "options": [
+    "rivierafvoer",
+    "kwel",
+    "Deltaprogramma",
+    "overstroming"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-plaats-lobith",
+   "begripId": "begrip-rivierafvoer"
+  },
+  {
+   "id": "voorbeeld-van-begrip-63",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Waal",
+   "question": "Waal is een voorbeeld van…",
+   "answer": "uiterwaard",
+   "options": [
+    "regenrivier",
+    "polder",
+    "Ruimte voor de Rivier",
+    "uiterwaard"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-waal",
+   "begripId": "begrip-uiterwaard"
+  },
+  {
+   "id": "voorbeeld-van-begrip-64",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Spiegelwaal",
+   "question": "Spiegelwaal is een voorbeeld van…",
+   "answer": "Ruimte voor de Rivier",
+   "options": [
+    "droogmakerij",
+    "getijden",
+    "kwel",
+    "Ruimte voor de Rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivierproject-spiegelwaal",
+   "begripId": "begrip-ruimte-voor-de-rivier"
+  },
+  {
+   "id": "voorbeeld-van-begrip-65",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Noordwaard",
+   "question": "Noordwaard is een voorbeeld van…",
+   "answer": "Ruimte voor de Rivier",
+   "options": [
+    "stormvloedkering",
+    "meerlaagsveiligheid",
+    "Ruimte voor de Rivier",
+    "bodemdaling"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivierproject-noordwaard",
+   "begripId": "begrip-ruimte-voor-de-rivier"
+  },
+  {
+   "id": "voorbeeld-van-begrip-66",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Oosterscheldekering",
+   "question": "Oosterscheldekering is een voorbeeld van…",
+   "answer": "Deltawerken",
+   "options": [
+    "Deltawerken",
+    "droogmakerij",
+    "wateroverlast",
+    "zomerbed en winterbed"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-waterkering-oosterscheldekering",
+   "begripId": "begrip-deltawerken"
+  },
+  {
+   "id": "voorbeeld-van-begrip-67",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Maeslantkering",
+   "question": "Maeslantkering is een voorbeeld van…",
+   "answer": "Deltawerken",
+   "options": [
+    "bodemdaling",
+    "zoetwatervoorraad",
+    "zomerbed en winterbed",
+    "Deltawerken"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-waterkering-maeslantkering",
+   "begripId": "begrip-deltawerken"
+  },
+  {
+   "id": "voorbeeld-van-begrip-68",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Maeslantkering",
+   "question": "Maeslantkering is een voorbeeld van…",
+   "answer": "stormvloedkering",
+   "options": [
+    "stormvloedkering",
+    "gemengde rivier",
+    "Deltawerken",
+    "verzilting"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-waterkering-maeslantkering",
+   "begripId": "begrip-stormvloedkering"
+  },
+  {
+   "id": "voorbeeld-van-begrip-69",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Oosterscheldekering",
+   "question": "Oosterscheldekering is een voorbeeld van…",
+   "answer": "stormvloedkering",
+   "options": [
+    "inpoldering",
+    "stormvloedkering",
+    "gemengde rivier",
+    "verzilting"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-waterkering-oosterscheldekering",
+   "begripId": "begrip-stormvloedkering"
+  },
+  {
+   "id": "voorbeeld-van-begrip-70",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Haarlemmermeer",
+   "question": "Haarlemmermeer is een voorbeeld van…",
+   "answer": "polder",
+   "options": [
+    "kwel",
+    "polder",
+    "bodemdaling",
+    "Ruimte voor de Rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-polder-haarlemmermeer",
+   "begripId": "begrip-polder"
+  },
+  {
+   "id": "voorbeeld-van-begrip-71",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Noordoostpolder",
+   "question": "Noordoostpolder is een voorbeeld van…",
+   "answer": "polder",
+   "options": [
+    "bodemdaling",
+    "wad",
+    "Deltaprogramma",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-polder-noordoostpolder",
+   "begripId": "begrip-polder"
+  },
+  {
+   "id": "voorbeeld-van-begrip-72",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Haarlemmermeer",
+   "question": "Haarlemmermeer is een voorbeeld van…",
+   "answer": "droogmakerij",
+   "options": [
+    "stroomgebied",
+    "droogmakerij",
+    "overstroming",
+    "zomerbed en winterbed"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-polder-haarlemmermeer",
+   "begripId": "begrip-droogmakerij"
+  },
+  {
+   "id": "voorbeeld-van-begrip-73",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Flevoland",
+   "question": "Flevoland is een voorbeeld van…",
+   "answer": "inpoldering",
+   "options": [
+    "zomerbed en winterbed",
+    "inpoldering",
+    "uiterwaard",
+    "stroomgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "provincie-flevoland",
+   "begripId": "begrip-inpoldering"
+  },
+  {
+   "id": "voorbeeld-van-begrip-74",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Groene Hart",
+   "question": "Groene Hart is een voorbeeld van…",
+   "answer": "bodemdaling",
+   "options": [
+    "inpoldering",
+    "wateroverlast",
+    "overstroming",
+    "bodemdaling"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-regio-groene-hart",
+   "begripId": "begrip-bodemdaling"
+  },
+  {
+   "id": "voorbeeld-van-begrip-75",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Zuidwestelijke Delta",
+   "question": "Zuidwestelijke Delta is een voorbeeld van…",
+   "answer": "verzilting",
+   "options": [
+    "verzilting",
+    "rivierafvoer",
+    "inpoldering",
+    "bodemdaling"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-delta-zuidwestelijke-delta",
+   "begripId": "begrip-verzilting"
+  },
+  {
+   "id": "voorbeeld-van-begrip-76",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "IJsselmeer",
+   "question": "IJsselmeer is een voorbeeld van…",
+   "answer": "zoetwatervoorraad",
+   "options": [
+    "zoetwatervoorraad",
+    "Deltaprogramma",
+    "zandsuppletie",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-meer-ijsselmeer",
+   "begripId": "begrip-zoetwatervoorraad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-77",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Zandmotor",
+   "question": "Zandmotor is een voorbeeld van…",
+   "answer": "zandsuppletie",
+   "options": [
+    "zomerbed en winterbed",
+    "inpoldering",
+    "regenrivier",
+    "zandsuppletie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-kustproject-zandmotor",
+   "begripId": "begrip-zandsuppletie"
+  },
+  {
+   "id": "voorbeeld-van-begrip-78",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Waddenzee",
+   "question": "Waddenzee is een voorbeeld van…",
+   "answer": "getijden",
+   "options": [
+    "getijden",
+    "Deltaprogramma",
+    "stroomgebied",
+    "Deltawerken"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "nl-zee-waddenzee",
+   "begripId": "begrip-getijden"
+  },
+  {
+   "id": "voorbeeld-van-begrip-79",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Waddenzee",
+   "question": "Waddenzee is een voorbeeld van…",
+   "answer": "wad",
+   "options": [
+    "stormvloedkering",
+    "wad",
+    "Deltaprogramma",
+    "meerlaagsveiligheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-zee-waddenzee",
+   "begripId": "begrip-wad"
+  },
+  {
+   "id": "voorbeeld-van-begrip-80",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Groene Hart",
+   "question": "Groene Hart is een voorbeeld van…",
+   "answer": "Groene Hart",
+   "options": [
+    "energietransitie",
+    "ruimtelijke inrichting",
+    "Groene Hart",
+    "ruimteclaim"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-E2",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-regio-groene-hart",
+   "begripId": "begrip-groene-hart"
+  },
+  {
+   "id": "voorbeeld-van-begrip-81",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Amazonegebied",
+   "question": "Amazonegebied is een voorbeeld van…",
+   "answer": "ontbossing",
+   "options": [
+    "inheemse bevolking",
+    "ontbossing",
+    "binnenlandse migratie",
+    "regionale ongelijkheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D2",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-amazonegebied",
+   "begripId": "begrip-ontbossing"
+  },
+  {
+   "id": "voorbeeld-van-begrip-82",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Cerrado",
+   "question": "Cerrado is een voorbeeld van…",
+   "answer": "agrobusiness",
+   "options": [
+    "agrobusiness",
+    "binnenlandse migratie",
+    "waterkrachtcentrale",
+    "etnische en culturele diversiteit"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-cerrado",
+   "begripId": "begrip-agrobusiness"
+  },
+  {
+   "id": "voorbeeld-van-begrip-83",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Carajás",
+   "question": "Carajás is een voorbeeld van…",
+   "answer": "hulpbron",
+   "options": [
+    "hulpbron",
+    "etnische en culturele diversiteit",
+    "ontbossing",
+    "regionale ongelijkheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-mijngebied-carajas",
+   "begripId": "begrip-hulpbron"
+  },
+  {
+   "id": "voorbeeld-van-begrip-84",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Itaipudam",
+   "question": "Itaipudam is een voorbeeld van…",
+   "answer": "waterkrachtcentrale",
+   "options": [
+    "waterkrachtcentrale",
+    "droogtepolygoon",
+    "regionale ongelijkheid",
+    "agrobusiness"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-stuwdam-itaipudam",
+   "begripId": "begrip-waterkrachtcentrale"
+  },
+  {
+   "id": "voorbeeld-van-begrip-85",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Belo Montedam",
+   "question": "Belo Montedam is een voorbeeld van…",
+   "answer": "waterkrachtcentrale",
+   "options": [
+    "binnenlandse migratie",
+    "hulpbron",
+    "grootgrondbezit",
+    "waterkrachtcentrale"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-stuwdam-belo-montedam",
+   "begripId": "begrip-waterkrachtcentrale"
+  },
+  {
+   "id": "voorbeeld-van-begrip-86",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Noordoost",
+   "question": "Noordoost is een voorbeeld van…",
+   "answer": "regionale ongelijkheid",
+   "options": [
+    "hulpbron",
+    "landhervorming",
+    "binnenlandse migratie",
+    "regionale ongelijkheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-noordoost",
+   "begripId": "begrip-regionale-ongelijkheid"
+  },
+  {
+   "id": "voorbeeld-van-begrip-87",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Zuidoost",
+   "question": "Zuidoost is een voorbeeld van…",
+   "answer": "regionale ongelijkheid",
+   "options": [
+    "binnenlandse migratie",
+    "droogtepolygoon",
+    "agrobusiness",
+    "regionale ongelijkheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-zuidoost",
+   "begripId": "begrip-regionale-ongelijkheid"
+  },
+  {
+   "id": "voorbeeld-van-begrip-88",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Sertão",
+   "question": "Sertão is een voorbeeld van…",
+   "answer": "binnenlandse migratie",
+   "options": [
+    "droogtepolygoon",
+    "binnenlandse migratie",
+    "grootgrondbezit",
+    "regionale ongelijkheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-sertao",
+   "begripId": "begrip-binnenlandse-migratie"
+  },
+  {
+   "id": "voorbeeld-van-begrip-89",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "São Paulo",
+   "question": "São Paulo is een voorbeeld van…",
+   "answer": "binnenlandse migratie",
+   "options": [
+    "inheemse bevolking",
+    "binnenlandse migratie",
+    "etnische en culturele diversiteit",
+    "hulpbron"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo",
+   "begripId": "begrip-binnenlandse-migratie"
+  },
+  {
+   "id": "voorbeeld-van-begrip-90",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Amazonegebied",
+   "question": "Amazonegebied is een voorbeeld van…",
+   "answer": "inheemse bevolking",
+   "options": [
+    "ontbossing",
+    "droogtepolygoon",
+    "agrobusiness",
+    "inheemse bevolking"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-amazonegebied",
+   "begripId": "begrip-inheemse-bevolking"
+  },
+  {
+   "id": "voorbeeld-van-begrip-91",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Sertão",
+   "question": "Sertão is een voorbeeld van…",
+   "answer": "droogtepolygoon",
+   "options": [
+    "droogtepolygoon",
+    "etnische en culturele diversiteit",
+    "ontbossing",
+    "agrobusiness"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "bra-regio-sertao",
+   "begripId": "begrip-droogtepolygoon"
+  },
+  {
+   "id": "voorbeeld-van-begrip-92",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Caatinga",
+   "question": "Caatinga is een voorbeeld van…",
+   "answer": "droogtepolygoon",
+   "options": [
+    "droogtepolygoon",
+    "waterkrachtcentrale",
+    "binnenlandse migratie",
+    "agrobusiness"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "H-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "bra-bioom-caatinga",
+   "begripId": "begrip-droogtepolygoon"
+  },
+  {
+   "id": "voorbeeld-van-begrip-93",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Zuid-Amerika",
+   "question": "Zuid-Amerika is een voorbeeld van…",
+   "answer": "afbakening",
+   "options": [
+    "nulmeridiaan",
+    "afbakening",
+    "regenrivier",
+    "centrum en periferie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "voorbeeld-van-begrip"
+   },
+   "doelen": [
+    "V-D1"
+   ],
+   "leerjaren": {
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "werelddeel-zuid-amerika",
+   "begripId": "begrip-afbakening"
+  }
+ ]
+}

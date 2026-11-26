@@ -1,0 +1,1524 @@
+{
+ "version": 1,
+ "sjabloon": "deelstaat-van-stad",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "deelstaat-van-stad-1",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Brasilia",
+   "question": "In welke deelstaat ligt Brasilia?",
+   "answer": "Federaal District",
+   "options": [
+    "Rio Grande do Sul",
+    "Mato Grosso do Sul",
+    "São Paulo",
+    "Federaal District"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-brasilia"
+  },
+  {
+   "id": "deelstaat-van-stad-2",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Rio de Janeiro",
+   "question": "In welke deelstaat ligt Rio de Janeiro?",
+   "answer": "Rio de Janeiro",
+   "options": [
+    "Pernambuco",
+    "Rio de Janeiro",
+    "Alagoas",
+    "Amapá"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-rio-de-janeiro"
+  },
+  {
+   "id": "deelstaat-van-stad-3",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "São Paulo",
+   "question": "In welke deelstaat ligt São Paulo?",
+   "answer": "São Paulo",
+   "options": [
+    "Acre",
+    "Tocantins",
+    "São Paulo",
+    "Pernambuco"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "deelstaat-van-stad-4",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Belo Horizonte",
+   "question": "In welke deelstaat ligt Belo Horizonte?",
+   "answer": "Minas Gerais",
+   "options": [
+    "Minas Gerais",
+    "Piauí",
+    "Acre",
+    "Rio Grande do Norte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-belo-horizonte"
+  },
+  {
+   "id": "deelstaat-van-stad-5",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Curitiba",
+   "question": "In welke deelstaat ligt Curitiba?",
+   "answer": "Paraná",
+   "options": [
+    "Pernambuco",
+    "Paraná",
+    "Maranhão",
+    "Roraima"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-curitiba"
+  },
+  {
+   "id": "deelstaat-van-stad-6",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Fortaleza",
+   "question": "In welke deelstaat ligt Fortaleza?",
+   "answer": "Ceará",
+   "options": [
+    "Ceará",
+    "Rio Grande do Norte",
+    "Pará",
+    "Minas Gerais"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-fortaleza"
+  },
+  {
+   "id": "deelstaat-van-stad-7",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Porto Alegre",
+   "question": "In welke deelstaat ligt Porto Alegre?",
+   "answer": "Rio Grande do Sul",
+   "options": [
+    "Paraíba",
+    "Rio Grande do Sul",
+    "Paraná",
+    "Rio Grande do Norte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-porto-alegre"
+  },
+  {
+   "id": "deelstaat-van-stad-8",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Recife",
+   "question": "In welke deelstaat ligt Recife?",
+   "answer": "Pernambuco",
+   "options": [
+    "Pernambuco",
+    "Acre",
+    "Bahia",
+    "Pará"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-recife"
+  },
+  {
+   "id": "deelstaat-van-stad-9",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Salvador",
+   "question": "In welke deelstaat ligt Salvador?",
+   "answer": "Bahia",
+   "options": [
+    "Bahia",
+    "Maranhão",
+    "Amazonas",
+    "Mato Grosso"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-salvador"
+  },
+  {
+   "id": "deelstaat-van-stad-10",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Aracaju",
+   "question": "In welke deelstaat ligt Aracaju?",
+   "answer": "Sergipe",
+   "options": [
+    "Sergipe",
+    "Rio Grande do Norte",
+    "Roraima",
+    "Amazonas"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-aracaju"
+  },
+  {
+   "id": "deelstaat-van-stad-11",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Belém",
+   "question": "In welke deelstaat ligt Belém?",
+   "answer": "Pará",
+   "options": [
+    "Alagoas",
+    "Pará",
+    "Piauí",
+    "Maranhão"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-belem"
+  },
+  {
+   "id": "deelstaat-van-stad-12",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Campinas",
+   "question": "In welke deelstaat ligt Campinas?",
+   "answer": "São Paulo",
+   "options": [
+    "Minas Gerais",
+    "Acre",
+    "Paraíba",
+    "São Paulo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-campinas"
+  },
+  {
+   "id": "deelstaat-van-stad-13",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Campo Grande",
+   "question": "In welke deelstaat ligt Campo Grande?",
+   "answer": "Mato Grosso do Sul",
+   "options": [
+    "Rio de Janeiro",
+    "Roraima",
+    "Mato Grosso do Sul",
+    "Pará"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-campo-grande"
+  },
+  {
+   "id": "deelstaat-van-stad-14",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Canoas",
+   "question": "In welke deelstaat ligt Canoas?",
+   "answer": "Rio Grande do Sul",
+   "options": [
+    "Maranhão",
+    "Sergipe",
+    "Rio Grande do Sul",
+    "Minas Gerais"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-canoas"
+  },
+  {
+   "id": "deelstaat-van-stad-15",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Cuiabá",
+   "question": "In welke deelstaat ligt Cuiabá?",
+   "answer": "Mato Grosso",
+   "options": [
+    "Mato Grosso",
+    "Pernambuco",
+    "Federaal District",
+    "Maranhão"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-cuiaba"
+  },
+  {
+   "id": "deelstaat-van-stad-16",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Duque de Caxias",
+   "question": "In welke deelstaat ligt Duque de Caxias?",
+   "answer": "Rio de Janeiro",
+   "options": [
+    "Piauí",
+    "Rio de Janeiro",
+    "Amazonas",
+    "Mato Grosso"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-duque-de-caxias"
+  },
+  {
+   "id": "deelstaat-van-stad-17",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Florianópolis",
+   "question": "In welke deelstaat ligt Florianópolis?",
+   "answer": "Santa Catarina",
+   "options": [
+    "Santa Catarina",
+    "Sergipe",
+    "Tocantins",
+    "Amapá"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-florianopolis"
+  },
+  {
+   "id": "deelstaat-van-stad-18",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Goiânia",
+   "question": "In welke deelstaat ligt Goiânia?",
+   "answer": "Goiás",
+   "options": [
+    "Federaal District",
+    "Rio Grande do Norte",
+    "Goiás",
+    "Mato Grosso"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-goiania"
+  },
+  {
+   "id": "deelstaat-van-stad-19",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Jaboatão dos Guararapes",
+   "question": "In welke deelstaat ligt Jaboatão dos Guararapes?",
+   "answer": "Pernambuco",
+   "options": [
+    "Bahia",
+    "Sergipe",
+    "Ceará",
+    "Pernambuco"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-jaboatao-dos-guararapes"
+  },
+  {
+   "id": "deelstaat-van-stad-20",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Joinville",
+   "question": "In welke deelstaat ligt Joinville?",
+   "answer": "Santa Catarina",
+   "options": [
+    "Santa Catarina",
+    "Paraíba",
+    "Bahia",
+    "Paraná"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-joinville"
+  },
+  {
+   "id": "deelstaat-van-stad-21",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "João Pessoa",
+   "question": "In welke deelstaat ligt João Pessoa?",
+   "answer": "Paraíba",
+   "options": [
+    "Piauí",
+    "Rio de Janeiro",
+    "Rio Grande do Norte",
+    "Paraíba"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-joao-pessoa"
+  },
+  {
+   "id": "deelstaat-van-stad-22",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Jundiaí",
+   "question": "In welke deelstaat ligt Jundiaí?",
+   "answer": "São Paulo",
+   "options": [
+    "Paraná",
+    "Acre",
+    "São Paulo",
+    "Bahia"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-jundiai"
+  },
+  {
+   "id": "deelstaat-van-stad-23",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Londrina",
+   "question": "In welke deelstaat ligt Londrina?",
+   "answer": "Paraná",
+   "options": [
+    "Alagoas",
+    "Paraná",
+    "Goiás",
+    "Amazonas"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-londrina"
+  },
+  {
+   "id": "deelstaat-van-stad-24",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Maceió",
+   "question": "In welke deelstaat ligt Maceió?",
+   "answer": "Alagoas",
+   "options": [
+    "Goiás",
+    "Rio Grande do Sul",
+    "Alagoas",
+    "Rio de Janeiro"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-maceio"
+  },
+  {
+   "id": "deelstaat-van-stad-25",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Manaus",
+   "question": "In welke deelstaat ligt Manaus?",
+   "answer": "Amazonas",
+   "options": [
+    "Ceará",
+    "Minas Gerais",
+    "Sergipe",
+    "Amazonas"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-manaus"
+  },
+  {
+   "id": "deelstaat-van-stad-26",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Natal",
+   "question": "In welke deelstaat ligt Natal?",
+   "answer": "Rio Grande do Norte",
+   "options": [
+    "Rio Grande do Sul",
+    "Pará",
+    "Rio Grande do Norte",
+    "São Paulo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-natal"
+  },
+  {
+   "id": "deelstaat-van-stad-27",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Niterói",
+   "question": "In welke deelstaat ligt Niterói?",
+   "answer": "Rio de Janeiro",
+   "options": [
+    "Maranhão",
+    "Rio de Janeiro",
+    "Pernambuco",
+    "Pará"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-niteroi"
+  },
+  {
+   "id": "deelstaat-van-stad-28",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Nova Iguaçu",
+   "question": "In welke deelstaat ligt Nova Iguaçu?",
+   "answer": "Rio de Janeiro",
+   "options": [
+    "Rio de Janeiro",
+    "Amazonas",
+    "Rio Grande do Sul",
+    "Espírito Santo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-nova-iguacu"
+  },
+  {
+   "id": "deelstaat-van-stad-29",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Novo Hamburgo",
+   "question": "In welke deelstaat ligt Novo Hamburgo?",
+   "answer": "Rio Grande do Sul",
+   "options": [
+    "Ceará",
+    "Rio Grande do Sul",
+    "Maranhão",
+    "Acre"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-novo-hamburgo"
+  },
+  {
+   "id": "deelstaat-van-stad-30",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Olinda",
+   "question": "In welke deelstaat ligt Olinda?",
+   "answer": "Pernambuco",
+   "options": [
+    "Rio de Janeiro",
+    "Mato Grosso do Sul",
+    "Rio Grande do Norte",
+    "Pernambuco"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-olinda"
+  },
+  {
+   "id": "deelstaat-van-stad-31",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Ribeirão Preto",
+   "question": "In welke deelstaat ligt Ribeirão Preto?",
+   "answer": "São Paulo",
+   "options": [
+    "Paraná",
+    "Tocantins",
+    "Mato Grosso",
+    "São Paulo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-ribeirao-preto"
+  },
+  {
+   "id": "deelstaat-van-stad-32",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Santo André",
+   "question": "In welke deelstaat ligt Santo André?",
+   "answer": "São Paulo",
+   "options": [
+    "São Paulo",
+    "Rio Grande do Norte",
+    "Rio Grande do Sul",
+    "Amapá"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-santo-andre"
+  },
+  {
+   "id": "deelstaat-van-stad-33",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Santos",
+   "question": "In welke deelstaat ligt Santos?",
+   "answer": "São Paulo",
+   "options": [
+    "Pernambuco",
+    "Mato Grosso",
+    "São Paulo",
+    "Federaal District"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-santos"
+  },
+  {
+   "id": "deelstaat-van-stad-34",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Sorocaba",
+   "question": "In welke deelstaat ligt Sorocaba?",
+   "answer": "São Paulo",
+   "options": [
+    "Ceará",
+    "São Paulo",
+    "Mato Grosso do Sul",
+    "Rio Grande do Sul"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sorocaba"
+  },
+  {
+   "id": "deelstaat-van-stad-35",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "São José dos Campos",
+   "question": "In welke deelstaat ligt São José dos Campos?",
+   "answer": "São Paulo",
+   "options": [
+    "Paraná",
+    "Roraima",
+    "Bahia",
+    "São Paulo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-jose-dos-campos"
+  },
+  {
+   "id": "deelstaat-van-stad-36",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "São José dos Pinhais",
+   "question": "In welke deelstaat ligt São José dos Pinhais?",
+   "answer": "Paraná",
+   "options": [
+    "Paraná",
+    "Ceará",
+    "Minas Gerais",
+    "Bahia"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-jose-dos-pinhais"
+  },
+  {
+   "id": "deelstaat-van-stad-37",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "São Luís",
+   "question": "In welke deelstaat ligt São Luís?",
+   "answer": "Maranhão",
+   "options": [
+    "Maranhão",
+    "Rio Grande do Sul",
+    "Espírito Santo",
+    "Rio de Janeiro"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-luis"
+  },
+  {
+   "id": "deelstaat-van-stad-38",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Teresina",
+   "question": "In welke deelstaat ligt Teresina?",
+   "answer": "Piauí",
+   "options": [
+    "Rondônia",
+    "Goiás",
+    "Piauí",
+    "Amapá"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-teresina"
+  },
+  {
+   "id": "deelstaat-van-stad-39",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Uberlândia",
+   "question": "In welke deelstaat ligt Uberlândia?",
+   "answer": "Minas Gerais",
+   "options": [
+    "Mato Grosso",
+    "Minas Gerais",
+    "Rio de Janeiro",
+    "Ceará"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-uberlandia"
+  },
+  {
+   "id": "deelstaat-van-stad-40",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Vila Velha",
+   "question": "In welke deelstaat ligt Vila Velha?",
+   "answer": "Amapá",
+   "options": [
+    "Tocantins",
+    "Amapá",
+    "São Paulo",
+    "Paraíba"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-vila-velha"
+  },
+  {
+   "id": "deelstaat-van-stad-41",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Vitória",
+   "question": "In welke deelstaat ligt Vitória?",
+   "answer": "Espírito Santo",
+   "options": [
+    "Rio Grande do Sul",
+    "Espírito Santo",
+    "Mato Grosso",
+    "Minas Gerais"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "deelstaat-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-vitoria"
+  }
+ ]
+}

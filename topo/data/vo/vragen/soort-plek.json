@@ -1,0 +1,9803 @@
+{
+ "version": 1,
+ "sjabloon": "soort-plek",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "soort-plek-1",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Pico da Neblina",
+   "question": "Wat voor soort plek is Pico da Neblina?",
+   "answer": "berg",
+   "options": [
+    "plateau",
+    "stuwdam",
+    "vlakte",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-pico-da-neblina"
+  },
+  {
+   "id": "soort-plek-2",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Amazonegebied",
+   "question": "Wat voor soort plek is Amazonegebied?",
+   "answer": "bioom",
+   "options": [
+    "bioom",
+    "delta",
+    "stuwdam",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25B",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-amazonegebied"
+  },
+  {
+   "id": "soort-plek-3",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Belo Montedam",
+   "question": "Wat voor soort plek is Belo Montedam?",
+   "answer": "stuwdam",
+   "options": [
+    "oceaan",
+    "kanaal",
+    "regio",
+    "stuwdam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "V-D1"
+   ],
+   "leerjaren": {
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-stuwdam-belo-montedam"
+  },
+  {
+   "id": "soort-plek-4",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Caatinga",
+   "question": "Wat voor soort plek is Caatinga?",
+   "answer": "bioom",
+   "options": [
+    "bioom",
+    "berg",
+    "rivier",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-caatinga"
+  },
+  {
+   "id": "soort-plek-5",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Centraal-West",
+   "question": "Wat voor soort plek is Centraal-West?",
+   "answer": "regio",
+   "options": [
+    "vulkaan",
+    "kanaal",
+    "regio",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-centraal-west"
+  },
+  {
+   "id": "soort-plek-6",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Cerrado",
+   "question": "Wat voor soort plek is Cerrado?",
+   "answer": "bioom",
+   "options": [
+    "zee",
+    "bioom",
+    "delta",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-cerrado"
+  },
+  {
+   "id": "soort-plek-7",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Itaipudam",
+   "question": "Wat voor soort plek is Itaipudam?",
+   "answer": "stuwdam",
+   "options": [
+    "stuwdam",
+    "waterkering",
+    "regio",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-stuwdam-itaipudam"
+  },
+  {
+   "id": "soort-plek-8",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Mata Atlântica",
+   "question": "Wat voor soort plek is Mata Atlântica?",
+   "answer": "bioom",
+   "options": [
+    "regio",
+    "stuwdam",
+    "golf",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-mata-atlantica"
+  },
+  {
+   "id": "soort-plek-9",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Noord",
+   "question": "Wat voor soort plek is Noord?",
+   "answer": "regio",
+   "options": [
+    "zee",
+    "regio",
+    "gebergte",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-noord"
+  },
+  {
+   "id": "soort-plek-10",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Noordoost",
+   "question": "Wat voor soort plek is Noordoost?",
+   "answer": "regio",
+   "options": [
+    "eilandengroep",
+    "regio",
+    "gebergte",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-noordoost"
+  },
+  {
+   "id": "soort-plek-11",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Pampa",
+   "question": "Wat voor soort plek is Pampa?",
+   "answer": "bioom",
+   "options": [
+    "schiereiland",
+    "woestijn",
+    "oceaan",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-pampa"
+  },
+  {
+   "id": "soort-plek-12",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Pantanal",
+   "question": "Wat voor soort plek is Pantanal?",
+   "answer": "bioom",
+   "options": [
+    "bioom",
+    "polder",
+    "regio",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-bioom-pantanal"
+  },
+  {
+   "id": "soort-plek-13",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Sertão",
+   "question": "Wat voor soort plek is Sertão?",
+   "answer": "regio",
+   "options": [
+    "waterkering",
+    "regio",
+    "golf",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-sertao"
+  },
+  {
+   "id": "soort-plek-14",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zona da Mata",
+   "question": "Wat voor soort plek is Zona da Mata?",
+   "answer": "regio",
+   "options": [
+    "kanaal",
+    "regio",
+    "zee",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-zona-da-mata"
+  },
+  {
+   "id": "soort-plek-15",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zuid",
+   "question": "Wat voor soort plek is Zuid?",
+   "answer": "regio",
+   "options": [
+    "berg",
+    "waterkering",
+    "regio",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-zuid"
+  },
+  {
+   "id": "soort-plek-16",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zuidoost",
+   "question": "Wat voor soort plek is Zuidoost?",
+   "answer": "regio",
+   "options": [
+    "golf",
+    "regio",
+    "zee",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-regio-zuidoost"
+  },
+  {
+   "id": "soort-plek-17",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Alpen",
+   "question": "Wat voor soort plek is Alpen?",
+   "answer": "gebergte",
+   "options": [
+    "delta",
+    "bioom",
+    "gebergte",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-alpen"
+  },
+  {
+   "id": "soort-plek-18",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Andes",
+   "question": "Wat voor soort plek is Andes?",
+   "answer": "gebergte",
+   "options": [
+    "kanaal",
+    "waterkering",
+    "gebergte",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "H-D1",
+    "KD25A",
+    "V-C1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-andes"
+  },
+  {
+   "id": "soort-plek-19",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Arabisch schiereiland",
+   "question": "Wat voor soort plek is Arabisch schiereiland?",
+   "answer": "schiereiland",
+   "options": [
+    "stuwdam",
+    "eiland",
+    "polder",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "schiereiland-arabisch-schiereiland"
+  },
+  {
+   "id": "soort-plek-20",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ardennen",
+   "question": "Wat voor soort plek is Ardennen?",
+   "answer": "gebergte",
+   "options": [
+    "eilandengroep",
+    "gebergte",
+    "zee",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "gebergte-ardennen"
+  },
+  {
+   "id": "soort-plek-21",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Britse Eilanden",
+   "question": "Wat voor soort plek is Britse Eilanden?",
+   "answer": "eilandengroep",
+   "options": [
+    "delta",
+    "eilandengroep",
+    "zee",
+    "zeestraat"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-britse-eilanden"
+  },
+  {
+   "id": "soort-plek-22",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Canadese Arctische Eilanden",
+   "question": "Wat voor soort plek is Canadese Arctische Eilanden?",
+   "answer": "eilandengroep",
+   "options": [
+    "eilandengroep",
+    "zee",
+    "kanaal",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-canadese-arctische-eilanden"
+  },
+  {
+   "id": "soort-plek-23",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Carolinen",
+   "question": "Wat voor soort plek is Carolinen?",
+   "answer": "eilandengroep",
+   "options": [
+    "waterkering",
+    "golf",
+    "rivier",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-carolinen"
+  },
+  {
+   "id": "soort-plek-24",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Chimborazo",
+   "question": "Wat voor soort plek is Chimborazo?",
+   "answer": "vulkaan",
+   "options": [
+    "vulkaan",
+    "woestijn",
+    "eiland",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-chimborazo"
+  },
+  {
+   "id": "soort-plek-25",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Chinees Laagland",
+   "question": "Wat voor soort plek is Chinees Laagland?",
+   "answer": "vlakte",
+   "options": [
+    "plateau",
+    "vlakte",
+    "rivier",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vlakte-chinees-laagland"
+  },
+  {
+   "id": "soort-plek-26",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Cotopaxi",
+   "question": "Wat voor soort plek is Cotopaxi?",
+   "answer": "vulkaan",
+   "options": [
+    "meer",
+    "zeestraat",
+    "vulkaan",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-cotopaxi"
+  },
+  {
+   "id": "soort-plek-27",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Filipijnen",
+   "question": "Wat voor soort plek is Filipijnen?",
+   "answer": "eilandengroep",
+   "options": [
+    "stuwdam",
+    "eilandengroep",
+    "golf",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-filipijnen"
+  },
+  {
+   "id": "soort-plek-28",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Fuji",
+   "question": "Wat voor soort plek is Fuji?",
+   "answer": "vulkaan",
+   "options": [
+    "schiereiland",
+    "eilandengroep",
+    "vulkaan",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-fuji"
+  },
+  {
+   "id": "soort-plek-29",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Gobi",
+   "question": "Wat voor soort plek is Gobi?",
+   "answer": "woestijn",
+   "options": [
+    "woestijn",
+    "vulkaan",
+    "golf",
+    "zeestraat"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "woestijn-gobi"
+  },
+  {
+   "id": "soort-plek-30",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Great Plains",
+   "question": "Wat voor soort plek is Great Plains?",
+   "answer": "vlakte",
+   "options": [
+    "plateau",
+    "rivier",
+    "meer",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vlakte-great-plains"
+  },
+  {
+   "id": "soort-plek-31",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Groenland",
+   "question": "Wat voor soort plek is Groenland?",
+   "answer": "eiland",
+   "options": [
+    "eiland",
+    "eilandengroep",
+    "vlakte",
+    "oceaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eiland-groenland"
+  },
+  {
+   "id": "soort-plek-32",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Groot Australisch Scheidingsgebergte",
+   "question": "Wat voor soort plek is Groot Australisch Scheidingsgebergte?",
+   "answer": "gebergte",
+   "options": [
+    "vlakte",
+    "gebergte",
+    "eiland",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-groot-australisch-scheidingsgebergte"
+  },
+  {
+   "id": "soort-plek-33",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Grote Soenda-eilanden",
+   "question": "Wat voor soort plek is Grote Soenda-eilanden?",
+   "answer": "eilandengroep",
+   "options": [
+    "eilandengroep",
+    "stuwdam",
+    "delta",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-grote-soenda-eilanden"
+  },
+  {
+   "id": "soort-plek-34",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Hawaii",
+   "question": "Wat voor soort plek is Hawaii?",
+   "answer": "eilandengroep",
+   "options": [
+    "rivier",
+    "zeestraat",
+    "eilandengroep",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "eilandengroep-hawaii"
+  },
+  {
+   "id": "soort-plek-35",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Hawaï",
+   "question": "Wat voor soort plek is Hawaï?",
+   "answer": "eilandengroep",
+   "options": [
+    "rivier",
+    "regio",
+    "zeestraat",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-hawai"
+  },
+  {
+   "id": "soort-plek-36",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Hawaïaanse eilanden",
+   "question": "Wat voor soort plek is Hawaïaanse eilanden?",
+   "answer": "eilandengroep",
+   "options": [
+    "eilandengroep",
+    "kanaal",
+    "regio",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-hawaiaanse-eilanden"
+  },
+  {
+   "id": "soort-plek-37",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Himalaya",
+   "question": "Wat voor soort plek is Himalaya?",
+   "answer": "gebergte",
+   "options": [
+    "rivier",
+    "zeestraat",
+    "waterkering",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-himalaya"
+  },
+  {
+   "id": "soort-plek-38",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Huascarán",
+   "question": "Wat voor soort plek is Huascarán?",
+   "answer": "berg",
+   "options": [
+    "gebergte",
+    "berg",
+    "schiereiland",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-huascaran"
+  },
+  {
+   "id": "soort-plek-39",
+   "kind": "fact",
+   "category": "soort",
+   "name": "IJsland (eiland)",
+   "question": "Wat voor soort plek is IJsland (eiland)?",
+   "answer": "eiland",
+   "options": [
+    "eiland",
+    "rivier",
+    "zee",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eiland-ijsland-eiland"
+  },
+  {
+   "id": "soort-plek-40",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Iberisch Schiereiland",
+   "question": "Wat voor soort plek is Iberisch Schiereiland?",
+   "answer": "plateau",
+   "options": [
+    "gebergte",
+    "plateau",
+    "rivier",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "plateau-iberisch-schiereiland"
+  },
+  {
+   "id": "soort-plek-41",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Indisch subcontinent",
+   "question": "Wat voor soort plek is Indisch subcontinent?",
+   "answer": "schiereiland",
+   "options": [
+    "schiereiland",
+    "golf",
+    "meer",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "schiereiland-indisch-subcontinent"
+  },
+  {
+   "id": "soort-plek-42",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Indische Archipel",
+   "question": "Wat voor soort plek is Indische Archipel?",
+   "answer": "eilandengroep",
+   "options": [
+    "plateau",
+    "oceaan",
+    "eilandengroep",
+    "zeestraat"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-indische-archipel"
+  },
+  {
+   "id": "soort-plek-43",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Indochina (schiereiland)",
+   "question": "Wat voor soort plek is Indochina (schiereiland)?",
+   "answer": "schiereiland",
+   "options": [
+    "stuwdam",
+    "eilandengroep",
+    "vlakte",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "schiereiland-indochina-schiereiland"
+  },
+  {
+   "id": "soort-plek-44",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Japan",
+   "question": "Wat voor soort plek is Japan?",
+   "answer": "eilandengroep",
+   "options": [
+    "plateau",
+    "polder",
+    "vulkaan",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-japan"
+  },
+  {
+   "id": "soort-plek-45",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Java",
+   "question": "Wat voor soort plek is Java?",
+   "answer": "eiland",
+   "options": [
+    "schiereiland",
+    "bioom",
+    "eiland",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "eiland-java"
+  },
+  {
+   "id": "soort-plek-46",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Kaukasus",
+   "question": "Wat voor soort plek is Kaukasus?",
+   "answer": "gebergte",
+   "options": [
+    "gebergte",
+    "golf",
+    "oceaan",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-kaukasus"
+  },
+  {
+   "id": "soort-plek-47",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Kazachse Steppe",
+   "question": "Wat voor soort plek is Kazachse Steppe?",
+   "answer": "vlakte",
+   "options": [
+    "kanaal",
+    "plateau",
+    "zee",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vlakte-kazachse-steppe"
+  },
+  {
+   "id": "soort-plek-48",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Kiribati",
+   "question": "Wat voor soort plek is Kiribati?",
+   "answer": "eilandengroep",
+   "options": [
+    "eilandengroep",
+    "eiland",
+    "meer",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-kiribati"
+  },
+  {
+   "id": "soort-plek-49",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Line-eilanden",
+   "question": "Wat voor soort plek is Line-eilanden?",
+   "answer": "eilandengroep",
+   "options": [
+    "stuwdam",
+    "vulkaan",
+    "rivier",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-line-eilanden"
+  },
+  {
+   "id": "soort-plek-50",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Madagaskar",
+   "question": "Wat voor soort plek is Madagaskar?",
+   "answer": "eiland",
+   "options": [
+    "stuwdam",
+    "gebergte",
+    "meer",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eiland-madagaskar"
+  },
+  {
+   "id": "soort-plek-51",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Matterhorn",
+   "question": "Wat voor soort plek is Matterhorn?",
+   "answer": "berg",
+   "options": [
+    "berg",
+    "eilandengroep",
+    "polder",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-matterhorn"
+  },
+  {
+   "id": "soort-plek-52",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Melanesië",
+   "question": "Wat voor soort plek is Melanesië?",
+   "answer": "eilandengroep",
+   "options": [
+    "zee",
+    "eilandengroep",
+    "delta",
+    "stuwdam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-melanesie"
+  },
+  {
+   "id": "soort-plek-53",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Micronesië",
+   "question": "Wat voor soort plek is Micronesië?",
+   "answer": "eilandengroep",
+   "options": [
+    "berg",
+    "rivier",
+    "eilandengroep",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-micronesie"
+  },
+  {
+   "id": "soort-plek-54",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Midden-Oosten",
+   "question": "Wat voor soort plek is Midden-Oosten?",
+   "answer": "regio",
+   "options": [
+    "plateau",
+    "vulkaan",
+    "regio",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "regio-midden-oosten"
+  },
+  {
+   "id": "soort-plek-55",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Molukken",
+   "question": "Wat voor soort plek is Molukken?",
+   "answer": "eilandengroep",
+   "options": [
+    "eilandengroep",
+    "regio",
+    "kanaal",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "eilandengroep-molukken"
+  },
+  {
+   "id": "soort-plek-56",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Mount Everest",
+   "question": "Wat voor soort plek is Mount Everest?",
+   "answer": "berg",
+   "options": [
+    "delta",
+    "vulkaan",
+    "vlakte",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-mount-everest"
+  },
+  {
+   "id": "soort-plek-57",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Nieuw-Zeeland",
+   "question": "Wat voor soort plek is Nieuw-Zeeland?",
+   "answer": "eilandengroep",
+   "options": [
+    "golf",
+    "delta",
+    "eilandengroep",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-nieuw-zeeland"
+  },
+  {
+   "id": "soort-plek-58",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Noord-Europese Laagvlakte",
+   "question": "Wat voor soort plek is Noord-Europese Laagvlakte?",
+   "answer": "vlakte",
+   "options": [
+    "zeestraat",
+    "schiereiland",
+    "vlakte",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vlakte-noord-europese-laagvlakte"
+  },
+  {
+   "id": "soort-plek-59",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Oeral",
+   "question": "Wat voor soort plek is Oeral?",
+   "answer": "gebergte",
+   "options": [
+    "vulkaan",
+    "gebergte",
+    "eiland",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-oeral"
+  },
+  {
+   "id": "soort-plek-60",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ojos del Salado",
+   "question": "Wat voor soort plek is Ojos del Salado?",
+   "answer": "vulkaan",
+   "options": [
+    "zeestraat",
+    "vulkaan",
+    "polder",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-ojos-del-salado"
+  },
+  {
+   "id": "soort-plek-61",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Pico de Orizaba",
+   "question": "Wat voor soort plek is Pico de Orizaba?",
+   "answer": "vulkaan",
+   "options": [
+    "vulkaan",
+    "zee",
+    "vlakte",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-pico-de-orizaba"
+  },
+  {
+   "id": "soort-plek-62",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Polynesië",
+   "question": "Wat voor soort plek is Polynesië?",
+   "answer": "eilandengroep",
+   "options": [
+    "eilandengroep",
+    "regio",
+    "gebergte",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-polynesie"
+  },
+  {
+   "id": "soort-plek-63",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Pyreneeën",
+   "question": "Wat voor soort plek is Pyreneeën?",
+   "answer": "gebergte",
+   "options": [
+    "bioom",
+    "woestijn",
+    "gebergte",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-pyreneeen"
+  },
+  {
+   "id": "soort-plek-64",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Rocky Mountains",
+   "question": "Wat voor soort plek is Rocky Mountains?",
+   "answer": "gebergte",
+   "options": [
+    "bioom",
+    "berg",
+    "zee",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-rocky-mountains"
+  },
+  {
+   "id": "soort-plek-65",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ruhrgebied",
+   "question": "Wat voor soort plek is Ruhrgebied?",
+   "answer": "regio",
+   "options": [
+    "regio",
+    "stuwdam",
+    "kanaal",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "regio-ruhrgebied"
+  },
+  {
+   "id": "soort-plek-66",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Sahara",
+   "question": "Wat voor soort plek is Sahara?",
+   "answer": "woestijn",
+   "options": [
+    "zee",
+    "vulkaan",
+    "plateau",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "woestijn-sahara"
+  },
+  {
+   "id": "soort-plek-67",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Scandinavië",
+   "question": "Wat voor soort plek is Scandinavië?",
+   "answer": "schiereiland",
+   "options": [
+    "schiereiland",
+    "golf",
+    "vulkaan",
+    "kanaal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "schiereiland-scandinavie"
+  },
+  {
+   "id": "soort-plek-68",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Scandinavië",
+   "question": "Wat voor soort plek is Scandinavië?",
+   "answer": "regio",
+   "options": [
+    "meer",
+    "gebergte",
+    "regio",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "regio-scandinavie"
+  },
+  {
+   "id": "soort-plek-69",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Siberië",
+   "question": "Wat voor soort plek is Siberië?",
+   "answer": "regio",
+   "options": [
+    "stuwdam",
+    "regio",
+    "berg",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "regio-siberie"
+  },
+  {
+   "id": "soort-plek-70",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Sicilië",
+   "question": "Wat voor soort plek is Sicilië?",
+   "answer": "eiland",
+   "options": [
+    "plateau",
+    "eiland",
+    "vulkaan",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "eiland-sicilie"
+  },
+  {
+   "id": "soort-plek-71",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tibetaans Hoogland",
+   "question": "Wat voor soort plek is Tibetaans Hoogland?",
+   "answer": "plateau",
+   "options": [
+    "plateau",
+    "bioom",
+    "zeestraat",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "plateau-tibetaans-hoogland"
+  },
+  {
+   "id": "soort-plek-72",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tiensjan",
+   "question": "Wat voor soort plek is Tiensjan?",
+   "answer": "gebergte",
+   "options": [
+    "bioom",
+    "vlakte",
+    "gebergte",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "gebergte-tiensjan"
+  },
+  {
+   "id": "soort-plek-73",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Vesuvius",
+   "question": "Wat voor soort plek is Vesuvius?",
+   "answer": "vulkaan",
+   "options": [
+    "stuwdam",
+    "rivier",
+    "zee",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-vesuvius"
+  },
+  {
+   "id": "soort-plek-74",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Vlaanderen",
+   "question": "Wat voor soort plek is Vlaanderen?",
+   "answer": "regio",
+   "options": [
+    "regio",
+    "stuwdam",
+    "zee",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "regio-vlaanderen"
+  },
+  {
+   "id": "soort-plek-75",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Wallonië",
+   "question": "Wat voor soort plek is Wallonië?",
+   "answer": "regio",
+   "options": [
+    "zee",
+    "regio",
+    "waterkering",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "regio-wallonie"
+  },
+  {
+   "id": "soort-plek-76",
+   "kind": "fact",
+   "category": "soort",
+   "name": "West-Indië",
+   "question": "Wat voor soort plek is West-Indië?",
+   "answer": "eilandengroep",
+   "options": [
+    "eiland",
+    "zeestraat",
+    "woestijn",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "eilandengroep-west-indie"
+  },
+  {
+   "id": "soort-plek-77",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Western Plateau",
+   "question": "Wat voor soort plek is Western Plateau?",
+   "answer": "plateau",
+   "options": [
+    "plateau",
+    "polder",
+    "oceaan",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "plateau-western-plateau"
+  },
+  {
+   "id": "soort-plek-78",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zugspitze",
+   "question": "Wat voor soort plek is Zugspitze?",
+   "answer": "berg",
+   "options": [
+    "gebergte",
+    "stuwdam",
+    "berg",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-zugspitze"
+  },
+  {
+   "id": "soort-plek-79",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Colorado",
+   "question": "Wat voor soort plek is Colorado?",
+   "answer": "rivier",
+   "options": [
+    "meer",
+    "rivier",
+    "bioom",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-B1",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "rivier-colorado"
+  },
+  {
+   "id": "soort-plek-80",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Rio Grande",
+   "question": "Wat voor soort plek is Rio Grande?",
+   "answer": "rivier",
+   "options": [
+    "kanaal",
+    "eilandengroep",
+    "rivier",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-B1",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "rivier-rio-grande"
+  },
+  {
+   "id": "soort-plek-81",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ameland",
+   "question": "Wat voor soort plek is Ameland?",
+   "answer": "eiland",
+   "options": [
+    "polder",
+    "kanaal",
+    "gebergte",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-eiland-ameland"
+  },
+  {
+   "id": "soort-plek-82",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Amsterdam-Rijnkanaal",
+   "question": "Wat voor soort plek is Amsterdam-Rijnkanaal?",
+   "answer": "kanaal",
+   "options": [
+    "regio",
+    "waterkering",
+    "kanaal",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-kanaal-amsterdam-rijnkanaal"
+  },
+  {
+   "id": "soort-plek-83",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Haarlemmermeer",
+   "question": "Wat voor soort plek is Haarlemmermeer?",
+   "answer": "polder",
+   "options": [
+    "polder",
+    "stuwdam",
+    "oceaan",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-polder-haarlemmermeer"
+  },
+  {
+   "id": "soort-plek-84",
+   "kind": "fact",
+   "category": "soort",
+   "name": "IJssel",
+   "question": "Wat voor soort plek is IJssel?",
+   "answer": "rivier",
+   "options": [
+    "meer",
+    "kanaal",
+    "rivier",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-ijssel"
+  },
+  {
+   "id": "soort-plek-85",
+   "kind": "fact",
+   "category": "soort",
+   "name": "IJsselmeer",
+   "question": "Wat voor soort plek is IJsselmeer?",
+   "answer": "meer",
+   "options": [
+    "rivier",
+    "meer",
+    "golf",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-meer-ijsselmeer"
+  },
+  {
+   "id": "soort-plek-86",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Lek",
+   "question": "Wat voor soort plek is Lek?",
+   "answer": "rivier",
+   "options": [
+    "regio",
+    "polder",
+    "gebergte",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-lek"
+  },
+  {
+   "id": "soort-plek-87",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Maas",
+   "question": "Wat voor soort plek is Maas?",
+   "answer": "rivier",
+   "options": [
+    "eilandengroep",
+    "rivier",
+    "zeestraat",
+    "oceaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-maas"
+  },
+  {
+   "id": "soort-plek-88",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Markermeer",
+   "question": "Wat voor soort plek is Markermeer?",
+   "answer": "meer",
+   "options": [
+    "kanaal",
+    "zeestraat",
+    "golf",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-meer-markermeer"
+  },
+  {
+   "id": "soort-plek-89",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Neder-Rijn",
+   "question": "Wat voor soort plek is Neder-Rijn?",
+   "answer": "rivier",
+   "options": [
+    "golf",
+    "zee",
+    "rivier",
+    "stuwdam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-neder-rijn"
+  },
+  {
+   "id": "soort-plek-90",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Nieuwe Waterweg",
+   "question": "Wat voor soort plek is Nieuwe Waterweg?",
+   "answer": "kanaal",
+   "options": [
+    "kanaal",
+    "vlakte",
+    "rivier",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-kanaal-nieuwe-waterweg"
+  },
+  {
+   "id": "soort-plek-91",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Noordzeekanaal",
+   "question": "Wat voor soort plek is Noordzeekanaal?",
+   "answer": "kanaal",
+   "options": [
+    "plateau",
+    "kanaal",
+    "schiereiland",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-kanaal-noordzeekanaal"
+  },
+  {
+   "id": "soort-plek-92",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Randstad",
+   "question": "Wat voor soort plek is Randstad?",
+   "answer": "regio",
+   "options": [
+    "woestijn",
+    "regio",
+    "rivier",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-regio-randstad"
+  },
+  {
+   "id": "soort-plek-93",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Rijnmond",
+   "question": "Wat voor soort plek is Rijnmond?",
+   "answer": "regio",
+   "options": [
+    "kanaal",
+    "vlakte",
+    "meer",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-regio-rijnmond"
+  },
+  {
+   "id": "soort-plek-94",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Schiermonnikoog",
+   "question": "Wat voor soort plek is Schiermonnikoog?",
+   "answer": "eiland",
+   "options": [
+    "waterkering",
+    "bioom",
+    "golf",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-eiland-schiermonnikoog"
+  },
+  {
+   "id": "soort-plek-95",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Terschelling",
+   "question": "Wat voor soort plek is Terschelling?",
+   "answer": "eiland",
+   "options": [
+    "plateau",
+    "zeestraat",
+    "eiland",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-eiland-terschelling"
+  },
+  {
+   "id": "soort-plek-96",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Texel",
+   "question": "Wat voor soort plek is Texel?",
+   "answer": "eiland",
+   "options": [
+    "delta",
+    "regio",
+    "zeestraat",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-eiland-texel"
+  },
+  {
+   "id": "soort-plek-97",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Twente",
+   "question": "Wat voor soort plek is Twente?",
+   "answer": "regio",
+   "options": [
+    "bioom",
+    "regio",
+    "plateau",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-regio-twente"
+  },
+  {
+   "id": "soort-plek-98",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Vaalserberg",
+   "question": "Wat voor soort plek is Vaalserberg?",
+   "answer": "berg",
+   "options": [
+    "rivier",
+    "regio",
+    "berg",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-berg-vaalserberg"
+  },
+  {
+   "id": "soort-plek-99",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Veluwe",
+   "question": "Wat voor soort plek is Veluwe?",
+   "answer": "regio",
+   "options": [
+    "regio",
+    "gebergte",
+    "delta",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-regio-veluwe"
+  },
+  {
+   "id": "soort-plek-100",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Vlieland",
+   "question": "Wat voor soort plek is Vlieland?",
+   "answer": "eiland",
+   "options": [
+    "kanaal",
+    "eiland",
+    "regio",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-eiland-vlieland"
+  },
+  {
+   "id": "soort-plek-101",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Waal",
+   "question": "Wat voor soort plek is Waal?",
+   "answer": "rivier",
+   "options": [
+    "delta",
+    "zeestraat",
+    "rivier",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-waal"
+  },
+  {
+   "id": "soort-plek-102",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Waddenzee",
+   "question": "Wat voor soort plek is Waddenzee?",
+   "answer": "zee",
+   "options": [
+    "gebergte",
+    "eilandengroep",
+    "zee",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-zee-waddenzee"
+  },
+  {
+   "id": "soort-plek-103",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zeeuws-Vlaanderen",
+   "question": "Wat voor soort plek is Zeeuws-Vlaanderen?",
+   "answer": "regio",
+   "options": [
+    "eilandengroep",
+    "vulkaan",
+    "regio",
+    "oceaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-regio-zeeuws-vlaanderen"
+  },
+  {
+   "id": "soort-plek-104",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Achterhoek",
+   "question": "Wat voor soort plek is Achterhoek?",
+   "answer": "regio",
+   "options": [
+    "regio",
+    "schiereiland",
+    "delta",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   },
+   "itemId": "nl-regio-achterhoek"
+  },
+  {
+   "id": "soort-plek-105",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Bergsche Maas",
+   "question": "Wat voor soort plek is Bergsche Maas?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "plateau",
+    "bioom",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-bergsche-maas"
+  },
+  {
+   "id": "soort-plek-106",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Betuwe",
+   "question": "Wat voor soort plek is Betuwe?",
+   "answer": "regio",
+   "options": [
+    "plateau",
+    "regio",
+    "berg",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "nl-regio-betuwe"
+  },
+  {
+   "id": "soort-plek-107",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Brainport Eindhoven",
+   "question": "Wat voor soort plek is Brainport Eindhoven?",
+   "answer": "regio",
+   "options": [
+    "delta",
+    "eilandengroep",
+    "regio",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25C",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-regio-brainport-eindhoven"
+  },
+  {
+   "id": "soort-plek-108",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Flevopolder",
+   "question": "Wat voor soort plek is Flevopolder?",
+   "answer": "polder",
+   "options": [
+    "rivier",
+    "polder",
+    "zeestraat",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-polder-flevopolder"
+  },
+  {
+   "id": "soort-plek-109",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Grevelingen",
+   "question": "Wat voor soort plek is Grevelingen?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "zee",
+    "polder",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-meer-grevelingen"
+  },
+  {
+   "id": "soort-plek-110",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Groene Hart",
+   "question": "Wat voor soort plek is Groene Hart?",
+   "answer": "regio",
+   "options": [
+    "zee",
+    "eiland",
+    "regio",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E2",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-regio-groene-hart"
+  },
+  {
+   "id": "soort-plek-111",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Haringvlietdam",
+   "question": "Wat voor soort plek is Haringvlietdam?",
+   "answer": "waterkering",
+   "options": [
+    "gebergte",
+    "delta",
+    "rivier",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-waterkering-haringvlietdam"
+  },
+  {
+   "id": "soort-plek-112",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Het Gooi",
+   "question": "Wat voor soort plek is Het Gooi?",
+   "answer": "regio",
+   "options": [
+    "stuwdam",
+    "polder",
+    "kanaal",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   },
+   "itemId": "nl-regio-het-gooi"
+  },
+  {
+   "id": "soort-plek-113",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Hondsrug",
+   "question": "Wat voor soort plek is Hondsrug?",
+   "answer": "regio",
+   "options": [
+    "regio",
+    "stuwdam",
+    "eiland",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   },
+   "itemId": "nl-regio-hondsrug"
+  },
+  {
+   "id": "soort-plek-114",
+   "kind": "fact",
+   "category": "soort",
+   "name": "IJsselmeergebied",
+   "question": "Wat voor soort plek is IJsselmeergebied?",
+   "answer": "regio",
+   "options": [
+    "stuwdam",
+    "rivier",
+    "regio",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-regio-ijsselmeergebied"
+  },
+  {
+   "id": "soort-plek-115",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Lauwersmeer",
+   "question": "Wat voor soort plek is Lauwersmeer?",
+   "answer": "meer",
+   "options": [
+    "vulkaan",
+    "meer",
+    "polder",
+    "kanaal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-meer-lauwersmeer"
+  },
+  {
+   "id": "soort-plek-116",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Maeslantkering",
+   "question": "Wat voor soort plek is Maeslantkering?",
+   "answer": "waterkering",
+   "options": [
+    "waterkering",
+    "vlakte",
+    "polder",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-waterkering-maeslantkering"
+  },
+  {
+   "id": "soort-plek-117",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Noordoostpolder",
+   "question": "Wat voor soort plek is Noordoostpolder?",
+   "answer": "polder",
+   "options": [
+    "polder",
+    "oceaan",
+    "gebergte",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-polder-noordoostpolder"
+  },
+  {
+   "id": "soort-plek-118",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Oosterscheldekering",
+   "question": "Wat voor soort plek is Oosterscheldekering?",
+   "answer": "waterkering",
+   "options": [
+    "zeestraat",
+    "bioom",
+    "plateau",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-waterkering-oosterscheldekering"
+  },
+  {
+   "id": "soort-plek-119",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Pannerdensch Kanaal",
+   "question": "Wat voor soort plek is Pannerdensch Kanaal?",
+   "answer": "rivier",
+   "options": [
+    "kanaal",
+    "rivier",
+    "eiland",
+    "zeestraat"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-rivier-pannerdensch-kanaal"
+  },
+  {
+   "id": "soort-plek-120",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Peel",
+   "question": "Wat voor soort plek is Peel?",
+   "answer": "regio",
+   "options": [
+    "woestijn",
+    "polder",
+    "zeestraat",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   },
+   "itemId": "nl-regio-peel"
+  },
+  {
+   "id": "soort-plek-121",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Volkerak",
+   "question": "Wat voor soort plek is Volkerak?",
+   "answer": "meer",
+   "options": [
+    "vlakte",
+    "kanaal",
+    "stuwdam",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-meer-volkerak"
+  },
+  {
+   "id": "soort-plek-122",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Westland",
+   "question": "Wat voor soort plek is Westland?",
+   "answer": "regio",
+   "options": [
+    "eiland",
+    "delta",
+    "regio",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25B",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2,
+     3
+    ]
+   },
+   "itemId": "nl-regio-westland"
+  },
+  {
+   "id": "soort-plek-123",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zuid-Limburg",
+   "question": "Wat voor soort plek is Zuid-Limburg?",
+   "answer": "regio",
+   "options": [
+    "regio",
+    "eiland",
+    "oceaan",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   },
+   "itemId": "nl-regio-zuid-limburg"
+  },
+  {
+   "id": "soort-plek-124",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zuidwestelijke Delta",
+   "question": "Wat voor soort plek is Zuidwestelijke Delta?",
+   "answer": "delta",
+   "options": [
+    "berg",
+    "delta",
+    "vlakte",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "nl-delta-zuidwestelijke-delta"
+  },
+  {
+   "id": "soort-plek-125",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Alakol",
+   "question": "Wat voor soort plek is Alakol?",
+   "answer": "meer",
+   "options": [
+    "vlakte",
+    "meer",
+    "plateau",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-alakol"
+  },
+  {
+   "id": "soort-plek-126",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Albertmeer",
+   "question": "Wat voor soort plek is Albertmeer?",
+   "answer": "meer",
+   "options": [
+    "berg",
+    "zeestraat",
+    "delta",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-albertmeer"
+  },
+  {
+   "id": "soort-plek-127",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Amadjuak Lake",
+   "question": "Wat voor soort plek is Amadjuak Lake?",
+   "answer": "meer",
+   "options": [
+    "regio",
+    "meer",
+    "waterkering",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-amadjuak-lake"
+  },
+  {
+   "id": "soort-plek-128",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Amazone",
+   "question": "Wat voor soort plek is Amazone?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "meer",
+    "schiereiland",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-amazone"
+  },
+  {
+   "id": "soort-plek-129",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Amoer",
+   "question": "Wat voor soort plek is Amoer?",
+   "answer": "rivier",
+   "options": [
+    "eilandengroep",
+    "polder",
+    "zee",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-amoer"
+  },
+  {
+   "id": "soort-plek-130",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Arabische Zee",
+   "question": "Wat voor soort plek is Arabische Zee?",
+   "answer": "zee",
+   "options": [
+    "eilandengroep",
+    "eiland",
+    "berg",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-arabische-zee"
+  },
+  {
+   "id": "soort-plek-131",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Araguaia",
+   "question": "Wat voor soort plek is Araguaia?",
+   "answer": "rivier",
+   "options": [
+    "delta",
+    "rivier",
+    "zee",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-araguaia"
+  },
+  {
+   "id": "soort-plek-132",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Athabascameer",
+   "question": "Wat voor soort plek is Athabascameer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "gebergte",
+    "schiereiland",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-athabascameer"
+  },
+  {
+   "id": "soort-plek-133",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Atlantische Oceaan",
+   "question": "Wat voor soort plek is Atlantische Oceaan?",
+   "answer": "oceaan",
+   "options": [
+    "woestijn",
+    "schiereiland",
+    "bioom",
+    "oceaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "oceaan-atlantische-oceaan"
+  },
+  {
+   "id": "soort-plek-134",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Baikalmeer",
+   "question": "Wat voor soort plek is Baikalmeer?",
+   "answer": "meer",
+   "options": [
+    "gebergte",
+    "regio",
+    "meer",
+    "oceaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-baikalmeer"
+  },
+  {
+   "id": "soort-plek-135",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Baker Lake",
+   "question": "Wat voor soort plek is Baker Lake?",
+   "answer": "meer",
+   "options": [
+    "berg",
+    "meer",
+    "stuwdam",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-baker-lake"
+  },
+  {
+   "id": "soort-plek-136",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Balatonmeer",
+   "question": "Wat voor soort plek is Balatonmeer?",
+   "answer": "meer",
+   "options": [
+    "eiland",
+    "zeestraat",
+    "waterkering",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-balatonmeer"
+  },
+  {
+   "id": "soort-plek-137",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Balkasjmeer",
+   "question": "Wat voor soort plek is Balkasjmeer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "bioom",
+    "zeestraat",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-balkasjmeer"
+  },
+  {
+   "id": "soort-plek-138",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Beaufortzee",
+   "question": "Wat voor soort plek is Beaufortzee?",
+   "answer": "zee",
+   "options": [
+    "waterkering",
+    "zee",
+    "woestijn",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-beaufortzee"
+  },
+  {
+   "id": "soort-plek-139",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Bodenmeer",
+   "question": "Wat voor soort plek is Bodenmeer?",
+   "answer": "meer",
+   "options": [
+    "golf",
+    "kanaal",
+    "meer",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-bodenmeer"
+  },
+  {
+   "id": "soort-plek-140",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Bovenmeer",
+   "question": "Wat voor soort plek is Bovenmeer?",
+   "answer": "meer",
+   "options": [
+    "regio",
+    "meer",
+    "golf",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-bovenmeer"
+  },
+  {
+   "id": "soort-plek-141",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Brahmaputra",
+   "question": "Wat voor soort plek is Brahmaputra?",
+   "answer": "rivier",
+   "options": [
+    "zeestraat",
+    "rivier",
+    "schiereiland",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-brahmaputra"
+  },
+  {
+   "id": "soort-plek-142",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Caribische Zee",
+   "question": "Wat voor soort plek is Caribische Zee?",
+   "answer": "zee",
+   "options": [
+    "schiereiland",
+    "zee",
+    "polder",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "zee-caraibische-zee"
+  },
+  {
+   "id": "soort-plek-143",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Cedar Lake",
+   "question": "Wat voor soort plek is Cedar Lake?",
+   "answer": "meer",
+   "options": [
+    "gebergte",
+    "zee",
+    "plateau",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-cedar-lake"
+  },
+  {
+   "id": "soort-plek-144",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Chang Jiang",
+   "question": "Wat voor soort plek is Chang Jiang?",
+   "answer": "rivier",
+   "options": [
+    "vlakte",
+    "delta",
+    "rivier",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-chang-jiang"
+  },
+  {
+   "id": "soort-plek-145",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Chankameer",
+   "question": "Wat voor soort plek is Chankameer?",
+   "answer": "meer",
+   "options": [
+    "plateau",
+    "regio",
+    "woestijn",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-chankameer"
+  },
+  {
+   "id": "soort-plek-146",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Columbia",
+   "question": "Wat voor soort plek is Columbia?",
+   "answer": "rivier",
+   "options": [
+    "bioom",
+    "woestijn",
+    "rivier",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-columbia"
+  },
+  {
+   "id": "soort-plek-147",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Dnjepr",
+   "question": "Wat voor soort plek is Dnjepr?",
+   "answer": "rivier",
+   "options": [
+    "schiereiland",
+    "gebergte",
+    "rivier",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-dnjepr"
+  },
+  {
+   "id": "soort-plek-148",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Dnjestr",
+   "question": "Wat voor soort plek is Dnjestr?",
+   "answer": "rivier",
+   "options": [
+    "waterkering",
+    "woestijn",
+    "bioom",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-dnjestr"
+  },
+  {
+   "id": "soort-plek-149",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Dode Zee",
+   "question": "Wat voor soort plek is Dode Zee?",
+   "answer": "meer",
+   "options": [
+    "gebergte",
+    "meer",
+    "vulkaan",
+    "kanaal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-dode-zee"
+  },
+  {
+   "id": "soort-plek-150",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Don",
+   "question": "Wat voor soort plek is Don?",
+   "answer": "rivier",
+   "options": [
+    "berg",
+    "rivier",
+    "zee",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-don"
+  },
+  {
+   "id": "soort-plek-151",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Donau",
+   "question": "Wat voor soort plek is Donau?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "kanaal",
+    "eilandengroep",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-donau"
+  },
+  {
+   "id": "soort-plek-152",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Dubawnt Lake",
+   "question": "Wat voor soort plek is Dubawnt Lake?",
+   "answer": "meer",
+   "options": [
+    "vlakte",
+    "zee",
+    "meer",
+    "oceaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-dubawnt-lake"
+  },
+  {
+   "id": "soort-plek-153",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ebro",
+   "question": "Wat voor soort plek is Ebro?",
+   "answer": "rivier",
+   "options": [
+    "plateau",
+    "rivier",
+    "schiereiland",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-ebro"
+  },
+  {
+   "id": "soort-plek-154",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Elbe",
+   "question": "Wat voor soort plek is Elbe?",
+   "answer": "rivier",
+   "options": [
+    "vulkaan",
+    "bioom",
+    "kanaal",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-elbe"
+  },
+  {
+   "id": "soort-plek-155",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Eriemeer",
+   "question": "Wat voor soort plek is Eriemeer?",
+   "answer": "meer",
+   "options": [
+    "rivier",
+    "zeestraat",
+    "meer",
+    "stuwdam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-eriemeer"
+  },
+  {
+   "id": "soort-plek-156",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Eufraat",
+   "question": "Wat voor soort plek is Eufraat?",
+   "answer": "rivier",
+   "options": [
+    "woestijn",
+    "eilandengroep",
+    "vlakte",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-eufraat"
+  },
+  {
+   "id": "soort-plek-157",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Eyremeer (noord)",
+   "question": "Wat voor soort plek is Eyremeer (noord)?",
+   "answer": "meer",
+   "options": [
+    "waterkering",
+    "delta",
+    "polder",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-eyremeer-noord"
+  },
+  {
+   "id": "soort-plek-158",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Filipijnenzee",
+   "question": "Wat voor soort plek is Filipijnenzee?",
+   "answer": "zee",
+   "options": [
+    "rivier",
+    "stuwdam",
+    "zee",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-filipijnenzee"
+  },
+  {
+   "id": "soort-plek-159",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ganges",
+   "question": "Wat voor soort plek is Ganges?",
+   "answer": "rivier",
+   "options": [
+    "delta",
+    "rivier",
+    "stuwdam",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-ganges"
+  },
+  {
+   "id": "soort-plek-160",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Gatúnmeer",
+   "question": "Wat voor soort plek is Gatúnmeer?",
+   "answer": "meer",
+   "options": [
+    "kanaal",
+    "berg",
+    "meer",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-gatunmeer"
+  },
+  {
+   "id": "soort-plek-161",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Gele Rivier",
+   "question": "Wat voor soort plek is Gele Rivier?",
+   "answer": "rivier",
+   "options": [
+    "stuwdam",
+    "rivier",
+    "zeestraat",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-gele-rivier"
+  },
+  {
+   "id": "soort-plek-162",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Golf van Alaska",
+   "question": "Wat voor soort plek is Golf van Alaska?",
+   "answer": "golf",
+   "options": [
+    "polder",
+    "schiereiland",
+    "kanaal",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "golf-golf-van-alaska"
+  },
+  {
+   "id": "soort-plek-163",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Golf van Mexico",
+   "question": "Wat voor soort plek is Golf van Mexico?",
+   "answer": "golf",
+   "options": [
+    "vulkaan",
+    "golf",
+    "vlakte",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "golf-golf-van-mexico"
+  },
+  {
+   "id": "soort-plek-164",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Great Salt Lake",
+   "question": "Wat voor soort plek is Great Salt Lake?",
+   "answer": "meer",
+   "options": [
+    "waterkering",
+    "delta",
+    "woestijn",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-great-salt-lake"
+  },
+  {
+   "id": "soort-plek-165",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Great Slave Lake",
+   "question": "Wat voor soort plek is Great Slave Lake?",
+   "answer": "meer",
+   "options": [
+    "polder",
+    "meer",
+    "woestijn",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-great-slave-lake"
+  },
+  {
+   "id": "soort-plek-166",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Groot Berenmeer",
+   "question": "Wat voor soort plek is Groot Berenmeer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "gebergte",
+    "vlakte",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-groot-berenmeer"
+  },
+  {
+   "id": "soort-plek-167",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Grote (of Stille) Oceaan",
+   "question": "Wat voor soort plek is Grote (of Stille) Oceaan?",
+   "answer": "oceaan",
+   "options": [
+    "golf",
+    "stuwdam",
+    "oceaan",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "oceaan-grote-oceaan"
+  },
+  {
+   "id": "soort-plek-168",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Het Kanaal",
+   "question": "Wat voor soort plek is Het Kanaal?",
+   "answer": "zeestraat",
+   "options": [
+    "rivier",
+    "zeestraat",
+    "eilandengroep",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "zeestraat-het-kanaal"
+  },
+  {
+   "id": "soort-plek-169",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Hulun Nuur",
+   "question": "Wat voor soort plek is Hulun Nuur?",
+   "answer": "meer",
+   "options": [
+    "gebergte",
+    "rivier",
+    "meer",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-hulun-nuur"
+  },
+  {
+   "id": "soort-plek-170",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Huronmeer",
+   "question": "Wat voor soort plek is Huronmeer?",
+   "answer": "meer",
+   "options": [
+    "zeestraat",
+    "bioom",
+    "meer",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-huronmeer"
+  },
+  {
+   "id": "soort-plek-171",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Iliamna Lake",
+   "question": "Wat voor soort plek is Iliamna Lake?",
+   "answer": "meer",
+   "options": [
+    "schiereiland",
+    "berg",
+    "vlakte",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-iliamna-lake"
+  },
+  {
+   "id": "soort-plek-172",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Inarimeer",
+   "question": "Wat voor soort plek is Inarimeer?",
+   "answer": "meer",
+   "options": [
+    "oceaan",
+    "berg",
+    "polder",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-inarimeer"
+  },
+  {
+   "id": "soort-plek-173",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Indische Oceaan",
+   "question": "Wat voor soort plek is Indische Oceaan?",
+   "answer": "oceaan",
+   "options": [
+    "eilandengroep",
+    "regio",
+    "waterkering",
+    "oceaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "oceaan-indische-oceaan"
+  },
+  {
+   "id": "soort-plek-174",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Indus",
+   "question": "Wat voor soort plek is Indus?",
+   "answer": "rivier",
+   "options": [
+    "bioom",
+    "woestijn",
+    "delta",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-indus"
+  },
+  {
+   "id": "soort-plek-175",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Irrawaddy",
+   "question": "Wat voor soort plek is Irrawaddy?",
+   "answer": "rivier",
+   "options": [
+    "woestijn",
+    "rivier",
+    "oceaan",
+    "stuwdam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-irrawaddy"
+  },
+  {
+   "id": "soort-plek-176",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Issyk Koelmeer",
+   "question": "Wat voor soort plek is Issyk Koelmeer?",
+   "answer": "meer",
+   "options": [
+    "delta",
+    "meer",
+    "vulkaan",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-issyk-koelmeer"
+  },
+  {
+   "id": "soort-plek-177",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Itaipu-stuwmeer",
+   "question": "Wat voor soort plek is Itaipu-stuwmeer?",
+   "answer": "meer",
+   "options": [
+    "gebergte",
+    "rivier",
+    "oceaan",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-itaipu-stuwmeer"
+  },
+  {
+   "id": "soort-plek-178",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Japanse Zee",
+   "question": "Wat voor soort plek is Japanse Zee?",
+   "answer": "zee",
+   "options": [
+    "zee",
+    "vulkaan",
+    "rivier",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-japanse-zee"
+  },
+  {
+   "id": "soort-plek-179",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Jenisej",
+   "question": "Wat voor soort plek is Jenisej?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "vulkaan",
+    "regio",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-jenisej"
+  },
+  {
+   "id": "soort-plek-180",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Jordaan",
+   "question": "Wat voor soort plek is Jordaan?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "zee",
+    "delta",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-jordaan"
+  },
+  {
+   "id": "soort-plek-181",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Karibameer",
+   "question": "Wat voor soort plek is Karibameer?",
+   "answer": "meer",
+   "options": [
+    "eilandengroep",
+    "golf",
+    "meer",
+    "zeestraat"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-karibameer"
+  },
+  {
+   "id": "soort-plek-182",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Kaspische Zee",
+   "question": "Wat voor soort plek is Kaspische Zee?",
+   "answer": "zee",
+   "options": [
+    "polder",
+    "vulkaan",
+    "zee",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "zee-kaspische-zee"
+  },
+  {
+   "id": "soort-plek-183",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Khövsgöl Nuur",
+   "question": "Wat voor soort plek is Khövsgöl Nuur?",
+   "answer": "meer",
+   "options": [
+    "woestijn",
+    "meer",
+    "stuwdam",
+    "eiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-khovsgol-nuur"
+  },
+  {
+   "id": "soort-plek-184",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Kongo",
+   "question": "Wat voor soort plek is Kongo?",
+   "answer": "rivier",
+   "options": [
+    "zee",
+    "eiland",
+    "rivier",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-kongo"
+  },
+  {
+   "id": "soort-plek-185",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Koraalzee",
+   "question": "Wat voor soort plek is Koraalzee?",
+   "answer": "zee",
+   "options": [
+    "woestijn",
+    "berg",
+    "waterkering",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-koraalzee"
+  },
+  {
+   "id": "soort-plek-186",
+   "kind": "fact",
+   "category": "soort",
+   "name": "La Grande-2 Reservoir",
+   "question": "Wat voor soort plek is La Grande-2 Reservoir?",
+   "answer": "meer",
+   "options": [
+    "woestijn",
+    "vulkaan",
+    "eilandengroep",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-la-grande-2-reservoir"
+  },
+  {
+   "id": "soort-plek-187",
+   "kind": "fact",
+   "category": "soort",
+   "name": "La Grande-3 Reservoir",
+   "question": "Wat voor soort plek is La Grande-3 Reservoir?",
+   "answer": "meer",
+   "options": [
+    "schiereiland",
+    "meer",
+    "stuwdam",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-la-grande-3-reservoir"
+  },
+  {
+   "id": "soort-plek-188",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Labradorzee",
+   "question": "Wat voor soort plek is Labradorzee?",
+   "answer": "zee",
+   "options": [
+    "schiereiland",
+    "vulkaan",
+    "zee",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "zee-labradorzee"
+  },
+  {
+   "id": "soort-plek-189",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Lac la Martre",
+   "question": "Wat voor soort plek is Lac la Martre?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "kanaal",
+    "vulkaan",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-lac-la-martre"
+  },
+  {
+   "id": "soort-plek-190",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ladogameer",
+   "question": "Wat voor soort plek is Ladogameer?",
+   "answer": "meer",
+   "options": [
+    "regio",
+    "meer",
+    "polder",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-ladogameer"
+  },
+  {
+   "id": "soort-plek-191",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Lake Mead",
+   "question": "Wat voor soort plek is Lake Mead?",
+   "answer": "meer",
+   "options": [
+    "zee",
+    "meer",
+    "golf",
+    "stuwdam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-lake-mead"
+  },
+  {
+   "id": "soort-plek-192",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Lake Mistassini",
+   "question": "Wat voor soort plek is Lake Mistassini?",
+   "answer": "meer",
+   "options": [
+    "regio",
+    "meer",
+    "delta",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-lake-mistassini"
+  },
+  {
+   "id": "soort-plek-193",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Lake Winnipegosis",
+   "question": "Wat voor soort plek is Lake Winnipegosis?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "woestijn",
+    "berg",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-lake-winnipegosis"
+  },
+  {
+   "id": "soort-plek-194",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Lake of the Woods",
+   "question": "Wat voor soort plek is Lake of the Woods?",
+   "answer": "meer",
+   "options": [
+    "eilandengroep",
+    "berg",
+    "meer",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-lake-of-the-woods"
+  },
+  {
+   "id": "soort-plek-195",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Lena",
+   "question": "Wat voor soort plek is Lena?",
+   "answer": "rivier",
+   "options": [
+    "gebergte",
+    "plateau",
+    "eilandengroep",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-lena"
+  },
+  {
+   "id": "soort-plek-196",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Limpopo",
+   "question": "Wat voor soort plek is Limpopo?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "delta",
+    "waterkering",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-limpopo"
+  },
+  {
+   "id": "soort-plek-197",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Loire",
+   "question": "Wat voor soort plek is Loire?",
+   "answer": "rivier",
+   "options": [
+    "regio",
+    "vulkaan",
+    "zeestraat",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-loire"
+  },
+  {
+   "id": "soort-plek-198",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Mackenzie",
+   "question": "Wat voor soort plek is Mackenzie?",
+   "answer": "rivier",
+   "options": [
+    "zeestraat",
+    "eiland",
+    "rivier",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-mackenzie"
+  },
+  {
+   "id": "soort-plek-199",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Madeira",
+   "question": "Wat voor soort plek is Madeira?",
+   "answer": "rivier",
+   "options": [
+    "vulkaan",
+    "plateau",
+    "rivier",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-madeira"
+  },
+  {
+   "id": "soort-plek-200",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Magdalena",
+   "question": "Wat voor soort plek is Magdalena?",
+   "answer": "rivier",
+   "options": [
+    "vulkaan",
+    "berg",
+    "rivier",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-magdalena"
+  },
+  {
+   "id": "soort-plek-201",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Malawimeer",
+   "question": "Wat voor soort plek is Malawimeer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "oceaan",
+    "plateau",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-malawimeer"
+  },
+  {
+   "id": "soort-plek-202",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Meer van Genève",
+   "question": "Wat voor soort plek is Meer van Genève?",
+   "answer": "meer",
+   "options": [
+    "eiland",
+    "plateau",
+    "oceaan",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-meer-van-geneve"
+  },
+  {
+   "id": "soort-plek-203",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Meer van Nicaragua",
+   "question": "Wat voor soort plek is Meer van Nicaragua?",
+   "answer": "meer",
+   "options": [
+    "oceaan",
+    "gebergte",
+    "regio",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-meer-van-nicaragua"
+  },
+  {
+   "id": "soort-plek-204",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Mekong",
+   "question": "Wat voor soort plek is Mekong?",
+   "answer": "rivier",
+   "options": [
+    "delta",
+    "berg",
+    "eilandengroep",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-mekong"
+  },
+  {
+   "id": "soort-plek-205",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Merínlagune",
+   "question": "Wat voor soort plek is Merínlagune?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "eiland",
+    "stuwdam",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-merinlagune"
+  },
+  {
+   "id": "soort-plek-206",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Michiganmeer",
+   "question": "Wat voor soort plek is Michiganmeer?",
+   "answer": "meer",
+   "options": [
+    "schiereiland",
+    "plateau",
+    "meer",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-michiganmeer"
+  },
+  {
+   "id": "soort-plek-207",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Middellandse Zee",
+   "question": "Wat voor soort plek is Middellandse Zee?",
+   "answer": "zee",
+   "options": [
+    "zee",
+    "oceaan",
+    "polder",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "zee-middellandse-zee"
+  },
+  {
+   "id": "soort-plek-208",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Mississippi",
+   "question": "Wat voor soort plek is Mississippi?",
+   "answer": "rivier",
+   "options": [
+    "zeestraat",
+    "rivier",
+    "stuwdam",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-mississippi"
+  },
+  {
+   "id": "soort-plek-209",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Missouri",
+   "question": "Wat voor soort plek is Missouri?",
+   "answer": "rivier",
+   "options": [
+    "eiland",
+    "oceaan",
+    "rivier",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-missouri"
+  },
+  {
+   "id": "soort-plek-210",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Murray",
+   "question": "Wat voor soort plek is Murray?",
+   "answer": "rivier",
+   "options": [
+    "kanaal",
+    "rivier",
+    "zee",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-murray"
+  },
+  {
+   "id": "soort-plek-211",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Mwerumeer",
+   "question": "Wat voor soort plek is Mwerumeer?",
+   "answer": "meer",
+   "options": [
+    "vulkaan",
+    "stuwdam",
+    "meer",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-mwerumeer"
+  },
+  {
+   "id": "soort-plek-212",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Mälarmeer",
+   "question": "Wat voor soort plek is Mälarmeer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "zeestraat",
+    "gebergte",
+    "oceaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-malarmeer"
+  },
+  {
+   "id": "soort-plek-213",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Nettilling Lake",
+   "question": "Wat voor soort plek is Nettilling Lake?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "vlakte",
+    "kanaal",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-nettilling-lake"
+  },
+  {
+   "id": "soort-plek-214",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Niger",
+   "question": "Wat voor soort plek is Niger?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "oceaan",
+    "delta",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-niger"
+  },
+  {
+   "id": "soort-plek-215",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Nijl",
+   "question": "Wat voor soort plek is Nijl?",
+   "answer": "rivier",
+   "options": [
+    "bioom",
+    "regio",
+    "oceaan",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-nijl"
+  },
+  {
+   "id": "soort-plek-216",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Nipigonmeer",
+   "question": "Wat voor soort plek is Nipigonmeer?",
+   "answer": "meer",
+   "options": [
+    "polder",
+    "delta",
+    "zeestraat",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-nipigonmeer"
+  },
+  {
+   "id": "soort-plek-217",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Noordelijk Aralmeer",
+   "question": "Wat voor soort plek is Noordelijk Aralmeer?",
+   "answer": "meer",
+   "options": [
+    "zee",
+    "vulkaan",
+    "meer",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-noordelijk-aralmeer"
+  },
+  {
+   "id": "soort-plek-218",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Noordelijke IJszee",
+   "question": "Wat voor soort plek is Noordelijke IJszee?",
+   "answer": "oceaan",
+   "options": [
+    "oceaan",
+    "gebergte",
+    "golf",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "oceaan-noordelijke-ijszee"
+  },
+  {
+   "id": "soort-plek-219",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Noordzee",
+   "question": "Wat voor soort plek is Noordzee?",
+   "answer": "zee",
+   "options": [
+    "zee",
+    "delta",
+    "golf",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "zee-noordzee"
+  },
+  {
+   "id": "soort-plek-220",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ob",
+   "question": "Wat voor soort plek is Ob?",
+   "answer": "rivier",
+   "options": [
+    "oceaan",
+    "golf",
+    "eiland",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-ob"
+  },
+  {
+   "id": "soort-plek-221",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Oder",
+   "question": "Wat voor soort plek is Oder?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "zeestraat",
+    "zee",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-oder"
+  },
+  {
+   "id": "soort-plek-222",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Oeral (rivier)",
+   "question": "Wat voor soort plek is Oeral (rivier)?",
+   "answer": "rivier",
+   "options": [
+    "zee",
+    "schiereiland",
+    "golf",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-oeral-rivier"
+  },
+  {
+   "id": "soort-plek-223",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Okavango",
+   "question": "Wat voor soort plek is Okavango?",
+   "answer": "rivier",
+   "options": [
+    "regio",
+    "rivier",
+    "zeestraat",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-okavango"
+  },
+  {
+   "id": "soort-plek-224",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Onegameer",
+   "question": "Wat voor soort plek is Onegameer?",
+   "answer": "meer",
+   "options": [
+    "eilandengroep",
+    "stuwdam",
+    "regio",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-onegameer"
+  },
+  {
+   "id": "soort-plek-225",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Ontariomeer",
+   "question": "Wat voor soort plek is Ontariomeer?",
+   "answer": "meer",
+   "options": [
+    "delta",
+    "meer",
+    "golf",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-ontariomeer"
+  },
+  {
+   "id": "soort-plek-226",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Oostzee",
+   "question": "Wat voor soort plek is Oostzee?",
+   "answer": "zee",
+   "options": [
+    "golf",
+    "vlakte",
+    "zee",
+    "plateau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-C2",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "itemId": "zee-oostzee"
+  },
+  {
+   "id": "soort-plek-227",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Oranjerivier",
+   "question": "Wat voor soort plek is Oranjerivier?",
+   "answer": "rivier",
+   "options": [
+    "gebergte",
+    "oceaan",
+    "waterkering",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-oranjerivier"
+  },
+  {
+   "id": "soort-plek-228",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Orinoco",
+   "question": "Wat voor soort plek is Orinoco?",
+   "answer": "rivier",
+   "options": [
+    "gebergte",
+    "rivier",
+    "delta",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-orinoco"
+  },
+  {
+   "id": "soort-plek-229",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Panamakanaal",
+   "question": "Wat voor soort plek is Panamakanaal?",
+   "answer": "kanaal",
+   "options": [
+    "meer",
+    "oceaan",
+    "kanaal",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "kanaal-panamakanaal"
+  },
+  {
+   "id": "soort-plek-230",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Paraná",
+   "question": "Wat voor soort plek is Paraná?",
+   "answer": "rivier",
+   "options": [
+    "delta",
+    "zeestraat",
+    "rivier",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-parana"
+  },
+  {
+   "id": "soort-plek-231",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Peipusmeer",
+   "question": "Wat voor soort plek is Peipusmeer?",
+   "answer": "meer",
+   "options": [
+    "kanaal",
+    "vulkaan",
+    "meer",
+    "vlakte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-peipusmeer"
+  },
+  {
+   "id": "soort-plek-232",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Perzische Golf",
+   "question": "Wat voor soort plek is Perzische Golf?",
+   "answer": "golf",
+   "options": [
+    "kanaal",
+    "stuwdam",
+    "eiland",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "golf-perzische-golf"
+  },
+  {
+   "id": "soort-plek-233",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Po",
+   "question": "Wat voor soort plek is Po?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "vulkaan",
+    "golf",
+    "zeestraat"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-po"
+  },
+  {
+   "id": "soort-plek-234",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Qinghaimeer",
+   "question": "Wat voor soort plek is Qinghaimeer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "zee",
+    "golf",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-qinghaimeer"
+  },
+  {
+   "id": "soort-plek-235",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Reindeer Lake",
+   "question": "Wat voor soort plek is Reindeer Lake?",
+   "answer": "meer",
+   "options": [
+    "zee",
+    "golf",
+    "delta",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-reindeer-lake"
+  },
+  {
+   "id": "soort-plek-236",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Rhône",
+   "question": "Wat voor soort plek is Rhône?",
+   "answer": "rivier",
+   "options": [
+    "oceaan",
+    "gebergte",
+    "rivier",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-rhone"
+  },
+  {
+   "id": "soort-plek-237",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Rijn",
+   "question": "Wat voor soort plek is Rijn?",
+   "answer": "rivier",
+   "options": [
+    "plateau",
+    "vulkaan",
+    "rivier",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-E1",
+    "KD25A",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-rijn"
+  },
+  {
+   "id": "soort-plek-238",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Rio Negro",
+   "question": "Wat voor soort plek is Rio Negro?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "golf",
+    "woestijn",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-rio-negro"
+  },
+  {
+   "id": "soort-plek-239",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Rode Zee",
+   "question": "Wat voor soort plek is Rode Zee?",
+   "answer": "zee",
+   "options": [
+    "zee",
+    "regio",
+    "waterkering",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "zee-rode-zee"
+  },
+  {
+   "id": "soort-plek-240",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Rosszee",
+   "question": "Wat voor soort plek is Rosszee?",
+   "answer": "zee",
+   "options": [
+    "oceaan",
+    "vlakte",
+    "kanaal",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-rosszee"
+  },
+  {
+   "id": "soort-plek-241",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Salween",
+   "question": "Wat voor soort plek is Salween?",
+   "answer": "rivier",
+   "options": [
+    "meer",
+    "vlakte",
+    "zeestraat",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-salween"
+  },
+  {
+   "id": "soort-plek-242",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Sarygamysh Köli",
+   "question": "Wat voor soort plek is Sarygamysh Köli?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "schiereiland",
+    "woestijn",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-sarygamysh-koli"
+  },
+  {
+   "id": "soort-plek-243",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Schelde",
+   "question": "Wat voor soort plek is Schelde?",
+   "answer": "rivier",
+   "options": [
+    "eiland",
+    "zee",
+    "rivier",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-schelde"
+  },
+  {
+   "id": "soort-plek-244",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Seine",
+   "question": "Wat voor soort plek is Seine?",
+   "answer": "rivier",
+   "options": [
+    "waterkering",
+    "golf",
+    "plateau",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-seine"
+  },
+  {
+   "id": "soort-plek-245",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Shatt al-Arab",
+   "question": "Wat voor soort plek is Shatt al-Arab?",
+   "answer": "rivier",
+   "options": [
+    "woestijn",
+    "plateau",
+    "bioom",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-shatt-al-arab"
+  },
+  {
+   "id": "soort-plek-246",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Sint-Laurensrivier",
+   "question": "Wat voor soort plek is Sint-Laurensrivier?",
+   "answer": "rivier",
+   "options": [
+    "bioom",
+    "regio",
+    "plateau",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-sint-laurensrivier"
+  },
+  {
+   "id": "soort-plek-247",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Smallwood Reservoir",
+   "question": "Wat voor soort plek is Smallwood Reservoir?",
+   "answer": "meer",
+   "options": [
+    "stuwdam",
+    "meer",
+    "plateau",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-smallwood-reservoir"
+  },
+  {
+   "id": "soort-plek-248",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Southern Indian Lake",
+   "question": "Wat voor soort plek is Southern Indian Lake?",
+   "answer": "meer",
+   "options": [
+    "oceaan",
+    "meer",
+    "berg",
+    "kanaal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-southern-indian-lake"
+  },
+  {
+   "id": "soort-plek-249",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Straat van Gibraltar",
+   "question": "Wat voor soort plek is Straat van Gibraltar?",
+   "answer": "zeestraat",
+   "options": [
+    "eilandengroep",
+    "zeestraat",
+    "meer",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "zeestraat-straat-van-gibraltar"
+  },
+  {
+   "id": "soort-plek-250",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Stuwmeer van Bratsk",
+   "question": "Wat voor soort plek is Stuwmeer van Bratsk?",
+   "answer": "meer",
+   "options": [
+    "berg",
+    "woestijn",
+    "bioom",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-stuwmeer-van-bratsk"
+  },
+  {
+   "id": "soort-plek-251",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Stuwmeer van Rybinsk",
+   "question": "Wat voor soort plek is Stuwmeer van Rybinsk?",
+   "answer": "meer",
+   "options": [
+    "oceaan",
+    "zeestraat",
+    "rivier",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-stuwmeer-van-rybinsk"
+  },
+  {
+   "id": "soort-plek-252",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Suezkanaal",
+   "question": "Wat voor soort plek is Suezkanaal?",
+   "answer": "kanaal",
+   "options": [
+    "kanaal",
+    "vulkaan",
+    "rivier",
+    "berg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "kanaal-suezkanaal"
+  },
+  {
+   "id": "soort-plek-253",
+   "kind": "fact",
+   "category": "soort",
+   "name": "São Francisco",
+   "question": "Wat voor soort plek is São Francisco?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "golf",
+    "kanaal",
+    "stuwdam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-sao-francisco"
+  },
+  {
+   "id": "soort-plek-254",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Taag",
+   "question": "Wat voor soort plek is Taag?",
+   "answer": "rivier",
+   "options": [
+    "regio",
+    "rivier",
+    "meer",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-taag"
+  },
+  {
+   "id": "soort-plek-255",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tajmyrmeer",
+   "question": "Wat voor soort plek is Tajmyrmeer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "delta",
+    "golf",
+    "schiereiland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-tajmyrmeer"
+  },
+  {
+   "id": "soort-plek-256",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tanameer",
+   "question": "Wat voor soort plek is Tanameer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "polder",
+    "plateau",
+    "gebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-tanameer"
+  },
+  {
+   "id": "soort-plek-257",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tanganyikameer",
+   "question": "Wat voor soort plek is Tanganyikameer?",
+   "answer": "meer",
+   "options": [
+    "golf",
+    "meer",
+    "berg",
+    "kanaal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-tanganyikameer"
+  },
+  {
+   "id": "soort-plek-258",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tapajós",
+   "question": "Wat voor soort plek is Tapajós?",
+   "answer": "rivier",
+   "options": [
+    "regio",
+    "meer",
+    "rivier",
+    "zeestraat"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-tapajos"
+  },
+  {
+   "id": "soort-plek-259",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tasmanzee",
+   "question": "Wat voor soort plek is Tasmanzee?",
+   "answer": "zee",
+   "options": [
+    "zeestraat",
+    "zee",
+    "eilandengroep",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-tasmanzee"
+  },
+  {
+   "id": "soort-plek-260",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Theems",
+   "question": "Wat voor soort plek is Theems?",
+   "answer": "rivier",
+   "options": [
+    "schiereiland",
+    "rivier",
+    "bioom",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-theems"
+  },
+  {
+   "id": "soort-plek-261",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tigris",
+   "question": "Wat voor soort plek is Tigris?",
+   "answer": "rivier",
+   "options": [
+    "rivier",
+    "polder",
+    "oceaan",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-tigris"
+  },
+  {
+   "id": "soort-plek-262",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Titicacameer",
+   "question": "Wat voor soort plek is Titicacameer?",
+   "answer": "meer",
+   "options": [
+    "zeestraat",
+    "woestijn",
+    "stuwdam",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-titicacameer"
+  },
+  {
+   "id": "soort-plek-263",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tocantins",
+   "question": "Wat voor soort plek is Tocantins?",
+   "answer": "rivier",
+   "options": [
+    "regio",
+    "zeestraat",
+    "rivier",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-tocantins"
+  },
+  {
+   "id": "soort-plek-264",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Tsjani",
+   "question": "Wat voor soort plek is Tsjani?",
+   "answer": "meer",
+   "options": [
+    "plateau",
+    "regio",
+    "rivier",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-tsjani"
+  },
+  {
+   "id": "soort-plek-265",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Turkanameer",
+   "question": "Wat voor soort plek is Turkanameer?",
+   "answer": "meer",
+   "options": [
+    "zee",
+    "regio",
+    "eiland",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-turkanameer"
+  },
+  {
+   "id": "soort-plek-266",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Urmiameer",
+   "question": "Wat voor soort plek is Urmiameer?",
+   "answer": "meer",
+   "options": [
+    "regio",
+    "golf",
+    "meer",
+    "eilandengroep"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-urmiameer"
+  },
+  {
+   "id": "soort-plek-267",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Uruguay",
+   "question": "Wat voor soort plek is Uruguay?",
+   "answer": "rivier",
+   "options": [
+    "delta",
+    "meer",
+    "rivier",
+    "polder"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-uruguay"
+  },
+  {
+   "id": "soort-plek-268",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Uvs Nuur",
+   "question": "Wat voor soort plek is Uvs Nuur?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "waterkering",
+    "eiland",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-uvs-nuur"
+  },
+  {
+   "id": "soort-plek-269",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Vanmeer",
+   "question": "Wat voor soort plek is Vanmeer?",
+   "answer": "meer",
+   "options": [
+    "kanaal",
+    "meer",
+    "eiland",
+    "vulkaan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-vanmeer"
+  },
+  {
+   "id": "soort-plek-270",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Victoriameer",
+   "question": "Wat voor soort plek is Victoriameer?",
+   "answer": "meer",
+   "options": [
+    "delta",
+    "bioom",
+    "schiereiland",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-victoriameer"
+  },
+  {
+   "id": "soort-plek-271",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Volga",
+   "question": "Wat voor soort plek is Volga?",
+   "answer": "rivier",
+   "options": [
+    "schiereiland",
+    "oceaan",
+    "plateau",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "rivier-wolga"
+  },
+  {
+   "id": "soort-plek-272",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Voltameer",
+   "question": "Wat voor soort plek is Voltameer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "vlakte",
+    "polder",
+    "zee"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-voltameer"
+  },
+  {
+   "id": "soort-plek-273",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Vygozeromeer",
+   "question": "Wat voor soort plek is Vygozeromeer?",
+   "answer": "meer",
+   "options": [
+    "berg",
+    "meer",
+    "waterkering",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-vygozeromeer"
+  },
+  {
+   "id": "soort-plek-274",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Vänermeer",
+   "question": "Wat voor soort plek is Vänermeer?",
+   "answer": "meer",
+   "options": [
+    "zee",
+    "regio",
+    "eilandengroep",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-vanermeer"
+  },
+  {
+   "id": "soort-plek-275",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Vättermeer",
+   "question": "Wat voor soort plek is Vättermeer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "plateau",
+    "zeestraat",
+    "kanaal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-vattermeer"
+  },
+  {
+   "id": "soort-plek-276",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Weddellzee",
+   "question": "Wat voor soort plek is Weddellzee?",
+   "answer": "zee",
+   "options": [
+    "zee",
+    "delta",
+    "woestijn",
+    "bioom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-weddellzee"
+  },
+  {
+   "id": "soort-plek-277",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Williston Meer",
+   "question": "Wat voor soort plek is Williston Meer?",
+   "answer": "meer",
+   "options": [
+    "schiereiland",
+    "zeestraat",
+    "meer",
+    "woestijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-williston-meer"
+  },
+  {
+   "id": "soort-plek-278",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Winnipegmeer",
+   "question": "Wat voor soort plek is Winnipegmeer?",
+   "answer": "meer",
+   "options": [
+    "eiland",
+    "vulkaan",
+    "meer",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-winnipegmeer"
+  },
+  {
+   "id": "soort-plek-279",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Wisła",
+   "question": "Wat voor soort plek is Wisła?",
+   "answer": "rivier",
+   "options": [
+    "kanaal",
+    "eiland",
+    "rivier",
+    "waterkering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-wisa"
+  },
+  {
+   "id": "soort-plek-280",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Wollastonmeer",
+   "question": "Wat voor soort plek is Wollastonmeer?",
+   "answer": "meer",
+   "options": [
+    "delta",
+    "meer",
+    "rivier",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-wollastonmeer"
+  },
+  {
+   "id": "soort-plek-281",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Xingu",
+   "question": "Wat voor soort plek is Xingu?",
+   "answer": "rivier",
+   "options": [
+    "vulkaan",
+    "eilandengroep",
+    "rivier",
+    "zeestraat"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "rivier-xingu"
+  },
+  {
+   "id": "soort-plek-282",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Yathkyed Lake",
+   "question": "Wat voor soort plek is Yathkyed Lake?",
+   "answer": "meer",
+   "options": [
+    "waterkering",
+    "rivier",
+    "zee",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-yathkyed-lake"
+  },
+  {
+   "id": "soort-plek-283",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Yukon",
+   "question": "Wat voor soort plek is Yukon?",
+   "answer": "rivier",
+   "options": [
+    "berg",
+    "oceaan",
+    "rivier",
+    "golf"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-yukon"
+  },
+  {
+   "id": "soort-plek-284",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zambezi",
+   "question": "Wat voor soort plek is Zambezi?",
+   "answer": "rivier",
+   "options": [
+    "stuwdam",
+    "vlakte",
+    "meer",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "rivier-zambezi"
+  },
+  {
+   "id": "soort-plek-285",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zaysanmeer",
+   "question": "Wat voor soort plek is Zaysanmeer?",
+   "answer": "meer",
+   "options": [
+    "zee",
+    "vlakte",
+    "golf",
+    "meer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-zaysanmeer"
+  },
+  {
+   "id": "soort-plek-286",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zee van Ochotsk",
+   "question": "Wat voor soort plek is Zee van Ochotsk?",
+   "answer": "zee",
+   "options": [
+    "regio",
+    "rivier",
+    "zee",
+    "kanaal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-zee-van-ochotsk"
+  },
+  {
+   "id": "soort-plek-287",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zuid-Chinese Zee",
+   "question": "Wat voor soort plek is Zuid-Chinese Zee?",
+   "answer": "zee",
+   "options": [
+    "plateau",
+    "vulkaan",
+    "zee",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "zee-zuid-chinese-zee"
+  },
+  {
+   "id": "soort-plek-288",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zuidelijk Aralmeer",
+   "question": "Wat voor soort plek is Zuidelijk Aralmeer?",
+   "answer": "meer",
+   "options": [
+    "meer",
+    "vlakte",
+    "waterkering",
+    "regio"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "meer-zuidelijk-aralmeer"
+  },
+  {
+   "id": "soort-plek-289",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zuidelijke Oceaan",
+   "question": "Wat voor soort plek is Zuidelijke Oceaan?",
+   "answer": "oceaan",
+   "options": [
+    "oceaan",
+    "polder",
+    "plateau",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "oceaan-zuidelijke-oceaan"
+  },
+  {
+   "id": "soort-plek-290",
+   "kind": "fact",
+   "category": "soort",
+   "name": "Zwarte Zee",
+   "question": "Wat voor soort plek is Zwarte Zee?",
+   "answer": "zee",
+   "options": [
+    "plateau",
+    "waterkering",
+    "zee",
+    "rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "soort-plek"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "zee-zwarte-zee"
+  }
+ ]
+}

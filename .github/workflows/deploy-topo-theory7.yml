@@ -61,13 +61,16 @@ jobs:
           test -s candidate/topo/instellingen/index.html
           test -s candidate/topo/nederland/index.html
           test -s candidate/topo/data/provincies-2026.geojson
+          test -s candidate/topo/vo/index.html
+          test -s candidate/topo/vo/spel/index.html
+          test -s candidate/topo/data/vo/sets.json
           python3 - <<'PY'
           import json
           from pathlib import Path
           root = Path('candidate/topo')
           geo = json.loads((root / 'data/provincies-2026.geojson').read_text())
           assert len(geo['features']) == 12, 'Expected twelve province boundaries'
-          for file in ('index.html', 'instellingen/index.html', 'nederland/index.html'):
+          for file in ('index.html', 'instellingen/index.html', 'nederland/index.html', 'vo/index.html', 'vo/spel/index.html'):
               html = (root / file).read_text(encoding='utf-8')
               assert '<html' in html and '</html>' in html, file
               assert 'TOPO!' in html, file
@@ -76,6 +79,9 @@ jobs:
       - name: Verify map, capitals, water sources and approved TOPO copy
         if: steps.deployment.outputs.id != ''
         run: node scripts/validate_topo_content.mjs
+      - name: Verify the TOPO VO data bank in the release candidate
+        if: steps.deployment.outputs.id != ''
+        run: node scripts/validate_topo_vo_data.mjs candidate/topo/data/vo
       - name: Install FTPS client
         if: steps.deployment.outputs.id != ''
         run: |
@@ -116,7 +122,7 @@ jobs:
           mirror -R --parallel=2 --transfer-all --verbose candidate/topo/ /topo/
           bye
           EOF
-      - name: Verify three published pages and map independently
+      - name: Verify published PO and VO pages and data independently
         if: steps.deployment.outputs.id != ''
         env:
           RELEASE_SHA: ${{ github.sha }}
@@ -136,7 +142,7 @@ jobs:
                   return reply.read()
 
           root = Path('candidate/topo')
-          for rel in ('index.html', 'instellingen/index.html', 'nederland/index.html'):
+          for rel in ('index.html', 'instellingen/index.html', 'nederland/index.html', 'vo/index.html', 'vo/spel/index.html'):
               local = (root / rel).read_text(encoding='utf-8')
               remote = fetch(rel).decode('utf-8')
               # Cloudflare can add HTML tags; verify the full original application script instead.
@@ -154,6 +160,9 @@ jobs:
           assert hashlib.sha256(local_map).digest() == hashlib.sha256(remote_map).digest(), 'Live TOPO province data differs'
           assert len(json.loads(remote_map)['features']) == 12
           print('Published 2026 province boundaries confirmed')
+          for rel in ('data/vo/sets.json', 'data/vo/doelen.json'):
+              assert hashlib.sha256((root / rel).read_bytes()).digest() == hashlib.sha256(fetch(rel)).digest(), 'Live TOPO VO data differs: ' + rel
+          print('Published TOPO VO sets and goals confirmed')
           PY
 
       - name: Registreer de uitkomst na de livecontroles

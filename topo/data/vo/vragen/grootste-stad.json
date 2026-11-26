@@ -1,0 +1,3410 @@
+{
+ "version": 1,
+ "sjabloon": "grootste-stad",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "grootste-stad-1",
+   "kind": "fact",
+   "category": "steden",
+   "name": "São Paulo",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "São Paulo",
+   "options": [
+    "Lima",
+    "São Paulo",
+    "Medellín",
+    "Curitiba"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "grootste-stad-2",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lima",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lima",
+   "options": [
+    "Salvador",
+    "Fortaleza",
+    "Lima",
+    "Medellín"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-per-lima"
+  },
+  {
+   "id": "grootste-stad-3",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Buenos Aires",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Buenos Aires",
+   "options": [
+    "Salvador",
+    "Buenos Aires",
+    "Recife",
+    "Goiânia"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-arg-buenos-aires"
+  },
+  {
+   "id": "grootste-stad-4",
+   "kind": "fact",
+   "category": "steden",
+   "name": "São Paulo",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "São Paulo",
+   "options": [
+    "Lima",
+    "Belém",
+    "Santa Cruz de la Sierra",
+    "São Paulo"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "grootste-stad-5",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Bogota",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Bogota",
+   "options": [
+    "Brasilia",
+    "Belo Horizonte",
+    "Guayaquil",
+    "Bogota"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-col-bogota"
+  },
+  {
+   "id": "grootste-stad-6",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Buenos Aires",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Buenos Aires",
+   "options": [
+    "Bogota",
+    "Buenos Aires",
+    "Curitiba",
+    "Porto Alegre"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-arg-buenos-aires"
+  },
+  {
+   "id": "grootste-stad-7",
+   "kind": "fact",
+   "category": "steden",
+   "name": "São Paulo",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "São Paulo",
+   "options": [
+    "Guayaquil",
+    "Buenos Aires",
+    "São Paulo",
+    "Salvador"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "grootste-stad-8",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Santiago",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Santiago",
+   "options": [
+    "Belém",
+    "Caracas",
+    "Curitiba",
+    "Santiago"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-chl-santiago"
+  },
+  {
+   "id": "grootste-stad-9",
+   "kind": "fact",
+   "category": "steden",
+   "name": "São Paulo",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "São Paulo",
+   "options": [
+    "Santiago",
+    "São Paulo",
+    "Campinas",
+    "Recife"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "grootste-stad-10",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Rio de Janeiro",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Rio de Janeiro",
+   "options": [
+    "Rio de Janeiro",
+    "Fortaleza",
+    "Maracaibo",
+    "Brasilia"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-rio-de-janeiro"
+  },
+  {
+   "id": "grootste-stad-11",
+   "kind": "fact",
+   "category": "steden",
+   "name": "São Paulo",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "São Paulo",
+   "options": [
+    "Campinas",
+    "São Paulo",
+    "Santa Cruz de la Sierra",
+    "Brasilia"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "grootste-stad-12",
+   "kind": "fact",
+   "category": "steden",
+   "name": "São Paulo",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "São Paulo",
+   "options": [
+    "Belo Horizonte",
+    "Belém",
+    "São Paulo",
+    "Santiago"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "grootste-stad-13",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Santiago",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Santiago",
+   "options": [
+    "Medellín",
+    "Santiago",
+    "Salvador",
+    "Fortaleza"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-chl-santiago"
+  },
+  {
+   "id": "grootste-stad-14",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Santiago",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Santiago",
+   "options": [
+    "Santa Cruz de la Sierra",
+    "Goiânia",
+    "Porto Alegre",
+    "Santiago"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-chl-santiago"
+  },
+  {
+   "id": "grootste-stad-15",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Bogota",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Bogota",
+   "options": [
+    "Bogota",
+    "Porto Alegre",
+    "Goiânia",
+    "Brasilia"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-col-bogota"
+  },
+  {
+   "id": "grootste-stad-16",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Fortaleza",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Fortaleza",
+   "options": [
+    "Fortaleza",
+    "Goiânia",
+    "Santa Cruz de la Sierra",
+    "Belém"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-fortaleza"
+  },
+  {
+   "id": "grootste-stad-17",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Rio de Janeiro",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Rio de Janeiro",
+   "options": [
+    "Caracas",
+    "Cali",
+    "Lima",
+    "Rio de Janeiro"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-rio-de-janeiro"
+  },
+  {
+   "id": "grootste-stad-18",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Rio de Janeiro",
+   "question": "Welke stad in Zuid-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Rio de Janeiro",
+   "options": [
+    "Curitiba",
+    "Goiânia",
+    "Medellín",
+    "Rio de Janeiro"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-rio-de-janeiro"
+  },
+  {
+   "id": "grootste-stad-19",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chicago",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Chicago",
+   "options": [
+    "Guadalajara",
+    "Boston",
+    "Chicago",
+    "Houston"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-chicago"
+  },
+  {
+   "id": "grootste-stad-20",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Houston",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Houston",
+   "options": [
+    "Fort Lauderdale",
+    "Santo Domingo",
+    "Saint Louis",
+    "Houston"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-houston"
+  },
+  {
+   "id": "grootste-stad-21",
+   "kind": "fact",
+   "category": "steden",
+   "name": "New York",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "New York",
+   "options": [
+    "New York",
+    "Denver",
+    "Dallas",
+    "Fort Lauderdale"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-new-york"
+  },
+  {
+   "id": "grootste-stad-22",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Washington",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Washington",
+   "options": [
+    "Long Beach",
+    "Washington",
+    "Santo Domingo",
+    "Saint Louis"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-washington-d-c"
+  },
+  {
+   "id": "grootste-stad-23",
+   "kind": "fact",
+   "category": "steden",
+   "name": "New York",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "New York",
+   "options": [
+    "Montréal",
+    "San Francisco",
+    "New York",
+    "Havana"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-new-york"
+  },
+  {
+   "id": "grootste-stad-24",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chicago",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Chicago",
+   "options": [
+    "Chicago",
+    "Miami",
+    "Fort Lauderdale",
+    "Puebla"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-chicago"
+  },
+  {
+   "id": "grootste-stad-25",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Dallas",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Dallas",
+   "options": [
+    "Phoenix",
+    "Santo Domingo",
+    "Havana",
+    "Dallas"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-dallas"
+  },
+  {
+   "id": "grootste-stad-26",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chicago",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Chicago",
+   "options": [
+    "Toronto",
+    "Chicago",
+    "Atlanta",
+    "Tampa"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-chicago"
+  },
+  {
+   "id": "grootste-stad-27",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Mexico-Stad",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Mexico-Stad",
+   "options": [
+    "Chicago",
+    "Mexico-Stad",
+    "Denver",
+    "San Juan"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-mex-mexico-stad"
+  },
+  {
+   "id": "grootste-stad-28",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chicago",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Chicago",
+   "options": [
+    "Boston",
+    "Long Beach",
+    "Chicago",
+    "Santo Domingo"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-chicago"
+  },
+  {
+   "id": "grootste-stad-29",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Philadelphia",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Philadelphia",
+   "options": [
+    "Philadelphia",
+    "Phoenix",
+    "Tampa",
+    "Seattle"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-philadelphia"
+  },
+  {
+   "id": "grootste-stad-30",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Dallas",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Dallas",
+   "options": [
+    "Dallas",
+    "Tampa",
+    "San Juan",
+    "Phoenix"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-dallas"
+  },
+  {
+   "id": "grootste-stad-31",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Los Angeles",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Los Angeles",
+   "options": [
+    "Toronto",
+    "San Juan",
+    "Los Angeles",
+    "Boston"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-los-angeles"
+  },
+  {
+   "id": "grootste-stad-32",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Mexico-Stad",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Mexico-Stad",
+   "options": [
+    "Long Beach",
+    "Houston",
+    "Mexico-Stad",
+    "Los Angeles"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-mex-mexico-stad"
+  },
+  {
+   "id": "grootste-stad-33",
+   "kind": "fact",
+   "category": "steden",
+   "name": "New York",
+   "question": "Welke stad in Noord-Amerika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "New York",
+   "options": [
+    "Montréal",
+    "New York",
+    "San Francisco",
+    "Chicago"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-new-york"
+  },
+  {
+   "id": "grootste-stad-34",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Mumbai",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Mumbai",
+   "options": [
+    "Shenzhen",
+    "Singapore",
+    "Teheran",
+    "Mumbai"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-bombay"
+  },
+  {
+   "id": "grootste-stad-35",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Shenzhen",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Shenzhen",
+   "options": [
+    "Zhengzhou",
+    "Shenzhen",
+    "Indore",
+    "Jinan"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-chn-shenzhen"
+  },
+  {
+   "id": "grootste-stad-36",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Teheran",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Teheran",
+   "options": [
+    "Haikou",
+    "Teheran",
+    "Nanchong",
+    "Linyi"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-irn-teheran"
+  },
+  {
+   "id": "grootste-stad-37",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Istanbul",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Istanbul",
+   "options": [
+    "Istanbul",
+    "İzmir",
+    "Hiroshima",
+    "Haiderabad"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-tur-istanboel"
+  },
+  {
+   "id": "grootste-stad-38",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Kolkata",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Kolkata",
+   "options": [
+    "Seoul",
+    "Taipei",
+    "Kunming",
+    "Kolkata"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-calcutta"
+  },
+  {
+   "id": "grootste-stad-39",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Amaravati",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Amaravati",
+   "options": [
+    "Jinan",
+    "Qingdao",
+    "Amaravati",
+    "Sanaa"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-amaravati"
+  },
+  {
+   "id": "grootste-stad-40",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Teheran",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Teheran",
+   "options": [
+    "Teheran",
+    "Nanchong",
+    "Tasjkent",
+    "Zaozhuang"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-irn-teheran"
+  },
+  {
+   "id": "grootste-stad-41",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Taipei",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Taipei",
+   "options": [
+    "Taipei",
+    "Kanpur",
+    "Lanzhou",
+    "Bandung"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-twn-taipei"
+  },
+  {
+   "id": "grootste-stad-42",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Osaka",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Osaka",
+   "options": [
+    "Kabul",
+    "Osaka",
+    "Nieuw Taipei",
+    "Hongkong"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-jpn-osaka"
+  },
+  {
+   "id": "grootste-stad-43",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lahore",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lahore",
+   "options": [
+    "Lahore",
+    "Shijiazhuang",
+    "George Town",
+    "Mashhad"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-pak-lahore"
+  },
+  {
+   "id": "grootste-stad-44",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Karachi",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Karachi",
+   "options": [
+    "Fuzhou",
+    "Chengdu",
+    "Hongkong",
+    "Karachi"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-pak-karachi"
+  },
+  {
+   "id": "grootste-stad-45",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Manilla",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Manilla",
+   "options": [
+    "Qingdao",
+    "Manilla",
+    "Haiderabad",
+    "Xiangtan"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-phl-manilla"
+  },
+  {
+   "id": "grootste-stad-46",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Hanoi",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Hanoi",
+   "options": [
+    "Hanoi",
+    "Taichung",
+    "Surabaya",
+    "Faisalabad"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-vnm-hanoi"
+  },
+  {
+   "id": "grootste-stad-47",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Rangoon",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Rangoon",
+   "options": [
+    "Daegu",
+    "Hiroshima",
+    "George Town",
+    "Rangoon"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-mmr-rangoon"
+  },
+  {
+   "id": "grootste-stad-48",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Delhi",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Delhi",
+   "options": [
+    "Nanning",
+    "Delhi",
+    "Hangzhou",
+    "Ürümqi"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-delhi"
+  },
+  {
+   "id": "grootste-stad-49",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Dhaka",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Dhaka",
+   "options": [
+    "Dhaka",
+    "Medan",
+    "Taichung",
+    "Xiamen"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bgd-dhaka"
+  },
+  {
+   "id": "grootste-stad-50",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Haora",
+   "question": "Welke stad in Azië heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Haora",
+   "options": [
+    "Kabul",
+    "Haora",
+    "Taichung",
+    "Dalian"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-haora"
+  },
+  {
+   "id": "grootste-stad-51",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Parijs",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Parijs",
+   "options": [
+    "Sint Petersburg",
+    "Lissabon",
+    "Parijs",
+    "Berlijn"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fra-parijs"
+  },
+  {
+   "id": "grootste-stad-52",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Moskou",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Moskou",
+   "options": [
+    "Berlijn",
+    "Wenen",
+    "Moskou",
+    "Katowice"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-rus-moskou"
+  },
+  {
+   "id": "grootste-stad-53",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Barcelona",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Barcelona",
+   "options": [
+    "Rome",
+    "Frankfurt",
+    "Barcelona",
+    "Katowice"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-esp-barcelona"
+  },
+  {
+   "id": "grootste-stad-54",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Parijs",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Parijs",
+   "options": [
+    "Barcelona",
+    "Parijs",
+    "Birmingham",
+    "Rome"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fra-parijs"
+  },
+  {
+   "id": "grootste-stad-55",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Londen",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Londen",
+   "options": [
+    "Mannheim",
+    "Manchester",
+    "Athene",
+    "Londen"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-gbr-londen"
+  },
+  {
+   "id": "grootste-stad-56",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Parijs",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Parijs",
+   "options": [
+    "Lissabon",
+    "Parijs",
+    "Rome",
+    "Katowice"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fra-parijs"
+  },
+  {
+   "id": "grootste-stad-57",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Moskou",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Moskou",
+   "options": [
+    "Katowice",
+    "Frankfurt",
+    "Moskou",
+    "Lissabon"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-rus-moskou"
+  },
+  {
+   "id": "grootste-stad-58",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Moskou",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Moskou",
+   "options": [
+    "Rome",
+    "Moskou",
+    "Berlijn",
+    "Sint Petersburg"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-rus-moskou"
+  },
+  {
+   "id": "grootste-stad-59",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Parijs",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Parijs",
+   "options": [
+    "Madrid",
+    "Parijs",
+    "Kiev",
+    "Napels"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fra-parijs"
+  },
+  {
+   "id": "grootste-stad-60",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Moskou",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Moskou",
+   "options": [
+    "Stuttgart",
+    "Madrid",
+    "Berlijn",
+    "Moskou"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-rus-moskou"
+  },
+  {
+   "id": "grootste-stad-61",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Madrid",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Madrid",
+   "options": [
+    "Kiev",
+    "Napels",
+    "Madrid",
+    "Rome"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-esp-madrid"
+  },
+  {
+   "id": "grootste-stad-62",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Londen",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Londen",
+   "options": [
+    "Londen",
+    "Barcelona",
+    "Lissabon",
+    "Mannheim"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-gbr-londen"
+  },
+  {
+   "id": "grootste-stad-63",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Madrid",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Madrid",
+   "options": [
+    "Wenen",
+    "Frankfurt",
+    "Milaan",
+    "Madrid"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-esp-madrid"
+  },
+  {
+   "id": "grootste-stad-64",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Londen",
+   "question": "Welke stad in Europa heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Londen",
+   "options": [
+    "Barcelona",
+    "Londen",
+    "Berlijn",
+    "Napels"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-gbr-londen"
+  },
+  {
+   "id": "grootste-stad-65",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lagos",
+   "options": [
+    "Nairobi",
+    "Johannesburg",
+    "Omdurman",
+    "Lagos"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "grootste-stad-66",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Cairo",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Cairo",
+   "options": [
+    "Addis Abeba",
+    "Omdurman",
+    "Johannesburg",
+    "Cairo"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-egy-cairo"
+  },
+  {
+   "id": "grootste-stad-67",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lagos",
+   "options": [
+    "Lagos",
+    "Dar es Salaam",
+    "Omdurman",
+    "Alexandrië"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "grootste-stad-68",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Khartoem",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Khartoem",
+   "options": [
+    "Kano",
+    "Algiers",
+    "Tunis",
+    "Khartoem"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-sdn-khartoem"
+  },
+  {
+   "id": "grootste-stad-69",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Cairo",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Cairo",
+   "options": [
+    "Kano",
+    "Cairo",
+    "Alexandrië",
+    "Ibadan"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-egy-cairo"
+  },
+  {
+   "id": "grootste-stad-70",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Cairo",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Cairo",
+   "options": [
+    "Algiers",
+    "Cairo",
+    "Khartoem",
+    "Kaapstad"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-egy-cairo"
+  },
+  {
+   "id": "grootste-stad-71",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Luanda",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Luanda",
+   "options": [
+    "Abidjan",
+    "Luanda",
+    "Kaapstad",
+    "Dar es Salaam"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ago-luanda"
+  },
+  {
+   "id": "grootste-stad-72",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Cairo",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Cairo",
+   "options": [
+    "Accra",
+    "Cairo",
+    "Johannesburg",
+    "Alexandrië"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-egy-cairo"
+  },
+  {
+   "id": "grootste-stad-73",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Kinshasa",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Kinshasa",
+   "options": [
+    "Addis Abeba",
+    "Khartoem",
+    "Kinshasa",
+    "Accra"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-cod-kinshasa"
+  },
+  {
+   "id": "grootste-stad-74",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Cairo",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Cairo",
+   "options": [
+    "Cairo",
+    "Dar es Salaam",
+    "Luanda",
+    "Algiers"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-egy-cairo"
+  },
+  {
+   "id": "grootste-stad-75",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lagos",
+   "options": [
+    "Omdurman",
+    "Lagos",
+    "Tunis",
+    "Benoni"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "grootste-stad-76",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Luanda",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Luanda",
+   "options": [
+    "Luanda",
+    "Casablanca",
+    "Abidjan",
+    "Ibadan"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ago-luanda"
+  },
+  {
+   "id": "grootste-stad-77",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lagos",
+   "options": [
+    "Omdurman",
+    "Johannesburg",
+    "Lagos",
+    "Kaapstad"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "grootste-stad-78",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Kinshasa",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Kinshasa",
+   "options": [
+    "Dar es Salaam",
+    "Durban",
+    "Kinshasa",
+    "Dakar"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-cod-kinshasa"
+  },
+  {
+   "id": "grootste-stad-79",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lagos",
+   "options": [
+    "Khartoem",
+    "Tripoli",
+    "Durban",
+    "Lagos"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "grootste-stad-80",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lagos",
+   "options": [
+    "Accra",
+    "Algiers",
+    "Benoni",
+    "Lagos"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "grootste-stad-81",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lagos",
+   "options": [
+    "Addis Abeba",
+    "Dar es Salaam",
+    "Kaapstad",
+    "Lagos"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "grootste-stad-82",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Lagos",
+   "options": [
+    "Lagos",
+    "Alexandrië",
+    "Tunis",
+    "Abidjan"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "grootste-stad-83",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Luanda",
+   "question": "Welke stad in Afrika heeft de meeste inwoners (agglomeratie)?",
+   "answer": "Luanda",
+   "options": [
+    "Addis Abeba",
+    "Luanda",
+    "Gizeh",
+    "Dakar"
+   ],
+   "hint": "",
+   "note": "Bron: Natural Earth (POP_MAX), afgerond.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "grootste-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ago-luanda"
+  }
+ ]
+}

@@ -317,10 +317,19 @@
     "scripts/test_topo_mobile.mjs": [
       "topo"
     ],
+    "scripts/test_topo_vo.mjs": [
+      "topo"
+    ],
+    "scripts/topo_vo/*": [
+      "topo"
+    ],
     "scripts/test_wihtml_journey.mjs": [
       "wihtml"
     ],
     "scripts/validate_topo_content.mjs": [
+      "topo"
+    ],
+    "scripts/validate_topo_vo_data.mjs": [
       "topo"
     ],
     "scripts/workflow_export.js": [

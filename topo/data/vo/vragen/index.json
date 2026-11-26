@@ -1,0 +1,91 @@
+{
+ "versie": "1.0.0",
+ "sjablonen": [
+  {
+   "sjabloon": "begrip-bij-uitleg",
+   "bestand": "vragen/begrip-bij-uitleg.json",
+   "aantal": 143
+  },
+  {
+   "sjabloon": "deelstaat-van-stad",
+   "bestand": "vragen/deelstaat-van-stad.json",
+   "aantal": 41
+  },
+  {
+   "sjabloon": "grootste-stad",
+   "bestand": "vragen/grootste-stad.json",
+   "aantal": 83
+  },
+  {
+   "sjabloon": "hoofdstad-van-land",
+   "bestand": "vragen/hoofdstad-van-land.json",
+   "aantal": 186
+  },
+  {
+   "sjabloon": "hoogste-berg",
+   "bestand": "vragen/hoogste-berg.json",
+   "aantal": 31
+  },
+  {
+   "sjabloon": "land-van-hoofdstad",
+   "bestand": "vragen/land-van-hoofdstad.json",
+   "aantal": 186
+  },
+  {
+   "sjabloon": "land-van-stad",
+   "bestand": "vragen/land-van-stad.json",
+   "aantal": 92
+  },
+  {
+   "sjabloon": "noordelijkst-nl",
+   "bestand": "vragen/noordelijkst-nl.json",
+   "aantal": 41
+  },
+  {
+   "sjabloon": "plaat-onder",
+   "bestand": "vragen/plaat-onder.json",
+   "aantal": 53
+  },
+  {
+   "sjabloon": "provincie-van-stad",
+   "bestand": "vragen/provincie-van-stad.json",
+   "aantal": 60
+  },
+  {
+   "sjabloon": "provinciehoofdstad",
+   "bestand": "vragen/provinciehoofdstad.json",
+   "aantal": 12
+  },
+  {
+   "sjabloon": "regio-van-deelstaat",
+   "bestand": "vragen/regio-van-deelstaat.json",
+   "aantal": 27
+  },
+  {
+   "sjabloon": "regio-van-stad",
+   "bestand": "vragen/regio-van-stad.json",
+   "aantal": 41
+  },
+  {
+   "sjabloon": "soort-plek",
+   "bestand": "vragen/soort-plek.json",
+   "aantal": 290
+  },
+  {
+   "sjabloon": "tweelingstad",
+   "bestand": "vragen/tweelingstad.json",
+   "aantal": 14
+  },
+  {
+   "sjabloon": "voorbeeld-van-begrip",
+   "bestand": "vragen/voorbeeld-van-begrip.json",
+   "aantal": 93
+  },
+  {
+   "sjabloon": "werelddeel-van-land",
+   "bestand": "vragen/werelddeel-van-land.json",
+   "aantal": 122
+  }
+ ],
+ "totaal": 1515
+}

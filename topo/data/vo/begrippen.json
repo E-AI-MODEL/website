@@ -1,0 +1,3362 @@
+{
+ "versie": "1.0.0",
+ "toelichting": "Uitleg in eigen woorden, bedoeld als oefenmateriaal; geen officiële definities.",
+ "aantal": 143,
+ "begrippen": [
+  {
+   "id": "begrip-schaal",
+   "term": "schaal",
+   "uitleg": "De verhouding tussen een afstand op de kaart en de echte afstand. Bij 1:100.000 is 1 cm op de kaart 1 km in het echt.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-schaalniveau",
+   "term": "schaalniveau",
+   "uitleg": "Het niveau waarop je naar een verschijnsel kijkt: lokaal, regionaal, nationaal, continentaal of mondiaal.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-legenda",
+   "term": "legenda",
+   "uitleg": "De uitleg bij een kaart: welke kleuren, lijnen en tekens wat betekenen.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-kaartprojectie",
+   "term": "kaartprojectie",
+   "uitleg": "De manier waarop de bolle aarde op een plat vlak wordt getekend. Elke projectie vervormt iets: oppervlakte, vorm of afstand.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-breedtegraad",
+   "term": "breedtegraad",
+   "uitleg": "De afstand in graden ten noorden of zuiden van de evenaar, van 0° tot 90°.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "id": "begrip-lengtegraad",
+   "term": "lengtegraad",
+   "uitleg": "De afstand in graden ten oosten of westen van de nulmeridiaan, van 0° tot 180°.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "id": "begrip-evenaar",
+   "term": "evenaar",
+   "uitleg": "De denkbeeldige lijn op 0° breedte die de aarde in een noordelijk en zuidelijk halfrond verdeelt.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "voorbeelden": [
+    "land-ecu"
+   ]
+  },
+  {
+   "id": "begrip-nulmeridiaan",
+   "term": "nulmeridiaan",
+   "uitleg": "De lijn op 0° lengte, die door Greenwich bij Londen loopt.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "voorbeelden": [
+    "stad-gbr-londen"
+   ]
+  },
+  {
+   "id": "begrip-keerkring",
+   "term": "keerkring",
+   "uitleg": "De breedtecirkels op ongeveer 23,5° noord (Kreeftskeerkring) en zuid (Steenbokskeerkring). Tussen de keerkringen staat de zon op een dag in het jaar loodrecht boven je.",
+   "thema": "kaart",
+   "doelen": [
+    "KD25A",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-poolcirkel",
+   "term": "poolcirkel",
+   "uitleg": "De breedtecirkels op ongeveer 66,5°. Daarbuiten gaat de zon minstens één dag per jaar niet onder of niet op.",
+   "thema": "kaart",
+   "doelen": [
+    "KD25A",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-topografische-kaart",
+   "term": "topografische kaart",
+   "uitleg": "Een kaart die laat zien wat er in een gebied ligt: wegen, water, bebouwing, bos en hoogte.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "H-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   }
+  },
+  {
+   "id": "begrip-thematische-kaart",
+   "term": "thematische kaart",
+   "uitleg": "Een kaart over één onderwerp, zoals bevolkingsdichtheid, klimaat of inkomen.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-choropletenkaart",
+   "term": "choropletenkaart",
+   "uitleg": "Een thematische kaart waarop gebieden een kleur krijgen naar een waarde, zoals inwoners per km².",
+   "thema": "kaart",
+   "doelen": [
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-isolijn",
+   "term": "isolijn",
+   "uitleg": "Een lijn die plaatsen met dezelfde waarde verbindt, zoals een hoogtelijn of een lijn van gelijke temperatuur (isotherm).",
+   "thema": "kaart",
+   "doelen": [
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-register-atlas",
+   "term": "register (atlas)",
+   "uitleg": "De alfabetische lijst achter in de atlas waarmee je een plaatsnaam opzoekt met kaartnummer en vakaanduiding.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-gis",
+   "term": "GIS",
+   "uitleg": "Geografisch informatiesysteem: software die kaartlagen met gegevens combineert om ruimtelijke vragen te beantwoorden.",
+   "thema": "kaart",
+   "doelen": [
+    "KD24C",
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-mentale-kaart",
+   "term": "mentale kaart",
+   "uitleg": "Het kaartbeeld dat je in je hoofd hebt van waar plaatsen liggen en hoe ze ten opzichte van elkaar liggen.",
+   "thema": "kaart",
+   "doelen": [
+    "BASIS-TOPO",
+    "V-A1",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-bevolkingsdichtheid",
+   "term": "bevolkingsdichtheid",
+   "uitleg": "Het aantal inwoners per vierkante kilometer.",
+   "thema": "bevolking",
+   "doelen": [
+    "KD25A",
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "land-bgd",
+    "land-nld"
+   ]
+  },
+  {
+   "id": "begrip-natuurlijke-groei",
+   "term": "natuurlijke groei",
+   "uitleg": "Het aantal geboorten min het aantal sterfgevallen in een jaar, meestal per 1000 inwoners.",
+   "thema": "bevolking",
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   }
+  },
+  {
+   "id": "begrip-demografische-transitie",
+   "term": "demografische transitie",
+   "uitleg": "Het model van hoe geboorte- en sterftecijfer dalen als een land zich ontwikkelt, met een fase van snelle bevolkingsgroei ertussen.",
+   "thema": "bevolking",
+   "doelen": [
+    "KD25A",
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-migratie",
+   "term": "migratie",
+   "uitleg": "Het verhuizen van mensen naar een andere woonplaats, binnen een land (binnenlands) of naar een ander land (internationaal).",
+   "thema": "bevolking",
+   "doelen": [
+    "KD25A",
+    "H-B1",
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-pushfactor",
+   "term": "pushfactor",
+   "uitleg": "Een reden om uit een gebied weg te trekken, zoals werkloosheid, geweld of droogte.",
+   "thema": "bevolking",
+   "doelen": [
+    "KD25A",
+    "H-B1",
+    "H-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   }
+  },
+  {
+   "id": "begrip-pullfactor",
+   "term": "pullfactor",
+   "uitleg": "Een reden om naar een gebied toe te trekken, zoals werk, veiligheid of familie.",
+   "thema": "bevolking",
+   "doelen": [
+    "KD25A",
+    "H-B1",
+    "H-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   }
+  },
+  {
+   "id": "begrip-geldovermakingen",
+   "term": "geldovermakingen",
+   "uitleg": "Geld dat migranten naar familie in hun herkomstland sturen (remittances). Voor sommige landen een grote inkomstenbron.",
+   "thema": "bevolking",
+   "doelen": [
+    "H-B1",
+    "H-B2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "voorbeelden": [
+    "land-mex"
+   ]
+  },
+  {
+   "id": "begrip-verstedelijking",
+   "term": "verstedelijking",
+   "uitleg": "De groei van het aandeel van de bevolking dat in steden woont.",
+   "thema": "stad",
+   "doelen": [
+    "KD25A",
+    "H-B2",
+    "V-B1",
+    "H-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-suburbanisatie",
+   "term": "suburbanisatie",
+   "uitleg": "Het verhuizen van mensen uit de stad naar woonwijken en dorpen rond de stad.",
+   "thema": "stad",
+   "doelen": [
+    "KD25A",
+    "H-E2",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-agglomeratie",
+   "term": "agglomeratie",
+   "uitleg": "Een stad samen met de aangrenzende bebouwde gemeenten die er functioneel bij horen.",
+   "thema": "stad",
+   "doelen": [
+    "KD25A",
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-megastad",
+   "term": "megastad",
+   "uitleg": "Een stedelijk gebied met 10 miljoen inwoners of meer.",
+   "thema": "stad",
+   "doelen": [
+    "KD25A",
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "stad-jpn-tokio",
+    "stad-mex-mexico-stad",
+    "stad-bra-sao-paulo"
+   ]
+  },
+  {
+   "id": "begrip-wereldstad",
+   "term": "wereldstad",
+   "uitleg": "Een stad met een sleutelrol in de wereldeconomie, door hoofdkantoren, banken, beurs en verbindingen.",
+   "thema": "stad",
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "stad-gbr-londen",
+    "stad-usa-new-york",
+    "stad-jpn-tokio"
+   ]
+  },
+  {
+   "id": "begrip-primaatstad",
+   "term": "primaatstad",
+   "uitleg": "Een stad die veel groter en belangrijker is dan de andere steden in het land.",
+   "thema": "stad",
+   "doelen": [
+    "V-D1",
+    "H-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "stad-arg-buenos-aires",
+    "stad-per-lima"
+   ]
+  },
+  {
+   "id": "begrip-stedelijk-netwerk",
+   "term": "stedelijk netwerk",
+   "uitleg": "Een groep steden die door verkeer, werk en voorzieningen sterk met elkaar verbonden zijn, zoals de Randstad.",
+   "thema": "stad",
+   "doelen": [
+    "KD25C",
+    "H-E2",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-regio-randstad"
+   ]
+  },
+  {
+   "id": "begrip-gentrificatie",
+   "term": "gentrificatie",
+   "uitleg": "Het opwaarderen van een oude stadswijk, waarbij huizen duurder worden en bewoners met hogere inkomens de oorspronkelijke bewoners vervangen.",
+   "thema": "stad",
+   "doelen": [
+    "H-E2",
+    "V-E1",
+    "V-E2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-segregatie",
+   "term": "segregatie",
+   "uitleg": "Het ruimtelijk gescheiden wonen van groepen naar inkomen, herkomst of leeftijd.",
+   "thema": "stad",
+   "doelen": [
+    "H-E2",
+    "V-E1",
+    "H-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-leefbaarheid",
+   "term": "leefbaarheid",
+   "uitleg": "Hoe prettig en veilig het is om in een buurt te wonen, bepaald door woningen, voorzieningen, veiligheid en sociale contacten.",
+   "thema": "stad",
+   "doelen": [
+    "H-E2",
+    "V-E1",
+    "V-E2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-krimpgebied",
+   "term": "krimpgebied",
+   "uitleg": "Een gebied waar het aantal inwoners daalt, vaak aan de randen van het land.",
+   "thema": "stad",
+   "doelen": [
+    "KD25C",
+    "H-E2",
+    "V-E2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-favela",
+   "term": "favela",
+   "uitleg": "Een informele woonwijk in een Braziliaanse stad, vaak op hellingen of aan de stadsrand, met slechte voorzieningen.",
+   "thema": "stad",
+   "doelen": [
+    "H-D1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-favela-rocinha",
+    "stad-bra-rio-de-janeiro"
+   ]
+  },
+  {
+   "id": "begrip-mondialisering",
+   "term": "mondialisering",
+   "uitleg": "Het proces waarin landen en regio's economisch, politiek en cultureel steeds sterker met elkaar verbonden raken.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-B2",
+    "H-B3",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-tijdruimtecompressie",
+   "term": "tijdruimtecompressie",
+   "uitleg": "Het verschijnsel dat afstanden 'kleiner' voelen omdat vervoer en communicatie sneller en goedkoper worden.",
+   "thema": "mondialisering",
+   "doelen": [
+    "V-B1"
+   ],
+   "leerjaren": {
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-multinational",
+   "term": "multinational",
+   "uitleg": "Een onderneming met vestigingen in meerdere landen.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-buitenlandse-directe-investering",
+   "term": "buitenlandse directe investering",
+   "uitleg": "Geld dat een bedrijf in het buitenland investeert in een eigen vestiging of overname.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-containerisatie",
+   "term": "containerisatie",
+   "uitleg": "Het vervoer van goederen in gestandaardiseerde containers, waardoor overslag snel en goedkoop werd.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-stad-rotterdam"
+   ]
+  },
+  {
+   "id": "begrip-mainport",
+   "term": "mainport",
+   "uitleg": "Een haven of luchthaven die een knooppunt is voor internationaal vervoer.",
+   "thema": "mondialisering",
+   "doelen": [
+    "KD25C",
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-stad-rotterdam",
+    "nl-luchthaven-schiphol"
+   ]
+  },
+  {
+   "id": "begrip-knelpunt-zeestraat",
+   "term": "knelpunt (zeestraat)",
+   "uitleg": "Een smalle doorgang waar veel scheepvaart doorheen moet; een blokkade heeft wereldwijde gevolgen.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "kanaal-suezkanaal",
+    "zeestraat-straat-malakka",
+    "zeestraat-straat-van-hormuz"
+   ]
+  },
+  {
+   "id": "begrip-centrum-en-periferie",
+   "term": "centrum en periferie",
+   "uitleg": "Een model waarin rijke kerngebieden (centrum) economisch domineren over armere randgebieden (periferie), met de semi-periferie ertussen.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-B2",
+    "V-B1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-ontwikkelingsland",
+   "term": "ontwikkelingsland",
+   "uitleg": "Een land met een relatief laag inkomen per inwoner en minder voorzieningen zoals onderwijs en zorg.",
+   "thema": "ontwikkeling",
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "land-bra"
+   ]
+  },
+  {
+   "id": "begrip-bbp-per-inwoner",
+   "term": "bbp per inwoner",
+   "uitleg": "De waarde van alle goederen en diensten die in een land in een jaar worden gemaakt, gedeeld door het aantal inwoners.",
+   "thema": "ontwikkeling",
+   "doelen": [
+    "H-B2",
+    "V-B1",
+    "H-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-hdi",
+   "term": "HDI",
+   "uitleg": "De index voor menselijke ontwikkeling van de VN, berekend uit levensverwachting, onderwijs en inkomen.",
+   "thema": "ontwikkeling",
+   "doelen": [
+    "H-B2",
+    "V-B1",
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-informele-sector",
+   "term": "informele sector",
+   "uitleg": "Werk dat niet geregistreerd is en waarover geen belasting wordt betaald, zoals straathandel.",
+   "thema": "ontwikkeling",
+   "doelen": [
+    "H-D1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-maquiladora",
+   "term": "maquiladora",
+   "uitleg": "Een fabriek in Mexico, vaak vlak bij de grens, die onderdelen invoert, assembleert en het product weer uitvoert naar de VS.",
+   "thema": "grens",
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "voorbeelden": [
+    "stad-mex-ciudad-juarez",
+    "stad-mex-tijuana"
+   ]
+  },
+  {
+   "id": "begrip-tweelingstad",
+   "term": "tweelingstad",
+   "uitleg": "Twee steden aan weerszijden van een grens die sterk met elkaar verbonden zijn.",
+   "thema": "grens",
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "voorbeelden": [
+    "grens-el-paso",
+    "stad-mex-ciudad-juarez"
+   ]
+  },
+  {
+   "id": "begrip-grensoverschrijdende-relatie",
+   "term": "grensoverschrijdende relatie",
+   "uitleg": "Contact over een grens heen: handel, pendel, migratie, investeringen of samenwerking.",
+   "thema": "grens",
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   }
+  },
+  {
+   "id": "begrip-offshoring",
+   "term": "offshoring",
+   "uitleg": "Het verplaatsen van productie of diensten naar een land met lagere kosten.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-B1",
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-handelsblok",
+   "term": "handelsblok",
+   "uitleg": "Een groep landen die onderling handelsbelemmeringen weghalen, zoals de EU of Mercosur.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-B2",
+    "V-B1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-mercosur",
+   "term": "Mercosur",
+   "uitleg": "Een handelsblok in Zuid-Amerika met onder meer Brazilië, Argentinië, Paraguay en Uruguay.",
+   "thema": "mondialisering",
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "land-bra",
+    "land-arg",
+    "land-pry",
+    "rivier-uruguay"
+   ]
+  },
+  {
+   "id": "begrip-platentektoniek",
+   "term": "platentektoniek",
+   "uitleg": "De theorie dat de aardkorst uit platen bestaat die langzaam bewegen op de mantel.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-lithosfeer",
+   "term": "lithosfeer",
+   "uitleg": "De harde buitenste laag van de aarde: de aardkorst en het bovenste deel van de mantel. Hieruit bestaan de platen.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-convergente-plaatgrens",
+   "term": "convergente plaatgrens",
+   "uitleg": "Een grens waar twee platen naar elkaar toe bewegen; er ontstaan gebergten, vulkanen en aardbevingen.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "gebergte-andes",
+    "gebergte-himalaya"
+   ]
+  },
+  {
+   "id": "begrip-divergente-plaatgrens",
+   "term": "divergente plaatgrens",
+   "uitleg": "Een grens waar platen uit elkaar bewegen; magma stijgt op en er ontstaat nieuwe korst.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "land-isl"
+   ]
+  },
+  {
+   "id": "begrip-transforme-plaatgrens",
+   "term": "transforme plaatgrens",
+   "uitleg": "Een grens waar platen langs elkaar schuiven; er ontstaan vooral aardbevingen.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "staat-californie"
+   ]
+  },
+  {
+   "id": "begrip-subductie",
+   "term": "subductie",
+   "uitleg": "Het wegduiken van een zware oceanische plaat onder een andere plaat.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "gebergte-andes",
+    "plaat-nazca"
+   ]
+  },
+  {
+   "id": "begrip-oceanische-rug",
+   "term": "oceanische rug",
+   "uitleg": "Een onderzees gebergte langs een divergente plaatgrens.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "oceaan-atlantische-oceaan"
+   ]
+  },
+  {
+   "id": "begrip-slenk",
+   "term": "slenk",
+   "uitleg": "Een langgerekte daling van het land tussen breuklijnen.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "dal-grote-slenk"
+   ]
+  },
+  {
+   "id": "begrip-hotspot",
+   "term": "hotspot",
+   "uitleg": "Een plek waar heet mantelmateriaal opstijgt, midden op een plaat, met vulkanen als gevolg.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "eilandengroep-hawaii"
+   ]
+  },
+  {
+   "id": "begrip-aardbeving",
+   "term": "aardbeving",
+   "uitleg": "Een plotselinge trilling van de aardkorst doordat opgebouwde spanning langs een breuk vrijkomt.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-epicentrum",
+   "term": "epicentrum",
+   "uitleg": "Het punt aan het aardoppervlak recht boven de haard van een aardbeving.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-tsunami",
+   "term": "tsunami",
+   "uitleg": "Een vloedgolf die ontstaat door een zeebeving, vulkaanuitbarsting of aardverschuiving onder water.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-plooiingsgebergte",
+   "term": "plooiingsgebergte",
+   "uitleg": "Een gebergte dat ontstaat doordat gesteentelagen door botsende platen worden samengedrukt en omhooggeduwd.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "gebergte-alpen",
+    "gebergte-himalaya"
+   ]
+  },
+  {
+   "id": "begrip-vulkanisme",
+   "term": "vulkanisme",
+   "uitleg": "Alle verschijnselen waarbij magma naar het aardoppervlak komt.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-gesteentekringloop",
+   "term": "gesteentekringloop",
+   "uitleg": "Het proces waarin stollings-, afzettings- en metamorfe gesteenten in elkaar overgaan.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-verwering",
+   "term": "verwering",
+   "uitleg": "Het uiteenvallen van gesteente ter plekke, door temperatuur, vorst, water of planten (fysisch of chemisch).",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-erosie",
+   "term": "erosie",
+   "uitleg": "Het wegvoeren van losgemaakt materiaal door water, wind of ijs.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1",
+    "H-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-sedimentatie",
+   "term": "sedimentatie",
+   "uitleg": "Het afzetten van meegevoerd materiaal, bijvoorbeeld in een delta of uiterwaard.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1",
+    "H-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-delta",
+   "term": "delta",
+   "uitleg": "Het gebied waar een rivier zich splitst en sediment afzet voordat ze in zee uitmondt.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-delta-zuidwestelijke-delta",
+    "rivier-nijl"
+   ]
+  },
+  {
+   "id": "begrip-meander",
+   "term": "meander",
+   "uitleg": "Een bocht in een rivier die zich verplaatst doordat de buitenbocht uitslijt en in de binnenbocht zand wordt afgezet.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "rivier-mississippi"
+   ]
+  },
+  {
+   "id": "begrip-gletsjer",
+   "term": "gletsjer",
+   "uitleg": "Een ijsmassa die door zijn eigen gewicht langzaam naar beneden stroomt.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "gebergte-alpen"
+   ]
+  },
+  {
+   "id": "begrip-morene",
+   "term": "morene",
+   "uitleg": "Puin dat een gletsjer heeft meegevoerd en afgezet.",
+   "thema": "aarde",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-regio-veluwe"
+   ]
+  },
+  {
+   "id": "begrip-stuwwal",
+   "term": "stuwwal",
+   "uitleg": "Een heuvelrug die ontstond doordat landijs grond voor zich uit duwde. De Veluwe is er een voorbeeld van.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "voorbeelden": [
+    "nl-regio-veluwe"
+   ]
+  },
+  {
+   "id": "begrip-landdegradatie",
+   "term": "landdegradatie",
+   "uitleg": "Het achteruitgaan van de kwaliteit van de bodem door bijvoorbeeld erosie, overbegrazing of uitputting.",
+   "thema": "aarde",
+   "doelen": [
+    "H-D2",
+    "V-D2",
+    "KD25B"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-bioom-cerrado",
+    "bra-bioom-caatinga"
+   ]
+  },
+  {
+   "id": "begrip-woestijnvorming",
+   "term": "woestijnvorming",
+   "uitleg": "Het uitbreiden van woestijnachtige omstandigheden door droogte en menselijk gebruik.",
+   "thema": "aarde",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "woestijn-sahara"
+   ]
+  },
+  {
+   "id": "begrip-weer-en-klimaat",
+   "term": "weer en klimaat",
+   "uitleg": "Weer is de toestand van de atmosfeer op een moment; klimaat is het gemiddelde weer over minstens dertig jaar.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-klimaatzone",
+   "term": "klimaatzone",
+   "uitleg": "Een gebied met een vergelijkbaar klimaat, bijvoorbeeld tropisch, droog, gematigd, landklimaat of poolklimaat.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-klimaatclassificatie-van-köppen",
+   "term": "klimaatclassificatie van Köppen",
+   "uitleg": "Een indeling van klimaten op basis van temperatuur en neerslag, met hoofdgroepen A (tropisch) tot en met E (pool).",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-itcz",
+   "term": "ITCZ",
+   "uitleg": "De intertropische convergentiezone: een gordel rond de evenaar waar passaatwinden samenkomen en lucht opstijgt, met veel regen.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-passaatwind",
+   "term": "passaatwind",
+   "uitleg": "Een constante wind tussen de subtropische hogedrukgebieden en de evenaar.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-luchtcirculatie",
+   "term": "luchtcirculatie",
+   "uitleg": "Het wereldwijde stelsel van luchtstromen dat warmte van de evenaar naar de polen verplaatst.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-hogedrukgebied",
+   "term": "hogedrukgebied",
+   "uitleg": "Een gebied met dalende lucht en hoge luchtdruk, meestal droog en helder weer.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-lagedrukgebied",
+   "term": "lagedrukgebied",
+   "uitleg": "Een gebied met stijgende lucht en lage luchtdruk, meestal bewolkt en nat weer.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-stuwingsregen",
+   "term": "stuwingsregen",
+   "uitleg": "Regen doordat lucht tegen een gebergte omhoog moet, afkoelt en condenseert. Achter het gebergte ligt een droge regenschaduw.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "gebergte-andes"
+   ]
+  },
+  {
+   "id": "begrip-zeestroming",
+   "term": "zeestroming",
+   "uitleg": "Een grote stroming in de oceaan, warm of koud, die het klimaat van kustgebieden beïnvloedt.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "oceaan-atlantische-oceaan"
+   ]
+  },
+  {
+   "id": "begrip-golfstroom",
+   "term": "Golfstroom",
+   "uitleg": "Een warme zeestroming van de Golf van Mexico naar de Noord-Atlantische Oceaan, die West-Europa relatief warm houdt.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "oceaan-atlantische-oceaan"
+   ]
+  },
+  {
+   "id": "begrip-el-niño",
+   "term": "El Niño",
+   "uitleg": "Een periodieke opwarming van het oppervlaktewater in de oostelijke Grote Oceaan, met droogte en overstromingen in verschillende delen van de wereld.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "land-per",
+    "oceaan-grote-oceaan"
+   ]
+  },
+  {
+   "id": "begrip-broeikaseffect",
+   "term": "broeikaseffect",
+   "uitleg": "Het vasthouden van warmte door gassen zoals CO₂ en methaan in de atmosfeer. Extra uitstoot versterkt het effect.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-klimaatverandering",
+   "term": "klimaatverandering",
+   "uitleg": "De verandering van het klimaat over lange tijd. De huidige opwarming komt vooral door uitstoot van broeikasgassen.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-mitigatie",
+   "term": "mitigatie",
+   "uitleg": "Maatregelen om klimaatverandering te beperken, zoals minder CO₂ uitstoten.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-adaptatie",
+   "term": "adaptatie",
+   "uitleg": "Maatregelen om je aan te passen aan de gevolgen van klimaatverandering, zoals hogere dijken.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-landschapszone",
+   "term": "landschapszone",
+   "uitleg": "Een brede zone op aarde met een samenhangend geheel van klimaat, bodem en begroeiing, zoals tropisch regenwoud of toendra.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-tropisch-regenwoud",
+   "term": "tropisch regenwoud",
+   "uitleg": "Een landschapszone rond de evenaar met het hele jaar warmte en veel regen, en een zeer grote soortenrijkdom.",
+   "thema": "klimaat",
+   "doelen": [
+    "KD25B",
+    "H-C2",
+    "V-C1",
+    "H-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-bioom-amazonegebied"
+   ]
+  },
+  {
+   "id": "begrip-savanne",
+   "term": "savanne",
+   "uitleg": "Een tropisch grasland met verspreide bomen, met een natte en een droge tijd.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1",
+    "H-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-bioom-cerrado"
+   ]
+  },
+  {
+   "id": "begrip-steppe",
+   "term": "steppe",
+   "uitleg": "Een droog grasland in een gematigd of subtropisch klimaat, met weinig bomen.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-bioom-pampa"
+   ]
+  },
+  {
+   "id": "begrip-taiga",
+   "term": "taiga",
+   "uitleg": "De noordelijke naaldbossenzone met lange, koude winters.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "regio-siberie"
+   ]
+  },
+  {
+   "id": "begrip-toendra",
+   "term": "toendra",
+   "uitleg": "Een boomloze vlakte in het hoge noorden met permafrost, mossen en lage struiken.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-permafrost",
+   "term": "permafrost",
+   "uitleg": "Grond die het hele jaar bevroren blijft.",
+   "thema": "klimaat",
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "regio-siberie"
+   ]
+  },
+  {
+   "id": "begrip-hoogtezones",
+   "term": "hoogtezones",
+   "uitleg": "De opeenvolging van klimaat en begroeiing naarmate je hoger in een gebergte komt.",
+   "thema": "klimaat",
+   "doelen": [
+    "V-D1",
+    "H-C2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "gebergte-andes"
+   ]
+  },
+  {
+   "id": "begrip-stroomgebied",
+   "term": "stroomgebied",
+   "uitleg": "Het hele gebied waarvan het water via één rivier naar zee stroomt.",
+   "thema": "water",
+   "doelen": [
+    "KD25B",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "rivier-rijn",
+    "nl-rivier-maas"
+   ]
+  },
+  {
+   "id": "begrip-regenrivier",
+   "term": "regenrivier",
+   "uitleg": "Een rivier die vooral door regenwater wordt gevoed, met grote verschillen in afvoer. De Maas is er een voorbeeld van.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-rivier-maas"
+   ]
+  },
+  {
+   "id": "begrip-gemengde-rivier",
+   "term": "gemengde rivier",
+   "uitleg": "Een rivier die door regen- én smeltwater wordt gevoed, waardoor de afvoer gelijkmatiger is. De Rijn is er een voorbeeld van.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "rivier-rijn"
+   ]
+  },
+  {
+   "id": "begrip-rivierafvoer",
+   "term": "rivierafvoer",
+   "uitleg": "De hoeveelheid water die per seconde door een rivier stroomt, gemeten in m³/s. Bij Lobith wordt de afvoer van de Rijn gemeten.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-plaats-lobith"
+   ]
+  },
+  {
+   "id": "begrip-overstroming",
+   "term": "overstroming",
+   "uitleg": "Water dat buiten de oevers of over of door een waterkering stroomt.",
+   "thema": "water",
+   "doelen": [
+    "KD25B",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-wateroverlast",
+   "term": "wateroverlast",
+   "uitleg": "Hinder door te veel water, bijvoorbeeld doordat riolen en sloten hevige regen niet snel genoeg kunnen afvoeren.",
+   "thema": "water",
+   "doelen": [
+    "KD25B",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-uiterwaard",
+   "term": "uiterwaard",
+   "uitleg": "Het land tussen de rivier en de dijk, dat bij hoogwater onder water mag lopen.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-rivier-waal"
+   ]
+  },
+  {
+   "id": "begrip-zomerbed-en-winterbed",
+   "term": "zomerbed en winterbed",
+   "uitleg": "Het zomerbed is de vaste geul van de rivier; het winterbed is het hele gebied tussen de dijken, inclusief de uiterwaarden.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-ruimte-voor-de-rivier",
+   "term": "Ruimte voor de Rivier",
+   "uitleg": "Een programma waarbij rivieren meer ruimte kregen, door bijvoorbeeld nevengeulen, dijkverlegging en lagere uiterwaarden.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-rivierproject-spiegelwaal",
+    "nl-rivierproject-noordwaard"
+   ]
+  },
+  {
+   "id": "begrip-deltawerken",
+   "term": "Deltawerken",
+   "uitleg": "Het stelsel van dammen, sluizen en stormvloedkeringen in Zuidwest-Nederland, gebouwd na de watersnood van 1953.",
+   "thema": "water",
+   "doelen": [
+    "KD25B",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-waterkering-oosterscheldekering",
+    "nl-waterkering-maeslantkering",
+    "nl-waterkering-haringvlietdam"
+   ]
+  },
+  {
+   "id": "begrip-stormvloedkering",
+   "term": "stormvloedkering",
+   "uitleg": "Een beweegbare waterkering die alleen bij hoog water sluit.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-waterkering-maeslantkering",
+    "nl-waterkering-oosterscheldekering"
+   ]
+  },
+  {
+   "id": "begrip-deltaprogramma",
+   "term": "Deltaprogramma",
+   "uitleg": "Het nationale programma dat Nederland beschermt tegen overstromingen en zorgt voor voldoende zoetwater, ook bij klimaatverandering.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-polder",
+   "term": "polder",
+   "uitleg": "Een laaggelegen stuk land omringd door dijken, waarvan het waterpeil kunstmatig wordt geregeld.",
+   "thema": "water",
+   "doelen": [
+    "KD25C",
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-polder-haarlemmermeer",
+    "nl-polder-noordoostpolder",
+    "nl-polder-flevopolder"
+   ]
+  },
+  {
+   "id": "begrip-droogmakerij",
+   "term": "droogmakerij",
+   "uitleg": "Een polder die is ontstaan door een meer droog te malen.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-polder-haarlemmermeer"
+   ]
+  },
+  {
+   "id": "begrip-inpoldering",
+   "term": "inpoldering",
+   "uitleg": "Het aanleggen van een polder door een gebied te bedijken en droog te malen.",
+   "thema": "water",
+   "doelen": [
+    "KD25C",
+    "H-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "voorbeelden": [
+    "provincie-flevoland"
+   ]
+  },
+  {
+   "id": "begrip-bodemdaling",
+   "term": "bodemdaling",
+   "uitleg": "Het langzaam zakken van de bodem, onder andere door ontwatering van veen en klei en door gaswinning.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-regio-groene-hart"
+   ]
+  },
+  {
+   "id": "begrip-kwel",
+   "term": "kwel",
+   "uitleg": "Grondwater dat onder een dijk door omhoog komt in een lager gelegen polder.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-verzilting",
+   "term": "verzilting",
+   "uitleg": "Het zouter worden van grond- en oppervlaktewater doordat zeewater het land binnendringt.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-delta-zuidwestelijke-delta"
+   ]
+  },
+  {
+   "id": "begrip-zoetwatervoorraad",
+   "term": "zoetwatervoorraad",
+   "uitleg": "De beschikbare hoeveelheid zoet water. Het IJsselmeer is de grootste zoetwaterbuffer van Nederland.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-meer-ijsselmeer"
+   ]
+  },
+  {
+   "id": "begrip-meerlaagsveiligheid",
+   "term": "meerlaagsveiligheid",
+   "uitleg": "Een aanpak met drie lagen: overstromingen voorkomen, de gevolgen beperken door slim te bouwen, en goede rampenbeheersing.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-zandsuppletie",
+   "term": "zandsuppletie",
+   "uitleg": "Het aanvullen van strand of vooroever met zand om de kust op zijn plaats te houden.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-kustproject-zandmotor"
+   ]
+  },
+  {
+   "id": "begrip-getijden",
+   "term": "getijden",
+   "uitleg": "Het regelmatig stijgen (vloed) en dalen (eb) van de zeespiegel door de aantrekkingskracht van de maan en de zon.",
+   "thema": "water",
+   "doelen": [
+    "KD25B",
+    "H-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "voorbeelden": [
+    "nl-zee-waddenzee"
+   ]
+  },
+  {
+   "id": "begrip-wad",
+   "term": "wad",
+   "uitleg": "Een gebied dat bij vloed onder water staat en bij eb droogvalt.",
+   "thema": "water",
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-zee-waddenzee"
+   ]
+  },
+  {
+   "id": "begrip-ruimtelijke-inrichting",
+   "term": "ruimtelijke inrichting",
+   "uitleg": "De manier waarop de ruimte in een gebied wordt verdeeld over functies zoals wonen, werken, natuur, landbouw en water.",
+   "thema": "inrichting",
+   "doelen": [
+    "KD25C",
+    "V-E1",
+    "V-E2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-ruimteclaim",
+   "term": "ruimteclaim",
+   "uitleg": "De vraag naar ruimte vanuit een functie, zoals woningbouw, natuur of energie.",
+   "thema": "inrichting",
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   }
+  },
+  {
+   "id": "begrip-toekomstscenario",
+   "term": "toekomstscenario",
+   "uitleg": "Een beschrijving van een mogelijke toekomst, om keuzes over de inrichting te vergelijken.",
+   "thema": "inrichting",
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   }
+  },
+  {
+   "id": "begrip-groene-hart",
+   "term": "Groene Hart",
+   "uitleg": "Het relatief open, agrarische gebied in het midden van de Randstad.",
+   "thema": "inrichting",
+   "doelen": [
+    "KD25C",
+    "H-E2",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "nl-regio-groene-hart"
+   ]
+  },
+  {
+   "id": "begrip-energietransitie",
+   "term": "energietransitie",
+   "uitleg": "De overgang van fossiele brandstoffen naar duurzame energie, met ruimte nodig voor bijvoorbeeld windparken en zonneparken.",
+   "thema": "inrichting",
+   "doelen": [
+    "KD25B",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2,
+     3
+    ]
+   }
+  },
+  {
+   "id": "begrip-ontbossing",
+   "term": "ontbossing",
+   "uitleg": "Het kappen of afbranden van bos, bijvoorbeeld voor landbouw, veeteelt, mijnbouw of wegen.",
+   "thema": "brazilie",
+   "doelen": [
+    "KD25B",
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-bioom-amazonegebied"
+   ]
+  },
+  {
+   "id": "begrip-agrobusiness",
+   "term": "agrobusiness",
+   "uitleg": "Grootschalige, commerciële landbouw voor de (wereld)markt, zoals de teelt van soja en suikerriet.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D1",
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-bioom-cerrado"
+   ]
+  },
+  {
+   "id": "begrip-hulpbron",
+   "term": "hulpbron",
+   "uitleg": "Iets uit de natuur dat mensen gebruiken, zoals ijzererts, olie, water of vruchtbare grond.",
+   "thema": "brazilie",
+   "doelen": [
+    "KD25B",
+    "H-D1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-mijngebied-carajas"
+   ]
+  },
+  {
+   "id": "begrip-waterkrachtcentrale",
+   "term": "waterkrachtcentrale",
+   "uitleg": "Een elektriciteitscentrale die stromend water van een stuwdam gebruikt.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D1",
+    "V-D2",
+    "KD25B"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-stuwdam-itaipudam",
+    "bra-stuwdam-belo-montedam"
+   ]
+  },
+  {
+   "id": "begrip-regionale-ongelijkheid",
+   "term": "regionale ongelijkheid",
+   "uitleg": "Grote verschillen in welvaart tussen regio's binnen een land, zoals tussen het zuidoosten en het noordoosten van Brazilië.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-regio-noordoost",
+    "bra-regio-zuidoost"
+   ]
+  },
+  {
+   "id": "begrip-binnenlandse-migratie",
+   "term": "binnenlandse migratie",
+   "uitleg": "Verhuizen binnen een land, bijvoorbeeld van het platteland in het noordoosten van Brazilië naar steden in het zuidoosten.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-regio-sertao",
+    "stad-bra-sao-paulo"
+   ]
+  },
+  {
+   "id": "begrip-grootgrondbezit",
+   "term": "grootgrondbezit",
+   "uitleg": "Een verdeling waarbij een kleine groep eigenaren een groot deel van de landbouwgrond bezit.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-landhervorming",
+   "term": "landhervorming",
+   "uitleg": "Beleid om landbouwgrond eerlijker te verdelen.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-inheemse-bevolking",
+   "term": "inheemse bevolking",
+   "uitleg": "De oorspronkelijke bewoners van een gebied en hun nakomelingen.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "bra-bioom-amazonegebied"
+   ]
+  },
+  {
+   "id": "begrip-etnische-en-culturele-diversiteit",
+   "term": "etnische en culturele diversiteit",
+   "uitleg": "De verscheidenheid aan herkomst, taal, godsdienst en gewoonten binnen een bevolking.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "begrip-droogtepolygoon",
+   "term": "droogtepolygoon",
+   "uitleg": "Het gebied in het noordoosten van Brazilië dat vaak door langdurige droogte wordt getroffen.",
+   "thema": "brazilie",
+   "doelen": [
+    "H-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "voorbeelden": [
+    "bra-regio-sertao",
+    "bra-bioom-caatinga"
+   ]
+  },
+  {
+   "id": "begrip-afbakening",
+   "term": "afbakening",
+   "uitleg": "Het bepalen van de grenzen van een gebied en de criteria die je daarvoor gebruikt.",
+   "thema": "zuid-amerika",
+   "doelen": [
+    "V-D1"
+   ],
+   "leerjaren": {
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "voorbeelden": [
+    "werelddeel-zuid-amerika"
+   ]
+  }
+ ]
+}
