@@ -154,7 +154,7 @@ deploy-sport-opstellingen-quick.yml,publish,6,Verify public sport pages and unch
 deploy-theory7.yml,deploy,1,Checkout,success(),,actions/checkout@v4,2,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,2,opnieuw bevestigd
 deploy-theory7.yml,deploy,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,3,opnieuw bevestigd
 deploy-theory7.yml,deploy,3,Download exact de geteste productiebuild,success(),,actions/download-artifact@v4,2,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,4,opnieuw bevestigd
-deploy-theory7.yml,deploy,4,Verifieer commit en alle bestanden voor upload,success(),scripts/verify_ui.py,,4,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,5,opnieuw bevestigd
+deploy-theory7.yml,deploy,4,Verifieer commit en alle bestanden voor upload,success(),"scripts/release_artifact.py, scripts/verify_ui.py",,4,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,5,opnieuw bevestigd
 deploy-theory7.yml,deploy,5,Install FTPS client,success(),,,7,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,6,opnieuw bevestigd
 deploy-theory7.yml,deploy,6,Verify Theory7 FTPS certificate fingerprint,success(),,,1,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,7,opnieuw bevestigd
 deploy-theory7.yml,deploy,7,Controleer dat dit nog de actuele hoofdversie is,success(),,,0,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,8,opnieuw bevestigd
@@ -216,7 +216,7 @@ llm-observatorium-ui.yml,llm-browser,5,Build LLM page from source,success(),scri
 llm-observatorium-ui.yml,llm-browser,6,Run python scripts/prepare_ui.py --root site-build,success(),scripts/prepare_ui.py,,,,,,,,niet opnieuw bevestigd
 llm-observatorium-ui.yml,llm-browser,7,Verify local learning mathematics,success(),scripts/test_llm_learning_math.mjs,,,,,,,,niet opnieuw bevestigd
 llm-observatorium-ui.yml,llm-browser,8,Verify real recorded GPT-Neo model execution,success(),scripts/test_llm_real_trace.py,,,,,,,,niet opnieuw bevestigd
-llm-observatorium-ui.yml,llm-browser,9,Validate original model and updated visualization,success(),test_llm_observatorium_source.py,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,9,Validate original model and updated visualization,success(),tests/test_llm_observatorium_source.py,,,,,,,,niet opnieuw bevestigd
 llm-observatorium-ui.yml,llm-browser,10,Run npm install --no-save playwright@1.56.1,success(),,,,,,,,,niet opnieuw bevestigd
 llm-observatorium-ui.yml,llm-browser,11,Run npx playwright install --with-deps chromium,success(),,,,,,,,,niet opnieuw bevestigd
 llm-observatorium-ui.yml,llm-browser,12,"Nine learning steps, research views and token interaction",success(),scripts/test_llm_observatorium.mjs,,,,,,,,niet opnieuw bevestigd
@@ -226,12 +226,12 @@ llm-observatorium-ui.yml,llm-browser,15,Run actions/upload-artifact@v4,always(),
 llm-real-trace.yml,measure,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,44183305015,fb5c360f3855c28768f8bd209aca043e7e3d6ec9,134393064776,measure,2,opnieuw bevestigd
 llm-real-trace.yml,measure,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,44183305015,fb5c360f3855c28768f8bd209aca043e7e3d6ec9,134393064776,measure,3,opnieuw bevestigd
 llm-real-trace.yml,measure,3,Install CPU inference dependencies,success(),,,37,44183305015,fb5c360f3855c28768f8bd209aca043e7e3d6ec9,134393064776,measure,4,opnieuw bevestigd
-llm-real-trace.yml,measure,4,Capture real values from trained public GPT-Neo model,success(),,,,,,,,,niet opnieuw bevestigd
+llm-real-trace.yml,measure,4,Capture real values from trained public GPT-Neo model,success(),scripts/generate_llm_real_trace.py,,,,,,,,niet opnieuw bevestigd
 llm-real-trace.yml,measure,5,Validate model trace before releasing the artifact,success(),scripts/test_llm_real_trace.py,,,,,,,,niet opnieuw bevestigd
 llm-real-trace.yml,measure,6,Run actions/upload-artifact@v4,success(),,actions/upload-artifact@v4,1,44183305015,fb5c360f3855c28768f8bd209aca043e7e3d6ec9,134393064776,measure,7,opnieuw bevestigd
 llmscan-daily-discovery.yml,scan,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
 llmscan-daily-discovery.yml,scan,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
-llmscan-daily-discovery.yml,scan,3,Fetch recent Crossref and arXiv candidates,success(),,,,,,,,,niet opnieuw bevestigd
+llmscan-daily-discovery.yml,scan,3,Fetch recent Crossref and arXiv candidates,success(),scripts/llmscan_discover.py,,,,,,,,niet opnieuw bevestigd
 llmscan-daily-discovery.yml,scan,4,Propose discoveries without automatic publication,success(),,peter-evans/create-pull-request@v7,,,,,,,niet opnieuw bevestigd
 lo-calm-mobile.yml,mobiel,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
 lo-calm-mobile.yml,mobiel,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
