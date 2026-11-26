@@ -2,10 +2,16 @@ name: EAIspeak
 
 on:
   workflow_call:
+    inputs:
+      skip_apple:
+        description: Skip unchanged Apple adapter compilation only when the central scope proves it unrelated
+        type: boolean
+        default: false
   workflow_dispatch:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   bridge-check:
@@ -74,6 +80,7 @@ jobs:
 
 
   apple-compile:
+    if: ${{ !inputs.skip_apple }}
     strategy:
       fail-fast: false
       matrix:
@@ -103,16 +110,25 @@ jobs:
   browser-smoke:
     needs: check-and-build
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+      options: --shm-size=1g
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - uses: actions/download-artifact@v4
+      - uses: actions/setup-python@v5
         with:
-          name: eaispeak-tested-build-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/eaispeak-release
+          python-version: '3.12'
+      - name: Retrieve exact EAIspeak producer artifact
+        shell: bash
+        env:
+          CI_ARTIFACT_TOKEN: ${{ github.token }}
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          python3 scripts/ci_build_artifact.py eaispeak "$RUNNER_TEMP/eaispeak-release"
       - name: Verify exact build and website registration
         run: |
           (cd "$RUNNER_TEMP/eaispeak-release" && sha256sum -c SHA256SUMS)
@@ -120,14 +136,9 @@ jobs:
           python -m unittest discover -s tests -p 'test_eaispeak_publish.py' -v
           python -m pip install beautifulsoup4
           python -m unittest discover -s tests -p 'test_eaispeak_visibility.py' -v
-      - name: Cache Playwright browser binaries
-        uses: actions/cache@v4
+      - name: Use the pinned browser runtime
+        uses: ./.github/actions/browser-runtime
         with:
-          path: ~/.cache/ms-playwright
-          key: playwright-ubuntu-24.04-${{ runner.arch }}-1.56.1-chromium-webkit
-      - name: Install browser test tools only
-        run: |
-          npm install --no-save playwright@1.56.1
-          npx playwright install --with-deps chromium webkit
+          binding: node
       - name: Exercise built Studio with synthetic speech events
         run: node tools/eaispeak/tests/browser-smoke.mjs "$RUNNER_TEMP/eaispeak-release/tools/eaispeak"

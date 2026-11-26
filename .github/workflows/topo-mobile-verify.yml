@@ -9,6 +9,9 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+      options: --shm-size=1g
     timeout-minutes: 12
     strategy:
       fail-fast: false
@@ -21,8 +24,13 @@ jobs:
           node-version: '22'
       - name: Validate sourced TOPO questions and language bank
         run: node scripts/validate_topo_content.mjs
-      - run: npm install --no-save playwright@1.56.1
-      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Use the pinned browser runtime
+        uses: ./.github/actions/browser-runtime
+        with:
+          binding: node
       - name: Start local static site
         run: python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/topo-server.log 2>&1 &
       - name: Test national map, mobile keyboard and settings
@@ -32,5 +40,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: topo-${{ matrix.browser }}-screenshots
+          name: topo-${{ matrix.browser }}-screenshots-${{ github.run_attempt }}
           path: test-results/topo/

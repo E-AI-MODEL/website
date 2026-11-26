@@ -93,7 +93,12 @@ class ReleaseGateTests(unittest.TestCase):
     def test_lo_consolidation_retains_every_independent_probe(self):
         root = Path(__file__).resolve().parents[1]
         combined = (root / ".github/workflows/lo-aanvalslab.yml").read_text()
-        self.assertEqual(combined.count("python -m playwright install"), 1)
+        self.assertEqual(combined.count("uses: ./.github/actions/browser-runtime"), 1)
+        self.assertIn("mcr.microsoft.com/playwright/python:v1.65.2-noble", combined)
+        self.assertIn("binding: python", combined)
+        runtime = (root / ".github/actions/browser-runtime/action.yml").read_text()
+        self.assertIn("python -m pip install --disable-pip-version-check playwright==1.65.2", runtime)
+        self.assertNotIn("playwright install --with-deps", combined)
         self.assertIn("fetch-depth: 0", combined)
         for command in (
             "python scripts/test_lo_calm_mobile.py",
