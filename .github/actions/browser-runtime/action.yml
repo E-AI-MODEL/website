@@ -1,0 +1,40 @@
+name: Use pinned Playwright browsers
+description: Use the browser binaries and OS libraries in a version-matched test container.
+inputs:
+  binding:
+    description: node or python
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Reject unknown binding
+      shell: bash
+      env:
+        BINDING: ${{ inputs.binding }}
+      run: |
+        case "$BINDING" in node|python) ;; *) exit 1;; esac
+    - name: Install the matching Node binding, without OS downloads
+      if: inputs.binding == 'node'
+      shell: bash
+      run: |
+        npm install --no-save --package-lock=false --ignore-scripts playwright@1.56.1
+        node - <<'JS'
+        const fs = require('node:fs');
+        const {chromium, webkit} = require('playwright');
+        for (const browser of [chromium, webkit]) {
+          if (!fs.existsSync(browser.executablePath())) throw Error('Browser image/package version mismatch: '+browser.name());
+        }
+        JS
+    - name: Install the matching Python binding, without OS downloads
+      if: inputs.binding == 'python'
+      shell: bash
+      run: |
+        python -m pip install --disable-pip-version-check playwright==1.65.2
+        python - <<'PY'
+        from pathlib import Path
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as playwright:
+            for browser in (playwright.chromium, playwright.webkit):
+                if not Path(browser.executable_path).is_file():
+                    raise SystemExit("Browser image/package version mismatch: " + browser.name)
+        PY

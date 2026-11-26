@@ -40,6 +40,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: eaigame-browser-evidence
+          name: eaigame-browser-evidence-${{ github.run_attempt }}
           path: test-results/eaigame-*.png
           if-no-files-found: warn

@@ -32,6 +32,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: projecthulp-eaiwork-contract
+          name: projecthulp-eaiwork-contract-${{ github.run_attempt }}
           path: projecthulp-eaiwork-resultaat.json
           if-no-files-found: warn

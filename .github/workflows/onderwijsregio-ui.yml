@@ -20,6 +20,6 @@ jobs:
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: onderwijsregio-layouts
+          name: onderwijsregio-layouts-${{ github.run_attempt }}
           path: test-results/onderwijsregio/*.png
           if-no-files-found: ignore

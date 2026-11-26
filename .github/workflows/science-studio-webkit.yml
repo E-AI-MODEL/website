@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 jobs:
   studio-webkit:
     runs-on: ubuntu-24.04
@@ -37,5 +38,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: schuine-worp-webkit
+          name: schuine-worp-webkit-${{ github.run_attempt }}
           path: test-results/worp-studio-*.png

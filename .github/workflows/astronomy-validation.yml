@@ -28,6 +28,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: astronomy-validation
+          name: astronomy-validation-${{ github.run_attempt }}
           path: test-results/astronomy/
           if-no-files-found: warn

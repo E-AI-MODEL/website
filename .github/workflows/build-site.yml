@@ -18,6 +18,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   build:
@@ -135,10 +136,9 @@ jobs:
 
       - name: Download the already browser-tested EAIspeak bundle
         if: ${{ inputs.eaispeak_artifact }}
-        uses: actions/download-artifact@v4
-        with:
-          name: eaispeak-tested-build-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/eaispeak-release
+        env:
+          CI_ARTIFACT_TOKEN: ${{ github.token }}
+        run: python3 scripts/ci_build_artifact.py eaispeak "$RUNNER_TEMP/eaispeak-release"
       - name: Prepare EAIspeak before generating the public site
         if: ${{ inputs.eaispeak_artifact }}
         run: |

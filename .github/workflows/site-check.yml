@@ -51,6 +51,8 @@ jobs:
   eaispeak-check:
     needs: scope
     uses: ./.github/workflows/eaispeak.yml
+    with:
+      skip_apple: ${{ fromJSON(needs.scope.outputs.selection).eaispeak != 'true' }}
   build-check:
     needs: [scope, eaispeak-check]
     with:
@@ -224,6 +226,7 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_release_gate.py' -v
           python3 -m unittest discover -s tests -p 'test_release_artifact.py' -v
           python3 -m unittest discover -s tests -p 'test_ci_scenarios.py' -v
+          python3 -m unittest discover -s tests -p 'test_ci_build_artifact.py' -v
 
   # De bestaande actieve branchregel vereist deze naam. Behoud deze context.
   static-checks:
