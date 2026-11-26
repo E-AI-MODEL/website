@@ -52,6 +52,31 @@ class CiBuildArtifactTests(unittest.TestCase):
                         prefix, producer, self.run, [job], [artifact],
                         lambda attempt: [original], "feature"), (artifact, 1))
 
+    def test_workflow_path_ref_suffixes_keep_exact_producer_allowlist(self):
+        from ci_build_artifact import WORKFLOWS
+        for path in WORKFLOWS:
+            for target in ("site", "eaispeak"):
+                if path.endswith("/eaispeak.yml") and target == "site":
+                    continue
+                expected = producer_for(target, path)
+                for ref in ("main", "feature/topic", "refs/heads/main",
+                            "refs/pull/415/merge", "refs/tags/v2", "a"*40):
+                    with self.subTest(path=path, target=target, ref=ref):
+                        self.assertEqual(producer_for(target, path+"@"+ref), expected)
+
+    def test_workflow_path_rejects_unknown_paths_and_invalid_refs(self):
+        path = ".github/workflows/site-check.yml"
+        for invalid in (None, "", "other/"+path+"@main",
+                        ".github/workflows/untrusted.yml@main",
+                        path+".bak@main", path+"@", path+"@-main",
+                        path+"@refs/heads/../main", path+"@refs//heads/main",
+                        path+"@main.lock", path+"@main @{bad}",
+                        path+"@main\n", path+"@\x00"):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                producer_for("site", invalid)
+        with self.assertRaises(ValueError):
+            producer_for("site", ".github/workflows/eaispeak.yml@main")
+
     def test_reject_stale_wrong_repo_wrong_branch_and_duplicate_upload(self):
         prefix, producer, job, original, a = self.records("eaispeak")
         def select(artifacts, jobs=None, earlier=None):
@@ -146,6 +171,8 @@ class CiBuildArtifactTests(unittest.TestCase):
                 bundle.writestr("release-manifest.json", json.dumps(manifest))
             prefix, producer, latest, original, artifact = self.records("site")
             artifact["digest"] = "sha256:" + digest(archive)
+            # Exercise the documented API shape in the full retrieval path.
+            self.run["path"] += "@refs/pull/415/merge"
             envfile = root / "github-env"
             env = dict(GITHUB_REPOSITORY=self.repo, CI_ARTIFACT_TOKEN="fixture",
                        GITHUB_RUN_ID="17", GITHUB_RUN_ATTEMPT="3", GITHUB_SHA=checkout,

@@ -35,9 +35,20 @@ UPLOADS = {
 
 def producer_for(target, workflow):
     prefix, name, step = UPLOADS[target]
-    if workflow not in WORKFLOWS:
+    # The REST API can return either the workflow path or path@ref.
+    # Match only the exact allowlisted path, not a basename or suffix.
+    if not isinstance(workflow, str):
         raise ValueError("Onbekende aanroepende workflow")
-    caller = WORKFLOWS[workflow]
+    path, separator, ref = workflow.partition("@")
+    if path not in WORKFLOWS:
+        raise ValueError("Onbekende aanroepende workflow")
+    if separator and (not ref or ref.startswith("-") or "\x00" in ref
+                      or subprocess.run(
+                          ["git", "check-ref-format", "--allow-onelevel", ref],
+                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                      ).returncode != 0):
+        raise ValueError("Ongeldige workflow-ref")
+    caller = WORKFLOWS[path]
     if caller is None:
         if target != "eaispeak":
             raise ValueError("Geen websitebouwer in zelfstandige EAIspeak-run")
