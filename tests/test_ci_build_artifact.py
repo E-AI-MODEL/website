@@ -126,5 +126,73 @@ class CiBuildArtifactTests(unittest.TestCase):
                 verify_eaispeak(root, "b"*40, "a"*40)
 
 
+    def test_retrieve_site_after_partial_retry_uses_merge_commit_and_exact_zip(self):
+        import os
+        import shutil
+        from ci_build_artifact import retrieve
+        from release_artifact import record
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            site = root / "fixture" / "site-build"
+            site.mkdir(parents=True)
+            (site / "index.html").write_text("tested merge tree")
+            checkout = "b"*40
+            tree = "d"*40
+            manifest = dict(record(site, checkout), schema=2,
+                            provenance=dict(tree=tree, run="17", attempt="1", repository=self.repo))
+            archive = root / "site.zip"
+            with zipfile.ZipFile(archive, "w") as bundle:
+                bundle.write(site / "index.html", "site-build/index.html")
+                bundle.writestr("release-manifest.json", json.dumps(manifest))
+            prefix, producer, latest, original, artifact = self.records("site")
+            artifact["digest"] = "sha256:" + digest(archive)
+            envfile = root / "github-env"
+            env = dict(GITHUB_REPOSITORY=self.repo, CI_ARTIFACT_TOKEN="fixture",
+                       GITHUB_RUN_ID="17", GITHUB_RUN_ATTEMPT="3", GITHUB_SHA=checkout,
+                       RUNNER_TEMP=str(root), GITHUB_ENV=str(envfile))
+            def records(path, field, token):
+                if field == "artifacts":
+                    return [artifact]
+                if "/attempts/3/" in path:
+                    return [latest]
+                if "/attempts/1/" in path:
+                    return [original]
+                self.fail("Unexpected producer lookup")
+            def download(path, token, dest):
+                self.assertTrue(path.endswith("/101/zip"))
+                shutil.copyfile(archive, dest)
+            with patch.dict(os.environ, env), \
+                    patch("ci_build_artifact.api_json", return_value=self.run), \
+                    patch("ci_build_artifact.pages", side_effect=records), \
+                    patch("ci_build_artifact.download", side_effect=download), \
+                    patch("ci_build_artifact.subprocess.check_output", side_effect=[checkout+"\n", tree+"\n"]):
+                retrieve("site", root / "output")
+            self.assertEqual((root / "output/site-build/index.html").read_text(), "tested merge tree")
+            self.assertEqual(envfile.read_text(), "BUILD_ATTEMPT=1\n")
+            artifact["digest"] = "sha256:" + "0"*64
+            with patch.dict(os.environ, env), \
+                    patch("ci_build_artifact.api_json", return_value=self.run), \
+                    patch("ci_build_artifact.pages", side_effect=records), \
+                    patch("ci_build_artifact.download", side_effect=download), \
+                    patch("ci_build_artifact.subprocess.check_output", return_value=checkout+"\n"):
+                with self.assertRaisesRegex(ValueError, "SHA-256"):
+                    retrieve("site", root / "invalid")
+            self.assertFalse((root / "invalid").exists())
+
+    def test_existing_build_consumers_use_read_only_recovery_and_no_new_attempt_guess(self):
+        root = Path(__file__).resolve().parents[1]
+        action = (root / ".github/actions/checked-build/action.yml").read_text()
+        self.assertIn("scripts/ci_build_artifact.py site .", action)
+        self.assertIn("scripts/release_artifact.py verify", action)
+        self.assertNotIn("site-release-", action)
+        for file in (root / ".github/workflows").glob("*.yml"):
+            source = file.read_text()
+            if "uses: ./.github/actions/checked-build" in source:
+                self.assertIn("  actions: read", source, file.name)
+            if file.name in ("build-site.yml", "eaispeak.yml"):
+                self.assertIn("scripts/ci_build_artifact.py eaispeak", source)
+                self.assertIn("  actions: read", source)
+                self.assertNotIn("uses: actions/download-artifact@v4", source)
+
 if __name__ == "__main__":
     unittest.main()
