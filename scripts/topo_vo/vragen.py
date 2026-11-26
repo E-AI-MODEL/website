@@ -185,7 +185,7 @@ for wd, lst in per_wd.items():
         ps = sorted(s, key=lambda x: -x["feiten"]["inwoners_agglomeratie"])
         if ps[0]["feiten"]["inwoners_agglomeratie"] < 1.3 * ps[1]["feiten"]["inwoners_agglomeratie"]:
             continue
-        vraag("grootste-stad", "steden", ps[0], f"Welke stad in {wd} heeft de meeste inwoners (agglomeratie)?", ps[0]["naam"],
+        vraag("grootste-stad", "steden", ps[0], f"Welke van deze steden in {wd} heeft de meeste inwoners (agglomeratie)?", ps[0]["naam"],
               [x["naam"] for x in ps[1:]], ["KD25A", "H-B2", "V-B1"], note="Bron: Natural Earth (POP_MAX), afgerond.")
 
 # 13 noordelijkst (Nederland, SLO-steden)

@@ -49,7 +49,7 @@ Elke vraag heeft vier opties, met `answer` altijd bij de opties. Extra velden te
 ## Opnieuw bouwen
 
 ```bash
-bash scripts/topo_vo/bronnen_ophalen.sh /tmp/bron
+bash scripts/topo_vo/bronnen_ophalen.sh /tmp/bron    # vaste commits/versie, met integriteitscontrole
 pip install shapely && npm i -g mapshaper
 python3 scripts/topo_vo/build.py /tmp/bron topo/data/vo
 bash scripts/topo_vo/kaarten.sh topo/data/vo
