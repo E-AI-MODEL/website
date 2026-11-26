@@ -7,6 +7,12 @@ from __future__ import annotations
 import hashlib
 import sys
 import unittest
+import io
+import textwrap
+from contextlib import redirect_stdout
+from unittest.mock import patch, MagicMock
+from urllib.error import HTTPError
+from urllib.parse import urlsplit
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
@@ -84,6 +90,56 @@ class CloudflareLiveHashTests(unittest.TestCase):
         self.assertEqual(anatomy.count("'User-Agent': 'EAI-release-check/1.0'"), 3)
         self.assertNotIn('with urlopen(', anatomy)
         self.assertNotIn('html = urlopen(', anatomy)
+
+    def test_retired_projectile_workflow_preserves_hash_and_route_checks(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/deploy-theory7.yml").read_text(encoding="utf-8")
+        step = workflow.split("      - name: Verify the retired projectile route and retained physics lab", 1)[1]
+        step = step.split("      - name: Verify exact live EAIspeak files and legacy redirect", 1)[0]
+        code = textwrap.dedent(step.split("python - <<'PY'\n", 1)[1].rsplit("\n          PY", 1)[0])
+        source = (root / "content/science-observatory/labs/natuurkunde.html").read_bytes()
+        injected = source.replace(b"</body>", BEACON + b"\n</body>", 1)
+        altered = injected.replace(b"<body", b'<body data-unauthorized="1"', 1)
+        old = "/tools/science-observatory/labs/schuine-worp/"
+        current = "/tools/science-observatory/labs/natuurkunde/"
+        cases = [
+            ("exact", (404, 404), 200, source, True, False),
+            ("known beacon", (404, 410), 200, injected, True, True),
+            ("changed content", (404, 404), 200, altered, False, False),
+            ("retired page still exists", (200, 404), 200, injected, False, False),
+            ("retired page redirects", (302, 404), 200, source, False, False),
+            ("retired index still exists", (404, 200), 200, source, False, False),
+            ("physics unavailable", (404, 404), 404, source, False, False),
+        ]
+        for name, old_status, kept_status, body, should_pass, beacon in cases:
+            with self.subTest(case=name):
+                def open_url(request, timeout):
+                    path = urlsplit(request.full_url).path
+                    statuses = {old: old_status[0], old + "index.html": old_status[1], current: kept_status}
+                    self.assertIn(path, statuses)
+                    status = statuses[path]
+                    if status != 200:
+                        raise HTTPError(request.full_url, status, "fixture", None, None)
+                    response = MagicMock()
+                    response.__enter__.return_value.status = status
+                    response.__enter__.return_value.read.return_value = body if path == current else b"old"
+                    return response
+
+                opener = MagicMock()
+                opener.open.side_effect = open_url
+                output = io.StringIO()
+                with patch("urllib.request.build_opener", return_value=opener) as factory, \
+                     patch("pathlib.Path.read_bytes", return_value=source), \
+                     patch("time.sleep"), patch.object(sys, "path", list(sys.path)), redirect_stdout(output):
+                    if should_pass:
+                        exec(compile(code, "retired-projectile-livecheck", "exec"), {})
+                        self.assertIn("integrated physics matches validated build", output.getvalue())
+                        self.assertEqual("Cloudflare RUM injection verified" in output.getvalue(), beacon)
+                    else:
+                        with self.assertRaisesRegex(AssertionError, "Retirement not verified"):
+                            exec(compile(code, "retired-projectile-livecheck", "exec"), {})
+                    handler = factory.call_args.args[0]
+                    self.assertIsNone(handler.redirect_request(None, None, 302, "", {}, current))
 
     def test_geen_dubbele_of_meervoudige_injecties(self):
         extra = ORIGINAL.replace(b"</body>", BEACON + BEACON + b"</body>")

@@ -1,4 +1,5 @@
 """Read GitHub's validation record before making any production files available."""
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -23,12 +24,95 @@ def validate_run(run, repo, jobs):
         raise ValueError("Verplichte testuitslag ontbreekt")
 
 
-def validated_manifest(root, manifest, repo, run, tree):
+def validated_manifest(root, manifest, repo, run, tree, build_attempt=None):
+    attempt = run["run_attempt"] if build_attempt is None else build_attempt
+    if type(attempt) is not int or not 1 <= attempt <= run["run_attempt"]:
+        raise ValueError("Ongeldige bouwpoging")
     expected = dict(record(root, run["head_sha"]), schema=2, provenance={
-        "tree": tree, "run": str(run["id"]), "attempt": str(run["run_attempt"]), "repository": repo,
+        "tree": tree, "run": str(run["id"]), "attempt": str(attempt), "repository": repo,
     })
     if manifest != expected:
         raise ValueError("Bestanden of herkomst wijken af")
+
+
+# GitHub carries successful jobs forward when only failed jobs are rerun.
+# The copied job has a new run_attempt but retains its original execution times.
+# Bind the artifact to the successful producer's upload step, not the last
+# validation attempt and never merely to the newest available archive.
+_PRODUCERS = {
+    "site": ("validation / build-check / build", "Bewaar de bouw voor alle testjobs in deze run"),
+    "topo": ("topo-package", "Run actions/upload-artifact@v4"),
+}
+
+
+def timestamp(value):
+    if not isinstance(value, str) or not re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})", value):
+        raise ValueError("Ongeldige tijdstempel in GitHub-resultaat")
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
+def producer_upload(target, run, jobs, attempt):
+    name, upload = _PRODUCERS[target]
+    matches = [j for j in jobs if j.get("name") == name]
+    if len(matches) != 1:
+        raise ValueError("De unieke bouwjob ontbreekt")
+    job = matches[0]
+    if (job.get("run_id") != run["id"] or job.get("run_attempt") != attempt
+            or job.get("head_sha") != run["head_sha"] or job.get("status") != "completed"
+            or job.get("conclusion") != "success"):
+        raise ValueError("De bouwjob is niet geslaagd voor deze versie")
+    steps = [s for s in job.get("steps", []) if s.get("name") == upload]
+    if len(steps) != 1 or steps[0].get("status") != "completed" or steps[0].get("conclusion") != "success":
+        raise ValueError("De geslaagde uploadstap ontbreekt")
+    step = steps[0]
+    times = tuple(timestamp(x) for x in (job.get("started_at"), step.get("started_at"),
+                                          step.get("completed_at"), job.get("completed_at")))
+    if not times[0] <= times[1] <= times[2] <= times[3]:
+        raise ValueError("Ongeldige volgorde van bouw- en uploadtijden")
+    return times
+
+
+def select_release_artifact(target, run, jobs, artifacts, jobs_for_attempt):
+    attempt = run["run_attempt"]
+    if type(attempt) is not int or attempt < 1:
+        raise ValueError("Ongeldige validatiepoging")
+    times = producer_upload(target, run, jobs, attempt)
+    pattern = re.compile(rf"{target}-release-{run['id']}-([1-9][0-9]*)")
+    identity = {
+        "id": run["id"], "head_sha": run["head_sha"], "head_branch": "main",
+        "repository_id": run["repository"]["id"],
+        "head_repository_id": run["head_repository"]["id"],
+    }
+    candidates = []
+    for artifact in artifacts:
+        match = pattern.fullmatch(artifact.get("name", ""))
+        if not match:
+            continue
+        origin_attempt = int(match.group(1))
+        if not 1 <= origin_attempt <= attempt:
+            continue
+        if artifact.get("expired") is not False:
+            continue
+        # An earlier successful build is valid only if it is the exact upload
+        # represented by the producer in the final successful validation.
+        if not times[1] <= timestamp(artifact.get("created_at")) <= times[2]:
+            continue
+        provenance = artifact.get("workflow_run") or {}
+        if any(provenance.get(key) != value for key, value in identity.items()):
+            raise ValueError("Artifact hoort niet bij deze bronversie of repository")
+        if (type(artifact.get("id")) is not int or artifact["id"] < 1
+                or not re.fullmatch(r"sha256:[0-9a-f]{64}", artifact.get("digest") or "")):
+            raise ValueError("Ongeldige artifactgegevens")
+        candidates.append((artifact, origin_attempt))
+    if len(candidates) != 1:
+        raise ValueError("Het unieke artifact van de geslaagde bouwjob ontbreekt, is verlopen of is dubbel")
+    artifact, origin_attempt = candidates[0]
+    if origin_attempt != attempt:
+        origin_times = producer_upload(target, run, jobs_for_attempt(origin_attempt), origin_attempt)
+        if origin_times != times:
+            raise ValueError("De eerdere bouwjob is niet de bouwjob uit de geslaagde validatie")
+    return artifact, origin_attempt
 
 
 def same_tree(tested, current):
@@ -91,8 +175,13 @@ def retrieve(run_id, target):
     run = api(f"{prefix}/actions/runs/{run_id}")
     match_trigger(source, run)
     attempt = run["run_attempt"]
-    pages = api(f"{prefix}/actions/runs/{run_id}/attempts/{attempt}/jobs?per_page=100", "--paginate", "--slurp")
-    jobs = [job for page in pages for job in page["jobs"]]
+
+    def jobs_for_attempt(number):
+        pages = api(f"{prefix}/actions/runs/{run_id}/attempts/{number}/jobs?per_page=100",
+                    "--paginate", "--slurp")
+        return [job for page in pages for job in page["jobs"]]
+
+    jobs = jobs_for_attempt(attempt)
     validate_run(run, repo, jobs)
     if target == "topo" and not all(any("topo-check / verify (" + browser + ")" in j["name"]
                                        and j["conclusion"] == "success" for j in jobs)
@@ -103,12 +192,10 @@ def retrieve(run_id, target):
     same_tree(tree, current)
     # Local upload and verification code must also belong to this source tree.
     same_tree(tree, subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], text=True).strip())
-    name = f"{target}-release-{run_id}-{attempt}"
     pages = api(f"{prefix}/actions/runs/{run_id}/artifacts?per_page=100", "--paginate", "--slurp")
-    artifacts = [a for page in pages for a in page["artifacts"] if a["name"] == name and not a["expired"]]
-    if len(artifacts) != 1:
-        raise ValueError("Het gevalideerde artifact ontbreekt of is verlopen")
-    artifact = artifacts[0]
+    artifacts = [a for page in pages for a in page["artifacts"]]
+    artifact, build_attempt = select_release_artifact(target, run, jobs, artifacts, jobs_for_attempt)
+    print(f"Gevalideerde bouw: {artifact['name']} (validatiepoging {attempt}, bouwpoging {build_attempt})")
     archive = Path(os.environ["RUNNER_TEMP"]) / "candidate.zip"
     with archive.open("wb") as out:
         subprocess.run(["gh", "api", f"{prefix}/actions/artifacts/{artifact['id']}/zip"], stdout=out, check=True)
@@ -125,7 +212,8 @@ def retrieve(run_id, target):
                     path.parts[0] not in (folder, "release-manifest.json")):
                 raise ValueError("Onverwacht pad in het archief")
         contents.extractall(dest)
-    validated_manifest(dest / folder, json.loads((dest / "release-manifest.json").read_text()), repo, run, tree)
+    validated_manifest(dest / folder, json.loads((dest / "release-manifest.json").read_text()),
+                       repo, run, tree, build_attempt)
     with open(os.environ["GITHUB_OUTPUT"], "a") as out:
         print(f"tree={tree}\ncommit={run['head_sha']}", file=out)
 
