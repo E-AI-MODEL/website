@@ -1,428 +1,428 @@
-workflow,job,stap,beschrijving,voorwaarde,scripts en tests,action,seconden gehele stap,voorbeeldrun
-anatomie-webkit.yml,webkit,1,Run actions/checkout@v4,success(),,actions/checkout@v4,5,45562543789
-anatomie-webkit.yml,webkit,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45562543789
-anatomie-webkit.yml,webkit,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,6,45562543789
-anatomie-webkit.yml,webkit,4,Controleer anatomische inhoud en model-ID's,success(),test_anatomie_content_audit.py,,2,45562543789
-anatomie-webkit.yml,webkit,5,Schrijf volledige anatomie-audit,success(),scripts/audit_anatomie_content.py,,0,45562543789
-anatomie-webkit.yml,webkit,6,Controleer JavaScript van het Hartslaglab voor de browserstart,success(),,,0,45562543789
-anatomie-webkit.yml,webkit,7,Controleer hartcyclus en kleplogica,success(),scripts/test_hartslaglab_cycle.mjs,,0,45562543789
-anatomie-webkit.yml,webkit,8,"Controleer open hartkamers, kleppen en bloedvaten",success(),scripts/test_hartslaglab_geometry.mjs,,0,45562543789
-anatomie-webkit.yml,webkit,9,Inspecteer hartstructuren in bestaande 3D-atlas,success(),scripts/audit_hart_glb.mjs,,0,45562543789
-anatomie-webkit.yml,webkit,10,Controleer herkomst van de anatomische uitlegartikelen,success(),scripts/test_anatomie_sources.mjs,,0,45562543789
-anatomie-webkit.yml,webkit,11,Controleer Nederlandse uitleg voor alle modelonderdelen,success(),scripts/test_anatomie_teaching.mjs,,1,45562543789
-anatomie-webkit.yml,webkit,12,Controleer selectie van transparante fascia,success(),tests/test_anatomie_picking.mjs,,0,45562543789
-anatomie-webkit.yml,webkit,13,Run python scripts/build_anatomie.py --out site-build/tools/anatomie,success(),scripts/build_anatomie.py,,7,45562543789
-anatomie-webkit.yml,webkit,14,Run npm install --no-save playwright@1.56.1,success(),,,2,45562543789
-anatomie-webkit.yml,webkit,15,Install WebKit and browser dependencies,success(),,,61,45562543789
-anatomie-webkit.yml,webkit,16,Verify anatomy on mobile WebKit,success(),scripts/test_anatomie_webkit.mjs,,46,45562543789
-anatomie-webkit.yml,webkit,17,Hartslaglab bewegen en bedienen in mobiele WebKit,success(),scripts/test_hartslaglab_browser.mjs,,81,45562543789
-anatomie-webkit.yml,webkit,18,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,3,45562543789
-audit-archive.yml,audit,1,Run actions/checkout@v4,success(),,actions/checkout@v4,6,45561706009
-audit-archive.yml,audit,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45561706009
-audit-archive.yml,audit,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,5,45561706009
-audit-archive.yml,audit,4,Build current public sources,success(),"scripts/build_anatomie.py, scripts/build_site.py, scripts/prepare_ui.py, scripts/verify_ui.py, test_archive_review.py",,20,45561706009
-audit-archive.yml,audit,5,"Inventory pages, links and live HTTP responses",success(),scripts/audit_archive.py,,28,45561706009
-audit-archive.yml,audit,6,Inspect older pages in Chromium and WebKit,success(),scripts/audit_archive_ui.mjs,,178,45561706009
-audit-archive.yml,audit,7,Test local tool workflows with synthetic inputs,success(),scripts/audit_archive_functional.mjs,,13,45561706009
-audit-archive.yml,audit,8,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,4,45561706009
-build-site.yml,build,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45562543789
-build-site.yml,build,2,Kies de vakspecifieke tests voor gewijzigde bestanden,success(),,,0,45562543789
-build-site.yml,build,3,Controleer selectie van tests,success(),test_ci_pr_scope.py,,0,45562543789
-build-site.yml,build,4,Set up Python,success(),,actions/setup-python@v5,0,45562543789
-build-site.yml,build,5,Use Node.js 22 for the 3D atlas and existing JavaScript tests,success(),,actions/setup-node@v4,1,45562543789
-build-site.yml,build,6,Install build dependencies,success(),,,1,45562543789
-build-site.yml,build,7,Test exact Theory7 hashes with Cloudflare beacon injection,success(),test_theory7_cloudflare_hash.py,,0,45562543789
-build-site.yml,build,8,Check review PDF workflow never overwrites site HTML or JS,success(),test_zhang_workflow_isolation.py,,0,45562543789
-build-site.yml,build,9,Test homepage and model rendering,success(),test_home_model.py,,1,45562543789
-build-site.yml,build,10,Check shared dashboard-card scope and homepage content,${{ steps.scope.outputs.home == 'true' }},test_dashboard_cards.py,,0,45562543789
-build-site.yml,build,11,Test LEIF en het toevoegen van testers,${{ steps.scope.outputs.leif == 'true' }},"tests/test_leif_kei.mjs, tests/test_leif_multitenant.mjs, tests/test_leif_site_texts.mjs, tests/test_leif_testers.mjs, tests/test_leif_unified_login.mjs",,0,45562543789
-build-site.yml,build,12,Verify Cloudflare beacon on public sitemap pages,success(),test_cloudflare_beacon.py,,0,45562543789
-build-site.yml,build,13,Check local-only ICT scan publishing,success(),test_ict_scan_publish.py,,0,45562543789
-build-site.yml,build,14,Test ICT scan Excel reports and AI categorization,${{ steps.scope.outputs.ictscan == 'true' }},tests/test_ict_scan_export.mjs,,0,45562543789
-build-site.yml,build,15,Controleer de brondata en JSON-import van Applicatielandschap 2026,${{ steps.scope.outputs.ictscan == 'true' }},"tests/test_ict_scan_2026_data.mjs, tests/test_ict_scan_answers.mjs, tests/test_ict_scan_cards.mjs, tests/test_ict_scan_github_sync.mjs, tests/test_ict_scan_visuals.mjs",,1,45562543789
-build-site.yml,build,16,Check first-party clicks and session privacy,success(),test_first_party_analytics.py,,1,45562543789
-build-site.yml,build,17,Check published analytics totals and privacy,success(),test_public_analytics.py,,0,45562543789
-build-site.yml,build,18,Check public dashboard JavaScript and labels,success(),tests/test_public_analytics_ui.mjs,,0,45562543789
-build-site.yml,build,19,Check website insights and menu,success(),test_site_insights.py,,0,45562543789
-build-site.yml,build,20,Check compact NL and EN menus,success(),test_site_menu_groups.py,,0,45562543789
-build-site.yml,build,21,Check bilingual EAI Dictionary and semantic menu links,success(),test_dictionary_and_menu.py,,1,45562543789
-build-site.yml,build,22,Check editorial card scope excludes interactive labs,success(),test_story_cards.py,,0,45562543789
-build-site.yml,build,23,Check EAIwork public /work/ entry,success(),test_eaiwork_public_entry.py,,0,45562543789
-build-site.yml,build,24,Check EAIwork public demonstration,${{ steps.scope.outputs.eaiwork == 'true' }},test_eaiwork_dashboard_publish.py,,0,45562543789
-build-site.yml,build,25,Test EAIgit browser analysis,${{ steps.scope.outputs.eaigit == 'true' }},"tests/test_eaigit_help.mjs, tests/test_eaigit_single_file.mjs, tests/test_projecthulp.mjs",,0,45562543789
-build-site.yml,build,26,Check EAIgame 300 questions and gameplay mechanics,${{ steps.scope.outputs.eaigame == 'true' }},tests/test_eaigame.mjs,,0,45562543789
-build-site.yml,build,27,Build site,success(),scripts/build_site.py,,1,45562543789
-build-site.yml,build,28,Controleer verborgen lokale ICT-scan,success(),"test_ict_scan_publish.py, tests/test_ict_scan_github_sync.mjs",,0,45562543789
-build-site.yml,build,29,Controleer EAIgit in gebouwde website,success(),,,0,45562543789
-build-site.yml,build,30,Build local anatomical 3D models and viewer,success(),scripts/build_anatomie.py,,6,45562543789
-build-site.yml,build,31,Test physiological sequence in Hartslaglab,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_hartslaglab_cycle.mjs,,0,45562543789
-build-site.yml,build,32,Check 3D anatomy geometry in Hartslaglab,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_hartslaglab_geometry.mjs,,0,45562543789
-build-site.yml,build,33,"Verify anatomical atlas, licensing and navigation",success(),test_anatomie_publish.py,,1,45562543789
-build-site.yml,build,34,Check HTML upload link in header,success(),test_header_upload_link.py,,0,45562543789
-build-site.yml,build,35,Check HTML gallery static publication,success(),"test_eai_site_admin_publish.py, test_html_galerij_publish.py",,0,45562543789
-build-site.yml,build,36,Check HTML gallery admin routes and client script,success(),"tests/test_eai_site_admin.mjs, tests/test_html_galerij_admin.mjs, tests/test_html_gallery_sqlite.mjs",,0,45562543789
-build-site.yml,build,37,Check WiHTML pages and reviewed studio copy,success(),test_wihtml_publish.py,,0,45562543789
-build-site.yml,build,38,Check LLM observatory source and menus,${{ steps.scope.outputs.llm == 'true' }},test_llm_observatorium_source.py,,0,45562543789
-build-site.yml,build,39,Check ABYSS source and mobile menu,success(),test_abyss_publish.py,,0,45562543789
-build-site.yml,build,40,Check Science Observatory pilot publication,${{ steps.scope.outputs.physics == 'true' }},test_science_observatory_publish.py,,0,45562543789
-build-site.yml,build,41,Check adaptive mathematics and physics workspaces,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_adaptive_workspaces.mjs,,0,45562543789
-build-site.yml,build,42,Check physics reference values and drawings,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_models.mjs,,1,45562543789
-build-site.yml,build,43,Check wave motion and optical models,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_round3.mjs,,0,45562543789
-build-site.yml,build,44,Check 53 proefspecifieke natuurkundeberekeningen,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_insights.mjs,,0,45562543789
-build-site.yml,build,45,Check physics source references and independent calculations,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_evidence.mjs,,0,45562543789
-build-site.yml,build,46,Check independent model references for the other 48 physics labs,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_reference_48.mjs,,0,45562543789
-build-site.yml,build,47,Check physics visuals against the simulated equations,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_visual_fidelity.mjs,,0,45562543789
-build-site.yml,build,48,Check physical graph axes and comparisons,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physical_graphs.mjs,,0,45562543789
-build-site.yml,build,49,"Check animation, graph and measurement agreement",${{ steps.scope.outputs.physics == 'true' }},tests/test_science_graph_animation_alignment.mjs,,1,45562543789
-build-site.yml,build,50,Check three experiment-specific inquiry methods,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_inquiry_variants.mjs,,0,45562543789
-build-site.yml,build,51,Check quality register for all 53 physics experiments,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_quality_register.mjs,,0,45562543789
-build-site.yml,build,52,Check Melkweg Lab publication,${{ steps.scope.outputs.melkweg == 'true' }},test_melkweg_lab_publish.py,,0,45562543789
-build-site.yml,build,53,Verify EAIstudio and EAImesh source publication,success(),test_tool_launch.py,,0,45562543789
-build-site.yml,build,54,Validate internal links,success(),,,1,45562543789
-build-site.yml,build,55,Check visitor routes and shared styling,success(),,,0,45562543789
-check-eaiwork-dashboard.yml,visual-dashboard,1,Run actions/checkout@v4,success(),,actions/checkout@v4,5,45485143975
-check-eaiwork-dashboard.yml,visual-dashboard,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,1,45485143975
-check-eaiwork-dashboard.yml,visual-dashboard,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,2,45485143975
-check-eaiwork-dashboard.yml,visual-dashboard,4,Install Python build dependency,success(),,,5,45485143975
-check-eaiwork-dashboard.yml,visual-dashboard,5,Build site,success(),scripts/build_site.py,,0,45485143975
-check-eaiwork-dashboard.yml,visual-dashboard,6,Check dashboard source and route,success(),test_eaiwork_dashboard_publish.py,,1,45485143975
-check-eaiwork-dashboard.yml,visual-dashboard,7,Install Playwright browser,success(),,,9,45485143975
-check-eaiwork-dashboard.yml,visual-dashboard,8,Test compact dashboard on desktop and mobile,success(),scripts/test_eaiwork_mobile.mjs,,2,45485143975
-check-eaiwork-dashboard.yml,visual-dashboard,9,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,45485143975
-check-ict-assurance.yml,check,1,Lees de repository,success(),,actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1,2,45562543789
-check-ict-assurance.yml,check,2,Gebruik Node.js 24,success(),,actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1,0,45562543789
-check-ict-assurance.yml,check,3,"Controleer regels, bronimport en kaartwijzigingen",success(),"test_ict_scan_publish.py, tests/test_ict_scan_assurance*.mjs, tests/test_ict_scan_cards.mjs, tests/test_ict_scan_edit_api.php, tests/test_ict_scan_export.mjs, tests/test_ict_scan_github_sync.mjs, tests/test_ict_scan_taxonomy.mjs",,4,45562543789
-check-ict-assurance.yml,check,4,Installeer de browser voor de gebruikersproef,success(),,,22,45562543789
-check-ict-assurance.yml,check,5,"Doorloop import, controles en vergelijking in de browser",success(),tests/verify_ict_assurance_browser.mjs,,14,45562543789
-check-ict-assurance.yml,check,6,Maak een controleverslag van de bronbestanden,${{ !cancelled() }},scripts/check_ict_assurance.mjs,,0,45562543789
-check-ict-assurance.yml,check,7,Bewaar het controleverslag,always(),,actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9,2,45562543789
-check-llmscan.yml,check,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,43514371689
-check-llmscan.yml,check,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,43514371689
-check-llmscan.yml,check,3,Check JavaScript syntax,success(),,,1,43514371689
-check-llmscan.yml,check,4,Check original catalogue and research,success(),test_llmscan_standalone.py,,0,43514371689
-check-llmscan.yml,check,5,Install browser,success(),,,11,43514371689
-check-llmscan.yml,check,6,Test actual LLMscan interaction on phone and desktop,success(),scripts/test_llmscan_browser.mjs,,1,43514371689
-check-own-exports.yml,exports,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,42119499812
-check-own-exports.yml,exports,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,42119499812
-check-own-exports.yml,exports,3,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,42119499812
-check-own-exports.yml,exports,4,Build own pages,success(),"scripts/build_site.py, scripts/prepare_ui.py, scripts/verify_ui.py",,8,42119499812
-check-own-exports.yml,exports,5,"Test real PNG, PDF and text files",success(),scripts/check_own_exports.mjs,,85,42119499812
-check-own-exports.yml,exports,6,Verify signed and altered synthetic files,success(),scripts/check_own_verifier.mjs,,2,42119499812
-check-own-exports.yml,exports,7,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,42119499812
-check-website-register.yml,register,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,45562543789
-check-website-register.yml,register,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,1,45562543789
-check-website-register.yml,register,3,Controleer het website-register,success(),"scripts/check_website_register.py, test_website_register.py",,1,45562543789
-deploy-analytics-dashboard.yml,deploy,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,43641295441
-deploy-analytics-dashboard.yml,deploy,2,Controleer dashboard en testgegevens,success(),"test_first_party_analytics.py, tests/test_public_analytics_ui.mjs",,0,43641295441
-deploy-analytics-dashboard.yml,deploy,3,Installeer FTPS-client,success(),,,9,43641295441
-deploy-analytics-dashboard.yml,deploy,4,Controleer bestaand Theory7-certificaat,success(),,,1,43641295441
-deploy-analytics-dashboard.yml,deploy,5,Publiceer eerst de servermeting,success(),,,4,43641295441
-deploy-analytics-dashboard.yml,deploy,6,Controleer servermeting op Theory7,success(),,,1,43641295441
-deploy-analytics-dashboard.yml,deploy,7,Publiceer dashboard en meetcode,success(),,,7,43641295441
-deploy-analytics-dashboard.yml,deploy,8,Controleer live demo zonder echte cijfers te veranderen,success(),,,2,43641295441
-deploy-delf-preview.yml,publish,1,Checkout tested DELF version,success(),,actions/checkout@v4,2,44634926660
-deploy-delf-preview.yml,publish,2,Node.js,success(),,actions/setup-node@v4,0,44634926660
-deploy-delf-preview.yml,publish,3,Build and test DELF only,success(),,,12,44634926660
-deploy-delf-preview.yml,publish,4,Install FTPS client,success(),,,6,44634926660
-deploy-delf-preview.yml,publish,5,Verify Theory7 FTPS certificate,success(),,,1,44634926660
-deploy-delf-preview.yml,publish,6,Publish only DELF test folder,success(),,,12,44634926660
-deploy-delf-preview.yml,publish,7,Verify public test page and assets,success(),,,2,44634926660
-deploy-eaiwork-theory7.yml,publish-dashboard,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,42854526699
-deploy-eaiwork-theory7.yml,publish-dashboard,2,Verify self-contained dashboard source,success(),,,0,42854526699
-deploy-eaiwork-theory7.yml,publish-dashboard,3,Install FTPS client,success(),,,10,42854526699
-deploy-eaiwork-theory7.yml,publish-dashboard,4,Verify Theory7 FTPS certificate,success(),,,1,42854526699
-deploy-eaiwork-theory7.yml,publish-dashboard,5,Upload only EAIwork HTML to Theory7,success(),,,4,42854526699
-deploy-eaiwork-theory7.yml,publish-dashboard,6,Verify exact published dashboard bytes,success(),,,1,42854526699
-deploy-leif-quick.yml,publish-leif,1,Haal websitecode op,success(),,actions/checkout@v4,1,42187376652
-deploy-leif-quick.yml,publish-leif,2,Controleer bestaande LEIF-toegang en testers,success(),tests/test_leif_*.mjs,,1,42187376652
-deploy-leif-quick.yml,publish-leif,3,Installeer FTPS-client,success(),,,8,42187376652
-deploy-leif-quick.yml,publish-leif,4,Controleer FTPS-certificaat van de bestaande host,success(),,,1,42187376652
-deploy-leif-quick.yml,publish-leif,5,Publiceer alleen de bestaande LEIF-pagina's,success(),,,12,42187376652
-deploy-leif-quick.yml,publish-leif,6,Controleer de live beheerpagina,success(),,,1,42187376652
-deploy-lo-quick.yml,publish-lo,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,43523530183
-deploy-lo-quick.yml,publish-lo,2,Controleer de bron van de online duofunctie,success(),,,0,43523530183
-deploy-lo-quick.yml,publish-lo,3,Installeer FTPS-client,success(),,,12,43523530183
-deploy-lo-quick.yml,publish-lo,4,Controleer het FTPS-certificaat,success(),,,0,43523530183
-deploy-lo-quick.yml,publish-lo,5,Publiceer alleen het LO Aanvalslab,success(),,,4,43523530183
-deploy-lo-quick.yml,publish-lo,6,Controleer exacte live HTML,success(),,,1,43523530183
-deploy-sport-opstellingen-quick.yml,publish,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,43756824835
-deploy-sport-opstellingen-quick.yml,publish,2,Verify only the intended pages,success(),,,0,43732398325
-deploy-sport-opstellingen-quick.yml,publish,3,Install FTPS client,success(),,,6,44634926660
-deploy-sport-opstellingen-quick.yml,publish,4,Verify expected FTPS fingerprint,success(),,,0,43732398325
-deploy-sport-opstellingen-quick.yml,publish,5,Upload sport pages without touching existing tactic simulator,success(),,,6,43732398325
-deploy-sport-opstellingen-quick.yml,publish,6,Verify public sport pages and unchanged tactics,success(),,,2,43732398325
-deploy-theory7.yml,deploy,1,Checkout,success(),,actions/checkout@v4,2,45552268124
-deploy-theory7.yml,deploy,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45552268124
-deploy-theory7.yml,deploy,3,Download exact de geteste productiebuild,success(),,actions/download-artifact@v4,2,45552268124
-deploy-theory7.yml,deploy,4,Verifieer commit en alle bestanden voor upload,success(),scripts/verify_ui.py,,4,45552268124
-deploy-theory7.yml,deploy,5,Install FTPS client,success(),,,7,45552268124
-deploy-theory7.yml,deploy,6,Verify Theory7 FTPS certificate fingerprint,success(),,,1,45552268124
-deploy-theory7.yml,deploy,7,Controleer dat dit nog de actuele hoofdversie is,success(),,,0,45552268124
-deploy-theory7.yml,deploy,8,Publish assets before HTML,success(),,,249,45552268124
-deploy-theory7.yml,deploy,9,Verify live ICT-scan profile and validator version,success(),,,2,45552268124
-deploy-theory7.yml,deploy,10,Verify live HTML and exact asset hashes,success(),scripts/verify_ui.py,,35,45552268124
-deploy-theory7.yml,deploy,11,Verify live anatomy JavaScript and stylesheets,success(),,,1,45552268124
-deploy-theory7.yml,deploy,12,Verify published Hartslaglab including the real 3D meshes,success(),,,3,45552268124
-deploy-theory7.yml,deploy,13,Verify live anatomical models,success(),,,1,45552268124
-deploy-topo-theory7.yml,deploy-topo,1,Run actions/checkout@v4,success(),,actions/checkout@v4,6,45411930061
-deploy-topo-theory7.yml,deploy-topo,2,Check TOPO sources and nationwide map,success(),,,0,45411930061
-deploy-topo-theory7.yml,deploy-topo,3,"Verify map, capitals, water sources and approved TOPO copy",success(),scripts/validate_topo_content.mjs,,3,45411930061
-deploy-topo-theory7.yml,deploy-topo,4,Install FTPS client,success(),,,23,45411930061
-deploy-topo-theory7.yml,deploy-topo,5,Verify Theory7 FTPS certificate fingerprint,success(),,,1,45411930061
-deploy-topo-theory7.yml,deploy-topo,6,"Publish TOPO only (no deletion, no other site folders)",success(),,,16,45411930061
-deploy-topo-theory7.yml,deploy-topo,7,Verify three published pages and map independently,success(),,,3,45411930061
-deploy-vakinhoud-quick.yml,publish,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,43756824835
-deploy-vakinhoud-quick.yml,publish,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,43756824835
-deploy-vakinhoud-quick.yml,publish,3,Build published navigation,success(),"scripts/build_site.py, scripts/prepare_ui.py",,9,43756824835
-deploy-vakinhoud-quick.yml,publish,4,Install FTPS tools,success(),,,14,43756824835
-deploy-vakinhoud-quick.yml,publish,5,Verify FTPS fingerprint,success(),,,1,43756824835
-deploy-vakinhoud-quick.yml,publish,6,Upload revised main pages without touching the other tools,success(),,,12,43756824835
-deploy-vakinhoud-quick.yml,publish,7,Verify revised public labels,success(),,,4,43756824835
-deploy-zhang-review-rapid.yml,publish,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,43756824835
-deploy-zhang-review-rapid.yml,publish,2,Check source files,success(),,,0,43707923133
-deploy-zhang-review-rapid.yml,publish,3,Set up Python for PDF verification,success(),,actions/setup-python@v5,0,43707923133
-deploy-zhang-review-rapid.yml,publish,4,Install fonts and PDF tools,success(),,,23,43707923133
-deploy-zhang-review-rapid.yml,publish,5,Apply reviewed PDF corrections,success(),"build_zhang_review.py, build_zhang_review_en.py",,0,43707923133
-deploy-zhang-review-rapid.yml,publish,6,Preserve definitive PDF files in repository,success(),,,0,43707923133
-deploy-zhang-review-rapid.yml,publish,7,Install FTPS,success(),,,4,43707923133
-deploy-zhang-review-rapid.yml,publish,8,Verify FTP certificate,success(),,,0,43707923133
-deploy-zhang-review-rapid.yml,publish,9,Publish reviewed PDF files only,success(),,,,
-deploy-zhang-review-rapid.yml,publish,10,Verify live PDF files (HTML is checked by Theory7 release),success(),,,,
-eaigame.yml,gameplay,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,43766533430
-eaigame.yml,gameplay,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,43766533430
-eaigame.yml,gameplay,3,Check game modules,success(),scripts/test_eaigame_browser.mjs,,0,43766533430
-eaigame.yml,gameplay,4,Verify questions and gameplay,success(),tests/test_eaigame.mjs,,1,43766533430
-eaigame.yml,gameplay,5,Install Playwright,success(),,,9,43766533430
-eaigame.yml,gameplay,6,"Play full game on desktop, phone and offline fallback",success(),scripts/test_eaigame_browser.mjs,,22,43766533430
-eaigame.yml,gameplay,7,Save browser screenshots,always(),,actions/upload-artifact@v4,1,43766533430
-ict-scan-webkit.yml,webkit,1,Checkout zonder opgeslagen credentials,success(),,actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1,3,45562543789
-ict-scan-webkit.yml,webkit,2,Gebruik Node.js 24,success(),,actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1,0,45562543789
-ict-scan-webkit.yml,webkit,3,Bereid de sitebuild voor,success(),,,1,45562543789
-ict-scan-webkit.yml,webkit,4,Bouw bestaande ICT-scan zonder externe gegevens,success(),scripts/build_site.py,,1,45562543789
-ict-scan-webkit.yml,webkit,5,Gebruik bij de container passende Playwright,success(),,,2,45562543789
-ict-scan-webkit.yml,webkit,6,Test dashboard in echte WebKit-renderer,success(),scripts/test_ict_scan_browser.mjs,,123,45562543789
-ict-scan-webkit.yml,webkit,7,Bewaar screenshots van WebKit-test,always(),,actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9,2,45562543789
-leeuw-console.yml,browser,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45561705910
-leeuw-console.yml,browser,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,45561705910
-leeuw-console.yml,browser,3,Run npm install --no-save playwright@1.56.1,success(),,,2,45561705910
-leeuw-console.yml,browser,4,Run npx playwright install --with-deps ${{ matrix.engine }},success(),,,,
-leeuw-console.yml,browser,5,Run node scripts/test_leeuw_console.mjs . ${{ matrix.engine }},success(),scripts/test_leeuw_console.mjs,,,
-leeuw-console.yml,browser,6,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,45561705910
-llm-observatorium-ui.yml,llm-browser,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45391102716
-llm-observatorium-ui.yml,llm-browser,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45391102716
-llm-observatorium-ui.yml,llm-browser,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,3,45391102716
-llm-observatorium-ui.yml,llm-browser,4,Run pip install beautifulsoup4,success(),,,4,45391102716
-llm-observatorium-ui.yml,llm-browser,5,Build LLM page from source,success(),scripts/build_site.py,,0,45391102716
-llm-observatorium-ui.yml,llm-browser,6,Run python scripts/prepare_ui.py --root site-build,success(),scripts/prepare_ui.py,,2,45391102716
-llm-observatorium-ui.yml,llm-browser,7,Verify local learning mathematics,success(),scripts/test_llm_learning_math.mjs,,0,45391102716
-llm-observatorium-ui.yml,llm-browser,8,Verify real recorded GPT-Neo model execution,success(),scripts/test_llm_real_trace.py,,1,45391102716
-llm-observatorium-ui.yml,llm-browser,9,Validate original model and updated visualization,success(),test_llm_observatorium_source.py,,0,45391102716
-llm-observatorium-ui.yml,llm-browser,10,Run npm install --no-save playwright@1.56.1,success(),,,2,45391102716
-llm-observatorium-ui.yml,llm-browser,11,Run npx playwright install --with-deps chromium,success(),,,21,45391102716
-llm-observatorium-ui.yml,llm-browser,12,"Nine learning steps, research views and token interaction",success(),scripts/test_llm_observatorium.mjs,,13,45391102716
-llm-observatorium-ui.yml,llm-browser,13,Install WebKit for Safari layout checks,success(),,,28,45391102716
-llm-observatorium-ui.yml,llm-browser,14,Verify mobile Safari-style layouts,success(),scripts/test_llm_mobile_webkit.mjs,,10,45391102716
-llm-observatorium-ui.yml,llm-browser,15,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,45391102716
-llm-real-trace.yml,measure,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,44183305015
-llm-real-trace.yml,measure,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,44183305015
-llm-real-trace.yml,measure,3,Install CPU inference dependencies,success(),,,37,44183305015
-llm-real-trace.yml,measure,4,Capture real values from trained public GPT-Neo model,success(),,,,
-llm-real-trace.yml,measure,5,Validate model trace before releasing the artifact,success(),scripts/test_llm_real_trace.py,,,
-llm-real-trace.yml,measure,6,Run actions/upload-artifact@v4,success(),,actions/upload-artifact@v4,1,44183305015
-llmscan-daily-discovery.yml,scan,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,
-llmscan-daily-discovery.yml,scan,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,
-llmscan-daily-discovery.yml,scan,3,Fetch recent Crossref and arXiv candidates,success(),,,,
-llmscan-daily-discovery.yml,scan,4,Propose discoveries without automatic publication,success(),,peter-evans/create-pull-request@v7,,
-lo-calm-mobile.yml,mobiel,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,44033457201
-lo-calm-mobile.yml,mobiel,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,44033457201
-lo-calm-mobile.yml,mobiel,3,Installeer Chromium en WebKit,success(),,,60,44033457201
-lo-calm-mobile.yml,mobiel,4,Controleer mobiele spelbediening,success(),scripts/test_lo_calm_mobile.py,,22,44033457201
-lo-calm-mobile.yml,mobiel,5,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,1,44033457201
-lo-easteregg-verify.yml,test,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,44033457183
-lo-easteregg-verify.yml,test,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,44033457183
-lo-easteregg-verify.yml,test,3,Run python -m pip install playwright,success(),,,21,44033457183
-lo-easteregg-verify.yml,test,4,"Test zichtbaarheid, bronpagina en publicatie",success(),test_lo_evidence_publish.py,,0,44033457183
-lo-easteregg-verify.yml,test,5,"Test spelberekeningen, desktop, mobiel en verborgen analyse",success(),scripts/test_lo_easteregg.py,,18,44033457183
-lo-tactics-source.yml,open-data,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,43474077451
-lo-tactics-source.yml,open-data,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,43474077451
-lo-tactics-source.yml,open-data,3,Test de gegevensparser zonder netwerk,success(),tools/lo-aanvalslab/calibratie/tactics/test_analyze_open_tactics.py,,1,43474077451
-lo-tactics-source.yml,open-data,4,Test ruimtemeting uit StatsBomb 360 zonder netwerk,success(),tools/lo-aanvalslab/calibratie/tactics/test_analyze_open_football.py,,0,43474077451
-lo-tactics-source.yml,open-data,5,Meet passlijnen uit echte voetbalmomenten,success(),,,1,43474077451
-lo-tactics-source.yml,open-data,6,Lees echte gelabelde handbalbezitten uit Zenodo,success(),,,1,43474077451
-lo-v13-tracking.yml,measure,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,44183305015
-lo-v13-tracking.yml,measure,2,Installeer parsers voor oorspronkelijke data,success(),,,4,43230794265
-lo-v13-tracking.yml,measure,3,Meet de datasets zonder ruwe data te publiceren,success(),,,54,43230794265
-lo-v13-tracking.yml,measure,4,Leg de meetuitkomsten vast in de onderzoeksbranch,success(),,,2,43230794265
-lo-v13-verify.yml,browser-tests,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,44033456923
-lo-v13-verify.yml,browser-tests,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,44033456923
-lo-v13-verify.yml,browser-tests,3,Installeer browser,success(),,,42,44033456923
-lo-v13-verify.yml,browser-tests,4,Controleer rustige mobiele bediening,success(),scripts/test_lo_calm_mobile.py,,13,44033456923
-lo-v13-verify.yml,browser-tests,5,Bewaar mobiele proefbeelden,always(),,actions/upload-artifact@v4,2,44033456923
-lo-v13-verify.yml,browser-tests,6,"Controleer sporten, verdedigende tactiek en bewegingen",success(),,,0,44033456923
-lo-zone-verify.yml,zones,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,44033456893
-lo-zone-verify.yml,zones,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,44033456893
-lo-zone-verify.yml,zones,3,Run python -m pip install playwright,success(),,,20,44033456893
-lo-zone-verify.yml,zones,4,"Controleer zonevormen, doelpogingen en lokale duo-opstelling",success(),scripts/test_lo_zone.py,,3,44033456893
-lo-zone-verify.yml,zones,5,Controleer dat de server nieuwe opdrachten accepteert,success(),,,0,44033456893
-onderwijsregio-ui.yml,browser,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45561705910
-onderwijsregio-ui.yml,browser,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,45561705910
-onderwijsregio-ui.yml,browser,3,Run npm install --no-save playwright@1.56.1,success(),,,2,45561705910
-onderwijsregio-ui.yml,browser,4,Run npx playwright install chromium,success(),,,8,44682310579
-onderwijsregio-ui.yml,browser,5,Run node scripts/test_regio_design.mjs .,success(),scripts/test_regio_design.mjs,,6,44682310579
-onderwijsregio-ui.yml,browser,6,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,45561705910
-projecthulp-browser.yml,golden-path,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45562543789
-projecthulp-browser.yml,golden-path,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,1,45562543789
-projecthulp-browser.yml,golden-path,3,"Controleer ZIP, GitHub en adviesregels",success(),"tests/test_audit_advice.mjs, tests/test_eaigit_help.mjs, tests/test_eaigit_single_file.mjs, tests/test_projecthulp.mjs, tests/test_static_audit.mjs",,0,45562543789
-projecthulp-browser.yml,golden-path,4,Installeer browser,success(),,,11,45562543789
-projecthulp-browser.yml,golden-path,5,Doorloop gebruikersroute op desktop en telefoon,success(),scripts/test_projecthulp_browser.mjs,,9,45562543789
-projecthulp-browser.yml,golden-path,6,Bewaar screenshots en advies voor beoordeling,always(),,actions/upload-artifact@v4,1,45562543789
-projecthulp-eaiwork-proof.yml,contract-and-workers,1,Websitecode ophalen,success(),,actions/checkout@v4,4,45420642712
-projecthulp-eaiwork-proof.yml,contract-and-workers,2,Echte EAI Work-code vastgepind ophalen,success(),,actions/checkout@v4,2,45420642712
-projecthulp-eaiwork-proof.yml,contract-and-workers,3,Node.js 22 voor TypeScript,success(),,actions/setup-node@v4,4,45420642712
-projecthulp-eaiwork-proof.yml,contract-and-workers,4,"Controleer afhankelijkheden, echte workers en menselijke vrijgave",success(),website/scripts/test_projecthulp_eaiwork.mjs,,0,45420642712
-projecthulp-eaiwork-proof.yml,contract-and-workers,5,Bewaar controleerbare proefuitkomst,always(),,actions/upload-artifact@v4,2,45420642712
-publish-command.yml,request-publication,1,Dispatch the existing production workflow on main,success(),,,2,39624266612
-publish-public-analytics.yml,refresh,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,43749613945
-publish-public-analytics.yml,refresh,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,43749613945
-publish-public-analytics.yml,refresh,3,Check snapshot publication logic,success(),test_public_analytics.py,,1,43749613945
-publish-public-analytics.yml,refresh,4,Refresh aggregate data from Cloudflare,success(),,,4,43749613945
-publish-public-analytics.yml,refresh,5,Verify Theory7 FTPS certificate,success(),,,8,43749613945
-publish-public-analytics.yml,refresh,6,Publish only the public statistics JSON to Theory7,success(),,,2,43749613945
-publish-public-analytics.yml,refresh,7,Verify the public dataset on Theory7,success(),,,1,43749613945
-schuine-worp-studio.yml,browser,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45561705910
-schuine-worp-studio.yml,browser,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45420743485
-schuine-worp-studio.yml,browser,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,45561705910
-schuine-worp-studio.yml,browser,4,Run pip install beautifulsoup4,success(),,,8,45420743485
-schuine-worp-studio.yml,browser,5,Bouw de compacte natuurkundestudio,success(),scripts/build_site.py,,0,45420743485
-schuine-worp-studio.yml,browser,6,Run npm install --no-save playwright@1.56.1,success(),,,2,45561705910
-schuine-worp-studio.yml,browser,7,Installeer Chromium,success(),,,55,45420743485
-schuine-worp-studio.yml,browser,8,Test op telefoon en desktop in Chromium,success(),scripts/test_schuine_worp_studio.mjs,,34,45420743485
-schuine-worp-studio.yml,browser,9,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,45561705910
-science-fixed-workspace.yml,physics-fixed,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45420743583
-science-fixed-workspace.yml,physics-fixed,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,3,45420743583
-science-fixed-workspace.yml,physics-fixed,3,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45420743583
-science-fixed-workspace.yml,physics-fixed,4,Run pip install beautifulsoup4,success(),,,2,45420743583
-science-fixed-workspace.yml,physics-fixed,5,Run python scripts/build_site.py --sources content/legacy --out site-build,success(),scripts/build_site.py,,0,45420743583
-science-fixed-workspace.yml,physics-fixed,6,Run npm install --no-save playwright@1.56.1,success(),,,3,45420743583
-science-fixed-workspace.yml,physics-fixed,7,Run npx playwright install --with-deps chromium webkit,success(),,,38,45420743583
-science-fixed-workspace.yml,physics-fixed,8,Mathematics viewport and navigation in Chromium,success(),scripts/test_science_math_adaptive.mjs,,43,45420743583
-science-fixed-workspace.yml,physics-fixed,9,Mathematics viewport and navigation in Safari,success(),scripts/test_science_math_adaptive.mjs,,46,45420743583
-science-fixed-workspace.yml,physics-fixed,10,All 53 labs fixed on screen in Chromium,success(),scripts/test_science_fixed_workspace.mjs,,19,45420743583
-science-fixed-workspace.yml,physics-fixed,11,All 53 labs fixed on screen in Safari,success(),scripts/test_science_fixed_workspace.mjs,,37,45420743583
-science-fixed-workspace.yml,physics-fixed,12,Mobile shooting and scale,success(),scripts/test_science_mobile_aim.mjs,,6,45420743583
-science-fixed-workspace.yml,physics-fixed,13,Compact studio and physics values,success(),scripts/test_schuine_worp_studio.mjs,,32,45420743583
-science-fixed-workspace.yml,physics-fixed,14,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,45420743583
-science-studio-webkit.yml,studio-webkit,1,Run actions/checkout@v4,success(),,actions/checkout@v4,6,45420743483
-science-studio-webkit.yml,studio-webkit,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45420743483
-science-studio-webkit.yml,studio-webkit,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,4,45420743483
-science-studio-webkit.yml,studio-webkit,4,Run pip install beautifulsoup4,success(),,,6,45420743483
-science-studio-webkit.yml,studio-webkit,5,Run python scripts/build_site.py --sources content/legacy --out site-build,success(),scripts/build_site.py,,1,45420743483
-science-studio-webkit.yml,studio-webkit,6,Run npm install --no-save playwright@1.56.1,success(),,,2,45420743483
-science-studio-webkit.yml,studio-webkit,7,Run npx playwright install --with-deps webkit,success(),,,52,45420743483
-science-studio-webkit.yml,studio-webkit,8,Check one-screen studio in Safari,success(),scripts/test_schuine_worp_studio.mjs,,43,45420743483
-science-studio-webkit.yml,studio-webkit,9,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,1,45420743483
-science-webkit.yml,mobile-webkit,1,Run actions/checkout@v4,success(),,actions/checkout@v4,6,44034363981
-science-webkit.yml,mobile-webkit,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,44034363981
-science-webkit.yml,mobile-webkit,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,6,44034363981
-science-webkit.yml,mobile-webkit,4,Run pip install beautifulsoup4,success(),,,6,44034363981
-science-webkit.yml,mobile-webkit,5,Build observatory and website,success(),scripts/build_site.py,,1,44034363981
-science-webkit.yml,mobile-webkit,6,Run npm install --no-save playwright@1.56.1,success(),,,3,44034363981
-science-webkit.yml,mobile-webkit,7,Install Safari engine,success(),,,58,44034363981
-science-webkit.yml,mobile-webkit,8,Check 390px and 320px physics lab interaction,success(),scripts/test_science_mobile_aim.mjs,,17,44034363981
-science-webkit.yml,mobile-webkit,9,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,44034363981
-site-check.yml,scope,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45562543789
-site-check.yml,scope,2,Bepaal welke toepassingen geraakt zijn,success(),,,0,45562543789
-site-check.yml,source-checks,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45562543789
-site-check.yml,source-checks,2,Check EAIgit ZIP and GitHub journey,success(),"tests/test_eaigit_help.mjs, tests/test_eaigit_single_file.mjs, tests/test_projecthulp.mjs",,0,45562543789
-site-check.yml,source-checks,3,Check navigation and page structure,success(),,,1,45562543789
-site-check.yml,source-checks,4,Controleer scheiding tussen website- en TOPO-publicatie,success(),test_publication_ownership.py,,0,45562543789
-site-check.yml,source-checks,5,Check Science Observatory and observatory navigation,success(),tests/test_science_observatory_navigation.mjs,,0,45562543789
-site-check.yml,source-checks,6,Check physics reference values and drawings,success(),tests/test_science_physics_models.mjs,,0,45562543789
-site-check.yml,source-checks,7,Check wave motion and optical models,success(),tests/test_science_physics_round3.mjs,,0,45562543789
-site-check.yml,source-checks,8,Check 53 proefspecifieke natuurkundeberekeningen,success(),tests/test_science_physics_insights.mjs,,0,45562543789
-site-check.yml,source-checks,9,Check physics source references and independent calculations,success(),tests/test_science_physics_evidence.mjs,,1,45562543789
-site-check.yml,source-checks,10,Check independent model references for the other 48 physics labs,success(),tests/test_science_physics_reference_48.mjs,,0,45562543789
-site-check.yml,source-checks,11,Check physics visuals against the simulated equations,success(),tests/test_science_physics_visual_fidelity.mjs,,0,45562543789
-site-check.yml,source-checks,12,Check physical graph axes and comparisons,success(),tests/test_science_physical_graphs.mjs,,0,45562543789
-site-check.yml,source-checks,13,"Check animation, graph and measurement agreement",success(),tests/test_science_graph_animation_alignment.mjs,,0,45562543789
-site-check.yml,source-checks,14,Check three learning routes and the projectile target,success(),tests/test_science_inquiry_variants.mjs,,1,45562543789
-site-check.yml,source-checks,15,Verify one KEI login opens the complete LEIF website,success(),tests/test_leif_kei.mjs,,0,45562543789
-site-check.yml,source-checks,16,Verify LEIF reader and corrected text,success(),"tests/test_leif_ereader.mjs, tests/test_leif_question_copy_mobile.mjs",,0,45562543789
-site-check.yml,source-checks,17,"Check separate LEIF dossiers, admin rights and codes",success(),"tests/test_leif_account.mjs, tests/test_leif_admin_session.mjs, tests/test_leif_multitenant.mjs, tests/test_leif_studio.mjs",,0,45562543789
-site-check.yml,source-checks,18,Controleer selectie en blokkering van publicaties,success(),"test_ci_pr_scope.py, test_release_artifact.py, test_release_gate.py",,0,45562543789
-site-check.yml,static-checks,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,45562543789
-site-check.yml,static-checks,2,Controleer alle verplichte resultaten,success(),scripts/check_release_gate.py,,0,45562543789
-test-html-gallery-auth.yml,auth,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,45480653976
-test-html-gallery-auth.yml,auth,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,45480653976
-test-html-gallery-auth.yml,auth,3,Parse Worker modules and password tool,success(),,,0,45480653976
-test-html-gallery-auth.yml,auth,4,"Test login, sessions, authorization, CSRF, and deletion",success(),tests/test_html_galerij_admin.mjs,,1,45480653976
-test-html-gallery-auth.yml,auth,5,"Test website management sources, access boundaries and audit actions",success(),tests/test_eai_site_admin.mjs,,0,45480653976
-test-html-gallery-auth.yml,auth,6,Test the complete gallery with a real SQLite transaction,success(),tests/test_html_gallery_sqlite.mjs,,0,45480653976
-test-html-gallery-auth.yml,live-anonymous,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45480653976
-test-html-gallery-auth.yml,live-anonymous,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,45480653976
-test-html-gallery-auth.yml,live-anonymous,3,Check anonymous production requests without real files or credentials,success(),tests/test_html_gallery_live.mjs,,1,45480653976
-topo-mobile-verify.yml,verify,1,Run actions/checkout@v4,success(),,actions/checkout@v4,4,45562543789
-topo-mobile-verify.yml,verify,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,6,45562543789
-topo-mobile-verify.yml,verify,3,Validate sourced TOPO questions and language bank,success(),scripts/validate_topo_content.mjs,,0,45562543789
-topo-mobile-verify.yml,verify,4,Run npm install --no-save playwright@1.56.1,success(),,,3,45562543789
-topo-mobile-verify.yml,verify,5,Run npx playwright install --with-deps ${{ matrix.browser }},success(),,,,
-topo-mobile-verify.yml,verify,6,Start local static site,success(),,,0,45562543789
-topo-mobile-verify.yml,verify,7,"Test national map, mobile keyboard and settings",success(),scripts/test_topo_mobile.mjs,,5,45562543789
-topo-mobile-verify.yml,verify,8,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,1,45562543789
-verify-live-cloudflare.yml,verify,1,Run actions/checkout@v4,success(),,actions/checkout@v4,4,45562543789
-verify-live-cloudflare.yml,verify,2,Controleer meetcode op Theory7,success(),scripts/build_site.py,,5,43611365557
-verify-ui.yml,verify,1,Run actions/checkout@v4,success(),,actions/checkout@v4,4,45562543789
-verify-ui.yml,verify,2,Kies de browserproeven die deze wijziging kunnen raken,success(),,,0,45562543789
-verify-ui.yml,verify,3,Test veilige selectie van browserproeven,success(),test_ci_pr_scope.py,,0,45562543789
-verify-ui.yml,verify,4,Run actions/setup-python@v5,success(),,actions/setup-python@v5,1,45562543789
-verify-ui.yml,verify,5,Run actions/setup-node@v4,success(),,actions/setup-node@v4,6,45562543789
-verify-ui.yml,verify,6,Run pip install beautifulsoup4,success(),,,6,45562543789
-verify-ui.yml,verify,7,Run python scripts/build_site.py --sources content/legacy --out site-build,success(),scripts/build_site.py,,1,45562543789
-verify-ui.yml,verify,8,Run python scripts/build_anatomie.py --out site-build/tools/anatomie,success(),scripts/build_anatomie.py,,7,45562543789
-verify-ui.yml,verify,9,Controleer anatomie vóór de algemene navigatiebewerking,success(),test_anatomie_publish.py,,0,45562543789
-verify-ui.yml,verify,10,Run python scripts/prepare_ui.py --root site-build,success(),scripts/prepare_ui.py,,3,45562543789
-verify-ui.yml,verify,11,Verify one canonical hub per subject and legacy redirects,success(),test_hub_structure.py,,0,45562543789
-verify-ui.yml,verify,12,"Check dashboard cards, route preservation and lab isolation",success(),test_dashboard_cards.py,,1,45562543789
-verify-ui.yml,verify,13,Verify editorial card scope and build output,success(),test_story_cards.py,,0,45562543789
-verify-ui.yml,verify,14,Run python scripts/verify_ui.py --root site-build,success(),scripts/verify_ui.py,,2,45562543789
-verify-ui.yml,verify,15,Verify LEIF is published without rewriting answers or access screen,success(),,,0,45562543789
-verify-ui.yml,verify,16,Run python -m unittest discover -s tests -p 'test_ui_release.py',success(),test_ui_release.py,,1,45562543789
-verify-ui.yml,verify,17,Run npm install --no-save playwright@1.56.1,success(),,,3,45562543789
-verify-ui.yml,verify,18,Install browser for UI tests,success(),,,7,45562543789
-verify-ui.yml,verify,19,Run python -m unittest discover -s tests -p test_tool_launch.py -v,success(),test_tool_launch.py,,0,45562543789
-verify-ui.yml,verify,20,Controleer ICT-scan synchronisatie en interface op desktop en mobiel,${{ steps.scope.outputs.ictscan == 'true' }},scripts/test_ict_scan_browser.mjs,,74,45562543789
-verify-ui.yml,verify,21,Check anatomical 3D rendering and local organ models,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_anatomie_3d.mjs,,25,45562543789
-verify-ui.yml,verify,22,Run node scripts/test_tool_launch.mjs site-build,success(),scripts/test_tool_launch.mjs,,2,45562543789
-verify-ui.yml,verify,23,Proef EAIgit op desktop en mobiel,${{ steps.scope.outputs.eaigit == 'true' }},scripts/test_projecthulp_browser.mjs,,8,45562543789
-verify-ui.yml,verify,24,Verify dashboard cards and filters on desktop and phones,${{ steps.scope.outputs.home == 'true' }},scripts/test_dashboard_cards_browser.mjs,,2,45562543789
-verify-ui.yml,verify,25,Run node scripts/ui_smoke.mjs site-build,success(),,,50,45562543789
-verify-ui.yml,verify,26,Verify homepage style and visible cards on phones and desktop,${{ steps.scope.outputs.home == 'true' }},scripts/test_story_cards_browser.mjs,,7,45562543789
-verify-ui.yml,verify,27,Test EAIgame 3D and full gameplay on phone and desktop,${{ steps.scope.outputs.eaigame == 'true' }},scripts/test_eaigame_browser.mjs,,22,45562543789
-verify-ui.yml,verify,28,Test compacte schuine-worpstudio op telefoons en desktop,${{ steps.scope.outputs.physics == 'true' }},scripts/test_schuine_worp_studio.mjs,,18,45562543789
-verify-ui.yml,verify,29,"Test mobiel richten, schaal en schieten in Natuurkunde",${{ steps.scope.outputs.physics == 'true' }},scripts/test_science_mobile_aim.mjs,,3,45562543789
-verify-ui.yml,verify,30,Check EAIwork dashboard layout on phones and desktop,${{ steps.scope.outputs.eaiwork == 'true' }},scripts/test_eaiwork_mobile.mjs,,1,45562543789
-verify-ui.yml,verify,31,Verify anatomical 3D viewer on desktop and mobile,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_anatomie_browser.mjs,,96,45562543789
-verify-ui.yml,verify,32,Verify Hartslaglab WebGL animation and mobile layout,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_hartslaglab_browser.mjs,,99,45562543789
-verify-ui.yml,verify,33,Verify LLM Observatory tokenizer in Chromium,${{ steps.scope.outputs.llm == 'true' }},scripts/test_llm_observatorium.mjs,,12,45562543789
-verify-ui.yml,verify,34,Test Melkweg Lab on phones and desktop,${{ steps.scope.outputs.melkweg == 'true' }},scripts/test_melkweg_mobile.mjs,,8,45562543789
-verify-ui.yml,verify,35,Test direct visual experiments in Melkweg Lab,${{ steps.scope.outputs.melkweg == 'true' }},scripts/test_melkweg_visual_play.mjs,,4,45562543789
-verify-ui.yml,verify,36,Verify LEIF continuation in Chromium,${{ steps.scope.outputs.leif == 'true' }},scripts/test_leif_continue.mjs,,1,45562543789
-verify-ui.yml,verify,37,Verify LEIF text editor in Chromium,${{ !cancelled() && steps.scope.outputs.leif == 'true' }},scripts/test_leif_site_editor.mjs,,1,45562543789
-verify-ui.yml,verify,38,Verify LEIF manager login and saved account in Chromium,${{ !cancelled() && steps.scope.outputs.leif == 'true' }},scripts/test_leif_magic_login.mjs,,2,45562543789
-verify-ui.yml,verify,39,Verify compact LEIF Studio and per-participant edits in Chromium,${{ steps.scope.outputs.leif == 'true' }},scripts/test_leif_studio_ui.mjs,,1,45562543789
-verify-ui.yml,verify,40,Verify mobile LEIF question and exercise typing in Chromium,${{ steps.scope.outputs.leif == 'true' }},scripts/test_leif_mobile_questions.mjs,,2,45562543789
-verify-ui.yml,verify,41,Verify LEIF landing pages after participant login,${{ steps.scope.outputs.leif == 'true' }},scripts/test_leif_landing_ui.mjs,,1,45562543789
-verify-ui.yml,verify,42,Verify LEIF session API rejects unknown private codes,${{ steps.scope.outputs.leif == 'true' }},,,1,45562543789
-verify-ui.yml,verify,43,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,1,45562543789
-verify-ui.yml,verify,44,Leg de gecontroleerde build vast en toets de bestandsintegriteit,success(),scripts/verify_ui.py,,2,45562543789
-verify-ui.yml,verify,45,Bewaar exact de geteste sitebuild,${{ inputs.release_artifact == true }},,actions/upload-artifact@v4,4,45552268124
-verify-wihtml.yml,wihtml,1,Run actions/checkout@v4,success(),,actions/checkout@v4,6,45561706210
-verify-wihtml.yml,wihtml,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45561706210
-verify-wihtml.yml,wihtml,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,4,45561706210
-verify-wihtml.yml,wihtml,4,Run pip install beautifulsoup4,success(),,,7,45561706210
-verify-wihtml.yml,wihtml,5,Run python scripts/build_site.py --sources content/legacy --out site-build,success(),scripts/build_site.py,,1,45561706210
-verify-wihtml.yml,wihtml,6,Run python scripts/prepare_ui.py --root site-build,success(),scripts/prepare_ui.py,,2,45561706210
-verify-wihtml.yml,wihtml,7,Run npm install --no-save playwright@1.56.1,success(),,,3,45561706210
-verify-wihtml.yml,wihtml,8,Run npx playwright install chromium,success(),,,8,45561706210
-verify-wihtml.yml,wihtml,9,"Test lesson route, math plots, menus and offline export",success(),scripts/test_wihtml_journey.mjs,,9,45561706210
-verify-wihtml.yml,wihtml,10,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,45561706210
+workflow,job,stap,beschrijving,voorwaarde,scripts en tests,action,seconden gehele stap,voorbeeldrun,gemeten broncommit,job-ID,werkelijke jobnaam,stapnummer API,meetstatus
+anatomie-webkit.yml,webkit,1,Run actions/checkout@v4,success(),,actions/checkout@v4,5,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,2,opnieuw bevestigd
+anatomie-webkit.yml,webkit,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,3,opnieuw bevestigd
+anatomie-webkit.yml,webkit,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,6,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,4,opnieuw bevestigd
+anatomie-webkit.yml,webkit,4,Controleer anatomische inhoud en model-ID's,success(),test_anatomie_content_audit.py,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,5,opnieuw bevestigd
+anatomie-webkit.yml,webkit,5,Schrijf volledige anatomie-audit,success(),scripts/audit_anatomie_content.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,6,opnieuw bevestigd
+anatomie-webkit.yml,webkit,6,Controleer JavaScript van het Hartslaglab voor de browserstart,success(),,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,7,opnieuw bevestigd
+anatomie-webkit.yml,webkit,7,Controleer hartcyclus en kleplogica,success(),scripts/test_hartslaglab_cycle.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,8,opnieuw bevestigd
+anatomie-webkit.yml,webkit,8,"Controleer open hartkamers, kleppen en bloedvaten",success(),scripts/test_hartslaglab_geometry.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,9,opnieuw bevestigd
+anatomie-webkit.yml,webkit,9,Inspecteer hartstructuren in bestaande 3D-atlas,success(),scripts/audit_hart_glb.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,10,opnieuw bevestigd
+anatomie-webkit.yml,webkit,10,Controleer herkomst van de anatomische uitlegartikelen,success(),scripts/test_anatomie_sources.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,11,opnieuw bevestigd
+anatomie-webkit.yml,webkit,11,Controleer Nederlandse uitleg voor alle modelonderdelen,success(),scripts/test_anatomie_teaching.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,12,opnieuw bevestigd
+anatomie-webkit.yml,webkit,12,Controleer selectie van transparante fascia,success(),tests/test_anatomie_picking.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,13,opnieuw bevestigd
+anatomie-webkit.yml,webkit,13,Run python scripts/build_anatomie.py --out site-build/tools/anatomie,success(),scripts/build_anatomie.py,,7,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,14,opnieuw bevestigd
+anatomie-webkit.yml,webkit,14,Run npm install --no-save playwright@1.56.1,success(),,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,15,opnieuw bevestigd
+anatomie-webkit.yml,webkit,15,Install WebKit and browser dependencies,success(),,,61,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,16,opnieuw bevestigd
+anatomie-webkit.yml,webkit,16,Verify anatomy on mobile WebKit,success(),scripts/test_anatomie_webkit.mjs,,46,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,17,opnieuw bevestigd
+anatomie-webkit.yml,webkit,17,Hartslaglab bewegen en bedienen in mobiele WebKit,success(),scripts/test_hartslaglab_browser.mjs,,81,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,18,opnieuw bevestigd
+anatomie-webkit.yml,webkit,18,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,3,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514078,anatomy-webkit / webkit,19,opnieuw bevestigd
+audit-archive.yml,audit,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+audit-archive.yml,audit,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+audit-archive.yml,audit,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+audit-archive.yml,audit,4,Build current public sources,success(),"scripts/build_anatomie.py, scripts/build_site.py, scripts/prepare_ui.py, scripts/verify_ui.py, test_archive_review.py",,,,,,,,niet opnieuw bevestigd
+audit-archive.yml,audit,5,"Inventory pages, links and live HTTP responses",success(),scripts/audit_archive.py,,,,,,,,niet opnieuw bevestigd
+audit-archive.yml,audit,6,Inspect older pages in Chromium and WebKit,success(),scripts/audit_archive_ui.mjs,,,,,,,,niet opnieuw bevestigd
+audit-archive.yml,audit,7,Test local tool workflows with synthetic inputs,success(),scripts/audit_archive_functional.mjs,,,,,,,,niet opnieuw bevestigd
+audit-archive.yml,audit,8,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+build-site.yml,build,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,2,opnieuw bevestigd
+build-site.yml,build,2,Kies de vakspecifieke tests voor gewijzigde bestanden,success(),,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,3,opnieuw bevestigd
+build-site.yml,build,3,Controleer selectie van tests,success(),test_ci_pr_scope.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,4,opnieuw bevestigd
+build-site.yml,build,4,Set up Python,success(),,actions/setup-python@v5,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,5,opnieuw bevestigd
+build-site.yml,build,5,Use Node.js 22 for the 3D atlas and existing JavaScript tests,success(),,actions/setup-node@v4,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,6,opnieuw bevestigd
+build-site.yml,build,6,Install build dependencies,success(),,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,7,opnieuw bevestigd
+build-site.yml,build,7,Test exact Theory7 hashes with Cloudflare beacon injection,success(),test_theory7_cloudflare_hash.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,8,opnieuw bevestigd
+build-site.yml,build,8,Check review PDF workflow never overwrites site HTML or JS,success(),test_zhang_workflow_isolation.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,9,opnieuw bevestigd
+build-site.yml,build,9,Test homepage and model rendering,success(),test_home_model.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,10,opnieuw bevestigd
+build-site.yml,build,10,Check shared dashboard-card scope and homepage content,${{ steps.scope.outputs.home == 'true' }},test_dashboard_cards.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,11,opnieuw bevestigd
+build-site.yml,build,11,Test LEIF en het toevoegen van testers,${{ steps.scope.outputs.leif == 'true' }},"tests/test_leif_kei.mjs, tests/test_leif_multitenant.mjs, tests/test_leif_site_texts.mjs, tests/test_leif_testers.mjs, tests/test_leif_unified_login.mjs",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,12,opnieuw bevestigd
+build-site.yml,build,12,Verify Cloudflare beacon on public sitemap pages,success(),test_cloudflare_beacon.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,13,opnieuw bevestigd
+build-site.yml,build,13,Check local-only ICT scan publishing,success(),test_ict_scan_publish.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,14,opnieuw bevestigd
+build-site.yml,build,14,Test ICT scan Excel reports and AI categorization,${{ steps.scope.outputs.ictscan == 'true' }},tests/test_ict_scan_export.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,15,opnieuw bevestigd
+build-site.yml,build,15,Controleer de brondata en JSON-import van Applicatielandschap 2026,${{ steps.scope.outputs.ictscan == 'true' }},"tests/test_ict_scan_2026_data.mjs, tests/test_ict_scan_answers.mjs, tests/test_ict_scan_cards.mjs, tests/test_ict_scan_github_sync.mjs, tests/test_ict_scan_visuals.mjs",,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,16,opnieuw bevestigd
+build-site.yml,build,16,Check first-party clicks and session privacy,success(),test_first_party_analytics.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,17,opnieuw bevestigd
+build-site.yml,build,17,Check published analytics totals and privacy,success(),test_public_analytics.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,18,opnieuw bevestigd
+build-site.yml,build,18,Check public dashboard JavaScript and labels,success(),tests/test_public_analytics_ui.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,19,opnieuw bevestigd
+build-site.yml,build,19,Check website insights and menu,success(),test_site_insights.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,20,opnieuw bevestigd
+build-site.yml,build,20,Check compact NL and EN menus,success(),test_site_menu_groups.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,21,opnieuw bevestigd
+build-site.yml,build,21,Check bilingual EAI Dictionary and semantic menu links,success(),test_dictionary_and_menu.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,22,opnieuw bevestigd
+build-site.yml,build,22,Check editorial card scope excludes interactive labs,success(),test_story_cards.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,23,opnieuw bevestigd
+build-site.yml,build,23,Check EAIwork public /work/ entry,success(),test_eaiwork_public_entry.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,24,opnieuw bevestigd
+build-site.yml,build,24,Check EAIwork public demonstration,${{ steps.scope.outputs.eaiwork == 'true' }},test_eaiwork_dashboard_publish.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,25,opnieuw bevestigd
+build-site.yml,build,25,Test EAIgit browser analysis,${{ steps.scope.outputs.eaigit == 'true' }},"tests/test_eaigit_help.mjs, tests/test_eaigit_single_file.mjs, tests/test_projecthulp.mjs",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,26,opnieuw bevestigd
+build-site.yml,build,26,Check EAIgame 300 questions and gameplay mechanics,${{ steps.scope.outputs.eaigame == 'true' }},tests/test_eaigame.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,27,opnieuw bevestigd
+build-site.yml,build,27,Build site,success(),scripts/build_site.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,28,opnieuw bevestigd
+build-site.yml,build,28,Controleer verborgen lokale ICT-scan,success(),"test_ict_scan_publish.py, tests/test_ict_scan_github_sync.mjs",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,29,opnieuw bevestigd
+build-site.yml,build,29,Controleer EAIgit in gebouwde website,success(),,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,30,opnieuw bevestigd
+build-site.yml,build,30,Build local anatomical 3D models and viewer,success(),scripts/build_anatomie.py,,6,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,31,opnieuw bevestigd
+build-site.yml,build,31,Test physiological sequence in Hartslaglab,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_hartslaglab_cycle.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,32,opnieuw bevestigd
+build-site.yml,build,32,Check 3D anatomy geometry in Hartslaglab,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_hartslaglab_geometry.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,33,opnieuw bevestigd
+build-site.yml,build,33,"Verify anatomical atlas, licensing and navigation",success(),test_anatomie_publish.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,34,opnieuw bevestigd
+build-site.yml,build,34,Check HTML upload link in header,success(),test_header_upload_link.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,35,opnieuw bevestigd
+build-site.yml,build,35,Check HTML gallery static publication,success(),"test_eai_site_admin_publish.py, test_html_galerij_publish.py",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,36,opnieuw bevestigd
+build-site.yml,build,36,Check HTML gallery admin routes and client script,success(),"tests/test_eai_site_admin.mjs, tests/test_html_galerij_admin.mjs, tests/test_html_gallery_sqlite.mjs",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,37,opnieuw bevestigd
+build-site.yml,build,37,Check WiHTML pages and reviewed studio copy,success(),test_wihtml_publish.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,38,opnieuw bevestigd
+build-site.yml,build,38,Check LLM observatory source and menus,${{ steps.scope.outputs.llm == 'true' }},test_llm_observatorium_source.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,39,opnieuw bevestigd
+build-site.yml,build,39,Check ABYSS source and mobile menu,success(),test_abyss_publish.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,40,opnieuw bevestigd
+build-site.yml,build,40,Check Science Observatory pilot publication,${{ steps.scope.outputs.physics == 'true' }},test_science_observatory_publish.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,41,opnieuw bevestigd
+build-site.yml,build,41,Check adaptive mathematics and physics workspaces,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_adaptive_workspaces.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,42,opnieuw bevestigd
+build-site.yml,build,42,Check physics reference values and drawings,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_models.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,43,opnieuw bevestigd
+build-site.yml,build,43,Check wave motion and optical models,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_round3.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,44,opnieuw bevestigd
+build-site.yml,build,44,Check 53 proefspecifieke natuurkundeberekeningen,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_insights.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,45,opnieuw bevestigd
+build-site.yml,build,45,Check physics source references and independent calculations,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_evidence.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,46,opnieuw bevestigd
+build-site.yml,build,46,Check independent model references for the other 48 physics labs,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_reference_48.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,47,opnieuw bevestigd
+build-site.yml,build,47,Check physics visuals against the simulated equations,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physics_visual_fidelity.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,48,opnieuw bevestigd
+build-site.yml,build,48,Check physical graph axes and comparisons,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_physical_graphs.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,49,opnieuw bevestigd
+build-site.yml,build,49,"Check animation, graph and measurement agreement",${{ steps.scope.outputs.physics == 'true' }},tests/test_science_graph_animation_alignment.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,50,opnieuw bevestigd
+build-site.yml,build,50,Check three experiment-specific inquiry methods,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_inquiry_variants.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,51,opnieuw bevestigd
+build-site.yml,build,51,Check quality register for all 53 physics experiments,${{ steps.scope.outputs.physics == 'true' }},tests/test_science_quality_register.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,52,opnieuw bevestigd
+build-site.yml,build,52,Check Melkweg Lab publication,${{ steps.scope.outputs.melkweg == 'true' }},test_melkweg_lab_publish.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,53,opnieuw bevestigd
+build-site.yml,build,53,Verify EAIstudio and EAImesh source publication,success(),test_tool_launch.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,54,opnieuw bevestigd
+build-site.yml,build,54,Validate internal links,success(),,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,55,opnieuw bevestigd
+build-site.yml,build,55,Check visitor routes and shared styling,success(),,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461135,build-check / build,56,opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,4,Install Python build dependency,success(),,,,,,,,,niet opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,5,Build site,success(),scripts/build_site.py,,,,,,,,niet opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,6,Check dashboard source and route,success(),test_eaiwork_dashboard_publish.py,,,,,,,,niet opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,7,Install Playwright browser,success(),,,,,,,,,niet opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,8,Test compact dashboard on desktop and mobile,success(),scripts/test_eaiwork_mobile.mjs,,,,,,,,niet opnieuw bevestigd
+check-eaiwork-dashboard.yml,visual-dashboard,9,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+check-ict-assurance.yml,check,1,Lees de repository,success(),,actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514447,"ict-check / Bronintegriteit, controles en regressies",2,opnieuw bevestigd
+check-ict-assurance.yml,check,2,Gebruik Node.js 24,success(),,actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514447,"ict-check / Bronintegriteit, controles en regressies",3,opnieuw bevestigd
+check-ict-assurance.yml,check,3,"Controleer regels, bronimport en kaartwijzigingen",success(),"test_ict_scan_publish.py, tests/test_ict_scan_assurance*.mjs, tests/test_ict_scan_cards.mjs, tests/test_ict_scan_edit_api.php, tests/test_ict_scan_export.mjs, tests/test_ict_scan_github_sync.mjs, tests/test_ict_scan_taxonomy.mjs",,4,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514447,"ict-check / Bronintegriteit, controles en regressies",4,opnieuw bevestigd
+check-ict-assurance.yml,check,4,Installeer de browser voor de gebruikersproef,success(),,,22,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514447,"ict-check / Bronintegriteit, controles en regressies",5,opnieuw bevestigd
+check-ict-assurance.yml,check,5,"Doorloop import, controles en vergelijking in de browser",success(),tests/verify_ict_assurance_browser.mjs,,14,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514447,"ict-check / Bronintegriteit, controles en regressies",6,opnieuw bevestigd
+check-ict-assurance.yml,check,6,Maak een controleverslag van de bronbestanden,${{ !cancelled() }},scripts/check_ict_assurance.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514447,"ict-check / Bronintegriteit, controles en regressies",7,opnieuw bevestigd
+check-ict-assurance.yml,check,7,Bewaar het controleverslag,always(),,actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514447,"ict-check / Bronintegriteit, controles en regressies",8,opnieuw bevestigd
+check-llmscan.yml,check,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+check-llmscan.yml,check,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+check-llmscan.yml,check,3,Check JavaScript syntax,success(),,,,,,,,,niet opnieuw bevestigd
+check-llmscan.yml,check,4,Check original catalogue and research,success(),test_llmscan_standalone.py,,,,,,,,niet opnieuw bevestigd
+check-llmscan.yml,check,5,Install browser,success(),,,,,,,,,niet opnieuw bevestigd
+check-llmscan.yml,check,6,Test actual LLMscan interaction on phone and desktop,success(),scripts/test_llmscan_browser.mjs,,,,,,,,niet opnieuw bevestigd
+check-own-exports.yml,exports,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+check-own-exports.yml,exports,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+check-own-exports.yml,exports,3,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+check-own-exports.yml,exports,4,Build own pages,success(),"scripts/build_site.py, scripts/prepare_ui.py, scripts/verify_ui.py",,,,,,,,niet opnieuw bevestigd
+check-own-exports.yml,exports,5,"Test real PNG, PDF and text files",success(),scripts/check_own_exports.mjs,,,,,,,,niet opnieuw bevestigd
+check-own-exports.yml,exports,6,Verify signed and altered synthetic files,success(),scripts/check_own_verifier.mjs,,,,,,,,niet opnieuw bevestigd
+check-own-exports.yml,exports,7,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+check-website-register.yml,register,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461313,"register-check / Pagina's, bronbestanden en onderdelen",2,opnieuw bevestigd
+check-website-register.yml,register,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461313,"register-check / Pagina's, bronbestanden en onderdelen",3,opnieuw bevestigd
+check-website-register.yml,register,3,Controleer het website-register,success(),"scripts/check_website_register.py, test_website_register.py",,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461313,"register-check / Pagina's, bronbestanden en onderdelen",4,opnieuw bevestigd
+deploy-analytics-dashboard.yml,deploy,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+deploy-analytics-dashboard.yml,deploy,2,Controleer dashboard en testgegevens,success(),"test_first_party_analytics.py, tests/test_public_analytics_ui.mjs",,,,,,,,niet opnieuw bevestigd
+deploy-analytics-dashboard.yml,deploy,3,Installeer FTPS-client,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-analytics-dashboard.yml,deploy,4,Controleer bestaand Theory7-certificaat,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-analytics-dashboard.yml,deploy,5,Publiceer eerst de servermeting,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-analytics-dashboard.yml,deploy,6,Controleer servermeting op Theory7,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-analytics-dashboard.yml,deploy,7,Publiceer dashboard en meetcode,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-analytics-dashboard.yml,deploy,8,Controleer live demo zonder echte cijfers te veranderen,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-delf-preview.yml,publish,1,Checkout tested DELF version,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+deploy-delf-preview.yml,publish,2,Node.js,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+deploy-delf-preview.yml,publish,3,Build and test DELF only,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-delf-preview.yml,publish,4,Install FTPS client,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-delf-preview.yml,publish,5,Verify Theory7 FTPS certificate,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-delf-preview.yml,publish,6,Publish only DELF test folder,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-delf-preview.yml,publish,7,Verify public test page and assets,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-eaiwork-theory7.yml,publish-dashboard,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+deploy-eaiwork-theory7.yml,publish-dashboard,2,Verify self-contained dashboard source,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-eaiwork-theory7.yml,publish-dashboard,3,Install FTPS client,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-eaiwork-theory7.yml,publish-dashboard,4,Verify Theory7 FTPS certificate,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-eaiwork-theory7.yml,publish-dashboard,5,Upload only EAIwork HTML to Theory7,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-eaiwork-theory7.yml,publish-dashboard,6,Verify exact published dashboard bytes,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-leif-quick.yml,publish-leif,1,Haal websitecode op,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+deploy-leif-quick.yml,publish-leif,2,Controleer bestaande LEIF-toegang en testers,success(),tests/test_leif_*.mjs,,,,,,,,niet opnieuw bevestigd
+deploy-leif-quick.yml,publish-leif,3,Installeer FTPS-client,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-leif-quick.yml,publish-leif,4,Controleer FTPS-certificaat van de bestaande host,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-leif-quick.yml,publish-leif,5,Publiceer alleen de bestaande LEIF-pagina's,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-leif-quick.yml,publish-leif,6,Controleer de live beheerpagina,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-lo-quick.yml,publish-lo,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+deploy-lo-quick.yml,publish-lo,2,Controleer de bron van de online duofunctie,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-lo-quick.yml,publish-lo,3,Installeer FTPS-client,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-lo-quick.yml,publish-lo,4,Controleer het FTPS-certificaat,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-lo-quick.yml,publish-lo,5,Publiceer alleen het LO Aanvalslab,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-lo-quick.yml,publish-lo,6,Controleer exacte live HTML,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-sport-opstellingen-quick.yml,publish,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,43732398325,d28ddb3bbe46b2201cc09ea23ae1664be5c7bbfa,132867523718,publish,2,opnieuw bevestigd
+deploy-sport-opstellingen-quick.yml,publish,2,Verify only the intended pages,success(),,,0,43732398325,d28ddb3bbe46b2201cc09ea23ae1664be5c7bbfa,132867523718,publish,3,opnieuw bevestigd
+deploy-sport-opstellingen-quick.yml,publish,3,Install FTPS client,success(),,,6,43732398325,d28ddb3bbe46b2201cc09ea23ae1664be5c7bbfa,132867523718,publish,4,opnieuw bevestigd
+deploy-sport-opstellingen-quick.yml,publish,4,Verify expected FTPS fingerprint,success(),,,0,43732398325,d28ddb3bbe46b2201cc09ea23ae1664be5c7bbfa,132867523718,publish,5,opnieuw bevestigd
+deploy-sport-opstellingen-quick.yml,publish,5,Upload sport pages without touching existing tactic simulator,success(),,,6,43732398325,d28ddb3bbe46b2201cc09ea23ae1664be5c7bbfa,132867523718,publish,6,opnieuw bevestigd
+deploy-sport-opstellingen-quick.yml,publish,6,Verify public sport pages and unchanged tactics,success(),,,2,43732398325,d28ddb3bbe46b2201cc09ea23ae1664be5c7bbfa,132867523718,publish,7,opnieuw bevestigd
+deploy-theory7.yml,deploy,1,Checkout,success(),,actions/checkout@v4,2,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,2,opnieuw bevestigd
+deploy-theory7.yml,deploy,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,3,opnieuw bevestigd
+deploy-theory7.yml,deploy,3,Download exact de geteste productiebuild,success(),,actions/download-artifact@v4,2,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,4,opnieuw bevestigd
+deploy-theory7.yml,deploy,4,Verifieer commit en alle bestanden voor upload,success(),scripts/verify_ui.py,,4,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,5,opnieuw bevestigd
+deploy-theory7.yml,deploy,5,Install FTPS client,success(),,,7,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,6,opnieuw bevestigd
+deploy-theory7.yml,deploy,6,Verify Theory7 FTPS certificate fingerprint,success(),,,1,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,7,opnieuw bevestigd
+deploy-theory7.yml,deploy,7,Controleer dat dit nog de actuele hoofdversie is,success(),,,0,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,8,opnieuw bevestigd
+deploy-theory7.yml,deploy,8,Publish assets before HTML,success(),,,249,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,9,opnieuw bevestigd
+deploy-theory7.yml,deploy,9,Verify live ICT-scan profile and validator version,success(),,,2,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,10,opnieuw bevestigd
+deploy-theory7.yml,deploy,10,Verify live HTML and exact asset hashes,success(),scripts/verify_ui.py,,35,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,11,opnieuw bevestigd
+deploy-theory7.yml,deploy,11,Verify live anatomy JavaScript and stylesheets,success(),,,1,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,12,opnieuw bevestigd
+deploy-theory7.yml,deploy,12,Verify published Hartslaglab including the real 3D meshes,success(),,,3,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,13,opnieuw bevestigd
+deploy-theory7.yml,deploy,13,Verify live anatomical models,success(),,,1,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138999261576,deploy,14,opnieuw bevestigd
+deploy-topo-theory7.yml,deploy-topo,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+deploy-topo-theory7.yml,deploy-topo,2,Check TOPO sources and nationwide map,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-topo-theory7.yml,deploy-topo,3,"Verify map, capitals, water sources and approved TOPO copy",success(),scripts/validate_topo_content.mjs,,,,,,,,niet opnieuw bevestigd
+deploy-topo-theory7.yml,deploy-topo,4,Install FTPS client,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-topo-theory7.yml,deploy-topo,5,Verify Theory7 FTPS certificate fingerprint,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-topo-theory7.yml,deploy-topo,6,"Publish TOPO only (no deletion, no other site folders)",success(),,,,,,,,,niet opnieuw bevestigd
+deploy-topo-theory7.yml,deploy-topo,7,Verify three published pages and map independently,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-vakinhoud-quick.yml,publish,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,43756824835,b7ea17901403c2932223003e52561218b1e30bb0,132942625462,publish,2,opnieuw bevestigd
+deploy-vakinhoud-quick.yml,publish,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,43756824835,b7ea17901403c2932223003e52561218b1e30bb0,132942625462,publish,3,opnieuw bevestigd
+deploy-vakinhoud-quick.yml,publish,3,Build published navigation,success(),"scripts/build_site.py, scripts/prepare_ui.py",,9,43756824835,b7ea17901403c2932223003e52561218b1e30bb0,132942625462,publish,4,opnieuw bevestigd
+deploy-vakinhoud-quick.yml,publish,4,Install FTPS tools,success(),,,14,43756824835,b7ea17901403c2932223003e52561218b1e30bb0,132942625462,publish,5,opnieuw bevestigd
+deploy-vakinhoud-quick.yml,publish,5,Verify FTPS fingerprint,success(),,,1,43756824835,b7ea17901403c2932223003e52561218b1e30bb0,132942625462,publish,6,opnieuw bevestigd
+deploy-vakinhoud-quick.yml,publish,6,Upload revised main pages without touching the other tools,success(),,,12,43756824835,b7ea17901403c2932223003e52561218b1e30bb0,132942625462,publish,7,opnieuw bevestigd
+deploy-vakinhoud-quick.yml,publish,7,Verify revised public labels,success(),,,4,43756824835,b7ea17901403c2932223003e52561218b1e30bb0,132942625462,publish,8,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,1,Run actions/checkout@v4,success(),,actions/checkout@v4,6,43707923133,cab1bfd4718ab186aa557c297e145b3afd262eb1,132792946105,publish,2,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,2,Check source files,success(),,,0,43707923133,cab1bfd4718ab186aa557c297e145b3afd262eb1,132792946105,publish,3,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,3,Set up Python for PDF verification,success(),,actions/setup-python@v5,0,43707923133,cab1bfd4718ab186aa557c297e145b3afd262eb1,132792946105,publish,4,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,4,Install fonts and PDF tools,success(),,,23,43707923133,cab1bfd4718ab186aa557c297e145b3afd262eb1,132792946105,publish,5,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,5,Apply reviewed PDF corrections,success(),"scripts/rebuild_zhang_review.py, scripts/rebuild_zhang_review_en.py",,0,43707923133,cab1bfd4718ab186aa557c297e145b3afd262eb1,132792946105,publish,6,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,6,Preserve definitive PDF files in repository,success(),,,0,43707923133,cab1bfd4718ab186aa557c297e145b3afd262eb1,132792946105,publish,7,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,7,Install FTPS,success(),,,4,43707923133,cab1bfd4718ab186aa557c297e145b3afd262eb1,132792946105,publish,8,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,8,Verify FTP certificate,success(),,,0,43707923133,cab1bfd4718ab186aa557c297e145b3afd262eb1,132792946105,publish,9,opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,9,Publish reviewed PDF files only,success(),,,,,,,,,niet opnieuw bevestigd
+deploy-zhang-review-rapid.yml,publish,10,Verify live PDF files (HTML is checked by Theory7 release),success(),,,,,,,,,niet opnieuw bevestigd
+eaigame.yml,gameplay,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+eaigame.yml,gameplay,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+eaigame.yml,gameplay,3,Check game modules,success(),scripts/test_eaigame_browser.mjs,,,,,,,,niet opnieuw bevestigd
+eaigame.yml,gameplay,4,Verify questions and gameplay,success(),tests/test_eaigame.mjs,,,,,,,,niet opnieuw bevestigd
+eaigame.yml,gameplay,5,Install Playwright,success(),,,,,,,,,niet opnieuw bevestigd
+eaigame.yml,gameplay,6,"Play full game on desktop, phone and offline fallback",success(),scripts/test_eaigame_browser.mjs,,,,,,,,niet opnieuw bevestigd
+eaigame.yml,gameplay,7,Save browser screenshots,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+ict-scan-webkit.yml,webkit,1,Checkout zonder opgeslagen credentials,success(),,actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1,3,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514570,"ict-webkit / WebKit iPhone-layout, grafieken en bronimport",3,opnieuw bevestigd
+ict-scan-webkit.yml,webkit,2,Gebruik Node.js 24,success(),,actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514570,"ict-webkit / WebKit iPhone-layout, grafieken en bronimport",4,opnieuw bevestigd
+ict-scan-webkit.yml,webkit,3,Bereid de sitebuild voor,success(),,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514570,"ict-webkit / WebKit iPhone-layout, grafieken en bronimport",5,opnieuw bevestigd
+ict-scan-webkit.yml,webkit,4,Bouw bestaande ICT-scan zonder externe gegevens,success(),scripts/build_site.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514570,"ict-webkit / WebKit iPhone-layout, grafieken en bronimport",6,opnieuw bevestigd
+ict-scan-webkit.yml,webkit,5,Gebruik bij de container passende Playwright,success(),,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514570,"ict-webkit / WebKit iPhone-layout, grafieken en bronimport",7,opnieuw bevestigd
+ict-scan-webkit.yml,webkit,6,Test dashboard in echte WebKit-renderer,success(),scripts/test_ict_scan_browser.mjs,,123,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514570,"ict-webkit / WebKit iPhone-layout, grafieken en bronimport",8,opnieuw bevestigd
+ict-scan-webkit.yml,webkit,7,Bewaar screenshots van WebKit-test,always(),,actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514570,"ict-webkit / WebKit iPhone-layout, grafieken en bronimport",9,opnieuw bevestigd
+leeuw-console.yml,browser,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45561705910,40152d088449bc0dcf482d63f552677b1588fb85,139026701014,browser (chromium),2,opnieuw bevestigd
+leeuw-console.yml,browser,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,0,45561705910,40152d088449bc0dcf482d63f552677b1588fb85,139026701014,browser (chromium),3,opnieuw bevestigd
+leeuw-console.yml,browser,3,Run npm install --no-save playwright@1.56.1,success(),,,2,45561705910,40152d088449bc0dcf482d63f552677b1588fb85,139026701014,browser (chromium),4,opnieuw bevestigd
+leeuw-console.yml,browser,4,Run npx playwright install --with-deps ${{ matrix.engine }},success(),,,,,,,,,niet opnieuw bevestigd
+leeuw-console.yml,browser,5,Run node scripts/test_leeuw_console.mjs . ${{ matrix.engine }},success(),scripts/test_leeuw_console.mjs,,,,,,,,niet opnieuw bevestigd
+leeuw-console.yml,browser,6,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,45561705910,40152d088449bc0dcf482d63f552677b1588fb85,139026701014,browser (chromium),7,opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,4,Run pip install beautifulsoup4,success(),,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,5,Build LLM page from source,success(),scripts/build_site.py,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,6,Run python scripts/prepare_ui.py --root site-build,success(),scripts/prepare_ui.py,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,7,Verify local learning mathematics,success(),scripts/test_llm_learning_math.mjs,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,8,Verify real recorded GPT-Neo model execution,success(),scripts/test_llm_real_trace.py,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,9,Validate original model and updated visualization,success(),test_llm_observatorium_source.py,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,10,Run npm install --no-save playwright@1.56.1,success(),,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,11,Run npx playwright install --with-deps chromium,success(),,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,12,"Nine learning steps, research views and token interaction",success(),scripts/test_llm_observatorium.mjs,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,13,Install WebKit for Safari layout checks,success(),,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,14,Verify mobile Safari-style layouts,success(),scripts/test_llm_mobile_webkit.mjs,,,,,,,,niet opnieuw bevestigd
+llm-observatorium-ui.yml,llm-browser,15,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+llm-real-trace.yml,measure,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,44183305015,fb5c360f3855c28768f8bd209aca043e7e3d6ec9,134393064776,measure,2,opnieuw bevestigd
+llm-real-trace.yml,measure,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,44183305015,fb5c360f3855c28768f8bd209aca043e7e3d6ec9,134393064776,measure,3,opnieuw bevestigd
+llm-real-trace.yml,measure,3,Install CPU inference dependencies,success(),,,37,44183305015,fb5c360f3855c28768f8bd209aca043e7e3d6ec9,134393064776,measure,4,opnieuw bevestigd
+llm-real-trace.yml,measure,4,Capture real values from trained public GPT-Neo model,success(),,,,,,,,,niet opnieuw bevestigd
+llm-real-trace.yml,measure,5,Validate model trace before releasing the artifact,success(),scripts/test_llm_real_trace.py,,,,,,,,niet opnieuw bevestigd
+llm-real-trace.yml,measure,6,Run actions/upload-artifact@v4,success(),,actions/upload-artifact@v4,1,44183305015,fb5c360f3855c28768f8bd209aca043e7e3d6ec9,134393064776,measure,7,opnieuw bevestigd
+llmscan-daily-discovery.yml,scan,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+llmscan-daily-discovery.yml,scan,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+llmscan-daily-discovery.yml,scan,3,Fetch recent Crossref and arXiv candidates,success(),,,,,,,,,niet opnieuw bevestigd
+llmscan-daily-discovery.yml,scan,4,Propose discoveries without automatic publication,success(),,peter-evans/create-pull-request@v7,,,,,,,niet opnieuw bevestigd
+lo-calm-mobile.yml,mobiel,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+lo-calm-mobile.yml,mobiel,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+lo-calm-mobile.yml,mobiel,3,Installeer Chromium en WebKit,success(),,,,,,,,,niet opnieuw bevestigd
+lo-calm-mobile.yml,mobiel,4,Controleer mobiele spelbediening,success(),scripts/test_lo_calm_mobile.py,,,,,,,,niet opnieuw bevestigd
+lo-calm-mobile.yml,mobiel,5,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+lo-easteregg-verify.yml,test,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+lo-easteregg-verify.yml,test,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+lo-easteregg-verify.yml,test,3,Run python -m pip install playwright,success(),,,,,,,,,niet opnieuw bevestigd
+lo-easteregg-verify.yml,test,4,"Test zichtbaarheid, bronpagina en publicatie",success(),test_lo_evidence_publish.py,,,,,,,,niet opnieuw bevestigd
+lo-easteregg-verify.yml,test,5,"Test spelberekeningen, desktop, mobiel en verborgen analyse",success(),scripts/test_lo_easteregg.py,,,,,,,,niet opnieuw bevestigd
+lo-tactics-source.yml,open-data,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+lo-tactics-source.yml,open-data,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+lo-tactics-source.yml,open-data,3,Test de gegevensparser zonder netwerk,success(),tools/lo-aanvalslab/calibratie/tactics/test_analyze_open_tactics.py,,,,,,,,niet opnieuw bevestigd
+lo-tactics-source.yml,open-data,4,Test ruimtemeting uit StatsBomb 360 zonder netwerk,success(),tools/lo-aanvalslab/calibratie/tactics/test_analyze_open_football.py,,,,,,,,niet opnieuw bevestigd
+lo-tactics-source.yml,open-data,5,Meet passlijnen uit echte voetbalmomenten,success(),,,,,,,,,niet opnieuw bevestigd
+lo-tactics-source.yml,open-data,6,Lees echte gelabelde handbalbezitten uit Zenodo,success(),,,,,,,,,niet opnieuw bevestigd
+lo-v13-tracking.yml,measure,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,43230794265,c016c28ffc7b8494783677b3369d18a35088a143,131225252143,measure,2,opnieuw bevestigd
+lo-v13-tracking.yml,measure,2,Installeer parsers voor oorspronkelijke data,success(),,,4,43230794265,c016c28ffc7b8494783677b3369d18a35088a143,131225252143,measure,3,opnieuw bevestigd
+lo-v13-tracking.yml,measure,3,Meet de datasets zonder ruwe data te publiceren,success(),,,54,43230794265,c016c28ffc7b8494783677b3369d18a35088a143,131225252143,measure,4,opnieuw bevestigd
+lo-v13-tracking.yml,measure,4,Leg de meetuitkomsten vast in de onderzoeksbranch,success(),,,2,43230794265,c016c28ffc7b8494783677b3369d18a35088a143,131225252143,measure,5,opnieuw bevestigd
+lo-v13-verify.yml,browser-tests,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+lo-v13-verify.yml,browser-tests,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+lo-v13-verify.yml,browser-tests,3,Installeer browser,success(),,,,,,,,,niet opnieuw bevestigd
+lo-v13-verify.yml,browser-tests,4,Controleer rustige mobiele bediening,success(),scripts/test_lo_calm_mobile.py,,,,,,,,niet opnieuw bevestigd
+lo-v13-verify.yml,browser-tests,5,Bewaar mobiele proefbeelden,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+lo-v13-verify.yml,browser-tests,6,"Controleer sporten, verdedigende tactiek en bewegingen",success(),,,,,,,,,niet opnieuw bevestigd
+lo-zone-verify.yml,zones,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+lo-zone-verify.yml,zones,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+lo-zone-verify.yml,zones,3,Run python -m pip install playwright,success(),,,,,,,,,niet opnieuw bevestigd
+lo-zone-verify.yml,zones,4,"Controleer zonevormen, doelpogingen en lokale duo-opstelling",success(),scripts/test_lo_zone.py,,,,,,,,niet opnieuw bevestigd
+lo-zone-verify.yml,zones,5,Controleer dat de server nieuwe opdrachten accepteert,success(),,,,,,,,,niet opnieuw bevestigd
+onderwijsregio-ui.yml,browser,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,44682310579,a87c0880b10e2ed8b0dccb53749600aaba069cda,136108349173,browser,2,opnieuw bevestigd
+onderwijsregio-ui.yml,browser,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,1,44682310579,a87c0880b10e2ed8b0dccb53749600aaba069cda,136108349173,browser,3,opnieuw bevestigd
+onderwijsregio-ui.yml,browser,3,Run npm install --no-save playwright@1.56.1,success(),,,3,44682310579,a87c0880b10e2ed8b0dccb53749600aaba069cda,136108349173,browser,4,opnieuw bevestigd
+onderwijsregio-ui.yml,browser,4,Run npx playwright install chromium,success(),,,8,44682310579,a87c0880b10e2ed8b0dccb53749600aaba069cda,136108349173,browser,5,opnieuw bevestigd
+onderwijsregio-ui.yml,browser,5,Run node scripts/test_regio_design.mjs .,success(),scripts/test_regio_design.mjs,,6,44682310579,a87c0880b10e2ed8b0dccb53749600aaba069cda,136108349173,browser,6,opnieuw bevestigd
+onderwijsregio-ui.yml,browser,6,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,2,44682310579,a87c0880b10e2ed8b0dccb53749600aaba069cda,136108349173,browser,7,opnieuw bevestigd
+projecthulp-browser.yml,golden-path,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514165,eaigit-check / golden-path,2,opnieuw bevestigd
+projecthulp-browser.yml,golden-path,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514165,eaigit-check / golden-path,3,opnieuw bevestigd
+projecthulp-browser.yml,golden-path,3,"Controleer ZIP, GitHub en adviesregels",success(),"tests/test_audit_advice.mjs, tests/test_eaigit_help.mjs, tests/test_eaigit_single_file.mjs, tests/test_projecthulp.mjs, tests/test_static_audit.mjs",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514165,eaigit-check / golden-path,4,opnieuw bevestigd
+projecthulp-browser.yml,golden-path,4,Installeer browser,success(),,,11,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514165,eaigit-check / golden-path,5,opnieuw bevestigd
+projecthulp-browser.yml,golden-path,5,Doorloop gebruikersroute op desktop en telefoon,success(),scripts/test_projecthulp_browser.mjs,,9,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514165,eaigit-check / golden-path,6,opnieuw bevestigd
+projecthulp-browser.yml,golden-path,6,Bewaar screenshots en advies voor beoordeling,always(),,actions/upload-artifact@v4,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514165,eaigit-check / golden-path,7,opnieuw bevestigd
+projecthulp-eaiwork-proof.yml,contract-and-workers,1,Websitecode ophalen,success(),,actions/checkout@v4,4,45420642712,3fa635bf2ca7e16f18c38bfe8339f28fc028e70e,138538874219,contract-and-workers,2,opnieuw bevestigd
+projecthulp-eaiwork-proof.yml,contract-and-workers,2,Echte EAI Work-code vastgepind ophalen,success(),,actions/checkout@v4,2,45420642712,3fa635bf2ca7e16f18c38bfe8339f28fc028e70e,138538874219,contract-and-workers,3,opnieuw bevestigd
+projecthulp-eaiwork-proof.yml,contract-and-workers,3,Node.js 22 voor TypeScript,success(),,actions/setup-node@v4,4,45420642712,3fa635bf2ca7e16f18c38bfe8339f28fc028e70e,138538874219,contract-and-workers,4,opnieuw bevestigd
+projecthulp-eaiwork-proof.yml,contract-and-workers,4,"Controleer afhankelijkheden, echte workers en menselijke vrijgave",success(),scripts/test_projecthulp_eaiwork.mjs,,0,45420642712,3fa635bf2ca7e16f18c38bfe8339f28fc028e70e,138538874219,contract-and-workers,5,opnieuw bevestigd
+projecthulp-eaiwork-proof.yml,contract-and-workers,5,Bewaar controleerbare proefuitkomst,always(),,actions/upload-artifact@v4,2,45420642712,3fa635bf2ca7e16f18c38bfe8339f28fc028e70e,138538874219,contract-and-workers,6,opnieuw bevestigd
+publish-command.yml,request-publication,1,Dispatch the existing production workflow on main,success(),,,,,,,,,niet opnieuw bevestigd
+publish-public-analytics.yml,refresh,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+publish-public-analytics.yml,refresh,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+publish-public-analytics.yml,refresh,3,Check snapshot publication logic,success(),test_public_analytics.py,,,,,,,,niet opnieuw bevestigd
+publish-public-analytics.yml,refresh,4,Refresh aggregate data from Cloudflare,success(),,,,,,,,,niet opnieuw bevestigd
+publish-public-analytics.yml,refresh,5,Verify Theory7 FTPS certificate,success(),,,,,,,,,niet opnieuw bevestigd
+publish-public-analytics.yml,refresh,6,Publish only the public statistics JSON to Theory7,success(),,,,,,,,,niet opnieuw bevestigd
+publish-public-analytics.yml,refresh,7,Verify the public dataset on Theory7,success(),,,,,,,,,niet opnieuw bevestigd
+schuine-worp-studio.yml,browser,1,Run actions/checkout@v4,success(),,actions/checkout@v4,6,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,2,opnieuw bevestigd
+schuine-worp-studio.yml,browser,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,0,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,3,opnieuw bevestigd
+schuine-worp-studio.yml,browser,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,5,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,4,opnieuw bevestigd
+schuine-worp-studio.yml,browser,4,Run pip install beautifulsoup4,success(),,,8,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,5,opnieuw bevestigd
+schuine-worp-studio.yml,browser,5,Bouw de compacte natuurkundestudio,success(),scripts/build_site.py,,0,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,6,opnieuw bevestigd
+schuine-worp-studio.yml,browser,6,Run npm install --no-save playwright@1.56.1,success(),,,3,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,7,opnieuw bevestigd
+schuine-worp-studio.yml,browser,7,Installeer Chromium,success(),,,55,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,8,opnieuw bevestigd
+schuine-worp-studio.yml,browser,8,Test op telefoon en desktop in Chromium,success(),scripts/test_schuine_worp_studio.mjs,,34,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,9,opnieuw bevestigd
+schuine-worp-studio.yml,browser,9,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,1,45420743485,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,138539238753,browser,10,opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,3,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,4,Run pip install beautifulsoup4,success(),,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,5,Run python scripts/build_site.py --sources content/legacy --out site-build,success(),scripts/build_site.py,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,6,Run npm install --no-save playwright@1.56.1,success(),,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,7,Run npx playwright install --with-deps chromium webkit,success(),,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,8,Mathematics viewport and navigation in Chromium,success(),scripts/test_science_math_adaptive.mjs,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,9,Mathematics viewport and navigation in Safari,success(),scripts/test_science_math_adaptive.mjs,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,10,All 53 labs fixed on screen in Chromium,success(),scripts/test_science_fixed_workspace.mjs,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,11,All 53 labs fixed on screen in Safari,success(),scripts/test_science_fixed_workspace.mjs,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,12,Mobile shooting and scale,success(),scripts/test_science_mobile_aim.mjs,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,13,Compact studio and physics values,success(),scripts/test_schuine_worp_studio.mjs,,,,,,,,niet opnieuw bevestigd
+science-fixed-workspace.yml,physics-fixed,14,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,4,Run pip install beautifulsoup4,success(),,,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,5,Run python scripts/build_site.py --sources content/legacy --out site-build,success(),scripts/build_site.py,,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,6,Run npm install --no-save playwright@1.56.1,success(),,,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,7,Run npx playwright install --with-deps webkit,success(),,,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,8,Check one-screen studio in Safari,success(),scripts/test_schuine_worp_studio.mjs,,,,,,,,niet opnieuw bevestigd
+science-studio-webkit.yml,studio-webkit,9,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,4,Run pip install beautifulsoup4,success(),,,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,5,Build observatory and website,success(),scripts/build_site.py,,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,6,Run npm install --no-save playwright@1.56.1,success(),,,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,7,Install Safari engine,success(),,,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,8,Check 390px and 320px physics lab interaction,success(),scripts/test_science_mobile_aim.mjs,,,,,,,,niet opnieuw bevestigd
+science-webkit.yml,mobile-webkit,9,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
+site-check.yml,scope,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461180,scope,2,opnieuw bevestigd
+site-check.yml,scope,2,Bepaal welke toepassingen geraakt zijn,success(),,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461180,scope,3,opnieuw bevestigd
+site-check.yml,source-checks,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,2,opnieuw bevestigd
+site-check.yml,source-checks,2,Check EAIgit ZIP and GitHub journey,success(),"tests/test_eaigit_help.mjs, tests/test_eaigit_single_file.mjs, tests/test_projecthulp.mjs",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,3,opnieuw bevestigd
+site-check.yml,source-checks,3,Check navigation and page structure,success(),,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,4,opnieuw bevestigd
+site-check.yml,source-checks,4,Controleer scheiding tussen website- en TOPO-publicatie,success(),test_publication_ownership.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,5,opnieuw bevestigd
+site-check.yml,source-checks,5,Check Science Observatory and observatory navigation,success(),tests/test_science_observatory_navigation.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,6,opnieuw bevestigd
+site-check.yml,source-checks,6,Check physics reference values and drawings,success(),tests/test_science_physics_models.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,7,opnieuw bevestigd
+site-check.yml,source-checks,7,Check wave motion and optical models,success(),tests/test_science_physics_round3.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,8,opnieuw bevestigd
+site-check.yml,source-checks,8,Check 53 proefspecifieke natuurkundeberekeningen,success(),tests/test_science_physics_insights.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,9,opnieuw bevestigd
+site-check.yml,source-checks,9,Check physics source references and independent calculations,success(),tests/test_science_physics_evidence.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,10,opnieuw bevestigd
+site-check.yml,source-checks,10,Check independent model references for the other 48 physics labs,success(),tests/test_science_physics_reference_48.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,11,opnieuw bevestigd
+site-check.yml,source-checks,11,Check physics visuals against the simulated equations,success(),tests/test_science_physics_visual_fidelity.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,12,opnieuw bevestigd
+site-check.yml,source-checks,12,Check physical graph axes and comparisons,success(),tests/test_science_physical_graphs.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,13,opnieuw bevestigd
+site-check.yml,source-checks,13,"Check animation, graph and measurement agreement",success(),tests/test_science_graph_animation_alignment.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,14,opnieuw bevestigd
+site-check.yml,source-checks,14,Check three learning routes and the projectile target,success(),tests/test_science_inquiry_variants.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,15,opnieuw bevestigd
+site-check.yml,source-checks,15,Verify one KEI login opens the complete LEIF website,success(),tests/test_leif_kei.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,16,opnieuw bevestigd
+site-check.yml,source-checks,16,Verify LEIF reader and corrected text,success(),"tests/test_leif_ereader.mjs, tests/test_leif_question_copy_mobile.mjs",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,17,opnieuw bevestigd
+site-check.yml,source-checks,17,"Check separate LEIF dossiers, admin rights and codes",success(),"tests/test_leif_account.mjs, tests/test_leif_admin_session.mjs, tests/test_leif_multitenant.mjs, tests/test_leif_studio.mjs",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,18,opnieuw bevestigd
+site-check.yml,source-checks,18,Controleer selectie en blokkering van publicaties,success(),"test_ci_pr_scope.py, test_release_artifact.py, test_release_gate.py",,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029460814,source-checks,19,opnieuw bevestigd
+site-check.yml,static-checks,1,Run actions/checkout@v4,success(),,actions/checkout@v4,3,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139032813481,static-checks,2,opnieuw bevestigd
+site-check.yml,static-checks,2,Controleer alle verplichte resultaten,success(),scripts/check_release_gate.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139032813481,static-checks,3,opnieuw bevestigd
+test-html-gallery-auth.yml,auth,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,auth,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,auth,3,Parse Worker modules and password tool,success(),,,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,auth,4,"Test login, sessions, authorization, CSRF, and deletion",success(),tests/test_html_galerij_admin.mjs,,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,auth,5,"Test website management sources, access boundaries and audit actions",success(),tests/test_eai_site_admin.mjs,,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,auth,6,Test the complete gallery with a real SQLite transaction,success(),tests/test_html_gallery_sqlite.mjs,,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,live-anonymous,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,live-anonymous,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,live-anonymous,3,Check anonymous production requests without real files or credentials,success(),tests/test_html_gallery_live.mjs,,,,,,,,niet opnieuw bevestigd
+topo-mobile-verify.yml,verify,1,Run actions/checkout@v4,success(),,actions/checkout@v4,4,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514211,topo-check / verify (chromium),2,opnieuw bevestigd
+topo-mobile-verify.yml,verify,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,6,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514211,topo-check / verify (chromium),3,opnieuw bevestigd
+topo-mobile-verify.yml,verify,3,Validate sourced TOPO questions and language bank,success(),scripts/validate_topo_content.mjs,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514211,topo-check / verify (chromium),4,opnieuw bevestigd
+topo-mobile-verify.yml,verify,4,Run npm install --no-save playwright@1.56.1,success(),,,3,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514211,topo-check / verify (chromium),5,opnieuw bevestigd
+topo-mobile-verify.yml,verify,5,Run npx playwright install --with-deps ${{ matrix.browser }},success(),,,,,,,,,niet opnieuw bevestigd
+topo-mobile-verify.yml,verify,6,Start local static site,success(),,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514211,topo-check / verify (chromium),7,opnieuw bevestigd
+topo-mobile-verify.yml,verify,7,"Test national map, mobile keyboard and settings",success(),scripts/test_topo_mobile.mjs,,5,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514211,topo-check / verify (chromium),8,opnieuw bevestigd
+topo-mobile-verify.yml,verify,8,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029514211,topo-check / verify (chromium),9,opnieuw bevestigd
+verify-live-cloudflare.yml,verify,1,Run actions/checkout@v4,success(),,actions/checkout@v4,2,43611365557,0222b8394e520a4a43605ca9bc5fb6d3a46f07e4,132496923306,verify,2,opnieuw bevestigd
+verify-live-cloudflare.yml,verify,2,Controleer meetcode op Theory7,success(),scripts/build_site.py,,5,43611365557,0222b8394e520a4a43605ca9bc5fb6d3a46f07e4,132496923306,verify,3,opnieuw bevestigd
+verify-ui.yml,verify,1,Run actions/checkout@v4,success(),,actions/checkout@v4,6,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,2,opnieuw bevestigd
+verify-ui.yml,verify,2,Kies de browserproeven die deze wijziging kunnen raken,success(),,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,3,opnieuw bevestigd
+verify-ui.yml,verify,3,Test veilige selectie van browserproeven,success(),test_ci_pr_scope.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,4,opnieuw bevestigd
+verify-ui.yml,verify,4,Run actions/setup-python@v5,success(),,actions/setup-python@v5,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,5,opnieuw bevestigd
+verify-ui.yml,verify,5,Run actions/setup-node@v4,success(),,actions/setup-node@v4,4,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,6,opnieuw bevestigd
+verify-ui.yml,verify,6,Run pip install beautifulsoup4,success(),,,6,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,7,opnieuw bevestigd
+verify-ui.yml,verify,7,Run python scripts/build_site.py --sources content/legacy --out site-build,success(),scripts/build_site.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,8,opnieuw bevestigd
+verify-ui.yml,verify,8,Run python scripts/build_anatomie.py --out site-build/tools/anatomie,success(),scripts/build_anatomie.py,,7,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,9,opnieuw bevestigd
+verify-ui.yml,verify,9,Controleer anatomie vóór de algemene navigatiebewerking,success(),test_anatomie_publish.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,10,opnieuw bevestigd
+verify-ui.yml,verify,10,Run python scripts/prepare_ui.py --root site-build,success(),scripts/prepare_ui.py,,3,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,11,opnieuw bevestigd
+verify-ui.yml,verify,11,Verify one canonical hub per subject and legacy redirects,success(),test_hub_structure.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,12,opnieuw bevestigd
+verify-ui.yml,verify,12,"Check dashboard cards, route preservation and lab isolation",success(),test_dashboard_cards.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,13,opnieuw bevestigd
+verify-ui.yml,verify,13,Verify editorial card scope and build output,success(),test_story_cards.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,14,opnieuw bevestigd
+verify-ui.yml,verify,14,Run python scripts/verify_ui.py --root site-build,success(),scripts/verify_ui.py,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,15,opnieuw bevestigd
+verify-ui.yml,verify,15,Verify LEIF is published without rewriting answers or access screen,success(),,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,16,opnieuw bevestigd
+verify-ui.yml,verify,16,Run python -m unittest discover -s tests -p 'test_ui_release.py',success(),test_ui_release.py,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,17,opnieuw bevestigd
+verify-ui.yml,verify,17,Run npm install --no-save playwright@1.56.1,success(),,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,18,opnieuw bevestigd
+verify-ui.yml,verify,18,Install browser for UI tests,success(),,,7,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,19,opnieuw bevestigd
+verify-ui.yml,verify,19,Run python -m unittest discover -s tests -p test_tool_launch.py -v,success(),test_tool_launch.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,20,opnieuw bevestigd
+verify-ui.yml,verify,20,Controleer ICT-scan synchronisatie en interface op desktop en mobiel,${{ steps.scope.outputs.ictscan == 'true' }},scripts/test_ict_scan_browser.mjs,,74,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,21,opnieuw bevestigd
+verify-ui.yml,verify,21,Check anatomical 3D rendering and local organ models,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_anatomie_3d.mjs,,25,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,22,opnieuw bevestigd
+verify-ui.yml,verify,22,Run node scripts/test_tool_launch.mjs site-build,success(),scripts/test_tool_launch.mjs,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,23,opnieuw bevestigd
+verify-ui.yml,verify,23,Proef EAIgit op desktop en mobiel,${{ steps.scope.outputs.eaigit == 'true' }},scripts/test_projecthulp_browser.mjs,,8,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,24,opnieuw bevestigd
+verify-ui.yml,verify,24,Verify dashboard cards and filters on desktop and phones,${{ steps.scope.outputs.home == 'true' }},scripts/test_dashboard_cards_browser.mjs,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,25,opnieuw bevestigd
+verify-ui.yml,verify,25,Run node scripts/ui_smoke.mjs site-build,success(),,,50,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,26,opnieuw bevestigd
+verify-ui.yml,verify,26,Verify homepage style and visible cards on phones and desktop,${{ steps.scope.outputs.home == 'true' }},scripts/test_story_cards_browser.mjs,,7,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,27,opnieuw bevestigd
+verify-ui.yml,verify,27,Test EAIgame 3D and full gameplay on phone and desktop,${{ steps.scope.outputs.eaigame == 'true' }},scripts/test_eaigame_browser.mjs,,22,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,28,opnieuw bevestigd
+verify-ui.yml,verify,28,Test compacte schuine-worpstudio op telefoons en desktop,${{ steps.scope.outputs.physics == 'true' }},scripts/test_schuine_worp_studio.mjs,,18,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,29,opnieuw bevestigd
+verify-ui.yml,verify,29,"Test mobiel richten, schaal en schieten in Natuurkunde",${{ steps.scope.outputs.physics == 'true' }},scripts/test_science_mobile_aim.mjs,,3,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,30,opnieuw bevestigd
+verify-ui.yml,verify,30,Check EAIwork dashboard layout on phones and desktop,${{ steps.scope.outputs.eaiwork == 'true' }},scripts/test_eaiwork_mobile.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,31,opnieuw bevestigd
+verify-ui.yml,verify,31,Verify anatomical 3D viewer on desktop and mobile,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_anatomie_browser.mjs,,96,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,32,opnieuw bevestigd
+verify-ui.yml,verify,32,Verify Hartslaglab WebGL animation and mobile layout,${{ steps.scope.outputs.anatomy == 'true' }},scripts/test_hartslaglab_browser.mjs,,99,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,33,opnieuw bevestigd
+verify-ui.yml,verify,33,Verify LLM Observatory tokenizer in Chromium,${{ steps.scope.outputs.llm == 'true' }},scripts/test_llm_observatorium.mjs,,12,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,34,opnieuw bevestigd
+verify-ui.yml,verify,34,Test Melkweg Lab on phones and desktop,${{ steps.scope.outputs.melkweg == 'true' }},scripts/test_melkweg_mobile.mjs,,8,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,35,opnieuw bevestigd
+verify-ui.yml,verify,35,Test direct visual experiments in Melkweg Lab,${{ steps.scope.outputs.melkweg == 'true' }},scripts/test_melkweg_visual_play.mjs,,4,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,36,opnieuw bevestigd
+verify-ui.yml,verify,36,Verify LEIF continuation in Chromium,${{ steps.scope.outputs.leif == 'true' }},scripts/test_leif_continue.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,37,opnieuw bevestigd
+verify-ui.yml,verify,37,Verify LEIF text editor in Chromium,${{ !cancelled() && steps.scope.outputs.leif == 'true' }},scripts/test_leif_site_editor.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,38,opnieuw bevestigd
+verify-ui.yml,verify,38,Verify LEIF manager login and saved account in Chromium,${{ !cancelled() && steps.scope.outputs.leif == 'true' }},scripts/test_leif_magic_login.mjs,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,39,opnieuw bevestigd
+verify-ui.yml,verify,39,Verify compact LEIF Studio and per-participant edits in Chromium,${{ steps.scope.outputs.leif == 'true' }},scripts/test_leif_studio_ui.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,40,opnieuw bevestigd
+verify-ui.yml,verify,40,Verify mobile LEIF question and exercise typing in Chromium,${{ steps.scope.outputs.leif == 'true' }},scripts/test_leif_mobile_questions.mjs,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,41,opnieuw bevestigd
+verify-ui.yml,verify,41,Verify LEIF landing pages after participant login,${{ steps.scope.outputs.leif == 'true' }},scripts/test_leif_landing_ui.mjs,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,42,opnieuw bevestigd
+verify-ui.yml,verify,42,Verify LEIF session API rejects unknown private codes,${{ steps.scope.outputs.leif == 'true' }},,,1,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,43,opnieuw bevestigd
+verify-ui.yml,verify,43,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,4,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,44,opnieuw bevestigd
+verify-ui.yml,verify,44,Leg de gecontroleerde build vast en toets de bestandsintegriteit,success(),scripts/verify_ui.py,,2,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139029461063,ui-check / verify,45,opnieuw bevestigd
+verify-ui.yml,verify,45,Bewaar exact de geteste sitebuild,${{ inputs.release_artifact == true }},,actions/upload-artifact@v4,4,45552268124,a752987bcd5aef4ac354ea11aa38acbd750c73a0,138995958345,release-check / ui-check / verify,46,opnieuw bevestigd
+verify-wihtml.yml,wihtml,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,2,Run actions/setup-python@v5,success(),,actions/setup-python@v5,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,3,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,4,Run pip install beautifulsoup4,success(),,,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,5,Run python scripts/build_site.py --sources content/legacy --out site-build,success(),scripts/build_site.py,,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,6,Run python scripts/prepare_ui.py --root site-build,success(),scripts/prepare_ui.py,,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,7,Run npm install --no-save playwright@1.56.1,success(),,,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,8,Run npx playwright install chromium,success(),,,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,9,"Test lesson route, math plots, menus and offline export",success(),scripts/test_wihtml_journey.mjs,,,,,,,,niet opnieuw bevestigd
+verify-wihtml.yml,wihtml,10,Run actions/upload-artifact@v4,always(),,actions/upload-artifact@v4,,,,,,,niet opnieuw bevestigd
