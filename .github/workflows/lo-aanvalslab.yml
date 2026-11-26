@@ -35,7 +35,13 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_lo_evidence_publish.py' -v
       - name: Test spelberekeningen, desktop, mobiel en verborgen analyse
         if: ${{ !cancelled() && steps.browsers.outcome == 'success' }}
-        run: python scripts/test_lo_easteregg.py
+        run: |
+          # The container user and runner-owned checkout can differ.
+          # Trust only this checkout, not every repository on the runner.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git rev-parse --verify origin/main
+          git cat-file -e origin/main:tools/lo-aanvalslab/index.html
+          python scripts/test_lo_easteregg.py
       - name: Controleer sporten, verdedigende tactiek en bewegingen
         if: ${{ !cancelled() && steps.browsers.outcome == 'success' }}
         run: python scripts/test_lo_v13_simulations.py

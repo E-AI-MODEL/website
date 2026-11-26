@@ -31,10 +31,29 @@ jobs:
         uses: ./.github/actions/browser-runtime
         with:
           binding: node
-      - name: Start local static site
-        run: python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/topo-server.log 2>&1 &
       - name: Test national map, mobile keyboard and settings
-        run: node scripts/test_topo_mobile.mjs
+        shell: bash
+        run: |
+          mkdir -p test-results/topo
+          python3 -m http.server 8765 --bind 127.0.0.1 >test-results/topo/server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          python3 - <<'PY'
+          import time
+          from urllib.request import urlopen
+
+          for _ in range(100):
+              try:
+                  with urlopen("http://127.0.0.1:8765/topo/", timeout=1) as response:
+                      if response.status == 200:
+                          break
+              except OSError:
+                  pass
+              time.sleep(0.1)
+          else:
+              raise SystemExit("TOPO static server did not become ready")
+          PY
+          node scripts/test_topo_mobile.mjs
         env:
           TOPO_BROWSER: ${{ matrix.browser }}
       - uses: actions/upload-artifact@v4
