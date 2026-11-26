@@ -1,0 +1,1247 @@
+{
+ "version": 1,
+ "sjabloon": "noordelijkst-nl",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "noordelijkst-nl-1",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Leeuwarden",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Leeuwarden",
+   "options": [
+    "Zutphen",
+    "Leeuwarden",
+    "Arnhem",
+    "Middelburg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-leeuwarden"
+  },
+  {
+   "id": "noordelijkst-nl-2",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Den Helder",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Den Helder",
+   "options": [
+    "Den Helder",
+    "Middelburg",
+    "Utrecht",
+    "Arnhem"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-den-helder"
+  },
+  {
+   "id": "noordelijkst-nl-3",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Drachten",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Drachten",
+   "options": [
+    "Emmeloord",
+    "Drachten",
+    "Rotterdam",
+    "Middelburg"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-drachten"
+  },
+  {
+   "id": "noordelijkst-nl-4",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Zwolle",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Zwolle",
+   "options": [
+    "Terneuzen",
+    "Enschede",
+    "Zwolle",
+    "Deventer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-zwolle"
+  },
+  {
+   "id": "noordelijkst-nl-5",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Drachten",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Drachten",
+   "options": [
+    "Enkhuizen",
+    "Middelburg",
+    "Drachten",
+    "Heerlen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-drachten"
+  },
+  {
+   "id": "noordelijkst-nl-6",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Emmen",
+   "options": [
+    "Venlo",
+    "Emmen",
+    "Alphen aan den Rijn",
+    "Breda"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-emmen"
+  },
+  {
+   "id": "noordelijkst-nl-7",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Amsterdam",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Amsterdam",
+   "options": [
+    "Venlo",
+    "Eindhoven",
+    "Vlissingen",
+    "Amsterdam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-hoofdstad-amsterdam"
+  },
+  {
+   "id": "noordelijkst-nl-8",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Lelystad",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Lelystad",
+   "options": [
+    "Lelystad",
+    "Zutphen",
+    "Doetinchem",
+    "Amersfoort"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-lelystad"
+  },
+  {
+   "id": "noordelijkst-nl-9",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Kampen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Kampen",
+   "options": [
+    "Dordrecht",
+    "Doetinchem",
+    "Kampen",
+    "Zoetermeer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-kampen"
+  },
+  {
+   "id": "noordelijkst-nl-10",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Groningen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Groningen",
+   "options": [
+    "Groningen",
+    "Alkmaar",
+    "Nijmegen",
+    "Hengelo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-groningen"
+  },
+  {
+   "id": "noordelijkst-nl-11",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Veendam",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Veendam",
+   "options": [
+    "Veendam",
+    "Delft",
+    "Zwolle",
+    "Zoetermeer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-veendam"
+  },
+  {
+   "id": "noordelijkst-nl-12",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Delfzijl",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Delfzijl",
+   "options": [
+    "Alkmaar",
+    "Den Haag",
+    "Nijmegen",
+    "Delfzijl"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-delfzijl"
+  },
+  {
+   "id": "noordelijkst-nl-13",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Drachten",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Drachten",
+   "options": [
+    "Tilburg",
+    "Zaandam",
+    "Drachten",
+    "Zutphen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-drachten"
+  },
+  {
+   "id": "noordelijkst-nl-14",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Almere",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Almere",
+   "options": [
+    "Helmond",
+    "Rotterdam",
+    "Heerlen",
+    "Almere"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-almere"
+  },
+  {
+   "id": "noordelijkst-nl-15",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Drachten",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Drachten",
+   "options": [
+    "Zoetermeer",
+    "Drachten",
+    "Emmen",
+    "Oss"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-drachten"
+  },
+  {
+   "id": "noordelijkst-nl-16",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Groningen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Groningen",
+   "options": [
+    "Zoetermeer",
+    "Eindhoven",
+    "Kampen",
+    "Groningen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-groningen"
+  },
+  {
+   "id": "noordelijkst-nl-17",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Heerenveen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Heerenveen",
+   "options": [
+    "Utrecht",
+    "Heerenveen",
+    "Tilburg",
+    "Nijmegen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-heerenveen"
+  },
+  {
+   "id": "noordelijkst-nl-18",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Lelystad",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Lelystad",
+   "options": [
+    "Lelystad",
+    "Alphen aan den Rijn",
+    "Vlissingen",
+    "Amersfoort"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-lelystad"
+  },
+  {
+   "id": "noordelijkst-nl-19",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Delfzijl",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Delfzijl",
+   "options": [
+    "Delfzijl",
+    "Meppel",
+    "Emmen",
+    "Enkhuizen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-delfzijl"
+  },
+  {
+   "id": "noordelijkst-nl-20",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Almelo",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Almelo",
+   "options": [
+    "Roermond",
+    "Leiden",
+    "Doetinchem",
+    "Almelo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-almelo"
+  },
+  {
+   "id": "noordelijkst-nl-21",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Delfzijl",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Delfzijl",
+   "options": [
+    "Hoogeveen",
+    "Emmeloord",
+    "Zutphen",
+    "Delfzijl"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-delfzijl"
+  },
+  {
+   "id": "noordelijkst-nl-22",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Emmen",
+   "options": [
+    "Purmerend",
+    "Amersfoort",
+    "Delft",
+    "Emmen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-emmen"
+  },
+  {
+   "id": "noordelijkst-nl-23",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Veendam",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Veendam",
+   "options": [
+    "Roosendaal",
+    "Middelburg",
+    "Veendam",
+    "Zaandam"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-veendam"
+  },
+  {
+   "id": "noordelijkst-nl-24",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Emmen",
+   "options": [
+    "Emmen",
+    "Zwolle",
+    "Dordrecht",
+    "Lelystad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-emmen"
+  },
+  {
+   "id": "noordelijkst-nl-25",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Veendam",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Veendam",
+   "options": [
+    "Veendam",
+    "Lelystad",
+    "Purmerend",
+    "Almelo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-veendam"
+  },
+  {
+   "id": "noordelijkst-nl-26",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Den Helder",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Den Helder",
+   "options": [
+    "Den Helder",
+    "Amsterdam",
+    "Hilversum",
+    "Den Haag"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-den-helder"
+  },
+  {
+   "id": "noordelijkst-nl-27",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Haarlem",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Haarlem",
+   "options": [
+    "Eindhoven",
+    "Nijmegen",
+    "Wageningen",
+    "Haarlem"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-haarlem"
+  },
+  {
+   "id": "noordelijkst-nl-28",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Delfzijl",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Delfzijl",
+   "options": [
+    "Zaandam",
+    "Nijmegen",
+    "Delfzijl",
+    "Bergen op Zoom"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-delfzijl"
+  },
+  {
+   "id": "noordelijkst-nl-29",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Lelystad",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Lelystad",
+   "options": [
+    "Roosendaal",
+    "Lelystad",
+    "Zoetermeer",
+    "Delft"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-lelystad"
+  },
+  {
+   "id": "noordelijkst-nl-30",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Deventer",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Deventer",
+   "options": [
+    "Gouda",
+    "Arnhem",
+    "Deventer",
+    "Nijmegen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-deventer"
+  },
+  {
+   "id": "noordelijkst-nl-31",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmeloord",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Emmeloord",
+   "options": [
+    "Emmeloord",
+    "Roermond",
+    "Eindhoven",
+    "Kampen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-emmeloord"
+  },
+  {
+   "id": "noordelijkst-nl-32",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmeloord",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Emmeloord",
+   "options": [
+    "Leiden",
+    "Deventer",
+    "Hengelo",
+    "Emmeloord"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-emmeloord"
+  },
+  {
+   "id": "noordelijkst-nl-33",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Zwolle",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Zwolle",
+   "options": [
+    "Heerlen",
+    "Gouda",
+    "Zwolle",
+    "Zoetermeer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-zwolle"
+  },
+  {
+   "id": "noordelijkst-nl-34",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Sneek",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Sneek",
+   "options": [
+    "Leiden",
+    "Sneek",
+    "Hengelo",
+    "Oss"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-sneek"
+  },
+  {
+   "id": "noordelijkst-nl-35",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Groningen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Groningen",
+   "options": [
+    "Roermond",
+    "Groningen",
+    "Assen",
+    "Zwolle"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-groningen"
+  },
+  {
+   "id": "noordelijkst-nl-36",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Heerenveen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Heerenveen",
+   "options": [
+    "Heerenveen",
+    "Amsterdam",
+    "Zoetermeer",
+    "Lelystad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-heerenveen"
+  },
+  {
+   "id": "noordelijkst-nl-37",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Delfzijl",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Delfzijl",
+   "options": [
+    "Enschede",
+    "Dordrecht",
+    "Delfzijl",
+    "Kampen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-delfzijl"
+  },
+  {
+   "id": "noordelijkst-nl-38",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Heerenveen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Heerenveen",
+   "options": [
+    "Haarlem",
+    "Almere",
+    "Middelburg",
+    "Heerenveen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-heerenveen"
+  },
+  {
+   "id": "noordelijkst-nl-39",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Purmerend",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Purmerend",
+   "options": [
+    "Tilburg",
+    "Apeldoorn",
+    "Purmerend",
+    "Vlissingen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-purmerend"
+  },
+  {
+   "id": "noordelijkst-nl-40",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmeloord",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Emmeloord",
+   "options": [
+    "Emmeloord",
+    "Utrecht",
+    "Heerlen",
+    "Almelo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-emmeloord"
+  }
+ ]
+}

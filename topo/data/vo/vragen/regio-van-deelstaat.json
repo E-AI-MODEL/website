@@ -1,0 +1,1006 @@
+{
+ "version": 1,
+ "sjabloon": "regio-van-deelstaat",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "regio-van-deelstaat-1",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Acre",
+   "question": "In welke regio van Brazilië ligt de deelstaat Acre?",
+   "answer": "Noord",
+   "options": [
+    "Zuidoost",
+    "Noordoost",
+    "Noord",
+    "Centraal-West"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-ac"
+  },
+  {
+   "id": "regio-van-deelstaat-2",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Alagoas",
+   "question": "In welke regio van Brazilië ligt de deelstaat Alagoas?",
+   "answer": "Noordoost",
+   "options": [
+    "Centraal-West",
+    "Noordoost",
+    "Noord",
+    "Zuidoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-al"
+  },
+  {
+   "id": "regio-van-deelstaat-3",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Amapá",
+   "question": "In welke regio van Brazilië ligt de deelstaat Amapá?",
+   "answer": "Noord",
+   "options": [
+    "Noordoost",
+    "Noord",
+    "Centraal-West",
+    "Zuid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-ap"
+  },
+  {
+   "id": "regio-van-deelstaat-4",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Amazonas",
+   "question": "In welke regio van Brazilië ligt de deelstaat Amazonas?",
+   "answer": "Noord",
+   "options": [
+    "Noord",
+    "Zuidoost",
+    "Noordoost",
+    "Zuid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-am"
+  },
+  {
+   "id": "regio-van-deelstaat-5",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Bahia",
+   "question": "In welke regio van Brazilië ligt de deelstaat Bahia?",
+   "answer": "Noordoost",
+   "options": [
+    "Noordoost",
+    "Zuid",
+    "Noord",
+    "Zuidoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-ba"
+  },
+  {
+   "id": "regio-van-deelstaat-6",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Ceará",
+   "question": "In welke regio van Brazilië ligt de deelstaat Ceará?",
+   "answer": "Noordoost",
+   "options": [
+    "Zuidoost",
+    "Noordoost",
+    "Zuid",
+    "Noord"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-ce"
+  },
+  {
+   "id": "regio-van-deelstaat-7",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Espírito Santo",
+   "question": "In welke regio van Brazilië ligt de deelstaat Espírito Santo?",
+   "answer": "Zuidoost",
+   "options": [
+    "Noord",
+    "Zuidoost",
+    "Noordoost",
+    "Centraal-West"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-es"
+  },
+  {
+   "id": "regio-van-deelstaat-8",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Federaal District",
+   "question": "In welke regio van Brazilië ligt de deelstaat Federaal District?",
+   "answer": "Centraal-West",
+   "options": [
+    "Noordoost",
+    "Noord",
+    "Zuidoost",
+    "Centraal-West"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-df"
+  },
+  {
+   "id": "regio-van-deelstaat-9",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Goiás",
+   "question": "In welke regio van Brazilië ligt de deelstaat Goiás?",
+   "answer": "Centraal-West",
+   "options": [
+    "Centraal-West",
+    "Zuid",
+    "Noord",
+    "Noordoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-go"
+  },
+  {
+   "id": "regio-van-deelstaat-10",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Maranhão",
+   "question": "In welke regio van Brazilië ligt de deelstaat Maranhão?",
+   "answer": "Noordoost",
+   "options": [
+    "Noord",
+    "Noordoost",
+    "Centraal-West",
+    "Zuid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-ma"
+  },
+  {
+   "id": "regio-van-deelstaat-11",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Mato Grosso",
+   "question": "In welke regio van Brazilië ligt de deelstaat Mato Grosso?",
+   "answer": "Centraal-West",
+   "options": [
+    "Centraal-West",
+    "Zuidoost",
+    "Zuid",
+    "Noordoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-mt"
+  },
+  {
+   "id": "regio-van-deelstaat-12",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Mato Grosso do Sul",
+   "question": "In welke regio van Brazilië ligt de deelstaat Mato Grosso do Sul?",
+   "answer": "Centraal-West",
+   "options": [
+    "Zuid",
+    "Centraal-West",
+    "Noord",
+    "Zuidoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-ms"
+  },
+  {
+   "id": "regio-van-deelstaat-13",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Minas Gerais",
+   "question": "In welke regio van Brazilië ligt de deelstaat Minas Gerais?",
+   "answer": "Zuidoost",
+   "options": [
+    "Zuid",
+    "Noord",
+    "Zuidoost",
+    "Centraal-West"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-mg"
+  },
+  {
+   "id": "regio-van-deelstaat-14",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Paraná",
+   "question": "In welke regio van Brazilië ligt de deelstaat Paraná?",
+   "answer": "Zuid",
+   "options": [
+    "Noord",
+    "Zuid",
+    "Zuidoost",
+    "Centraal-West"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-pr"
+  },
+  {
+   "id": "regio-van-deelstaat-15",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Paraíba",
+   "question": "In welke regio van Brazilië ligt de deelstaat Paraíba?",
+   "answer": "Noordoost",
+   "options": [
+    "Zuid",
+    "Centraal-West",
+    "Noordoost",
+    "Zuidoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-pb"
+  },
+  {
+   "id": "regio-van-deelstaat-16",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Pará",
+   "question": "In welke regio van Brazilië ligt de deelstaat Pará?",
+   "answer": "Noord",
+   "options": [
+    "Noord",
+    "Noordoost",
+    "Zuidoost",
+    "Zuid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-pa"
+  },
+  {
+   "id": "regio-van-deelstaat-17",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Pernambuco",
+   "question": "In welke regio van Brazilië ligt de deelstaat Pernambuco?",
+   "answer": "Noordoost",
+   "options": [
+    "Noordoost",
+    "Centraal-West",
+    "Zuid",
+    "Zuidoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-pe"
+  },
+  {
+   "id": "regio-van-deelstaat-18",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Piauí",
+   "question": "In welke regio van Brazilië ligt de deelstaat Piauí?",
+   "answer": "Noordoost",
+   "options": [
+    "Centraal-West",
+    "Noord",
+    "Noordoost",
+    "Zuidoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-pi"
+  },
+  {
+   "id": "regio-van-deelstaat-19",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Rio Grande do Norte",
+   "question": "In welke regio van Brazilië ligt de deelstaat Rio Grande do Norte?",
+   "answer": "Noordoost",
+   "options": [
+    "Noord",
+    "Zuid",
+    "Centraal-West",
+    "Noordoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-rn"
+  },
+  {
+   "id": "regio-van-deelstaat-20",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Rio Grande do Sul",
+   "question": "In welke regio van Brazilië ligt de deelstaat Rio Grande do Sul?",
+   "answer": "Zuid",
+   "options": [
+    "Centraal-West",
+    "Zuid",
+    "Zuidoost",
+    "Noordoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-rs"
+  },
+  {
+   "id": "regio-van-deelstaat-21",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Rio de Janeiro",
+   "question": "In welke regio van Brazilië ligt de deelstaat Rio de Janeiro?",
+   "answer": "Zuidoost",
+   "options": [
+    "Zuid",
+    "Zuidoost",
+    "Noord",
+    "Centraal-West"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-rj"
+  },
+  {
+   "id": "regio-van-deelstaat-22",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Rondônia",
+   "question": "In welke regio van Brazilië ligt de deelstaat Rondônia?",
+   "answer": "Noord",
+   "options": [
+    "Centraal-West",
+    "Noord",
+    "Zuid",
+    "Zuidoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-ro"
+  },
+  {
+   "id": "regio-van-deelstaat-23",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Roraima",
+   "question": "In welke regio van Brazilië ligt de deelstaat Roraima?",
+   "answer": "Noord",
+   "options": [
+    "Zuid",
+    "Zuidoost",
+    "Noord",
+    "Noordoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-rr"
+  },
+  {
+   "id": "regio-van-deelstaat-24",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Santa Catarina",
+   "question": "In welke regio van Brazilië ligt de deelstaat Santa Catarina?",
+   "answer": "Zuid",
+   "options": [
+    "Noord",
+    "Zuidoost",
+    "Noordoost",
+    "Zuid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-sc"
+  },
+  {
+   "id": "regio-van-deelstaat-25",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Sergipe",
+   "question": "In welke regio van Brazilië ligt de deelstaat Sergipe?",
+   "answer": "Noordoost",
+   "options": [
+    "Noordoost",
+    "Zuid",
+    "Noord",
+    "Centraal-West"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-se"
+  },
+  {
+   "id": "regio-van-deelstaat-26",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "São Paulo",
+   "question": "In welke regio van Brazilië ligt de deelstaat São Paulo?",
+   "answer": "Zuidoost",
+   "options": [
+    "Zuidoost",
+    "Noord",
+    "Zuid",
+    "Noordoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-sp"
+  },
+  {
+   "id": "regio-van-deelstaat-27",
+   "kind": "fact",
+   "category": "brazilie",
+   "name": "Tocantins",
+   "question": "In welke regio van Brazilië ligt de deelstaat Tocantins?",
+   "answer": "Noord",
+   "options": [
+    "Centraal-West",
+    "Noord",
+    "Noordoost",
+    "Zuidoost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "regio-van-deelstaat"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "bra-deelstaat-to"
+  }
+ ]
+}

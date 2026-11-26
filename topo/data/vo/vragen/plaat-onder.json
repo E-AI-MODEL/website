@@ -1,0 +1,2180 @@
+{
+ "version": 1,
+ "sjabloon": "plaat-onder",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "plaat-onder-1",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Brasilia",
+   "question": "Op welke plaat ligt Brasilia?",
+   "answer": "Zuid-Amerikaanse plaat",
+   "options": [
+    "Antarctische plaat",
+    "Filipijnse plaat",
+    "Juan de Fucaplaat",
+    "Zuid-Amerikaanse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-brasilia"
+  },
+  {
+   "id": "plaat-onder-2",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Rio de Janeiro",
+   "question": "Op welke plaat ligt Rio de Janeiro?",
+   "answer": "Zuid-Amerikaanse plaat",
+   "options": [
+    "Sundaplaat",
+    "Indische plaat",
+    "Juan de Fucaplaat",
+    "Zuid-Amerikaanse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-rio-de-janeiro"
+  },
+  {
+   "id": "plaat-onder-3",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "São Paulo",
+   "question": "Op welke plaat ligt São Paulo?",
+   "answer": "Zuid-Amerikaanse plaat",
+   "options": [
+    "Antarctische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Indische plaat",
+    "Cocosplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "plaat-onder-4",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Antwerpen",
+   "question": "Op welke plaat ligt Antwerpen?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Pacifische plaat",
+    "Anatolische plaat",
+    "Nazcaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bel-antwerpen"
+  },
+  {
+   "id": "plaat-onder-5",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Barcelona",
+   "question": "Op welke plaat ligt Barcelona?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Juan de Fucaplaat",
+    "Antarctische plaat",
+    "Arabische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-esp-barcelona"
+  },
+  {
+   "id": "plaat-onder-6",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Belgrado",
+   "question": "Op welke plaat ligt Belgrado?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Juan de Fucaplaat",
+    "Somalische plaat",
+    "Noord-Amerikaanse plaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-srb-belgrado"
+  },
+  {
+   "id": "plaat-onder-7",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Berlijn",
+   "question": "Op welke plaat ligt Berlijn?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Juan de Fucaplaat",
+    "Cocosplaat",
+    "Scotiaplaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-deu-berlijn"
+  },
+  {
+   "id": "plaat-onder-8",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Bern",
+   "question": "Op welke plaat ligt Bern?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Anatolische plaat",
+    "Scotiaplaat",
+    "Afrikaanse plaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-che-bern"
+  },
+  {
+   "id": "plaat-onder-9",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Boekarest",
+   "question": "Op welke plaat ligt Boekarest?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Sundaplaat",
+    "Australische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-rou-boekarest"
+  },
+  {
+   "id": "plaat-onder-10",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Bordeaux",
+   "question": "Op welke plaat ligt Bordeaux?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Juan de Fucaplaat",
+    "Euraziatische plaat",
+    "Somalische plaat",
+    "Antarctische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fra-bordeaux"
+  },
+  {
+   "id": "plaat-onder-11",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Bratislava",
+   "question": "Op welke plaat ligt Bratislava?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Arabische plaat",
+    "Filipijnse plaat",
+    "Euraziatische plaat",
+    "Nazcaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-svk-bratislava"
+  },
+  {
+   "id": "plaat-onder-12",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Brussel",
+   "question": "Op welke plaat ligt Brussel?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Scotiaplaat",
+    "Anatolische plaat",
+    "Euraziatische plaat",
+    "Caribische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bel-brussel"
+  },
+  {
+   "id": "plaat-onder-13",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Budapest",
+   "question": "Op welke plaat ligt Budapest?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Noord-Amerikaanse plaat",
+    "Sundaplaat",
+    "Arabische plaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-hun-boedapest"
+  },
+  {
+   "id": "plaat-onder-14",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Buenos Aires",
+   "question": "Op welke plaat ligt Buenos Aires?",
+   "answer": "Zuid-Amerikaanse plaat",
+   "options": [
+    "Caribische plaat",
+    "Afrikaanse plaat",
+    "Zuid-Amerikaanse plaat",
+    "Anatolische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-arg-buenos-aires"
+  },
+  {
+   "id": "plaat-onder-15",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Cairo",
+   "question": "Op welke plaat ligt Cairo?",
+   "answer": "Afrikaanse plaat",
+   "options": [
+    "Arabische plaat",
+    "Afrikaanse plaat",
+    "Caribische plaat",
+    "Cocosplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-egy-cairo"
+  },
+  {
+   "id": "plaat-onder-16",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Chicago",
+   "question": "Op welke plaat ligt Chicago?",
+   "answer": "Noord-Amerikaanse plaat",
+   "options": [
+    "Australische plaat",
+    "Noord-Amerikaanse plaat",
+    "Cocosplaat",
+    "Antarctische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-chicago"
+  },
+  {
+   "id": "plaat-onder-17",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Dhaka",
+   "question": "Op welke plaat ligt Dhaka?",
+   "answer": "Indische plaat",
+   "options": [
+    "Scotiaplaat",
+    "Australische plaat",
+    "Sundaplaat",
+    "Indische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bgd-dhaka"
+  },
+  {
+   "id": "plaat-onder-18",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Dublin",
+   "question": "Op welke plaat ligt Dublin?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Caribische plaat",
+    "Arabische plaat",
+    "Somalische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-irl-dublin"
+  },
+  {
+   "id": "plaat-onder-19",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Genève",
+   "question": "Op welke plaat ligt Genève?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Anatolische plaat",
+    "Euraziatische plaat",
+    "Cocosplaat",
+    "Scotiaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-che-geneve"
+  },
+  {
+   "id": "plaat-onder-20",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Glasgow",
+   "question": "Op welke plaat ligt Glasgow?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Arabische plaat",
+    "Anatolische plaat",
+    "Caribische plaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-gbr-glasgow"
+  },
+  {
+   "id": "plaat-onder-21",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Hamburg",
+   "question": "Op welke plaat ligt Hamburg?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Zuid-Amerikaanse plaat",
+    "Sundaplaat",
+    "Australische plaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-deu-hamburg"
+  },
+  {
+   "id": "plaat-onder-22",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Helsinki",
+   "question": "Op welke plaat ligt Helsinki?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Filipijnse plaat",
+    "Ochotskplaat",
+    "Australische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fin-helsinki"
+  },
+  {
+   "id": "plaat-onder-23",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Jakarta",
+   "question": "Op welke plaat ligt Jakarta?",
+   "answer": "Sundaplaat",
+   "options": [
+    "Zuid-Amerikaanse plaat",
+    "Cocosplaat",
+    "Australische plaat",
+    "Sundaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-idn-jakarta"
+  },
+  {
+   "id": "plaat-onder-24",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Kaapstad",
+   "question": "Op welke plaat ligt Kaapstad?",
+   "answer": "Afrikaanse plaat",
+   "options": [
+    "Afrikaanse plaat",
+    "Anatolische plaat",
+    "Pacifische plaat",
+    "Zuid-Amerikaanse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-zaf-kaapstad"
+  },
+  {
+   "id": "plaat-onder-25",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Keulen",
+   "question": "Op welke plaat ligt Keulen?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Noord-Amerikaanse plaat",
+    "Zuid-Amerikaanse plaat",
+    "Juan de Fucaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-deu-keulen"
+  },
+  {
+   "id": "plaat-onder-26",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Kolkata",
+   "question": "Op welke plaat ligt Kolkata?",
+   "answer": "Indische plaat",
+   "options": [
+    "Somalische plaat",
+    "Indische plaat",
+    "Scotiaplaat",
+    "Anatolische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-calcutta"
+  },
+  {
+   "id": "plaat-onder-27",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Kopenhagen",
+   "question": "Op welke plaat ligt Kopenhagen?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Arabische plaat",
+    "Sundaplaat",
+    "Afrikaanse plaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-dnk-kopenhagen"
+  },
+  {
+   "id": "plaat-onder-28",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Lagos",
+   "question": "Op welke plaat ligt Lagos?",
+   "answer": "Afrikaanse plaat",
+   "options": [
+    "Australische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Afrikaanse plaat",
+    "Arabische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "plaat-onder-29",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Liverpool",
+   "question": "Op welke plaat ligt Liverpool?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Ochotskplaat",
+    "Euraziatische plaat",
+    "Anatolische plaat",
+    "Nazcaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-gbr-liverpool"
+  },
+  {
+   "id": "plaat-onder-30",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Londen",
+   "question": "Op welke plaat ligt Londen?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Noord-Amerikaanse plaat",
+    "Euraziatische plaat",
+    "Arabische plaat",
+    "Juan de Fucaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-gbr-londen"
+  },
+  {
+   "id": "plaat-onder-31",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Luxemburg",
+   "question": "Op welke plaat ligt Luxemburg?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Cocosplaat",
+    "Indische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-lux-luxemburg"
+  },
+  {
+   "id": "plaat-onder-32",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Lyon",
+   "question": "Op welke plaat ligt Lyon?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Scotiaplaat",
+    "Caribische plaat",
+    "Zuid-Amerikaanse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fra-lyon"
+  },
+  {
+   "id": "plaat-onder-33",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Madrid",
+   "question": "Op welke plaat ligt Madrid?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Nazcaplaat",
+    "Filipijnse plaat",
+    "Anatolische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-esp-madrid"
+  },
+  {
+   "id": "plaat-onder-34",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Marseille",
+   "question": "Op welke plaat ligt Marseille?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Sundaplaat",
+    "Antarctische plaat",
+    "Euraziatische plaat",
+    "Indische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fra-marseille"
+  },
+  {
+   "id": "plaat-onder-35",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Mexico-Stad",
+   "question": "Op welke plaat ligt Mexico-Stad?",
+   "answer": "Noord-Amerikaanse plaat",
+   "options": [
+    "Nazcaplaat",
+    "Pacifische plaat",
+    "Afrikaanse plaat",
+    "Noord-Amerikaanse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-mex-mexico-stad"
+  },
+  {
+   "id": "plaat-onder-36",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Milaan",
+   "question": "Op welke plaat ligt Milaan?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Antarctische plaat",
+    "Euraziatische plaat",
+    "Nazcaplaat",
+    "Indische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ita-milaan"
+  },
+  {
+   "id": "plaat-onder-37",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Montréal",
+   "question": "Op welke plaat ligt Montréal?",
+   "answer": "Noord-Amerikaanse plaat",
+   "options": [
+    "Noord-Amerikaanse plaat",
+    "Euraziatische plaat",
+    "Caribische plaat",
+    "Zuid-Amerikaanse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-can-montreal"
+  },
+  {
+   "id": "plaat-onder-38",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Moskou",
+   "question": "Op welke plaat ligt Moskou?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Pacifische plaat",
+    "Afrikaanse plaat",
+    "Euraziatische plaat",
+    "Scotiaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-rus-moskou"
+  },
+  {
+   "id": "plaat-onder-39",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Mumbai",
+   "question": "Op welke plaat ligt Mumbai?",
+   "answer": "Indische plaat",
+   "options": [
+    "Juan de Fucaplaat",
+    "Australische plaat",
+    "Indische plaat",
+    "Scotiaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-bombay"
+  },
+  {
+   "id": "plaat-onder-40",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "München",
+   "question": "Op welke plaat ligt München?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Arabische plaat",
+    "Euraziatische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Antarctische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-deu-munchen"
+  },
+  {
+   "id": "plaat-onder-41",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "New York",
+   "question": "Op welke plaat ligt New York?",
+   "answer": "Noord-Amerikaanse plaat",
+   "options": [
+    "Antarctische plaat",
+    "Nazcaplaat",
+    "Cocosplaat",
+    "Noord-Amerikaanse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-new-york"
+  },
+  {
+   "id": "plaat-onder-42",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Oslo",
+   "question": "Op welke plaat ligt Oslo?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Sundaplaat",
+    "Somalische plaat",
+    "Euraziatische plaat",
+    "Nazcaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-nor-oslo"
+  },
+  {
+   "id": "plaat-onder-43",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Paramaribo",
+   "question": "Op welke plaat ligt Paramaribo?",
+   "answer": "Zuid-Amerikaanse plaat",
+   "options": [
+    "Caribische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Antarctische plaat",
+    "Australische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-sur-paramaribo"
+  },
+  {
+   "id": "plaat-onder-44",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Parijs",
+   "question": "Op welke plaat ligt Parijs?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Ochotskplaat",
+    "Indische plaat",
+    "Euraziatische plaat",
+    "Anatolische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-fra-parijs"
+  },
+  {
+   "id": "plaat-onder-45",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Praag",
+   "question": "Op welke plaat ligt Praag?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Scotiaplaat",
+    "Noord-Amerikaanse plaat",
+    "Euraziatische plaat",
+    "Filipijnse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-cze-praag"
+  },
+  {
+   "id": "plaat-onder-46",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Rome",
+   "question": "Op welke plaat ligt Rome?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Australische plaat",
+    "Filipijnse plaat",
+    "Afrikaanse plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ita-rome"
+  },
+  {
+   "id": "plaat-onder-47",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Sint Petersburg",
+   "question": "Op welke plaat ligt Sint Petersburg?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Ochotskplaat",
+    "Antarctische plaat",
+    "Juan de Fucaplaat",
+    "Euraziatische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-rus-sint-petersburg"
+  },
+  {
+   "id": "plaat-onder-48",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Stockholm",
+   "question": "Op welke plaat ligt Stockholm?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Juan de Fucaplaat",
+    "Euraziatische plaat",
+    "Sundaplaat",
+    "Arabische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-swe-stockholm"
+  },
+  {
+   "id": "plaat-onder-49",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Sydney",
+   "question": "Op welke plaat ligt Sydney?",
+   "answer": "Australische plaat",
+   "options": [
+    "Juan de Fucaplaat",
+    "Australische plaat",
+    "Scotiaplaat",
+    "Sundaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-aus-sydney"
+  },
+  {
+   "id": "plaat-onder-50",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Teheran",
+   "question": "Op welke plaat ligt Teheran?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Afrikaanse plaat",
+    "Nazcaplaat",
+    "Caribische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-irn-teheran"
+  },
+  {
+   "id": "plaat-onder-51",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Warschau",
+   "question": "Op welke plaat ligt Warschau?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Arabische plaat",
+    "Euraziatische plaat",
+    "Nazcaplaat",
+    "Scotiaplaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-pol-warschau"
+  },
+  {
+   "id": "plaat-onder-52",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Washington",
+   "question": "Op welke plaat ligt Washington?",
+   "answer": "Noord-Amerikaanse plaat",
+   "options": [
+    "Somalische plaat",
+    "Noord-Amerikaanse plaat",
+    "Indische plaat",
+    "Arabische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-washington-d-c"
+  },
+  {
+   "id": "plaat-onder-53",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Wenen",
+   "question": "Op welke plaat ligt Wenen?",
+   "answer": "Euraziatische plaat",
+   "options": [
+    "Euraziatische plaat",
+    "Australische plaat",
+    "Somalische plaat",
+    "Arabische plaat"
+   ],
+   "hint": "",
+   "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "plaat-onder"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-aut-wenen"
+  }
+ ]
+}

@@ -1,0 +1,102 @@
+{
+  "versie": "1.0.0",
+  "naam": "Let's go TOPO! VO – doelen aardrijkskunde havo/vwo klas 1 t/m 6",
+  "toelichting": "Omschrijvingen staan in eigen woorden en zijn samenvattingen; de officiële tekst staat in de genoemde bron. De koppeling van doelen aan leerjaren is een voorstel, geen voorschrift.",
+  "bronnen": {
+    "kerndoelen": {
+      "titel": "Kerndoelen voortgezet onderwijs (SLO, 2025), leergebied mens en maatschappij",
+      "url": "https://www.slo.nl/publish/pages/23189/kerndoelen-voortgezet-onderwijs-slo-2025.pdf",
+      "status": "Opgeleverd november 2025; het ministerie legt ze vast in wet- en regelgeving. Nog niet wettelijk verplicht."
+    },
+    "havo": {
+      "titel": "Examenprogramma en syllabus aardrijkskunde havo (CvTE, syllabus CE 2027)",
+      "url": "https://www.examenblad.nl/2027/havo/documenten/syllabus-aardrijkskunde-havo"
+    },
+    "vwo": {
+      "titel": "Examenprogramma en syllabus aardrijkskunde vwo (CvTE, syllabus CE 2027)",
+      "url": "https://www.examenblad.nl/2027/vwo/documenten/syllabus-aardrijkskunde-vwo-2027"
+    },
+    "basistopografie": {
+      "titel": "Topografie in het basisonderwijs – basislijst topografie (SLO)",
+      "url": "https://www.slo.nl/publish/pages/16845/topografie_basisonderwijs.pdf",
+      "toelichting": "Beide syllabi noemen basale topografische kennis van de wereld, met ten minste de lijst van 300 namen die ook in het basisonderwijs geldt."
+    }
+  },
+  "niveaus": [
+    { "id": "onderbouw", "naam": "Onderbouw havo/vwo", "leerjaren": [1, 2, 3] },
+    { "id": "havo", "naam": "Havo bovenbouw", "leerjaren": [4, 5] },
+    { "id": "vwo", "naam": "Vwo bovenbouw", "leerjaren": [4, 5, 6] }
+  ],
+  "doelen": [
+    {
+      "code": "BASIS-TOPO",
+      "niveau": "alle",
+      "leerjaren_voorstel": [1, 2, 3],
+      "titel": "Basistopografie: mentale kaart van Nederland, Europa en de wereld",
+      "omschrijving": "De leerling kan de namen van de basislijst (100 Nederland, 100 Europa, 100 wereld) op de kaart plaatsen en weet wat voor soort plek het is. Dit is de bodem onder alle havo- en vwo-examendoelen.",
+      "examen": "voorkennis CE havo en vwo",
+      "bron": "basistopografie",
+      "topoFocus": ["slo300"]
+    },
+    {
+      "code": "KD24C",
+      "niveau": "onderbouw",
+      "leerjaren_voorstel": [1, 2],
+      "titel": "Kaartvaardigheid: ruimtegebruik in kaart brengen",
+      "omschrijving": "De leerling leest en maakt kaarten, kiest een geschikte kaart in de atlas en brengt ruimtegebruik in beeld.",
+      "bron": "kerndoelen",
+      "topoFocus": ["kaartlezen", "atlas"]
+    },
+    {
+      "code": "KD25A",
+      "niveau": "onderbouw",
+      "leerjaren_voorstel": [1, 2, 3],
+      "titel": "Wereldbeeld en perspectieven",
+      "omschrijving": "De leerling beschrijft de wereld met fysisch-geografische, sociaalgeografische en topografische kenmerken: bevolking, migratie, verstedelijking, mobiliteit en globalisering. Hij verklaart ruimtelijke patronen door conflicten, samenwerking en economie, en verkent welke betekenis mensen aan plaatsen geven.",
+      "bron": "kerndoelen",
+      "topoFocus": ["continenten", "landen", "hoofdsteden", "megasteden", "gebergten", "rivieren", "zeeen", "woestijnen"]
+    },
+    {
+      "code": "KD25B",
+      "niveau": "onderbouw",
+      "leerjaren_voorstel": [2, 3],
+      "titel": "Mens en leefomgeving",
+      "omschrijving": "De leerling onderzoekt hoe mensen en hun leefomgeving elkaar beïnvloeden: water- en grondstofwinning, productie, voedsel en maatregelen tegen klimaatverandering (mitigatie en adaptatie). Hij beoordeelt wat regio's met die gevolgen kunnen.",
+      "bron": "kerndoelen",
+      "topoFocus": ["klimaat", "rivieren", "delta", "landschapszones", "platen"]
+    },
+    {
+      "code": "KD25C",
+      "niveau": "onderbouw",
+      "leerjaren_voorstel": [3],
+      "titel": "Ruimtelijke inrichting van Nederland",
+      "omschrijving": "De leerling vergelijkt toekomstscenario's voor Nederland. Wonen, natuur, landbouw, werk, infrastructuur, water en energie claimen ruimte; hij weegt belangen af voor stad en platteland.",
+      "bron": "kerndoelen",
+      "topoFocus": ["nederland", "randstad", "groene-hart", "water-nl", "polders"]
+    },
+
+    { "code": "H-A1", "niveau": "havo", "leerjaren_voorstel": [4, 5], "examen": "CE en SE", "titel": "Geografische benadering", "omschrijving": "Geografische informatie (kaarten, atlas, data) selecteren, verwerken en weergeven; geografische vragen stellen en werkwijzen toepassen zoals schaalniveaus en samenhang.", "bron": "havo", "topoFocus": ["atlas", "kaartlezen", "schaal"] },
+    { "code": "H-A2", "niveau": "havo", "leerjaren_voorstel": [4, 5], "examen": "SE", "titel": "Geografisch onderzoek", "omschrijving": "Een eigen onderzoek opzetten, uitvoeren met primaire data, presenteren en evalueren.", "bron": "havo", "topoFocus": [] },
+    { "code": "H-B1", "niveau": "havo", "leerjaren_voorstel": [4], "examen": "SE", "titel": "Gebieden op de grens van arm en rijk", "omschrijving": "Een grensgebied tussen arm en rijk analyseren, bijvoorbeeld Mexico–Verenigde Staten: grensoverschrijdende relaties en hun gevolgen.", "bron": "havo", "topoFocus": ["mexico-vs"] },
+    { "code": "H-B2", "niveau": "havo", "leerjaren_voorstel": [4, 5], "examen": "CE", "titel": "Samenhangen en verschillen in de wereld", "omschrijving": "Wereldwijde patronen van handel, investeringen en migratie; landen vergelijken; mondialisering. Relaties tussen onder meer China, de VS, Europa en de EU.", "bron": "havo", "topoFocus": ["landen", "megasteden", "wereldsteden", "zeestraten", "kanalen"] },
+    { "code": "H-B3", "niveau": "havo", "leerjaren_voorstel": [5], "examen": "SE", "titel": "Mondiale processen en lokale effecten", "omschrijving": "Hoe mondialisering in een lokaal gebied uitpakt, met sociale en fysische kanten en de betrokken actoren.", "bron": "havo", "topoFocus": [] },
+    { "code": "H-C1", "niveau": "havo", "leerjaren_voorstel": [4], "examen": "SE", "titel": "Samenhangen en verschillen op regionaal niveau", "omschrijving": "Natuurlijke verschijnselen en processen in een zelfgekozen fysisch-geografische regio.", "bron": "havo", "topoFocus": ["gebergten", "landschapszones"] },
+    { "code": "H-C2", "niveau": "havo", "leerjaren_voorstel": [4, 5], "examen": "CE", "titel": "Samenhangen en verschillen op aarde", "omschrijving": "Endogene processen (platentektoniek, vulkanisme, aardbevingen) en exogene processen; luchtcirculatie, zeestromen, klimaatzones en landschapszones; invloed van de mens.", "bron": "havo", "topoFocus": ["platen", "gebergten", "woestijnen", "klimaat", "zeestromen"] },
+    { "code": "H-C3", "niveau": "havo", "leerjaren_voorstel": [5], "examen": "SE", "titel": "De aarde als natuurlijk systeem en lokale effecten", "omschrijving": "Mondiale natuurprocessen in een lokale situatie, met actoren.", "bron": "havo", "topoFocus": [] },
+    { "code": "H-D1", "niveau": "havo", "leerjaren_voorstel": [4, 5], "examen": "CE", "titel": "Ontwikkelingsland Brazilië: gebiedskenmerken", "omschrijving": "Beeldvorming, sociale en fysische kenmerken van Brazilië (verstedelijking, klimaten, landschappen, hulpbronnen), regionale verschillen en de positie van Brazilië in Zuid-Amerika en de wereld. Genoemd worden onder meer het Amazonegebied, het Hoogland van Brazilië, het Hoogland van Guyana, het noordoosten en zuidoosten.", "bron": "havo", "topoFocus": ["brazilie", "zuid-amerika"] },
+    { "code": "H-D2", "niveau": "havo", "leerjaren_voorstel": [5], "examen": "SE", "titel": "Brazilië: actuele vraagstukken", "omschrijving": "Landdegradatie, milieuverontreiniging en conflicten rond etnische en culturele verschillen in Brazilië.", "bron": "havo", "topoFocus": ["brazilie"] },
+    { "code": "H-E1", "niveau": "havo", "leerjaren_voorstel": [4, 5], "examen": "CE", "titel": "Leefomgeving: nationale en regionale vraagstukken", "omschrijving": "Overstromingsrisico's en wateroverlast in Nederland: stroomgebieden van Rijn en Maas, het IJsselmeergebied, de Waddenzee en de Zuidwestelijke Delta; waterbeleid en zoetwater.", "bron": "havo", "topoFocus": ["water-nl", "stroomgebieden", "delta"] },
+    { "code": "H-E2", "niveau": "havo", "leerjaren_voorstel": [5], "examen": "SE", "titel": "Leefomgeving: regionale en lokale vraagstukken", "omschrijving": "Stedelijke vraagstukken in Nederland: leefbaarheid, sociaaleconomische verschillen en beleid op wijk- en buurtniveau.", "bron": "havo", "topoFocus": ["steden-nl", "randstad"] },
+
+    { "code": "V-A1", "niveau": "vwo", "leerjaren_voorstel": [4, 5, 6], "examen": "CE en SE", "titel": "Geografische benadering", "omschrijving": "Geografische informatie selecteren, verwerken en weergeven; geografische vragen stellen; een mentale kaart van de wereld gebruiken; een passende atlaskaart kiezen en die keuze verantwoorden.", "bron": "vwo", "topoFocus": ["atlas", "kaartlezen", "schaal", "slo300"] },
+    { "code": "V-A2", "niveau": "vwo", "leerjaren_voorstel": [5, 6], "examen": "SE", "titel": "Geografisch onderzoek", "omschrijving": "Een eigen onderzoek opzetten en uitvoeren vanuit een onderzoeksvraag, met plan en primaire data.", "bron": "vwo", "topoFocus": [] },
+    { "code": "V-B1", "niveau": "vwo", "leerjaren_voorstel": [4, 5], "examen": "CE", "titel": "Samenhang en verscheidenheid in de wereld", "omschrijving": "Mondialisering en tijdruimtecompressie; wereldwijde spreidingspatronen verklaren; grootstedelijke gebieden in postindustriële landen.", "bron": "vwo", "topoFocus": ["landen", "megasteden", "wereldsteden", "zeestraten", "kanalen"] },
+    { "code": "V-B2", "niveau": "vwo", "leerjaren_voorstel": [5, 6], "examen": "SE", "titel": "Mondiaal verdelingsvraagstuk", "omschrijving": "Een wereldwijd verdelingsvraagstuk analyseren en beleid op macroregionale schaal beoordelen.", "bron": "vwo", "topoFocus": [] },
+    { "code": "V-C1", "niveau": "vwo", "leerjaren_voorstel": [4, 5], "examen": "CE", "titel": "De aarde als natuurlijk systeem; samenhangen en diversiteit", "omschrijving": "Het systeem aarde (platentektoniek, klimaat, water), landschapszones en een fysisch-geografische macroregio.", "bron": "vwo", "topoFocus": ["platen", "gebergten", "woestijnen", "klimaat", "zeestromen", "landschapszones"] },
+    { "code": "V-C2", "niveau": "vwo", "leerjaren_voorstel": [5, 6], "examen": "SE", "titel": "Mondiaal milieuvraagstuk", "omschrijving": "Een natuurlijk milieuvraagstuk: oorzaken, gevolgen en beleid op macroregionale schaal.", "bron": "vwo", "topoFocus": [] },
+    { "code": "V-D1", "niveau": "vwo", "leerjaren_voorstel": [4, 5, 6], "examen": "CE", "titel": "Zuid-Amerika: afbakening en gebiedskenmerken", "omschrijving": "Zuid-Amerika afbakenen, vergelijken met een andere ontwikkelingsregio en ontwikkelingsprocessen verklaren.", "bron": "vwo", "topoFocus": ["zuid-amerika", "brazilie"] },
+    { "code": "V-D2", "niveau": "vwo", "leerjaren_voorstel": [5, 6], "examen": "SE", "titel": "Zuid-Amerika: actuele vraagstukken", "omschrijving": "Hulpbronnen en natuurrampen, stad en platteland onder mondialisering, en conflicten rond etnische en culturele verschillen in Zuid-Amerika.", "bron": "vwo", "topoFocus": ["zuid-amerika"] },
+    { "code": "V-E1", "niveau": "vwo", "leerjaren_voorstel": [4, 5, 6], "examen": "CE", "titel": "Leefomgeving: nationale en regionale vraagstukken", "omschrijving": "Overstromingen en wateroverlast in Nederland, en stedelijke vraagstukken, met aandacht voor duurzaamheid en ruimtelijke inrichting.", "bron": "vwo", "topoFocus": ["water-nl", "stroomgebieden", "delta", "steden-nl"] },
+    { "code": "V-E2", "niveau": "vwo", "leerjaren_voorstel": [5, 6], "examen": "SE", "titel": "Leefomgeving: regionale en lokale vraagstukken", "omschrijving": "Lokale en regionale ruimtelijke vraagstukken analyseren en er een beargumenteerde mening over vormen.", "bron": "vwo", "topoFocus": ["steden-nl"] }
+  ]
+}

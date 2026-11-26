@@ -1,0 +1,16 @@
+{
+ "version": "1.0",
+ "name": "Let’s go TOPO! VO taalbank",
+ "total": 50,
+ "uitspraak": {
+  "bijnamen": ["Kaartbaas!", "Atlasheld!", "Topografisch genie!", "Wereldwijs!", "GPS op benen!", "Kaartkoning!", "Mental map: maximaal!", "Topo-legende!", "Examenklaar!"],
+  "goed_antwoord": ["Raak!", "Precies daar.", "Die zit.", "Strak gedaan.", "Zo hoort het.", "Topografisch sterk!", "Klopt helemaal.", "Netjes!"],
+  "fout_antwoord": ["Net ernaast.", "Andere plek. Kijk nog eens.", "Bijna, maar nee.", "Dat ligt ergens anders.", "Zoek iets verder.", "Mis. Probeer het nog een keer."],
+  "wild_klikken": ["Gokken of zoeken?", "Rustig. Kijk eerst, tik dan.", "Dit is geen klikwedstrijd."],
+  "veel_fouten": ["Even resetten: waar ben je op de kaart?", "Neem de spiekkaart erbij, dat mag.", "Lastig rijtje. Je komt er wel.", "Kijk naar de grote lijnen: zee, gebergte, rivier.", "Deze komen straks terug. Dan heb je een herkansing."],
+  "goede_reeks": ["Lekkere reeks!", "Je zit in de flow.", "Drie op rij. Doorgaan!"],
+  "spieken_hints": ["Kleine hint dan.", "Even meekijken mag.", "Hier een duwtje.", "Gebruik het, en onthoud het.", "Spieken is ook leren."],
+  "shuffle": ["Alles door elkaar!", "Kaart, quiz, zoom: alles kan.", "Hou je mental map scherp.", "Niet te snel, wel gefocust.", "Wissel van blik: van wereld naar regio.", "Wat ligt waar, en waarom daar?", "Klaar voor de volgende?"],
+  "einde": ["Goed geoefend!", "Lekker bezig!", "Weer een stuk wereld erbij.", "Ronde klaar!"]
+ }
+}

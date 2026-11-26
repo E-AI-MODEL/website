@@ -1,0 +1,3106 @@
+{
+ "version": 1,
+ "sjabloon": "land-van-stad",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "land-van-stad-1",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Rio de Janeiro",
+   "question": "In welk land ligt Rio de Janeiro?",
+   "answer": "Brazilië",
+   "options": [
+    "Colombia",
+    "Paraguay",
+    "Brazilië",
+    "Bolivia"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "H-D1",
+    "KD25A",
+    "V-B1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-rio-de-janeiro"
+  },
+  {
+   "id": "land-van-stad-2",
+   "kind": "fact",
+   "category": "steden",
+   "name": "São Paulo",
+   "question": "In welk land ligt São Paulo?",
+   "answer": "Brazilië",
+   "options": [
+    "Suriname",
+    "Uruguay",
+    "Brazilië",
+    "Argentinië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "H-D1",
+    "KD25A",
+    "V-B1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-sao-paulo"
+  },
+  {
+   "id": "land-van-stad-3",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Belo Horizonte",
+   "question": "In welk land ligt Belo Horizonte?",
+   "answer": "Brazilië",
+   "options": [
+    "Bolivia",
+    "Brazilië",
+    "Uruguay",
+    "Colombia"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-belo-horizonte"
+  },
+  {
+   "id": "land-van-stad-4",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Curitiba",
+   "question": "In welk land ligt Curitiba?",
+   "answer": "Brazilië",
+   "options": [
+    "Venezuela",
+    "Chili",
+    "Guyana",
+    "Brazilië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-curitiba"
+  },
+  {
+   "id": "land-van-stad-5",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Fortaleza",
+   "question": "In welk land ligt Fortaleza?",
+   "answer": "Brazilië",
+   "options": [
+    "Venezuela",
+    "Colombia",
+    "Brazilië",
+    "Paraguay"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-fortaleza"
+  },
+  {
+   "id": "land-van-stad-6",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Porto Alegre",
+   "question": "In welk land ligt Porto Alegre?",
+   "answer": "Brazilië",
+   "options": [
+    "Uruguay",
+    "Paraguay",
+    "Brazilië",
+    "Argentinië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-porto-alegre"
+  },
+  {
+   "id": "land-van-stad-7",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Recife",
+   "question": "In welk land ligt Recife?",
+   "answer": "Brazilië",
+   "options": [
+    "Bolivia",
+    "Brazilië",
+    "Colombia",
+    "Peru"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-recife"
+  },
+  {
+   "id": "land-van-stad-8",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Salvador",
+   "question": "In welk land ligt Salvador?",
+   "answer": "Brazilië",
+   "options": [
+    "Brazilië",
+    "Colombia",
+    "Ecuador",
+    "Guyana"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-bra-salvador"
+  },
+  {
+   "id": "land-van-stad-9",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Monterrey",
+   "question": "In welk land ligt Monterrey?",
+   "answer": "Mexico",
+   "options": [
+    "Belize",
+    "Antigua en Barbuda",
+    "Saint Lucia",
+    "Mexico"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-mex-monterrey"
+  },
+  {
+   "id": "land-van-stad-10",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Antwerpen",
+   "question": "In welk land ligt Antwerpen?",
+   "answer": "België",
+   "options": [
+    "Monaco",
+    "Zwitserland",
+    "België",
+    "Frankrijk"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-bel-antwerpen"
+  },
+  {
+   "id": "land-van-stad-11",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Barcelona",
+   "question": "In welk land ligt Barcelona?",
+   "answer": "Spanje",
+   "options": [
+    "Cyprus",
+    "San Marino",
+    "Griekenland",
+    "Spanje"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-esp-barcelona"
+  },
+  {
+   "id": "land-van-stad-12",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Bordeaux",
+   "question": "In welk land ligt Bordeaux?",
+   "answer": "Frankrijk",
+   "options": [
+    "Frankrijk",
+    "Luxemburg",
+    "Zwitserland",
+    "Monaco"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-fra-bordeaux"
+  },
+  {
+   "id": "land-van-stad-13",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Casablanca",
+   "question": "In welk land ligt Casablanca?",
+   "answer": "Marokko",
+   "options": [
+    "Marokko",
+    "Algerije",
+    "Libië",
+    "Egypte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-mar-casablanca"
+  },
+  {
+   "id": "land-van-stad-14",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chicago",
+   "question": "In welk land ligt Chicago?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Verenigde Staten",
+    "Trinidad en Tobago",
+    "Antigua en Barbuda",
+    "Canada"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-usa-chicago"
+  },
+  {
+   "id": "land-van-stad-15",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Delhi",
+   "question": "In welk land ligt Delhi?",
+   "answer": "India",
+   "options": [
+    "Pakistan",
+    "Nepal",
+    "India",
+    "Afghanistan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-delhi"
+  },
+  {
+   "id": "land-van-stad-16",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Genève",
+   "question": "In welk land ligt Genève?",
+   "answer": "Zwitserland",
+   "options": [
+    "Zwitserland",
+    "België",
+    "Liechtenstein",
+    "Duitsland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-che-geneve"
+  },
+  {
+   "id": "land-van-stad-17",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Glasgow",
+   "question": "In welk land ligt Glasgow?",
+   "answer": "Verenigd Koninkrijk",
+   "options": [
+    "Estland",
+    "Ierland",
+    "Noorwegen",
+    "Verenigd Koninkrijk"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-gbr-glasgow"
+  },
+  {
+   "id": "land-van-stad-18",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Hamburg",
+   "question": "In welk land ligt Hamburg?",
+   "answer": "Duitsland",
+   "options": [
+    "Duitsland",
+    "Frankrijk",
+    "Liechtenstein",
+    "België"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-deu-hamburg"
+  },
+  {
+   "id": "land-van-stad-19",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Istanbul",
+   "question": "In welk land ligt Istanbul?",
+   "answer": "Turkije",
+   "options": [
+    "Georgië",
+    "Jemen",
+    "Turkije",
+    "Verenigde Arabische Emiraten"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-tur-istanboel"
+  },
+  {
+   "id": "land-van-stad-20",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Karachi",
+   "question": "In welk land ligt Karachi?",
+   "answer": "Pakistan",
+   "options": [
+    "Nepal",
+    "Bhutan",
+    "Afghanistan",
+    "Pakistan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-pak-karachi"
+  },
+  {
+   "id": "land-van-stad-21",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Keulen",
+   "question": "In welk land ligt Keulen?",
+   "answer": "Duitsland",
+   "options": [
+    "Frankrijk",
+    "België",
+    "Luxemburg",
+    "Duitsland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-deu-keulen"
+  },
+  {
+   "id": "land-van-stad-22",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Kolkata",
+   "question": "In welk land ligt Kolkata?",
+   "answer": "India",
+   "options": [
+    "Afghanistan",
+    "Bangladesh",
+    "Sri Lanka",
+    "India"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-calcutta"
+  },
+  {
+   "id": "land-van-stad-23",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lagos",
+   "question": "In welk land ligt Lagos?",
+   "answer": "Nigeria",
+   "options": [
+    "Senegal",
+    "Nigeria",
+    "Togo",
+    "Ghana"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-nga-lagos"
+  },
+  {
+   "id": "land-van-stad-24",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Liverpool",
+   "question": "In welk land ligt Liverpool?",
+   "answer": "Verenigd Koninkrijk",
+   "options": [
+    "Verenigd Koninkrijk",
+    "Noorwegen",
+    "IJsland",
+    "Litouwen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-gbr-liverpool"
+  },
+  {
+   "id": "land-van-stad-25",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Los Angeles",
+   "question": "In welk land ligt Los Angeles?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Antigua en Barbuda",
+    "Panama",
+    "Verenigde Staten",
+    "Barbados"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-los-angeles"
+  },
+  {
+   "id": "land-van-stad-26",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lyon",
+   "question": "In welk land ligt Lyon?",
+   "answer": "Frankrijk",
+   "options": [
+    "Nederland",
+    "Monaco",
+    "Liechtenstein",
+    "Frankrijk"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-fra-lyon"
+  },
+  {
+   "id": "land-van-stad-27",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Marseille",
+   "question": "In welk land ligt Marseille?",
+   "answer": "Frankrijk",
+   "options": [
+    "Frankrijk",
+    "Liechtenstein",
+    "Luxemburg",
+    "Duitsland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-fra-marseille"
+  },
+  {
+   "id": "land-van-stad-28",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Mekka",
+   "question": "In welk land ligt Mekka?",
+   "answer": "Saoedi-Arabië",
+   "options": [
+    "Azerbeidzjan",
+    "Israël",
+    "Saoedi-Arabië",
+    "Turkije"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-mekka"
+  },
+  {
+   "id": "land-van-stad-29",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Milaan",
+   "question": "In welk land ligt Milaan?",
+   "answer": "Italië",
+   "options": [
+    "Portugal",
+    "Griekenland",
+    "Andorra",
+    "Italië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-ita-milaan"
+  },
+  {
+   "id": "land-van-stad-30",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Montréal",
+   "question": "In welk land ligt Montréal?",
+   "answer": "Canada",
+   "options": [
+    "Dominicaanse Republiek",
+    "Antigua en Barbuda",
+    "Canada",
+    "Nicaragua"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-can-montreal"
+  },
+  {
+   "id": "land-van-stad-31",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Mumbai",
+   "question": "In welk land ligt Mumbai?",
+   "answer": "India",
+   "options": [
+    "India",
+    "Bhutan",
+    "Iran",
+    "Nepal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-ind-bombay"
+  },
+  {
+   "id": "land-van-stad-32",
+   "kind": "fact",
+   "category": "steden",
+   "name": "München",
+   "question": "In welk land ligt München?",
+   "answer": "Duitsland",
+   "options": [
+    "Monaco",
+    "Nederland",
+    "Duitsland",
+    "Zwitserland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-deu-munchen"
+  },
+  {
+   "id": "land-van-stad-33",
+   "kind": "fact",
+   "category": "steden",
+   "name": "New York",
+   "question": "In welk land ligt New York?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Panama",
+    "Verenigde Staten",
+    "Nicaragua",
+    "Mexico"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-usa-new-york"
+  },
+  {
+   "id": "land-van-stad-34",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Osaka",
+   "question": "In welk land ligt Osaka?",
+   "answer": "Japan",
+   "options": [
+    "China",
+    "Noord-Korea",
+    "Zuid-Korea",
+    "Japan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-jpn-osaka"
+  },
+  {
+   "id": "land-van-stad-35",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Shanghai",
+   "question": "In welk land ligt Shanghai?",
+   "answer": "China",
+   "options": [
+    "Noord-Korea",
+    "Zuid-Korea",
+    "Japan",
+    "China"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-chn-shanghai"
+  },
+  {
+   "id": "land-van-stad-36",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Sint Petersburg",
+   "question": "In welk land ligt Sint Petersburg?",
+   "answer": "Rusland",
+   "options": [
+    "Rusland",
+    "Moldavië",
+    "Oekraïne",
+    "Wit-Rusland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-rus-sint-petersburg"
+  },
+  {
+   "id": "land-van-stad-37",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Sydney",
+   "question": "In welk land ligt Sydney?",
+   "answer": "Australië",
+   "options": [
+    "Fiji",
+    "Tuvalu",
+    "Nieuw-Zeeland",
+    "Australië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "stad-aus-sydney"
+  },
+  {
+   "id": "land-van-stad-38",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Abidjan",
+   "question": "In welk land ligt Abidjan?",
+   "answer": "Ivoorkust",
+   "options": [
+    "Mali",
+    "Kaapverdië",
+    "Senegal",
+    "Ivoorkust"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-civ-abidjan"
+  },
+  {
+   "id": "land-van-stad-39",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Ahmedabad",
+   "question": "In welk land ligt Ahmedabad?",
+   "answer": "India",
+   "options": [
+    "India",
+    "Bangladesh",
+    "Iran",
+    "Bhutan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-ahmedabad"
+  },
+  {
+   "id": "land-van-stad-40",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Alexandrië",
+   "question": "In welk land ligt Alexandrië?",
+   "answer": "Egypte",
+   "options": [
+    "Tunesië",
+    "Algerije",
+    "Libië",
+    "Egypte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-egy-alexandrie"
+  },
+  {
+   "id": "land-van-stad-41",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Amaravati",
+   "question": "In welk land ligt Amaravati?",
+   "answer": "India",
+   "options": [
+    "Bhutan",
+    "Maldiven",
+    "Bangladesh",
+    "India"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-amaravati"
+  },
+  {
+   "id": "land-van-stad-42",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Atlanta",
+   "question": "In welk land ligt Atlanta?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Grenada",
+    "Verenigde Staten",
+    "Bahama's",
+    "Barbados"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-atlanta"
+  },
+  {
+   "id": "land-van-stad-43",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Bangalore",
+   "question": "In welk land ligt Bangalore?",
+   "answer": "India",
+   "options": [
+    "Sri Lanka",
+    "India",
+    "Afghanistan",
+    "Nepal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-bangalore"
+  },
+  {
+   "id": "land-van-stad-44",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Boston",
+   "question": "In welk land ligt Boston?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Costa Rica",
+    "Verenigde Staten",
+    "Cuba",
+    "Haïti"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-boston"
+  },
+  {
+   "id": "land-van-stad-45",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Busan",
+   "question": "In welk land ligt Busan?",
+   "answer": "Zuid-Korea",
+   "options": [
+    "Japan",
+    "Zuid-Korea",
+    "China",
+    "Mongolië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-kor-busan"
+  },
+  {
+   "id": "land-van-stad-46",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Changchun",
+   "question": "In welk land ligt Changchun?",
+   "answer": "China",
+   "options": [
+    "Noord-Korea",
+    "China",
+    "Zuid-Korea",
+    "Mongolië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-changchun"
+  },
+  {
+   "id": "land-van-stad-47",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chengdu",
+   "question": "In welk land ligt Chengdu?",
+   "answer": "China",
+   "options": [
+    "China",
+    "Noord-Korea",
+    "Zuid-Korea",
+    "Mongolië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-chengdu"
+  },
+  {
+   "id": "land-van-stad-48",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chennai",
+   "question": "In welk land ligt Chennai?",
+   "answer": "India",
+   "options": [
+    "Sri Lanka",
+    "India",
+    "Afghanistan",
+    "Maldiven"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-chennai"
+  },
+  {
+   "id": "land-van-stad-49",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chittagong",
+   "question": "In welk land ligt Chittagong?",
+   "answer": "Bangladesh",
+   "options": [
+    "Bhutan",
+    "Bangladesh",
+    "Pakistan",
+    "Nepal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-bgd-chittagong"
+  },
+  {
+   "id": "land-van-stad-50",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Chongqing",
+   "question": "In welk land ligt Chongqing?",
+   "answer": "China",
+   "options": [
+    "Zuid-Korea",
+    "Japan",
+    "China",
+    "Noord-Korea"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-chongqing"
+  },
+  {
+   "id": "land-van-stad-51",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Dalian",
+   "question": "In welk land ligt Dalian?",
+   "answer": "China",
+   "options": [
+    "China",
+    "Zuid-Korea",
+    "Mongolië",
+    "Japan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-dalian"
+  },
+  {
+   "id": "land-van-stad-52",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Dallas",
+   "question": "In welk land ligt Dallas?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Haïti",
+    "Bahama's",
+    "Costa Rica",
+    "Verenigde Staten"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-dallas"
+  },
+  {
+   "id": "land-van-stad-53",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Detroit",
+   "question": "In welk land ligt Detroit?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Dominica",
+    "Verenigde Staten",
+    "El Salvador",
+    "Mexico"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-detroit"
+  },
+  {
+   "id": "land-van-stad-54",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Djedda",
+   "question": "In welk land ligt Djedda?",
+   "answer": "Saoedi-Arabië",
+   "options": [
+    "Turkije",
+    "Saoedi-Arabië",
+    "Armenië",
+    "Azerbeidzjan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-sau-djedda"
+  },
+  {
+   "id": "land-van-stad-55",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Dongguan",
+   "question": "In welk land ligt Dongguan?",
+   "answer": "China",
+   "options": [
+    "China",
+    "Zuid-Korea",
+    "Mongolië",
+    "Japan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-dongguan"
+  },
+  {
+   "id": "land-van-stad-56",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Guadalajara",
+   "question": "In welk land ligt Guadalajara?",
+   "answer": "Mexico",
+   "options": [
+    "Costa Rica",
+    "Panama",
+    "Mexico",
+    "Canada"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-mex-guadalajara"
+  },
+  {
+   "id": "land-van-stad-57",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Guangzhou",
+   "question": "In welk land ligt Guangzhou?",
+   "answer": "China",
+   "options": [
+    "Noord-Korea",
+    "Zuid-Korea",
+    "Mongolië",
+    "China"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-guangzhou"
+  },
+  {
+   "id": "land-van-stad-58",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Guiyang",
+   "question": "In welk land ligt Guiyang?",
+   "answer": "China",
+   "options": [
+    "Mongolië",
+    "Japan",
+    "Zuid-Korea",
+    "China"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-guiyang"
+  },
+  {
+   "id": "land-van-stad-59",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Haiderabad",
+   "question": "In welk land ligt Haiderabad?",
+   "answer": "India",
+   "options": [
+    "Pakistan",
+    "India",
+    "Nepal",
+    "Bhutan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-haiderabad"
+  },
+  {
+   "id": "land-van-stad-60",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Hangzhou",
+   "question": "In welk land ligt Hangzhou?",
+   "answer": "China",
+   "options": [
+    "China",
+    "Noord-Korea",
+    "Zuid-Korea",
+    "Mongolië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-hangzhou"
+  },
+  {
+   "id": "land-van-stad-61",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Haora",
+   "question": "In welk land ligt Haora?",
+   "answer": "India",
+   "options": [
+    "Bhutan",
+    "Iran",
+    "India",
+    "Nepal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-haora"
+  },
+  {
+   "id": "land-van-stad-62",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Harbin",
+   "question": "In welk land ligt Harbin?",
+   "answer": "China",
+   "options": [
+    "Mongolië",
+    "Noord-Korea",
+    "China",
+    "Japan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-harbin"
+  },
+  {
+   "id": "land-van-stad-63",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Hechi",
+   "question": "In welk land ligt Hechi?",
+   "answer": "China",
+   "options": [
+    "Mongolië",
+    "Zuid-Korea",
+    "Japan",
+    "China"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-hechi"
+  },
+  {
+   "id": "land-van-stad-64",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Ho Chi Minhstad",
+   "question": "In welk land ligt Ho Chi Minhstad?",
+   "answer": "Vietnam",
+   "options": [
+    "Singapore",
+    "Maleisië",
+    "Vietnam",
+    "Laos"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-vnm-ho-chi-minhstad"
+  },
+  {
+   "id": "land-van-stad-65",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Hongkong",
+   "question": "In welk land ligt Hongkong?",
+   "answer": "Hongkong",
+   "options": [
+    "Noord-Korea",
+    "Zuid-Korea",
+    "China",
+    "Hongkong"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-hkg-hongkong"
+  },
+  {
+   "id": "land-van-stad-66",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Houston",
+   "question": "In welk land ligt Houston?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Verenigde Staten",
+    "Saint Vincent en de Grenadines",
+    "Saint Kitts en Nevis",
+    "Cuba"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-houston"
+  },
+  {
+   "id": "land-van-stad-67",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Irvine",
+   "question": "In welk land ligt Irvine?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Trinidad en Tobago",
+    "Barbados",
+    "Belize",
+    "Verenigde Staten"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-irvine"
+  },
+  {
+   "id": "land-van-stad-68",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Johannesburg",
+   "question": "In welk land ligt Johannesburg?",
+   "answer": "Zuid-Afrika",
+   "options": [
+    "Botswana",
+    "Swaziland",
+    "Lesotho",
+    "Zuid-Afrika"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-zaf-johannesburg"
+  },
+  {
+   "id": "land-van-stad-69",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Kano",
+   "question": "In welk land ligt Kano?",
+   "answer": "Nigeria",
+   "options": [
+    "Burkina Faso",
+    "Nigeria",
+    "Sierra Leone",
+    "Kaapverdië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-nga-kano"
+  },
+  {
+   "id": "land-van-stad-70",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Kanpur",
+   "question": "In welk land ligt Kanpur?",
+   "answer": "India",
+   "options": [
+    "Bhutan",
+    "Pakistan",
+    "India",
+    "Nepal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-kanpur"
+  },
+  {
+   "id": "land-van-stad-71",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Lahore",
+   "question": "In welk land ligt Lahore?",
+   "answer": "Pakistan",
+   "options": [
+    "Pakistan",
+    "India",
+    "Afghanistan",
+    "Sri Lanka"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-pak-lahore"
+  },
+  {
+   "id": "land-van-stad-72",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Medellín",
+   "question": "In welk land ligt Medellín?",
+   "answer": "Colombia",
+   "options": [
+    "Brazilië",
+    "Peru",
+    "Ecuador",
+    "Colombia"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "stad-col-medellin"
+  },
+  {
+   "id": "land-van-stad-73",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Melbourne",
+   "question": "In welk land ligt Melbourne?",
+   "answer": "Australië",
+   "options": [
+    "Seychellen",
+    "Micronesia",
+    "Marshalleilanden",
+    "Australië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-aus-melbourne"
+  },
+  {
+   "id": "land-van-stad-74",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Miami",
+   "question": "In welk land ligt Miami?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Canada",
+    "Verenigde Staten",
+    "Grenada",
+    "Mexico"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-miami"
+  },
+  {
+   "id": "land-van-stad-75",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Nagoya",
+   "question": "In welk land ligt Nagoya?",
+   "answer": "Japan",
+   "options": [
+    "Mongolië",
+    "Japan",
+    "Zuid-Korea",
+    "China"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-jpn-nagoya"
+  },
+  {
+   "id": "land-van-stad-76",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Nanjing",
+   "question": "In welk land ligt Nanjing?",
+   "answer": "China",
+   "options": [
+    "Japan",
+    "China",
+    "Noord-Korea",
+    "Mongolië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-nanjing"
+  },
+  {
+   "id": "land-van-stad-77",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Nieuw Taipei",
+   "question": "In welk land ligt Nieuw Taipei?",
+   "answer": "Taiwan",
+   "options": [
+    "Mongolië",
+    "Taiwan",
+    "China",
+    "Zuid-Korea"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-twn-nieuw-taipei"
+  },
+  {
+   "id": "land-van-stad-78",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Philadelphia",
+   "question": "In welk land ligt Philadelphia?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Guatemala",
+    "Saint Kitts en Nevis",
+    "Panama",
+    "Verenigde Staten"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-philadelphia"
+  },
+  {
+   "id": "land-van-stad-79",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Phoenix",
+   "question": "In welk land ligt Phoenix?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Haïti",
+    "Verenigde Staten",
+    "Belize",
+    "Trinidad en Tobago"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-phoenix"
+  },
+  {
+   "id": "land-van-stad-80",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Poona",
+   "question": "In welk land ligt Poona?",
+   "answer": "India",
+   "options": [
+    "Bhutan",
+    "India",
+    "Iran",
+    "Maldiven"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-poona"
+  },
+  {
+   "id": "land-van-stad-81",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Rangoon",
+   "question": "In welk land ligt Rangoon?",
+   "answer": "Myanmar",
+   "options": [
+    "Oost-Timor",
+    "Laos",
+    "Singapore",
+    "Myanmar"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-mmr-rangoon"
+  },
+  {
+   "id": "land-van-stad-82",
+   "kind": "fact",
+   "category": "steden",
+   "name": "San Francisco",
+   "question": "In welk land ligt San Francisco?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Saint Kitts en Nevis",
+    "Canada",
+    "Verenigde Staten",
+    "Dominicaanse Republiek"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-san-francisco"
+  },
+  {
+   "id": "land-van-stad-83",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Seattle",
+   "question": "In welk land ligt Seattle?",
+   "answer": "Verenigde Staten",
+   "options": [
+    "Costa Rica",
+    "Bahama's",
+    "Verenigde Staten",
+    "Barbados"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-usa-seattle"
+  },
+  {
+   "id": "land-van-stad-84",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Shenyang",
+   "question": "In welk land ligt Shenyang?",
+   "answer": "China",
+   "options": [
+    "Mongolië",
+    "Japan",
+    "China",
+    "Zuid-Korea"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-shenyang"
+  },
+  {
+   "id": "land-van-stad-85",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Shenzhen",
+   "question": "In welk land ligt Shenzhen?",
+   "answer": "China",
+   "options": [
+    "Zuid-Korea",
+    "Noord-Korea",
+    "Mongolië",
+    "China"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-shenzhen"
+  },
+  {
+   "id": "land-van-stad-86",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Surat",
+   "question": "In welk land ligt Surat?",
+   "answer": "India",
+   "options": [
+    "Bhutan",
+    "India",
+    "Pakistan",
+    "Afghanistan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ind-surat"
+  },
+  {
+   "id": "land-van-stad-87",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Tel Aviv",
+   "question": "In welk land ligt Tel Aviv?",
+   "answer": "Israël",
+   "options": [
+    "Azerbeidzjan",
+    "Libanon",
+    "Israël",
+    "Irak"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-isr-tel-aviv"
+  },
+  {
+   "id": "land-van-stad-88",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Tianjin",
+   "question": "In welk land ligt Tianjin?",
+   "answer": "China",
+   "options": [
+    "Noord-Korea",
+    "Zuid-Korea",
+    "China",
+    "Mongolië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-tianjin"
+  },
+  {
+   "id": "land-van-stad-89",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Toronto",
+   "question": "In welk land ligt Toronto?",
+   "answer": "Canada",
+   "options": [
+    "Saint Vincent en de Grenadines",
+    "Canada",
+    "El Salvador",
+    "Honduras"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-can-toronto"
+  },
+  {
+   "id": "land-van-stad-90",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Wuhan",
+   "question": "In welk land ligt Wuhan?",
+   "answer": "China",
+   "options": [
+    "China",
+    "Mongolië",
+    "Noord-Korea",
+    "Japan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-wuhan"
+  },
+  {
+   "id": "land-van-stad-91",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Xi'an",
+   "question": "In welk land ligt Xi'an?",
+   "answer": "China",
+   "options": [
+    "Mongolië",
+    "China",
+    "Japan",
+    "Zuid-Korea"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-xi-an"
+  },
+  {
+   "id": "land-van-stad-92",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Yokohama",
+   "question": "In welk land ligt Yokohama?",
+   "answer": "Japan",
+   "options": [
+    "Mongolië",
+    "Zuid-Korea",
+    "Japan",
+    "Noord-Korea"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-jpn-yokohama"
+  },
+  {
+   "id": "land-van-stad-93",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Zhangzhou",
+   "question": "In welk land ligt Zhangzhou?",
+   "answer": "China",
+   "options": [
+    "Zuid-Korea",
+    "China",
+    "Japan",
+    "Mongolië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-zhangzhou"
+  },
+  {
+   "id": "land-van-stad-94",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Zibo",
+   "question": "In welk land ligt Zibo?",
+   "answer": "China",
+   "options": [
+    "Zuid-Korea",
+    "China",
+    "Japan",
+    "Mongolië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-zibo"
+  },
+  {
+   "id": "land-van-stad-95",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Ürümqi",
+   "question": "In welk land ligt Ürümqi?",
+   "answer": "China",
+   "options": [
+    "Zuid-Korea",
+    "Noord-Korea",
+    "China",
+    "Japan"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-chn-urumqi"
+  }
+ ]
+}

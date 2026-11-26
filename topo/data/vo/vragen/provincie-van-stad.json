@@ -1,0 +1,1927 @@
+{
+ "version": 1,
+ "sjabloon": "provincie-van-stad",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "provincie-van-stad-1",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "'s-Hertogenbosch",
+   "question": "In welke provincie ligt 's-Hertogenbosch?",
+   "answer": "Noord-Brabant",
+   "options": [
+    "Zeeland",
+    "Groningen",
+    "Gelderland",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-s-hertogenbosch"
+  },
+  {
+   "id": "provincie-van-stad-2",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Alkmaar",
+   "question": "In welke provincie ligt Alkmaar?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Overijssel",
+    "Noord-Holland",
+    "Drenthe",
+    "Fryslân"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-alkmaar"
+  },
+  {
+   "id": "provincie-van-stad-3",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Almelo",
+   "question": "In welke provincie ligt Almelo?",
+   "answer": "Overijssel",
+   "options": [
+    "Limburg",
+    "Fryslân",
+    "Overijssel",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-almelo"
+  },
+  {
+   "id": "provincie-van-stad-4",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Almere",
+   "question": "In welke provincie ligt Almere?",
+   "answer": "Flevoland",
+   "options": [
+    "Limburg",
+    "Groningen",
+    "Overijssel",
+    "Flevoland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-almere"
+  },
+  {
+   "id": "provincie-van-stad-5",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Alphen aan den Rijn",
+   "question": "In welke provincie ligt Alphen aan den Rijn?",
+   "answer": "Zuid-Holland",
+   "options": [
+    "Drenthe",
+    "Zuid-Holland",
+    "Limburg",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-alphen-aan-den-rijn"
+  },
+  {
+   "id": "provincie-van-stad-6",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Amersfoort",
+   "question": "In welke provincie ligt Amersfoort?",
+   "answer": "Utrecht",
+   "options": [
+    "Limburg",
+    "Utrecht",
+    "Noord-Holland",
+    "Overijssel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-amersfoort"
+  },
+  {
+   "id": "provincie-van-stad-7",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Amstelveen",
+   "question": "In welke provincie ligt Amstelveen?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Gelderland",
+    "Flevoland",
+    "Noord-Holland",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-amstelveen"
+  },
+  {
+   "id": "provincie-van-stad-8",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Amsterdam",
+   "question": "In welke provincie ligt Amsterdam?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Limburg",
+    "Noord-Holland",
+    "Flevoland",
+    "Zuid-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-hoofdstad-amsterdam"
+  },
+  {
+   "id": "provincie-van-stad-9",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Apeldoorn",
+   "question": "In welke provincie ligt Apeldoorn?",
+   "answer": "Gelderland",
+   "options": [
+    "Gelderland",
+    "Zuid-Holland",
+    "Overijssel",
+    "Groningen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-apeldoorn"
+  },
+  {
+   "id": "provincie-van-stad-10",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Arnhem",
+   "question": "In welke provincie ligt Arnhem?",
+   "answer": "Gelderland",
+   "options": [
+    "Limburg",
+    "Gelderland",
+    "Noord-Brabant",
+    "Overijssel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-arnhem"
+  },
+  {
+   "id": "provincie-van-stad-11",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Assen",
+   "question": "In welke provincie ligt Assen?",
+   "answer": "Drenthe",
+   "options": [
+    "Utrecht",
+    "Drenthe",
+    "Zeeland",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-assen"
+  },
+  {
+   "id": "provincie-van-stad-12",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Bergen op Zoom",
+   "question": "In welke provincie ligt Bergen op Zoom?",
+   "answer": "Noord-Brabant",
+   "options": [
+    "Groningen",
+    "Drenthe",
+    "Gelderland",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-bergen-op-zoom"
+  },
+  {
+   "id": "provincie-van-stad-13",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Breda",
+   "question": "In welke provincie ligt Breda?",
+   "answer": "Noord-Brabant",
+   "options": [
+    "Drenthe",
+    "Noord-Brabant",
+    "Gelderland",
+    "Utrecht"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-breda"
+  },
+  {
+   "id": "provincie-van-stad-14",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Delft",
+   "question": "In welke provincie ligt Delft?",
+   "answer": "Zuid-Holland",
+   "options": [
+    "Groningen",
+    "Utrecht",
+    "Zuid-Holland",
+    "Drenthe"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-delft"
+  },
+  {
+   "id": "provincie-van-stad-15",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Delfzijl",
+   "question": "In welke provincie ligt Delfzijl?",
+   "answer": "Groningen",
+   "options": [
+    "Groningen",
+    "Overijssel",
+    "Limburg",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-delfzijl"
+  },
+  {
+   "id": "provincie-van-stad-16",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Den Haag",
+   "question": "In welke provincie ligt Den Haag?",
+   "answer": "Zuid-Holland",
+   "options": [
+    "Gelderland",
+    "Drenthe",
+    "Zuid-Holland",
+    "Overijssel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-den-haag"
+  },
+  {
+   "id": "provincie-van-stad-17",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Den Helder",
+   "question": "In welke provincie ligt Den Helder?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Gelderland",
+    "Groningen",
+    "Drenthe",
+    "Noord-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-den-helder"
+  },
+  {
+   "id": "provincie-van-stad-18",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Deventer",
+   "question": "In welke provincie ligt Deventer?",
+   "answer": "Overijssel",
+   "options": [
+    "Zeeland",
+    "Utrecht",
+    "Overijssel",
+    "Flevoland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-deventer"
+  },
+  {
+   "id": "provincie-van-stad-19",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Doetinchem",
+   "question": "In welke provincie ligt Doetinchem?",
+   "answer": "Gelderland",
+   "options": [
+    "Gelderland",
+    "Fryslân",
+    "Overijssel",
+    "Drenthe"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-doetinchem"
+  },
+  {
+   "id": "provincie-van-stad-20",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Dordrecht",
+   "question": "In welke provincie ligt Dordrecht?",
+   "answer": "Zuid-Holland",
+   "options": [
+    "Zuid-Holland",
+    "Overijssel",
+    "Utrecht",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-dordrecht"
+  },
+  {
+   "id": "provincie-van-stad-21",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Drachten",
+   "question": "In welke provincie ligt Drachten?",
+   "answer": "Fryslân",
+   "options": [
+    "Fryslân",
+    "Utrecht",
+    "Zeeland",
+    "Overijssel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-drachten"
+  },
+  {
+   "id": "provincie-van-stad-22",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Eindhoven",
+   "question": "In welke provincie ligt Eindhoven?",
+   "answer": "Noord-Brabant",
+   "options": [
+    "Drenthe",
+    "Zuid-Holland",
+    "Fryslân",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-eindhoven"
+  },
+  {
+   "id": "provincie-van-stad-23",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmeloord",
+   "question": "In welke provincie ligt Emmeloord?",
+   "answer": "Flevoland",
+   "options": [
+    "Zeeland",
+    "Noord-Holland",
+    "Flevoland",
+    "Drenthe"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-emmeloord"
+  },
+  {
+   "id": "provincie-van-stad-24",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmen",
+   "question": "In welke provincie ligt Emmen?",
+   "answer": "Drenthe",
+   "options": [
+    "Drenthe",
+    "Flevoland",
+    "Noord-Brabant",
+    "Groningen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-emmen"
+  },
+  {
+   "id": "provincie-van-stad-25",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Enkhuizen",
+   "question": "In welke provincie ligt Enkhuizen?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Noord-Holland",
+    "Drenthe",
+    "Overijssel",
+    "Groningen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-enkhuizen"
+  },
+  {
+   "id": "provincie-van-stad-26",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Enschede",
+   "question": "In welke provincie ligt Enschede?",
+   "answer": "Overijssel",
+   "options": [
+    "Noord-Holland",
+    "Groningen",
+    "Overijssel",
+    "Zuid-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-enschede"
+  },
+  {
+   "id": "provincie-van-stad-27",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Gouda",
+   "question": "In welke provincie ligt Gouda?",
+   "answer": "Zuid-Holland",
+   "options": [
+    "Gelderland",
+    "Groningen",
+    "Zuid-Holland",
+    "Fryslân"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-gouda"
+  },
+  {
+   "id": "provincie-van-stad-28",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Groningen",
+   "question": "In welke provincie ligt Groningen?",
+   "answer": "Groningen",
+   "options": [
+    "Gelderland",
+    "Groningen",
+    "Utrecht",
+    "Fryslân"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-groningen"
+  },
+  {
+   "id": "provincie-van-stad-29",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Haarlem",
+   "question": "In welke provincie ligt Haarlem?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Fryslân",
+    "Gelderland",
+    "Noord-Holland",
+    "Overijssel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-haarlem"
+  },
+  {
+   "id": "provincie-van-stad-30",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Heerenveen",
+   "question": "In welke provincie ligt Heerenveen?",
+   "answer": "Fryslân",
+   "options": [
+    "Fryslân",
+    "Drenthe",
+    "Noord-Holland",
+    "Overijssel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-heerenveen"
+  },
+  {
+   "id": "provincie-van-stad-31",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Heerlen",
+   "question": "In welke provincie ligt Heerlen?",
+   "answer": "Limburg",
+   "options": [
+    "Zuid-Holland",
+    "Zeeland",
+    "Limburg",
+    "Fryslân"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-heerlen"
+  },
+  {
+   "id": "provincie-van-stad-32",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Helmond",
+   "question": "In welke provincie ligt Helmond?",
+   "answer": "Noord-Brabant",
+   "options": [
+    "Utrecht",
+    "Noord-Brabant",
+    "Zuid-Holland",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-helmond"
+  },
+  {
+   "id": "provincie-van-stad-33",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Hengelo",
+   "question": "In welke provincie ligt Hengelo?",
+   "answer": "Overijssel",
+   "options": [
+    "Overijssel",
+    "Limburg",
+    "Groningen",
+    "Flevoland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-hengelo"
+  },
+  {
+   "id": "provincie-van-stad-34",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Hilversum",
+   "question": "In welke provincie ligt Hilversum?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Utrecht",
+    "Gelderland",
+    "Noord-Holland",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-hilversum"
+  },
+  {
+   "id": "provincie-van-stad-35",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Hoogeveen",
+   "question": "In welke provincie ligt Hoogeveen?",
+   "answer": "Drenthe",
+   "options": [
+    "Flevoland",
+    "Overijssel",
+    "Drenthe",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-hoogeveen"
+  },
+  {
+   "id": "provincie-van-stad-36",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Kampen",
+   "question": "In welke provincie ligt Kampen?",
+   "answer": "Overijssel",
+   "options": [
+    "Overijssel",
+    "Utrecht",
+    "Flevoland",
+    "Noord-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-kampen"
+  },
+  {
+   "id": "provincie-van-stad-37",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Leeuwarden",
+   "question": "In welke provincie ligt Leeuwarden?",
+   "answer": "Fryslân",
+   "options": [
+    "Fryslân",
+    "Zeeland",
+    "Gelderland",
+    "Drenthe"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-leeuwarden"
+  },
+  {
+   "id": "provincie-van-stad-38",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Leiden",
+   "question": "In welke provincie ligt Leiden?",
+   "answer": "Zuid-Holland",
+   "options": [
+    "Gelderland",
+    "Utrecht",
+    "Noord-Brabant",
+    "Zuid-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-leiden"
+  },
+  {
+   "id": "provincie-van-stad-39",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Lelystad",
+   "question": "In welke provincie ligt Lelystad?",
+   "answer": "Flevoland",
+   "options": [
+    "Flevoland",
+    "Groningen",
+    "Noord-Holland",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-lelystad"
+  },
+  {
+   "id": "provincie-van-stad-40",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Maastricht",
+   "question": "In welke provincie ligt Maastricht?",
+   "answer": "Limburg",
+   "options": [
+    "Groningen",
+    "Limburg",
+    "Gelderland",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-maastricht"
+  },
+  {
+   "id": "provincie-van-stad-41",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Meppel",
+   "question": "In welke provincie ligt Meppel?",
+   "answer": "Drenthe",
+   "options": [
+    "Groningen",
+    "Drenthe",
+    "Flevoland",
+    "Fryslân"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-meppel"
+  },
+  {
+   "id": "provincie-van-stad-42",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Middelburg",
+   "question": "In welke provincie ligt Middelburg?",
+   "answer": "Zeeland",
+   "options": [
+    "Utrecht",
+    "Fryslân",
+    "Zuid-Holland",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-middelburg"
+  },
+  {
+   "id": "provincie-van-stad-43",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Nijmegen",
+   "question": "In welke provincie ligt Nijmegen?",
+   "answer": "Gelderland",
+   "options": [
+    "Flevoland",
+    "Groningen",
+    "Gelderland",
+    "Noord-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-nijmegen"
+  },
+  {
+   "id": "provincie-van-stad-44",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Oss",
+   "question": "In welke provincie ligt Oss?",
+   "answer": "Noord-Brabant",
+   "options": [
+    "Zeeland",
+    "Noord-Brabant",
+    "Groningen",
+    "Gelderland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-oss"
+  },
+  {
+   "id": "provincie-van-stad-45",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Purmerend",
+   "question": "In welke provincie ligt Purmerend?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Fryslân",
+    "Groningen",
+    "Noord-Holland",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-purmerend"
+  },
+  {
+   "id": "provincie-van-stad-46",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Roermond",
+   "question": "In welke provincie ligt Roermond?",
+   "answer": "Limburg",
+   "options": [
+    "Overijssel",
+    "Noord-Brabant",
+    "Limburg",
+    "Groningen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-roermond"
+  },
+  {
+   "id": "provincie-van-stad-47",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Roosendaal",
+   "question": "In welke provincie ligt Roosendaal?",
+   "answer": "Noord-Brabant",
+   "options": [
+    "Utrecht",
+    "Fryslân",
+    "Noord-Holland",
+    "Noord-Brabant"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-roosendaal"
+  },
+  {
+   "id": "provincie-van-stad-48",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Rotterdam",
+   "question": "In welke provincie ligt Rotterdam?",
+   "answer": "Zuid-Holland",
+   "options": [
+    "Groningen",
+    "Zeeland",
+    "Zuid-Holland",
+    "Utrecht"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-rotterdam"
+  },
+  {
+   "id": "provincie-van-stad-49",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Sneek",
+   "question": "In welke provincie ligt Sneek?",
+   "answer": "Fryslân",
+   "options": [
+    "Noord-Brabant",
+    "Utrecht",
+    "Fryslân",
+    "Noord-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-sneek"
+  },
+  {
+   "id": "provincie-van-stad-50",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Terneuzen",
+   "question": "In welke provincie ligt Terneuzen?",
+   "answer": "Zeeland",
+   "options": [
+    "Drenthe",
+    "Limburg",
+    "Flevoland",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-terneuzen"
+  },
+  {
+   "id": "provincie-van-stad-51",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Tilburg",
+   "question": "In welke provincie ligt Tilburg?",
+   "answer": "Noord-Brabant",
+   "options": [
+    "Groningen",
+    "Noord-Brabant",
+    "Overijssel",
+    "Gelderland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-tilburg"
+  },
+  {
+   "id": "provincie-van-stad-52",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Utrecht",
+   "question": "In welke provincie ligt Utrecht?",
+   "answer": "Utrecht",
+   "options": [
+    "Utrecht",
+    "Limburg",
+    "Noord-Brabant",
+    "Flevoland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-utrecht"
+  },
+  {
+   "id": "provincie-van-stad-53",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Veendam",
+   "question": "In welke provincie ligt Veendam?",
+   "answer": "Groningen",
+   "options": [
+    "Zuid-Holland",
+    "Limburg",
+    "Zeeland",
+    "Groningen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-veendam"
+  },
+  {
+   "id": "provincie-van-stad-54",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Venlo",
+   "question": "In welke provincie ligt Venlo?",
+   "answer": "Limburg",
+   "options": [
+    "Limburg",
+    "Utrecht",
+    "Noord-Holland",
+    "Zuid-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-venlo"
+  },
+  {
+   "id": "provincie-van-stad-55",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Vlissingen",
+   "question": "In welke provincie ligt Vlissingen?",
+   "answer": "Zeeland",
+   "options": [
+    "Limburg",
+    "Fryslân",
+    "Noord-Holland",
+    "Zeeland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-vlissingen"
+  },
+  {
+   "id": "provincie-van-stad-56",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Wageningen",
+   "question": "In welke provincie ligt Wageningen?",
+   "answer": "Gelderland",
+   "options": [
+    "Noord-Holland",
+    "Zuid-Holland",
+    "Groningen",
+    "Gelderland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-wageningen"
+  },
+  {
+   "id": "provincie-van-stad-57",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Zaandam",
+   "question": "In welke provincie ligt Zaandam?",
+   "answer": "Noord-Holland",
+   "options": [
+    "Flevoland",
+    "Groningen",
+    "Limburg",
+    "Noord-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-zaandam"
+  },
+  {
+   "id": "provincie-van-stad-58",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Zoetermeer",
+   "question": "In welke provincie ligt Zoetermeer?",
+   "answer": "Zuid-Holland",
+   "options": [
+    "Overijssel",
+    "Zuid-Holland",
+    "Limburg",
+    "Noord-Holland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-zoetermeer"
+  },
+  {
+   "id": "provincie-van-stad-59",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Zutphen",
+   "question": "In welke provincie ligt Zutphen?",
+   "answer": "Gelderland",
+   "options": [
+    "Zeeland",
+    "Limburg",
+    "Noord-Brabant",
+    "Gelderland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-zutphen"
+  },
+  {
+   "id": "provincie-van-stad-60",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Zwolle",
+   "question": "In welke provincie ligt Zwolle?",
+   "answer": "Overijssel",
+   "options": [
+    "Overijssel",
+    "Limburg",
+    "Zeeland",
+    "Fryslân"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "provincie-van-stad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     3
+    ]
+   },
+   "itemId": "nl-stad-zwolle"
+  }
+ ]
+}

@@ -1,0 +1,5414 @@
+{
+ "version": 1,
+ "sjabloon": "begrip-bij-uitleg",
+ "policy": "Gegenereerd uit de TOPO VO-databank; antwoorden volgen uit de itemgegevens.",
+ "questions": [
+  {
+   "id": "begrip-bij-uitleg-1",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "schaal",
+   "question": "Welk begrip past bij deze uitleg? De verhouding tussen een afstand op de kaart en de echte afstand. Bij 1:100.000 is 1 cm op de kaart 1 km in het echt.",
+   "answer": "schaal",
+   "options": [
+    "schaal",
+    "GIS",
+    "register (atlas)",
+    "schaalniveau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "KD24C",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-schaal"
+  },
+  {
+   "id": "begrip-bij-uitleg-2",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "schaalniveau",
+   "question": "Welk begrip past bij deze uitleg? Het niveau waarop je naar een verschijnsel kijkt: lokaal, regionaal, nationaal, continentaal of mondiaal.",
+   "answer": "schaalniveau",
+   "options": [
+    "schaal",
+    "keerkring",
+    "schaalniveau",
+    "GIS"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "KD24C",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-schaalniveau"
+  },
+  {
+   "id": "begrip-bij-uitleg-3",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "legenda",
+   "question": "Welk begrip past bij deze uitleg? De uitleg bij een kaart: welke kleuren, lijnen en tekens wat betekenen.",
+   "answer": "legenda",
+   "options": [
+    "legenda",
+    "choropletenkaart",
+    "keerkring",
+    "isolijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "KD24C",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-legenda"
+  },
+  {
+   "id": "begrip-bij-uitleg-4",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "kaartprojectie",
+   "question": "Welk begrip past bij deze uitleg? De manier waarop de bolle aarde op een plat vlak wordt getekend. Elke projectie vervormt iets: oppervlakte, vorm of afstand.",
+   "answer": "kaartprojectie",
+   "options": [
+    "GIS",
+    "kaartprojectie",
+    "thematische kaart",
+    "topografische kaart"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "KD24C",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-kaartprojectie"
+  },
+  {
+   "id": "begrip-bij-uitleg-5",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "breedtegraad",
+   "question": "Welk begrip past bij deze uitleg? De afstand in graden ten noorden of zuiden van de evenaar, van 0° tot 90°.",
+   "answer": "breedtegraad",
+   "options": [
+    "poolcirkel",
+    "choropletenkaart",
+    "breedtegraad",
+    "thematische kaart"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "begripId": "begrip-breedtegraad"
+  },
+  {
+   "id": "begrip-bij-uitleg-6",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "lengtegraad",
+   "question": "Welk begrip past bij deze uitleg? De afstand in graden ten oosten of westen van de nulmeridiaan, van 0° tot 180°.",
+   "answer": "lengtegraad",
+   "options": [
+    "evenaar",
+    "lengtegraad",
+    "choropletenkaart",
+    "breedtegraad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "begripId": "begrip-lengtegraad"
+  },
+  {
+   "id": "begrip-bij-uitleg-7",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "evenaar",
+   "question": "Welk begrip past bij deze uitleg? De denkbeeldige lijn op 0° breedte die de aarde in een noordelijk en zuidelijk halfrond verdeelt.",
+   "answer": "evenaar",
+   "options": [
+    "evenaar",
+    "poolcirkel",
+    "isolijn",
+    "choropletenkaart"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "begripId": "begrip-evenaar"
+  },
+  {
+   "id": "begrip-bij-uitleg-8",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "nulmeridiaan",
+   "question": "Welk begrip past bij deze uitleg? De lijn op 0° lengte, die door Greenwich bij Londen loopt.",
+   "answer": "nulmeridiaan",
+   "options": [
+    "lengtegraad",
+    "nulmeridiaan",
+    "GIS",
+    "isolijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD24C",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "begripId": "begrip-nulmeridiaan"
+  },
+  {
+   "id": "begrip-bij-uitleg-9",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "keerkring",
+   "question": "Welk begrip past bij deze uitleg? De breedtecirkels op ongeveer 23,5° noord (Kreeftskeerkring) en zuid (Steenbokskeerkring). Tussen de keerkringen staat de zon op een dag in het jaar loodrecht boven je.",
+   "answer": "keerkring",
+   "options": [
+    "topografische kaart",
+    "keerkring",
+    "schaalniveau",
+    "thematische kaart"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-keerkring"
+  },
+  {
+   "id": "begrip-bij-uitleg-10",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "poolcirkel",
+   "question": "Welk begrip past bij deze uitleg? De breedtecirkels op ongeveer 66,5°. Daarbuiten gaat de zon minstens één dag per jaar niet onder of niet op.",
+   "answer": "poolcirkel",
+   "options": [
+    "evenaar",
+    "thematische kaart",
+    "breedtegraad",
+    "poolcirkel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25A",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-poolcirkel"
+  },
+  {
+   "id": "begrip-bij-uitleg-11",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "topografische kaart",
+   "question": "Welk begrip past bij deze uitleg? Een kaart die laat zien wat er in een gebied ligt: wegen, water, bebouwing, bos en hoogte.",
+   "answer": "topografische kaart",
+   "options": [
+    "lengtegraad",
+    "topografische kaart",
+    "choropletenkaart",
+    "keerkring"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-topografische-kaart"
+  },
+  {
+   "id": "begrip-bij-uitleg-12",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "thematische kaart",
+   "question": "Welk begrip past bij deze uitleg? Een kaart over één onderwerp, zoals bevolkingsdichtheid, klimaat of inkomen.",
+   "answer": "thematische kaart",
+   "options": [
+    "thematische kaart",
+    "schaalniveau",
+    "mentale kaart",
+    "isolijn"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "KD24C",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-thematische-kaart"
+  },
+  {
+   "id": "begrip-bij-uitleg-13",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "choropletenkaart",
+   "question": "Welk begrip past bij deze uitleg? Een thematische kaart waarop gebieden een kleur krijgen naar een waarde, zoals inwoners per km².",
+   "answer": "choropletenkaart",
+   "options": [
+    "register (atlas)",
+    "kaartprojectie",
+    "thematische kaart",
+    "choropletenkaart"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-choropletenkaart"
+  },
+  {
+   "id": "begrip-bij-uitleg-14",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "isolijn",
+   "question": "Welk begrip past bij deze uitleg? Een lijn die plaatsen met dezelfde waarde verbindt, zoals een hoogtelijn of een lijn van gelijke temperatuur (isotherm).",
+   "answer": "isolijn",
+   "options": [
+    "poolcirkel",
+    "thematische kaart",
+    "isolijn",
+    "topografische kaart"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-isolijn"
+  },
+  {
+   "id": "begrip-bij-uitleg-15",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "register (atlas)",
+   "question": "Welk begrip past bij deze uitleg? De alfabetische lijst achter in de atlas waarmee je een plaatsnaam opzoekt met kaartnummer en vakaanduiding.",
+   "answer": "register (atlas)",
+   "options": [
+    "choropletenkaart",
+    "evenaar",
+    "topografische kaart",
+    "register (atlas)"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "KD24C",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-register-atlas"
+  },
+  {
+   "id": "begrip-bij-uitleg-16",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "GIS",
+   "question": "Welk begrip past bij deze uitleg? Geografisch informatiesysteem: software die kaartlagen met gegevens combineert om ruimtelijke vragen te beantwoorden.",
+   "answer": "GIS",
+   "options": [
+    "breedtegraad",
+    "GIS",
+    "kaartprojectie",
+    "schaalniveau"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-A1",
+    "KD24C",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-gis"
+  },
+  {
+   "id": "begrip-bij-uitleg-17",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "mentale kaart",
+   "question": "Welk begrip past bij deze uitleg? Het kaartbeeld dat je in je hoofd hebt van waar plaatsen liggen en hoe ze ten opzichte van elkaar liggen.",
+   "answer": "mentale kaart",
+   "options": [
+    "mentale kaart",
+    "thematische kaart",
+    "choropletenkaart",
+    "kaartprojectie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A",
+    "V-A1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-mentale-kaart"
+  },
+  {
+   "id": "begrip-bij-uitleg-18",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "bevolkingsdichtheid",
+   "question": "Welk begrip past bij deze uitleg? Het aantal inwoners per vierkante kilometer.",
+   "answer": "bevolkingsdichtheid",
+   "options": [
+    "natuurlijke groei",
+    "geldovermakingen",
+    "bevolkingsdichtheid",
+    "pullfactor"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-bevolkingsdichtheid"
+  },
+  {
+   "id": "begrip-bij-uitleg-19",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "natuurlijke groei",
+   "question": "Welk begrip past bij deze uitleg? Het aantal geboorten min het aantal sterfgevallen in een jaar, meestal per 1000 inwoners.",
+   "answer": "natuurlijke groei",
+   "options": [
+    "demografische transitie",
+    "natuurlijke groei",
+    "geldovermakingen",
+    "migratie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "begripId": "begrip-natuurlijke-groei"
+  },
+  {
+   "id": "begrip-bij-uitleg-20",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "demografische transitie",
+   "question": "Welk begrip past bij deze uitleg? Het model van hoe geboorte- en sterftecijfer dalen als een land zich ontwikkelt, met een fase van snelle bevolkingsgroei ertussen.",
+   "answer": "demografische transitie",
+   "options": [
+    "pushfactor",
+    "migratie",
+    "demografische transitie",
+    "geldovermakingen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-demografische-transitie"
+  },
+  {
+   "id": "begrip-bij-uitleg-21",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "migratie",
+   "question": "Welk begrip past bij deze uitleg? Het verhuizen van mensen naar een andere woonplaats, binnen een land (binnenlands) of naar een ander land (internationaal).",
+   "answer": "migratie",
+   "options": [
+    "pushfactor",
+    "bevolkingsdichtheid",
+    "migratie",
+    "demografische transitie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B1",
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-migratie"
+  },
+  {
+   "id": "begrip-bij-uitleg-22",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "pushfactor",
+   "question": "Welk begrip past bij deze uitleg? Een reden om uit een gebied weg te trekken, zoals werkloosheid, geweld of droogte.",
+   "answer": "pushfactor",
+   "options": [
+    "migratie",
+    "natuurlijke groei",
+    "demografische transitie",
+    "pushfactor"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B1",
+    "H-D2",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-pushfactor"
+  },
+  {
+   "id": "begrip-bij-uitleg-23",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "pullfactor",
+   "question": "Welk begrip past bij deze uitleg? Een reden om naar een gebied toe te trekken, zoals werk, veiligheid of familie.",
+   "answer": "pullfactor",
+   "options": [
+    "demografische transitie",
+    "pullfactor",
+    "pushfactor",
+    "migratie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B1",
+    "H-D2",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-pullfactor"
+  },
+  {
+   "id": "begrip-bij-uitleg-24",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "geldovermakingen",
+   "question": "Welk begrip past bij deze uitleg? Geld dat migranten naar familie in hun herkomstland sturen (remittances). Voor sommige landen een grote inkomstenbron.",
+   "answer": "geldovermakingen",
+   "options": [
+    "pullfactor",
+    "pushfactor",
+    "migratie",
+    "geldovermakingen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B1",
+    "H-B2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-geldovermakingen"
+  },
+  {
+   "id": "begrip-bij-uitleg-25",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "verstedelijking",
+   "question": "Welk begrip past bij deze uitleg? De groei van het aandeel van de bevolking dat in steden woont.",
+   "answer": "verstedelijking",
+   "options": [
+    "leefbaarheid",
+    "agglomeratie",
+    "verstedelijking",
+    "primaatstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "H-D1",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-verstedelijking"
+  },
+  {
+   "id": "begrip-bij-uitleg-26",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "suburbanisatie",
+   "question": "Welk begrip past bij deze uitleg? Het verhuizen van mensen uit de stad naar woonwijken en dorpen rond de stad.",
+   "answer": "suburbanisatie",
+   "options": [
+    "favela",
+    "gentrificatie",
+    "megastad",
+    "suburbanisatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E2",
+    "KD25A",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-suburbanisatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-27",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "agglomeratie",
+   "question": "Welk begrip past bij deze uitleg? Een stad samen met de aangrenzende bebouwde gemeenten die er functioneel bij horen.",
+   "answer": "agglomeratie",
+   "options": [
+    "agglomeratie",
+    "wereldstad",
+    "verstedelijking",
+    "suburbanisatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-agglomeratie"
+  },
+  {
+   "id": "begrip-bij-uitleg-28",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "megastad",
+   "question": "Welk begrip past bij deze uitleg? Een stedelijk gebied met 10 miljoen inwoners of meer.",
+   "answer": "megastad",
+   "options": [
+    "favela",
+    "verstedelijking",
+    "leefbaarheid",
+    "megastad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25A",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-megastad"
+  },
+  {
+   "id": "begrip-bij-uitleg-29",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "wereldstad",
+   "question": "Welk begrip past bij deze uitleg? Een stad met een sleutelrol in de wereldeconomie, door hoofdkantoren, banken, beurs en verbindingen.",
+   "answer": "wereldstad",
+   "options": [
+    "agglomeratie",
+    "gentrificatie",
+    "stedelijk netwerk",
+    "wereldstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-wereldstad"
+  },
+  {
+   "id": "begrip-bij-uitleg-30",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "primaatstad",
+   "question": "Welk begrip past bij deze uitleg? Een stad die veel groter en belangrijker is dan de andere steden in het land.",
+   "answer": "primaatstad",
+   "options": [
+    "leefbaarheid",
+    "verstedelijking",
+    "segregatie",
+    "primaatstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-primaatstad"
+  },
+  {
+   "id": "begrip-bij-uitleg-31",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "stedelijk netwerk",
+   "question": "Welk begrip past bij deze uitleg? Een groep steden die door verkeer, werk en voorzieningen sterk met elkaar verbonden zijn, zoals de Randstad.",
+   "answer": "stedelijk netwerk",
+   "options": [
+    "primaatstad",
+    "stedelijk netwerk",
+    "verstedelijking",
+    "agglomeratie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E2",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-stedelijk-netwerk"
+  },
+  {
+   "id": "begrip-bij-uitleg-32",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "gentrificatie",
+   "question": "Welk begrip past bij deze uitleg? Het opwaarderen van een oude stadswijk, waarbij huizen duurder worden en bewoners met hogere inkomens de oorspronkelijke bewoners vervangen.",
+   "answer": "gentrificatie",
+   "options": [
+    "segregatie",
+    "gentrificatie",
+    "stedelijk netwerk",
+    "primaatstad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E2",
+    "V-E1",
+    "V-E2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-gentrificatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-33",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "segregatie",
+   "question": "Welk begrip past bij deze uitleg? Het ruimtelijk gescheiden wonen van groepen naar inkomen, herkomst of leeftijd.",
+   "answer": "segregatie",
+   "options": [
+    "agglomeratie",
+    "wereldstad",
+    "stedelijk netwerk",
+    "segregatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "H-E2",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-segregatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-34",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "leefbaarheid",
+   "question": "Welk begrip past bij deze uitleg? Hoe prettig en veilig het is om in een buurt te wonen, bepaald door woningen, voorzieningen, veiligheid en sociale contacten.",
+   "answer": "leefbaarheid",
+   "options": [
+    "favela",
+    "wereldstad",
+    "suburbanisatie",
+    "leefbaarheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E2",
+    "V-E1",
+    "V-E2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-leefbaarheid"
+  },
+  {
+   "id": "begrip-bij-uitleg-35",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "krimpgebied",
+   "question": "Welk begrip past bij deze uitleg? Een gebied waar het aantal inwoners daalt, vaak aan de randen van het land.",
+   "answer": "krimpgebied",
+   "options": [
+    "megastad",
+    "wereldstad",
+    "primaatstad",
+    "krimpgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E2",
+    "KD25C",
+    "V-E2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-krimpgebied"
+  },
+  {
+   "id": "begrip-bij-uitleg-36",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "favela",
+   "question": "Welk begrip past bij deze uitleg? Een informele woonwijk in een Braziliaanse stad, vaak op hellingen of aan de stadsrand, met slechte voorzieningen.",
+   "answer": "favela",
+   "options": [
+    "segregatie",
+    "stedelijk netwerk",
+    "suburbanisatie",
+    "favela"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-favela"
+  },
+  {
+   "id": "begrip-bij-uitleg-37",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "mondialisering",
+   "question": "Welk begrip past bij deze uitleg? Het proces waarin landen en regio's economisch, politiek en cultureel steeds sterker met elkaar verbonden raken.",
+   "answer": "mondialisering",
+   "options": [
+    "knelpunt (zeestraat)",
+    "multinational",
+    "offshoring",
+    "mondialisering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "H-B3",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-mondialisering"
+  },
+  {
+   "id": "begrip-bij-uitleg-38",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "tijdruimtecompressie",
+   "question": "Welk begrip past bij deze uitleg? Het verschijnsel dat afstanden 'kleiner' voelen omdat vervoer en communicatie sneller en goedkoper worden.",
+   "answer": "tijdruimtecompressie",
+   "options": [
+    "multinational",
+    "tijdruimtecompressie",
+    "mondialisering",
+    "containerisatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "V-B1"
+   ],
+   "leerjaren": {
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-tijdruimtecompressie"
+  },
+  {
+   "id": "begrip-bij-uitleg-39",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "multinational",
+   "question": "Welk begrip past bij deze uitleg? Een onderneming met vestigingen in meerdere landen.",
+   "answer": "multinational",
+   "options": [
+    "mainport",
+    "containerisatie",
+    "multinational",
+    "Mercosur"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-multinational"
+  },
+  {
+   "id": "begrip-bij-uitleg-40",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "buitenlandse directe investering",
+   "question": "Welk begrip past bij deze uitleg? Geld dat een bedrijf in het buitenland investeert in een eigen vestiging of overname.",
+   "answer": "buitenlandse directe investering",
+   "options": [
+    "tijdruimtecompressie",
+    "Mercosur",
+    "multinational",
+    "buitenlandse directe investering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-buitenlandse-directe-investering"
+  },
+  {
+   "id": "begrip-bij-uitleg-41",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "containerisatie",
+   "question": "Welk begrip past bij deze uitleg? Het vervoer van goederen in gestandaardiseerde containers, waardoor overslag snel en goedkoop werd.",
+   "answer": "containerisatie",
+   "options": [
+    "Mercosur",
+    "tijdruimtecompressie",
+    "containerisatie",
+    "centrum en periferie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-containerisatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-42",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "mainport",
+   "question": "Welk begrip past bij deze uitleg? Een haven of luchthaven die een knooppunt is voor internationaal vervoer.",
+   "answer": "mainport",
+   "options": [
+    "offshoring",
+    "mondialisering",
+    "mainport",
+    "containerisatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "KD25C",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-mainport"
+  },
+  {
+   "id": "begrip-bij-uitleg-43",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "knelpunt (zeestraat)",
+   "question": "Welk begrip past bij deze uitleg? Een smalle doorgang waar veel scheepvaart doorheen moet; een blokkade heeft wereldwijde gevolgen.",
+   "answer": "knelpunt (zeestraat)",
+   "options": [
+    "tijdruimtecompressie",
+    "mainport",
+    "knelpunt (zeestraat)",
+    "buitenlandse directe investering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-knelpunt-zeestraat"
+  },
+  {
+   "id": "begrip-bij-uitleg-44",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "centrum en periferie",
+   "question": "Welk begrip past bij deze uitleg? Een model waarin rijke kerngebieden (centrum) economisch domineren over armere randgebieden (periferie), met de semi-periferie ertussen.",
+   "answer": "centrum en periferie",
+   "options": [
+    "multinational",
+    "mainport",
+    "centrum en periferie",
+    "mondialisering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-centrum-en-periferie"
+  },
+  {
+   "id": "begrip-bij-uitleg-45",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "ontwikkelingsland",
+   "question": "Welk begrip past bij deze uitleg? Een land met een relatief laag inkomen per inwoner en minder voorzieningen zoals onderwijs en zorg.",
+   "answer": "ontwikkelingsland",
+   "options": [
+    "informele sector",
+    "bbp per inwoner",
+    "HDI",
+    "ontwikkelingsland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-ontwikkelingsland"
+  },
+  {
+   "id": "begrip-bij-uitleg-46",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "bbp per inwoner",
+   "question": "Welk begrip past bij deze uitleg? De waarde van alle goederen en diensten die in een land in een jaar worden gemaakt, gedeeld door het aantal inwoners.",
+   "answer": "bbp per inwoner",
+   "options": [
+    "ontwikkelingsland",
+    "HDI",
+    "informele sector",
+    "bbp per inwoner"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "H-D1",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-bbp-per-inwoner"
+  },
+  {
+   "id": "begrip-bij-uitleg-47",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "HDI",
+   "question": "Welk begrip past bij deze uitleg? De index voor menselijke ontwikkeling van de VN, berekend uit levensverwachting, onderwijs en inkomen.",
+   "answer": "HDI",
+   "options": [
+    "HDI",
+    "informele sector",
+    "ontwikkelingsland",
+    "bbp per inwoner"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "H-D1",
+    "V-B1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-hdi"
+  },
+  {
+   "id": "begrip-bij-uitleg-48",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "informele sector",
+   "question": "Welk begrip past bij deze uitleg? Werk dat niet geregistreerd is en waarover geen belasting wordt betaald, zoals straathandel.",
+   "answer": "informele sector",
+   "options": [
+    "informele sector",
+    "ontwikkelingsland",
+    "HDI",
+    "bbp per inwoner"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-informele-sector"
+  },
+  {
+   "id": "begrip-bij-uitleg-49",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "maquiladora",
+   "question": "Welk begrip past bij deze uitleg? Een fabriek in Mexico, vaak vlak bij de grens, die onderdelen invoert, assembleert en het product weer uitvoert naar de VS.",
+   "answer": "maquiladora",
+   "options": [
+    "maquiladora",
+    "register (atlas)",
+    "wateroverlast",
+    "inheemse bevolking"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-maquiladora"
+  },
+  {
+   "id": "begrip-bij-uitleg-50",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "tweelingstad",
+   "question": "Welk begrip past bij deze uitleg? Twee steden aan weerszijden van een grens die sterk met elkaar verbonden zijn.",
+   "answer": "tweelingstad",
+   "options": [
+    "subductie",
+    "tijdruimtecompressie",
+    "tweelingstad",
+    "krimpgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-tweelingstad"
+  },
+  {
+   "id": "begrip-bij-uitleg-51",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "grensoverschrijdende relatie",
+   "question": "Welk begrip past bij deze uitleg? Contact over een grens heen: handel, pendel, migratie, investeringen of samenwerking.",
+   "answer": "grensoverschrijdende relatie",
+   "options": [
+    "bodemdaling",
+    "grensoverschrijdende relatie",
+    "verwering",
+    "ontbossing"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-grensoverschrijdende-relatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-52",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "offshoring",
+   "question": "Welk begrip past bij deze uitleg? Het verplaatsen van productie of diensten naar een land met lagere kosten.",
+   "answer": "offshoring",
+   "options": [
+    "containerisatie",
+    "mainport",
+    "buitenlandse directe investering",
+    "offshoring"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B1",
+    "H-B2",
+    "V-B1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-offshoring"
+  },
+  {
+   "id": "begrip-bij-uitleg-53",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "handelsblok",
+   "question": "Welk begrip past bij deze uitleg? Een groep landen die onderling handelsbelemmeringen weghalen, zoals de EU of Mercosur.",
+   "answer": "handelsblok",
+   "options": [
+    "Mercosur",
+    "knelpunt (zeestraat)",
+    "buitenlandse directe investering",
+    "handelsblok"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-B2",
+    "V-B1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-handelsblok"
+  },
+  {
+   "id": "begrip-bij-uitleg-54",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Mercosur",
+   "question": "Welk begrip past bij deze uitleg? Een handelsblok in Zuid-Amerika met onder meer Brazilië, Argentinië, Paraguay en Uruguay.",
+   "answer": "Mercosur",
+   "options": [
+    "buitenlandse directe investering",
+    "handelsblok",
+    "Mercosur",
+    "mainport"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-mercosur"
+  },
+  {
+   "id": "begrip-bij-uitleg-55",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "platentektoniek",
+   "question": "Welk begrip past bij deze uitleg? De theorie dat de aardkorst uit platen bestaat die langzaam bewegen op de mantel.",
+   "answer": "platentektoniek",
+   "options": [
+    "subductie",
+    "epicentrum",
+    "platentektoniek",
+    "gletsjer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-platentektoniek"
+  },
+  {
+   "id": "begrip-bij-uitleg-56",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "lithosfeer",
+   "question": "Welk begrip past bij deze uitleg? De harde buitenste laag van de aarde: de aardkorst en het bovenste deel van de mantel. Hieruit bestaan de platen.",
+   "answer": "lithosfeer",
+   "options": [
+    "platentektoniek",
+    "lithosfeer",
+    "plooiingsgebergte",
+    "slenk"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-lithosfeer"
+  },
+  {
+   "id": "begrip-bij-uitleg-57",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "convergente plaatgrens",
+   "question": "Welk begrip past bij deze uitleg? Een grens waar twee platen naar elkaar toe bewegen; er ontstaan gebergten, vulkanen en aardbevingen.",
+   "answer": "convergente plaatgrens",
+   "options": [
+    "epicentrum",
+    "tsunami",
+    "hotspot",
+    "convergente plaatgrens"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-convergente-plaatgrens"
+  },
+  {
+   "id": "begrip-bij-uitleg-58",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "divergente plaatgrens",
+   "question": "Welk begrip past bij deze uitleg? Een grens waar platen uit elkaar bewegen; magma stijgt op en er ontstaat nieuwe korst.",
+   "answer": "divergente plaatgrens",
+   "options": [
+    "subductie",
+    "aardbeving",
+    "divergente plaatgrens",
+    "epicentrum"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-divergente-plaatgrens"
+  },
+  {
+   "id": "begrip-bij-uitleg-59",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "transforme plaatgrens",
+   "question": "Welk begrip past bij deze uitleg? Een grens waar platen langs elkaar schuiven; er ontstaan vooral aardbevingen.",
+   "answer": "transforme plaatgrens",
+   "options": [
+    "convergente plaatgrens",
+    "transforme plaatgrens",
+    "vulkanisme",
+    "stuwwal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-transforme-plaatgrens"
+  },
+  {
+   "id": "begrip-bij-uitleg-60",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "subductie",
+   "question": "Welk begrip past bij deze uitleg? Het wegduiken van een zware oceanische plaat onder een andere plaat.",
+   "answer": "subductie",
+   "options": [
+    "landdegradatie",
+    "convergente plaatgrens",
+    "plooiingsgebergte",
+    "subductie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-subductie"
+  },
+  {
+   "id": "begrip-bij-uitleg-61",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "oceanische rug",
+   "question": "Welk begrip past bij deze uitleg? Een onderzees gebergte langs een divergente plaatgrens.",
+   "answer": "oceanische rug",
+   "options": [
+    "verwering",
+    "sedimentatie",
+    "meander",
+    "oceanische rug"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-oceanische-rug"
+  },
+  {
+   "id": "begrip-bij-uitleg-62",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "slenk",
+   "question": "Welk begrip past bij deze uitleg? Een langgerekte daling van het land tussen breuklijnen.",
+   "answer": "slenk",
+   "options": [
+    "morene",
+    "slenk",
+    "transforme plaatgrens",
+    "tsunami"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-slenk"
+  },
+  {
+   "id": "begrip-bij-uitleg-63",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "hotspot",
+   "question": "Welk begrip past bij deze uitleg? Een plek waar heet mantelmateriaal opstijgt, midden op een plaat, met vulkanen als gevolg.",
+   "answer": "hotspot",
+   "options": [
+    "verwering",
+    "hotspot",
+    "oceanische rug",
+    "morene"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-hotspot"
+  },
+  {
+   "id": "begrip-bij-uitleg-64",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "aardbeving",
+   "question": "Welk begrip past bij deze uitleg? Een plotselinge trilling van de aardkorst doordat opgebouwde spanning langs een breuk vrijkomt.",
+   "answer": "aardbeving",
+   "options": [
+    "convergente plaatgrens",
+    "stuwwal",
+    "aardbeving",
+    "divergente plaatgrens"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-aardbeving"
+  },
+  {
+   "id": "begrip-bij-uitleg-65",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "epicentrum",
+   "question": "Welk begrip past bij deze uitleg? Het punt aan het aardoppervlak recht boven de haard van een aardbeving.",
+   "answer": "epicentrum",
+   "options": [
+    "erosie",
+    "epicentrum",
+    "woestijnvorming",
+    "gletsjer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-epicentrum"
+  },
+  {
+   "id": "begrip-bij-uitleg-66",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "tsunami",
+   "question": "Welk begrip past bij deze uitleg? Een vloedgolf die ontstaat door een zeebeving, vulkaanuitbarsting of aardverschuiving onder water.",
+   "answer": "tsunami",
+   "options": [
+    "tsunami",
+    "erosie",
+    "transforme plaatgrens",
+    "plooiingsgebergte"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-tsunami"
+  },
+  {
+   "id": "begrip-bij-uitleg-67",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "plooiingsgebergte",
+   "question": "Welk begrip past bij deze uitleg? Een gebergte dat ontstaat doordat gesteentelagen door botsende platen worden samengedrukt en omhooggeduwd.",
+   "answer": "plooiingsgebergte",
+   "options": [
+    "tsunami",
+    "plooiingsgebergte",
+    "gletsjer",
+    "delta"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-plooiingsgebergte"
+  },
+  {
+   "id": "begrip-bij-uitleg-68",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "vulkanisme",
+   "question": "Welk begrip past bij deze uitleg? Alle verschijnselen waarbij magma naar het aardoppervlak komt.",
+   "answer": "vulkanisme",
+   "options": [
+    "sedimentatie",
+    "hotspot",
+    "plooiingsgebergte",
+    "vulkanisme"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-vulkanisme"
+  },
+  {
+   "id": "begrip-bij-uitleg-69",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "gesteentekringloop",
+   "question": "Welk begrip past bij deze uitleg? Het proces waarin stollings-, afzettings- en metamorfe gesteenten in elkaar overgaan.",
+   "answer": "gesteentekringloop",
+   "options": [
+    "woestijnvorming",
+    "platentektoniek",
+    "transforme plaatgrens",
+    "gesteentekringloop"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-gesteentekringloop"
+  },
+  {
+   "id": "begrip-bij-uitleg-70",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "verwering",
+   "question": "Welk begrip past bij deze uitleg? Het uiteenvallen van gesteente ter plekke, door temperatuur, vorst, water of planten (fysisch of chemisch).",
+   "answer": "verwering",
+   "options": [
+    "verwering",
+    "oceanische rug",
+    "divergente plaatgrens",
+    "transforme plaatgrens"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-verwering"
+  },
+  {
+   "id": "begrip-bij-uitleg-71",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "erosie",
+   "question": "Welk begrip past bij deze uitleg? Het wegvoeren van losgemaakt materiaal door water, wind of ijs.",
+   "answer": "erosie",
+   "options": [
+    "delta",
+    "oceanische rug",
+    "aardbeving",
+    "erosie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "H-D2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-erosie"
+  },
+  {
+   "id": "begrip-bij-uitleg-72",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "sedimentatie",
+   "question": "Welk begrip past bij deze uitleg? Het afzetten van meegevoerd materiaal, bijvoorbeeld in een delta of uiterwaard.",
+   "answer": "sedimentatie",
+   "options": [
+    "tsunami",
+    "sedimentatie",
+    "platentektoniek",
+    "morene"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "H-E1",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-sedimentatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-73",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "delta",
+   "question": "Welk begrip past bij deze uitleg? Het gebied waar een rivier zich splitst en sediment afzet voordat ze in zee uitmondt.",
+   "answer": "delta",
+   "options": [
+    "slenk",
+    "stuwwal",
+    "delta",
+    "epicentrum"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-delta"
+  },
+  {
+   "id": "begrip-bij-uitleg-74",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "meander",
+   "question": "Welk begrip past bij deze uitleg? Een bocht in een rivier die zich verplaatst doordat de buitenbocht uitslijt en in de binnenbocht zand wordt afgezet.",
+   "answer": "meander",
+   "options": [
+    "platentektoniek",
+    "hotspot",
+    "meander",
+    "erosie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-meander"
+  },
+  {
+   "id": "begrip-bij-uitleg-75",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "gletsjer",
+   "question": "Welk begrip past bij deze uitleg? Een ijsmassa die door zijn eigen gewicht langzaam naar beneden stroomt.",
+   "answer": "gletsjer",
+   "options": [
+    "plooiingsgebergte",
+    "divergente plaatgrens",
+    "gletsjer",
+    "tsunami"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-gletsjer"
+  },
+  {
+   "id": "begrip-bij-uitleg-76",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "morene",
+   "question": "Welk begrip past bij deze uitleg? Puin dat een gletsjer heeft meegevoerd en afgezet.",
+   "answer": "morene",
+   "options": [
+    "morene",
+    "plooiingsgebergte",
+    "stuwwal",
+    "woestijnvorming"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-morene"
+  },
+  {
+   "id": "begrip-bij-uitleg-77",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "stuwwal",
+   "question": "Welk begrip past bij deze uitleg? Een heuvelrug die ontstond doordat landijs grond voor zich uit duwde. De Veluwe is er een voorbeeld van.",
+   "answer": "stuwwal",
+   "options": [
+    "divergente plaatgrens",
+    "landdegradatie",
+    "slenk",
+    "stuwwal"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-stuwwal"
+  },
+  {
+   "id": "begrip-bij-uitleg-78",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "landdegradatie",
+   "question": "Welk begrip past bij deze uitleg? Het achteruitgaan van de kwaliteit van de bodem door bijvoorbeeld erosie, overbegrazing of uitputting.",
+   "answer": "landdegradatie",
+   "options": [
+    "delta",
+    "epicentrum",
+    "landdegradatie",
+    "gletsjer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D2",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-landdegradatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-79",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "woestijnvorming",
+   "question": "Welk begrip past bij deze uitleg? Het uitbreiden van woestijnachtige omstandigheden door droogte en menselijk gebruik.",
+   "answer": "woestijnvorming",
+   "options": [
+    "woestijnvorming",
+    "epicentrum",
+    "gletsjer",
+    "divergente plaatgrens"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-woestijnvorming"
+  },
+  {
+   "id": "begrip-bij-uitleg-80",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "weer en klimaat",
+   "question": "Welk begrip past bij deze uitleg? Weer is de toestand van de atmosfeer op een moment; klimaat is het gemiddelde weer over minstens dertig jaar.",
+   "answer": "weer en klimaat",
+   "options": [
+    "weer en klimaat",
+    "Golfstroom",
+    "savanne",
+    "passaatwind"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-weer-en-klimaat"
+  },
+  {
+   "id": "begrip-bij-uitleg-81",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "klimaatzone",
+   "question": "Welk begrip past bij deze uitleg? Een gebied met een vergelijkbaar klimaat, bijvoorbeeld tropisch, droog, gematigd, landklimaat of poolklimaat.",
+   "answer": "klimaatzone",
+   "options": [
+    "broeikaseffect",
+    "klimaatzone",
+    "toendra",
+    "klimaatclassificatie van Köppen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-klimaatzone"
+  },
+  {
+   "id": "begrip-bij-uitleg-82",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "klimaatclassificatie van Köppen",
+   "question": "Welk begrip past bij deze uitleg? Een indeling van klimaten op basis van temperatuur en neerslag, met hoofdgroepen A (tropisch) tot en met E (pool).",
+   "answer": "klimaatclassificatie van Köppen",
+   "options": [
+    "savanne",
+    "hogedrukgebied",
+    "permafrost",
+    "klimaatclassificatie van Köppen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-klimaatclassificatie-van-köppen"
+  },
+  {
+   "id": "begrip-bij-uitleg-83",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "ITCZ",
+   "question": "Welk begrip past bij deze uitleg? De intertropische convergentiezone: een gordel rond de evenaar waar passaatwinden samenkomen en lucht opstijgt, met veel regen.",
+   "answer": "ITCZ",
+   "options": [
+    "El Niño",
+    "stuwingsregen",
+    "ITCZ",
+    "klimaatverandering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-itcz"
+  },
+  {
+   "id": "begrip-bij-uitleg-84",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "passaatwind",
+   "question": "Welk begrip past bij deze uitleg? Een constante wind tussen de subtropische hogedrukgebieden en de evenaar.",
+   "answer": "passaatwind",
+   "options": [
+    "toendra",
+    "passaatwind",
+    "savanne",
+    "El Niño"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-passaatwind"
+  },
+  {
+   "id": "begrip-bij-uitleg-85",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "luchtcirculatie",
+   "question": "Welk begrip past bij deze uitleg? Het wereldwijde stelsel van luchtstromen dat warmte van de evenaar naar de polen verplaatst.",
+   "answer": "luchtcirculatie",
+   "options": [
+    "El Niño",
+    "luchtcirculatie",
+    "broeikaseffect",
+    "klimaatverandering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-luchtcirculatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-86",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "hogedrukgebied",
+   "question": "Welk begrip past bij deze uitleg? Een gebied met dalende lucht en hoge luchtdruk, meestal droog en helder weer.",
+   "answer": "hogedrukgebied",
+   "options": [
+    "hoogtezones",
+    "hogedrukgebied",
+    "toendra",
+    "lagedrukgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-hogedrukgebied"
+  },
+  {
+   "id": "begrip-bij-uitleg-87",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "lagedrukgebied",
+   "question": "Welk begrip past bij deze uitleg? Een gebied met stijgende lucht en lage luchtdruk, meestal bewolkt en nat weer.",
+   "answer": "lagedrukgebied",
+   "options": [
+    "lagedrukgebied",
+    "broeikaseffect",
+    "savanne",
+    "klimaatzone"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-lagedrukgebied"
+  },
+  {
+   "id": "begrip-bij-uitleg-88",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "stuwingsregen",
+   "question": "Welk begrip past bij deze uitleg? Regen doordat lucht tegen een gebergte omhoog moet, afkoelt en condenseert. Achter het gebergte ligt een droge regenschaduw.",
+   "answer": "stuwingsregen",
+   "options": [
+    "zeestroming",
+    "mitigatie",
+    "stuwingsregen",
+    "ITCZ"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-stuwingsregen"
+  },
+  {
+   "id": "begrip-bij-uitleg-89",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "zeestroming",
+   "question": "Welk begrip past bij deze uitleg? Een grote stroming in de oceaan, warm of koud, die het klimaat van kustgebieden beïnvloedt.",
+   "answer": "zeestroming",
+   "options": [
+    "zeestroming",
+    "luchtcirculatie",
+    "steppe",
+    "lagedrukgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-zeestroming"
+  },
+  {
+   "id": "begrip-bij-uitleg-90",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Golfstroom",
+   "question": "Welk begrip past bij deze uitleg? Een warme zeestroming van de Golf van Mexico naar de Noord-Atlantische Oceaan, die West-Europa relatief warm houdt.",
+   "answer": "Golfstroom",
+   "options": [
+    "permafrost",
+    "Golfstroom",
+    "passaatwind",
+    "El Niño"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-golfstroom"
+  },
+  {
+   "id": "begrip-bij-uitleg-91",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "El Niño",
+   "question": "Welk begrip past bij deze uitleg? Een periodieke opwarming van het oppervlaktewater in de oostelijke Grote Oceaan, met droogte en overstromingen in verschillende delen van de wereld.",
+   "answer": "El Niño",
+   "options": [
+    "passaatwind",
+    "klimaatclassificatie van Köppen",
+    "El Niño",
+    "luchtcirculatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-el-niño"
+  },
+  {
+   "id": "begrip-bij-uitleg-92",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "broeikaseffect",
+   "question": "Welk begrip past bij deze uitleg? Het vasthouden van warmte door gassen zoals CO₂ en methaan in de atmosfeer. Extra uitstoot versterkt het effect.",
+   "answer": "broeikaseffect",
+   "options": [
+    "toendra",
+    "klimaatzone",
+    "broeikaseffect",
+    "stuwingsregen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-broeikaseffect"
+  },
+  {
+   "id": "begrip-bij-uitleg-93",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "klimaatverandering",
+   "question": "Welk begrip past bij deze uitleg? De verandering van het klimaat over lange tijd. De huidige opwarming komt vooral door uitstoot van broeikasgassen.",
+   "answer": "klimaatverandering",
+   "options": [
+    "adaptatie",
+    "klimaatverandering",
+    "passaatwind",
+    "hogedrukgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "KD25B",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-klimaatverandering"
+  },
+  {
+   "id": "begrip-bij-uitleg-94",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "mitigatie",
+   "question": "Welk begrip past bij deze uitleg? Maatregelen om klimaatverandering te beperken, zoals minder CO₂ uitstoten.",
+   "answer": "mitigatie",
+   "options": [
+    "weer en klimaat",
+    "mitigatie",
+    "savanne",
+    "stuwingsregen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD25B",
+    "V-C2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-mitigatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-95",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "adaptatie",
+   "question": "Welk begrip past bij deze uitleg? Maatregelen om je aan te passen aan de gevolgen van klimaatverandering, zoals hogere dijken.",
+   "answer": "adaptatie",
+   "options": [
+    "weer en klimaat",
+    "passaatwind",
+    "landschapszone",
+    "adaptatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-adaptatie"
+  },
+  {
+   "id": "begrip-bij-uitleg-96",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "landschapszone",
+   "question": "Welk begrip past bij deze uitleg? Een brede zone op aarde met een samenhangend geheel van klimaat, bodem en begroeiing, zoals tropisch regenwoud of toendra.",
+   "answer": "landschapszone",
+   "options": [
+    "luchtcirculatie",
+    "adaptatie",
+    "toendra",
+    "landschapszone"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-landschapszone"
+  },
+  {
+   "id": "begrip-bij-uitleg-97",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "tropisch regenwoud",
+   "question": "Welk begrip past bij deze uitleg? Een landschapszone rond de evenaar met het hele jaar warmte en veel regen, en een zeer grote soortenrijkdom.",
+   "answer": "tropisch regenwoud",
+   "options": [
+    "savanne",
+    "tropisch regenwoud",
+    "broeikaseffect",
+    "passaatwind"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "H-D1",
+    "KD25B",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-tropisch-regenwoud"
+  },
+  {
+   "id": "begrip-bij-uitleg-98",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "savanne",
+   "question": "Welk begrip past bij deze uitleg? Een tropisch grasland met verspreide bomen, met een natte en een droge tijd.",
+   "answer": "savanne",
+   "options": [
+    "klimaatclassificatie van Köppen",
+    "taiga",
+    "savanne",
+    "luchtcirculatie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "H-D1",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-savanne"
+  },
+  {
+   "id": "begrip-bij-uitleg-99",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "steppe",
+   "question": "Welk begrip past bij deze uitleg? Een droog grasland in een gematigd of subtropisch klimaat, met weinig bomen.",
+   "answer": "steppe",
+   "options": [
+    "stuwingsregen",
+    "taiga",
+    "adaptatie",
+    "steppe"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-steppe"
+  },
+  {
+   "id": "begrip-bij-uitleg-100",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "taiga",
+   "question": "Welk begrip past bij deze uitleg? De noordelijke naaldbossenzone met lange, koude winters.",
+   "answer": "taiga",
+   "options": [
+    "weer en klimaat",
+    "taiga",
+    "Golfstroom",
+    "permafrost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-taiga"
+  },
+  {
+   "id": "begrip-bij-uitleg-101",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "toendra",
+   "question": "Welk begrip past bij deze uitleg? Een boomloze vlakte in het hoge noorden met permafrost, mossen en lage struiken.",
+   "answer": "toendra",
+   "options": [
+    "weer en klimaat",
+    "taiga",
+    "toendra",
+    "ITCZ"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-toendra"
+  },
+  {
+   "id": "begrip-bij-uitleg-102",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "permafrost",
+   "question": "Welk begrip past bij deze uitleg? Grond die het hele jaar bevroren blijft.",
+   "answer": "permafrost",
+   "options": [
+    "tropisch regenwoud",
+    "klimaatzone",
+    "savanne",
+    "permafrost"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-permafrost"
+  },
+  {
+   "id": "begrip-bij-uitleg-103",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "hoogtezones",
+   "question": "Welk begrip past bij deze uitleg? De opeenvolging van klimaat en begroeiing naarmate je hoger in een gebergte komt.",
+   "answer": "hoogtezones",
+   "options": [
+    "hogedrukgebied",
+    "stuwingsregen",
+    "hoogtezones",
+    "El Niño"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-hoogtezones"
+  },
+  {
+   "id": "begrip-bij-uitleg-104",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "stroomgebied",
+   "question": "Welk begrip past bij deze uitleg? Het hele gebied waarvan het water via één rivier naar zee stroomt.",
+   "answer": "stroomgebied",
+   "options": [
+    "polder",
+    "stroomgebied",
+    "droogmakerij",
+    "gemengde rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-stroomgebied"
+  },
+  {
+   "id": "begrip-bij-uitleg-105",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "regenrivier",
+   "question": "Welk begrip past bij deze uitleg? Een rivier die vooral door regenwater wordt gevoed, met grote verschillen in afvoer. De Maas is er een voorbeeld van.",
+   "answer": "regenrivier",
+   "options": [
+    "zomerbed en winterbed",
+    "bodemdaling",
+    "regenrivier",
+    "overstroming"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-regenrivier"
+  },
+  {
+   "id": "begrip-bij-uitleg-106",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "gemengde rivier",
+   "question": "Welk begrip past bij deze uitleg? Een rivier die door regen- én smeltwater wordt gevoed, waardoor de afvoer gelijkmatiger is. De Rijn is er een voorbeeld van.",
+   "answer": "gemengde rivier",
+   "options": [
+    "zandsuppletie",
+    "gemengde rivier",
+    "zoetwatervoorraad",
+    "getijden"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-gemengde-rivier"
+  },
+  {
+   "id": "begrip-bij-uitleg-107",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "rivierafvoer",
+   "question": "Welk begrip past bij deze uitleg? De hoeveelheid water die per seconde door een rivier stroomt, gemeten in m³/s. Bij Lobith wordt de afvoer van de Rijn gemeten.",
+   "answer": "rivierafvoer",
+   "options": [
+    "Deltawerken",
+    "gemengde rivier",
+    "uiterwaard",
+    "rivierafvoer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-rivierafvoer"
+  },
+  {
+   "id": "begrip-bij-uitleg-108",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "overstroming",
+   "question": "Welk begrip past bij deze uitleg? Water dat buiten de oevers of over of door een waterkering stroomt.",
+   "answer": "overstroming",
+   "options": [
+    "overstroming",
+    "regenrivier",
+    "kwel",
+    "rivierafvoer"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-overstroming"
+  },
+  {
+   "id": "begrip-bij-uitleg-109",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "wateroverlast",
+   "question": "Welk begrip past bij deze uitleg? Hinder door te veel water, bijvoorbeeld doordat riolen en sloten hevige regen niet snel genoeg kunnen afvoeren.",
+   "answer": "wateroverlast",
+   "options": [
+    "stroomgebied",
+    "wateroverlast",
+    "overstroming",
+    "regenrivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-wateroverlast"
+  },
+  {
+   "id": "begrip-bij-uitleg-110",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "uiterwaard",
+   "question": "Welk begrip past bij deze uitleg? Het land tussen de rivier en de dijk, dat bij hoogwater onder water mag lopen.",
+   "answer": "uiterwaard",
+   "options": [
+    "uiterwaard",
+    "polder",
+    "zandsuppletie",
+    "meerlaagsveiligheid"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-uiterwaard"
+  },
+  {
+   "id": "begrip-bij-uitleg-111",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "zomerbed en winterbed",
+   "question": "Welk begrip past bij deze uitleg? Het zomerbed is de vaste geul van de rivier; het winterbed is het hele gebied tussen de dijken, inclusief de uiterwaarden.",
+   "answer": "zomerbed en winterbed",
+   "options": [
+    "rivierafvoer",
+    "zomerbed en winterbed",
+    "getijden",
+    "zoetwatervoorraad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-zomerbed-en-winterbed"
+  },
+  {
+   "id": "begrip-bij-uitleg-112",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Ruimte voor de Rivier",
+   "question": "Welk begrip past bij deze uitleg? Een programma waarbij rivieren meer ruimte kregen, door bijvoorbeeld nevengeulen, dijkverlegging en lagere uiterwaarden.",
+   "answer": "Ruimte voor de Rivier",
+   "options": [
+    "stormvloedkering",
+    "inpoldering",
+    "zoetwatervoorraad",
+    "Ruimte voor de Rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-ruimte-voor-de-rivier"
+  },
+  {
+   "id": "begrip-bij-uitleg-113",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Deltawerken",
+   "question": "Welk begrip past bij deze uitleg? Het stelsel van dammen, sluizen en stormvloedkeringen in Zuidwest-Nederland, gebouwd na de watersnood van 1953.",
+   "answer": "Deltawerken",
+   "options": [
+    "regenrivier",
+    "inpoldering",
+    "bodemdaling",
+    "Deltawerken"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-deltawerken"
+  },
+  {
+   "id": "begrip-bij-uitleg-114",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "stormvloedkering",
+   "question": "Welk begrip past bij deze uitleg? Een beweegbare waterkering die alleen bij hoog water sluit.",
+   "answer": "stormvloedkering",
+   "options": [
+    "regenrivier",
+    "meerlaagsveiligheid",
+    "stormvloedkering",
+    "Deltawerken"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-stormvloedkering"
+  },
+  {
+   "id": "begrip-bij-uitleg-115",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Deltaprogramma",
+   "question": "Welk begrip past bij deze uitleg? Het nationale programma dat Nederland beschermt tegen overstromingen en zorgt voor voldoende zoetwater, ook bij klimaatverandering.",
+   "answer": "Deltaprogramma",
+   "options": [
+    "zomerbed en winterbed",
+    "Deltaprogramma",
+    "uiterwaard",
+    "stroomgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-deltaprogramma"
+  },
+  {
+   "id": "begrip-bij-uitleg-116",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "polder",
+   "question": "Welk begrip past bij deze uitleg? Een laaggelegen stuk land omringd door dijken, waarvan het waterpeil kunstmatig wordt geregeld.",
+   "answer": "polder",
+   "options": [
+    "wad",
+    "polder",
+    "bodemdaling",
+    "wateroverlast"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-polder"
+  },
+  {
+   "id": "begrip-bij-uitleg-117",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "droogmakerij",
+   "question": "Welk begrip past bij deze uitleg? Een polder die is ontstaan door een meer droog te malen.",
+   "answer": "droogmakerij",
+   "options": [
+    "rivierafvoer",
+    "uiterwaard",
+    "droogmakerij",
+    "overstroming"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-droogmakerij"
+  },
+  {
+   "id": "begrip-bij-uitleg-118",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "inpoldering",
+   "question": "Welk begrip past bij deze uitleg? Het aanleggen van een polder door een gebied te bedijken en droog te malen.",
+   "answer": "inpoldering",
+   "options": [
+    "wateroverlast",
+    "polder",
+    "Deltaprogramma",
+    "inpoldering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-inpoldering"
+  },
+  {
+   "id": "begrip-bij-uitleg-119",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "bodemdaling",
+   "question": "Welk begrip past bij deze uitleg? Het langzaam zakken van de bodem, onder andere door ontwatering van veen en klei en door gaswinning.",
+   "answer": "bodemdaling",
+   "options": [
+    "wateroverlast",
+    "Deltaprogramma",
+    "bodemdaling",
+    "Ruimte voor de Rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-bodemdaling"
+  },
+  {
+   "id": "begrip-bij-uitleg-120",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "kwel",
+   "question": "Welk begrip past bij deze uitleg? Grondwater dat onder een dijk door omhoog komt in een lager gelegen polder.",
+   "answer": "kwel",
+   "options": [
+    "zomerbed en winterbed",
+    "inpoldering",
+    "regenrivier",
+    "kwel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-kwel"
+  },
+  {
+   "id": "begrip-bij-uitleg-121",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "verzilting",
+   "question": "Welk begrip past bij deze uitleg? Het zouter worden van grond- en oppervlaktewater doordat zeewater het land binnendringt.",
+   "answer": "verzilting",
+   "options": [
+    "wad",
+    "zomerbed en winterbed",
+    "verzilting",
+    "inpoldering"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-verzilting"
+  },
+  {
+   "id": "begrip-bij-uitleg-122",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "zoetwatervoorraad",
+   "question": "Welk begrip past bij deze uitleg? De beschikbare hoeveelheid zoet water. Het IJsselmeer is de grootste zoetwaterbuffer van Nederland.",
+   "answer": "zoetwatervoorraad",
+   "options": [
+    "overstroming",
+    "Ruimte voor de Rivier",
+    "zoetwatervoorraad",
+    "kwel"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-zoetwatervoorraad"
+  },
+  {
+   "id": "begrip-bij-uitleg-123",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "meerlaagsveiligheid",
+   "question": "Welk begrip past bij deze uitleg? Een aanpak met drie lagen: overstromingen voorkomen, de gevolgen beperken door slim te bouwen, en goede rampenbeheersing.",
+   "answer": "meerlaagsveiligheid",
+   "options": [
+    "meerlaagsveiligheid",
+    "gemengde rivier",
+    "rivierafvoer",
+    "stroomgebied"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-meerlaagsveiligheid"
+  },
+  {
+   "id": "begrip-bij-uitleg-124",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "zandsuppletie",
+   "question": "Welk begrip past bij deze uitleg? Het aanvullen van strand of vooroever met zand om de kust op zijn plaats te houden.",
+   "answer": "zandsuppletie",
+   "options": [
+    "inpoldering",
+    "zandsuppletie",
+    "Deltaprogramma",
+    "gemengde rivier"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-zandsuppletie"
+  },
+  {
+   "id": "begrip-bij-uitleg-125",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "getijden",
+   "question": "Welk begrip past bij deze uitleg? Het regelmatig stijgen (vloed) en dalen (eb) van de zeespiegel door de aantrekkingskracht van de maan en de zon.",
+   "answer": "getijden",
+   "options": [
+    "zoetwatervoorraad",
+    "stormvloedkering",
+    "droogmakerij",
+    "getijden"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "KD25B"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-getijden"
+  },
+  {
+   "id": "begrip-bij-uitleg-126",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "wad",
+   "question": "Welk begrip past bij deze uitleg? Een gebied dat bij vloed onder water staat en bij eb droogvalt.",
+   "answer": "wad",
+   "options": [
+    "wateroverlast",
+    "Ruimte voor de Rivier",
+    "gemengde rivier",
+    "wad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E1",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-wad"
+  },
+  {
+   "id": "begrip-bij-uitleg-127",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "ruimtelijke inrichting",
+   "question": "Welk begrip past bij deze uitleg? De manier waarop de ruimte in een gebied wordt verdeeld over functies zoals wonen, werken, natuur, landbouw en water.",
+   "answer": "ruimtelijke inrichting",
+   "options": [
+    "energietransitie",
+    "toekomstscenario",
+    "ruimtelijke inrichting",
+    "ruimteclaim"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD25C",
+    "V-E1",
+    "V-E2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-ruimtelijke-inrichting"
+  },
+  {
+   "id": "begrip-bij-uitleg-128",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "ruimteclaim",
+   "question": "Welk begrip past bij deze uitleg? De vraag naar ruimte vanuit een functie, zoals woningbouw, natuur of energie.",
+   "answer": "ruimteclaim",
+   "options": [
+    "Groene Hart",
+    "ruimtelijke inrichting",
+    "ruimteclaim",
+    "toekomstscenario"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   },
+   "begripId": "begrip-ruimteclaim"
+  },
+  {
+   "id": "begrip-bij-uitleg-129",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "toekomstscenario",
+   "question": "Welk begrip past bij deze uitleg? Een beschrijving van een mogelijke toekomst, om keuzes over de inrichting te vergelijken.",
+   "answer": "toekomstscenario",
+   "options": [
+    "toekomstscenario",
+    "Groene Hart",
+    "ruimtelijke inrichting",
+    "energietransitie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ]
+   },
+   "begripId": "begrip-toekomstscenario"
+  },
+  {
+   "id": "begrip-bij-uitleg-130",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "Groene Hart",
+   "question": "Welk begrip past bij deze uitleg? Het relatief open, agrarische gebied in het midden van de Randstad.",
+   "answer": "Groene Hart",
+   "options": [
+    "toekomstscenario",
+    "Groene Hart",
+    "ruimteclaim",
+    "ruimtelijke inrichting"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-E2",
+    "KD25C",
+    "V-E1"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     3
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-groene-hart"
+  },
+  {
+   "id": "begrip-bij-uitleg-131",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "energietransitie",
+   "question": "Welk begrip past bij deze uitleg? De overgang van fossiele brandstoffen naar duurzame energie, met ruimte nodig voor bijvoorbeeld windparken en zonneparken.",
+   "answer": "energietransitie",
+   "options": [
+    "energietransitie",
+    "Groene Hart",
+    "ruimtelijke inrichting",
+    "toekomstscenario"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "KD25B",
+    "KD25C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2,
+     3
+    ]
+   },
+   "begripId": "begrip-energietransitie"
+  },
+  {
+   "id": "begrip-bij-uitleg-132",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "ontbossing",
+   "question": "Welk begrip past bij deze uitleg? Het kappen of afbranden van bos, bijvoorbeeld voor landbouw, veeteelt, mijnbouw of wegen.",
+   "answer": "ontbossing",
+   "options": [
+    "ontbossing",
+    "droogtepolygoon",
+    "regionale ongelijkheid",
+    "hulpbron"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D2",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-ontbossing"
+  },
+  {
+   "id": "begrip-bij-uitleg-133",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "agrobusiness",
+   "question": "Welk begrip past bij deze uitleg? Grootschalige, commerciële landbouw voor de (wereld)markt, zoals de teelt van soja en suikerriet.",
+   "answer": "agrobusiness",
+   "options": [
+    "hulpbron",
+    "ontbossing",
+    "agrobusiness",
+    "binnenlandse migratie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-agrobusiness"
+  },
+  {
+   "id": "begrip-bij-uitleg-134",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "hulpbron",
+   "question": "Welk begrip past bij deze uitleg? Iets uit de natuur dat mensen gebruiken, zoals ijzererts, olie, water of vruchtbare grond.",
+   "answer": "hulpbron",
+   "options": [
+    "binnenlandse migratie",
+    "droogtepolygoon",
+    "agrobusiness",
+    "hulpbron"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-hulpbron"
+  },
+  {
+   "id": "begrip-bij-uitleg-135",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "waterkrachtcentrale",
+   "question": "Welk begrip past bij deze uitleg? Een elektriciteitscentrale die stromend water van een stuwdam gebruikt.",
+   "answer": "waterkrachtcentrale",
+   "options": [
+    "droogtepolygoon",
+    "waterkrachtcentrale",
+    "grootgrondbezit",
+    "binnenlandse migratie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "KD25B",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ],
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-waterkrachtcentrale"
+  },
+  {
+   "id": "begrip-bij-uitleg-136",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "regionale ongelijkheid",
+   "question": "Welk begrip past bij deze uitleg? Grote verschillen in welvaart tussen regio's binnen een land, zoals tussen het zuidoosten en het noordoosten van Brazilië.",
+   "answer": "regionale ongelijkheid",
+   "options": [
+    "grootgrondbezit",
+    "regionale ongelijkheid",
+    "hulpbron",
+    "waterkrachtcentrale"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-regionale-ongelijkheid"
+  },
+  {
+   "id": "begrip-bij-uitleg-137",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "binnenlandse migratie",
+   "question": "Welk begrip past bij deze uitleg? Verhuizen binnen een land, bijvoorbeeld van het platteland in het noordoosten van Brazilië naar steden in het zuidoosten.",
+   "answer": "binnenlandse migratie",
+   "options": [
+    "grootgrondbezit",
+    "etnische en culturele diversiteit",
+    "binnenlandse migratie",
+    "landhervorming"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1",
+    "V-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-binnenlandse-migratie"
+  },
+  {
+   "id": "begrip-bij-uitleg-138",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "grootgrondbezit",
+   "question": "Welk begrip past bij deze uitleg? Een verdeling waarbij een kleine groep eigenaren een groot deel van de landbouwgrond bezit.",
+   "answer": "grootgrondbezit",
+   "options": [
+    "grootgrondbezit",
+    "waterkrachtcentrale",
+    "binnenlandse migratie",
+    "agrobusiness"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-grootgrondbezit"
+  },
+  {
+   "id": "begrip-bij-uitleg-139",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "landhervorming",
+   "question": "Welk begrip past bij deze uitleg? Beleid om landbouwgrond eerlijker te verdelen.",
+   "answer": "landhervorming",
+   "options": [
+    "landhervorming",
+    "droogtepolygoon",
+    "ontbossing",
+    "agrobusiness"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-landhervorming"
+  },
+  {
+   "id": "begrip-bij-uitleg-140",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "inheemse bevolking",
+   "question": "Welk begrip past bij deze uitleg? De oorspronkelijke bewoners van een gebied en hun nakomelingen.",
+   "answer": "inheemse bevolking",
+   "options": [
+    "droogtepolygoon",
+    "hulpbron",
+    "grootgrondbezit",
+    "inheemse bevolking"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-inheemse-bevolking"
+  },
+  {
+   "id": "begrip-bij-uitleg-141",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "etnische en culturele diversiteit",
+   "question": "Welk begrip past bij deze uitleg? De verscheidenheid aan herkomst, taal, godsdienst en gewoonten binnen een bevolking.",
+   "answer": "etnische en culturele diversiteit",
+   "options": [
+    "etnische en culturele diversiteit",
+    "grootgrondbezit",
+    "waterkrachtcentrale",
+    "droogtepolygoon"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D2",
+    "V-D2"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-etnische-en-culturele-diversiteit"
+  },
+  {
+   "id": "begrip-bij-uitleg-142",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "droogtepolygoon",
+   "question": "Welk begrip past bij deze uitleg? Het gebied in het noordoosten van Brazilië dat vaak door langdurige droogte wordt getroffen.",
+   "answer": "droogtepolygoon",
+   "options": [
+    "waterkrachtcentrale",
+    "droogtepolygoon",
+    "regionale ongelijkheid",
+    "grootgrondbezit"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "H-D1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ]
+   },
+   "begripId": "begrip-droogtepolygoon"
+  },
+  {
+   "id": "begrip-bij-uitleg-143",
+   "kind": "fact",
+   "category": "begrippen",
+   "name": "afbakening",
+   "question": "Welk begrip past bij deze uitleg? Het bepalen van de grenzen van een gebied en de criteria die je daarvoor gebruikt.",
+   "answer": "afbakening",
+   "options": [
+    "mitigatie",
+    "informele sector",
+    "afbakening",
+    "erosie"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "begrip-bij-uitleg"
+   },
+   "doelen": [
+    "V-D1"
+   ],
+   "leerjaren": {
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "begripId": "begrip-afbakening"
+  }
+ ]
+}

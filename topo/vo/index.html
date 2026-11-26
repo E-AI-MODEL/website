@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fcf6df">
+<title>Let’s go TOPO! voor VO | Topografie havo en vwo</title>
+<meta name="description" content="Topografie en aardrijkskunde oefenen voor havo en vwo, klas 1 tot en met 6. Kerndoelen, examenstof en de SLO-basislijst. Geen account nodig.">
+<link rel="canonical" href="https://eaimodel.nl/topo/vo/">
+<style>
+:root{--ink:#182b34;--cream:#fcf6df;--pink:#ffa7bc;--orange:#ffae60;--lime:#d6ef8d;--cyan:#a4dded;--muted:#50666d;--stroke:3px solid var(--ink)}
+*{box-sizing:border-box}html{background:var(--cream)}body{margin:0;color:var(--ink);background:var(--cream);font-family:ui-rounded,'Trebuchet MS',system-ui,sans-serif;font-weight:750}
+button,a{font:inherit}button{cursor:pointer;touch-action:manipulation;color:inherit}button:focus-visible,a:focus-visible{outline:4px solid #e76851;outline-offset:4px}
+header{width:min(1430px,100%);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(16px,3vw,40px)}
+.logo{color:var(--ink);font-size:clamp(25px,3.2vw,39px);letter-spacing:-.055em;font-weight:1000;text-decoration:none;white-space:nowrap;transform:rotate(-2deg)}.logo span{color:#f06457}
+.back{background:#fff;text-decoration:none;color:var(--ink);border:var(--stroke);padding:11px 17px;border-radius:16px;box-shadow:0 5px 0 var(--ink);font-weight:1000;white-space:nowrap}
+.wrap{width:min(1430px,100%);padding:8px clamp(16px,3vw,40px) 32px;margin:auto}
+.intro{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:20px}
+.sticker{background:var(--pink);font-size:13px;display:inline-block;border:var(--stroke);box-shadow:4px 5px 0 var(--ink);border-radius:9px;transform:rotate(-3deg);padding:7px 12px;letter-spacing:.09em;font-weight:1000}
+h1{font-weight:1000;font-size:clamp(52px,7.5vw,105px);letter-spacing:-.055em;line-height:.95;margin:12px 0 4px;transform:rotate(-1deg)}
+.intro p{font-size:clamp(16px,1.8vw,22px);margin:8px 0;font-weight:900}
+.board{border:var(--stroke);background:white;border-radius:30px;box-shadow:11px 12px 0 var(--ink);padding:clamp(15px,2.3vw,29px)}
+.layout{display:grid;grid-template-columns:minmax(175px,220px) minmax(0,1fr);gap:clamp(16px,3vw,30px)}
+.tabs{display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:8px 0}
+.tab{border:var(--stroke);border-radius:17px;background:var(--cream);box-shadow:4px 5px 0 var(--ink);font-size:clamp(19px,2.5vw,27px);font-weight:1000;letter-spacing:-.025em;text-align:left;padding:17px 15px;transform:rotate(var(--turn,0deg))}
+.tab:nth-child(1){--turn:-2deg}.tab:nth-child(2){--turn:1deg}.tab:nth-child(3){--turn:-1deg}
+.tab[aria-selected=true]{background:var(--lime)}.tab .n{font-size:13px;margin-right:5px}
+.panel{min-height:435px;border-left:2px dashed #bcc9c6;padding-left:clamp(14px,2.5vw,32px)}
+.panel[hidden]{display:none}
+h2{font-size:clamp(30px,4vw,48px);font-weight:1000;letter-spacing:-.05em;margin:1px 0 7px}
+.hint{font-size:16px;line-height:1.35;color:var(--muted);margin:0 0 19px}
+.zonepick{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+.zone{padding:12px 17px;border:var(--stroke);border-radius:16px;background:var(--cream);box-shadow:3px 4px 0 var(--ink);font-weight:1000;font-size:clamp(16px,1.7vw,20px)}
+.zone[aria-pressed=true]{background:var(--orange)}
+.sheet-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.province{position:relative;min-height:83px;border:var(--stroke);border-radius:17px;background:var(--cream);padding:14px 9px;display:flex;align-items:center;justify-content:center;text-align:center;word-break:normal;font-size:clamp(13px,1.45vw,19px);font-weight:1000;letter-spacing:-.025em;box-shadow:4px 5px 0 var(--ink);transform:rotate(var(--rot,0deg));transition:transform .14s,background .14s}
+.province:nth-child(5n+1){--rot:-2deg}.province:nth-child(5n+3){--rot:2deg}.province:nth-child(4n){--rot:-1deg}
+.province[aria-pressed=true]{background:var(--lime);transform:rotate(var(--rot,0deg)) translateY(-2px)}
+.province:active,.zone:active,.tab:active{box-shadow:0 1px 0 var(--ink);transform:translateY(3px)}
+.province .tick{position:absolute;top:3px;right:8px;font-size:13px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:2px solid var(--ink);background:var(--cream);padding:12px 14px;font-size:16px;border-radius:999px;font-weight:1000;min-height:44px}
+.pill[aria-pressed=true]{background:var(--lime)}
+.area-note{border:2px dashed #b0beb7;border-radius:15px;padding:13px;margin-top:17px;background:#f8faef;font-size:14px;font-weight:800;line-height:1.4}
+.group{margin-bottom:24px}.group h3{font-weight:1000;font-size:21px;letter-spacing:-.025em;margin:0 0 12px}
+.group p{margin:7px 0;color:var(--muted);font-size:14px}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:16px 2px 0}
+.summary{font-weight:900;font-size:clamp(15px,1.6vw,19px);max-width:52ch;line-height:1.3}
+.summary small{display:block;font-size:13px;color:var(--muted);margin-top:5px}
+.actions{display:flex;gap:11px;align-items:center;flex-wrap:wrap}
+.go{background:var(--orange);border:var(--stroke);border-radius:21px;font-size:clamp(22px,2.8vw,31px);font-weight:1000;box-shadow:0 6px 0 var(--ink);padding:15px 29px;text-decoration:none;color:var(--ink);transform:rotate(-2deg);white-space:nowrap}
+.go[aria-disabled=true]{background:#dddcd3;color:#596c71;cursor:not-allowed;box-shadow:0 4px 0 #7b8e8a}
+.info{font-size:14px;color:var(--muted);max-width:310px}
+.modalback{position:fixed;inset:0;background:#0e2735b8;display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modalback[hidden]{display:none}
+.modal{background:var(--cream);border:var(--stroke);box-shadow:9px 11px 0 var(--ink);border-radius:27px;padding:28px;width:min(100%,480px)}
+.modal h2{font-size:39px}.modal p{line-height:1.45}.modal button{border:var(--stroke);border-radius:15px;padding:12px 20px;font-weight:1000;background:var(--lime);font-size:21px}
+@media(max-width:850px){.layout{grid-template-columns:1fr;gap:9px}.tabs{flex-direction:row;padding:0 0 11px;gap:8px}.tab{flex:1;text-align:center;font-size:clamp(14px,3.6vw,21px);padding:11px 3px;min-width:0;border-radius:13px}.tab .n{display:none}.panel{padding:12px 0 0;border-left:0;border-top:2px dashed #bcc9c6;min-height:0}.sheet-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.province{min-height:77px}header{padding-top:calc(env(safe-area-inset-top,0px) + 10px)}.wrap{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 25px)}}
+@media(max-width:450px){h1{font-size:clamp(45px,12vw,61px)}header .logo{font-size:22px}.back{font-size:13px;padding:8px 11px;box-shadow:0 3px 0 var(--ink)}.intro{margin-bottom:16px}.intro p{font-size:15px}.board{padding:13px;border-radius:22px;box-shadow:6px 7px 0 var(--ink)}.sheet-grid{gap:8px}.province{min-height:75px;padding:9px 5px;font-size:14px;box-shadow:2px 3px 0 var(--ink)}h2{font-size:31px}.hint{font-size:14px;margin-bottom:14px}.zone{font-size:15px;padding:10px 12px}.bottom{padding-top:21px}.go{width:100%;text-align:center}.actions{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+</style>
+<style id="liveNationalOptions">.pill:disabled{opacity:.38;cursor:not-allowed;box-shadow:none;text-decoration:line-through}.go:disabled{opacity:.5;cursor:not-allowed}.go:disabled:active{transform:none}#topicNote{max-width:60ch}</style>
+<style id="settings-fixed-viewport">
+html,body{height:var(--settings-h,100dvh);max-height:var(--settings-h,100dvh);overflow:hidden;overscroll-behavior:none}
+body{display:flex;flex-direction:column;min-height:0}
+body>header{flex:0 0 auto;width:min(1430px,100%);padding-top:12px;padding-bottom:12px}
+.wrap{flex:1 1 0;min-height:0;width:min(1430px,100%);padding-top:5px;padding-bottom:14px;display:flex;flex-direction:column;overflow:hidden}
+.intro{flex:0 0 auto;margin-bottom:12px}
+.intro h1{font-size:clamp(42px,6.5vw,85px);margin:8px 0 3px}
+.intro p{margin:3px 0}
+.board{flex:1 1 0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.layout{flex:1 1 0;min-height:0;overflow:hidden}
+.layout>div:last-child{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.tabs{min-height:0}.panel{min-height:0}
+.bottom{flex:0 0 auto;min-height:0;padding-top:11px;gap:10px}
+@media(max-width:850px){
+ .wrap{padding-bottom:12px}.board{padding:12px 14px}
+ .layout{display:flex;flex-direction:column;gap:4px}
+ .tabs{flex:0 0 auto;flex-direction:row;padding:0 0 9px}
+ .tab{padding:9px 3px;min-height:47px}
+ .layout>div:last-child{flex:1 1 0;min-height:0;overflow-y:auto}
+ .panel{padding:10px 0 0}
+ .bottom{border-top:2px dashed #bcc9c6;padding:10px 2px 0}
+ .summary{font-size:13px;line-height:1.2;flex:1 1 130px}
+ .summary small{font-size:11px;margin-top:3px}
+ .actions{flex:0 0 auto;width:auto}
+ .go{font-size:clamp(17px,4vw,23px);padding:10px 16px;width:auto;border-radius:15px}
+}
+@media(max-width:480px){
+ body>header{padding:9px 16px 8px}.wrap{padding:3px 15px 11px}
+ .intro{margin-bottom:7px}.intro h1{font-size:clamp(34px,9vw,45px);margin:7px 0 2px}
+ .intro p{font-size:13px}.sticker{font-size:10px;padding:4px 8px}
+ .board{border-radius:23px;padding:10px 12px 12px;box-shadow:6px 7px 0 var(--ink)}
+ .tab{font-size:14px;min-height:43px;border-radius:11px}
+ h2{font-size:27px;margin:0 0 5px}.hint{font-size:13px;margin-bottom:9px;line-height:1.2}
+ .zonepick{gap:6px;margin:0 0 10px}.zone{font-size:13px;padding:8px 9px;border-radius:12px;min-height:37px}
+ .sheet-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .province{min-width:0;min-height:61px;font-size:clamp(10px,2.9vw,13px);line-height:1.1;padding:9px 2px;border-radius:12px;border-width:2px;box-shadow:2px 3px 0 var(--ink);overflow-wrap:anywhere}
+ .province .tick{top:1px;right:4px;font-size:11px}
+ .area-note{font-size:11px;padding:7px 9px;margin-top:10px;border-radius:10px}
+ .group{margin-bottom:14px}.group h3{font-size:17px;margin:0 0 8px}
+ .pill{font-size:13px;padding:8px 11px;min-height:39px}
+ .bottom{gap:5px}.summary{font-size:12px;max-width:185px}
+ .go{font-size:16px;padding:10px 12px;white-space:nowrap}
+}
+@media(max-height:620px){
+ .intro .sticker,.intro p{display:none}.intro h1{font-size:34px;margin:1px 0}
+ .intro{margin-bottom:5px}.wrap{padding-bottom:7px}
+ .board{padding-top:8px;padding-bottom:8px}.bottom{padding-top:5px}
+}
+</style>
+<style id="topo-shuffle-setting">
+#types .pill[data-value="shuffle"]{background:var(--pink);border:3px solid var(--ink);box-shadow:4px 5px 0 var(--ink);font-weight:1000;transform:rotate(-2deg)}
+#types .pill[data-value="shuffle"][aria-pressed="true"]{background:var(--lime)}
+#shuffleNote{font-weight:850;max-width:54ch;line-height:1.38}
+</style>
+<style id="topo-vo-start">
+.logo .vo{display:inline-block;margin-left:6px;padding:2px 8px;font-size:.55em;letter-spacing:0;vertical-align:middle;background:var(--lime);border:2px solid var(--ink);border-radius:9px;transform:rotate(4deg);color:var(--ink)}
+.toplinks{display:flex;gap:8px;align-items:center}.plain{background:none;border:0;font-weight:1000;text-decoration:underline;text-underline-offset:3px;padding:8px 4px;color:var(--ink)}
+.zone small{display:block;font-size:12px;font-weight:850;color:var(--muted)}
+.sheet-grid.sets{grid-template-columns:repeat(3,minmax(0,1fr))}
+.province.set{flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;gap:5px;min-height:92px;padding:12px 13px}
+.set-title{font-size:clamp(14px,1.4vw,18px);line-height:1.12}.set-meta{font-size:12px;font-weight:850;color:var(--muted)}
+.doel{display:inline-block;margin:4px 4px 0 0;padding:3px 8px;border:2px solid var(--ink);border-radius:9px;background:#fff;font-size:12px;font-weight:900}
+#setNote small{display:block;margin-top:6px;color:var(--muted)}
+.copy{border:2px solid var(--ink);border-radius:14px;background:#fff;padding:10px 13px;font-weight:1000;box-shadow:0 3px 0 var(--ink)}
+.overlay{position:fixed;inset:0;z-index:12;background:#0d2538ae;display:flex;align-items:center;justify-content:center;padding:15px}.overlay.hide{display:none}
+.mini-label{display:inline-block;background:var(--pink);border:2px solid var(--ink);border-radius:9px;padding:5px 10px;font-size:12px;font-weight:1000;transform:rotate(-3deg)}
+.overlay .modal{position:relative;width:min(100%,520px)}.overlay .modal h2{font-size:clamp(30px,6vw,42px);margin:10px 0}
+.big{font-weight:1000;border:var(--stroke);background:var(--orange);border-radius:20px;padding:14px 22px;box-shadow:0 5px 0 var(--ink);font-size:21px;transform:rotate(-2deg);color:var(--ink)}
+.overlay .modal details{margin:10px 0 16px;font-size:14px;line-height:1.4}.overlay .modal summary{font-weight:1000;cursor:pointer}
+@media(max-width:850px){.sheet-grid.sets{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.province.set{min-height:78px;padding:9px 10px}.set-title{font-size:13px}.set-meta{font-size:10.5px}.zone small{font-size:10px}.copy{font-size:12px;padding:8px 9px}.toplinks .plain{font-size:12px}}
+</style></head>
+<body>
+<header><a class="logo" href="/topo/vo/">Let’s go <span>TOPO!</span><b class="vo">VO</b></a><div class="toplinks"><button class="plain" id="openPrivacy" type="button">Privacy</button><a class="back" href="/topo/">Basisschool</a></div></header>
+<main class="wrap">
+<div class="intro"><div><span class="sticker">HAVO EN VWO · KLAS 1–6</span><h1>Topo voor VO!</h1><p>Kies je niveau, je set en hoe je wilt oefenen.</p></div></div>
+<div class="board">
+<div class="layout">
+<nav class="tabs" aria-label="Keuzes">
+<button class="tab" role="tab" aria-selected="true" aria-controls="panel-niveau" id="tab-niveau" data-tab="niveau"><span class="n">01</span> Niveau</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="panel-oefenen" id="tab-oefenen" data-tab="oefenen"><span class="n">02</span> Oefenen</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="panel-spel" id="tab-spel" data-tab="spel"><span class="n">03</span> Spel</button>
+</nav>
+<div>
+<section class="panel" id="panel-niveau" role="tabpanel" aria-labelledby="tab-niveau">
+<h2>Welk niveau?</h2><p class="hint">Kies je schooltype en eventueel je leerjaar.</p>
+<div class="zonepick" id="niveaus"></div>
+<div class="group"><h3>Leerjaar</h3><div class="controls" id="leerjaren"></div></div>
+<div class="area-note">Onderbouw volgt de kerndoelen mens en maatschappij en de SLO-basislijst. Havo en vwo volgen de examenprogramma’s aardrijkskunde. De indeling per leerjaar is een voorstel.</div>
+</section>
+<section class="panel" id="panel-oefenen" role="tabpanel" aria-labelledby="tab-oefenen" hidden>
+<h2>Wat ga je oefenen?</h2><p class="hint">Kies een set. Elke set hoort bij een doel.</p>
+<div class="sheet-grid sets" id="sets" aria-label="Oefensets"></div>
+<div class="area-note" id="setNote">Kies een set.</div>
+</section>
+<section class="panel" id="panel-spel" role="tabpanel" aria-labelledby="tab-spel" hidden>
+<h2>Hoe wil je spelen?</h2>
+<div class="group"><h3>Vraagvorm</h3><div class="controls" id="vormen"></div><p id="vormNote"></p></div>
+<div class="group"><h3>Aantal vragen</h3><div class="controls" id="aantal"></div></div>
+<div class="group"><h3>Hulp</h3><div class="controls" id="hulp"></div><p>Zonder hulp: geen hints en geen spiekkaart. Foute plekken komen later in de ronde terug.</p></div>
+<div class="group"><h3>Manier van oefenen</h3><div class="controls" id="manier"></div><p>Extra uitdaging: ook moeilijkere plekken en minder inzoomen.</p></div>
+</section>
+</div>
+</div>
+<div class="bottom">
+<div class="summary" id="summary" aria-live="polite">Even laden…</div>
+<div class="actions"><button type="button" class="copy" id="copy">Link voor de klas</button><a class="go" id="go" href="#">SPELEN! ↗</a></div>
+</div>
+</div>
+</main>
+<div class="modalback" id="notReady" hidden role="dialog" aria-modal="true" aria-labelledby="notReadyTitle"><div class="modal"><span class="sticker">KOMT NOG!</span><h2 id="notReadyTitle">Nog even niet!</h2><p>Kies eerst een niveau en een set.</p><button type="button" id="closeModal">OKÉ!</button></div></div>
+<div class="overlay" id="privacyLayer" role="dialog" aria-modal="true" aria-labelledby="privacyTitle"><div class="modal"><span class="mini-label">TOPO!</span><h2 id="privacyTitle">Let’s go, TOPO! VO</h2><p>Geen account nodig. Je antwoorden en scores bewaren we niet.</p><details><summary>Voor ouders en docenten</summary><p>Je hoeft geen persoonlijke gegevens in te vullen. Antwoorden en scores blijven tijdens het spelen in de browser en verdwijnen als je de pagina sluit of vernieuwt. Het spel slaat niets op en verstuurt geen speelgegevens. De website of hosting kan wel technische bezoekgegevens verwerken, zoals een IP-adres.</p></details><button class="big" id="privacyOk">JA, SPELEN! ↗</button></div></div>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const DATA='/topo/data/vo/';
+const p=new URLSearchParams(location.search);
+const NIVEAUS=[['onderbouw','Onderbouw','klas 1–3',[1,2,3]],['havo','Havo','klas 4–5',[4,5]],['vwo','Vwo','klas 4–6',[4,5,6]]];
+const VORMEN=[['mix','Lekker afwisselen'],['shuffle','TOPO SHUFFLE!'],['point','Aanwijzen'],['choice','Kiezen'],['type','Typen'],['missing','Wat mist er?'],['zoom','Ingezoomd'],['quiz','Zonder kaart']];
+const AANTAL=[['5','5'],['10','10'],['20','20'],['40','40'],['all','Alles']];
+const HULP=[['help','Met hulp'],['none','Zonder hulp']];
+const MANIER=[['normal','Gewoon oefenen'],['challenge','Extra uitdaging']];
+const KAARTNAAM={wereld:'Wereldkaart',europa:'Europa',nederland:'Nederland','zuid-amerika':'Zuid-Amerika',brazilie:'Brazilië','mexico-vs':'Mexico – VS'};
+let SETS=[],DOELEN={};
+const state={niveau:p.get('niveau')||'onderbouw',leerjaar:p.get('leerjaar')||'alle',set:p.get('set')||'',mode:p.get('mode')||'mix',questions:p.get('questions')||'10',assist:p.get('assist')||'help',level:p.get('level')||'normal'};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function setById(id){return SETS.find(s=>s.id===id)}
+function visibleSets(){
+ return SETS.filter(s=>s.niveau===state.niveau&&(state.leerjaar==='alle'||s.leerjaren.includes(+state.leerjaar)));
+}
+function vormBeschikbaar(s,v){
+ if(!s)return false;
+ if(!s.kaart)return v==='quiz';
+ if(v==='mix'||v==='point'||v==='choice'||v==='type')return true;
+ if(v==='shuffle')return Boolean(s.vragen);
+ return s.vraagvormen.includes(v);
+}
+function pills(id,list,value,disabled){
+ $(id).innerHTML=list.map(([v,l])=>{const off=disabled&&disabled(v);return '<button type="button" class="pill" data-group="'+id+'" data-value="'+v+'" aria-pressed="'+(value===v)+'"'+(off?' disabled aria-label="'+esc(l)+' (niet bij deze set)"':'')+'>'+esc(l)+'</button>'}).join('');
+}
+function spelUrl(){
+ const q=new URLSearchParams({set:state.set,mode:state.mode,questions:state.questions});
+ if(state.assist==='none')q.set('assist','none');if(state.level==='challenge')q.set('level','challenge');
+ return '/topo/vo/spel/?'+q.toString();
+}
+function render(){
+ const niv=NIVEAUS.find(n=>n[0]===state.niveau)||NIVEAUS[0];
+ $('niveaus').innerHTML=NIVEAUS.map(n=>'<button class="zone" type="button" data-niveau="'+n[0]+'" aria-pressed="'+(n[0]===state.niveau)+'">'+n[1]+' <small>'+n[2]+'</small></button>').join('');
+ pills('leerjaren',[['alle','Alle leerjaren'],...niv[3].map(j=>[String(j),'Klas '+j])],state.leerjaar);
+ const list=visibleSets();
+ if(!list.some(s=>s.id===state.set))state.set=list[0]?.id||'';
+ $('sets').innerHTML=list.map(s=>'<button class="province set" type="button" data-set="'+s.id+'" aria-pressed="'+(s.id===state.set)+'"><span class="set-title">'+esc(s.titel)+'</span><span class="set-meta">'+(s.kaart?KAARTNAAM[s.kaart]+' · '+s.aantal+' plekken':s.aantal+' begrippen')+'</span>'+(s.id===state.set?'<span class="tick">✓</span>':'')+'</button>').join('')||'<p class="hint">Geen sets voor deze keuze.</p>';
+ const s=setById(state.set);
+ $('setNote').innerHTML=s?'<strong>Dit oefen je:</strong> '+s.doelen.map(c=>DOELEN[c]?'<span class="doel" title="'+esc(DOELEN[c].omschrijving)+'">'+esc(c)+' · '+esc(DOELEN[c].titel)+'</span>':'').join(' ')+(s.uitleg?'<br><small>'+esc(s.uitleg)+'</small>':''):'Kies een set.';
+ if(s&&!vormBeschikbaar(s,state.mode))state.mode=s.kaart?'mix':'quiz';
+ pills('vormen',VORMEN,state.mode,v=>!vormBeschikbaar(s,v));
+ pills('aantal',AANTAL,state.questions);pills('hulp',HULP,state.assist);pills('manier',MANIER,state.level);
+ $('vormNote').textContent=state.mode==='shuffle'?'Alles door elkaar: aanwijzen, kiezen, typen, ingezoomde plekken en vragen zonder kaart.':state.mode==='quiz'?'Vragen zonder kaart: feiten en begrippen bij deze set.':'Kies een vraagvorm, of laat de vragen afwisselen.';
+ const vorm=VORMEN.find(v=>v[0]===state.mode)?.[1]||'';
+ $('summary').innerHTML=s?esc(niv[1])+(state.leerjaar!=='alle'?' klas '+esc(state.leerjaar):'')+' · '+esc(s.titel)+'<small>'+esc(vorm)+' · '+(state.questions==='all'?'alle':state.questions)+' vragen'+(state.assist==='none'?' · zonder hulp':'')+(state.level==='challenge'?' · extra uitdaging':'')+'</small>':'Kies een set<small>Kies eerst een niveau en een set.</small>';
+ $('go').href=s?spelUrl():'#';$('go').setAttribute('aria-disabled',String(!s));
+ const q=new URLSearchParams({niveau:state.niveau,leerjaar:state.leerjaar,set:state.set,mode:state.mode,questions:state.questions,assist:state.assist,level:state.level});
+ history.replaceState(null,'','?'+q.toString());
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b||b.disabled)return;
+ if(b.dataset.tab){
+  document.querySelectorAll('[data-tab]').forEach(t=>t.setAttribute('aria-selected',String(t===b)));
+  document.querySelectorAll('.panel').forEach(pn=>pn.hidden=pn.id!=='panel-'+b.dataset.tab);return;
+ }
+ if(b.dataset.niveau){state.niveau=b.dataset.niveau;state.leerjaar='alle';state.set='';render();return}
+ if(b.dataset.set){state.set=b.dataset.set;render();return}
+ const g=b.dataset.group;
+ if(g==='leerjaren')state.leerjaar=b.dataset.value;
+ else if(g==='vormen')state.mode=b.dataset.value;
+ else if(g==='aantal')state.questions=b.dataset.value;
+ else if(g==='hulp')state.assist=b.dataset.value;
+ else if(g==='manier')state.level=b.dataset.value;
+ else return;
+ render();
+});
+$('go').addEventListener('click',e=>{if($('go').getAttribute('aria-disabled')==='true'){e.preventDefault();$('notReady').hidden=false}});
+$('closeModal').onclick=()=>{$('notReady').hidden=true};
+$('copy').onclick=async()=>{
+ const url=location.origin+spelUrl();
+ try{await navigator.clipboard.writeText(url);$('copy').textContent='Gekopieerd!'}catch(err){window.prompt('Kopieer deze link:',url)}
+ setTimeout(()=>{$('copy').textContent='Link voor de klas'},2200);
+};
+if(p.has('set'))$('privacyLayer').classList.add('hide');
+$('openPrivacy').onclick=()=>$('privacyLayer').classList.remove('hide');
+$('privacyOk').onclick=()=>$('privacyLayer').classList.add('hide');
+function size(){document.documentElement.style.setProperty('--settings-h',Math.round(window.visualViewport?.height||window.innerHeight)+'px')}
+window.visualViewport?.addEventListener('resize',size);window.addEventListener('resize',size);size();
+Promise.all([fetch(DATA+'sets.json').then(r=>{if(!r.ok)throw Error('sets');return r.json()}),fetch(DATA+'doelen.json').then(r=>{if(!r.ok)throw Error('doelen');return r.json()})]).then(([sets,doelen])=>{
+ SETS=sets.sets;for(const d of doelen.doelen)DOELEN[d.code]=d;
+ const s=setById(state.set);if(s){state.niveau=s.niveau}
+ render();
+}).catch(err=>{console.error(err);$('sets').innerHTML='<p class="hint">De sets konden niet laden. Vernieuw de pagina.</p>'});
+})();
+</script>
+</body>
+</html>

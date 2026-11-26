@@ -1776,6 +1776,32 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/topo/vo/",
+      "url": "/topo/vo/",
+      "file": "topo/vo/index.html",
+      "title": "Let’s go TOPO! voor VO",
+      "kind": "toepassing",
+      "category": "Spelen en oefenen",
+      "review": "topografie_vo_havo_vwo_klas_1_6_kerndoelen_en_examenstof",
+      "parent": "page:/topo/",
+      "family": "spelen-en-oefenen",
+      "in_committed_sitemap": false,
+      "search_scope": "algemeen"
+    },
+    {
+      "id": "page:/topo/vo/spel/",
+      "url": "/topo/vo/spel/",
+      "file": "topo/vo/spel/index.html",
+      "title": "Spelen | Let’s go TOPO! VO",
+      "kind": "toepassing",
+      "category": "Spelen en oefenen",
+      "review": "vo_spel_wereld_europa_nederland_brazilie_mexico_vs",
+      "parent": "page:/topo/vo/",
+      "family": "spelen-en-oefenen",
+      "in_committed_sitemap": false,
+      "search_scope": "niet_indexeren"
+    },
+    {
       "id": "page:/twee-pijlers/",
       "url": "/twee-pijlers/",
       "file": "twee-pijlers/index.html",
