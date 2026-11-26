@@ -12,9 +12,10 @@ export const SERVICES = [
 export const STATUS = Object.freeze({idle:'idle',ready:'ready',busy:'busy',error:'error',unavailable:'unavailable'});
 export function classifyError(error,service='') {
   const message=String(error?.message||error||'Onbekende fout');
+  if(service==='ollama'&&/HTTP\s*403|forbidden/i.test(message)) return {code:'SYS-OLLAMA-403',advice:'Ollama weigert deze website-origin. Sluit de server volledig af, stel OLLAMA_ORIGINS in en start de server opnieuw.'};
   if (/abort|timeout|time.out/i.test(message)) return {code:'SYS-TIMEOUT-001',advice:'De controle duurde te lang. Probeer het opnieuw en kijk of het model geladen is.'};
-  if (/failed to fetch|networkerror|load failed|cors/i.test(message)) return {code:'SYS-NET-002',advice:'De verbinding is niet bereikbaar of de browser blokkeert de aanvraag (CORS). Controleer adres, server en toegestane browserorigin.'};
-  if (/permission|not.allowed|denied/i.test(message)) return {code:'SYS-PERM-003',advice:'Controleer de browsertoestemming voor de microfoon.'};
+  if (/failed to fetch|networkerror|load failed|cors/i.test(message)) return {code:'SYS-NET-002',advice:'De verbinding is niet bereikbaar of de browser blokkeert de aanvraag (CORS of lokale-netwerktoestemming). Controleer de server, origin en site-instellingen.'};
+  if (/permission|not.allowed|denied/i.test(message)) return {code:'SYS-PERM-003',advice:service==='mic'?'Controleer de browsertoestemming voor de microfoon.':'Controleer de site-instellingen voor toegang tot lokale apps.'};
   if (/404|model.*not found|gekozen model staat niet/i.test(message)) return {code:'SYS-MODEL-004',advice:'Het gekozen model ontbreekt op de server. Laad of kies een beschikbaar model.'};
   return {code:'SYS-'+service.toUpperCase().replace(/[^A-Z]/g,'').slice(0,8)+'-005',advice:'Open de betreffende functie, controleer de instellingen en probeer de test opnieuw.'};
 }
@@ -26,11 +27,29 @@ export function validateLocalEndpoint(value) {
   if (url.username||url.password||url.search||url.hash||url.pathname!=='/') throw new Error('Vul uitsluitend het basisadres in, zonder pad of inloggegevens');
   return url.origin;
 }
+// Use the granular permission where supported, not the obsolete combined name.
+export async function loopbackPermission(permissions=globalThis.navigator?.permissions) {
+  try{return (await permissions?.query({name:'loopback-network'}))?.state||'unknown';}
+  catch{return 'unknown';}
+}
+export function localFetchOptions(url,init={}) {
+  const parsed=new URL(url);
+  if(!['http:','https:'].includes(parsed.protocol)||!['localhost','127.0.0.1','[::1]'].includes(parsed.hostname)||parsed.username||parsed.password)
+    throw new Error('Alleen een lokale HTTP(S)-server is toegestaan');
+  const options={...init,cache:'no-store',credentials:'omit',redirect:'error'};
+  // Older browsers may reject the new enum or ignore it. Feature-detect
+  // without performing a request; only send it when the browser accepts it.
+  try{
+    const candidate=new Request(url,{targetAddressSpace:'loopback'});
+    if(candidate.targetAddressSpace==='loopback')options.targetAddressSpace='loopback';
+  }catch{}
+  return options;
+}
 async function request(url,init={},ms=8000) {
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),ms);
   try {
-    const response=await fetch(url,{...init,signal:controller.signal,cache:'no-store',credentials:'omit',redirect:'error'});
+    const response=await fetch(url,localFetchOptions(url,{...init,signal:controller.signal}));
     if(!response.ok) throw new Error('HTTP '+response.status);
     return response.json();
   } finally {clearTimeout(timer);}

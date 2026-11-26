@@ -2,7 +2,7 @@
 import {localReply,interruptBrowserReply,ensureBrowserModel,browserModelStatus} from './browser-llm.js';
 import {checkWebGpuAvailability} from './gpu-capability.mjs';
 import {availableVoices,readVoicePreference,saveVoicePreference,voiceLanguage} from './browser-voice-choice.mjs';
-import {listLocalModels,validateLocalEndpoint,probeLocalModel} from './system-probes.mjs';
+import {listLocalModels,validateLocalEndpoint,probeLocalModel,localFetchOptions} from './system-probes.mjs';
 import {activationGate,talkKey,ROUTES,guidance} from './activation.mjs';
 import {describeDevice,suggestDeviceSetup,modelDeviceAdvice} from './device-profile.mjs';
 import {isSpeechEngine,speechEngine,validateSpeechPair} from './speech-engines.mjs';
@@ -557,10 +557,10 @@ async function ask(question){
     }else if(engine.value==='ollama'){
       const origin=validateLocalEndpoint(ollamaEndpoint.value);
       if(!ollamaModel.value)throw new Error('Kies eerst via Zoek lokale modellen een Ollama-model.');
-      const response=await fetch(origin+'/api/chat',{
-        method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',
+      const response=await fetch(origin+'/api/chat',localFetchOptions(origin+'/api/chat',{
+        method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({model:ollamaModel.value,messages,stream:false,options:{num_predict:160}})
-      });
+      }));
       if(!response.ok)throw new Error('Ollama HTTP '+response.status);
       const result=await response.json();
       text=String(result?.message?.content||'').trim();

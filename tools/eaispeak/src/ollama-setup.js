@@ -1,5 +1,6 @@
 import './ollama-setup.css';
-import {inspectOllamaServer, probeLocalModel, classifyError} from './system-probes.mjs';
+import {inspectOllamaServer, probeLocalModel, classifyError, loopbackPermission} from './system-probes.mjs';
+import {macOllamaCommands,OLLAMA_HTTP,OLLAMA_HTTPS} from './ollama-connection.mjs';
 
 const host=document.querySelector('#page-meer');
 if(host) {
@@ -27,14 +28,15 @@ if(host) {
     {title:'Opstarten',instruction:'Start Ollama op je Mac. De app blijft in de menubalk draaien. Controleer daarna de lokale server.'},
     {title:'Browser verbinden',instruction:'Verbind deze browser met Ollama op je Mac. Safari gebruikt bij voorkeur een lokale HTTPS-verbinding.'},
     {title:'Een model kiezen',instruction:'Gebruik bij voorkeur een model dat al op je Mac staat. Ontbreekt er een model? Download er één via Terminal.'},
-    {title:'Model testen',instruction:'Laat het gekozen model één korte Franse zin maken. Pas na een echt antwoord is deze controle geslaagd.'}
+    {title:'Model testen',instruction:'Laat het gekozen model één korte testzin maken. Pas na een echt antwoord is deze controle geslaagd.'}
   ];
   const $=id=>document.getElementById(id);
   const origin=window.location.origin;
   const safari=/safari/i.test(navigator.userAgent)&&!/chrome|chromium|crios|edg/i.test(navigator.userAgent);
   const browserName=safari?'Safari':'deze browser';
-  const httpServer='http://localhost:11434/';
-  const httpsServer='https://localhost:11435/';
+  const httpServer=OLLAMA_HTTP;
+  const httpsServer=OLLAMA_HTTPS;
+  const commands=macOllamaCommands(origin);
   let server=safari?httpsServer:httpServer;
   let connectionKind=safari?'https':'http';
   let index=0;
@@ -110,34 +112,43 @@ if(host) {
       const method=document.createElement('select');method.id='ollamaConnectionKind';
       [['https','Beveiligde lokale verbinding (Safari)'],['http','Direct via HTTP (andere browsers)']].forEach(([value,label])=>method.add(new Option(label,value)));
       method.value=connectionKind;
-      method.addEventListener('change',()=>{connectionKind=method.value;server=connectionKind==='https'?httpsServer:httpServer;serverReady=false;models=[];selected='';verified=false;notify('');render();});
+      method.addEventListener('change',()=>{connectionKind=method.value;server=connectionKind==='https'?httpsServer:httpServer;serverReady=false;models=[];selected='';verified=false;lastError='';notify('');render();});
       choices.append(method);contentElement.append(choices);
       contentElement.append(line('p','Te testen adres: '+server+'. De verbinding wordt pas bevestigd na een antwoord vanuit deze browser.','studio-support'));
       if(connectionKind==='https'){
         contentElement.append(line('p','Safari kan een HTTP-aanvraag vanuit een HTTPS-website blokkeren. Ollama spreekt zelf HTTP. Caddy kan alleen op jouw Mac een vertrouwde HTTPS-verbinding vóór Ollama verzorgen.','studio-support'));
         const setup=document.createElement('details');setup.className='ollama-help';
-        setup.append(line('summary','Lokale HTTPS-verbinding voor Safari'));
+        setup.append(line('summary','Lokale HTTPS-verbinding voor Safari'));setup.open=Boolean(lastError);
         setup.append(line('p','Installeer Caddy als je Homebrew hebt. Is Homebrew niet aanwezig, gebruik de officiële instructies van caddyserver.com. Voer de opdrachten één voor één uit.','studio-support'));
         setup.append(terminal('brew install caddy'));
         setup.append(line('p','Maak een configuratie die uitsluitend luistert op je eigen Mac:','studio-support'));
-        setup.append(terminal('mkdir -p "$HOME/.config/eaispeak" && printf "%s\\n" "https://localhost:11435 {" "  bind 127.0.0.1" "  tls internal" "  reverse_proxy 127.0.0.1:11434" "}" > "$HOME/.config/eaispeak/Caddyfile"'));
-        setup.append(line('p','Laat Ollama op poort 11434 draaien. Start in een tweede Terminal-venster deze HTTPS-verbinding:','studio-support'));
-        setup.append(terminal('caddy run --config "$HOME/.config/eaispeak/Caddyfile"'));
-        setup.append(line('p','Caddy kan om toestemming vragen om het lokale certificaat op je Mac te vertrouwen. Geef die toestemming uitsluitend als je Caddy zelf hebt geïnstalleerd. Laat ook dit Terminal-venster open.','studio-support'));
+        setup.append(terminal(commands.writeConfig));
+        setup.append(line('p','Laat Ollama op poort 11434 draaien. Voer in een tweede Terminal-venster de volgende opdracht uit. De configuratie wordt eerst gecontroleerd. Caddy gebruikt alleen de lokale poort 11435 en maakt geen redirect via poort 80.','studio-support'));
+        setup.append(terminal(commands.startCaddy));
+        setup.append(line('p','Caddy kan toestemming vragen voor zijn lokale certificaat. Vertrouw het alleen wanneer je Caddy zelf hebt geïnstalleerd en je beheerbeleid dat toestaat. Gebruik geen sudo om Caddy te starten. Laat dit Terminal-venster open.','studio-support'));
         setup.append(line('p','Open https://localhost:11435/api/tags eerst rechtstreeks in Safari. De pagina moet zonder certificaatwaarschuwing laden. Pas daarna heeft de test vanuit de website zin.','studio-support'));
-        setup.append(line('p','De lokale HTTPS-poort is niet vanaf internet toegankelijk. Deze configuratie bindt aan 127.0.0.1.','studio-support'));
+        setup.append(line('p','De lokale HTTPS-poort luistert alleen op loopback (127.0.0.1 en ::1). Controleer daarna ook de website-origin via Terminal.','studio-support'));
+        setup.append(terminal(commands.curlHttps));
         contentElement.append(setup);
       }else{
-        contentElement.append(line('p','Deze directe HTTP-route kan in sommige browsers werken. Safari kan de aanvraag vanuit een HTTPS-website blokkeren, ook wanneer Terminal een HTTP 200 teruggeeft.','studio-support'));
+        contentElement.append(line('p','Probeer deze route eerst in Chrome of Edge, zonder Caddy. Geef EAIspeak toestemming om verbinding te maken met lokale apps op je computer. Safari kan HTTP blokkeren, ook na HTTP 200 in Terminal.','studio-support'));
       }
       contentElement.append(action('Test verbinding vanuit deze browser',checkServer));
       const detail=document.createElement('details');
-      detail.className='ollama-help';
+      detail.className='ollama-help';detail.open=Boolean(lastError);
       const summary=document.createElement('summary');summary.textContent='Verbinding geblokkeerd? Toon de oplossing voor macOS';detail.append(summary);
-      detail.append(line('p','Ollama moet het echte websiteadres toestaan. Stop Ollama en start daarna opnieuw met de juiste instelling. Deze stap helpt bij een CORS-fout, maar herstelt geen blokkade van onbeveiligd HTTP door Safari.','studio-support'));
-      detail.append(terminal('launchctl setenv OLLAMA_ORIGINS "'+origin+'"'));
-      detail.append(line('p','Een Terminal-test met Origin controleert CORS, niet de browserblokkade. Test daarna opnieuw vanuit deze website.','studio-support'));
-      detail.append(terminal('curl -i -H "Origin: '+origin+'" http://localhost:11434/api/tags'));
+      detail.append(line('p','Stap A · Sluit Ollama volledig af via het Ollama-icoon in de menubalk (Quit / Stop Ollama). Alleen het venster sluiten is niet genoeg. Stop ook een eventueel eerder gestart ollama serve met Ctrl+C.','studio-support'));
+      detail.append(line('p','Stap B · Kopieer de opdracht naar een nieuwe Terminal-prompt en druk op Enter. Deze instelling vervangt je eerder ingestelde extra origins. Alleen de genoemde websiteadressen krijgen toegang.','studio-support'));
+      detail.append(terminal(commands.setOrigins));
+      detail.append(line('p','Stap C · Start Ollama opnieuw. Wacht tot de app in de menubalk staat. De oude server leest de gewijzigde instelling niet vanzelf.','studio-support'));
+      detail.append(terminal(commands.restartApp));
+      detail.append(line('p','Stap D · Test exact de origin van deze pagina: '+origin+'. HTTP 200 betekent dat Ollama deze origin accepteert. HTTP 403 betekent dat Ollama de origin nog afwijst.','studio-support'));
+      detail.append(terminal(commands.curlHttp));
+      detail.append(line('p','HTTP 403 na opnieuw starten? Controleer welk proces op poort 11434 luistert. Start geen tweede server zolang deze poort bezet is.','studio-support'));
+      detail.append(terminal(commands.checkListener));
+      detail.append(line('p','Alternatief: sluit Ollama volledig af en start uitsluitend deze Terminal-server. Laat het venster open. Deze server luistert alleen lokaal.','studio-support'));
+      detail.append(terminal(commands.startTerminal));
+      detail.append(line('p','Stap E · Bij HTTP 200: klik opnieuw op Test verbinding vanuit deze browser. In Chrome: sta de toegang tot lokale apps toe. Eerder geweigerd? Klik links van het websiteadres op het site-instellingen-icoon, open Site-instellingen en sta Lokaal netwerk / Loopback-netwerk toe. Een schoolbeheerder kan deze instelling blokkeren. Omzeil het beheerbeleid niet.','studio-support'));
       detail.append(line('p','Deze instelling geldt voor de huidige macOS-aanmeldsessie. Na een herstart van je Mac kan opnieuw instellen nodig zijn.','studio-support'));
       contentElement.append(detail);
     }
@@ -181,7 +192,8 @@ if(host) {
     }catch(error){
       serverReady=false;models=[];selected='';verified=false;lastError=String(error?.message||error);
       const diagnosis=classifyError(error,'ollama');
-      notify('Verbinding vanuit '+browserName+' mislukt ('+diagnosis.code+'). '+(safari&&connectionKind==='http'?'Safari kan HTTP vanaf deze HTTPS-website blokkeren. Kies hierboven de lokale HTTPS-verbinding. ':safari&&connectionKind==='https'?'Controleer of Caddy draait en of https://localhost:11435/api/tags zonder certificaatwaarschuwing opent. ':'')+diagnosis.advice,true);
+      const permission=await loopbackPermission();
+      notify('Verbinding vanuit '+browserName+' mislukt ('+diagnosis.code+'). '+(permission==='denied'?'Deze browser weigert de toegang tot lokale apps. Open Site-instellingen. ':'')+(safari&&connectionKind==='http'?'Safari kan HTTP vanaf deze HTTPS-website blokkeren. Kies hierboven de lokale HTTPS-verbinding. ':safari&&connectionKind==='https'?'Controleer of Caddy draait en of https://localhost:11435/api/tags zonder certificaatwaarschuwing opent. ':'')+diagnosis.advice+' Volg de geopende herstelstappen hieronder.',true);
       return false;
     }finally{busy=false;render();}
   }
