@@ -243,7 +243,7 @@ const setId=params.get('set')||'ob1-nl-basis';
 const MODES=['mix','shuffle','point','choice','type','missing','zoom','quiz'];
 const mode=MODES.includes(params.get('mode'))?params.get('mode'):'mix';
 const countChoice=params.get('questions')||'10';
-const questionLimit=countChoice==='all'?80:Math.max(5,Math.min(80,parseInt(countChoice,10)||10));
+const questionLimit=countChoice==='all'?Infinity:Math.max(5,Math.min(80,parseInt(countChoice,10)||10));
 const noHints=params.get('assist')==='none';
 const challenge=params.get('level')==='challenge';
 const KAART={
@@ -411,11 +411,11 @@ function regionBounds(task){
  const it=task.item,full={left:0,right:W,top:0,bottom:H};
  if(!it||['werelddeel','oceaan','plaat'].includes(it.type))return full;
  const kd=kindOf(it);let pts=null;
+ if(challenge)return full;
  if(kaartId==='wereld'){
   const wd=continentOf(it);
   if(wd)pts=[...items.values()].filter(o=>o.werelddeel===wd&&o.type==='land'&&(o.kaarten||[]).includes('wereld')).map(pt);
- }else if(challenge){return full}
- else if(kaartId==='nederland'&&kd==='point'&&it.feiten?.provincie){
+ }else if(kaartId==='nederland'&&kd==='point'&&it.feiten?.provincie){
   const f=basisFeatures.find(x=>x.properties.statnaam===it.feiten.provincie);
   if(f)pts=projGeom(f.geometry).rings.flat();
  }else if(kaartId==='brazilie'&&kd==='point'&&it.feiten?.regio){
@@ -529,8 +529,9 @@ function modeFor(it,i){
  return m;
 }
 function pickItems(pool,limit){
+ // Gewoon oefenen: alleen basis- en middelplekken, ook als dat minder vragen oplevert. Extra uitdaging: alles.
  let use=pool;
- if(!challenge){const easy=pool.filter(it=>(it.moeilijkheid||2)<=2);if(easy.length>=Math.min(limit,pool.length))use=easy}
+ if(!challenge){const easy=pool.filter(it=>(it.moeilijkheid||2)<=2);if(easy.length)use=easy}
  return shuffle(use).slice(0,limit);
 }
 function factTask(q){return {id:q.id,kind:'fact',q,mode:'quiz'}}
@@ -671,7 +672,8 @@ function tapResult(svg,x,y){
   return {ok:false,hit:other||null};
  }
  const lines=visible.filter(it=>kindOf(it)==='line').map(it=>({it,d:edgeDist(shapeOf(it),x,y)})).sort((a,b)=>a.d-b.d);
- if(lines[0]&&lines[0].it.id===target.id&&lines[0].d<=18*u)return {ok:true};
+ const ownLine=lines.find(l=>l.it.id===target.id);
+ if(ownLine&&ownLine.d<=18*u&&ownLine.d<=lines[0].d+6*u)return {ok:true};
  return {ok:false,hit:lines[0]&&lines[0].d<=18*u?lines[0].it:null};
 }
 $('map').addEventListener('click',e=>{

@@ -19,9 +19,11 @@ for old in glob.glob(os.path.join(D, "vragen", "sets", "*.json")):
     os.remove(old)
 
 
-def bundel(set_id, items_ids=(), begrip_ids=()):
-    ids, bs = set(items_ids), set(begrip_ids)
-    qs = [q for q in ALLE_VRAGEN if (q.get("itemId") in ids and not q.get("begripId")) or q.get("begripId") in bs]
+def bundel(set_id, items_ids=(), begrip_ids=(), doelen=()):
+    """Vragen bij de set: over een item of begrip uit de set én met minstens één doel van de set."""
+    ids, bs, ds = set(items_ids), set(begrip_ids), set(doelen)
+    qs = [q for q in ALLE_VRAGEN if ((q.get("itemId") in ids and not q.get("begripId")) or q.get("begripId") in bs)
+          and ds & set(q.get("doelen", []))]
     if not qs:
         return None
     path = f"vragen/sets/{set_id}.json"
@@ -47,7 +49,7 @@ def S(id, titel, niveau, leerjaren, doelen, kaart, f, vraagvormen=ALLE, uitleg="
     sel.sort(key=lambda i: (i.get("moeilijkheid", 3), i["naam"]))
     zonder_kaart = [i["id"] for i in sel if kaart not in i.get("kaarten", [])]
     sel = [i for i in sel if kaart in i.get("kaarten", [])] if len(zonder_kaart) < len(sel) else sel
-    vr = bundel(id, [i["id"] for i in sel])
+    vr = bundel(id, [i["id"] for i in sel], doelen=doelen)
     SETS.append({"id": id, "titel": titel, "niveau": niveau, "leerjaren": leerjaren, "doelen": doelen, "kaart": kaart,
                  "vraagvormen": vraagvormen, "uitleg": uitleg, "aantal": len(sel), "items": [i["id"] for i in sel],
                  "bestanden": sorted({"items/" + GROEP[i["id"]] + ".json" for i in sel}), **({"vragen": vr} if vr else {}),
@@ -59,7 +61,7 @@ def BEGRIP(id, titel, niveau, leerjaren, f, uitleg=""):
     doelen = sorted({d for b in sel for d in b["doelen"]})
     SETS.append({"id": id, "titel": titel, "niveau": niveau, "leerjaren": leerjaren, "doelen": doelen, "kaart": None,
                  "vraagvormen": ["quiz"], "uitleg": uitleg, "aantal": len(sel), "items": [], "begrippen": [b["id"] for b in sel],
-                 "bestanden": [], "vragen": bundel(id, (), [b["id"] for b in sel])})
+                 "bestanden": [], "vragen": bundel(id, (), [b["id"] for b in sel], doelen)})
 
 
 # ---------------- onderbouw
@@ -121,7 +123,7 @@ S("v-c1-aarde", "De aarde als systeem", "vwo", [4, 5], ["V-C1"], "wereld",
 S("v-d1-zuid-amerika", "Zuid-Amerika", "vwo", [4, 5, 6], ["V-D1"], "zuid-amerika",
   lambda i: "V-D1" in i["doelen"] and "zuid-amerika" in i.get("kaarten", []) and (i["type"] != "stad" or (i.get("feiten", {}).get("inwoners_agglomeratie") or 0) >= 2_000_000) and i["type"] not in ("deelstaat", "favela", "weg", "plaats"))
 S("v-d1-brazilie", "Brazilië binnen Zuid-Amerika", "vwo", [5, 6], ["V-D1"], "brazilie",
-  lambda i: "V-D1" in i["doelen"] and i.get("land") == "BRA" and i["type"] in ("regio", "deelstaat", "biome", "hoofdstad", "stuwdam") or (i.get("land") == "BRA" and i["type"] == "stad" and (i.get("feiten", {}).get("inwoners_agglomeratie") or 0) >= 2_000_000))
+  lambda i: "V-D1" in i["doelen"] and i.get("land") == "BRA" and i["type"] in ("regio", "deelstaat", "bioom", "hoofdstad", "stuwdam") or (i.get("land") == "BRA" and i["type"] == "stad" and (i.get("feiten", {}).get("inwoners_agglomeratie") or 0) >= 2_000_000))
 S("v-e1-water-stad", "Leefomgeving Nederland: water en stad", "vwo", [4, 5, 6], ["V-E1"], "nederland",
   lambda i: i.get("land") == "NLD" and "V-E1" in i["doelen"] and i["type"] not in ("provincie", "eiland"))
 

@@ -2665,8 +2665,7 @@
    ],
    "bestanden": [
     "items/nederland.json"
-   ],
-   "vragen": "vragen/sets/h-e2-steden.json"
+   ]
   },
   {
    "id": "v-a1-mentale-kaart",
@@ -3425,7 +3424,7 @@
     "quiz"
    ],
    "uitleg": "",
-   "aantal": 48,
+   "aantal": 54,
    "items": [
     "stad-bra-brasilia",
     "stad-bra-rio-de-janeiro",
@@ -3434,11 +3433,14 @@
     "bra-deelstaat-al",
     "bra-deelstaat-ap",
     "bra-deelstaat-am",
+    "bra-bioom-amazonegebied",
     "bra-deelstaat-ba",
     "stad-bra-belo-horizonte",
     "bra-stuwdam-belo-montedam",
+    "bra-bioom-caatinga",
     "bra-deelstaat-ce",
     "bra-regio-centraal-west",
+    "bra-bioom-cerrado",
     "stad-bra-curitiba",
     "bra-deelstaat-es",
     "bra-deelstaat-df",
@@ -3446,11 +3448,14 @@
     "bra-deelstaat-go",
     "bra-stuwdam-itaipudam",
     "bra-deelstaat-ma",
+    "bra-bioom-mata-atlantica",
     "bra-deelstaat-mt",
     "bra-deelstaat-ms",
     "bra-deelstaat-mg",
     "bra-regio-noord",
     "bra-regio-noordoost",
+    "bra-bioom-pampa",
+    "bra-bioom-pantanal",
     "bra-deelstaat-pr",
     "bra-deelstaat-pb",
     "bra-deelstaat-pa",

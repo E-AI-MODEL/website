@@ -118,6 +118,7 @@ for (const s of sets.sets) {
     const mag = new Set(s.items), magB = new Set(s.begrippen || []);
     for (const q of qs) {
       assert.ok(q.begripId ? magB.has(q.begripId) : mag.has(q.itemId), `${s.id}: vraag ${q.id} hoort niet bij de set`);
+      assert.ok(q.doelen.some(d => s.doelen.includes(d)), `${s.id}: vraag ${q.id} oefent geen doel van de set`);
       assert.ok(q.options.includes(q.answer) && q.options.length === 4, `${s.id}: vraag ${q.id} ongeldig`);
     }
   }
@@ -161,5 +162,7 @@ assert.equal(vind('Ciudad Juárez').feiten.tweelingstad, vind('El Paso').id);
 for (const [stad, prov] of [['Zwolle', 'Overijssel'], ['Assen', 'Drenthe'], ["'s-Hertogenbosch", 'Noord-Brabant'], ['Lelystad', 'Flevoland']])
   assert.equal(vind(stad, 'stad').feiten.provincie, prov, `${stad} hoort bij ${prov}`);
 assert.equal(items.filter(i => i.feiten?.provinciehoofdstad).length, 12, 'Niet alle provinciehoofdsteden gemarkeerd');
+const vBrazil = sets.sets.find(s => s.id === 'v-d1-brazilie');
+assert.ok(['Amazonegebied', 'Cerrado', 'Pantanal'].every(n => vBrazil.items.includes(vind(n).id)), 'Biomen ontbreken in v-d1-brazilie');
 
 console.log(`TOPO VO OK: ${items.length} items, ${slo.length} SLO-namen, ${sets.sets.length} sets, ${begr.begrippen.length} begrippen, ${totaal} vragen`);
