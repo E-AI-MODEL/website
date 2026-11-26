@@ -1,6 +1,6 @@
 // Shared by the production browser test and the independent mobile WebKit test.
 import assert from 'node:assert/strict';
-import { chromium, webkit } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 import { spawn } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -52,10 +52,47 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     assert.equal(paused.yaw,after.yaw,'Pauze zet camera stil');assert.equal(after.animating,false);
     await fixed(p,w,h,mobile);await shot('ruimte');
     await p.locator('#side').click();await p.waitForFunction(()=>window.LEO_STATE().view==='side');
-    const c=await p.locator('#scene').boundingBox(),yaw=(await state(p)).yaw;
-    await p.mouse.move(c.x+c.width*.45,c.y+c.height*.7);
-    await p.mouse.down();await p.mouse.move(c.x+c.width*.68,c.y+c.height*.65,{steps:8});await p.mouse.up();
-    assert.notEqual((await state(p)).yaw,yaw,'Slepen draait de camera');
+    const scene=p.locator('#scene');
+    const beforeDrag=await state(p);
+    assert.equal(beforeDrag.animating,false,'Zijaanzicht draait niet vanzelf');
+    await p.evaluate(()=>{
+      window.__leeuwPointerTrace=[];
+      for(const type of ['pointerdown','pointermove','pointerup','pointercancel','gotpointercapture','lostpointercapture']){
+        document.addEventListener(type,e=>{
+          if(window.__leeuwPointerTrace.length<40)window.__leeuwPointerTrace.push({
+            type:e.type,target:e.target.id||e.target.tagName,pointerType:e.pointerType,
+            buttons:e.buttons,x:e.clientX,y:e.clientY,trusted:e.isTrusted
+          });
+        },true);
+      }
+    });
+    try{
+      // Let Playwright check stability and hit-testing before real mouse input.
+      const first=await scene.boundingBox();
+      assert.ok(first,'Sterrenkaart zichtbaar');
+      await scene.hover({position:{x:Math.round(first.width*.45),y:Math.round(first.height*.7)}});
+      const c=await scene.boundingBox();
+      assert.ok(c,'Sterrenkaart zichtbaar na hover');
+      const start={x:Math.round(c.x+c.width*.45),y:Math.round(c.y+c.height*.7)};
+      const end={x:Math.round(c.x+c.width*.68),y:Math.round(c.y+c.height*.65)};
+      assert.equal(await p.evaluate(({x,y})=>document.elementFromPoint(x,y)?.id,start),'scene','Sleep begint op de sterrenkaart');
+      await p.mouse.move(start.x,start.y);
+      await p.mouse.down();
+      try{await p.mouse.move(end.x,end.y,{steps:8})}finally{await p.mouse.up()}
+      await p.waitForFunction(y=>window.LEO_STATE().yaw!==y,beforeDrag.yaw,{timeout:4000});
+      assert.notEqual((await state(p)).yaw,beforeDrag.yaw,'Slepen draait de camera');
+      const trace=await p.evaluate(()=>window.__leeuwPointerTrace);
+      assert.ok(trace.some(e=>e.type==='pointerdown'&&e.target==='scene'&&e.trusted),'Echte pointerdown op de sterrenkaart');
+      assert.equal((await state(p)).view,'space','Slepen verlaat het vaste zijaanzicht');
+      console.log('Leeuw '+engine+'/'+w+': echte pointerrotatie geslaagd');
+    }catch(error){
+      console.error('Leeuw '+engine+'/'+w+' drag failure:',JSON.stringify(await p.evaluate(()=>({
+        state:window.LEO_STATE(),trace:window.__leeuwPointerTrace,
+        viewport:{width:innerWidth,height:innerHeight}
+      }))));
+      await shot('sleep-fout').catch(()=>{});
+      throw error;
+    }
     await range(35);assert.ok(Math.abs((await state(p)).blend-.35)<.01,'Schuif bestuurt de werkelijke projectie');
     await p.locator('#near').click();await p.waitForFunction(()=>window.LEO_STATE().points===8&&window.LEO_STATE().blend>.999);
     await shot('nabij');await open();
@@ -140,7 +177,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     assert.deepEqual(errors,[],'Reis browserfouten op '+engine+'/'+w);
     await ctx.close();
   }
-  const still=await browser.newContext({viewport:{width:390,height:760},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+  const still=await browser.newContext({viewport:{width:390,height:760},...(engine==='firefox'?{}:{isMobile:true}),hasTouch:true,reducedMotion:'reduce'});
   const film=await still.newPage();await film.goto(base+path,{waitUntil:'load'});
   await film.waitForFunction(()=>window.LEO_VOYAGE_STATE?.().frame>0);
   const v=await film.evaluate(()=>window.LEO_VOYAGE_STATE());
@@ -148,7 +185,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
   await film.locator('#voyageNext').click();assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().chapter),1);assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().time),31);
   await still.close();
 
-  const reduced=await browser.newContext({viewport:{width:390,height:760},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+  const reduced=await browser.newContext({viewport:{width:390,height:760},...(engine==='firefox'?{}:{isMobile:true}),hasTouch:true,reducedMotion:'reduce'});
   const p=await reduced.newPage();await p.goto(base+path+'#ruimte',{waitUntil:'load'});await p.waitForFunction(()=>window.LEO_STATE?.().points===9);
   const r=await state(p);assert.equal(r.blend,1);assert.equal(r.animating,false,'Respecteer verminderde beweging');await reduced.close();
   console.log('Leeuw '+engine+': vast scherm, zeven onderwerpen, 3D-overgang, rotatie, pauze, schuif, metingen, grafiek en verminderde beweging geslaagd.');
@@ -160,6 +197,8 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   try{
     let ready=false;for(let i=0;i<60;i++){try{ready=(await fetch(base+path,{method:'HEAD'})).ok}catch{}if(ready)break;await new Promise(r=>setTimeout(r,100))}
     assert.ok(ready,'Leeuw ontbreekt');
-    browser=await (engine==='webkit'?webkit:chromium).launch({headless:true});await runLeeuwConsoleChecks(browser,base,engine);
+    const engines={chromium,firefox,webkit};
+    assert.ok(Object.hasOwn(engines,engine),'Onbekende browser: '+engine);
+    browser=await engines[engine].launch({headless:true});await runLeeuwConsoleChecks(browser,base,engine);
   }finally{if(browser)await browser.close();server.kill()}
 }

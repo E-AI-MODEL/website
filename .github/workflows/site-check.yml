@@ -227,6 +227,7 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_release_artifact.py' -v
           python3 -m unittest discover -s tests -p 'test_ci_scenarios.py' -v
           python3 -m unittest discover -s tests -p 'test_ci_build_artifact.py' -v
+          python3 -m unittest discover -s tests -p 'test_live_cloudflare.py' -v
 
   # De bestaande actieve branchregel vereist deze naam. Behoud deze context.
   static-checks:
