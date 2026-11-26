@@ -8,7 +8,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Ecuador",
-   "question": "Ecuador is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Ecuador?",
    "answer": "evenaar",
    "options": [
     "choropletenkaart",
@@ -41,7 +41,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Londen",
-   "question": "Londen is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Londen?",
    "answer": "nulmeridiaan",
    "options": [
     "schaal",
@@ -74,7 +74,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Bangladesh",
-   "question": "Bangladesh is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Bangladesh?",
    "answer": "bevolkingsdichtheid",
    "options": [
     "migratie",
@@ -116,7 +116,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Nederland",
-   "question": "Nederland is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Nederland?",
    "answer": "bevolkingsdichtheid",
    "options": [
     "pushfactor",
@@ -158,7 +158,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Mexico",
-   "question": "Mexico is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Mexico?",
    "answer": "geldovermakingen",
    "options": [
     "geldovermakingen",
@@ -191,13 +191,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Tokyo",
-   "question": "Tokyo is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Tokyo?",
    "answer": "megastad",
    "options": [
-    "leefbaarheid",
     "krimpgebied",
+    "favela",
     "megastad",
-    "segregatie"
+    "leefbaarheid"
    ],
    "hint": "",
    "note": "",
@@ -233,7 +233,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Mexico-Stad",
-   "question": "Mexico-Stad is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Mexico-Stad?",
    "answer": "megastad",
    "options": [
     "megastad",
@@ -275,7 +275,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Londen",
-   "question": "Londen is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Londen?",
    "answer": "wereldstad",
    "options": [
     "megastad",
@@ -313,7 +313,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "New York",
-   "question": "New York is een voorbeeld van…",
+   "question": "Welk begrip hoort bij New York?",
    "answer": "wereldstad",
    "options": [
     "suburbanisatie",
@@ -351,7 +351,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Buenos Aires",
-   "question": "Buenos Aires is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Buenos Aires?",
    "answer": "primaatstad",
    "options": [
     "primaatstad",
@@ -389,7 +389,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Lima",
-   "question": "Lima is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Lima?",
    "answer": "primaatstad",
    "options": [
     "suburbanisatie",
@@ -427,7 +427,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Randstad",
-   "question": "Randstad is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Randstad?",
    "answer": "stedelijk netwerk",
    "options": [
     "stedelijk netwerk",
@@ -469,7 +469,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Rocinha",
-   "question": "Rocinha is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Rocinha?",
    "answer": "favela",
    "options": [
     "primaatstad",
@@ -507,7 +507,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Rio de Janeiro",
-   "question": "Rio de Janeiro is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Rio de Janeiro?",
    "answer": "favela",
    "options": [
     "verstedelijking",
@@ -545,10 +545,10 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Rotterdam",
-   "question": "Rotterdam is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Rotterdam?",
    "answer": "containerisatie",
    "options": [
-    "handelsblok",
+    "tijdruimtecompressie",
     "containerisatie",
     "buitenlandse directe investering",
     "multinational"
@@ -583,10 +583,10 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Rotterdam",
-   "question": "Rotterdam is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Rotterdam?",
    "answer": "mainport",
    "options": [
-    "centrum en periferie",
+    "offshoring",
     "mondialisering",
     "mainport",
     "handelsblok"
@@ -625,7 +625,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Schiphol",
-   "question": "Schiphol is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Schiphol?",
    "answer": "mainport",
    "options": [
     "mainport",
@@ -667,7 +667,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Suezkanaal",
-   "question": "Suezkanaal is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Suezkanaal?",
    "answer": "knelpunt (zeestraat)",
    "options": [
     "knelpunt (zeestraat)",
@@ -705,7 +705,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Straat Malakka",
-   "question": "Straat Malakka is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Straat Malakka?",
    "answer": "knelpunt (zeestraat)",
    "options": [
     "knelpunt (zeestraat)",
@@ -743,7 +743,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Brazilië",
-   "question": "Brazilië is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Brazilië?",
    "answer": "ontwikkelingsland",
    "options": [
     "ontwikkelingsland",
@@ -781,13 +781,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Ciudad Juárez",
-   "question": "Ciudad Juárez is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Ciudad Juárez?",
    "answer": "maquiladora",
    "options": [
-    "informele sector",
+    "lithosfeer",
+    "grensoverschrijdende relatie",
     "maquiladora",
-    "Mercosur",
-    "droogtepolygoon"
+    "gletsjer"
    ],
    "hint": "",
    "note": "",
@@ -813,13 +813,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Tijuana",
-   "question": "Tijuana is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Tijuana?",
    "answer": "maquiladora",
    "options": [
     "Ruimte voor de Rivier",
     "maquiladora",
-    "regenrivier",
-    "grensoverschrijdende relatie"
+    "hotspot",
+    "regenrivier"
    ],
    "hint": "",
    "note": "",
@@ -845,7 +845,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "El Paso",
-   "question": "El Paso is een voorbeeld van…",
+   "question": "Welk begrip hoort bij El Paso?",
    "answer": "tweelingstad",
    "options": [
     "agglomeratie",
@@ -877,13 +877,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Ciudad Juárez",
-   "question": "Ciudad Juárez is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Ciudad Juárez?",
    "answer": "tweelingstad",
    "options": [
     "tweelingstad",
-    "schaal",
-    "steppe",
-    "nulmeridiaan"
+    "schaalniveau",
+    "toendra",
+    "keerkring"
    ],
    "hint": "",
    "note": "",
@@ -909,7 +909,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Brazilië",
-   "question": "Brazilië is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Brazilië?",
    "answer": "Mercosur",
    "options": [
     "mainport",
@@ -947,7 +947,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Argentinië",
-   "question": "Argentinië is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Argentinië?",
    "answer": "Mercosur",
    "options": [
     "tijdruimtecompressie",
@@ -985,13 +985,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Andes",
-   "question": "Andes is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Andes?",
    "answer": "convergente plaatgrens",
    "options": [
-    "aardbeving",
-    "oceanische rug",
+    "epicentrum",
+    "slenk",
     "convergente plaatgrens",
-    "stuwwal"
+    "landdegradatie"
    ],
    "hint": "",
    "note": "",
@@ -1027,11 +1027,11 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Himalaya",
-   "question": "Himalaya is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Himalaya?",
    "answer": "convergente plaatgrens",
    "options": [
-    "vulkanisme",
-    "verwering",
+    "gesteentekringloop",
+    "erosie",
     "convergente plaatgrens",
     "subductie"
    ],
@@ -1069,7 +1069,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "IJsland",
-   "question": "IJsland is een voorbeeld van…",
+   "question": "Welk begrip hoort bij IJsland?",
    "answer": "divergente plaatgrens",
    "options": [
     "divergente plaatgrens",
@@ -1111,7 +1111,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Californië",
-   "question": "Californië is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Californië?",
    "answer": "transforme plaatgrens",
    "options": [
     "meander",
@@ -1153,12 +1153,12 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Andes",
-   "question": "Andes is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Andes?",
    "answer": "subductie",
    "options": [
-    "verwering",
-    "morene",
-    "divergente plaatgrens",
+    "erosie",
+    "stuwwal",
+    "transforme plaatgrens",
     "subductie"
    ],
    "hint": "",
@@ -1191,7 +1191,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Nazcaplaat",
-   "question": "Nazcaplaat is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Nazcaplaat?",
    "answer": "subductie",
    "options": [
     "morene",
@@ -1229,7 +1229,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Atlantische Oceaan",
-   "question": "Atlantische Oceaan is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Atlantische Oceaan?",
    "answer": "oceanische rug",
    "options": [
     "morene",
@@ -1267,7 +1267,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Grote Slenk",
-   "question": "Grote Slenk is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Grote Slenk?",
    "answer": "slenk",
    "options": [
     "vulkanisme",
@@ -1305,7 +1305,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Hawaii",
-   "question": "Hawaii is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Hawaii?",
    "answer": "hotspot",
    "options": [
     "hotspot",
@@ -1343,10 +1343,10 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Alpen",
-   "question": "Alpen is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Alpen?",
    "answer": "plooiingsgebergte",
    "options": [
-    "stuwwal",
+    "landdegradatie",
     "plooiingsgebergte",
     "verwering",
     "erosie"
@@ -1381,13 +1381,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Himalaya",
-   "question": "Himalaya is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Himalaya?",
    "answer": "plooiingsgebergte",
    "options": [
-    "woestijnvorming",
-    "divergente plaatgrens",
-    "sedimentatie",
-    "plooiingsgebergte"
+    "transforme plaatgrens",
+    "plooiingsgebergte",
+    "delta",
+    "morene"
    ],
    "hint": "",
    "note": "",
@@ -1419,7 +1419,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Zuidwestelijke Delta",
-   "question": "Zuidwestelijke Delta is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Zuidwestelijke Delta?",
    "answer": "delta",
    "options": [
     "delta",
@@ -1462,7 +1462,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Nijl",
-   "question": "Nijl is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Nijl?",
    "answer": "delta",
    "options": [
     "verwering",
@@ -1505,7 +1505,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Mississippi",
-   "question": "Mississippi is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Mississippi?",
    "answer": "meander",
    "options": [
     "platentektoniek",
@@ -1543,13 +1543,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Alpen",
-   "question": "Alpen is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Alpen?",
    "answer": "gletsjer",
    "options": [
     "platentektoniek",
     "gletsjer",
     "convergente plaatgrens",
-    "verwering"
+    "erosie"
    ],
    "hint": "",
    "note": "",
@@ -1581,7 +1581,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Veluwe",
-   "question": "Veluwe is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Veluwe?",
    "answer": "morene",
    "options": [
     "oceanische rug",
@@ -1619,7 +1619,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Veluwe",
-   "question": "Veluwe is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Veluwe?",
    "answer": "stuwwal",
    "options": [
     "oceanische rug",
@@ -1655,7 +1655,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Cerrado",
-   "question": "Cerrado is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Cerrado?",
    "answer": "landdegradatie",
    "options": [
     "oceanische rug",
@@ -1697,7 +1697,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Caatinga",
-   "question": "Caatinga is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Caatinga?",
    "answer": "landdegradatie",
    "options": [
     "landdegradatie",
@@ -1739,7 +1739,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Sahara",
-   "question": "Sahara is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Sahara?",
    "answer": "woestijnvorming",
    "options": [
     "woestijnvorming",
@@ -1781,7 +1781,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Andes",
-   "question": "Andes is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Andes?",
    "answer": "stuwingsregen",
    "options": [
     "ITCZ",
@@ -1819,10 +1819,10 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Atlantische Oceaan",
-   "question": "Atlantische Oceaan is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Atlantische Oceaan?",
    "answer": "zeestroming",
    "options": [
-    "tropisch regenwoud",
+    "savanne",
     "klimaatzone",
     "klimaatclassificatie van Köppen",
     "zeestroming"
@@ -1857,12 +1857,12 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Atlantische Oceaan",
-   "question": "Atlantische Oceaan is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Atlantische Oceaan?",
    "answer": "Golfstroom",
    "options": [
     "klimaatzone",
-    "broeikaseffect",
-    "savanne",
+    "klimaatverandering",
+    "steppe",
     "Golfstroom"
    ],
    "hint": "",
@@ -1895,7 +1895,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Peru",
-   "question": "Peru is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Peru?",
    "answer": "El Niño",
    "options": [
     "landschapszone",
@@ -1934,7 +1934,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Grote (of Stille) Oceaan",
-   "question": "Grote (of Stille) Oceaan is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Grote (of Stille) Oceaan?",
    "answer": "El Niño",
    "options": [
     "passaatwind",
@@ -1973,7 +1973,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Amazonegebied",
-   "question": "Amazonegebied is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Amazonegebied?",
    "answer": "tropisch regenwoud",
    "options": [
     "klimaatverandering",
@@ -2016,7 +2016,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Cerrado",
-   "question": "Cerrado is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Cerrado?",
    "answer": "savanne",
    "options": [
     "hogedrukgebied",
@@ -2055,7 +2055,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Pampa",
-   "question": "Pampa is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Pampa?",
    "answer": "steppe",
    "options": [
     "steppe",
@@ -2093,7 +2093,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Siberië",
-   "question": "Siberië is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Siberië?",
    "answer": "taiga",
    "options": [
     "savanne",
@@ -2131,7 +2131,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Siberië",
-   "question": "Siberië is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Siberië?",
    "answer": "permafrost",
    "options": [
     "tropisch regenwoud",
@@ -2169,13 +2169,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Andes",
-   "question": "Andes is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Andes?",
    "answer": "hoogtezones",
    "options": [
     "hoogtezones",
     "ITCZ",
-    "landschapszone",
-    "Golfstroom"
+    "tropisch regenwoud",
+    "El Niño"
    ],
    "hint": "",
    "note": "",
@@ -2207,13 +2207,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Rijn",
-   "question": "Rijn is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Rijn?",
    "answer": "stroomgebied",
    "options": [
     "stroomgebied",
-    "kwel",
-    "Deltaprogramma",
-    "overstroming"
+    "verzilting",
+    "polder",
+    "wateroverlast"
    ],
    "hint": "",
    "note": "",
@@ -2249,13 +2249,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Maas",
-   "question": "Maas is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Maas?",
    "answer": "stroomgebied",
    "options": [
     "inpoldering",
-    "kwel",
     "stroomgebied",
-    "droogmakerij"
+    "bodemdaling",
+    "getijden"
    ],
    "hint": "",
    "note": "",
@@ -2291,13 +2291,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Maas",
-   "question": "Maas is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Maas?",
    "answer": "regenrivier",
    "options": [
-    "uiterwaard",
-    "stormvloedkering",
-    "inpoldering",
-    "regenrivier"
+    "rivierafvoer",
+    "Deltaprogramma",
+    "regenrivier",
+    "zomerbed en winterbed"
    ],
    "hint": "",
    "note": "",
@@ -2329,13 +2329,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Rijn",
-   "question": "Rijn is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Rijn?",
    "answer": "gemengde rivier",
    "options": [
-    "overstroming",
-    "gemengde rivier",
     "rivierafvoer",
-    "uiterwaard"
+    "meerlaagsveiligheid",
+    "gemengde rivier",
+    "regenrivier"
    ],
    "hint": "",
    "note": "",
@@ -2367,13 +2367,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Lobith",
-   "question": "Lobith is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Lobith?",
    "answer": "rivierafvoer",
    "options": [
-    "droogmakerij",
-    "getijden",
-    "kwel",
-    "rivierafvoer"
+    "rivierafvoer",
+    "stroomgebied",
+    "wateroverlast",
+    "inpoldering"
    ],
    "hint": "",
    "note": "",
@@ -2405,13 +2405,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Waal",
-   "question": "Waal is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Waal?",
    "answer": "uiterwaard",
    "options": [
-    "bodemdaling",
-    "zoetwatervoorraad",
     "Ruimte voor de Rivier",
-    "uiterwaard"
+    "uiterwaard",
+    "wateroverlast",
+    "bodemdaling"
    ],
    "hint": "",
    "note": "",
@@ -2443,13 +2443,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Spiegelwaal",
-   "question": "Spiegelwaal is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Spiegelwaal?",
    "answer": "Ruimte voor de Rivier",
    "options": [
-    "inpoldering",
-    "Ruimte voor de Rivier",
     "gemengde rivier",
-    "verzilting"
+    "Ruimte voor de Rivier",
+    "droogmakerij",
+    "inpoldering"
    ],
    "hint": "",
    "note": "",
@@ -2481,7 +2481,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Noordwaard",
-   "question": "Noordwaard is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Noordwaard?",
    "answer": "Ruimte voor de Rivier",
    "options": [
     "Deltawerken",
@@ -2519,12 +2519,12 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Oosterscheldekering",
-   "question": "Oosterscheldekering is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Oosterscheldekering?",
    "answer": "Deltawerken",
    "options": [
-    "kwel",
+    "verzilting",
     "Deltawerken",
-    "bodemdaling",
+    "kwel",
     "Ruimte voor de Rivier"
    ],
    "hint": "",
@@ -2561,13 +2561,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Maeslantkering",
-   "question": "Maeslantkering is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Maeslantkering?",
    "answer": "Deltawerken",
    "options": [
-    "bodemdaling",
-    "wad",
-    "polder",
-    "Deltawerken"
+    "droogmakerij",
+    "Deltawerken",
+    "rivierafvoer",
+    "kwel"
    ],
    "hint": "",
    "note": "",
@@ -2603,7 +2603,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Maeslantkering",
-   "question": "Maeslantkering is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Maeslantkering?",
    "answer": "stormvloedkering",
    "options": [
     "stroomgebied",
@@ -2641,13 +2641,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Oosterscheldekering",
-   "question": "Oosterscheldekering is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Oosterscheldekering?",
    "answer": "stormvloedkering",
    "options": [
     "zomerbed en winterbed",
-    "droogmakerij",
+    "inpoldering",
     "stormvloedkering",
-    "bodemdaling"
+    "kwel"
    ],
    "hint": "",
    "note": "",
@@ -2679,10 +2679,10 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Haarlemmermeer",
-   "question": "Haarlemmermeer is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Haarlemmermeer?",
    "answer": "polder",
    "options": [
-    "bodemdaling",
+    "kwel",
     "wateroverlast",
     "overstroming",
     "polder"
@@ -2721,7 +2721,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Noordoostpolder",
-   "question": "Noordoostpolder is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Noordoostpolder?",
    "answer": "polder",
    "options": [
     "overstroming",
@@ -2763,13 +2763,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Haarlemmermeer",
-   "question": "Haarlemmermeer is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Haarlemmermeer?",
    "answer": "droogmakerij",
    "options": [
     "droogmakerij",
     "rivierafvoer",
-    "bodemdaling",
-    "kwel"
+    "kwel",
+    "verzilting"
    ],
    "hint": "",
    "note": "",
@@ -2801,7 +2801,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Flevoland",
-   "question": "Flevoland is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Flevoland?",
    "answer": "inpoldering",
    "options": [
     "inpoldering",
@@ -2837,7 +2837,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Groene Hart",
-   "question": "Groene Hart is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Groene Hart?",
    "answer": "bodemdaling",
    "options": [
     "overstroming",
@@ -2879,7 +2879,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Zuidwestelijke Delta",
-   "question": "Zuidwestelijke Delta is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Zuidwestelijke Delta?",
    "answer": "verzilting",
    "options": [
     "verzilting",
@@ -2917,7 +2917,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "IJsselmeer",
-   "question": "IJsselmeer is een voorbeeld van…",
+   "question": "Welk begrip hoort bij IJsselmeer?",
    "answer": "zoetwatervoorraad",
    "options": [
     "stormvloedkering",
@@ -2955,7 +2955,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Zandmotor",
-   "question": "Zandmotor is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Zandmotor?",
    "answer": "zandsuppletie",
    "options": [
     "stroomgebied",
@@ -2993,7 +2993,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Waddenzee",
-   "question": "Waddenzee is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Waddenzee?",
    "answer": "getijden",
    "options": [
     "rivierafvoer",
@@ -3029,7 +3029,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Waddenzee",
-   "question": "Waddenzee is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Waddenzee?",
    "answer": "wad",
    "options": [
     "Ruimte voor de Rivier",
@@ -3067,7 +3067,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Groene Hart",
-   "question": "Groene Hart is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Groene Hart?",
    "answer": "Groene Hart",
    "options": [
     "Groene Hart",
@@ -3109,11 +3109,11 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Amazonegebied",
-   "question": "Amazonegebied is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Amazonegebied?",
    "answer": "ontbossing",
    "options": [
     "binnenlandse migratie",
-    "waterkrachtcentrale",
+    "hulpbron",
     "grootgrondbezit",
     "ontbossing"
    ],
@@ -3151,7 +3151,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Cerrado",
-   "question": "Cerrado is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Cerrado?",
    "answer": "agrobusiness",
    "options": [
     "waterkrachtcentrale",
@@ -3190,7 +3190,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Carajás",
-   "question": "Carajás is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Carajás?",
    "answer": "hulpbron",
    "options": [
     "etnische en culturele diversiteit",
@@ -3232,7 +3232,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Itaipudam",
-   "question": "Itaipudam is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Itaipudam?",
    "answer": "waterkrachtcentrale",
    "options": [
     "inheemse bevolking",
@@ -3274,7 +3274,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Belo Montedam",
-   "question": "Belo Montedam is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Belo Montedam?",
    "answer": "waterkrachtcentrale",
    "options": [
     "etnische en culturele diversiteit",
@@ -3316,7 +3316,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Noordoost",
-   "question": "Noordoost is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Noordoost?",
    "answer": "regionale ongelijkheid",
    "options": [
     "landhervorming",
@@ -3354,7 +3354,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Zuidoost",
-   "question": "Zuidoost is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Zuidoost?",
    "answer": "regionale ongelijkheid",
    "options": [
     "ontbossing",
@@ -3392,12 +3392,12 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Sertão",
-   "question": "Sertão is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Sertão?",
    "answer": "binnenlandse migratie",
    "options": [
-    "binnenlandse migratie",
-    "hulpbron",
     "ontbossing",
+    "grootgrondbezit",
+    "binnenlandse migratie",
     "regionale ongelijkheid"
    ],
    "hint": "",
@@ -3430,7 +3430,7 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "São Paulo",
-   "question": "São Paulo is een voorbeeld van…",
+   "question": "Welk begrip hoort bij São Paulo?",
    "answer": "binnenlandse migratie",
    "options": [
     "binnenlandse migratie",
@@ -3468,13 +3468,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Amazonegebied",
-   "question": "Amazonegebied is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Amazonegebied?",
    "answer": "inheemse bevolking",
    "options": [
-    "waterkrachtcentrale",
-    "binnenlandse migratie",
+    "grootgrondbezit",
     "inheemse bevolking",
-    "agrobusiness"
+    "regionale ongelijkheid",
+    "hulpbron"
    ],
    "hint": "",
    "note": "",
@@ -3506,13 +3506,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Sertão",
-   "question": "Sertão is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Sertão?",
    "answer": "droogtepolygoon",
    "options": [
-    "waterkrachtcentrale",
+    "regionale ongelijkheid",
     "droogtepolygoon",
-    "hulpbron",
-    "grootgrondbezit"
+    "landhervorming",
+    "agrobusiness"
    ],
    "hint": "",
    "note": "",
@@ -3538,13 +3538,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Caatinga",
-   "question": "Caatinga is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Caatinga?",
    "answer": "droogtepolygoon",
    "options": [
-    "landhervorming",
-    "regionale ongelijkheid",
     "droogtepolygoon",
-    "binnenlandse migratie"
+    "waterkrachtcentrale",
+    "inheemse bevolking",
+    "hulpbron"
    ],
    "hint": "",
    "note": "",
@@ -3570,13 +3570,13 @@
    "kind": "fact",
    "category": "begrippen",
    "name": "Zuid-Amerika",
-   "question": "Zuid-Amerika is een voorbeeld van…",
+   "question": "Welk begrip hoort bij Zuid-Amerika?",
    "answer": "afbakening",
    "options": [
-    "pushfactor",
-    "megastad",
-    "zoetwatervoorraad",
-    "afbakening"
+    "subductie",
+    "bodemdaling",
+    "afbakening",
+    "kwel"
    ],
    "hint": "",
    "note": "",

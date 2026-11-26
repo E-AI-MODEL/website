@@ -227,7 +227,11 @@ for b in begrippen:
     if q: q["begripId"] = b["id"]
     for ref in b.get("voorbeelden", [])[:2]:
         it = by[ref]
-        q = vraag("voorbeeld-van-begrip", "begrippen", it, f"{it['naam']} is een voorbeeld van…", b["term"], pick(pool, 3), b["doelen"])
+        # 'hoort bij' in plaats van 'is een voorbeeld van': een plek kan ook alleen met het begrip samenhangen
+        # (Londen en de nulmeridiaan). Begrippen die ook bij deze plek horen, zijn geen afleider.
+        ook = {x["term"] for x in begrippen if ref in x.get("voorbeelden", [])}
+        q = vraag("voorbeeld-van-begrip", "begrippen", it, f"Welk begrip hoort bij {it['naam']}?", b["term"],
+                  pick([t for t in pool if t not in ook], 3), b["doelen"])
         if q: q["begripId"] = b["id"]
 
 os.makedirs(os.path.join(D, "vragen"), exist_ok=True)

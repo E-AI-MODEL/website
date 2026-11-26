@@ -2544,10 +2544,10 @@
    "question": "Welk begrip past bij deze uitleg? Alle verschijnselen waarbij magma naar het aardoppervlak komt.",
    "answer": "vulkanisme",
    "options": [
+    "sedimentatie",
+    "hotspot",
     "plooiingsgebergte",
-    "meander",
-    "vulkanisme",
-    "slenk"
+    "vulkanisme"
    ],
    "hint": "",
    "note": "",
@@ -2585,9 +2585,9 @@
    "question": "Welk begrip past bij deze uitleg? Het proces waarin stollings-, afzettings- en metamorfe gesteenten in elkaar overgaan.",
    "answer": "gesteentekringloop",
    "options": [
-    "transforme plaatgrens",
-    "lithosfeer",
+    "woestijnvorming",
     "platentektoniek",
+    "transforme plaatgrens",
     "gesteentekringloop"
    ],
    "hint": "",
@@ -3972,10 +3972,10 @@
    "question": "Welk begrip past bij deze uitleg? Een rivier die vooral door regenwater wordt gevoed, met grote verschillen in afvoer. De Maas is er een voorbeeld van.",
    "answer": "regenrivier",
    "options": [
-    "bodemdaling",
-    "uiterwaard",
     "zomerbed en winterbed",
-    "regenrivier"
+    "bodemdaling",
+    "regenrivier",
+    "overstroming"
    ],
    "hint": "",
    "note": "",
@@ -4009,10 +4009,10 @@
    "question": "Welk begrip past bij deze uitleg? Een rivier die door regen- én smeltwater wordt gevoed, waardoor de afvoer gelijkmatiger is. De Rijn is er een voorbeeld van.",
    "answer": "gemengde rivier",
    "options": [
-    "regenrivier",
-    "polder",
-    "Ruimte voor de Rivier",
-    "gemengde rivier"
+    "zandsuppletie",
+    "gemengde rivier",
+    "zoetwatervoorraad",
+    "getijden"
    ],
    "hint": "",
    "note": "",
@@ -4046,10 +4046,10 @@
    "question": "Welk begrip past bij deze uitleg? De hoeveelheid water die per seconde door een rivier stroomt, gemeten in m³/s. Bij Lobith wordt de afvoer van de Rijn gemeten.",
    "answer": "rivierafvoer",
    "options": [
-    "inpoldering",
     "Deltawerken",
-    "rivierafvoer",
-    "bodemdaling"
+    "gemengde rivier",
+    "uiterwaard",
+    "rivierafvoer"
    ],
    "hint": "",
    "note": "",
@@ -4083,10 +4083,10 @@
    "question": "Welk begrip past bij deze uitleg? Water dat buiten de oevers of over of door een waterkering stroomt.",
    "answer": "overstroming",
    "options": [
-    "stormvloedkering",
-    "meerlaagsveiligheid",
     "overstroming",
-    "bodemdaling"
+    "regenrivier",
+    "kwel",
+    "rivierafvoer"
    ],
    "hint": "",
    "note": "",
@@ -4124,10 +4124,10 @@
    "question": "Welk begrip past bij deze uitleg? Hinder door te veel water, bijvoorbeeld doordat riolen en sloten hevige regen niet snel genoeg kunnen afvoeren.",
    "answer": "wateroverlast",
    "options": [
+    "stroomgebied",
     "wateroverlast",
-    "polder",
-    "Deltawerken",
-    "verzilting"
+    "overstroming",
+    "regenrivier"
    ],
    "hint": "",
    "note": "",
@@ -4166,9 +4166,9 @@
    "answer": "uiterwaard",
    "options": [
     "uiterwaard",
-    "droogmakerij",
-    "wateroverlast",
-    "Ruimte voor de Rivier"
+    "polder",
+    "zandsuppletie",
+    "meerlaagsveiligheid"
    ],
    "hint": "",
    "note": "",
@@ -4202,10 +4202,10 @@
    "question": "Welk begrip past bij deze uitleg? Het zomerbed is de vaste geul van de rivier; het winterbed is het hele gebied tussen de dijken, inclusief de uiterwaarden.",
    "answer": "zomerbed en winterbed",
    "options": [
+    "rivierafvoer",
     "zomerbed en winterbed",
-    "verzilting",
-    "zandsuppletie",
-    "kwel"
+    "getijden",
+    "zoetwatervoorraad"
    ],
    "hint": "",
    "note": "",
@@ -4239,10 +4239,10 @@
    "question": "Welk begrip past bij deze uitleg? Een programma waarbij rivieren meer ruimte kregen, door bijvoorbeeld nevengeulen, dijkverlegging en lagere uiterwaarden.",
    "answer": "Ruimte voor de Rivier",
    "options": [
-    "Ruimte voor de Rivier",
-    "gemengde rivier",
     "stormvloedkering",
-    "verzilting"
+    "inpoldering",
+    "zoetwatervoorraad",
+    "Ruimte voor de Rivier"
    ],
    "hint": "",
    "note": "",
@@ -5318,10 +5318,10 @@
    "question": "Welk begrip past bij deze uitleg? De verscheidenheid aan herkomst, taal, godsdienst en gewoonten binnen een bevolking.",
    "answer": "etnische en culturele diversiteit",
    "options": [
-    "droogtepolygoon",
     "etnische en culturele diversiteit",
+    "grootgrondbezit",
     "waterkrachtcentrale",
-    "grootgrondbezit"
+    "droogtepolygoon"
    ],
    "hint": "",
    "note": "",
@@ -5355,10 +5355,10 @@
    "question": "Welk begrip past bij deze uitleg? Het gebied in het noordoosten van Brazilië dat vaak door langdurige droogte wordt getroffen.",
    "answer": "droogtepolygoon",
    "options": [
-    "grootgrondbezit",
-    "inheemse bevolking",
+    "waterkrachtcentrale",
+    "droogtepolygoon",
     "regionale ongelijkheid",
-    "droogtepolygoon"
+    "grootgrondbezit"
    ],
    "hint": "",
    "note": "",
@@ -5386,10 +5386,10 @@
    "question": "Welk begrip past bij deze uitleg? Het bepalen van de grenzen van een gebied en de criteria die je daarvoor gebruikt.",
    "answer": "afbakening",
    "options": [
+    "mitigatie",
+    "informele sector",
     "afbakening",
-    "landschapszone",
-    "bodemdaling",
-    "divergente plaatgrens"
+    "erosie"
    ],
    "hint": "",
    "note": "",

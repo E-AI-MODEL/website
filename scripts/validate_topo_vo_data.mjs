@@ -151,6 +151,11 @@ for (const s of vi.sjablonen) {
   totaal += qs.length;
 }
 assert.equal(totaal, vi.totaal, 'Totaal aantal vragen klopt niet');
+// Een begripvraag bij een plek mag maar één begrip als goed antwoord hebben.
+for (const q of json('vragen/voorbeeld-van-begrip.json').questions) {
+  const goed = begr.begrippen.filter(b => (b.voorbeelden || []).includes(q.itemId)).map(b => b.term);
+  assert.equal(q.options.filter(o => goed.includes(o)).length, 1, `${q.id}: meer dan één begrip hoort bij deze plek`);
+}
 
 // ---- inhoudelijke steekproeven (bekende feiten, niet uit het geheugen van de generator)
 const vind = (naam, type) => items.find(i => (i.naam === naam || (i.alt || []).includes(naam)) && (!type || i.type === type));
