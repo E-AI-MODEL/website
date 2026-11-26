@@ -41,9 +41,14 @@ const guestTargets=new Map([
   ['leif/beheer/index.html','/leif/?beheer=1'],
 ]);
 
+// Both legacy aliases end at the public research hub. DOMContentLoaded on
+// the first redirect is not readiness of the final, fully styled document.
+const researchAliases=new Set(['verdieping/index.html','kennis/index.html']);
+const researchPages=new Set([...researchAliases,'nl/onderzoek/index.html']);
+
 export async function openArchivePage(page,path,base,timeout=12000){
   await page.goto(base+'/'+path,{
-    waitUntil:guestTargets.has(path)?'commit':'domcontentloaded',
+    waitUntil:(guestTargets.has(path)||researchAliases.has(path))?'commit':'domcontentloaded',
     timeout
   });
   return waitForArchivePage(page,path,base,timeout);
@@ -66,6 +71,18 @@ export async function waitForArchivePage(page, path, base, timeout=12000){
     await privateContent.waitFor({state:'attached',timeout});
     await privateContent.waitFor({state:'hidden',timeout});
     return {guestRedirect:page.url()};
+  }
+  if(researchPages.has(path)){
+    await page.waitForURL(url=>url.origin===base&&
+      url.pathname.replace(/index\.html$/,'')==='/nl/onderzoek/'&&!url.search&&!url.hash,
+      {waitUntil:'load',timeout});
+    await page.locator('main .knowledge-routes').waitFor({state:'visible',timeout});
+    // Wait for fonts and layout of the destination, not a fixed delay on a redirect.
+    await page.evaluate(async()=>{
+      await document.fonts.ready;
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    });
+    return {researchDestination:page.url()};
   }
   if(path==='eai-tools-modules/index.html'){
     await page.waitForURL(url=>url.origin===base&&url.pathname==='/nl/tools/',{waitUntil:'load',timeout:12000});

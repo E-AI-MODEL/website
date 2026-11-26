@@ -39,8 +39,9 @@ proeven uitvoeren en faalt als een verplichte proef mislukt.
   releasebestanden. Bestaande installatiestappen blijven actief.
 - Alleen achterhaalde PR-runs worden geannuleerd. Geen aanpassing van
   Theory7-publicatie, FTPS-overdracht, eigenaarstoestemming, TOPO, herstel of Pages.
-- Gedeeltelijke reruns met een ontbrekend artifact van de actuele runpoging
-  blijven fail-closed; voer in dat geval een volledige rerun uit.
+- Historische stand na #403: gedeeltelijke reruns met een ontbrekend artifact
+  van de actuele runpoging bleven fail-closed. Dit is voor productiepublicatie
+  hersteld in #414; zie de [geactualiseerde vergelijking](README.md#vergelijking-met-de-gepubliceerde-versie-op-26-november-2026). De overige artifactdownloaders zijn niet hiermee aangepast.
 - De inventory-workflow rapporteert volledige run/uses-blokken en hun context;
   de lexicale vergelijking alleen bewijst geen semantische testgelijkheid.
 - Actionlint wordt zowel op de baseline als op de gewijzigde workflows uitgevoerd;

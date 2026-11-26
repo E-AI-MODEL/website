@@ -222,40 +222,64 @@ export async function inspectPublicBlobs(api,entries,paths,fetcher,headers){
 
 // Publieke GitHub Checks horen bij de huidige branch. Alleen EAIgit-annotaties
 // mogen als bewezen syntaxfouten in de wizard verschijnen; een groen vinkje bewijst geen werking.
-export async function fetchPublicChecks(api,branch,paths,fetcher,headers){
- const result={checked:false,headSha:null,runs:[],syntaxErrors:[],incomplete:false};
- if(!branch)return result;
- let response;
- try{response=await fetcher(api+"/commits/"+encodeURIComponent(branch)+"/check-runs?per_page=50",{
-  headers,redirect:"error",signal:AbortSignal.timeout(8500)});
- }catch{return result;}
- if(!response.ok)return result;
- let data;
- try{data=await response.json();}catch{return result;}
- if(!Array.isArray(data.check_runs))return result;
- result.checked=true;result.incomplete=data.total_count>50;
+export async function fetchPublicChecks(api,commitSha,paths,fetcher,headers){
+ const result={checked:false,headSha:null,runs:[],syntaxErrors:[],incomplete:false,annotationsIncomplete:false};
+ if(!/^[a-f0-9]{40}$/i.test(commitSha||""))return result;
+ const sha=commitSha.toLowerCase(),pageSize=100,maxPages=3,deadline=Date.now()+8500;
+ const request=async url=>{
+  const remaining=deadline-Date.now();
+  if(remaining<=0)throw Error("GitHub check time budget exceeded");
+  const response=await fetcher(url,{headers,redirect:"error",signal:AbortSignal.timeout(remaining)});
+  if(!response.ok)throw Error("GitHub check request failed");
+  return response.json();
+ };
+ const relevant=[],seen=new Set();
+ let total=null,received=0;
+ for(let page=1;page<=maxPages;page++){
+  let data;
+  try{data=await request(api+"/commits/"+sha+"/check-runs?per_page="+pageSize+"&page="+page+"&filter=latest");}
+  catch{result.incomplete=true;break;}
+  if(!Array.isArray(data?.check_runs)){result.incomplete=true;break;}
+  result.checked=true;result.headSha=sha;
+  if(!Number.isSafeInteger(data.total_count)||data.total_count<0){
+   result.incomplete=true;
+  }else if(total===null){total=data.total_count;}
+  else if(total!==data.total_count){result.incomplete=true;}
+  if(data.check_runs.length>pageSize)result.incomplete=true;
+  received+=data.check_runs.length;
+  for(const run of data.check_runs){
+   if(!run||!Number.isSafeInteger(run.id)||run.id<=0||seen.has(run.id)){
+    result.incomplete=true;continue;
+   }
+   seen.add(run.id);
+   if(typeof run.name!=="string"||!run.name.trim()||typeof run.head_sha!=="string"||run.head_sha.toLowerCase()!==sha){
+    result.incomplete=true;continue;
+   }
+   if(/EAIgit|projectcontrole|project.?engine|syntax|syntaxis/i.test(run.name))relevant.push(run);
+  }
+  if(total===null||received>=total||data.check_runs.length<pageSize)break;
+ }
+ if(total===null||received!==total||seen.size!==received)result.incomplete=true;
+ const known=["success","failure","cancelled","timed_out","skipped","neutral","action_required","stale","startup_failure"];
+ const safeUrl=value=>typeof value==="string"&&/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/(?:actions\/runs\/\d+(?:\/job\/\d+)?|runs\/\d+)(?:\?[^#\s]*)?$/.test(value)&&value.toLowerCase().startsWith(api.replace("https://api.github.com/repos/","https://github.com/").toLowerCase()+"/")?value:null;
+ result.runs=relevant.map(run=>({id:run.id,name:safeLabel(run.name),status:run.status==="completed"?"completed":"pending",
+  conclusion:known.includes(run.conclusion)?run.conclusion:null,url:safeUrl(run.html_url)}));
+ // All returned checks count towards the verdict; annotations have a separate bounded budget.
+ const failed=relevant.filter(x=>x.status==="completed"&&x.conclusion==="failure");
+ if(failed.length>3)result.annotationsIncomplete=true;
  const permitted=new Set(paths);
- const runs=data.check_runs.filter(x=>typeof x.name==="string"&&
-  /EAIgit|projectcontrole|project.?engine|syntax|syntaxis/i.test(x.name)).slice(0,12);
- result.headSha=runs.find(x=>/^[a-f0-9]{40}$/i.test(x.head_sha||""))?.head_sha||null;
- result.runs=runs.map(x=>({name:safeLabel(x.name),status:x.status==="completed"?"completed":"pending",
-  conclusion:["success","failure","cancelled","timed_out","skipped","neutral","action_required"].includes(x.conclusion)?x.conclusion:null,
-  url:typeof x.html_url==="string"&&x.html_url.startsWith("https://github.com/")?x.html_url:null})).slice(0,8);
- const failed=runs.filter(x=>x.conclusion==="failure"&&Number.isSafeInteger(x.id)).slice(0,3);
- for(const check of failed){
-  let response;
-  try{response=await fetcher(api+"/check-runs/"+check.id+"/annotations?per_page=100",{
-   headers,redirect:"error",signal:AbortSignal.timeout(8500)});}
-  catch{result.incomplete=true;continue;}
-  if(!response.ok){result.incomplete=true;continue;}
-  let annotations;try{annotations=await response.json();}catch{result.incomplete=true;continue;}
-  if(!Array.isArray(annotations)){result.incomplete=true;continue;}
+ for(const check of failed.slice(0,3)){
+  let annotations;
+  try{annotations=await request(api+"/check-runs/"+check.id+"/annotations?per_page=100");}
+  catch{result.annotationsIncomplete=true;continue;}
+  if(!Array.isArray(annotations)){result.annotationsIncomplete=true;continue;}
+  if(annotations.length>=100||(Number.isSafeInteger(check.output?.annotations_count)&&check.output.annotations_count>annotations.length))result.annotationsIncomplete=true;
   for(const x of annotations){
-   if(x.title!=="EAIgit syntaxis"||!permitted.has(x.path))continue;
+   if(!x||x.title!=="EAIgit syntaxis"||!permitted.has(x.path))continue;
    const line=Number.isSafeInteger(x.start_line)&&x.start_line>0?x.start_line:null;
-   result.syntaxErrors.push({path:x.path,line,title:"Syntaxisfout bevestigd door GitHub Actions",
-    detail:"GitHub Actions heeft de syntaxis van dit bestand gecontroleerd en een fout gemeld.",checkUrl:result.runs.find(y=>y.name===check.name)?.url||null});
-   if(result.syntaxErrors.length>=30){result.incomplete=true;return result;}
+   result.syntaxErrors.push({path:x.path,line,title:"Syntaxisfout gemeld door GitHub Actions",
+    detail:"GitHub Actions meldt een syntaxisfout voor dit bestand. De uitgevoerde controle is niet onafhankelijk herhaald.",checkUrl:safeUrl(check.html_url)});
+   if(result.syntaxErrors.length>=30){result.annotationsIncomplete=true;return result;}
   }
  }
  return result;

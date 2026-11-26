@@ -389,13 +389,14 @@ test("GitHub Checks: verifieer EAIgit-annotaties, filter ongeldige paden en leg 
    ]),{status:200});
   throw Error("Unexpected API URL "+url);
  };
- const checks=await fetchPublicChecks("https://api.github.com/repos/u/r","main",["src/app.js"],fetcher,{});
+ const checks=await fetchPublicChecks("https://api.github.com/repos/u/r",sha,["src/app.js"],fetcher,{});
  assert.equal(checks.checked,true);
  assert.equal(checks.syntaxErrors.length,1);
  assert.equal(checks.syntaxErrors[0].line,8);
  const guidance=makeGuidance({repo:{name:"u/r",url:"https://github.com/u/r",readable:true,paths:["src/app.js"],
   actionChecks:checks},goal:"app"});
- assert.equal(guidance.codeErrorsVerified,true);
+ assert.equal(guidance.codeErrorsVerified,false,"GitHub annotations are reported, not independently reproduced");
+ assert.equal(guidance.githubCodeErrorsReported,true);
  assert.ok(guidance.problems.some(x=>x.path==="src/app.js"&&x.line===8));
  assert.match(guidance.next[0],/syntaxisfout/);
 });

@@ -125,6 +125,40 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'HTML content mismatch: /kennis/'):
                 verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
 
+    def test_byte_identical_invalid_redirect_is_still_rejected(self):
+        from prepare_ui import LEGACY_HUB_REDIRECTS
+        route = '/kennis/'
+        target = LEGACY_HUB_REDIRECTS[route]
+        relative = 'kennis/index.html'
+        self.manifest['pages'].append(relative)
+        valid = (
+            '<html><head>'
+            f'<link rel="canonical" href="https://eaimodel.nl{target}">'
+            f'<meta http-equiv="refresh" content="0;url={target}">'
+            '</head><body><main>'
+            f'<a href="{target}">Verder</a>'
+            '</main></body></html>'
+        )
+        bad_cases = (
+            (valid.replace(f'https://eaimodel.nl{target}', 'https://example.invalid/'), 'canonical'),
+            (valid.replace(f'0;url={target}', f'0;url=/wrong/?next={target}'), 'refresh'),
+            (valid.replace(f'href="{target}"', 'href="/wrong/"'), 'fallback'),
+            (valid.replace('>Verder</a>', '></a>'), 'fallback'),
+        )
+        for bad, label in bad_cases:
+            with self.subTest(label=label, html=bad):
+                with self.assertRaisesRegex(AssertionError, f'Invalid {label} redirect: /kennis/'):
+                    verify_ui.assert_redirect_contract(route, verify_ui.BeautifulSoup(bad, 'html.parser'))
+                data = bad.encode()
+                file = self.root / relative
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_bytes(data)
+                def response(request, **kwargs):
+                    return io.BytesIO(data if urlsplit(request.full_url).path == route else self.current)
+                with patch.object(verify_ui, 'urlopen', side_effect=response):
+                    with self.assertRaisesRegex(RuntimeError, f'Invalid {label} redirect: /kennis/'):
+                        verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
+
     def test_editorial_page_without_matching_ui_version_is_rejected(self):
         relative = 'nl/tools/index.html'
         missing_version = self.current.replace(b'data-ui-version="same-ui-assets"', b'')

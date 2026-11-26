@@ -1,6 +1,6 @@
 # Uitvoerbestanden uit Git: proef op de huidige hoofdversie
 
-Hoofdversie: 7e97e43b8634f3308e974ccd385973ef50c4e81a. De 20 onderstaande bron-uitvoerparen zijn op deze commit byte-identiek (gelijke Git blob SHA en bestandsmodus). De losse Schuine worp is al definitief uit main verwijderd via #412 en is niet in deze lijst opgenomen. Totale omvang van de kopieën: 2.290.470 bytes; dit is geen voorspelling van bespaarde Git-opslag.
+Hoofdversie: c0cc75069cbe28d57d8f50340c7f4716a3dd7dbd. Op deze versie zijn alle 20 paren opnieuw rechtstreeks in de Git-boom vergeleken, inclusief de bijgewerkte Leeuw. De 20 onderstaande bron-uitvoerparen zijn op deze commit byte-identiek (gelijke Git blob SHA en bestandsmodus). De losse Schuine worp is al definitief uit main verwijderd via #412 en is niet in deze lijst opgenomen. Totale omvang van de kopieën: 2.290.739 bytes; dit is geen voorspelling van bespaarde Git-opslag.
 
 | Uitvoer | Leidende bron |
 |---|---|
@@ -25,7 +25,7 @@ Hoofdversie: 7e97e43b8634f3308e974ccd385973ef50c4e81a. De 20 onderstaande bron-u
 | `tools/wihtml/voorbeeld-lesinhoud.json` | `content/wihtml/voorbeeld-lesinhoud.json` |
 | `tools/wihtml/voorbeeld/index.html` | `content/wihtml/verdubbelen-halveren-v9.html` |
 
-De oorspronkelijke [generatorproef](https://github.com/E-AI-MODEL/website/actions/runs/45652888716) controleerde alleen build_site.py voor en na tijdelijke verwijdering: 362 uitvoerbestanden, geen verschillen. Die proef bewees geen volledige release of Pages-publicatie. De latere draft #411 faalde in het register, bronlinkcontrole, Leeuw en EAIspeak-registercontrole.
+De oorspronkelijke [generatorproef](https://github.com/E-AI-MODEL/website/actions/runs/45652888716) controleerde alleen build_site.py voor en na tijdelijke verwijdering: 362 uitvoerbestanden, geen verschillen. Die proef bewees geen volledige release of Pages-publicatie. Een eerdere draft faalde in het register, bronlinkcontrole, Leeuw en EAIspeak-registercontrole. De [laatste proef vóór deze bijwerking](https://github.com/E-AI-MODEL/website/actions/runs/45703424610) faalde alleen bij Leeuw WebKit en de daarvan afhankelijke eindcontrole. De inmiddels gemergde Leeuw-reparatie en de extra controle van de geïntegreerde Schuine worp uit #413/#414 blijven behouden; alleen de bronpaden in de betrokken test en de standaardroot van de Leeuw-test zijn aangepast. Een nieuwe volledige proef moet deze combinatie nog bevestigen.
 
 ## Aanpassing in deze draft
 

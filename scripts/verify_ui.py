@@ -12,6 +12,16 @@ from bs4 import BeautifulSoup, Comment
 from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, LEGACY_HUB_REDIRECTS, canonical
 
 
+def assert_redirect_contract(path: str, soup: BeautifulSoup) -> None:
+    target = LEGACY_HUB_REDIRECTS[path]
+    link = soup.find('link', rel='canonical')
+    refresh = soup.find('meta', attrs={'http-equiv': 'refresh'})
+    fallback = soup.select_one('main a[href]')
+    assert link and link.get('href') == 'https://eaimodel.nl' + target, f'Invalid canonical redirect: {path}'
+    assert refresh and refresh.get('content') == '0;url=' + target, f'Invalid refresh redirect: {path}'
+    assert fallback and fallback.get('href') == target and fallback.get_text(strip=True), f'Invalid fallback redirect: {path}'
+
+
 def check(root: Path):
     manifest = json.loads((root / 'assets/ui-manifest.json').read_text())
     assert manifest['pages'], 'No pages were prepared'
@@ -24,10 +34,7 @@ def check(root: Path):
         if route in LEGACY_HUB_REDIRECTS:
             # Redirect handoffs are byte-verified on the live site like all HTML.
             # They have no shared menu because the browser immediately navigates.
-            expected = LEGACY_HUB_REDIRECTS[route]
-            assert soup.find('link', rel='canonical')['href'] == 'https://eaimodel.nl' + expected, rel
-            assert expected in soup.find('meta', attrs={'http-equiv': 'refresh'})['content'], rel
-            assert soup.select_one('main a[href]')['href'] == expected, rel
+            assert_redirect_contract(route, soup)
             assert 'location.search + location.hash' in (root / rel).read_text(), rel
             continue
         assert len(soup.select('header.eai-masthead')) == 1, rel
@@ -177,8 +184,9 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                 if path in LEGACY_HUB_REDIRECTS:
                     # These six old hubs are intentional redirect handoffs,
                     # not editorial pages with the shared UI marker/menu.
-                    # Their full bytes still have to match the prepared build;
-                    # check(root) validates each redirect destination.
+                    # The full bytes must match the prepared build, and
+                    # the redirect destination itself must also be valid.
+                    assert_redirect_contract(path, BeautifulSoup(data, 'html.parser'))
                     continue
                 soup = BeautifulSoup(data, 'html.parser')
                 assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
