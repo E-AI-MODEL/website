@@ -19,11 +19,28 @@ async function fixed(p,w,h,mobile){
   assert.ok(m.canvas.h>200&&m.canvas.w>230,'Modelruimte te klein: '+JSON.stringify(m.canvas));
   if(mobile)assert.ok(m.stage.h>h*.78,'Model is niet dominant op mobiel');
 }
+// The earlier run lost all Firefox pointer events in its second context,
+// while WebKit closed a later context during the film. Keep each of these
+// independent scenarios in a fresh browser process; do not retry or skip
+// any application assertion. Chromium can keep its existing shared browser.
+async function withScenario(browser,engine,options,check){
+  const isolated=engine==='firefox'||engine==='webkit';
+  const active=isolated?await {firefox,webkit}[engine].launch({headless:true}):browser;
+  let context;
+  try{
+    context=await active.newContext(options);
+    await check(context);
+  }finally{
+    try{if(context)await context.close()}finally{if(isolated)await active.close()}
+  }
+}
 export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
   mkdirSync('test-results',{recursive:true});
   for(const [w,h] of [[1440,900],[390,760],[320,640]]){
-    const mobile=w<=850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
+    const mobile=w<=850;
+    await withScenario(browser,engine,{viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'},async ctx=>{
     const p=await ctx.newPage(),errors=[];
+    p.on('crash',()=>console.error('Leeuw '+engine+'/'+w+': pagina gecrasht'));
     p.on('pageerror',e=>errors.push(e.message));
     await p.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
     const shot=name=>p.screenshot({path:'test-results/leeuw-'+engine+'-'+w+'-'+name+'.png'});
@@ -57,7 +74,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     assert.equal(beforeDrag.animating,false,'Zijaanzicht draait niet vanzelf');
     await p.evaluate(()=>{
       window.__leeuwPointerTrace=[];
-      for(const type of ['pointerdown','pointermove','pointerup','pointercancel','gotpointercapture','lostpointercapture']){
+      for(const type of ['pointerdown','pointermove','pointerup','pointercancel','gotpointercapture','lostpointercapture','mousedown','mousemove','mouseup','touchstart','touchmove','touchend']){
         document.addEventListener(type,e=>{
           if(window.__leeuwPointerTrace.length<40)window.__leeuwPointerTrace.push({
             type:e.type,target:e.target.id||e.target.tagName,pointerType:e.pointerType,
@@ -108,13 +125,15 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     await mode('beweging');await p.locator('#spin').click();await p.waitForFunction(()=>window.LEO_STATE().years>300);await p.locator('#spin').click();await range(20000);assert.equal((await state(p)).years,20000);
     await mode('waarnemen');await open();await p.locator('#lat').fill('0');await p.locator('#lon').fill('0');assert.ok((await state(p)).points<=9);await close();
     await fixed(p,w,h,mobile);assert.deepEqual(errors,[],'Browserfouten op '+engine+'/'+w);
-    await ctx.close();
+    });
   }
 
   // The public route is now a film. Verify the actual rendered scene, not just its text.
   for(const [w,h] of [[1440,900],[390,760],[320,640]]){
-    const mobile=w<850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
+    const mobile=w<850;
+    await withScenario(browser,engine,{viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'},async ctx=>{
     const p=await ctx.newPage(),errors=[];
+    p.on('crash',()=>console.error('Leeuw '+engine+'/'+w+': pagina gecrasht'));
     p.on('pageerror',e=>errors.push(e.message));
     await p.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
     await p.goto(base+path,{waitUntil:'load'});
@@ -175,19 +194,20 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     assert.equal(await p.locator('#voyage').isVisible(),true);
     await p.locator('#voyageSources').click();await p.waitForFunction(()=>!window.LEO_VOYAGE_STATE().visible&&document.querySelector('#bronnen details').open);assert.equal(await p.locator('#bronnen').isVisible(),true);
     assert.deepEqual(errors,[],'Reis browserfouten op '+engine+'/'+w);
-    await ctx.close();
+    });
   }
-  const still=await browser.newContext({viewport:{width:390,height:760},...(engine==='firefox'?{}:{isMobile:true}),hasTouch:true,reducedMotion:'reduce'});
+  await withScenario(browser,engine,{viewport:{width:390,height:760},...(engine==='firefox'?{}:{isMobile:true}),hasTouch:true,reducedMotion:'reduce'},async still=>{
   const film=await still.newPage();await film.goto(base+path,{waitUntil:'load'});
   await film.waitForFunction(()=>window.LEO_VOYAGE_STATE?.().frame>0);
   const v=await film.evaluate(()=>window.LEO_VOYAGE_STATE());
   assert.equal(v.playing,false,'Verminderde beweging start zonder film');assert.equal(v.time,9);
   await film.locator('#voyageNext').click();assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().chapter),1);assert.equal(await film.evaluate(()=>window.LEO_VOYAGE_STATE().time),31);
-  await still.close();
+  });
 
-  const reduced=await browser.newContext({viewport:{width:390,height:760},...(engine==='firefox'?{}:{isMobile:true}),hasTouch:true,reducedMotion:'reduce'});
+  await withScenario(browser,engine,{viewport:{width:390,height:760},...(engine==='firefox'?{}:{isMobile:true}),hasTouch:true,reducedMotion:'reduce'},async reduced=>{
   const p=await reduced.newPage();await p.goto(base+path+'#ruimte',{waitUntil:'load'});await p.waitForFunction(()=>window.LEO_STATE?.().points===9);
-  const r=await state(p);assert.equal(r.blend,1);assert.equal(r.animating,false,'Respecteer verminderde beweging');await reduced.close();
+  const r=await state(p);assert.equal(r.blend,1);assert.equal(r.animating,false,'Respecteer verminderde beweging');
+  });
   console.log('Leeuw '+engine+': vast scherm, zeven onderwerpen, 3D-overgang, rotatie, pauze, schuif, metingen, grafiek en verminderde beweging geslaagd.');
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
@@ -199,6 +219,7 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
     assert.ok(ready,'Leeuw ontbreekt');
     const engines={chromium,firefox,webkit};
     assert.ok(Object.hasOwn(engines,engine),'Onbekende browser: '+engine);
-    browser=await engines[engine].launch({headless:true});await runLeeuwConsoleChecks(browser,base,engine);
+    if(engine==='chromium')browser=await engines[engine].launch({headless:true});
+    await runLeeuwConsoleChecks(browser,base,engine);
   }finally{if(browser)await browser.close();server.kill()}
 }
