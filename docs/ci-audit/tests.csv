@@ -42,7 +42,7 @@ scripts/test_lo_zone.py,lo-zone-verify/zones#4,tools/lo-aanvalslab/index.html
 scripts/test_melkweg_mobile.mjs,verify-ui/verify#34,
 scripts/test_melkweg_visual_play.mjs,verify-ui/verify#35,
 scripts/test_projecthulp_browser.mjs,projecthulp-browser/golden-path#5 | verify-ui/verify#23,../assets/eaigit/prompts-data.mjs
-scripts/test_projecthulp_eaiwork.mjs,Geen letterlijke aanroep gevonden; controleer discovery/import,../assets/eaigit/work-plan.mjs
+scripts/test_projecthulp_eaiwork.mjs,projecthulp-eaiwork-proof/contract-and-workers#4,../assets/eaigit/work-plan.mjs
 scripts/test_regio_design.mjs,onderwijsregio-ui/browser#5,
 scripts/test_schuine_worp_studio.mjs,schuine-worp-studio/browser#8 | science-fixed-workspace/physics-fixed#13 | science-studio-webkit/studio-webkit#8 | verify-ui/verify#28,
 scripts/test_science_fixed_workspace.mjs,science-fixed-workspace/physics-fixed#10 | science-fixed-workspace/physics-fixed#11,

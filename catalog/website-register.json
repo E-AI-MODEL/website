@@ -194,7 +194,7 @@
       "parent": null,
       "family": "hulpmiddelen",
       "page_status": "meta_redirect_verified",
-      "redirect_target": "/tools/",
+      "redirect_target": "/nl/tools/",
       "in_committed_sitemap": false,
       "search_scope": "niet_indexeren"
     },
@@ -1191,6 +1191,20 @@
       "search_scope": "niet_indexeren"
     },
     {
+      "id": "page:/tools/eaispeak/",
+      "url": "/tools/eaispeak/",
+      "file": "tools/eaispeak/index.html",
+      "title": "EAIspeak | praten, vertalen en luisteren",
+      "kind": "toepassing",
+      "category": "Hulpmiddelen · Spraak en vertalen",
+      "review": "opgenomen_in_algemeen_hulpmiddelenoverzicht",
+      "parent": "page:/tools/",
+      "family": "hulpmiddelen",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen",
+      "public_title_nl": "EAIspeak"
+    },
+    {
       "id": "page:/tools/abyss/",
       "url": "/tools/abyss/",
       "file": "tools/abyss/index.html",
@@ -1595,19 +1609,6 @@
       "family": "natuurkunde",
       "in_committed_sitemap": true,
       "public_title_nl": "Natuurkunde",
-      "search_scope": "algemeen"
-    },
-    {
-      "id": "page:/tools/science-observatory/labs/schuine-worp/",
-      "url": "/tools/science-observatory/labs/schuine-worp/",
-      "file": "tools/science-observatory/labs/schuine-worp/index.html",
-      "title": "Schuine worp",
-      "kind": "toepassing",
-      "category": "TOOLS",
-      "review": "gevonden_in_zoekindex",
-      "parent": "page:/tools/science-observatory/",
-      "family": "hulpmiddelen",
-      "in_committed_sitemap": false,
       "search_scope": "algemeen"
     },
     {
@@ -7228,9 +7229,6 @@
       "path": "content/science-observatory/labs/natuurkunde.html"
     },
     {
-      "path": "content/science-observatory/labs/schuine-worp.html"
-    },
-    {
       "path": "content/science-observatory/labs/wiskunde-a.html"
     },
     {
@@ -7259,7 +7257,7 @@
     }
   ],
   "audit": {
-    "tracked_html_files": 221,
+    "tracked_html_files": 220,
     "public_page_files": 180,
     "generated_pages": 2,
     "search_index_entries": 290,
@@ -7303,9 +7301,9 @@
       "/verdieping/"
     ],
     "orphan_items": [],
-    "additional_html_files": 41,
-    "all_html_files": 221,
-    "pages_not_in_public_search": 36,
+    "additional_html_files": 40,
+    "all_html_files": 220,
+    "pages_not_in_public_search": 37,
     "page_families_needing_review": 0,
     "redirect_title_candidates": 9,
     "collections": 5,
@@ -7350,7 +7348,7 @@
     "sitemap_from_main": {
       "source": "sitemap.xml",
       "registered_urls": 149,
-      "registered_missing": 31,
+      "registered_missing": 30,
       "examples_not_in_sitemap": [
         "/eai-blog/",
         "/eai-blog/eai-balans/",
@@ -7381,7 +7379,6 @@
         "/toepassingen/saga-legal-ai/",
         "/tools/lo-aanvalslab/onderbouwing/",
         "/tools/projecthulp/",
-        "/tools/science-observatory/labs/schuine-worp/",
         "/tools/van-proces-naar-prompt/"
       ],
       "important_generated_pages_missing": [],

@@ -22,7 +22,7 @@ async function fixed(p,w,h,mobile){
 export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
   mkdirSync('test-results',{recursive:true});
   for(const [w,h] of [[1440,900],[390,760],[320,640]]){
-    const mobile=w<=850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
+    const mobile=w<=850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
     const p=await ctx.newPage(),errors=[];
     p.on('pageerror',e=>errors.push(e.message));
     await p.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
@@ -76,7 +76,7 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
 
   // The public route is now a film. Verify the actual rendered scene, not just its text.
   for(const [w,h] of [[1440,900],[390,760],[320,640]]){
-    const mobile=w<850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile,hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
+    const mobile=w<850,ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'});
     const p=await ctx.newPage(),errors=[];
     p.on('pageerror',e=>errors.push(e.message));
     await p.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
@@ -98,8 +98,23 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
       assert.ok(m.canvas.w>=w-1&&m.canvas.h>=h-1,'Canvas vult viewport');
       assert.ok(m.copy.b<=m.foot.y+1&&m.copy.y>=m.top.b-1&&m.hit,'Uitleg en bediening overlappen of zijn onbereikbaar: '+JSON.stringify(m));
     };
+    // Keep the same visible control while playback advances.
+    console.log('Leeuw '+engine+'/'+w+': controle afspelen en pauzeren');
+    const initialControl=await p.evaluate(()=>{
+      const button=document.querySelector('#voyagePlay');
+      window.__leeuwPlayIcon=button.querySelector('svg');
+      window.__leeuwPlayPath=window.__leeuwPlayIcon.querySelector('path');
+      return window.LEO_VOYAGE_STATE().time;
+    });
+    await p.waitForFunction(t=>window.LEO_VOYAGE_STATE().time>t+.35,initialControl);
+    assert.ok(await p.evaluate(()=>{
+      const svg=document.querySelector('#voyagePlay svg');
+      return svg===window.__leeuwPlayIcon&&svg.querySelector('path')===window.__leeuwPlayPath;
+    }),'Afspelen mag het aanraakdoel niet vervangen');
+    assert.equal(await p.locator('#voyagePlay').getAttribute('aria-label'),'Pauzeren');
     await p.locator('#voyagePlay').click();
     let first=await vs();assert.equal(first.playing,false);
+    assert.equal(await p.locator('#voyagePlay').getAttribute('aria-label'),'Afspelen');
     await p.waitForTimeout(250);assert.equal((await vs()).time,first.time);
     await seek(9);await visible();assert.equal((await vs()).chapter,0);await shot('hemel');
     const earth=await p.locator('#voyageCanvas').evaluate(c=>c.toDataURL());
@@ -112,6 +127,9 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
     await p.locator('.voyage-chapter').nth(1).click();assert.equal((await vs()).chapter,1);
     await p.locator('#voyageNext').click();assert.equal((await vs()).chapter,2);
     await p.locator('#voyagePlay').click();const before=(await vs()).time;await p.waitForFunction(t=>window.LEO_VOYAGE_STATE().time>t+.2,before);
+    assert.equal(await p.locator('#voyagePlay').getAttribute('aria-label'),'Pauzeren');
+    assert.ok(await p.evaluate(()=>document.querySelector('#voyagePlay path')===window.__leeuwPlayPath),'Ook hervatten behoudt het oorspronkelijke pictogram');
+    console.log('Leeuw '+engine+'/'+w+': van ruimtereis naar onderzoeksconsole');
     await p.locator('#openLab').click();
     await p.waitForFunction(()=>!window.LEO_VOYAGE_STATE().visible&&window.LEO_STATE().mode==='hemel');
     assert.equal(await p.locator('#app').isVisible(),true);

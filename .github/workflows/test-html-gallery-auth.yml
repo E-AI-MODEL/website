@@ -1,24 +1,7 @@
 name: Test gallery authentication
 
 on:
-  pull_request:
-    paths:
-      - 'services/html-galerij/**'
-      - 'tests/test_html_galerij_admin.mjs'
-      - 'tests/test_html_gallery_sqlite.mjs'
-      - 'tests/test_html_gallery_live.mjs'
-      - 'tests/test_eai_site_admin.mjs'
-      - 'tools/html-galerij/index.html'
-      - '.github/workflows/test-html-gallery-auth.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'services/html-galerij/**'
-      - 'tests/test_html_galerij_admin.mjs'
-      - 'tests/test_html_gallery_sqlite.mjs'
-      - 'tests/test_html_gallery_live.mjs'
-      - 'tools/html-galerij/index.html'
-      - '.github/workflows/test-html-gallery-auth.yml'
+  workflow_call:
   workflow_dispatch:
 
 permissions:

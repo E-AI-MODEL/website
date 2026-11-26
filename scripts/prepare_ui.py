@@ -199,11 +199,13 @@ def tool_sections(en: bool):
         return [
             ('Create lessons and prompts', [('Prompt Framework', '/tools/prompt-framework/', ''), ('Process to prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Library', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Example', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio Editor', '/tools/eaistudio/studio/', '')]),
             ('Check models and publications', [('LLMscan', '/en/llmscan/', ''), ('LLMscan research', '/nl/llmscan/onderzoek/', 'Dutch'), ('AI Model Monitor', '/en/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publication verification', '/nl/tools/verificatie/', 'Dutch')]),
+            ('Speech and translation', [('EAIspeak', '/tools/eaispeak/', 'Live translation, captions, transcription, conversation and read-aloud (Dutch interface)')]),
             ('Workspaces and sharing', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh Start', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('Upload HTML', '/tools/html-galerij/', '')]),
         ]
     return [
         ('Lesmateriaal en prompts maken', [('EAI Prompt Framework', '/tools/prompt-framework/', ''), ('Van proces naar prompt', '/tools/van-proces-naar-prompt/', ''), ('WiHTML Docentstudio', '/tools/wihtml/', ''), ('WiHTML Studio', '/tools/wihtml/studio/', ''), ('WiHTML Bibliotheek', '/tools/wihtml/bibliotheek/', ''), ('WiHTML Voorbeeld', '/tools/wihtml/voorbeeld/', ''), ('EAIstudio', '/tools/eaistudio/', ''), ('EAIstudio bewerken', '/tools/eaistudio/studio/', '')]),
         ('AI en publicaties controleren', [('LLMscan', '/nl/llmscan/', ''), ('LLMscan onderzoek', '/nl/llmscan/onderzoek/', ''), ('AI Model Monitor', '/nl/model-monitor/', ''), ('Beyond Explainability', '/tools/beyond-explainability/', ''), ('Publicatie verifiëren', '/nl/tools/verificatie/', '')]),
+        ('Spraak en vertalen', [('EAIspeak', '/tools/eaispeak/', 'Live vertalen, ondertitelen, transcriberen, vrij praten en voorlezen')]),
         ('Werkruimtes en delen', [('EAImesh', '/tools/eaimesh/', ''), ('EAImesh starten', '/tools/eaimesh/start/', ''), ('EAIwork', '/tools/eaiwork/', ''), ('HTML uploaden', '/tools/html-galerij/', '')]),
     ]
 
