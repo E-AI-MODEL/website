@@ -37,7 +37,16 @@ export async function fetchPublicRepo(url,fetcher=fetch){
   }catch(error){readable=false;return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,blobs,contentCheck,actionChecks,error:error.message,empty:false};}
  }
  if(paths.some(x=>x.startsWith(".github/workflows/"))){
-  try{actionChecks=await fetchPublicChecks(api,branch,paths,fetcher,headers);}catch{actionChecks=null;}
+  // Bind the checks to the exact tree already inspected, not to a moving branch.
+  try{
+   const revisionResponse=await fetcher(api+"/commits/"+encodeURIComponent(branch),{headers,redirect:"error",signal:AbortSignal.timeout(5500)});
+   const revision=revisionResponse.ok?await revisionResponse.json():null;
+   if(!revision||!/^[a-f0-9]{40}$/i.test(revision.sha||"")||revision.commit?.tree?.sha!==sha){
+    actionChecks={checked:false,headSha:null,runs:[],syntaxErrors:[],incomplete:true,revisionMismatch:true};
+   }else{
+    actionChecks=await fetchPublicChecks(api,revision.sha,paths,fetcher,headers);
+   }
+  }catch{actionChecks=null;}
  }
  return {name:meta.full_name,url:meta.html_url||"https://github.com/"+p.name,branch,paths,sha,truncated,readable,blobs,contentCheck,actionChecks,empty:!branch||paths.length===0};
 }
@@ -160,7 +169,7 @@ export function makeAdvice({goal="code",experience="beginner",archive,repo,aim="
  if(repo){
   if(repo.contentCheck?.checkedFiles)observations.push("Van GitHub zijn "+repo.contentCheck.checkedFiles+" kleine bronbestanden inhoudelijk gelezen en statisch gecontroleerd.");
   if(repo.contentCheck?.findings?.length)warnings.push("In de GitHub-code zijn "+repo.contentCheck.findings.length+" inhoudelijke aandachtspunten gevonden.");
-  if(repo.actionChecks?.syntaxErrors?.length)warnings.push("GitHub Actions bevestigt "+repo.actionChecks.syntaxErrors.length+" syntaxisfout(en), met bestandsverwijzingen.");
+  if(repo.actionChecks?.syntaxErrors?.length)warnings.push("GitHub Actions meldt "+repo.actionChecks.syntaxErrors.length+" syntaxisfout(en), met bestandsverwijzingen.");
   observations.push("GitHub-repository '"+repo.name+"' is openbaar en bereikbaar.");
   if(!repo.readable)warnings.push("De bestandslijst kon niet worden opgehaald. De vergelijking is niet compleet.");
   if(repo.truncated)warnings.push("De GitHub-bestandslijst is afgekapt. De vergelijking kan bestanden missen.");

@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '22'
       - name: Controleer ZIP, GitHub en adviesregels
-        run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs tests/test_static_audit.mjs tests/test_audit_advice.mjs
+        run: node --test tests/test_projecthulp.mjs tests/test_eaigit_help.mjs tests/test_eaigit_single_file.mjs tests/test_eaigit_github_checks.mjs tests/test_static_audit.mjs tests/test_audit_advice.mjs
       - name: Installeer browser
         run: |
           npm install --no-save playwright@1.56.1
