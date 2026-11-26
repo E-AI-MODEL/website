@@ -17,16 +17,17 @@ try{
  const page=await browser.newPage({viewport:{width:390,height:844}});
  const errors=[],requests=[];
  page.on('pageerror',error=>errors.push(error.message));
- let manager=true;
+ let manager=true,loginFailure=null,loginTenants=[membership];
  await page.route('**/functions/v1/leif-admin-console',async route=>{
   const request=route.request(),headers={'access-control-allow-origin':origin,'access-control-allow-methods':'POST,OPTIONS','access-control-allow-headers':'content-type,authorization','content-type':'application/json'};
   if(request.method()==='OPTIONS')return route.fulfill({status:200,headers,body:'{}'});
   const input=JSON.parse(request.postData()||'{}');
   requests.push({action:input.action,body:input,auth:request.headers().authorization});
   let data={ok:true};
+  if(input.action==='login'&&loginFailure)return route.fulfill({status:loginFailure.status,headers,body:JSON.stringify({error:loginFailure.error})});
   if(input.action==='request_magic_link')data={ok:true};
   else if(input.action==='session')data={ok:true,tenants:manager?[membership]:[],user_email:'test@example.invalid'};
-  else if(input.action==='refresh'||input.action==='login')data={ok:true,access_token:tokens.access,refresh_token:tokens.refresh,expires_in:3600,tenants:[membership],user_email:'test@example.invalid'};
+  else if(input.action==='refresh'||input.action==='login')data={ok:true,access_token:tokens.access,refresh_token:tokens.refresh,expires_in:3600,tenants:input.action==='login'?loginTenants:[membership],user_email:'test@example.invalid'};
   else if(input.action==='update_account')data={ok:true,user_email:input.email,pending_email:'',password_saved:true};
   else if(input.action==='list')data={ok:true,participants:[]};
   else if(input.action==='list_testers')data={ok:true,testers:[]};
@@ -85,6 +86,23 @@ try{
  await page.locator('#adminLoginEmail').fill('test@example.invalid');
  await page.locator('#adminLoginPassword').fill('synthetic-password-123');
  const linksBefore=requests.filter(x=>x.action==='request_magic_link').length;
+ const deniedCases=[
+  [{status:401,error:'invalid_credentials'},[membership],/Controleer je e-mailadres en wachtwoord/],
+  [{status:403,error:'no_admin_access'},[],/geen toegang tot LEIF-beheer/],
+  [null,[{...membership,role:'reader'}],/geen toegang tot LEIF-beheer/],
+  [{status:503,error:'server_unavailable'},[membership],/Inloggen lukt op dit moment niet/]
+ ];
+ for(const [failure,tenants,message] of deniedCases){
+  loginFailure=failure;loginTenants=tenants;
+  await page.locator('#adminLoginPassword').fill('synthetic-password-123');
+  await page.locator('#adminLoginSubmit').click();
+  await page.locator('#adminLoginError:visible').waitFor();
+  assert.match(await page.locator('#adminLoginError').innerText(),message);
+  assert.equal(await page.evaluate(()=>localStorage.getItem('leif-admin-session-v1')),null,'Geen sessie na mislukte of onbevoegde login');
+  assert.equal(new URL(page.url()).pathname,'/leif/','Geen overgang naar beheer na geweigerde login');
+ }
+ loginFailure=null;loginTenants=[membership];
+ await page.locator('#adminLoginPassword').fill('synthetic-password-123');
  await page.locator('#adminLoginSubmit').click();
  await page.waitForURL('**/leif/beheer/');
  await page.locator('#workspace:visible').waitFor();

@@ -366,7 +366,13 @@ document.getElementById('adminLoginForm').onsubmit=async event=>{
   const data=await window.LeifAdminSession.request('login',{email:document.getElementById('adminLoginEmail').value.trim(),password:document.getElementById('adminLoginPassword').value});
   if(!data.tenants?.some(t=>t.slug==='leif'&&t.role==='manager'))throw Error('not_manager');
   window.LeifAdminSession.save(data);document.getElementById('adminLoginPassword').value='';location.assign('/leif/beheer/');
- }catch{err.textContent='Inloggen is niet gelukt. Controleer je e-mailadres en wachtwoord.';err.hidden=false}
+ }catch(error){
+  if(error.message==='not_manager'||(error.status===403&&error.message==='no_admin_access'))err.textContent='Dit account heeft geen toegang tot LEIF-beheer.';
+  else if(error.message==='invalid_credentials'&&(error.status===400||error.status===401))err.textContent='Inloggen is niet gelukt. Controleer je e-mailadres en wachtwoord.';
+  else if(error.status===429)err.textContent='Te veel inlogpogingen. Probeer het later opnieuw.';
+  else err.textContent='Inloggen lukt op dit moment niet. Probeer het later opnieuw.';
+  err.hidden=false;
+ }
  finally{button.disabled=false}
 };
 document.getElementById('adminLink').onclick=async()=>{
