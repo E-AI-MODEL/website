@@ -485,6 +485,22 @@
     ],
     "scripts/test_lo_v13_simulations.py": [
       "lo"
+    ],
+    ".github/workflows/verify-live-cloudflare.yml": [],
+    "scripts/verify_live_cloudflare.py": [],
+    "tests/test_live_cloudflare.py": [],
+    ".github/workflows/anatomie-webkit.yml": [
+      "anatomy",
+      "heart"
+    ],
+    ".github/workflows/ict-scan-webkit.yml": [
+      "ictscan"
+    ],
+    ".github/workflows/check-ict-assurance.yml": [
+      "ictscan"
+    ],
+    ".github/workflows/topo-mobile-verify.yml": [
+      "topo"
     ]
   },
   "always": [

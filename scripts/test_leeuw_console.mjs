@@ -38,7 +38,10 @@ export async function runLeeuwConsoleChecks(browser,base,engine='chromium'){
   mkdirSync('test-results',{recursive:true});
   for(const [w,h] of [[1440,900],[390,760],[320,640]]){
     const mobile=w<=850;
-    await withScenario(browser,engine,{viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile,deviceScaleFactor:1,reducedMotion:'no-preference'},async ctx=>{
+    // The drag below uses real mouse input. Firefox's touch-emulated context
+    // delivered mouse events but no pointer events in CI. Use a narrow mouse
+    // viewport for this probe; film and reduced-motion retain touch contexts.
+    await withScenario(browser,engine,{viewport:{width:w,height:h},isMobile:mobile && engine!=='firefox',hasTouch:mobile && engine!=='firefox',deviceScaleFactor:1,reducedMotion:'no-preference'},async ctx=>{
     const p=await ctx.newPage(),errors=[];
     p.on('crash',()=>console.error('Leeuw '+engine+'/'+w+': pagina gecrasht'));
     p.on('pageerror',e=>errors.push(e.message));
