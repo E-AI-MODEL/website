@@ -161,12 +161,54 @@ class CiBuildArtifactTests(unittest.TestCase):
                 sleep.assert_not_called()
 
     def test_pages_fail_closed_on_missing_and_duplicate_data(self):
-        with patch("ci_build_artifact.api_json", return_value={"total_count": 2, "jobs": [{"id": 1}]}):
-            with self.assertRaises(ValueError):
-                pages("/repos/example/site/jobs", "jobs", "fixture-token")
-        with patch("ci_build_artifact.api_json", return_value={"total_count": 2, "jobs": [{"id": 1}, {"id": 1}]}):
-            with self.assertRaises(ValueError):
-                pages("/repos/example/site/jobs", "jobs", "fixture-token")
+        from ci_build_artifact import PAGE_BACKOFF
+        for listing in ({"total_count": 2, "jobs": [{"id": 1}]},
+                        {"total_count": 2, "jobs": [{"id": 1}, {"id": 1}]}):
+            with self.subTest(listing=listing), \
+                    patch("ci_build_artifact.api_json", return_value=listing) as api, \
+                    patch("ci_build_artifact.time.sleep") as sleep:
+                with self.assertRaises(ValueError):
+                    pages("/repos/example/site/jobs", "jobs", "fixture-token")
+                self.assertEqual(api.call_count, len(PAGE_BACKOFF)+1)
+                self.assertEqual([c.args[0] for c in sleep.call_args_list], list(PAGE_BACKOFF))
+
+    def test_inconsistent_artifact_listing_is_reread_without_combining_snapshots(self):
+        first = [{"id": 10}]
+        final = [{"id": 11}, {"id": 12}]
+        with patch("ci_build_artifact.api_json", side_effect=[
+                {"total_count": 2, "artifacts": first},
+                {"total_count": 2, "artifacts": final}]) as api, \
+                patch("ci_build_artifact.time.sleep") as sleep:
+            self.assertEqual(pages("/repos/example/site/artifacts", "artifacts", "fixture-token"), final)
+        self.assertEqual(api.call_count, 2)
+        sleep.assert_called_once_with(1)
+
+    def test_paginated_listing_restarts_when_total_count_changes(self):
+        old = [{"id": i} for i in range(1, 101)]
+        new = [{"id": i} for i in range(2, 102)]
+        with patch("ci_build_artifact.api_json", side_effect=[
+                {"total_count": 101, "jobs": old},
+                {"total_count": 102, "jobs": [{"id": 101}, {"id": 102}]},
+                {"total_count": 101, "jobs": new},
+                {"total_count": 101, "jobs": [{"id": 102}]}]) as api, \
+                patch("ci_build_artifact.time.sleep") as sleep:
+            self.assertEqual(pages("/repos/example/site/jobs", "jobs", "fixture-token"),
+                             new+[{"id": 102}])
+        self.assertEqual([c.args[0].split("page=")[-1] for c in api.call_args_list],
+                         ["1", "2", "1", "2"])
+        sleep.assert_called_once_with(1)
+
+    def test_malformed_listing_is_not_retried(self):
+        for listing in ({"total_count": -1, "jobs": []},
+                        {"total_count": 1, "jobs": [{"id": 0}]},
+                        {"total_count": 1, "jobs": "invalid"}):
+            with self.subTest(listing=listing), \
+                    patch("ci_build_artifact.api_json", return_value=listing) as api, \
+                    patch("ci_build_artifact.time.sleep") as sleep:
+                with self.assertRaises(ValueError):
+                    pages("/repos/example/site/jobs", "jobs", "fixture-token")
+                api.assert_called_once()
+                sleep.assert_not_called()
 
     def test_archive_rejects_unsafe_paths_and_links(self):
         with tempfile.TemporaryDirectory() as tmp:

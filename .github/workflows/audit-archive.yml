@@ -13,6 +13,12 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+      options: --shm-size=1g
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
@@ -27,20 +33,17 @@ jobs:
           reuse: ${{ inputs.reuse_build }}
       - name: Controleer de opgehaalde bouw
         run: |
-          pip install beautifulsoup4
+          python -m pip install beautifulsoup4
           python scripts/verify_ui.py --root site-build
           python -m unittest discover -s tests -p 'test_archive_review.py'
       - name: Inventory pages, links and live HTTP responses
         run: python scripts/audit_archive.py
-      - name: Cache Playwright browser binaries
-        uses: actions/cache@v4
+      - name: Use the pinned browser runtime
+        uses: ./.github/actions/browser-runtime
         with:
-          path: ~/.cache/ms-playwright
-          key: playwright-ubuntu-24.04-${{ runner.arch }}-1.56.1-chromium-webkit
+          binding: node
       - name: Inspect older pages in Chromium and WebKit
         run: |
-          npm install --no-save playwright@1.56.1
-          npx playwright install --with-deps chromium webkit
           node scripts/audit_archive_session_test.mjs
           node scripts/audit_archive_ui.mjs
       - name: Test local tool workflows with synthetic inputs

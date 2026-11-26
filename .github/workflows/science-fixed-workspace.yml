@@ -17,6 +17,12 @@ permissions:
 jobs:
   physics-fixed:
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+      options: --shm-size=1g
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
@@ -26,17 +32,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install beautifulsoup4
+      - run: python -m pip install beautifulsoup4
       - uses: ./.github/actions/checked-build
         with:
           reuse: ${{ inputs.reuse_build }}
-      - name: Cache Playwright browser binaries
-        uses: actions/cache@v4
+      - name: Use the pinned browser runtime
+        uses: ./.github/actions/browser-runtime
         with:
-          path: ~/.cache/ms-playwright
-          key: playwright-ubuntu-24.04-${{ runner.arch }}-1.56.1-chromium-webkit
-      - run: npm install --no-save playwright@1.56.1
-      - run: npx playwright install --with-deps chromium webkit
+          binding: node
       - name: Mathematics viewport and navigation in Chromium
         run: node scripts/test_science_math_adaptive.mjs site-build chromium
       - name: Mathematics viewport and navigation in Safari
