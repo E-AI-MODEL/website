@@ -136,3 +136,19 @@ test('Leeuw gebruikt vaste Melkweg-console en behoudt de projectiebediening', ()
   assert.match(html,/Math\.min\(2\.5,r\)/);
   assert.match(html,/line\(c,a,b,"#9ab9cf8c",\.65\)/);
 });
+
+
+test('Heelal: vier gelijkwaardige, herkenbare ingangen in Nederlands en Engels', () => {
+  const urls = ['/tools/science-observatory/labs/melkweg/', '/tools/science-observatory/labs/leeuw/', '/tools/melkweg-lab/', '/tools/science-observatory/labs/gravitatie-banen/'];
+  for (const lang of ['nl','en']) {
+    const html = load(lang + '/tools/index.html');
+    const section = html.match(/<section[^>]*id="vak-heelal"[^>]*>[\s\S]*?<\/section>/)[0];
+    const links = [...section.matchAll(/<a class="heelal-card" href="([^"]+)"/g)].map(m=>m[1]);
+    assert.deepEqual(links, urls);
+    assert.doesNotMatch(section, /eai-explore-alternate|Andere uitvoering|Alternate Milky Way version/);
+    assert.equal((section.match(/class="heelal-art"/g)||[]).length,4);
+    assert.equal((section.match(/class="heelal-copy"/g)||[]).length,4);
+    assert.ok(section.includes(lang === 'nl' ? '<strong>Stellair Observatorium</strong>' : '<strong>Stellar Observatory (Dutch)</strong>'));
+    assert.match(load('content/science-observatory/labs/leeuw.html'), /<strong>STELLAIR OBSERVATORIUM<\/strong>/);
+  }
+});

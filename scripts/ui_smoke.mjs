@@ -146,6 +146,23 @@ try {
   assert(await page.locator('.eai-explore-choices').isVisible(), 'Back returns to all subjects');
   await page.locator('.eai-explore-choice[href="#vak-oceanografie"]').click();
   assert(await page.locator('#vak-oceanografie a[href="/tools/abyss/"]').isVisible(), 'Oceanography has a working direct entry');
+  // Heelal: the public subject route, including all four actual launch links.
+  for (const lang of ['nl','en']) {
+    for (const width of [1440,390,320]) {
+      const hub=await context.newPage();
+      await hub.route('**/*', route => new URL(route.request().url()).origin===base ? route.continue() : route.abort());
+      await hub.setViewportSize({width,height:900});
+      await hub.goto(base+'/'+lang+'/tools/#vak-heelal',{waitUntil:'load'});
+      const cards=hub.locator('#vak-heelal .heelal-card');
+      await cards.first().waitFor({state:'visible'});
+      assert.equal(await cards.count(),4);
+      assert.deepEqual(await cards.evaluateAll(els=>els.map(a=>a.getAttribute('href'))),['/tools/science-observatory/labs/melkweg/','/tools/science-observatory/labs/leeuw/','/tools/melkweg-lab/','/tools/science-observatory/labs/gravitatie-banen/']);
+      assert.ok(await hub.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Heelal overflow '+lang+'/'+width);
+      await hub.screenshot({path:'test-results/heelal-'+lang+'-'+width+'.png',fullPage:true});
+      if(lang==='nl'&&width===390){await cards.nth(1).click();await hub.waitForURL('**/labs/leeuw/');await hub.waitForFunction(()=>window.LEO_VOYAGE_STATE?.().visible);}
+      await hub.close();
+    }
+  }
   await runLeeuwConsoleChecks(browser, base, engine);
   // WiHTML: van de rustige landingspagina via elke keuze naar een echte offline HTML-les.
   const wiContext = await browser.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
