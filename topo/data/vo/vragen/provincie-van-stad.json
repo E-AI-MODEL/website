@@ -11,10 +11,10 @@
    "question": "In welke provincie ligt 's-Hertogenbosch?",
    "answer": "Noord-Brabant",
    "options": [
-    "Noord-Brabant",
+    "Zeeland",
+    "Groningen",
     "Gelderland",
-    "Flevoland",
-    "Zuid-Holland"
+    "Noord-Brabant"
    ],
    "hint": "",
    "note": "",
@@ -43,10 +43,10 @@
    "question": "In welke provincie ligt Alkmaar?",
    "answer": "Noord-Holland",
    "options": [
-    "Fryslân",
-    "Limburg",
-    "Noord-Brabant",
-    "Noord-Holland"
+    "Overijssel",
+    "Noord-Holland",
+    "Drenthe",
+    "Fryslân"
    ],
    "hint": "",
    "note": "",
@@ -76,9 +76,9 @@
    "answer": "Overijssel",
    "options": [
     "Limburg",
-    "Noord-Holland",
-    "Zuid-Holland",
-    "Overijssel"
+    "Fryslân",
+    "Overijssel",
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -107,10 +107,10 @@
    "question": "In welke provincie ligt Almere?",
    "answer": "Flevoland",
    "options": [
-    "Zeeland",
-    "Flevoland",
-    "Fryslân",
-    "Drenthe"
+    "Limburg",
+    "Groningen",
+    "Overijssel",
+    "Flevoland"
    ],
    "hint": "",
    "note": "",
@@ -139,10 +139,10 @@
    "question": "In welke provincie ligt Alphen aan den Rijn?",
    "answer": "Zuid-Holland",
    "options": [
-    "Noord-Brabant",
-    "Noord-Holland",
     "Drenthe",
-    "Zuid-Holland"
+    "Zuid-Holland",
+    "Limburg",
+    "Noord-Brabant"
    ],
    "hint": "",
    "note": "",
@@ -171,10 +171,10 @@
    "question": "In welke provincie ligt Amersfoort?",
    "answer": "Utrecht",
    "options": [
-    "Groningen",
-    "Zuid-Holland",
-    "Zeeland",
-    "Utrecht"
+    "Limburg",
+    "Utrecht",
+    "Noord-Holland",
+    "Overijssel"
    ],
    "hint": "",
    "note": "",
@@ -203,10 +203,10 @@
    "question": "In welke provincie ligt Amstelveen?",
    "answer": "Noord-Holland",
    "options": [
-    "Overijssel",
-    "Groningen",
+    "Gelderland",
+    "Flevoland",
     "Noord-Holland",
-    "Utrecht"
+    "Noord-Brabant"
    ],
    "hint": "",
    "note": "",
@@ -235,10 +235,10 @@
    "question": "In welke provincie ligt Amsterdam?",
    "answer": "Noord-Holland",
    "options": [
-    "Zuid-Holland",
-    "Groningen",
-    "Zeeland",
-    "Noord-Holland"
+    "Limburg",
+    "Noord-Holland",
+    "Flevoland",
+    "Zuid-Holland"
    ],
    "hint": "",
    "note": "",
@@ -257,7 +257,7 @@
      3
     ]
    },
-   "itemId": "nl-stad-amsterdam"
+   "itemId": "nl-hoofdstad-amsterdam"
   },
   {
    "id": "provincie-van-stad-9",
@@ -267,10 +267,10 @@
    "question": "In welke provincie ligt Apeldoorn?",
    "answer": "Gelderland",
    "options": [
-    "Noord-Holland",
     "Gelderland",
+    "Zuid-Holland",
     "Overijssel",
-    "Flevoland"
+    "Groningen"
    ],
    "hint": "",
    "note": "",
@@ -299,10 +299,10 @@
    "question": "In welke provincie ligt Arnhem?",
    "answer": "Gelderland",
    "options": [
-    "Utrecht",
-    "Noord-Holland",
+    "Limburg",
     "Gelderland",
-    "Drenthe"
+    "Noord-Brabant",
+    "Overijssel"
    ],
    "hint": "",
    "note": "",
@@ -332,9 +332,9 @@
    "answer": "Drenthe",
    "options": [
     "Utrecht",
-    "Zuid-Holland",
     "Drenthe",
-    "Limburg"
+    "Zeeland",
+    "Noord-Brabant"
    ],
    "hint": "",
    "note": "",
@@ -363,10 +363,10 @@
    "question": "In welke provincie ligt Bergen op Zoom?",
    "answer": "Noord-Brabant",
    "options": [
-    "Noord-Holland",
-    "Noord-Brabant",
-    "Utrecht",
-    "Groningen"
+    "Groningen",
+    "Drenthe",
+    "Gelderland",
+    "Noord-Brabant"
    ],
    "hint": "",
    "note": "",
@@ -395,10 +395,10 @@
    "question": "In welke provincie ligt Breda?",
    "answer": "Noord-Brabant",
    "options": [
+    "Drenthe",
     "Noord-Brabant",
-    "Fryslân",
-    "Overijssel",
-    "Drenthe"
+    "Gelderland",
+    "Utrecht"
    ],
    "hint": "",
    "note": "",
@@ -428,9 +428,9 @@
    "answer": "Zuid-Holland",
    "options": [
     "Groningen",
+    "Utrecht",
     "Zuid-Holland",
-    "Drenthe",
-    "Noord-Brabant"
+    "Drenthe"
    ],
    "hint": "",
    "note": "",
@@ -459,9 +459,9 @@
    "question": "In welke provincie ligt Delfzijl?",
    "answer": "Groningen",
    "options": [
-    "Zeeland",
-    "Gelderland",
     "Groningen",
+    "Overijssel",
+    "Limburg",
     "Noord-Brabant"
    ],
    "hint": "",
@@ -492,9 +492,9 @@
    "answer": "Zuid-Holland",
    "options": [
     "Gelderland",
-    "Zuid-Holland",
     "Drenthe",
-    "Utrecht"
+    "Zuid-Holland",
+    "Overijssel"
    ],
    "hint": "",
    "note": "",
@@ -523,10 +523,10 @@
    "question": "In welke provincie ligt Den Helder?",
    "answer": "Noord-Holland",
    "options": [
-    "Noord-Brabant",
-    "Noord-Holland",
-    "Flevoland",
-    "Limburg"
+    "Gelderland",
+    "Groningen",
+    "Drenthe",
+    "Noord-Holland"
    ],
    "hint": "",
    "note": "",
@@ -555,10 +555,10 @@
    "question": "In welke provincie ligt Deventer?",
    "answer": "Overijssel",
    "options": [
-    "Gelderland",
-    "Limburg",
+    "Zeeland",
+    "Utrecht",
     "Overijssel",
-    "Fryslân"
+    "Flevoland"
    ],
    "hint": "",
    "note": "",
@@ -587,10 +587,10 @@
    "question": "In welke provincie ligt Doetinchem?",
    "answer": "Gelderland",
    "options": [
-    "Zeeland",
-    "Limburg",
-    "Groningen",
-    "Gelderland"
+    "Gelderland",
+    "Fryslân",
+    "Overijssel",
+    "Drenthe"
    ],
    "hint": "",
    "note": "",
@@ -619,10 +619,10 @@
    "question": "In welke provincie ligt Dordrecht?",
    "answer": "Zuid-Holland",
    "options": [
-    "Noord-Holland",
     "Zuid-Holland",
-    "Drenthe",
-    "Fryslân"
+    "Overijssel",
+    "Utrecht",
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -651,10 +651,10 @@
    "question": "In welke provincie ligt Drachten?",
    "answer": "Fryslân",
    "options": [
-    "Noord-Brabant",
-    "Gelderland",
     "Fryslân",
-    "Zeeland"
+    "Utrecht",
+    "Zeeland",
+    "Overijssel"
    ],
    "hint": "",
    "note": "",
@@ -683,9 +683,9 @@
    "question": "In welke provincie ligt Eindhoven?",
    "answer": "Noord-Brabant",
    "options": [
-    "Groningen",
-    "Gelderland",
-    "Overijssel",
+    "Drenthe",
+    "Zuid-Holland",
+    "Fryslân",
     "Noord-Brabant"
    ],
    "hint": "",
@@ -715,10 +715,10 @@
    "question": "In welke provincie ligt Emmeloord?",
    "answer": "Flevoland",
    "options": [
-    "Drenthe",
+    "Zeeland",
+    "Noord-Holland",
     "Flevoland",
-    "Noord-Brabant",
-    "Noord-Holland"
+    "Drenthe"
    ],
    "hint": "",
    "note": "",
@@ -747,10 +747,10 @@
    "question": "In welke provincie ligt Emmen?",
    "answer": "Drenthe",
    "options": [
-    "Noord-Brabant",
     "Drenthe",
-    "Overijssel",
-    "Utrecht"
+    "Flevoland",
+    "Noord-Brabant",
+    "Groningen"
    ],
    "hint": "",
    "note": "",
@@ -779,10 +779,10 @@
    "question": "In welke provincie ligt Enkhuizen?",
    "answer": "Noord-Holland",
    "options": [
-    "Gelderland",
-    "Flevoland",
     "Noord-Holland",
-    "Noord-Brabant"
+    "Drenthe",
+    "Overijssel",
+    "Groningen"
    ],
    "hint": "",
    "note": "",
@@ -811,9 +811,9 @@
    "question": "In welke provincie ligt Enschede?",
    "answer": "Overijssel",
    "options": [
-    "Limburg",
+    "Noord-Holland",
+    "Groningen",
     "Overijssel",
-    "Flevoland",
     "Zuid-Holland"
    ],
    "hint": "",
@@ -843,10 +843,10 @@
    "question": "In welke provincie ligt Gouda?",
    "answer": "Zuid-Holland",
    "options": [
+    "Gelderland",
+    "Groningen",
     "Zuid-Holland",
-    "Zeeland",
-    "Noord-Holland",
-    "Gelderland"
+    "Fryslân"
    ],
    "hint": "",
    "note": "",
@@ -875,10 +875,10 @@
    "question": "In welke provincie ligt Groningen?",
    "answer": "Groningen",
    "options": [
-    "Limburg",
+    "Gelderland",
     "Groningen",
-    "Noord-Brabant",
-    "Overijssel"
+    "Utrecht",
+    "Fryslân"
    ],
    "hint": "",
    "note": "",
@@ -907,10 +907,10 @@
    "question": "In welke provincie ligt Haarlem?",
    "answer": "Noord-Holland",
    "options": [
-    "Utrecht",
+    "Fryslân",
+    "Gelderland",
     "Noord-Holland",
-    "Zeeland",
-    "Limburg"
+    "Overijssel"
    ],
    "hint": "",
    "note": "",
@@ -939,10 +939,10 @@
    "question": "In welke provincie ligt Heerenveen?",
    "answer": "Fryslân",
    "options": [
-    "Limburg",
+    "Fryslân",
     "Drenthe",
-    "Groningen",
-    "Fryslân"
+    "Noord-Holland",
+    "Overijssel"
    ],
    "hint": "",
    "note": "",
@@ -971,10 +971,10 @@
    "question": "In welke provincie ligt Heerlen?",
    "answer": "Limburg",
    "options": [
-    "Drenthe",
+    "Zuid-Holland",
+    "Zeeland",
     "Limburg",
-    "Gelderland",
-    "Utrecht"
+    "Fryslân"
    ],
    "hint": "",
    "note": "",
@@ -1003,10 +1003,10 @@
    "question": "In welke provincie ligt Helmond?",
    "answer": "Noord-Brabant",
    "options": [
-    "Groningen",
-    "Zeeland",
+    "Utrecht",
     "Noord-Brabant",
-    "Drenthe"
+    "Zuid-Holland",
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -1036,9 +1036,9 @@
    "answer": "Overijssel",
    "options": [
     "Overijssel",
-    "Noord-Holland",
+    "Limburg",
     "Groningen",
-    "Limburg"
+    "Flevoland"
    ],
    "hint": "",
    "note": "",
@@ -1067,10 +1067,10 @@
    "question": "In welke provincie ligt Hilversum?",
    "answer": "Noord-Holland",
    "options": [
+    "Utrecht",
     "Gelderland",
-    "Drenthe",
     "Noord-Holland",
-    "Utrecht"
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -1099,10 +1099,10 @@
    "question": "In welke provincie ligt Hoogeveen?",
    "answer": "Drenthe",
    "options": [
-    "Groningen",
-    "Limburg",
     "Flevoland",
-    "Drenthe"
+    "Overijssel",
+    "Drenthe",
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -1131,10 +1131,10 @@
    "question": "In welke provincie ligt Kampen?",
    "answer": "Overijssel",
    "options": [
-    "Zeeland",
-    "Utrecht",
     "Overijssel",
-    "Flevoland"
+    "Utrecht",
+    "Flevoland",
+    "Noord-Holland"
    ],
    "hint": "",
    "note": "",
@@ -1164,8 +1164,8 @@
    "answer": "Fryslân",
    "options": [
     "Fryslân",
+    "Zeeland",
     "Gelderland",
-    "Overijssel",
     "Drenthe"
    ],
    "hint": "",
@@ -1195,10 +1195,10 @@
    "question": "In welke provincie ligt Leiden?",
    "answer": "Zuid-Holland",
    "options": [
-    "Zuid-Holland",
-    "Overijssel",
+    "Gelderland",
     "Utrecht",
-    "Zeeland"
+    "Noord-Brabant",
+    "Zuid-Holland"
    ],
    "hint": "",
    "note": "",
@@ -1228,9 +1228,9 @@
    "answer": "Flevoland",
    "options": [
     "Flevoland",
-    "Utrecht",
-    "Zeeland",
-    "Overijssel"
+    "Groningen",
+    "Noord-Holland",
+    "Noord-Brabant"
    ],
    "hint": "",
    "note": "",
@@ -1259,10 +1259,10 @@
    "question": "In welke provincie ligt Maastricht?",
    "answer": "Limburg",
    "options": [
-    "Drenthe",
-    "Zuid-Holland",
-    "Fryslân",
-    "Limburg"
+    "Groningen",
+    "Limburg",
+    "Gelderland",
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -1291,10 +1291,10 @@
    "question": "In welke provincie ligt Meppel?",
    "answer": "Drenthe",
    "options": [
-    "Zeeland",
-    "Noord-Holland",
+    "Groningen",
     "Drenthe",
-    "Flevoland"
+    "Flevoland",
+    "Fryslân"
    ],
    "hint": "",
    "note": "",
@@ -1323,10 +1323,10 @@
    "question": "In welke provincie ligt Middelburg?",
    "answer": "Zeeland",
    "options": [
-    "Zeeland",
-    "Drenthe",
-    "Limburg",
-    "Gelderland"
+    "Utrecht",
+    "Fryslân",
+    "Zuid-Holland",
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -1355,10 +1355,10 @@
    "question": "In welke provincie ligt Nijmegen?",
    "answer": "Gelderland",
    "options": [
+    "Flevoland",
+    "Groningen",
     "Gelderland",
-    "Drenthe",
-    "Overijssel",
-    "Limburg"
+    "Noord-Holland"
    ],
    "hint": "",
    "note": "",
@@ -1387,10 +1387,10 @@
    "question": "In welke provincie ligt Oss?",
    "answer": "Noord-Brabant",
    "options": [
-    "Overijssel",
-    "Groningen",
+    "Zeeland",
     "Noord-Brabant",
-    "Zuid-Holland"
+    "Groningen",
+    "Gelderland"
    ],
    "hint": "",
    "note": "",
@@ -1419,10 +1419,10 @@
    "question": "In welke provincie ligt Purmerend?",
    "answer": "Noord-Holland",
    "options": [
-    "Gelderland",
+    "Fryslân",
     "Groningen",
     "Noord-Holland",
-    "Fryslân"
+    "Noord-Brabant"
    ],
    "hint": "",
    "note": "",
@@ -1451,10 +1451,10 @@
    "question": "In welke provincie ligt Roermond?",
    "answer": "Limburg",
    "options": [
-    "Gelderland",
+    "Overijssel",
+    "Noord-Brabant",
     "Limburg",
-    "Utrecht",
-    "Fryslân"
+    "Groningen"
    ],
    "hint": "",
    "note": "",
@@ -1483,10 +1483,10 @@
    "question": "In welke provincie ligt Roosendaal?",
    "answer": "Noord-Brabant",
    "options": [
+    "Utrecht",
     "Fryslân",
-    "Gelderland",
-    "Noord-Brabant",
-    "Overijssel"
+    "Noord-Holland",
+    "Noord-Brabant"
    ],
    "hint": "",
    "note": "",
@@ -1515,10 +1515,10 @@
    "question": "In welke provincie ligt Rotterdam?",
    "answer": "Zuid-Holland",
    "options": [
+    "Groningen",
+    "Zeeland",
     "Zuid-Holland",
-    "Drenthe",
-    "Noord-Brabant",
-    "Noord-Holland"
+    "Utrecht"
    ],
    "hint": "",
    "note": "",
@@ -1547,10 +1547,10 @@
    "question": "In welke provincie ligt Sneek?",
    "answer": "Fryslân",
    "options": [
-    "Zuid-Holland",
-    "Zeeland",
+    "Noord-Brabant",
+    "Utrecht",
     "Fryslân",
-    "Gelderland"
+    "Noord-Holland"
    ],
    "hint": "",
    "note": "",
@@ -1579,10 +1579,10 @@
    "question": "In welke provincie ligt Terneuzen?",
    "answer": "Zeeland",
    "options": [
-    "Overijssel",
-    "Zeeland",
-    "Zuid-Holland",
-    "Utrecht"
+    "Drenthe",
+    "Limburg",
+    "Flevoland",
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -1611,10 +1611,10 @@
    "question": "In welke provincie ligt Tilburg?",
    "answer": "Noord-Brabant",
    "options": [
-    "Noord-Brabant",
-    "Limburg",
     "Groningen",
-    "Flevoland"
+    "Noord-Brabant",
+    "Overijssel",
+    "Gelderland"
    ],
    "hint": "",
    "note": "",
@@ -1643,10 +1643,10 @@
    "question": "In welke provincie ligt Utrecht?",
    "answer": "Utrecht",
    "options": [
-    "Overijssel",
-    "Gelderland",
     "Utrecht",
-    "Zeeland"
+    "Limburg",
+    "Noord-Brabant",
+    "Flevoland"
    ],
    "hint": "",
    "note": "",
@@ -1675,10 +1675,10 @@
    "question": "In welke provincie ligt Veendam?",
    "answer": "Groningen",
    "options": [
-    "Drenthe",
-    "Overijssel",
-    "Groningen",
-    "Zeeland"
+    "Zuid-Holland",
+    "Limburg",
+    "Zeeland",
+    "Groningen"
    ],
    "hint": "",
    "note": "",
@@ -1709,8 +1709,8 @@
    "options": [
     "Limburg",
     "Utrecht",
-    "Flevoland",
-    "Overijssel"
+    "Noord-Holland",
+    "Zuid-Holland"
    ],
    "hint": "",
    "note": "",
@@ -1739,10 +1739,10 @@
    "question": "In welke provincie ligt Vlissingen?",
    "answer": "Zeeland",
    "options": [
-    "Zeeland",
-    "Utrecht",
+    "Limburg",
     "Fryslân",
-    "Drenthe"
+    "Noord-Holland",
+    "Zeeland"
    ],
    "hint": "",
    "note": "",
@@ -1771,9 +1771,9 @@
    "question": "In welke provincie ligt Wageningen?",
    "answer": "Gelderland",
    "options": [
-    "Groningen",
-    "Zeeland",
     "Noord-Holland",
+    "Zuid-Holland",
+    "Groningen",
     "Gelderland"
    ],
    "hint": "",
@@ -1803,10 +1803,10 @@
    "question": "In welke provincie ligt Zaandam?",
    "answer": "Noord-Holland",
    "options": [
-    "Noord-Holland",
-    "Gelderland",
-    "Noord-Brabant",
-    "Limburg"
+    "Flevoland",
+    "Groningen",
+    "Limburg",
+    "Noord-Holland"
    ],
    "hint": "",
    "note": "",
@@ -1835,10 +1835,10 @@
    "question": "In welke provincie ligt Zoetermeer?",
    "answer": "Zuid-Holland",
    "options": [
-    "Groningen",
+    "Overijssel",
     "Zuid-Holland",
-    "Gelderland",
-    "Utrecht"
+    "Limburg",
+    "Noord-Holland"
    ],
    "hint": "",
    "note": "",
@@ -1867,10 +1867,10 @@
    "question": "In welke provincie ligt Zutphen?",
    "answer": "Gelderland",
    "options": [
-    "Groningen",
-    "Gelderland",
-    "Drenthe",
-    "Flevoland"
+    "Zeeland",
+    "Limburg",
+    "Noord-Brabant",
+    "Gelderland"
    ],
    "hint": "",
    "note": "",
@@ -1899,10 +1899,10 @@
    "question": "In welke provincie ligt Zwolle?",
    "answer": "Overijssel",
    "options": [
+    "Overijssel",
+    "Limburg",
     "Zeeland",
-    "Fryslân",
-    "Zuid-Holland",
-    "Overijssel"
+    "Fryslân"
    ],
    "hint": "",
    "note": "",

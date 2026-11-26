@@ -11,9 +11,9 @@
    "question": "Wat voor soort plek is Pico da Neblina?",
    "answer": "berg",
    "options": [
-    "plateau",
-    "stuwdam",
-    "vlakte",
+    "delta",
+    "regio",
+    "eilandengroep",
     "berg"
    ],
    "hint": "",
@@ -52,10 +52,10 @@
    "question": "Wat voor soort plek is Amazonegebied?",
    "answer": "bioom",
    "options": [
-    "bioom",
-    "delta",
-    "stuwdam",
-    "schiereiland"
+    "vlakte",
+    "rivier",
+    "gebergte",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -93,10 +93,10 @@
    "question": "Wat voor soort plek is Belo Montedam?",
    "answer": "stuwdam",
    "options": [
-    "oceaan",
-    "kanaal",
-    "regio",
-    "stuwdam"
+    "bioom",
+    "stuwdam",
+    "delta",
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -126,9 +126,9 @@
    "answer": "bioom",
    "options": [
     "bioom",
-    "berg",
-    "rivier",
-    "golf"
+    "zee",
+    "kanaal",
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -162,10 +162,10 @@
    "question": "Wat voor soort plek is Centraal-West?",
    "answer": "regio",
    "options": [
-    "vulkaan",
-    "kanaal",
-    "regio",
-    "gebergte"
+    "waterkering",
+    "gebergte",
+    "rivier",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -203,10 +203,10 @@
    "question": "Wat voor soort plek is Cerrado?",
    "answer": "bioom",
    "options": [
-    "zee",
     "bioom",
-    "delta",
-    "vulkaan"
+    "woestijn",
+    "eilandengroep",
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -240,10 +240,10 @@
    "question": "Wat voor soort plek is Itaipudam?",
    "answer": "stuwdam",
    "options": [
+    "plateau",
     "stuwdam",
-    "waterkering",
-    "regio",
-    "plateau"
+    "rivier",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -277,10 +277,10 @@
    "question": "Wat voor soort plek is Mata Atlântica?",
    "answer": "bioom",
    "options": [
-    "regio",
-    "stuwdam",
-    "golf",
-    "bioom"
+    "oceaan",
+    "zeestraat",
+    "bioom",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -314,10 +314,10 @@
    "question": "Wat voor soort plek is Noord?",
    "answer": "regio",
    "options": [
-    "zee",
+    "stuwdam",
     "regio",
     "gebergte",
-    "golf"
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -355,10 +355,10 @@
    "question": "Wat voor soort plek is Noordoost?",
    "answer": "regio",
    "options": [
+    "stuwdam",
     "eilandengroep",
     "regio",
-    "gebergte",
-    "vulkaan"
+    "polder"
    ],
    "hint": "",
    "note": "",
@@ -396,10 +396,10 @@
    "question": "Wat voor soort plek is Pampa?",
    "answer": "bioom",
    "options": [
-    "schiereiland",
-    "woestijn",
-    "oceaan",
-    "bioom"
+    "bioom",
+    "waterkering",
+    "kanaal",
+    "zeestraat"
    ],
    "hint": "",
    "note": "",
@@ -433,10 +433,10 @@
    "question": "Wat voor soort plek is Pantanal?",
    "answer": "bioom",
    "options": [
-    "bioom",
     "polder",
-    "regio",
-    "delta"
+    "schiereiland",
+    "oceaan",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -470,10 +470,10 @@
    "question": "Wat voor soort plek is Sertão?",
    "answer": "regio",
    "options": [
-    "waterkering",
     "regio",
-    "golf",
-    "berg"
+    "eiland",
+    "vlakte",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -511,10 +511,10 @@
    "question": "Wat voor soort plek is Zona da Mata?",
    "answer": "regio",
    "options": [
-    "kanaal",
+    "vlakte",
     "regio",
-    "zee",
-    "golf"
+    "eiland",
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -552,9 +552,9 @@
    "question": "Wat voor soort plek is Zuid?",
    "answer": "regio",
    "options": [
-    "berg",
-    "waterkering",
     "regio",
+    "stuwdam",
+    "delta",
     "rivier"
    ],
    "hint": "",
@@ -593,10 +593,10 @@
    "question": "Wat voor soort plek is Zuidoost?",
    "answer": "regio",
    "options": [
-    "golf",
+    "rivier",
+    "zeestraat",
     "regio",
-    "zee",
-    "polder"
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -634,10 +634,10 @@
    "question": "Wat voor soort plek is Alpen?",
    "answer": "gebergte",
    "options": [
-    "delta",
-    "bioom",
-    "gebergte",
-    "eiland"
+    "rivier",
+    "regio",
+    "zeestraat",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -677,10 +677,10 @@
    "question": "Wat voor soort plek is Andes?",
    "answer": "gebergte",
    "options": [
-    "kanaal",
-    "waterkering",
     "gebergte",
-    "meer"
+    "kanaal",
+    "regio",
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -722,9 +722,9 @@
    "question": "Wat voor soort plek is Arabisch schiereiland?",
    "answer": "schiereiland",
    "options": [
-    "stuwdam",
-    "eiland",
-    "polder",
+    "regio",
+    "zeestraat",
+    "waterkering",
     "schiereiland"
    ],
    "hint": "",
@@ -754,8 +754,8 @@
    "options": [
     "eilandengroep",
     "gebergte",
-    "zee",
-    "bioom"
+    "schiereiland",
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -784,10 +784,10 @@
    "question": "Wat voor soort plek is Britse Eilanden?",
    "answer": "eilandengroep",
    "options": [
-    "delta",
     "eilandengroep",
+    "rivier",
     "zee",
-    "zeestraat"
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -814,10 +814,10 @@
    "question": "Wat voor soort plek is Canadese Arctische Eilanden?",
    "answer": "eilandengroep",
    "options": [
+    "golf",
     "eilandengroep",
-    "zee",
-    "kanaal",
-    "waterkering"
+    "rivier",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -844,10 +844,10 @@
    "question": "Wat voor soort plek is Carolinen?",
    "answer": "eilandengroep",
    "options": [
-    "waterkering",
-    "golf",
-    "rivier",
-    "eilandengroep"
+    "eilandengroep",
+    "kanaal",
+    "oceaan",
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -874,10 +874,10 @@
    "question": "Wat voor soort plek is Chimborazo?",
    "answer": "vulkaan",
    "options": [
+    "oceaan",
+    "meer",
     "vulkaan",
-    "woestijn",
-    "eiland",
-    "golf"
+    "zeestraat"
    ],
    "hint": "",
    "note": "",
@@ -916,10 +916,10 @@
    "question": "Wat voor soort plek is Chinees Laagland?",
    "answer": "vlakte",
    "options": [
-    "plateau",
-    "vlakte",
-    "rivier",
-    "gebergte"
+    "schiereiland",
+    "eilandengroep",
+    "stuwdam",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -957,10 +957,10 @@
    "question": "Wat voor soort plek is Cotopaxi?",
    "answer": "vulkaan",
    "options": [
-    "meer",
-    "zeestraat",
-    "vulkaan",
-    "regio"
+    "oceaan",
+    "plateau",
+    "vlakte",
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -999,10 +999,10 @@
    "question": "Wat voor soort plek is Filipijnen?",
    "answer": "eilandengroep",
    "options": [
-    "stuwdam",
+    "schiereiland",
+    "bioom",
     "eilandengroep",
-    "golf",
-    "berg"
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -1029,10 +1029,10 @@
    "question": "Wat voor soort plek is Fuji?",
    "answer": "vulkaan",
    "options": [
-    "schiereiland",
-    "eilandengroep",
     "vulkaan",
-    "polder"
+    "gebergte",
+    "meer",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -1071,10 +1071,10 @@
    "question": "Wat voor soort plek is Gobi?",
    "answer": "woestijn",
    "options": [
-    "woestijn",
-    "vulkaan",
-    "golf",
-    "zeestraat"
+    "kanaal",
+    "plateau",
+    "zee",
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -1113,10 +1113,10 @@
    "question": "Wat voor soort plek is Great Plains?",
    "answer": "vlakte",
    "options": [
-    "plateau",
-    "rivier",
-    "meer",
-    "vlakte"
+    "vlakte",
+    "eiland",
+    "kanaal",
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -1154,10 +1154,10 @@
    "question": "Wat voor soort plek is Groenland?",
    "answer": "eiland",
    "options": [
-    "eiland",
-    "eilandengroep",
-    "vlakte",
-    "oceaan"
+    "stuwdam",
+    "vulkaan",
+    "rivier",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -1184,10 +1184,10 @@
    "question": "Wat voor soort plek is Groot Australisch Scheidingsgebergte?",
    "answer": "gebergte",
    "options": [
-    "vlakte",
-    "gebergte",
-    "eiland",
-    "meer"
+    "stuwdam",
+    "eilandengroep",
+    "meer",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -1226,9 +1226,9 @@
    "answer": "eilandengroep",
    "options": [
     "eilandengroep",
-    "stuwdam",
-    "delta",
-    "rivier"
+    "eiland",
+    "polder",
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -1255,10 +1255,10 @@
    "question": "Wat voor soort plek is Hawaii?",
    "answer": "eilandengroep",
    "options": [
-    "rivier",
-    "zeestraat",
+    "zee",
     "eilandengroep",
-    "polder"
+    "delta",
+    "stuwdam"
    ],
    "hint": "",
    "note": "",
@@ -1287,10 +1287,10 @@
    "question": "Wat voor soort plek is Hawaï?",
    "answer": "eilandengroep",
    "options": [
+    "berg",
     "rivier",
-    "regio",
-    "zeestraat",
-    "eilandengroep"
+    "eilandengroep",
+    "polder"
    ],
    "hint": "",
    "note": "",
@@ -1317,10 +1317,10 @@
    "question": "Wat voor soort plek is Hawaïaanse eilanden?",
    "answer": "eilandengroep",
    "options": [
+    "polder",
+    "vulkaan",
     "eilandengroep",
-    "kanaal",
-    "regio",
-    "vulkaan"
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -1347,10 +1347,10 @@
    "question": "Wat voor soort plek is Himalaya?",
    "answer": "gebergte",
    "options": [
-    "rivier",
-    "zeestraat",
-    "waterkering",
-    "gebergte"
+    "gebergte",
+    "regio",
+    "kanaal",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -1390,10 +1390,10 @@
    "question": "Wat voor soort plek is Huascarán?",
    "answer": "berg",
    "options": [
-    "gebergte",
-    "berg",
-    "schiereiland",
-    "bioom"
+    "delta",
+    "vulkaan",
+    "vlakte",
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -1432,10 +1432,10 @@
    "question": "Wat voor soort plek is IJsland (eiland)?",
    "answer": "eiland",
    "options": [
+    "golf",
+    "delta",
     "eiland",
-    "rivier",
-    "zee",
-    "schiereiland"
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -1462,10 +1462,10 @@
    "question": "Wat voor soort plek is Iberisch Schiereiland?",
    "answer": "plateau",
    "options": [
-    "gebergte",
+    "zeestraat",
+    "stuwdam",
     "plateau",
-    "rivier",
-    "bioom"
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -1503,10 +1503,10 @@
    "question": "Wat voor soort plek is Indisch subcontinent?",
    "answer": "schiereiland",
    "options": [
+    "vulkaan",
     "schiereiland",
-    "golf",
-    "meer",
-    "waterkering"
+    "eiland",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -1533,10 +1533,10 @@
    "question": "Wat voor soort plek is Indische Archipel?",
    "answer": "eilandengroep",
    "options": [
-    "plateau",
-    "oceaan",
+    "zeestraat",
     "eilandengroep",
-    "zeestraat"
+    "regio",
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -1563,10 +1563,10 @@
    "question": "Wat voor soort plek is Indochina (schiereiland)?",
    "answer": "schiereiland",
    "options": [
-    "stuwdam",
-    "eilandengroep",
-    "vlakte",
-    "schiereiland"
+    "schiereiland",
+    "zee",
+    "vulkaan",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -1593,10 +1593,10 @@
    "question": "Wat voor soort plek is Japan?",
    "answer": "eilandengroep",
    "options": [
-    "plateau",
-    "polder",
-    "vulkaan",
-    "eilandengroep"
+    "eilandengroep",
+    "regio",
+    "gebergte",
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -1623,10 +1623,10 @@
    "question": "Wat voor soort plek is Java?",
    "answer": "eiland",
    "options": [
-    "schiereiland",
     "bioom",
+    "woestijn",
     "eiland",
-    "plateau"
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -1655,10 +1655,10 @@
    "question": "Wat voor soort plek is Kaukasus?",
    "answer": "gebergte",
    "options": [
-    "gebergte",
-    "golf",
-    "oceaan",
-    "rivier"
+    "bioom",
+    "berg",
+    "zee",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -1698,10 +1698,10 @@
    "question": "Wat voor soort plek is Kazachse Steppe?",
    "answer": "vlakte",
    "options": [
+    "vlakte",
+    "schiereiland",
     "kanaal",
-    "plateau",
-    "zee",
-    "vlakte"
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -1739,10 +1739,10 @@
    "question": "Wat voor soort plek is Kiribati?",
    "answer": "eilandengroep",
    "options": [
-    "eilandengroep",
-    "eiland",
-    "meer",
-    "waterkering"
+    "zee",
+    "waterkering",
+    "polder",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -1769,10 +1769,10 @@
    "question": "Wat voor soort plek is Line-eilanden?",
    "answer": "eilandengroep",
    "options": [
-    "stuwdam",
+    "eilandengroep",
+    "kanaal",
     "vulkaan",
-    "rivier",
-    "eilandengroep"
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -1799,10 +1799,10 @@
    "question": "Wat voor soort plek is Madagaskar?",
    "answer": "eiland",
    "options": [
-    "stuwdam",
-    "gebergte",
-    "meer",
-    "eiland"
+    "oceaan",
+    "golf",
+    "eiland",
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -1829,10 +1829,10 @@
    "question": "Wat voor soort plek is Matterhorn?",
    "answer": "berg",
    "options": [
+    "stuwdam",
     "berg",
-    "eilandengroep",
-    "polder",
-    "vulkaan"
+    "bioom",
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -1870,10 +1870,10 @@
    "question": "Wat voor soort plek is Melanesië?",
    "answer": "eilandengroep",
    "options": [
-    "zee",
+    "plateau",
     "eilandengroep",
-    "delta",
-    "stuwdam"
+    "vulkaan",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -1900,10 +1900,10 @@
    "question": "Wat voor soort plek is Micronesië?",
    "answer": "eilandengroep",
    "options": [
-    "berg",
-    "rivier",
     "eilandengroep",
-    "polder"
+    "bioom",
+    "zeestraat",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -1930,10 +1930,10 @@
    "question": "Wat voor soort plek is Midden-Oosten?",
    "answer": "regio",
    "options": [
-    "plateau",
-    "vulkaan",
+    "bioom",
+    "vlakte",
     "regio",
-    "meer"
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -1962,10 +1962,10 @@
    "question": "Wat voor soort plek is Molukken?",
    "answer": "eilandengroep",
    "options": [
-    "eilandengroep",
-    "regio",
-    "kanaal",
-    "meer"
+    "vlakte",
+    "schiereiland",
+    "zee",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -1994,10 +1994,10 @@
    "question": "Wat voor soort plek is Mount Everest?",
    "answer": "berg",
    "options": [
-    "delta",
-    "vulkaan",
-    "vlakte",
-    "berg"
+    "berg",
+    "stuwdam",
+    "zee",
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -2035,10 +2035,10 @@
    "question": "Wat voor soort plek is Nieuw-Zeeland?",
    "answer": "eilandengroep",
    "options": [
-    "golf",
-    "delta",
+    "zee",
     "eilandengroep",
-    "eiland"
+    "waterkering",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -2065,10 +2065,10 @@
    "question": "Wat voor soort plek is Noord-Europese Laagvlakte?",
    "answer": "vlakte",
    "options": [
+    "eiland",
     "zeestraat",
-    "schiereiland",
-    "vlakte",
-    "delta"
+    "woestijn",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -2106,10 +2106,10 @@
    "question": "Wat voor soort plek is Oeral?",
    "answer": "gebergte",
    "options": [
-    "vulkaan",
     "gebergte",
-    "eiland",
-    "eilandengroep"
+    "polder",
+    "plateau",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -2149,10 +2149,10 @@
    "question": "Wat voor soort plek is Ojos del Salado?",
    "answer": "vulkaan",
    "options": [
-    "zeestraat",
+    "eilandengroep",
+    "schiereiland",
     "vulkaan",
-    "polder",
-    "meer"
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -2191,10 +2191,10 @@
    "question": "Wat voor soort plek is Pico de Orizaba?",
    "answer": "vulkaan",
    "options": [
+    "meer",
     "vulkaan",
-    "zee",
-    "vlakte",
-    "bioom"
+    "bioom",
+    "stuwdam"
    ],
    "hint": "",
    "note": "",
@@ -2232,10 +2232,10 @@
    "question": "Wat voor soort plek is Polynesië?",
    "answer": "eilandengroep",
    "options": [
-    "eilandengroep",
-    "regio",
+    "meer",
     "gebergte",
-    "delta"
+    "eilandengroep",
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -2262,10 +2262,10 @@
    "question": "Wat voor soort plek is Pyreneeën?",
    "answer": "gebergte",
    "options": [
-    "bioom",
-    "woestijn",
-    "gebergte",
-    "zee"
+    "polder",
+    "kanaal",
+    "eilandengroep",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -2305,10 +2305,10 @@
    "question": "Wat voor soort plek is Rocky Mountains?",
    "answer": "gebergte",
    "options": [
-    "bioom",
-    "berg",
-    "zee",
-    "gebergte"
+    "regio",
+    "waterkering",
+    "gebergte",
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -2350,8 +2350,8 @@
    "options": [
     "regio",
     "stuwdam",
-    "kanaal",
-    "schiereiland"
+    "oceaan",
+    "polder"
    ],
    "hint": "",
    "note": "",
@@ -2380,10 +2380,10 @@
    "question": "Wat voor soort plek is Sahara?",
    "answer": "woestijn",
    "options": [
-    "zee",
-    "vulkaan",
-    "plateau",
-    "woestijn"
+    "meer",
+    "kanaal",
+    "woestijn",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -2424,10 +2424,10 @@
    "question": "Wat voor soort plek is Scandinavië?",
    "answer": "schiereiland",
    "options": [
+    "regio",
     "schiereiland",
     "golf",
-    "vulkaan",
-    "kanaal"
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -2454,10 +2454,10 @@
    "question": "Wat voor soort plek is Scandinavië?",
    "answer": "regio",
    "options": [
-    "meer",
+    "rivier",
+    "polder",
     "gebergte",
-    "regio",
-    "waterkering"
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -2486,10 +2486,10 @@
    "question": "Wat voor soort plek is Siberië?",
    "answer": "regio",
    "options": [
-    "stuwdam",
+    "eilandengroep",
     "regio",
-    "berg",
-    "meer"
+    "zeestraat",
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -2518,10 +2518,10 @@
    "question": "Wat voor soort plek is Sicilië?",
    "answer": "eiland",
    "options": [
-    "plateau",
-    "eiland",
-    "vulkaan",
-    "bioom"
+    "meer",
+    "zeestraat",
+    "kanaal",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -2550,10 +2550,10 @@
    "question": "Wat voor soort plek is Tibetaans Hoogland?",
    "answer": "plateau",
    "options": [
+    "golf",
+    "zee",
     "plateau",
-    "bioom",
-    "zeestraat",
-    "vlakte"
+    "stuwdam"
    ],
    "hint": "",
    "note": "",
@@ -2591,10 +2591,10 @@
    "question": "Wat voor soort plek is Tiensjan?",
    "answer": "gebergte",
    "options": [
-    "bioom",
-    "vlakte",
     "gebergte",
-    "waterkering"
+    "vlakte",
+    "rivier",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -2632,10 +2632,10 @@
    "question": "Wat voor soort plek is Vesuvius?",
    "answer": "vulkaan",
    "options": [
-    "stuwdam",
+    "oceaan",
+    "vulkaan",
     "rivier",
-    "zee",
-    "vulkaan"
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -2674,10 +2674,10 @@
    "question": "Wat voor soort plek is Vlaanderen?",
    "answer": "regio",
    "options": [
+    "woestijn",
     "regio",
-    "stuwdam",
-    "zee",
-    "golf"
+    "rivier",
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -2706,10 +2706,10 @@
    "question": "Wat voor soort plek is Wallonië?",
    "answer": "regio",
    "options": [
-    "zee",
-    "regio",
-    "waterkering",
-    "polder"
+    "kanaal",
+    "vlakte",
+    "meer",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -2738,9 +2738,9 @@
    "question": "Wat voor soort plek is West-Indië?",
    "answer": "eilandengroep",
    "options": [
-    "eiland",
-    "zeestraat",
-    "woestijn",
+    "waterkering",
+    "bioom",
+    "golf",
     "eilandengroep"
    ],
    "hint": "",
@@ -2768,10 +2768,10 @@
    "question": "Wat voor soort plek is Western Plateau?",
    "answer": "plateau",
    "options": [
-    "plateau",
-    "polder",
     "oceaan",
-    "gebergte"
+    "zeestraat",
+    "plateau",
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -2809,10 +2809,10 @@
    "question": "Wat voor soort plek is Zugspitze?",
    "answer": "berg",
    "options": [
-    "gebergte",
-    "stuwdam",
-    "berg",
-    "rivier"
+    "eiland",
+    "regio",
+    "zeestraat",
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -2850,10 +2850,10 @@
    "question": "Wat voor soort plek is Colorado?",
    "answer": "rivier",
    "options": [
-    "meer",
-    "rivier",
     "bioom",
-    "vlakte"
+    "rivier",
+    "plateau",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -2885,10 +2885,10 @@
    "question": "Wat voor soort plek is Rio Grande?",
    "answer": "rivier",
    "options": [
-    "kanaal",
-    "eilandengroep",
+    "regio",
+    "polder",
     "rivier",
-    "woestijn"
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -2920,10 +2920,10 @@
    "question": "Wat voor soort plek is Ameland?",
    "answer": "eiland",
    "options": [
-    "polder",
-    "kanaal",
-    "gebergte",
-    "eiland"
+    "eiland",
+    "golf",
+    "delta",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -2961,10 +2961,10 @@
    "question": "Wat voor soort plek is Amsterdam-Rijnkanaal?",
    "answer": "kanaal",
    "options": [
-    "regio",
-    "waterkering",
+    "golf",
     "kanaal",
-    "plateau"
+    "regio",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -3004,10 +3004,10 @@
    "question": "Wat voor soort plek is Haarlemmermeer?",
    "answer": "polder",
    "options": [
+    "delta",
+    "zeestraat",
     "polder",
-    "stuwdam",
-    "oceaan",
-    "regio"
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -3036,10 +3036,10 @@
    "question": "Wat voor soort plek is IJssel?",
    "answer": "rivier",
    "options": [
-    "meer",
-    "kanaal",
+    "gebergte",
+    "eilandengroep",
     "rivier",
-    "eilandengroep"
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -3079,10 +3079,10 @@
    "question": "Wat voor soort plek is IJsselmeer?",
    "answer": "meer",
    "options": [
-    "rivier",
+    "eilandengroep",
+    "vulkaan",
     "meer",
-    "golf",
-    "eilandengroep"
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -3122,10 +3122,10 @@
    "question": "Wat voor soort plek is Lek?",
    "answer": "rivier",
    "options": [
-    "regio",
-    "polder",
-    "gebergte",
-    "rivier"
+    "rivier",
+    "schiereiland",
+    "delta",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -3165,10 +3165,10 @@
    "question": "Wat voor soort plek is Maas?",
    "answer": "rivier",
    "options": [
-    "eilandengroep",
     "rivier",
-    "zeestraat",
-    "oceaan"
+    "plateau",
+    "bioom",
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -3208,10 +3208,10 @@
    "question": "Wat voor soort plek is Markermeer?",
    "answer": "meer",
    "options": [
-    "kanaal",
-    "zeestraat",
-    "golf",
-    "meer"
+    "polder",
+    "meer",
+    "berg",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -3251,10 +3251,10 @@
    "question": "Wat voor soort plek is Neder-Rijn?",
    "answer": "rivier",
    "options": [
-    "golf",
-    "zee",
+    "delta",
+    "eilandengroep",
     "rivier",
-    "stuwdam"
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -3294,10 +3294,10 @@
    "question": "Wat voor soort plek is Nieuwe Waterweg?",
    "answer": "kanaal",
    "options": [
-    "kanaal",
-    "vlakte",
     "rivier",
-    "gebergte"
+    "kanaal",
+    "zeestraat",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -3337,10 +3337,10 @@
    "question": "Wat voor soort plek is Noordzeekanaal?",
    "answer": "kanaal",
    "options": [
-    "plateau",
     "kanaal",
-    "schiereiland",
-    "golf"
+    "zee",
+    "polder",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -3380,10 +3380,10 @@
    "question": "Wat voor soort plek is Randstad?",
    "answer": "regio",
    "options": [
-    "woestijn",
+    "zee",
+    "eiland",
     "regio",
-    "rivier",
-    "delta"
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -3412,9 +3412,9 @@
    "question": "Wat voor soort plek is Rijnmond?",
    "answer": "regio",
    "options": [
-    "kanaal",
-    "vlakte",
-    "meer",
+    "gebergte",
+    "delta",
+    "schiereiland",
     "regio"
    ],
    "hint": "",
@@ -3444,9 +3444,9 @@
    "question": "Wat voor soort plek is Schiermonnikoog?",
    "answer": "eiland",
    "options": [
-    "waterkering",
-    "bioom",
-    "golf",
+    "stuwdam",
+    "regio",
+    "meer",
     "eiland"
    ],
    "hint": "",
@@ -3485,10 +3485,10 @@
    "question": "Wat voor soort plek is Terschelling?",
    "answer": "eiland",
    "options": [
-    "plateau",
-    "zeestraat",
     "eiland",
-    "delta"
+    "stuwdam",
+    "eilandengroep",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -3526,10 +3526,10 @@
    "question": "Wat voor soort plek is Texel?",
    "answer": "eiland",
    "options": [
-    "delta",
-    "regio",
-    "zeestraat",
-    "eiland"
+    "stuwdam",
+    "rivier",
+    "eiland",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -3567,10 +3567,10 @@
    "question": "Wat voor soort plek is Twente?",
    "answer": "regio",
    "options": [
-    "bioom",
+    "vulkaan",
     "regio",
     "plateau",
-    "eilandengroep"
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -3599,10 +3599,10 @@
    "question": "Wat voor soort plek is Vaalserberg?",
    "answer": "berg",
    "options": [
-    "rivier",
-    "regio",
     "berg",
-    "plateau"
+    "vulkaan",
+    "regio",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -3630,9 +3630,9 @@
    "answer": "regio",
    "options": [
     "regio",
+    "oceaan",
     "gebergte",
-    "delta",
-    "eilandengroep"
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -3661,10 +3661,10 @@
    "question": "Wat voor soort plek is Vlieland?",
    "answer": "eiland",
    "options": [
-    "kanaal",
-    "eiland",
-    "regio",
-    "vlakte"
+    "zeestraat",
+    "bioom",
+    "polder",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -3702,10 +3702,10 @@
    "question": "Wat voor soort plek is Waal?",
    "answer": "rivier",
    "options": [
-    "delta",
-    "zeestraat",
+    "kanaal",
     "rivier",
-    "eilandengroep"
+    "eiland",
+    "zeestraat"
    ],
    "hint": "",
    "note": "",
@@ -3745,10 +3745,10 @@
    "question": "Wat voor soort plek is Waddenzee?",
    "answer": "zee",
    "options": [
-    "gebergte",
-    "eilandengroep",
-    "zee",
-    "plateau"
+    "waterkering",
+    "polder",
+    "zeestraat",
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -3789,10 +3789,10 @@
    "question": "Wat voor soort plek is Zeeuws-Vlaanderen?",
    "answer": "regio",
    "options": [
-    "eilandengroep",
-    "vulkaan",
-    "regio",
-    "oceaan"
+    "vlakte",
+    "kanaal",
+    "stuwdam",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -3821,10 +3821,10 @@
    "question": "Wat voor soort plek is Achterhoek?",
    "answer": "regio",
    "options": [
-    "regio",
-    "schiereiland",
+    "eiland",
     "delta",
-    "meer"
+    "regio",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -3852,9 +3852,9 @@
    "answer": "rivier",
    "options": [
     "rivier",
-    "plateau",
-    "bioom",
-    "vulkaan"
+    "eiland",
+    "oceaan",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -3888,10 +3888,10 @@
    "question": "Wat voor soort plek is Betuwe?",
    "answer": "regio",
    "options": [
-    "plateau",
-    "regio",
     "berg",
-    "bioom"
+    "regio",
+    "vlakte",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -3923,10 +3923,10 @@
    "question": "Wat voor soort plek is Brainport Eindhoven?",
    "answer": "regio",
    "options": [
-    "delta",
-    "eilandengroep",
+    "vlakte",
     "regio",
-    "rivier"
+    "oceaan",
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -3964,10 +3964,10 @@
    "question": "Wat voor soort plek is Flevopolder?",
    "answer": "polder",
    "options": [
-    "rivier",
-    "polder",
+    "berg",
     "zeestraat",
-    "eiland"
+    "delta",
+    "polder"
    ],
    "hint": "",
    "note": "",
@@ -4005,10 +4005,10 @@
    "question": "Wat voor soort plek is Grevelingen?",
    "answer": "meer",
    "options": [
+    "regio",
     "meer",
-    "zee",
-    "polder",
-    "eilandengroep"
+    "waterkering",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -4042,9 +4042,9 @@
    "question": "Wat voor soort plek is Groene Hart?",
    "answer": "regio",
    "options": [
-    "zee",
-    "eiland",
     "regio",
+    "meer",
+    "schiereiland",
     "vlakte"
    ],
    "hint": "",
@@ -4083,9 +4083,9 @@
    "question": "Wat voor soort plek is Haringvlietdam?",
    "answer": "waterkering",
    "options": [
-    "gebergte",
-    "delta",
-    "rivier",
+    "eilandengroep",
+    "polder",
+    "zee",
     "waterkering"
    ],
    "hint": "",
@@ -4120,9 +4120,9 @@
    "question": "Wat voor soort plek is Het Gooi?",
    "answer": "regio",
    "options": [
-    "stuwdam",
-    "polder",
-    "kanaal",
+    "eilandengroep",
+    "eiland",
+    "berg",
     "regio"
    ],
    "hint": "",
@@ -4150,10 +4150,10 @@
    "question": "Wat voor soort plek is Hondsrug?",
    "answer": "regio",
    "options": [
+    "delta",
     "regio",
-    "stuwdam",
-    "eiland",
-    "bioom"
+    "zee",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -4180,10 +4180,10 @@
    "question": "Wat voor soort plek is IJsselmeergebied?",
    "answer": "regio",
    "options": [
-    "stuwdam",
-    "rivier",
     "regio",
-    "eiland"
+    "gebergte",
+    "schiereiland",
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -4217,10 +4217,10 @@
    "question": "Wat voor soort plek is Lauwersmeer?",
    "answer": "meer",
    "options": [
-    "vulkaan",
-    "meer",
-    "polder",
-    "kanaal"
+    "woestijn",
+    "schiereiland",
+    "bioom",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -4254,10 +4254,10 @@
    "question": "Wat voor soort plek is Maeslantkering?",
    "answer": "waterkering",
    "options": [
-    "waterkering",
-    "vlakte",
+    "gebergte",
     "polder",
-    "rivier"
+    "waterkering",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -4295,9 +4295,9 @@
    "question": "Wat voor soort plek is Noordoostpolder?",
    "answer": "polder",
    "options": [
+    "berg",
     "polder",
-    "oceaan",
-    "gebergte",
+    "stuwdam",
     "plateau"
    ],
    "hint": "",
@@ -4336,9 +4336,9 @@
    "question": "Wat voor soort plek is Oosterscheldekering?",
    "answer": "waterkering",
    "options": [
+    "eiland",
     "zeestraat",
-    "bioom",
-    "plateau",
+    "vulkaan",
     "waterkering"
    ],
    "hint": "",
@@ -4377,10 +4377,10 @@
    "question": "Wat voor soort plek is Pannerdensch Kanaal?",
    "answer": "rivier",
    "options": [
-    "kanaal",
     "rivier",
-    "eiland",
-    "zeestraat"
+    "bioom",
+    "zeestraat",
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -4415,9 +4415,9 @@
    "answer": "regio",
    "options": [
     "woestijn",
-    "polder",
-    "zeestraat",
-    "regio"
+    "regio",
+    "zee",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -4444,10 +4444,10 @@
    "question": "Wat voor soort plek is Volkerak?",
    "answer": "meer",
    "options": [
-    "vlakte",
+    "golf",
     "kanaal",
-    "stuwdam",
-    "meer"
+    "meer",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -4481,10 +4481,10 @@
    "question": "Wat voor soort plek is Westland?",
    "answer": "regio",
    "options": [
-    "eiland",
-    "delta",
+    "polder",
     "regio",
-    "golf"
+    "golf",
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -4513,10 +4513,10 @@
    "question": "Wat voor soort plek is Zuid-Limburg?",
    "answer": "regio",
    "options": [
+    "zeestraat",
     "regio",
-    "eiland",
-    "oceaan",
-    "golf"
+    "schiereiland",
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -4543,9 +4543,9 @@
    "question": "Wat voor soort plek is Zuidwestelijke Delta?",
    "answer": "delta",
    "options": [
-    "berg",
+    "stuwdam",
     "delta",
-    "vlakte",
+    "regio",
     "eilandengroep"
    ],
    "hint": "",
@@ -4584,10 +4584,10 @@
    "question": "Wat voor soort plek is Alakol?",
    "answer": "meer",
    "options": [
-    "vlakte",
-    "meer",
+    "gebergte",
+    "zee",
     "plateau",
-    "woestijn"
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -4614,10 +4614,10 @@
    "question": "Wat voor soort plek is Albertmeer?",
    "answer": "meer",
    "options": [
-    "berg",
-    "zeestraat",
+    "vlakte",
     "delta",
-    "meer"
+    "meer",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -4644,10 +4644,10 @@
    "question": "Wat voor soort plek is Amadjuak Lake?",
    "answer": "meer",
    "options": [
+    "plateau",
     "regio",
-    "meer",
-    "waterkering",
-    "eiland"
+    "woestijn",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -4674,10 +4674,10 @@
    "question": "Wat voor soort plek is Amazone?",
    "answer": "rivier",
    "options": [
+    "bioom",
+    "woestijn",
     "rivier",
-    "meer",
-    "schiereiland",
-    "vlakte"
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -4717,10 +4717,10 @@
    "question": "Wat voor soort plek is Amoer?",
    "answer": "rivier",
    "options": [
-    "eilandengroep",
-    "polder",
-    "zee",
-    "rivier"
+    "schiereiland",
+    "gebergte",
+    "rivier",
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -4747,9 +4747,9 @@
    "question": "Wat voor soort plek is Arabische Zee?",
    "answer": "zee",
    "options": [
-    "eilandengroep",
-    "eiland",
-    "berg",
+    "vulkaan",
+    "waterkering",
+    "bioom",
     "zee"
    ],
    "hint": "",
@@ -4777,10 +4777,10 @@
    "question": "Wat voor soort plek is Araguaia?",
    "answer": "rivier",
    "options": [
-    "delta",
+    "gebergte",
     "rivier",
-    "zee",
-    "regio"
+    "vulkaan",
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -4818,10 +4818,10 @@
    "question": "Wat voor soort plek is Athabascameer?",
    "answer": "meer",
    "options": [
+    "berg",
     "meer",
-    "gebergte",
-    "schiereiland",
-    "woestijn"
+    "zee",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -4848,10 +4848,10 @@
    "question": "Wat voor soort plek is Atlantische Oceaan?",
    "answer": "oceaan",
    "options": [
-    "woestijn",
-    "schiereiland",
-    "bioom",
-    "oceaan"
+    "oceaan",
+    "kanaal",
+    "eilandengroep",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -4885,8 +4885,8 @@
    "question": "Wat voor soort plek is Baikalmeer?",
    "answer": "meer",
    "options": [
-    "gebergte",
-    "regio",
+    "vlakte",
+    "zee",
     "meer",
     "oceaan"
    ],
@@ -4915,10 +4915,10 @@
    "question": "Wat voor soort plek is Baker Lake?",
    "answer": "meer",
    "options": [
-    "berg",
+    "polder",
     "meer",
-    "stuwdam",
-    "polder"
+    "schiereiland",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -4945,9 +4945,9 @@
    "question": "Wat voor soort plek is Balatonmeer?",
    "answer": "meer",
    "options": [
-    "eiland",
-    "zeestraat",
-    "waterkering",
+    "vulkaan",
+    "bioom",
+    "kanaal",
     "meer"
    ],
    "hint": "",
@@ -4975,10 +4975,10 @@
    "question": "Wat voor soort plek is Balkasjmeer?",
    "answer": "meer",
    "options": [
-    "meer",
-    "bioom",
+    "rivier",
     "zeestraat",
-    "delta"
+    "meer",
+    "stuwdam"
    ],
    "hint": "",
    "note": "",
@@ -5006,9 +5006,9 @@
    "answer": "zee",
    "options": [
     "waterkering",
-    "zee",
-    "woestijn",
-    "gebergte"
+    "eilandengroep",
+    "stuwdam",
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -5035,10 +5035,10 @@
    "question": "Wat voor soort plek is Bodenmeer?",
    "answer": "meer",
    "options": [
-    "golf",
-    "kanaal",
-    "meer",
-    "eiland"
+    "waterkering",
+    "delta",
+    "polder",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -5065,10 +5065,10 @@
    "question": "Wat voor soort plek is Bovenmeer?",
    "answer": "meer",
    "options": [
-    "regio",
+    "schiereiland",
+    "vlakte",
     "meer",
-    "golf",
-    "berg"
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -5095,10 +5095,10 @@
    "question": "Wat voor soort plek is Brahmaputra?",
    "answer": "rivier",
    "options": [
-    "zeestraat",
+    "delta",
     "rivier",
-    "schiereiland",
-    "plateau"
+    "stuwdam",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -5125,10 +5125,10 @@
    "question": "Wat voor soort plek is Caribische Zee?",
    "answer": "zee",
    "options": [
-    "schiereiland",
+    "kanaal",
+    "berg",
     "zee",
-    "polder",
-    "eiland"
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -5162,10 +5162,10 @@
    "question": "Wat voor soort plek is Cedar Lake?",
    "answer": "meer",
    "options": [
-    "gebergte",
-    "zee",
-    "plateau",
-    "meer"
+    "stuwdam",
+    "meer",
+    "zeestraat",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -5192,10 +5192,10 @@
    "question": "Wat voor soort plek is Chang Jiang?",
    "answer": "rivier",
    "options": [
-    "vlakte",
-    "delta",
-    "rivier",
-    "bioom"
+    "plateau",
+    "schiereiland",
+    "golf",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -5224,10 +5224,10 @@
    "question": "Wat voor soort plek is Chankameer?",
    "answer": "meer",
    "options": [
-    "plateau",
-    "regio",
-    "woestijn",
-    "meer"
+    "vulkaan",
+    "meer",
+    "vlakte",
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -5254,10 +5254,10 @@
    "question": "Wat voor soort plek is Columbia?",
    "answer": "rivier",
    "options": [
-    "bioom",
+    "waterkering",
+    "delta",
     "woestijn",
-    "rivier",
-    "eilandengroep"
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -5284,10 +5284,10 @@
    "question": "Wat voor soort plek is Dnjepr?",
    "answer": "rivier",
    "options": [
-    "schiereiland",
-    "gebergte",
+    "plateau",
     "rivier",
-    "zee"
+    "woestijn",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -5314,10 +5314,10 @@
    "question": "Wat voor soort plek is Dnjestr?",
    "answer": "rivier",
    "options": [
-    "waterkering",
-    "woestijn",
-    "bioom",
-    "rivier"
+    "rivier",
+    "gebergte",
+    "vlakte",
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -5344,10 +5344,10 @@
    "question": "Wat voor soort plek is Dode Zee?",
    "answer": "meer",
    "options": [
-    "gebergte",
+    "golf",
+    "stuwdam",
     "meer",
-    "vulkaan",
-    "kanaal"
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -5374,9 +5374,9 @@
    "question": "Wat voor soort plek is Don?",
    "answer": "rivier",
    "options": [
-    "berg",
+    "schiereiland",
     "rivier",
-    "zee",
+    "eilandengroep",
     "golf"
    ],
    "hint": "",
@@ -5404,10 +5404,10 @@
    "question": "Wat voor soort plek is Donau?",
    "answer": "rivier",
    "options": [
+    "gebergte",
+    "regio",
     "rivier",
-    "kanaal",
-    "eilandengroep",
-    "vlakte"
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -5436,10 +5436,10 @@
    "question": "Wat voor soort plek is Dubawnt Lake?",
    "answer": "meer",
    "options": [
-    "vlakte",
-    "zee",
+    "zeestraat",
+    "bioom",
     "meer",
-    "oceaan"
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -5466,10 +5466,10 @@
    "question": "Wat voor soort plek is Ebro?",
    "answer": "rivier",
    "options": [
-    "plateau",
-    "rivier",
     "schiereiland",
-    "vlakte"
+    "berg",
+    "vlakte",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -5496,9 +5496,9 @@
    "question": "Wat voor soort plek is Elbe?",
    "answer": "rivier",
    "options": [
-    "vulkaan",
-    "bioom",
-    "kanaal",
+    "meer",
+    "berg",
+    "plateau",
     "rivier"
    ],
    "hint": "",
@@ -5526,10 +5526,10 @@
    "question": "Wat voor soort plek is Eriemeer?",
    "answer": "meer",
    "options": [
-    "rivier",
-    "zeestraat",
-    "meer",
-    "stuwdam"
+    "eilandengroep",
+    "regio",
+    "waterkering",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -5556,9 +5556,9 @@
    "question": "Wat voor soort plek is Eufraat?",
    "answer": "rivier",
    "options": [
+    "bioom",
     "woestijn",
-    "eilandengroep",
-    "vlakte",
+    "delta",
     "rivier"
    ],
    "hint": "",
@@ -5586,10 +5586,10 @@
    "question": "Wat voor soort plek is Eyremeer (noord)?",
    "answer": "meer",
    "options": [
-    "waterkering",
-    "delta",
-    "polder",
-    "meer"
+    "woestijn",
+    "meer",
+    "plateau",
+    "stuwdam"
    ],
    "hint": "",
    "note": "",
@@ -5616,10 +5616,10 @@
    "question": "Wat voor soort plek is Filipijnenzee?",
    "answer": "zee",
    "options": [
-    "rivier",
-    "stuwdam",
+    "delta",
     "zee",
-    "polder"
+    "vlakte",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -5646,10 +5646,10 @@
    "question": "Wat voor soort plek is Ganges?",
    "answer": "rivier",
    "options": [
-    "delta",
-    "rivier",
-    "stuwdam",
-    "regio"
+    "gebergte",
+    "regio",
+    "meer",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -5678,10 +5678,10 @@
    "question": "Wat voor soort plek is Gatúnmeer?",
    "answer": "meer",
    "options": [
-    "kanaal",
-    "berg",
     "meer",
-    "rivier"
+    "waterkering",
+    "schiereiland",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -5708,9 +5708,9 @@
    "question": "Wat voor soort plek is Gele Rivier?",
    "answer": "rivier",
    "options": [
-    "stuwdam",
     "rivier",
-    "zeestraat",
+    "vulkaan",
+    "regio",
     "eiland"
    ],
    "hint": "",
@@ -5738,10 +5738,10 @@
    "question": "Wat voor soort plek is Golf van Alaska?",
    "answer": "golf",
    "options": [
-    "polder",
-    "schiereiland",
-    "kanaal",
-    "golf"
+    "golf",
+    "zee",
+    "delta",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -5768,10 +5768,10 @@
    "question": "Wat voor soort plek is Golf van Mexico?",
    "answer": "golf",
    "options": [
-    "vulkaan",
+    "eilandengroep",
+    "kanaal",
     "golf",
-    "vlakte",
-    "woestijn"
+    "zeestraat"
    ],
    "hint": "",
    "note": "",
@@ -5798,10 +5798,10 @@
    "question": "Wat voor soort plek is Great Salt Lake?",
    "answer": "meer",
    "options": [
+    "regio",
     "waterkering",
-    "delta",
-    "woestijn",
-    "meer"
+    "meer",
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -5828,10 +5828,10 @@
    "question": "Wat voor soort plek is Great Slave Lake?",
    "answer": "meer",
    "options": [
-    "polder",
-    "meer",
     "woestijn",
-    "schiereiland"
+    "meer",
+    "stuwdam",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -5858,10 +5858,10 @@
    "question": "Wat voor soort plek is Groot Berenmeer?",
    "answer": "meer",
    "options": [
+    "zee",
+    "eiland",
     "meer",
-    "gebergte",
-    "vlakte",
-    "vulkaan"
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -5888,10 +5888,10 @@
    "question": "Wat voor soort plek is Grote (of Stille) Oceaan?",
    "answer": "oceaan",
    "options": [
-    "golf",
-    "stuwdam",
-    "oceaan",
-    "plateau"
+    "zee",
+    "berg",
+    "woestijn",
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -5920,10 +5920,10 @@
    "question": "Wat voor soort plek is Het Kanaal?",
    "answer": "zeestraat",
    "options": [
-    "rivier",
-    "zeestraat",
+    "waterkering",
+    "vlakte",
     "eilandengroep",
-    "golf"
+    "zeestraat"
    ],
    "hint": "",
    "note": "",
@@ -5952,10 +5952,10 @@
    "question": "Wat voor soort plek is Hulun Nuur?",
    "answer": "meer",
    "options": [
-    "gebergte",
-    "rivier",
+    "schiereiland",
     "meer",
-    "plateau"
+    "stuwdam",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -5982,10 +5982,10 @@
    "question": "Wat voor soort plek is Huronmeer?",
    "answer": "meer",
    "options": [
-    "zeestraat",
-    "bioom",
+    "stuwdam",
+    "waterkering",
     "meer",
-    "gebergte"
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -6012,10 +6012,10 @@
    "question": "Wat voor soort plek is Iliamna Lake?",
    "answer": "meer",
    "options": [
-    "schiereiland",
-    "berg",
-    "vlakte",
-    "meer"
+    "meer",
+    "kanaal",
+    "vulkaan",
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -6042,10 +6042,10 @@
    "question": "Wat voor soort plek is Inarimeer?",
    "answer": "meer",
    "options": [
-    "oceaan",
-    "berg",
+    "regio",
+    "meer",
     "polder",
-    "meer"
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -6072,10 +6072,10 @@
    "question": "Wat voor soort plek is Indische Oceaan?",
    "answer": "oceaan",
    "options": [
-    "eilandengroep",
-    "regio",
-    "waterkering",
-    "oceaan"
+    "zee",
+    "oceaan",
+    "golf",
+    "stuwdam"
    ],
    "hint": "",
    "note": "",
@@ -6104,10 +6104,10 @@
    "question": "Wat voor soort plek is Indus?",
    "answer": "rivier",
    "options": [
-    "bioom",
-    "woestijn",
+    "polder",
+    "rivier",
     "delta",
-    "rivier"
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -6134,10 +6134,10 @@
    "question": "Wat voor soort plek is Irrawaddy?",
    "answer": "rivier",
    "options": [
-    "woestijn",
     "rivier",
-    "oceaan",
-    "stuwdam"
+    "woestijn",
+    "berg",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -6164,10 +6164,10 @@
    "question": "Wat voor soort plek is Issyk Koelmeer?",
    "answer": "meer",
    "options": [
-    "delta",
+    "eilandengroep",
+    "berg",
     "meer",
-    "vulkaan",
-    "eiland"
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -6195,8 +6195,8 @@
    "answer": "meer",
    "options": [
     "gebergte",
-    "rivier",
-    "oceaan",
+    "polder",
+    "eilandengroep",
     "meer"
    ],
    "hint": "",
@@ -6225,9 +6225,9 @@
    "answer": "zee",
    "options": [
     "zee",
+    "delta",
     "vulkaan",
-    "rivier",
-    "gebergte"
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -6254,10 +6254,10 @@
    "question": "Wat voor soort plek is Jenisej?",
    "answer": "rivier",
    "options": [
-    "rivier",
-    "vulkaan",
     "regio",
-    "eiland"
+    "vulkaan",
+    "zeestraat",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -6284,10 +6284,10 @@
    "question": "Wat voor soort plek is Jordaan?",
    "answer": "rivier",
    "options": [
+    "zeestraat",
+    "eiland",
     "rivier",
-    "zee",
-    "delta",
-    "regio"
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -6314,10 +6314,10 @@
    "question": "Wat voor soort plek is Karibameer?",
    "answer": "meer",
    "options": [
-    "eilandengroep",
-    "golf",
+    "vulkaan",
+    "polder",
     "meer",
-    "zeestraat"
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -6344,10 +6344,10 @@
    "question": "Wat voor soort plek is Kaspische Zee?",
    "answer": "zee",
    "options": [
-    "polder",
-    "vulkaan",
+    "vlakte",
+    "berg",
     "zee",
-    "berg"
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -6376,10 +6376,10 @@
    "question": "Wat voor soort plek is Khövsgöl Nuur?",
    "answer": "meer",
    "options": [
-    "woestijn",
     "meer",
-    "stuwdam",
-    "eiland"
+    "oceaan",
+    "plateau",
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -6406,10 +6406,10 @@
    "question": "Wat voor soort plek is Kongo?",
    "answer": "rivier",
    "options": [
-    "zee",
     "eiland",
-    "rivier",
-    "berg"
+    "oceaan",
+    "meer",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -6436,9 +6436,9 @@
    "question": "Wat voor soort plek is Koraalzee?",
    "answer": "zee",
    "options": [
-    "woestijn",
-    "berg",
-    "waterkering",
+    "meer",
+    "gebergte",
+    "polder",
     "zee"
    ],
    "hint": "",
@@ -6466,8 +6466,8 @@
    "question": "Wat voor soort plek is La Grande-2 Reservoir?",
    "answer": "meer",
    "options": [
-    "woestijn",
-    "vulkaan",
+    "delta",
+    "berg",
     "eilandengroep",
     "meer"
    ],
@@ -6496,10 +6496,10 @@
    "question": "Wat voor soort plek is La Grande-3 Reservoir?",
    "answer": "meer",
    "options": [
-    "schiereiland",
     "meer",
+    "eiland",
     "stuwdam",
-    "golf"
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -6526,8 +6526,8 @@
    "question": "Wat voor soort plek is Labradorzee?",
    "answer": "zee",
    "options": [
-    "schiereiland",
-    "vulkaan",
+    "rivier",
+    "oceaan",
     "zee",
     "bioom"
    ],
@@ -6562,8 +6562,8 @@
    "answer": "meer",
    "options": [
     "meer",
-    "kanaal",
-    "vulkaan",
+    "plateau",
+    "regio",
     "zee"
    ],
    "hint": "",
@@ -6591,10 +6591,10 @@
    "question": "Wat voor soort plek is Ladogameer?",
    "answer": "meer",
    "options": [
-    "regio",
+    "zeestraat",
     "meer",
-    "polder",
-    "vulkaan"
+    "stuwdam",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -6621,10 +6621,10 @@
    "question": "Wat voor soort plek is Lake Mead?",
    "answer": "meer",
    "options": [
-    "zee",
+    "eiland",
+    "plateau",
     "meer",
-    "golf",
-    "stuwdam"
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -6651,10 +6651,10 @@
    "question": "Wat voor soort plek is Lake Mistassini?",
    "answer": "meer",
    "options": [
-    "regio",
+    "kanaal",
     "meer",
-    "delta",
-    "schiereiland"
+    "zee",
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -6681,10 +6681,10 @@
    "question": "Wat voor soort plek is Lake Winnipegosis?",
    "answer": "meer",
    "options": [
+    "vulkaan",
+    "stuwdam",
     "meer",
-    "woestijn",
-    "berg",
-    "golf"
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -6711,10 +6711,10 @@
    "question": "Wat voor soort plek is Lake of the Woods?",
    "answer": "meer",
    "options": [
-    "eilandengroep",
-    "berg",
     "meer",
-    "woestijn"
+    "zeestraat",
+    "gebergte",
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -6741,10 +6741,10 @@
    "question": "Wat voor soort plek is Lena?",
    "answer": "rivier",
    "options": [
-    "gebergte",
-    "plateau",
-    "eilandengroep",
-    "rivier"
+    "rivier",
+    "vlakte",
+    "kanaal",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -6772,9 +6772,9 @@
    "answer": "rivier",
    "options": [
     "rivier",
+    "oceaan",
     "delta",
-    "waterkering",
-    "zee"
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -6801,9 +6801,9 @@
    "question": "Wat voor soort plek is Loire?",
    "answer": "rivier",
    "options": [
+    "bioom",
     "regio",
-    "vulkaan",
-    "zeestraat",
+    "oceaan",
     "rivier"
    ],
    "hint": "",
@@ -6831,10 +6831,10 @@
    "question": "Wat voor soort plek is Mackenzie?",
    "answer": "rivier",
    "options": [
+    "plateau",
+    "delta",
     "zeestraat",
-    "eiland",
-    "rivier",
-    "golf"
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -6861,10 +6861,10 @@
    "question": "Wat voor soort plek is Madeira?",
    "answer": "rivier",
    "options": [
+    "zee",
     "vulkaan",
-    "plateau",
     "rivier",
-    "polder"
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -6902,10 +6902,10 @@
    "question": "Wat voor soort plek is Magdalena?",
    "answer": "rivier",
    "options": [
-    "vulkaan",
-    "berg",
     "rivier",
-    "eilandengroep"
+    "gebergte",
+    "golf",
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -6939,9 +6939,9 @@
    "answer": "meer",
    "options": [
     "meer",
-    "oceaan",
-    "plateau",
-    "zee"
+    "delta",
+    "golf",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -6968,9 +6968,9 @@
    "question": "Wat voor soort plek is Meer van Genève?",
    "answer": "meer",
    "options": [
-    "eiland",
     "plateau",
-    "oceaan",
+    "golf",
+    "eiland",
     "meer"
    ],
    "hint": "",
@@ -6998,10 +6998,10 @@
    "question": "Wat voor soort plek is Meer van Nicaragua?",
    "answer": "meer",
    "options": [
-    "oceaan",
-    "gebergte",
-    "regio",
-    "meer"
+    "meer",
+    "zeestraat",
+    "zee",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -7028,9 +7028,9 @@
    "question": "Wat voor soort plek is Mekong?",
    "answer": "rivier",
    "options": [
-    "delta",
-    "berg",
-    "eilandengroep",
+    "zee",
+    "schiereiland",
+    "golf",
     "rivier"
    ],
    "hint": "",
@@ -7058,10 +7058,10 @@
    "question": "Wat voor soort plek is Merínlagune?",
    "answer": "meer",
    "options": [
+    "rivier",
     "meer",
-    "eiland",
-    "stuwdam",
-    "waterkering"
+    "zeestraat",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -7088,10 +7088,10 @@
    "question": "Wat voor soort plek is Michiganmeer?",
    "answer": "meer",
    "options": [
-    "schiereiland",
-    "plateau",
-    "meer",
-    "bioom"
+    "eilandengroep",
+    "stuwdam",
+    "regio",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -7118,10 +7118,10 @@
    "question": "Wat voor soort plek is Middellandse Zee?",
    "answer": "zee",
    "options": [
+    "delta",
     "zee",
-    "oceaan",
-    "polder",
-    "woestijn"
+    "golf",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -7155,10 +7155,10 @@
    "question": "Wat voor soort plek is Mississippi?",
    "answer": "rivier",
    "options": [
-    "zeestraat",
+    "golf",
+    "vulkaan",
     "rivier",
-    "stuwdam",
-    "gebergte"
+    "plateau"
    ],
    "hint": "",
    "note": "",
@@ -7187,10 +7187,10 @@
    "question": "Wat voor soort plek is Missouri?",
    "answer": "rivier",
    "options": [
-    "eiland",
+    "gebergte",
     "oceaan",
-    "rivier",
-    "schiereiland"
+    "waterkering",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -7217,9 +7217,9 @@
    "question": "Wat voor soort plek is Murray?",
    "answer": "rivier",
    "options": [
-    "kanaal",
+    "gebergte",
     "rivier",
-    "zee",
+    "delta",
     "woestijn"
    ],
    "hint": "",
@@ -7247,10 +7247,10 @@
    "question": "Wat voor soort plek is Mwerumeer?",
    "answer": "meer",
    "options": [
-    "vulkaan",
-    "stuwdam",
+    "kanaal",
+    "oceaan",
     "meer",
-    "bioom"
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -7277,10 +7277,10 @@
    "question": "Wat voor soort plek is Mälarmeer?",
    "answer": "meer",
    "options": [
-    "meer",
+    "delta",
     "zeestraat",
-    "gebergte",
-    "oceaan"
+    "meer",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -7307,10 +7307,10 @@
    "question": "Wat voor soort plek is Nettilling Lake?",
    "answer": "meer",
    "options": [
-    "meer",
-    "vlakte",
     "kanaal",
-    "bioom"
+    "vulkaan",
+    "meer",
+    "vlakte"
    ],
    "hint": "",
    "note": "",
@@ -7337,10 +7337,10 @@
    "question": "Wat voor soort plek is Niger?",
    "answer": "rivier",
    "options": [
-    "rivier",
-    "oceaan",
-    "delta",
-    "schiereiland"
+    "golf",
+    "stuwdam",
+    "eiland",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -7367,10 +7367,10 @@
    "question": "Wat voor soort plek is Nijl?",
    "answer": "rivier",
    "options": [
-    "bioom",
-    "regio",
-    "oceaan",
-    "rivier"
+    "rivier",
+    "vulkaan",
+    "golf",
+    "zeestraat"
    ],
    "hint": "",
    "note": "",
@@ -7399,10 +7399,10 @@
    "question": "Wat voor soort plek is Nipigonmeer?",
    "answer": "meer",
    "options": [
-    "polder",
-    "delta",
-    "zeestraat",
-    "meer"
+    "meer",
+    "zee",
+    "golf",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -7430,9 +7430,9 @@
    "answer": "meer",
    "options": [
     "zee",
-    "vulkaan",
-    "meer",
-    "woestijn"
+    "golf",
+    "delta",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -7459,9 +7459,9 @@
    "question": "Wat voor soort plek is Noordelijke IJszee?",
    "answer": "oceaan",
    "options": [
-    "oceaan",
+    "plateau",
     "gebergte",
-    "golf",
+    "oceaan",
     "berg"
    ],
    "hint": "",
@@ -7491,9 +7491,9 @@
    "question": "Wat voor soort plek is Noordzee?",
    "answer": "zee",
    "options": [
+    "plateau",
+    "vlakte",
     "zee",
-    "delta",
-    "golf",
     "regio"
    ],
    "hint": "",
@@ -7528,10 +7528,10 @@
    "question": "Wat voor soort plek is Ob?",
    "answer": "rivier",
    "options": [
-    "oceaan",
+    "rivier",
     "golf",
-    "eiland",
-    "rivier"
+    "woestijn",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -7559,9 +7559,9 @@
    "answer": "rivier",
    "options": [
     "rivier",
-    "zeestraat",
-    "zee",
-    "regio"
+    "regio",
+    "woestijn",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -7588,9 +7588,9 @@
    "question": "Wat voor soort plek is Oeral (rivier)?",
    "answer": "rivier",
    "options": [
-    "zee",
-    "schiereiland",
-    "golf",
+    "oceaan",
+    "vulkaan",
+    "kanaal",
     "rivier"
    ],
    "hint": "",
@@ -7618,10 +7618,10 @@
    "question": "Wat voor soort plek is Okavango?",
    "answer": "rivier",
    "options": [
-    "regio",
-    "rivier",
+    "meer",
+    "vlakte",
     "zeestraat",
-    "schiereiland"
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -7648,10 +7648,10 @@
    "question": "Wat voor soort plek is Onegameer?",
    "answer": "meer",
    "options": [
-    "eilandengroep",
-    "stuwdam",
-    "regio",
-    "meer"
+    "meer",
+    "schiereiland",
+    "woestijn",
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -7678,10 +7678,10 @@
    "question": "Wat voor soort plek is Ontariomeer?",
    "answer": "meer",
    "options": [
-    "delta",
+    "eiland",
+    "zee",
     "meer",
-    "golf",
-    "vulkaan"
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -7708,10 +7708,10 @@
    "question": "Wat voor soort plek is Oostzee?",
    "answer": "zee",
    "options": [
+    "vulkaan",
     "golf",
-    "vlakte",
-    "zee",
-    "plateau"
+    "plateau",
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -7745,9 +7745,9 @@
    "question": "Wat voor soort plek is Oranjerivier?",
    "answer": "rivier",
    "options": [
-    "gebergte",
-    "oceaan",
-    "waterkering",
+    "woestijn",
+    "plateau",
+    "bioom",
     "rivier"
    ],
    "hint": "",
@@ -7775,10 +7775,10 @@
    "question": "Wat voor soort plek is Orinoco?",
    "answer": "rivier",
    "options": [
-    "gebergte",
-    "rivier",
-    "delta",
-    "woestijn"
+    "bioom",
+    "regio",
+    "plateau",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -7811,10 +7811,10 @@
    "question": "Wat voor soort plek is Panamakanaal?",
    "answer": "kanaal",
    "options": [
-    "meer",
-    "oceaan",
+    "stuwdam",
     "kanaal",
-    "vulkaan"
+    "plateau",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -7854,10 +7854,10 @@
    "question": "Wat voor soort plek is Paraná?",
    "answer": "rivier",
    "options": [
-    "delta",
-    "zeestraat",
+    "meer",
     "rivier",
-    "vlakte"
+    "berg",
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -7895,10 +7895,10 @@
    "question": "Wat voor soort plek is Peipusmeer?",
    "answer": "meer",
    "options": [
-    "kanaal",
-    "vulkaan",
+    "eilandengroep",
     "meer",
-    "vlakte"
+    "oceaan",
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -7925,9 +7925,9 @@
    "question": "Wat voor soort plek is Perzische Golf?",
    "answer": "golf",
    "options": [
-    "kanaal",
-    "stuwdam",
-    "eiland",
+    "berg",
+    "woestijn",
+    "bioom",
     "golf"
    ],
    "hint": "",
@@ -7957,10 +7957,10 @@
    "question": "Wat voor soort plek is Po?",
    "answer": "rivier",
    "options": [
-    "rivier",
-    "vulkaan",
-    "golf",
-    "zeestraat"
+    "meer",
+    "zeestraat",
+    "regio",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -7990,9 +7990,9 @@
    "answer": "meer",
    "options": [
     "meer",
-    "zee",
-    "golf",
-    "gebergte"
+    "vulkaan",
+    "rivier",
+    "berg"
    ],
    "hint": "",
    "note": "",
@@ -8019,10 +8019,10 @@
    "question": "Wat voor soort plek is Reindeer Lake?",
    "answer": "meer",
    "options": [
-    "zee",
+    "meer",
     "golf",
-    "delta",
-    "meer"
+    "kanaal",
+    "stuwdam"
    ],
    "hint": "",
    "note": "",
@@ -8049,10 +8049,10 @@
    "question": "Wat voor soort plek is Rhône?",
    "answer": "rivier",
    "options": [
-    "oceaan",
-    "gebergte",
+    "regio",
     "rivier",
-    "berg"
+    "meer",
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -8081,10 +8081,10 @@
    "question": "Wat voor soort plek is Rijn?",
    "answer": "rivier",
    "options": [
-    "plateau",
-    "vulkaan",
     "rivier",
-    "regio"
+    "delta",
+    "golf",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -8125,9 +8125,9 @@
    "answer": "rivier",
    "options": [
     "rivier",
-    "golf",
-    "woestijn",
-    "eilandengroep"
+    "plateau",
+    "oceaan",
+    "gebergte"
    ],
    "hint": "",
    "note": "",
@@ -8165,10 +8165,10 @@
    "question": "Wat voor soort plek is Rode Zee?",
    "answer": "zee",
    "options": [
+    "golf",
     "zee",
-    "regio",
-    "waterkering",
-    "rivier"
+    "berg",
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -8197,10 +8197,10 @@
    "question": "Wat voor soort plek is Rosszee?",
    "answer": "zee",
    "options": [
-    "oceaan",
-    "vlakte",
-    "kanaal",
-    "zee"
+    "regio",
+    "meer",
+    "zee",
+    "zeestraat"
    ],
    "hint": "",
    "note": "",
@@ -8227,10 +8227,10 @@
    "question": "Wat voor soort plek is Salween?",
    "answer": "rivier",
    "options": [
-    "meer",
-    "vlakte",
     "zeestraat",
-    "rivier"
+    "rivier",
+    "eilandengroep",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -8257,10 +8257,10 @@
    "question": "Wat voor soort plek is Sarygamysh Köli?",
    "answer": "meer",
    "options": [
-    "meer",
     "schiereiland",
-    "woestijn",
-    "vulkaan"
+    "meer",
+    "bioom",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -8287,9 +8287,9 @@
    "question": "Wat voor soort plek is Schelde?",
    "answer": "rivier",
    "options": [
-    "eiland",
-    "zee",
     "rivier",
+    "polder",
+    "oceaan",
     "bioom"
    ],
    "hint": "",
@@ -8319,9 +8319,9 @@
    "question": "Wat voor soort plek is Seine?",
    "answer": "rivier",
    "options": [
-    "waterkering",
-    "golf",
-    "plateau",
+    "zeestraat",
+    "woestijn",
+    "stuwdam",
     "rivier"
    ],
    "hint": "",
@@ -8351,10 +8351,10 @@
    "question": "Wat voor soort plek is Shatt al-Arab?",
    "answer": "rivier",
    "options": [
-    "woestijn",
-    "plateau",
-    "bioom",
-    "rivier"
+    "regio",
+    "zeestraat",
+    "rivier",
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -8381,9 +8381,9 @@
    "question": "Wat voor soort plek is Sint-Laurensrivier?",
    "answer": "rivier",
    "options": [
-    "bioom",
+    "oceaan",
+    "polder",
     "regio",
-    "plateau",
     "rivier"
    ],
    "hint": "",
@@ -8411,10 +8411,10 @@
    "question": "Wat voor soort plek is Smallwood Reservoir?",
    "answer": "meer",
    "options": [
-    "stuwdam",
-    "meer",
-    "plateau",
-    "rivier"
+    "zee",
+    "regio",
+    "eiland",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -8441,10 +8441,10 @@
    "question": "Wat voor soort plek is Southern Indian Lake?",
    "answer": "meer",
    "options": [
-    "oceaan",
+    "regio",
+    "golf",
     "meer",
-    "berg",
-    "kanaal"
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -8471,10 +8471,10 @@
    "question": "Wat voor soort plek is Straat van Gibraltar?",
    "answer": "zeestraat",
    "options": [
-    "eilandengroep",
-    "zeestraat",
+    "delta",
     "meer",
-    "berg"
+    "zeestraat",
+    "polder"
    ],
    "hint": "",
    "note": "",
@@ -8503,10 +8503,10 @@
    "question": "Wat voor soort plek is Stuwmeer van Bratsk?",
    "answer": "meer",
    "options": [
-    "berg",
-    "woestijn",
-    "bioom",
-    "meer"
+    "meer",
+    "waterkering",
+    "eiland",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -8533,10 +8533,10 @@
    "question": "Wat voor soort plek is Stuwmeer van Rybinsk?",
    "answer": "meer",
    "options": [
-    "oceaan",
-    "zeestraat",
-    "rivier",
-    "meer"
+    "kanaal",
+    "meer",
+    "eiland",
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -8563,10 +8563,10 @@
    "question": "Wat voor soort plek is Suezkanaal?",
    "answer": "kanaal",
    "options": [
-    "kanaal",
-    "vulkaan",
-    "rivier",
-    "berg"
+    "delta",
+    "bioom",
+    "schiereiland",
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -8606,10 +8606,10 @@
    "question": "Wat voor soort plek is São Francisco?",
    "answer": "rivier",
    "options": [
-    "rivier",
-    "golf",
-    "kanaal",
-    "stuwdam"
+    "schiereiland",
+    "oceaan",
+    "plateau",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -8647,10 +8647,10 @@
    "question": "Wat voor soort plek is Taag?",
    "answer": "rivier",
    "options": [
-    "regio",
     "rivier",
-    "meer",
-    "woestijn"
+    "vlakte",
+    "plateau",
+    "zee"
    ],
    "hint": "",
    "note": "",
@@ -8677,10 +8677,10 @@
    "question": "Wat voor soort plek is Tajmyrmeer?",
    "answer": "meer",
    "options": [
+    "berg",
     "meer",
-    "delta",
-    "golf",
-    "schiereiland"
+    "waterkering",
+    "woestijn"
    ],
    "hint": "",
    "note": "",
@@ -8707,10 +8707,10 @@
    "question": "Wat voor soort plek is Tanameer?",
    "answer": "meer",
    "options": [
-    "meer",
-    "polder",
-    "plateau",
-    "gebergte"
+    "zee",
+    "regio",
+    "eilandengroep",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -8737,9 +8737,9 @@
    "question": "Wat voor soort plek is Tanganyikameer?",
    "answer": "meer",
    "options": [
-    "golf",
     "meer",
-    "berg",
+    "plateau",
+    "zeestraat",
     "kanaal"
    ],
    "hint": "",
@@ -8767,10 +8767,10 @@
    "question": "Wat voor soort plek is Tapajós?",
    "answer": "rivier",
    "options": [
-    "regio",
-    "meer",
     "rivier",
-    "zeestraat"
+    "delta",
+    "zee",
+    "bioom"
    ],
    "hint": "",
    "note": "",
@@ -8808,10 +8808,10 @@
    "question": "Wat voor soort plek is Tasmanzee?",
    "answer": "zee",
    "options": [
+    "rivier",
     "zeestraat",
     "zee",
-    "eilandengroep",
-    "rivier"
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -8838,10 +8838,10 @@
    "question": "Wat voor soort plek is Theems?",
    "answer": "rivier",
    "options": [
-    "schiereiland",
+    "eiland",
+    "vulkaan",
     "rivier",
-    "bioom",
-    "golf"
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -8870,10 +8870,10 @@
    "question": "Wat voor soort plek is Tigris?",
    "answer": "rivier",
    "options": [
+    "kanaal",
+    "eiland",
     "rivier",
-    "polder",
-    "oceaan",
-    "bioom"
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -8900,10 +8900,10 @@
    "question": "Wat voor soort plek is Titicacameer?",
    "answer": "meer",
    "options": [
-    "zeestraat",
-    "woestijn",
-    "stuwdam",
-    "meer"
+    "delta",
+    "meer",
+    "rivier",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -8930,10 +8930,10 @@
    "question": "Wat voor soort plek is Tocantins?",
    "answer": "rivier",
    "options": [
-    "regio",
-    "zeestraat",
+    "vulkaan",
+    "eilandengroep",
     "rivier",
-    "delta"
+    "zeestraat"
    ],
    "hint": "",
    "note": "",
@@ -8971,9 +8971,9 @@
    "question": "Wat voor soort plek is Tsjani?",
    "answer": "meer",
    "options": [
-    "plateau",
-    "regio",
+    "waterkering",
     "rivier",
+    "zee",
     "meer"
    ],
    "hint": "",
@@ -9001,10 +9001,10 @@
    "question": "Wat voor soort plek is Turkanameer?",
    "answer": "meer",
    "options": [
-    "zee",
-    "regio",
-    "eiland",
-    "meer"
+    "berg",
+    "plateau",
+    "meer",
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -9031,10 +9031,10 @@
    "question": "Wat voor soort plek is Urmiameer?",
    "answer": "meer",
    "options": [
-    "regio",
-    "golf",
-    "meer",
-    "eilandengroep"
+    "stuwdam",
+    "vlakte",
+    "oceaan",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -9061,10 +9061,10 @@
    "question": "Wat voor soort plek is Uruguay?",
    "answer": "rivier",
    "options": [
-    "delta",
-    "meer",
-    "rivier",
-    "polder"
+    "zee",
+    "vlakte",
+    "golf",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -9102,10 +9102,10 @@
    "question": "Wat voor soort plek is Uvs Nuur?",
    "answer": "meer",
    "options": [
+    "rivier",
+    "schiereiland",
     "meer",
-    "waterkering",
-    "eiland",
-    "bioom"
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -9132,10 +9132,10 @@
    "question": "Wat voor soort plek is Vanmeer?",
    "answer": "meer",
    "options": [
-    "kanaal",
+    "polder",
+    "waterkering",
     "meer",
-    "eiland",
-    "vulkaan"
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -9162,10 +9162,10 @@
    "question": "Wat voor soort plek is Victoriameer?",
    "answer": "meer",
    "options": [
-    "delta",
-    "bioom",
-    "schiereiland",
-    "meer"
+    "meer",
+    "vlakte",
+    "waterkering",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -9192,10 +9192,10 @@
    "question": "Wat voor soort plek is Volga?",
    "answer": "rivier",
    "options": [
-    "schiereiland",
-    "oceaan",
+    "rivier",
     "plateau",
-    "rivier"
+    "oceaan",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -9224,10 +9224,10 @@
    "question": "Wat voor soort plek is Voltameer?",
    "answer": "meer",
    "options": [
-    "meer",
-    "vlakte",
     "polder",
-    "zee"
+    "woestijn",
+    "meer",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -9254,10 +9254,10 @@
    "question": "Wat voor soort plek is Vygozeromeer?",
    "answer": "meer",
    "options": [
-    "berg",
     "meer",
-    "waterkering",
-    "woestijn"
+    "oceaan",
+    "zee",
+    "stuwdam"
    ],
    "hint": "",
    "note": "",
@@ -9284,10 +9284,10 @@
    "question": "Wat voor soort plek is Vänermeer?",
    "answer": "meer",
    "options": [
-    "zee",
-    "regio",
+    "oceaan",
     "eilandengroep",
-    "meer"
+    "meer",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -9315,9 +9315,9 @@
    "answer": "meer",
    "options": [
     "meer",
-    "plateau",
-    "zeestraat",
-    "kanaal"
+    "regio",
+    "golf",
+    "eiland"
    ],
    "hint": "",
    "note": "",
@@ -9345,9 +9345,9 @@
    "answer": "zee",
    "options": [
     "zee",
-    "delta",
-    "woestijn",
-    "bioom"
+    "eiland",
+    "schiereiland",
+    "regio"
    ],
    "hint": "",
    "note": "",
@@ -9374,10 +9374,10 @@
    "question": "Wat voor soort plek is Williston Meer?",
    "answer": "meer",
    "options": [
-    "schiereiland",
-    "zeestraat",
+    "kanaal",
+    "berg",
     "meer",
-    "woestijn"
+    "golf"
    ],
    "hint": "",
    "note": "",
@@ -9404,10 +9404,10 @@
    "question": "Wat voor soort plek is Winnipegmeer?",
    "answer": "meer",
    "options": [
-    "eiland",
-    "vulkaan",
-    "meer",
-    "delta"
+    "polder",
+    "delta",
+    "eilandengroep",
+    "meer"
    ],
    "hint": "",
    "note": "",
@@ -9434,10 +9434,10 @@
    "question": "Wat voor soort plek is Wisła?",
    "answer": "rivier",
    "options": [
-    "kanaal",
-    "eiland",
     "rivier",
-    "waterkering"
+    "regio",
+    "vlakte",
+    "oceaan"
    ],
    "hint": "",
    "note": "",
@@ -9464,10 +9464,10 @@
    "question": "Wat voor soort plek is Wollastonmeer?",
    "answer": "meer",
    "options": [
-    "delta",
     "meer",
-    "rivier",
-    "regio"
+    "eiland",
+    "woestijn",
+    "kanaal"
    ],
    "hint": "",
    "note": "",
@@ -9494,10 +9494,10 @@
    "question": "Wat voor soort plek is Xingu?",
    "answer": "rivier",
    "options": [
-    "vulkaan",
-    "eilandengroep",
-    "rivier",
-    "zeestraat"
+    "bioom",
+    "vlakte",
+    "meer",
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -9535,10 +9535,10 @@
    "question": "Wat voor soort plek is Yathkyed Lake?",
    "answer": "meer",
    "options": [
-    "waterkering",
-    "rivier",
-    "zee",
-    "meer"
+    "meer",
+    "golf",
+    "eilandengroep",
+    "vulkaan"
    ],
    "hint": "",
    "note": "",
@@ -9565,10 +9565,10 @@
    "question": "Wat voor soort plek is Yukon?",
    "answer": "rivier",
    "options": [
+    "delta",
+    "zee",
     "berg",
-    "oceaan",
-    "rivier",
-    "golf"
+    "rivier"
    ],
    "hint": "",
    "note": "",
@@ -9595,10 +9595,10 @@
    "question": "Wat voor soort plek is Zambezi?",
    "answer": "rivier",
    "options": [
-    "stuwdam",
-    "vlakte",
-    "meer",
-    "rivier"
+    "schiereiland",
+    "golf",
+    "rivier",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -9625,10 +9625,10 @@
    "question": "Wat voor soort plek is Zaysanmeer?",
    "answer": "meer",
    "options": [
-    "zee",
-    "vlakte",
-    "golf",
-    "meer"
+    "meer",
+    "waterkering",
+    "berg",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",
@@ -9655,9 +9655,9 @@
    "question": "Wat voor soort plek is Zee van Ochotsk?",
    "answer": "zee",
    "options": [
-    "regio",
-    "rivier",
     "zee",
+    "polder",
+    "stuwdam",
     "kanaal"
    ],
    "hint": "",
@@ -9685,10 +9685,10 @@
    "question": "Wat voor soort plek is Zuid-Chinese Zee?",
    "answer": "zee",
    "options": [
-    "plateau",
-    "vulkaan",
     "zee",
-    "regio"
+    "regio",
+    "eilandengroep",
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -9716,9 +9716,9 @@
    "answer": "meer",
    "options": [
     "meer",
-    "vlakte",
-    "waterkering",
-    "regio"
+    "berg",
+    "bioom",
+    "schiereiland"
    ],
    "hint": "",
    "note": "",
@@ -9746,9 +9746,9 @@
    "answer": "oceaan",
    "options": [
     "oceaan",
-    "polder",
-    "plateau",
-    "rivier"
+    "delta",
+    "schiereiland",
+    "waterkering"
    ],
    "hint": "",
    "note": "",
@@ -9775,10 +9775,10 @@
    "question": "Wat voor soort plek is Zwarte Zee?",
    "answer": "zee",
    "options": [
-    "plateau",
-    "waterkering",
     "zee",
-    "rivier"
+    "bioom",
+    "vlakte",
+    "eilandengroep"
    ],
    "hint": "",
    "note": "",

@@ -11,10 +11,10 @@
    "question": "Welke berg is het hoogst?",
    "answer": "K2",
    "options": [
-    "K2",
     "Huascarán",
-    "Vinsonmassief",
-    "Pico de Orizaba"
+    "Mount Kosciuszko",
+    "Mont Blanc",
+    "K2"
    ],
    "hint": "",
    "note": "K2: 8611 m.",
@@ -48,10 +48,10 @@
    "question": "Welke berg is het hoogst?",
    "answer": "Mount Everest",
    "options": [
+    "Mount Kosciuszko",
+    "Vesuvius",
     "Mount Everest",
-    "Huascarán",
-    "Vaalserberg",
-    "Fuji"
+    "Chimborazo"
    ],
    "hint": "",
    "note": "Mount Everest: 8848 m.",
@@ -81,457 +81,13 @@
    "id": "hoogste-berg-3",
    "kind": "fact",
    "category": "aarde",
-   "name": "Denali",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Denali",
-   "options": [
-    "Zugspitze",
-    "Fuji",
-    "Denali",
-    "Vaalserberg"
-   ],
-   "hint": "",
-   "note": "Denali: 6194 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-denali"
-  },
-  {
-   "id": "hoogste-berg-4",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Mount Everest",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Mount Everest",
-   "options": [
-    "Ojos del Salado",
-    "Pico da Neblina",
-    "Mount Everest",
-    "Vesuvius"
-   ],
-   "hint": "",
-   "note": "Mount Everest: 8848 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-mount-everest"
-  },
-  {
-   "id": "hoogste-berg-5",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Huascarán",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Huascarán",
-   "options": [
-    "Huascarán",
-    "Pico da Neblina",
-    "Zugspitze",
-    "Cotopaxi"
-   ],
-   "hint": "",
-   "note": "Huascarán: 6768 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-huascaran"
-  },
-  {
-   "id": "hoogste-berg-6",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Denali",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Denali",
-   "options": [
-    "Elbroes",
-    "Denali",
-    "Vesuvius",
-    "Mount Whitney"
-   ],
-   "hint": "",
-   "note": "Denali: 6194 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-denali"
-  },
-  {
-   "id": "hoogste-berg-7",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "K2",
-   "question": "Welke berg is het hoogst?",
-   "answer": "K2",
-   "options": [
-    "Vesuvius",
-    "Kilimanjaro",
-    "Ojos del Salado",
-    "K2"
-   ],
-   "hint": "",
-   "note": "K2: 8611 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-k2"
-  },
-  {
-   "id": "hoogste-berg-8",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Mount Everest",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Mount Everest",
-   "options": [
-    "Mount Everest",
-    "Pico da Neblina",
-    "Vaalserberg",
-    "Chimborazo"
-   ],
-   "hint": "",
-   "note": "Mount Everest: 8848 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-mount-everest"
-  },
-  {
-   "id": "hoogste-berg-9",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Cotopaxi",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Cotopaxi",
-   "options": [
-    "Vinsonmassief",
-    "Fuji",
-    "Cotopaxi",
-    "Pico da Neblina"
-   ],
-   "hint": "",
-   "note": "Cotopaxi: 5897 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "vulkaan-cotopaxi"
-  },
-  {
-   "id": "hoogste-berg-10",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Huascarán",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Huascarán",
-   "options": [
-    "Huascarán",
-    "Matterhorn",
-    "Pico da Neblina",
-    "Mount Kosciuszko"
-   ],
-   "hint": "",
-   "note": "Huascarán: 6768 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-huascaran"
-  },
-  {
-   "id": "hoogste-berg-11",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Chimborazo",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Chimborazo",
-   "options": [
-    "Chimborazo",
-    "Mount Kosciuszko",
-    "Pico da Neblina",
-    "Elbroes"
-   ],
-   "hint": "",
-   "note": "Chimborazo: 6263 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "vulkaan-chimborazo"
-  },
-  {
-   "id": "hoogste-berg-12",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Aconcagua",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Aconcagua",
-   "options": [
-    "Elbroes",
-    "Denali",
-    "Mont Blanc",
-    "Aconcagua"
-   ],
-   "hint": "",
-   "note": "Aconcagua: 6959 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-aconcagua"
-  },
-  {
-   "id": "hoogste-berg-13",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Aconcagua",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Aconcagua",
-   "options": [
-    "Chimborazo",
-    "Aconcagua",
-    "Denali",
-    "Fuji"
-   ],
-   "hint": "",
-   "note": "Aconcagua: 6959 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-aconcagua"
-  },
-  {
-   "id": "hoogste-berg-14",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "Huascarán",
-   "question": "Welke berg is het hoogst?",
-   "answer": "Huascarán",
-   "options": [
-    "Pico da Neblina",
-    "Huascarán",
-    "Denali",
-    "Mount Kosciuszko"
-   ],
-   "hint": "",
-   "note": "Huascarán: 6768 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-huascaran"
-  },
-  {
-   "id": "hoogste-berg-15",
-   "kind": "fact",
-   "category": "aarde",
    "name": "Ojos del Salado",
    "question": "Welke berg is het hoogst?",
    "answer": "Ojos del Salado",
    "options": [
-    "Vinsonmassief",
-    "Ojos del Salado",
+    "Kilimanjaro",
     "Vesuvius",
+    "Ojos del Salado",
     "Chimborazo"
    ],
    "hint": "",
@@ -559,81 +115,7 @@
    "itemId": "vulkaan-ojos-del-salado"
   },
   {
-   "id": "hoogste-berg-16",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "K2",
-   "question": "Welke berg is het hoogst?",
-   "answer": "K2",
-   "options": [
-    "Kilimanjaro",
-    "Matterhorn",
-    "Cotopaxi",
-    "K2"
-   ],
-   "hint": "",
-   "note": "K2: 8611 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-k2"
-  },
-  {
-   "id": "hoogste-berg-17",
-   "kind": "fact",
-   "category": "aarde",
-   "name": "K2",
-   "question": "Welke berg is het hoogst?",
-   "answer": "K2",
-   "options": [
-    "Fuji",
-    "Huascarán",
-    "K2",
-    "Denali"
-   ],
-   "hint": "",
-   "note": "K2: 8611 m.",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "hoogste-berg"
-   },
-   "doelen": [
-    "H-C2",
-    "V-C1"
-   ],
-   "leerjaren": {
-    "havo": [
-     4,
-     5
-    ],
-    "vwo": [
-     4,
-     5,
-     6
-    ]
-   },
-   "itemId": "berg-k2"
-  },
-  {
-   "id": "hoogste-berg-18",
+   "id": "hoogste-berg-4",
    "kind": "fact",
    "category": "aarde",
    "name": "K2",
@@ -670,7 +152,7 @@
    "itemId": "berg-k2"
   },
   {
-   "id": "hoogste-berg-19",
+   "id": "hoogste-berg-5",
    "kind": "fact",
    "category": "aarde",
    "name": "Ojos del Salado",
@@ -707,7 +189,7 @@
    "itemId": "vulkaan-ojos-del-salado"
   },
   {
-   "id": "hoogste-berg-20",
+   "id": "hoogste-berg-6",
    "kind": "fact",
    "category": "aarde",
    "name": "Huascarán",
@@ -744,7 +226,7 @@
    "itemId": "berg-huascaran"
   },
   {
-   "id": "hoogste-berg-21",
+   "id": "hoogste-berg-7",
    "kind": "fact",
    "category": "aarde",
    "name": "Huascarán",
@@ -781,7 +263,7 @@
    "itemId": "berg-huascaran"
   },
   {
-   "id": "hoogste-berg-22",
+   "id": "hoogste-berg-8",
    "kind": "fact",
    "category": "aarde",
    "name": "Chimborazo",
@@ -818,7 +300,7 @@
    "itemId": "vulkaan-chimborazo"
   },
   {
-   "id": "hoogste-berg-23",
+   "id": "hoogste-berg-9",
    "kind": "fact",
    "category": "aarde",
    "name": "Kilimanjaro",
@@ -855,7 +337,7 @@
    "itemId": "berg-kilimanjaro"
   },
   {
-   "id": "hoogste-berg-24",
+   "id": "hoogste-berg-10",
    "kind": "fact",
    "category": "aarde",
    "name": "Aconcagua",
@@ -892,7 +374,7 @@
    "itemId": "berg-aconcagua"
   },
   {
-   "id": "hoogste-berg-25",
+   "id": "hoogste-berg-11",
    "kind": "fact",
    "category": "aarde",
    "name": "K2",
@@ -929,7 +411,7 @@
    "itemId": "berg-k2"
   },
   {
-   "id": "hoogste-berg-26",
+   "id": "hoogste-berg-12",
    "kind": "fact",
    "category": "aarde",
    "name": "Mount Everest",
@@ -966,7 +448,7 @@
    "itemId": "berg-mount-everest"
   },
   {
-   "id": "hoogste-berg-27",
+   "id": "hoogste-berg-13",
    "kind": "fact",
    "category": "aarde",
    "name": "K2",
@@ -1003,7 +485,7 @@
    "itemId": "berg-k2"
   },
   {
-   "id": "hoogste-berg-28",
+   "id": "hoogste-berg-14",
    "kind": "fact",
    "category": "aarde",
    "name": "Mount Everest",
@@ -1040,7 +522,7 @@
    "itemId": "berg-mount-everest"
   },
   {
-   "id": "hoogste-berg-29",
+   "id": "hoogste-berg-15",
    "kind": "fact",
    "category": "aarde",
    "name": "Huascarán",
@@ -1077,7 +559,7 @@
    "itemId": "berg-huascaran"
   },
   {
-   "id": "hoogste-berg-30",
+   "id": "hoogste-berg-16",
    "kind": "fact",
    "category": "aarde",
    "name": "Mount Everest",
@@ -1114,7 +596,7 @@
    "itemId": "berg-mount-everest"
   },
   {
-   "id": "hoogste-berg-31",
+   "id": "hoogste-berg-17",
    "kind": "fact",
    "category": "aarde",
    "name": "Mount Everest",
@@ -1149,6 +631,487 @@
     ]
    },
    "itemId": "berg-mount-everest"
+  },
+  {
+   "id": "hoogste-berg-18",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Mount Everest",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Mount Everest",
+   "options": [
+    "Fuji",
+    "Mount Everest",
+    "Elbroes",
+    "Vesuvius"
+   ],
+   "hint": "",
+   "note": "Mount Everest: 8848 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-mount-everest"
+  },
+  {
+   "id": "hoogste-berg-19",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Cotopaxi",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Cotopaxi",
+   "options": [
+    "Cotopaxi",
+    "Vesuvius",
+    "Mount Kosciuszko",
+    "Vinsonmassief"
+   ],
+   "hint": "",
+   "note": "Cotopaxi: 5897 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-cotopaxi"
+  },
+  {
+   "id": "hoogste-berg-20",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Pico de Orizaba",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Pico de Orizaba",
+   "options": [
+    "Pico de Orizaba",
+    "Mount Kosciuszko",
+    "Matterhorn",
+    "Vinsonmassief"
+   ],
+   "hint": "",
+   "note": "Pico de Orizaba: 5636 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-pico-de-orizaba"
+  },
+  {
+   "id": "hoogste-berg-21",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Aconcagua",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Aconcagua",
+   "options": [
+    "Denali",
+    "Aconcagua",
+    "Vaalserberg",
+    "Pico de Orizaba"
+   ],
+   "hint": "",
+   "note": "Aconcagua: 6959 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-aconcagua"
+  },
+  {
+   "id": "hoogste-berg-22",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Mount Everest",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Mount Everest",
+   "options": [
+    "Fuji",
+    "Denali",
+    "Mount Everest",
+    "Aconcagua"
+   ],
+   "hint": "",
+   "note": "Mount Everest: 8848 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-mount-everest"
+  },
+  {
+   "id": "hoogste-berg-23",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Ojos del Salado",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Ojos del Salado",
+   "options": [
+    "Mont Blanc",
+    "Pico da Neblina",
+    "Vesuvius",
+    "Ojos del Salado"
+   ],
+   "hint": "",
+   "note": "Ojos del Salado: 6893 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-ojos-del-salado"
+  },
+  {
+   "id": "hoogste-berg-24",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "K2",
+   "question": "Welke berg is het hoogst?",
+   "answer": "K2",
+   "options": [
+    "Chimborazo",
+    "Vinsonmassief",
+    "K2",
+    "Cotopaxi"
+   ],
+   "hint": "",
+   "note": "K2: 8611 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-k2"
+  },
+  {
+   "id": "hoogste-berg-25",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "K2",
+   "question": "Welke berg is het hoogst?",
+   "answer": "K2",
+   "options": [
+    "K2",
+    "Denali",
+    "Mont Blanc",
+    "Aconcagua"
+   ],
+   "hint": "",
+   "note": "K2: 8611 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-k2"
+  },
+  {
+   "id": "hoogste-berg-26",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Cotopaxi",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Cotopaxi",
+   "options": [
+    "Cotopaxi",
+    "Vaalserberg",
+    "Zugspitze",
+    "Vinsonmassief"
+   ],
+   "hint": "",
+   "note": "Cotopaxi: 5897 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-cotopaxi"
+  },
+  {
+   "id": "hoogste-berg-27",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Huascarán",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Huascarán",
+   "options": [
+    "Huascarán",
+    "Mount Whitney",
+    "Pico da Neblina",
+    "Vesuvius"
+   ],
+   "hint": "",
+   "note": "Huascarán: 6768 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-huascaran"
+  },
+  {
+   "id": "hoogste-berg-28",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Ojos del Salado",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Ojos del Salado",
+   "options": [
+    "Cotopaxi",
+    "Ojos del Salado",
+    "Zugspitze",
+    "Elbroes"
+   ],
+   "hint": "",
+   "note": "Ojos del Salado: 6893 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-ojos-del-salado"
+  },
+  {
+   "id": "hoogste-berg-29",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Huascarán",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Huascarán",
+   "options": [
+    "Huascarán",
+    "Pico da Neblina",
+    "Chimborazo",
+    "Matterhorn"
+   ],
+   "hint": "",
+   "note": "Huascarán: 6768 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "berg-huascaran"
+  },
+  {
+   "id": "hoogste-berg-30",
+   "kind": "fact",
+   "category": "aarde",
+   "name": "Cotopaxi",
+   "question": "Welke berg is het hoogst?",
+   "answer": "Cotopaxi",
+   "options": [
+    "Fuji",
+    "Pico da Neblina",
+    "Cotopaxi",
+    "Vesuvius"
+   ],
+   "hint": "",
+   "note": "Cotopaxi: 5897 m.",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "hoogste-berg"
+   },
+   "doelen": [
+    "H-C2",
+    "V-C1"
+   ],
+   "leerjaren": {
+    "havo": [
+     4,
+     5
+    ],
+    "vwo": [
+     4,
+     5,
+     6
+    ]
+   },
+   "itemId": "vulkaan-cotopaxi"
   }
  ]
 }

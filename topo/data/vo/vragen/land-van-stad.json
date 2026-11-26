@@ -11,10 +11,10 @@
    "question": "In welk land ligt Rio de Janeiro?",
    "answer": "Brazilië",
    "options": [
+    "Colombia",
     "Paraguay",
-    "Guyana",
     "Brazilië",
-    "Venezuela"
+    "Bolivia"
    ],
    "hint": "",
    "note": "",
@@ -56,10 +56,10 @@
    "question": "In welk land ligt São Paulo?",
    "answer": "Brazilië",
    "options": [
-    "Brazilië",
     "Suriname",
-    "Bolivia",
-    "Ecuador"
+    "Uruguay",
+    "Brazilië",
+    "Argentinië"
    ],
    "hint": "",
    "note": "",
@@ -99,10 +99,10 @@
    "question": "In welk land ligt Belo Horizonte?",
    "answer": "Brazilië",
    "options": [
-    "Ecuador",
-    "Venezuela",
+    "Bolivia",
     "Brazilië",
-    "Suriname"
+    "Uruguay",
+    "Colombia"
    ],
    "hint": "",
    "note": "",
@@ -140,9 +140,9 @@
    "question": "In welk land ligt Curitiba?",
    "answer": "Brazilië",
    "options": [
-    "Ecuador",
-    "Paraguay",
-    "Bolivia",
+    "Venezuela",
+    "Chili",
+    "Guyana",
     "Brazilië"
    ],
    "hint": "",
@@ -181,10 +181,10 @@
    "question": "In welk land ligt Fortaleza?",
    "answer": "Brazilië",
    "options": [
-    "Suriname",
     "Venezuela",
+    "Colombia",
     "Brazilië",
-    "Colombia"
+    "Paraguay"
    ],
    "hint": "",
    "note": "",
@@ -222,9 +222,9 @@
    "question": "In welk land ligt Porto Alegre?",
    "answer": "Brazilië",
    "options": [
+    "Uruguay",
+    "Paraguay",
     "Brazilië",
-    "Chili",
-    "Bolivia",
     "Argentinië"
    ],
    "hint": "",
@@ -263,10 +263,10 @@
    "question": "In welk land ligt Recife?",
    "answer": "Brazilië",
    "options": [
-    "Argentinië",
     "Bolivia",
-    "Chili",
-    "Brazilië"
+    "Brazilië",
+    "Colombia",
+    "Peru"
    ],
    "hint": "",
    "note": "",
@@ -304,10 +304,10 @@
    "question": "In welk land ligt Salvador?",
    "answer": "Brazilië",
    "options": [
-    "Uruguay",
-    "Chili",
+    "Brazilië",
+    "Colombia",
     "Ecuador",
-    "Brazilië"
+    "Guyana"
    ],
    "hint": "",
    "note": "",
@@ -345,10 +345,10 @@
    "question": "In welk land ligt Monterrey?",
    "answer": "Mexico",
    "options": [
-    "Mexico",
-    "Dominicaanse Republiek",
-    "Grenada",
-    "Honduras"
+    "Belize",
+    "Antigua en Barbuda",
+    "Saint Lucia",
+    "Mexico"
    ],
    "hint": "",
    "note": "",
@@ -375,10 +375,10 @@
    "question": "In welk land ligt Antwerpen?",
    "answer": "België",
    "options": [
-    "Frankrijk",
-    "Luxemburg",
     "Monaco",
-    "België"
+    "Zwitserland",
+    "België",
+    "Frankrijk"
    ],
    "hint": "",
    "note": "",
@@ -407,10 +407,10 @@
    "question": "In welk land ligt Barcelona?",
    "answer": "Spanje",
    "options": [
-    "Portugal",
-    "Malta",
-    "Spanje",
-    "Griekenland"
+    "Cyprus",
+    "San Marino",
+    "Griekenland",
+    "Spanje"
    ],
    "hint": "",
    "note": "",
@@ -439,10 +439,10 @@
    "question": "In welk land ligt Bordeaux?",
    "answer": "Frankrijk",
    "options": [
-    "Luxemburg",
     "Frankrijk",
-    "Duitsland",
-    "Liechtenstein"
+    "Luxemburg",
+    "Zwitserland",
+    "Monaco"
    ],
    "hint": "",
    "note": "",
@@ -471,10 +471,10 @@
    "question": "In welk land ligt Casablanca?",
    "answer": "Marokko",
    "options": [
-    "Tunesië",
     "Marokko",
+    "Algerije",
     "Libië",
-    "Sudan"
+    "Egypte"
    ],
    "hint": "",
    "note": "",
@@ -503,10 +503,10 @@
    "question": "In welk land ligt Chicago?",
    "answer": "Verenigde Staten",
    "options": [
-    "Haïti",
-    "Bahama's",
-    "Saint Kitts en Nevis",
-    "Verenigde Staten"
+    "Verenigde Staten",
+    "Trinidad en Tobago",
+    "Antigua en Barbuda",
+    "Canada"
    ],
    "hint": "",
    "note": "",
@@ -535,10 +535,10 @@
    "question": "In welk land ligt Delhi?",
    "answer": "India",
    "options": [
+    "Pakistan",
     "Nepal",
     "India",
-    "Bangladesh",
-    "Sri Lanka"
+    "Afghanistan"
    ],
    "hint": "",
    "note": "",
@@ -577,9 +577,9 @@
    "answer": "Zwitserland",
    "options": [
     "Zwitserland",
-    "Nederland",
-    "Monaco",
-    "Frankrijk"
+    "België",
+    "Liechtenstein",
+    "Duitsland"
    ],
    "hint": "",
    "note": "",
@@ -608,10 +608,10 @@
    "question": "In welk land ligt Glasgow?",
    "answer": "Verenigd Koninkrijk",
    "options": [
-    "Denemarken",
-    "Letland",
-    "Verenigd Koninkrijk",
-    "Noorwegen"
+    "Estland",
+    "Ierland",
+    "Noorwegen",
+    "Verenigd Koninkrijk"
    ],
    "hint": "",
    "note": "",
@@ -640,10 +640,10 @@
    "question": "In welk land ligt Hamburg?",
    "answer": "Duitsland",
    "options": [
-    "Frankrijk",
-    "België",
     "Duitsland",
-    "Nederland"
+    "Frankrijk",
+    "Liechtenstein",
+    "België"
    ],
    "hint": "",
    "note": "",
@@ -672,9 +672,9 @@
    "question": "In welk land ligt Istanbul?",
    "answer": "Turkije",
    "options": [
-    "Turkije",
-    "Syrië",
     "Georgië",
+    "Jemen",
+    "Turkije",
     "Verenigde Arabische Emiraten"
    ],
    "hint": "",
@@ -715,10 +715,10 @@
    "question": "In welk land ligt Karachi?",
    "answer": "Pakistan",
    "options": [
-    "Pakistan",
     "Nepal",
+    "Bhutan",
     "Afghanistan",
-    "Bangladesh"
+    "Pakistan"
    ],
    "hint": "",
    "note": "",
@@ -756,10 +756,10 @@
    "question": "In welk land ligt Keulen?",
    "answer": "Duitsland",
    "options": [
-    "België",
-    "Duitsland",
     "Frankrijk",
-    "Nederland"
+    "België",
+    "Luxemburg",
+    "Duitsland"
    ],
    "hint": "",
    "note": "",
@@ -788,10 +788,10 @@
    "question": "In welk land ligt Kolkata?",
    "answer": "India",
    "options": [
-    "India",
-    "Bhutan",
     "Afghanistan",
-    "Nepal"
+    "Bangladesh",
+    "Sri Lanka",
+    "India"
    ],
    "hint": "",
    "note": "",
@@ -831,10 +831,10 @@
    "question": "In welk land ligt Lagos?",
    "answer": "Nigeria",
    "options": [
-    "Nigeria",
-    "Benin",
     "Senegal",
-    "Guinee"
+    "Nigeria",
+    "Togo",
+    "Ghana"
    ],
    "hint": "",
    "note": "",
@@ -864,9 +864,9 @@
    "answer": "Verenigd Koninkrijk",
    "options": [
     "Verenigd Koninkrijk",
-    "Finland",
-    "Zweden",
-    "Ierland"
+    "Noorwegen",
+    "IJsland",
+    "Litouwen"
    ],
    "hint": "",
    "note": "",
@@ -895,10 +895,10 @@
    "question": "In welk land ligt Los Angeles?",
    "answer": "Verenigde Staten",
    "options": [
-    "Mexico",
     "Antigua en Barbuda",
+    "Panama",
     "Verenigde Staten",
-    "Saint Vincent en de Grenadines"
+    "Barbados"
    ],
    "hint": "",
    "note": "",
@@ -938,10 +938,10 @@
    "question": "In welk land ligt Lyon?",
    "answer": "Frankrijk",
    "options": [
-    "Frankrijk",
-    "Zwitserland",
-    "Duitsland",
-    "Monaco"
+    "Nederland",
+    "Monaco",
+    "Liechtenstein",
+    "Frankrijk"
    ],
    "hint": "",
    "note": "",
@@ -970,10 +970,10 @@
    "question": "In welk land ligt Marseille?",
    "answer": "Frankrijk",
    "options": [
-    "Zwitserland",
-    "Monaco",
-    "Duitsland",
-    "Frankrijk"
+    "Frankrijk",
+    "Liechtenstein",
+    "Luxemburg",
+    "Duitsland"
    ],
    "hint": "",
    "note": "",
@@ -1002,10 +1002,10 @@
    "question": "In welk land ligt Mekka?",
    "answer": "Saoedi-Arabië",
    "options": [
+    "Azerbeidzjan",
+    "Israël",
     "Saoedi-Arabië",
-    "Armenië",
-    "Bahrein",
-    "Qatar"
+    "Turkije"
    ],
    "hint": "",
    "note": "",
@@ -1034,10 +1034,10 @@
    "question": "In welk land ligt Milaan?",
    "answer": "Italië",
    "options": [
-    "Italië",
-    "Vaticaanstad",
-    "Cyprus",
-    "Spanje"
+    "Portugal",
+    "Griekenland",
+    "Andorra",
+    "Italië"
    ],
    "hint": "",
    "note": "",
@@ -1066,10 +1066,10 @@
    "question": "In welk land ligt Montréal?",
    "answer": "Canada",
    "options": [
-    "Canada",
-    "Trinidad en Tobago",
+    "Dominicaanse Republiek",
     "Antigua en Barbuda",
-    "Mexico"
+    "Canada",
+    "Nicaragua"
    ],
    "hint": "",
    "note": "",
@@ -1098,10 +1098,10 @@
    "question": "In welk land ligt Mumbai?",
    "answer": "India",
    "options": [
-    "Pakistan",
-    "Nepal",
     "India",
-    "Afghanistan"
+    "Bhutan",
+    "Iran",
+    "Nepal"
    ],
    "hint": "",
    "note": "",
@@ -1141,10 +1141,10 @@
    "question": "In welk land ligt München?",
    "answer": "Duitsland",
    "options": [
+    "Monaco",
+    "Nederland",
     "Duitsland",
-    "België",
-    "Liechtenstein",
-    "Frankrijk"
+    "Zwitserland"
    ],
    "hint": "",
    "note": "",
@@ -1173,10 +1173,10 @@
    "question": "In welk land ligt New York?",
    "answer": "Verenigde Staten",
    "options": [
-    "Mexico",
     "Panama",
-    "Bahama's",
-    "Verenigde Staten"
+    "Verenigde Staten",
+    "Nicaragua",
+    "Mexico"
    ],
    "hint": "",
    "note": "",
@@ -1216,10 +1216,10 @@
    "question": "In welk land ligt Osaka?",
    "answer": "Japan",
    "options": [
-    "Japan",
-    "Zuid-Korea",
     "China",
-    "Noord-Korea"
+    "Noord-Korea",
+    "Zuid-Korea",
+    "Japan"
    ],
    "hint": "",
    "note": "",
@@ -1257,10 +1257,10 @@
    "question": "In welk land ligt Shanghai?",
    "answer": "China",
    "options": [
-    "China",
-    "Japan",
     "Noord-Korea",
-    "Zuid-Korea"
+    "Zuid-Korea",
+    "Japan",
+    "China"
    ],
    "hint": "",
    "note": "",
@@ -1300,10 +1300,10 @@
    "question": "In welk land ligt Sint Petersburg?",
    "answer": "Rusland",
    "options": [
-    "Moldavië",
-    "Wit-Rusland",
     "Rusland",
-    "Oekraïne"
+    "Moldavië",
+    "Oekraïne",
+    "Wit-Rusland"
    ],
    "hint": "",
    "note": "",
@@ -1332,10 +1332,10 @@
    "question": "In welk land ligt Sydney?",
    "answer": "Australië",
    "options": [
-    "Salomonseilanden",
+    "Fiji",
+    "Tuvalu",
     "Nieuw-Zeeland",
-    "Australië",
-    "Marshalleilanden"
+    "Australië"
    ],
    "hint": "",
    "note": "",
@@ -1360,13 +1360,43 @@
    "id": "land-van-stad-38",
    "kind": "fact",
    "category": "steden",
+   "name": "Abidjan",
+   "question": "In welk land ligt Abidjan?",
+   "answer": "Ivoorkust",
+   "options": [
+    "Mali",
+    "Kaapverdië",
+    "Senegal",
+    "Ivoorkust"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-civ-abidjan"
+  },
+  {
+   "id": "land-van-stad-39",
+   "kind": "fact",
+   "category": "steden",
    "name": "Ahmedabad",
    "question": "In welk land ligt Ahmedabad?",
    "answer": "India",
    "options": [
-    "Maldiven",
-    "Bangladesh",
     "India",
+    "Bangladesh",
+    "Iran",
     "Bhutan"
    ],
    "hint": "",
@@ -1387,17 +1417,17 @@
    "itemId": "stad-ind-ahmedabad"
   },
   {
-   "id": "land-van-stad-39",
+   "id": "land-van-stad-40",
    "kind": "fact",
    "category": "steden",
    "name": "Alexandrië",
    "question": "In welk land ligt Alexandrië?",
    "answer": "Egypte",
    "options": [
-    "Egypte",
-    "Marokko",
-    "Sudan",
-    "Libië"
+    "Tunesië",
+    "Algerije",
+    "Libië",
+    "Egypte"
    ],
    "hint": "",
    "note": "",
@@ -1417,17 +1447,17 @@
    "itemId": "stad-egy-alexandrie"
   },
   {
-   "id": "land-van-stad-40",
+   "id": "land-van-stad-41",
    "kind": "fact",
    "category": "steden",
    "name": "Amaravati",
    "question": "In welk land ligt Amaravati?",
    "answer": "India",
    "options": [
-    "India",
+    "Bhutan",
     "Maldiven",
-    "Iran",
-    "Pakistan"
+    "Bangladesh",
+    "India"
    ],
    "hint": "",
    "note": "",
@@ -1447,17 +1477,17 @@
    "itemId": "stad-ind-amaravati"
   },
   {
-   "id": "land-van-stad-41",
+   "id": "land-van-stad-42",
    "kind": "fact",
    "category": "steden",
    "name": "Atlanta",
    "question": "In welk land ligt Atlanta?",
    "answer": "Verenigde Staten",
    "options": [
-    "Saint Vincent en de Grenadines",
-    "Saint Lucia",
-    "Panama",
-    "Verenigde Staten"
+    "Grenada",
+    "Verenigde Staten",
+    "Bahama's",
+    "Barbados"
    ],
    "hint": "",
    "note": "",
@@ -1477,16 +1507,16 @@
    "itemId": "stad-usa-atlanta"
   },
   {
-   "id": "land-van-stad-42",
+   "id": "land-van-stad-43",
    "kind": "fact",
    "category": "steden",
    "name": "Bangalore",
    "question": "In welk land ligt Bangalore?",
    "answer": "India",
    "options": [
+    "Sri Lanka",
     "India",
-    "Bhutan",
-    "Maldiven",
+    "Afghanistan",
     "Nepal"
    ],
    "hint": "",
@@ -1507,17 +1537,17 @@
    "itemId": "stad-ind-bangalore"
   },
   {
-   "id": "land-van-stad-43",
+   "id": "land-van-stad-44",
    "kind": "fact",
    "category": "steden",
    "name": "Boston",
    "question": "In welk land ligt Boston?",
    "answer": "Verenigde Staten",
    "options": [
-    "Mexico",
+    "Costa Rica",
     "Verenigde Staten",
-    "Bahama's",
-    "Costa Rica"
+    "Cuba",
+    "Haïti"
    ],
    "hint": "",
    "note": "",
@@ -1537,16 +1567,16 @@
    "itemId": "stad-usa-boston"
   },
   {
-   "id": "land-van-stad-44",
+   "id": "land-van-stad-45",
    "kind": "fact",
    "category": "steden",
    "name": "Busan",
    "question": "In welk land ligt Busan?",
    "answer": "Zuid-Korea",
    "options": [
-    "China",
+    "Japan",
     "Zuid-Korea",
-    "Noord-Korea",
+    "China",
     "Mongolië"
    ],
    "hint": "",
@@ -1567,17 +1597,17 @@
    "itemId": "stad-kor-busan"
   },
   {
-   "id": "land-van-stad-45",
+   "id": "land-van-stad-46",
    "kind": "fact",
    "category": "steden",
    "name": "Changchun",
    "question": "In welk land ligt Changchun?",
    "answer": "China",
    "options": [
-    "China",
     "Noord-Korea",
+    "China",
     "Zuid-Korea",
-    "Japan"
+    "Mongolië"
    ],
    "hint": "",
    "note": "",
@@ -1597,7 +1627,7 @@
    "itemId": "stad-chn-changchun"
   },
   {
-   "id": "land-van-stad-46",
+   "id": "land-van-stad-47",
    "kind": "fact",
    "category": "steden",
    "name": "Chengdu",
@@ -1605,9 +1635,9 @@
    "answer": "China",
    "options": [
     "China",
-    "Japan",
+    "Noord-Korea",
     "Zuid-Korea",
-    "Noord-Korea"
+    "Mongolië"
    ],
    "hint": "",
    "note": "",
@@ -1627,17 +1657,17 @@
    "itemId": "stad-chn-chengdu"
   },
   {
-   "id": "land-van-stad-47",
+   "id": "land-van-stad-48",
    "kind": "fact",
    "category": "steden",
    "name": "Chennai",
    "question": "In welk land ligt Chennai?",
    "answer": "India",
    "options": [
-    "Bhutan",
+    "Sri Lanka",
     "India",
-    "Nepal",
-    "Pakistan"
+    "Afghanistan",
+    "Maldiven"
    ],
    "hint": "",
    "note": "",
@@ -1657,17 +1687,17 @@
    "itemId": "stad-ind-chennai"
   },
   {
-   "id": "land-van-stad-48",
+   "id": "land-van-stad-49",
    "kind": "fact",
    "category": "steden",
    "name": "Chittagong",
    "question": "In welk land ligt Chittagong?",
    "answer": "Bangladesh",
    "options": [
-    "Maldiven",
-    "Nepal",
     "Bhutan",
-    "Bangladesh"
+    "Bangladesh",
+    "Pakistan",
+    "Nepal"
    ],
    "hint": "",
    "note": "",
@@ -1687,17 +1717,17 @@
    "itemId": "stad-bgd-chittagong"
   },
   {
-   "id": "land-van-stad-49",
+   "id": "land-van-stad-50",
    "kind": "fact",
    "category": "steden",
    "name": "Chongqing",
    "question": "In welk land ligt Chongqing?",
    "answer": "China",
    "options": [
-    "Japan",
     "Zuid-Korea",
-    "Noord-Korea",
-    "China"
+    "Japan",
+    "China",
+    "Noord-Korea"
    ],
    "hint": "",
    "note": "",
@@ -1717,17 +1747,17 @@
    "itemId": "stad-chn-chongqing"
   },
   {
-   "id": "land-van-stad-50",
+   "id": "land-van-stad-51",
    "kind": "fact",
    "category": "steden",
    "name": "Dalian",
    "question": "In welk land ligt Dalian?",
    "answer": "China",
    "options": [
-    "Mongolië",
-    "Zuid-Korea",
     "China",
-    "Noord-Korea"
+    "Zuid-Korea",
+    "Mongolië",
+    "Japan"
    ],
    "hint": "",
    "note": "",
@@ -1747,17 +1777,17 @@
    "itemId": "stad-chn-dalian"
   },
   {
-   "id": "land-van-stad-51",
+   "id": "land-van-stad-52",
    "kind": "fact",
    "category": "steden",
    "name": "Dallas",
    "question": "In welk land ligt Dallas?",
    "answer": "Verenigde Staten",
    "options": [
-    "Verenigde Staten",
+    "Haïti",
     "Bahama's",
-    "Jamaica",
-    "Canada"
+    "Costa Rica",
+    "Verenigde Staten"
    ],
    "hint": "",
    "note": "",
@@ -1777,17 +1807,17 @@
    "itemId": "stad-usa-dallas"
   },
   {
-   "id": "land-van-stad-52",
+   "id": "land-van-stad-53",
    "kind": "fact",
    "category": "steden",
    "name": "Detroit",
    "question": "In welk land ligt Detroit?",
    "answer": "Verenigde Staten",
    "options": [
-    "Barbados",
-    "Belize",
+    "Dominica",
     "Verenigde Staten",
-    "Panama"
+    "El Salvador",
+    "Mexico"
    ],
    "hint": "",
    "note": "",
@@ -1807,17 +1837,17 @@
    "itemId": "stad-usa-detroit"
   },
   {
-   "id": "land-van-stad-53",
+   "id": "land-van-stad-54",
    "kind": "fact",
    "category": "steden",
    "name": "Djedda",
    "question": "In welk land ligt Djedda?",
    "answer": "Saoedi-Arabië",
    "options": [
+    "Turkije",
     "Saoedi-Arabië",
-    "Verenigde Arabische Emiraten",
-    "Jordanië",
-    "Israël"
+    "Armenië",
+    "Azerbeidzjan"
    ],
    "hint": "",
    "note": "",
@@ -1837,17 +1867,17 @@
    "itemId": "stad-sau-djedda"
   },
   {
-   "id": "land-van-stad-54",
+   "id": "land-van-stad-55",
    "kind": "fact",
    "category": "steden",
    "name": "Dongguan",
    "question": "In welk land ligt Dongguan?",
    "answer": "China",
    "options": [
-    "Japan",
     "China",
+    "Zuid-Korea",
     "Mongolië",
-    "Zuid-Korea"
+    "Japan"
    ],
    "hint": "",
    "note": "",
@@ -1867,17 +1897,17 @@
    "itemId": "stad-chn-dongguan"
   },
   {
-   "id": "land-van-stad-55",
+   "id": "land-van-stad-56",
    "kind": "fact",
    "category": "steden",
    "name": "Guadalajara",
    "question": "In welk land ligt Guadalajara?",
    "answer": "Mexico",
    "options": [
-    "Guatemala",
+    "Costa Rica",
+    "Panama",
     "Mexico",
-    "Belize",
-    "Saint Vincent en de Grenadines"
+    "Canada"
    ],
    "hint": "",
    "note": "",
@@ -1897,17 +1927,17 @@
    "itemId": "stad-mex-guadalajara"
   },
   {
-   "id": "land-van-stad-56",
+   "id": "land-van-stad-57",
    "kind": "fact",
    "category": "steden",
    "name": "Guangzhou",
    "question": "In welk land ligt Guangzhou?",
    "answer": "China",
    "options": [
-    "Zuid-Korea",
     "Noord-Korea",
-    "China",
-    "Japan"
+    "Zuid-Korea",
+    "Mongolië",
+    "China"
    ],
    "hint": "",
    "note": "",
@@ -1927,17 +1957,17 @@
    "itemId": "stad-chn-guangzhou"
   },
   {
-   "id": "land-van-stad-57",
+   "id": "land-van-stad-58",
    "kind": "fact",
    "category": "steden",
    "name": "Guiyang",
    "question": "In welk land ligt Guiyang?",
    "answer": "China",
    "options": [
-    "China",
-    "Noord-Korea",
     "Mongolië",
-    "Zuid-Korea"
+    "Japan",
+    "Zuid-Korea",
+    "China"
    ],
    "hint": "",
    "note": "",
@@ -1957,17 +1987,17 @@
    "itemId": "stad-chn-guiyang"
   },
   {
-   "id": "land-van-stad-58",
+   "id": "land-van-stad-59",
    "kind": "fact",
    "category": "steden",
    "name": "Haiderabad",
    "question": "In welk land ligt Haiderabad?",
    "answer": "India",
    "options": [
-    "Iran",
+    "Pakistan",
+    "India",
     "Nepal",
-    "Bangladesh",
-    "India"
+    "Bhutan"
    ],
    "hint": "",
    "note": "",
@@ -1987,17 +2017,17 @@
    "itemId": "stad-ind-haiderabad"
   },
   {
-   "id": "land-van-stad-59",
+   "id": "land-van-stad-60",
    "kind": "fact",
    "category": "steden",
    "name": "Hangzhou",
    "question": "In welk land ligt Hangzhou?",
    "answer": "China",
    "options": [
-    "Zuid-Korea",
     "China",
-    "Japan",
-    "Noord-Korea"
+    "Noord-Korea",
+    "Zuid-Korea",
+    "Mongolië"
    ],
    "hint": "",
    "note": "",
@@ -2017,16 +2047,16 @@
    "itemId": "stad-chn-hangzhou"
   },
   {
-   "id": "land-van-stad-60",
+   "id": "land-van-stad-61",
    "kind": "fact",
    "category": "steden",
    "name": "Haora",
    "question": "In welk land ligt Haora?",
    "answer": "India",
    "options": [
+    "Bhutan",
     "Iran",
     "India",
-    "Afghanistan",
     "Nepal"
    ],
    "hint": "",
@@ -2047,17 +2077,17 @@
    "itemId": "stad-ind-haora"
   },
   {
-   "id": "land-van-stad-61",
+   "id": "land-van-stad-62",
    "kind": "fact",
    "category": "steden",
    "name": "Harbin",
    "question": "In welk land ligt Harbin?",
    "answer": "China",
    "options": [
+    "Mongolië",
     "Noord-Korea",
     "China",
-    "Zuid-Korea",
-    "Mongolië"
+    "Japan"
    ],
    "hint": "",
    "note": "",
@@ -2077,17 +2107,17 @@
    "itemId": "stad-chn-harbin"
   },
   {
-   "id": "land-van-stad-62",
+   "id": "land-van-stad-63",
    "kind": "fact",
    "category": "steden",
    "name": "Hechi",
    "question": "In welk land ligt Hechi?",
    "answer": "China",
    "options": [
-    "China",
-    "Noord-Korea",
+    "Mongolië",
     "Zuid-Korea",
-    "Mongolië"
+    "Japan",
+    "China"
    ],
    "hint": "",
    "note": "",
@@ -2107,17 +2137,17 @@
    "itemId": "stad-chn-hechi"
   },
   {
-   "id": "land-van-stad-63",
+   "id": "land-van-stad-64",
    "kind": "fact",
    "category": "steden",
    "name": "Ho Chi Minhstad",
    "question": "In welk land ligt Ho Chi Minhstad?",
    "answer": "Vietnam",
    "options": [
-    "Filipijnen",
+    "Singapore",
+    "Maleisië",
     "Vietnam",
-    "Myanmar",
-    "Indonesië"
+    "Laos"
    ],
    "hint": "",
    "note": "",
@@ -2137,16 +2167,16 @@
    "itemId": "stad-vnm-ho-chi-minhstad"
   },
   {
-   "id": "land-van-stad-64",
+   "id": "land-van-stad-65",
    "kind": "fact",
    "category": "steden",
    "name": "Hongkong",
    "question": "In welk land ligt Hongkong?",
    "answer": "Hongkong",
    "options": [
-    "Mongolië",
     "Noord-Korea",
-    "Japan",
+    "Zuid-Korea",
+    "China",
     "Hongkong"
    ],
    "hint": "",
@@ -2167,7 +2197,7 @@
    "itemId": "stad-hkg-hongkong"
   },
   {
-   "id": "land-van-stad-65",
+   "id": "land-van-stad-66",
    "kind": "fact",
    "category": "steden",
    "name": "Houston",
@@ -2175,9 +2205,9 @@
    "answer": "Verenigde Staten",
    "options": [
     "Verenigde Staten",
-    "Dominica",
-    "Honduras",
-    "Barbados"
+    "Saint Vincent en de Grenadines",
+    "Saint Kitts en Nevis",
+    "Cuba"
    ],
    "hint": "",
    "note": "",
@@ -2197,17 +2227,17 @@
    "itemId": "stad-usa-houston"
   },
   {
-   "id": "land-van-stad-66",
+   "id": "land-van-stad-67",
    "kind": "fact",
    "category": "steden",
    "name": "Irvine",
    "question": "In welk land ligt Irvine?",
    "answer": "Verenigde Staten",
    "options": [
-    "Verenigde Staten",
-    "Guatemala",
-    "Jamaica",
-    "Antigua en Barbuda"
+    "Trinidad en Tobago",
+    "Barbados",
+    "Belize",
+    "Verenigde Staten"
    ],
    "hint": "",
    "note": "",
@@ -2227,17 +2257,47 @@
    "itemId": "stad-usa-irvine"
   },
   {
-   "id": "land-van-stad-67",
+   "id": "land-van-stad-68",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Johannesburg",
+   "question": "In welk land ligt Johannesburg?",
+   "answer": "Zuid-Afrika",
+   "options": [
+    "Botswana",
+    "Swaziland",
+    "Lesotho",
+    "Zuid-Afrika"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-zaf-johannesburg"
+  },
+  {
+   "id": "land-van-stad-69",
    "kind": "fact",
    "category": "steden",
    "name": "Kano",
    "question": "In welk land ligt Kano?",
    "answer": "Nigeria",
    "options": [
-    "Senegal",
-    "Mali",
-    "Guinee",
-    "Nigeria"
+    "Burkina Faso",
+    "Nigeria",
+    "Sierra Leone",
+    "Kaapverdië"
    ],
    "hint": "",
    "note": "",
@@ -2257,17 +2317,17 @@
    "itemId": "stad-nga-kano"
   },
   {
-   "id": "land-van-stad-68",
+   "id": "land-van-stad-70",
    "kind": "fact",
    "category": "steden",
    "name": "Kanpur",
    "question": "In welk land ligt Kanpur?",
    "answer": "India",
    "options": [
-    "Iran",
-    "India",
+    "Bhutan",
     "Pakistan",
-    "Afghanistan"
+    "India",
+    "Nepal"
    ],
    "hint": "",
    "note": "",
@@ -2287,17 +2347,17 @@
    "itemId": "stad-ind-kanpur"
   },
   {
-   "id": "land-van-stad-69",
+   "id": "land-van-stad-71",
    "kind": "fact",
    "category": "steden",
    "name": "Lahore",
    "question": "In welk land ligt Lahore?",
    "answer": "Pakistan",
    "options": [
-    "Bangladesh",
     "Pakistan",
     "India",
-    "Bhutan"
+    "Afghanistan",
+    "Sri Lanka"
    ],
    "hint": "",
    "note": "",
@@ -2317,17 +2377,17 @@
    "itemId": "stad-pak-lahore"
   },
   {
-   "id": "land-van-stad-70",
+   "id": "land-van-stad-72",
    "kind": "fact",
    "category": "steden",
    "name": "Medellín",
    "question": "In welk land ligt Medellín?",
    "answer": "Colombia",
    "options": [
-    "Colombia",
-    "Uruguay",
+    "Brazilië",
     "Peru",
-    "Suriname"
+    "Ecuador",
+    "Colombia"
    ],
    "hint": "",
    "note": "",
@@ -2353,7 +2413,7 @@
    "itemId": "stad-col-medellin"
   },
   {
-   "id": "land-van-stad-71",
+   "id": "land-van-stad-73",
    "kind": "fact",
    "category": "steden",
    "name": "Melbourne",
@@ -2361,9 +2421,9 @@
    "answer": "Australië",
    "options": [
     "Seychellen",
-    "Nieuw-Zeeland",
-    "Australië",
-    "Salomonseilanden"
+    "Micronesia",
+    "Marshalleilanden",
+    "Australië"
    ],
    "hint": "",
    "note": "",
@@ -2383,17 +2443,17 @@
    "itemId": "stad-aus-melbourne"
   },
   {
-   "id": "land-van-stad-72",
+   "id": "land-van-stad-74",
    "kind": "fact",
    "category": "steden",
    "name": "Miami",
    "question": "In welk land ligt Miami?",
    "answer": "Verenigde Staten",
    "options": [
-    "Nicaragua",
+    "Canada",
     "Verenigde Staten",
-    "Costa Rica",
-    "Saint Kitts en Nevis"
+    "Grenada",
+    "Mexico"
    ],
    "hint": "",
    "note": "",
@@ -2413,14 +2473,14 @@
    "itemId": "stad-usa-miami"
   },
   {
-   "id": "land-van-stad-73",
+   "id": "land-van-stad-75",
    "kind": "fact",
    "category": "steden",
    "name": "Nagoya",
    "question": "In welk land ligt Nagoya?",
    "answer": "Japan",
    "options": [
-    "Noord-Korea",
+    "Mongolië",
     "Japan",
     "Zuid-Korea",
     "China"
@@ -2443,17 +2503,17 @@
    "itemId": "stad-jpn-nagoya"
   },
   {
-   "id": "land-van-stad-74",
+   "id": "land-van-stad-76",
    "kind": "fact",
    "category": "steden",
    "name": "Nanjing",
    "question": "In welk land ligt Nanjing?",
    "answer": "China",
    "options": [
-    "China",
     "Japan",
+    "China",
     "Noord-Korea",
-    "Zuid-Korea"
+    "Mongolië"
    ],
    "hint": "",
    "note": "",
@@ -2473,17 +2533,17 @@
    "itemId": "stad-chn-nanjing"
   },
   {
-   "id": "land-van-stad-75",
+   "id": "land-van-stad-77",
    "kind": "fact",
    "category": "steden",
    "name": "Nieuw Taipei",
    "question": "In welk land ligt Nieuw Taipei?",
    "answer": "Taiwan",
    "options": [
-    "Japan",
+    "Mongolië",
     "Taiwan",
-    "Zuid-Korea",
-    "Mongolië"
+    "China",
+    "Zuid-Korea"
    ],
    "hint": "",
    "note": "",
@@ -2503,17 +2563,17 @@
    "itemId": "stad-twn-nieuw-taipei"
   },
   {
-   "id": "land-van-stad-76",
+   "id": "land-van-stad-78",
    "kind": "fact",
    "category": "steden",
    "name": "Philadelphia",
    "question": "In welk land ligt Philadelphia?",
    "answer": "Verenigde Staten",
    "options": [
-    "Verenigde Staten",
-    "Nicaragua",
+    "Guatemala",
+    "Saint Kitts en Nevis",
     "Panama",
-    "Grenada"
+    "Verenigde Staten"
    ],
    "hint": "",
    "note": "",
@@ -2533,17 +2593,17 @@
    "itemId": "stad-usa-philadelphia"
   },
   {
-   "id": "land-van-stad-77",
+   "id": "land-van-stad-79",
    "kind": "fact",
    "category": "steden",
    "name": "Phoenix",
    "question": "In welk land ligt Phoenix?",
    "answer": "Verenigde Staten",
    "options": [
-    "Dominica",
-    "Guatemala",
-    "Panama",
-    "Verenigde Staten"
+    "Haïti",
+    "Verenigde Staten",
+    "Belize",
+    "Trinidad en Tobago"
    ],
    "hint": "",
    "note": "",
@@ -2563,17 +2623,17 @@
    "itemId": "stad-usa-phoenix"
   },
   {
-   "id": "land-van-stad-78",
+   "id": "land-van-stad-80",
    "kind": "fact",
    "category": "steden",
    "name": "Poona",
    "question": "In welk land ligt Poona?",
    "answer": "India",
    "options": [
-    "Bangladesh",
+    "Bhutan",
     "India",
-    "Afghanistan",
-    "Iran"
+    "Iran",
+    "Maldiven"
    ],
    "hint": "",
    "note": "",
@@ -2593,17 +2653,47 @@
    "itemId": "stad-ind-poona"
   },
   {
-   "id": "land-van-stad-79",
+   "id": "land-van-stad-81",
+   "kind": "fact",
+   "category": "steden",
+   "name": "Rangoon",
+   "question": "In welk land ligt Rangoon?",
+   "answer": "Myanmar",
+   "options": [
+    "Oost-Timor",
+    "Laos",
+    "Singapore",
+    "Myanmar"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-stad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-mmr-rangoon"
+  },
+  {
+   "id": "land-van-stad-82",
    "kind": "fact",
    "category": "steden",
    "name": "San Francisco",
    "question": "In welk land ligt San Francisco?",
    "answer": "Verenigde Staten",
    "options": [
-    "Mexico",
+    "Saint Kitts en Nevis",
+    "Canada",
     "Verenigde Staten",
-    "Panama",
-    "Dominica"
+    "Dominicaanse Republiek"
    ],
    "hint": "",
    "note": "",
@@ -2623,17 +2713,17 @@
    "itemId": "stad-usa-san-francisco"
   },
   {
-   "id": "land-van-stad-80",
+   "id": "land-van-stad-83",
    "kind": "fact",
    "category": "steden",
    "name": "Seattle",
    "question": "In welk land ligt Seattle?",
    "answer": "Verenigde Staten",
    "options": [
-    "Belize",
-    "Canada",
+    "Costa Rica",
+    "Bahama's",
     "Verenigde Staten",
-    "Guatemala"
+    "Barbados"
    ],
    "hint": "",
    "note": "",
@@ -2653,17 +2743,17 @@
    "itemId": "stad-usa-seattle"
   },
   {
-   "id": "land-van-stad-81",
+   "id": "land-van-stad-84",
    "kind": "fact",
    "category": "steden",
    "name": "Shenyang",
    "question": "In welk land ligt Shenyang?",
    "answer": "China",
    "options": [
-    "Noord-Korea",
+    "Mongolië",
+    "Japan",
     "China",
-    "Zuid-Korea",
-    "Japan"
+    "Zuid-Korea"
    ],
    "hint": "",
    "note": "",
@@ -2683,15 +2773,15 @@
    "itemId": "stad-chn-shenyang"
   },
   {
-   "id": "land-van-stad-82",
+   "id": "land-van-stad-85",
    "kind": "fact",
    "category": "steden",
    "name": "Shenzhen",
    "question": "In welk land ligt Shenzhen?",
    "answer": "China",
    "options": [
-    "Noord-Korea",
     "Zuid-Korea",
+    "Noord-Korea",
     "Mongolië",
     "China"
    ],
@@ -2713,17 +2803,17 @@
    "itemId": "stad-chn-shenzhen"
   },
   {
-   "id": "land-van-stad-83",
+   "id": "land-van-stad-86",
    "kind": "fact",
    "category": "steden",
    "name": "Surat",
    "question": "In welk land ligt Surat?",
    "answer": "India",
    "options": [
-    "Iran",
-    "Maldiven",
-    "Sri Lanka",
-    "India"
+    "Bhutan",
+    "India",
+    "Pakistan",
+    "Afghanistan"
    ],
    "hint": "",
    "note": "",
@@ -2743,17 +2833,17 @@
    "itemId": "stad-ind-surat"
   },
   {
-   "id": "land-van-stad-84",
+   "id": "land-van-stad-87",
    "kind": "fact",
    "category": "steden",
    "name": "Tel Aviv",
    "question": "In welk land ligt Tel Aviv?",
    "answer": "Israël",
    "options": [
-    "Irak",
+    "Azerbeidzjan",
+    "Libanon",
     "Israël",
-    "Qatar",
-    "Libanon"
+    "Irak"
    ],
    "hint": "",
    "note": "",
@@ -2773,17 +2863,17 @@
    "itemId": "stad-isr-tel-aviv"
   },
   {
-   "id": "land-van-stad-85",
+   "id": "land-van-stad-88",
    "kind": "fact",
    "category": "steden",
    "name": "Tianjin",
    "question": "In welk land ligt Tianjin?",
    "answer": "China",
    "options": [
-    "China",
     "Noord-Korea",
-    "Mongolië",
-    "Zuid-Korea"
+    "Zuid-Korea",
+    "China",
+    "Mongolië"
    ],
    "hint": "",
    "note": "",
@@ -2803,17 +2893,17 @@
    "itemId": "stad-chn-tianjin"
   },
   {
-   "id": "land-van-stad-86",
+   "id": "land-van-stad-89",
    "kind": "fact",
    "category": "steden",
    "name": "Toronto",
    "question": "In welk land ligt Toronto?",
    "answer": "Canada",
    "options": [
+    "Saint Vincent en de Grenadines",
     "Canada",
-    "Cuba",
-    "Verenigde Staten",
-    "Saint Kitts en Nevis"
+    "El Salvador",
+    "Honduras"
    ],
    "hint": "",
    "note": "",
@@ -2833,17 +2923,17 @@
    "itemId": "stad-can-toronto"
   },
   {
-   "id": "land-van-stad-87",
+   "id": "land-van-stad-90",
    "kind": "fact",
    "category": "steden",
    "name": "Wuhan",
    "question": "In welk land ligt Wuhan?",
    "answer": "China",
    "options": [
-    "Japan",
-    "Noord-Korea",
+    "China",
     "Mongolië",
-    "China"
+    "Noord-Korea",
+    "Japan"
    ],
    "hint": "",
    "note": "",
@@ -2863,17 +2953,17 @@
    "itemId": "stad-chn-wuhan"
   },
   {
-   "id": "land-van-stad-88",
+   "id": "land-van-stad-91",
    "kind": "fact",
    "category": "steden",
    "name": "Xi'an",
    "question": "In welk land ligt Xi'an?",
    "answer": "China",
    "options": [
-    "Noord-Korea",
-    "Zuid-Korea",
     "Mongolië",
-    "China"
+    "China",
+    "Japan",
+    "Zuid-Korea"
    ],
    "hint": "",
    "note": "",
@@ -2893,16 +2983,16 @@
    "itemId": "stad-chn-xi-an"
   },
   {
-   "id": "land-van-stad-89",
+   "id": "land-van-stad-92",
    "kind": "fact",
    "category": "steden",
    "name": "Yokohama",
    "question": "In welk land ligt Yokohama?",
    "answer": "Japan",
    "options": [
-    "China",
-    "Japan",
+    "Mongolië",
     "Zuid-Korea",
+    "Japan",
     "Noord-Korea"
    ],
    "hint": "",
@@ -2923,17 +3013,17 @@
    "itemId": "stad-jpn-yokohama"
   },
   {
-   "id": "land-van-stad-90",
+   "id": "land-van-stad-93",
    "kind": "fact",
    "category": "steden",
    "name": "Zhangzhou",
    "question": "In welk land ligt Zhangzhou?",
    "answer": "China",
    "options": [
-    "Mongolië",
-    "China",
     "Zuid-Korea",
-    "Japan"
+    "China",
+    "Japan",
+    "Mongolië"
    ],
    "hint": "",
    "note": "",
@@ -2953,16 +3043,16 @@
    "itemId": "stad-chn-zhangzhou"
   },
   {
-   "id": "land-van-stad-91",
+   "id": "land-van-stad-94",
    "kind": "fact",
    "category": "steden",
    "name": "Zibo",
    "question": "In welk land ligt Zibo?",
    "answer": "China",
    "options": [
-    "Japan",
+    "Zuid-Korea",
     "China",
-    "Noord-Korea",
+    "Japan",
     "Mongolië"
    ],
    "hint": "",
@@ -2983,7 +3073,7 @@
    "itemId": "stad-chn-zibo"
   },
   {
-   "id": "land-van-stad-92",
+   "id": "land-van-stad-95",
    "kind": "fact",
    "category": "steden",
    "name": "Ürümqi",
@@ -2991,9 +3081,9 @@
    "answer": "China",
    "options": [
     "Zuid-Korea",
+    "Noord-Korea",
     "China",
-    "Japan",
-    "Mongolië"
+    "Japan"
    ],
    "hint": "",
    "note": "",

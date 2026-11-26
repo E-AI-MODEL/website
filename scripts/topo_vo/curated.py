@@ -28,7 +28,7 @@ NL = [
     ("Amstelveen", "stad", 4.860, 52.304, {"provincie": "Noord-Holland"}),
     ("Hengelo", "stad", 6.793, 52.266, {"provincie": "Overijssel"}),
     ("Terneuzen", "stad", 3.828, 51.336, {"provincie": "Zeeland"}),
-    ("Amsterdam", "stad", 4.900, 52.373, {"provincie": "Noord-Holland", "hoofdstad": True}),
+    ("Amsterdam", "hoofdstad", 4.900, 52.373, {"provincie": "Noord-Holland", "hoofdstad": True}),
     ("Hilversum", "stad", 5.176, 52.223, {"provincie": "Noord-Holland"}),
     ("Hoogeveen", "stad", 6.477, 52.723, {"provincie": "Drenthe"}),
     ("Apeldoorn", "stad", 5.969, 52.211, {"provincie": "Gelderland"}),

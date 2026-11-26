@@ -114,7 +114,7 @@ for s in items:
 prov = [i for i in items if i["type"] == "provincie"]
 pn = [p["naam"] for p in prov]
 for s in items:
-    if s.get("land") == "NLD" and s["type"] == "stad" and s.get("feiten", {}).get("provincie"):
+    if s.get("land") == "NLD" and s["type"] in ("stad", "hoofdstad") and s.get("feiten", {}).get("provincie"):
         vraag("provincie-van-stad", "nederland", s, f"In welke provincie ligt {s['naam']}?", s["feiten"]["provincie"],
               pick(pn, 3, excl=[s["feiten"]["provincie"]]), ["BASIS-TOPO", "KD25C"])
 phs = {s["feiten"]["provincie"]: s for s in items if s.get("land") == "NLD" and s.get("feiten", {}).get("provinciehoofdstad")}
@@ -189,7 +189,7 @@ for wd, lst in per_wd.items():
               [x["naam"] for x in ps[1:]], ["KD25A", "H-B2", "V-B1"], note="Bron: Natural Earth (POP_MAX), afgerond.")
 
 # 13 noordelijkst (Nederland, SLO-steden)
-nl_st = [i for i in items if i.get("land") == "NLD" and i["type"] == "stad" and i.get("slo300")]
+nl_st = [i for i in items if i.get("land") == "NLD" and i["type"] in ("stad", "hoofdstad") and i.get("slo300")]
 for _ in range(60):
     s = rng.sample(nl_st, 4)
     ss = sorted(s, key=lambda x: -x["coord"][1])

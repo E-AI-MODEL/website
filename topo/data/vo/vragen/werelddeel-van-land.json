@@ -11,10 +11,10 @@
    "question": "In welk werelddeel ligt Brazilië?",
    "answer": "Zuid-Amerika",
    "options": [
-    "Afrika",
-    "Zuid-Amerika",
     "Azië",
-    "Noord-Amerika"
+    "Noord-Amerika",
+    "Oceanië",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -41,10 +41,10 @@
    "question": "In welk werelddeel ligt Afghanistan?",
    "answer": "Azië",
    "options": [
-    "Oceanië",
-    "Europa",
     "Azië",
-    "Afrika"
+    "Zuid-Amerika",
+    "Afrika",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -71,10 +71,10 @@
    "question": "In welk werelddeel ligt Albanië?",
    "answer": "Europa",
    "options": [
-    "Afrika",
     "Europa",
-    "Azië",
-    "Oceanië"
+    "Afrika",
+    "Oceanië",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -101,10 +101,10 @@
    "question": "In welk werelddeel ligt Argentinië?",
    "answer": "Zuid-Amerika",
    "options": [
-    "Azië",
-    "Noord-Amerika",
+    "Afrika",
+    "Zuid-Amerika",
     "Europa",
-    "Zuid-Amerika"
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -132,9 +132,9 @@
    "answer": "Oceanië",
    "options": [
     "Oceanië",
-    "Europa",
-    "Noord-Amerika",
-    "Azië"
+    "Zuid-Amerika",
+    "Azië",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -161,10 +161,10 @@
    "question": "In welk werelddeel ligt Bangladesh?",
    "answer": "Azië",
    "options": [
+    "Europa",
     "Noord-Amerika",
-    "Zuid-Amerika",
-    "Oceanië",
-    "Azië"
+    "Azië",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -191,10 +191,10 @@
    "question": "In welk werelddeel ligt België?",
    "answer": "Europa",
    "options": [
-    "Oceanië",
+    "Afrika",
+    "Azië",
     "Noord-Amerika",
-    "Europa",
-    "Azië"
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -221,10 +221,10 @@
    "question": "In welk werelddeel ligt Bosnië en Herzegovina?",
    "answer": "Europa",
    "options": [
-    "Oceanië",
-    "Afrika",
     "Europa",
-    "Azië"
+    "Noord-Amerika",
+    "Azië",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -251,10 +251,10 @@
    "question": "In welk werelddeel ligt Bulgarije?",
    "answer": "Europa",
    "options": [
-    "Noord-Amerika",
     "Europa",
-    "Afrika",
-    "Oceanië"
+    "Azië",
+    "Oceanië",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -282,9 +282,9 @@
    "answer": "Noord-Amerika",
    "options": [
     "Noord-Amerika",
-    "Oceanië",
+    "Azië",
     "Zuid-Amerika",
-    "Afrika"
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -311,10 +311,10 @@
    "question": "In welk werelddeel ligt Chili?",
    "answer": "Zuid-Amerika",
    "options": [
+    "Azië",
+    "Oceanië",
     "Afrika",
-    "Europa",
-    "Zuid-Amerika",
-    "Oceanië"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -341,10 +341,10 @@
    "question": "In welk werelddeel ligt China?",
    "answer": "Azië",
    "options": [
+    "Oceanië",
     "Zuid-Amerika",
-    "Afrika",
-    "Europa",
-    "Azië"
+    "Azië",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -372,9 +372,9 @@
    "answer": "Zuid-Amerika",
    "options": [
     "Zuid-Amerika",
-    "Azië",
-    "Europa",
-    "Noord-Amerika"
+    "Noord-Amerika",
+    "Oceanië",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -401,10 +401,10 @@
    "question": "In welk werelddeel ligt Congo-Kinshasa?",
    "answer": "Afrika",
    "options": [
-    "Noord-Amerika",
     "Afrika",
-    "Zuid-Amerika",
-    "Oceanië"
+    "Oceanië",
+    "Azië",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -431,10 +431,10 @@
    "question": "In welk werelddeel ligt Cyprus?",
    "answer": "Azië",
    "options": [
-    "Oceanië",
     "Europa",
+    "Azië",
     "Noord-Amerika",
-    "Azië"
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -461,10 +461,10 @@
    "question": "In welk werelddeel ligt Denemarken?",
    "answer": "Europa",
    "options": [
-    "Zuid-Amerika",
-    "Europa",
     "Oceanië",
-    "Afrika"
+    "Azië",
+    "Zuid-Amerika",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -492,9 +492,9 @@
    "answer": "Europa",
    "options": [
     "Europa",
+    "Zuid-Amerika",
     "Afrika",
-    "Azië",
-    "Zuid-Amerika"
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -521,10 +521,10 @@
    "question": "In welk werelddeel ligt Egypte?",
    "answer": "Afrika",
    "options": [
+    "Noord-Amerika",
     "Afrika",
-    "Europa",
-    "Zuid-Amerika",
-    "Noord-Amerika"
+    "Oceanië",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -551,10 +551,10 @@
    "question": "In welk werelddeel ligt Estland?",
    "answer": "Europa",
    "options": [
+    "Zuid-Amerika",
     "Azië",
-    "Europa",
     "Afrika",
-    "Noord-Amerika"
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -581,10 +581,10 @@
    "question": "In welk werelddeel ligt Ethiopië?",
    "answer": "Afrika",
    "options": [
-    "Oceanië",
-    "Zuid-Amerika",
+    "Azië",
+    "Afrika",
     "Europa",
-    "Afrika"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -611,10 +611,10 @@
    "question": "In welk werelddeel ligt Filipijnen?",
    "answer": "Azië",
    "options": [
-    "Europa",
-    "Oceanië",
+    "Zuid-Amerika",
     "Azië",
-    "Zuid-Amerika"
+    "Afrika",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -641,10 +641,10 @@
    "question": "In welk werelddeel ligt Finland?",
    "answer": "Europa",
    "options": [
-    "Zuid-Amerika",
-    "Afrika",
     "Europa",
-    "Noord-Amerika"
+    "Zuid-Amerika",
+    "Noord-Amerika",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -671,10 +671,10 @@
    "question": "In welk werelddeel ligt Frankrijk?",
    "answer": "Europa",
    "options": [
+    "Noord-Amerika",
     "Europa",
-    "Afrika",
     "Azië",
-    "Noord-Amerika"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -701,10 +701,10 @@
    "question": "In welk werelddeel ligt Griekenland?",
    "answer": "Europa",
    "options": [
-    "Europa",
-    "Noord-Amerika",
-    "Zuid-Amerika",
-    "Oceanië"
+    "Azië",
+    "Oceanië",
+    "Afrika",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -731,10 +731,10 @@
    "question": "In welk werelddeel ligt Hongarije?",
    "answer": "Europa",
    "options": [
-    "Europa",
+    "Noord-Amerika",
     "Oceanië",
-    "Afrika",
-    "Noord-Amerika"
+    "Europa",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -761,10 +761,10 @@
    "question": "In welk werelddeel ligt IJsland?",
    "answer": "Europa",
    "options": [
-    "Zuid-Amerika",
+    "Azië",
     "Noord-Amerika",
     "Europa",
-    "Afrika"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -791,9 +791,9 @@
    "question": "In welk werelddeel ligt Ierland?",
    "answer": "Europa",
    "options": [
+    "Afrika",
     "Zuid-Amerika",
-    "Azië",
-    "Noord-Amerika",
+    "Oceanië",
     "Europa"
    ],
    "hint": "",
@@ -821,10 +821,10 @@
    "question": "In welk werelddeel ligt India?",
    "answer": "Azië",
    "options": [
+    "Europa",
     "Azië",
-    "Oceanië",
     "Zuid-Amerika",
-    "Afrika"
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -852,9 +852,9 @@
    "answer": "Azië",
    "options": [
     "Azië",
-    "Oceanië",
-    "Afrika",
-    "Europa"
+    "Zuid-Amerika",
+    "Noord-Amerika",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -881,10 +881,10 @@
    "question": "In welk werelddeel ligt Irak?",
    "answer": "Azië",
    "options": [
-    "Europa",
     "Azië",
-    "Noord-Amerika",
-    "Oceanië"
+    "Afrika",
+    "Europa",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -911,10 +911,10 @@
    "question": "In welk werelddeel ligt Iran?",
    "answer": "Azië",
    "options": [
-    "Oceanië",
-    "Europa",
     "Zuid-Amerika",
-    "Azië"
+    "Oceanië",
+    "Azië",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -942,9 +942,9 @@
    "answer": "Azië",
    "options": [
     "Azië",
-    "Zuid-Amerika",
-    "Afrika",
-    "Oceanië"
+    "Noord-Amerika",
+    "Europa",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -971,10 +971,10 @@
    "question": "In welk werelddeel ligt Italië?",
    "answer": "Europa",
    "options": [
+    "Azië",
     "Noord-Amerika",
     "Europa",
-    "Oceanië",
-    "Azië"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1001,10 +1001,10 @@
    "question": "In welk werelddeel ligt Japan?",
    "answer": "Azië",
    "options": [
-    "Zuid-Amerika",
     "Europa",
     "Afrika",
-    "Azië"
+    "Azië",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1031,9 +1031,9 @@
    "question": "In welk werelddeel ligt Kroatië?",
    "answer": "Europa",
    "options": [
-    "Afrika",
+    "Zuid-Amerika",
     "Europa",
-    "Azië",
+    "Afrika",
     "Noord-Amerika"
    ],
    "hint": "",
@@ -1061,10 +1061,10 @@
    "question": "In welk werelddeel ligt Letland?",
    "answer": "Europa",
    "options": [
-    "Zuid-Amerika",
     "Europa",
+    "Oceanië",
     "Afrika",
-    "Noord-Amerika"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1091,10 +1091,10 @@
    "question": "In welk werelddeel ligt Litouwen?",
    "answer": "Europa",
    "options": [
-    "Europa",
+    "Oceanië",
     "Zuid-Amerika",
-    "Noord-Amerika",
-    "Oceanië"
+    "Europa",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -1121,10 +1121,10 @@
    "question": "In welk werelddeel ligt Luxemburg?",
    "answer": "Europa",
    "options": [
-    "Noord-Amerika",
     "Europa",
+    "Zuid-Amerika",
     "Azië",
-    "Zuid-Amerika"
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -1152,9 +1152,9 @@
    "answer": "Europa",
    "options": [
     "Azië",
-    "Oceanië",
-    "Afrika",
-    "Europa"
+    "Europa",
+    "Zuid-Amerika",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1181,10 +1181,10 @@
    "question": "In welk werelddeel ligt Marokko?",
    "answer": "Afrika",
    "options": [
-    "Noord-Amerika",
-    "Oceanië",
+    "Azië",
     "Afrika",
-    "Azië"
+    "Zuid-Amerika",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -1211,10 +1211,10 @@
    "question": "In welk werelddeel ligt Mexico?",
    "answer": "Noord-Amerika",
    "options": [
-    "Azië",
-    "Europa",
     "Noord-Amerika",
-    "Zuid-Amerika"
+    "Zuid-Amerika",
+    "Afrika",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -1241,9 +1241,9 @@
    "question": "In welk werelddeel ligt Nieuw-Zeeland?",
    "answer": "Oceanië",
    "options": [
+    "Azië",
     "Afrika",
-    "Noord-Amerika",
-    "Zuid-Amerika",
+    "Europa",
     "Oceanië"
    ],
    "hint": "",
@@ -1271,10 +1271,10 @@
    "question": "In welk werelddeel ligt Nigeria?",
    "answer": "Afrika",
    "options": [
+    "Zuid-Amerika",
     "Europa",
     "Afrika",
-    "Zuid-Amerika",
-    "Oceanië"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1301,10 +1301,10 @@
    "question": "In welk werelddeel ligt Noorwegen?",
    "answer": "Europa",
    "options": [
+    "Azië",
+    "Afrika",
     "Europa",
-    "Zuid-Amerika",
-    "Noord-Amerika",
-    "Afrika"
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -1332,9 +1332,9 @@
    "answer": "Europa",
    "options": [
     "Europa",
-    "Afrika",
     "Azië",
-    "Noord-Amerika"
+    "Noord-Amerika",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -1361,10 +1361,10 @@
    "question": "In welk werelddeel ligt Oostenrijk?",
    "answer": "Europa",
    "options": [
-    "Zuid-Amerika",
-    "Oceanië",
+    "Afrika",
+    "Noord-Amerika",
     "Europa",
-    "Noord-Amerika"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1391,10 +1391,10 @@
    "question": "In welk werelddeel ligt Pakistan?",
    "answer": "Azië",
    "options": [
+    "Afrika",
+    "Oceanië",
     "Azië",
-    "Noord-Amerika",
-    "Europa",
-    "Afrika"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1421,10 +1421,10 @@
    "question": "In welk werelddeel ligt Polen?",
    "answer": "Europa",
    "options": [
-    "Azië",
-    "Noord-Amerika",
     "Europa",
-    "Zuid-Amerika"
+    "Zuid-Amerika",
+    "Noord-Amerika",
+    "Azië"
    ],
    "hint": "",
    "note": "",
@@ -1451,10 +1451,10 @@
    "question": "In welk werelddeel ligt Portugal?",
    "answer": "Europa",
    "options": [
-    "Azië",
-    "Afrika",
+    "Zuid-Amerika",
     "Europa",
-    "Zuid-Amerika"
+    "Oceanië",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -1481,10 +1481,10 @@
    "question": "In welk werelddeel ligt Roemenië?",
    "answer": "Europa",
    "options": [
-    "Zuid-Amerika",
-    "Europa",
+    "Noord-Amerika",
     "Afrika",
-    "Noord-Amerika"
+    "Zuid-Amerika",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -1511,10 +1511,10 @@
    "question": "In welk werelddeel ligt Rusland?",
    "answer": "Europa",
    "options": [
-    "Europa",
+    "Noord-Amerika",
     "Oceanië",
-    "Afrika",
-    "Zuid-Amerika"
+    "Azië",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -1541,10 +1541,10 @@
    "question": "In welk werelddeel ligt Saoedi-Arabië?",
    "answer": "Azië",
    "options": [
-    "Oceanië",
+    "Afrika",
+    "Noord-Amerika",
     "Zuid-Amerika",
-    "Azië",
-    "Afrika"
+    "Azië"
    ],
    "hint": "",
    "note": "",
@@ -1571,10 +1571,10 @@
    "question": "In welk werelddeel ligt Servië?",
    "answer": "Europa",
    "options": [
+    "Oceanië",
+    "Noord-Amerika",
     "Europa",
-    "Zuid-Amerika",
-    "Azië",
-    "Oceanië"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1601,10 +1601,10 @@
    "question": "In welk werelddeel ligt Singapore?",
    "answer": "Azië",
    "options": [
-    "Europa",
     "Azië",
     "Zuid-Amerika",
-    "Noord-Amerika"
+    "Noord-Amerika",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -1631,10 +1631,10 @@
    "question": "In welk werelddeel ligt Slovenië?",
    "answer": "Europa",
    "options": [
-    "Afrika",
     "Europa",
     "Zuid-Amerika",
-    "Oceanië"
+    "Oceanië",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -1661,10 +1661,10 @@
    "question": "In welk werelddeel ligt Slowakije?",
    "answer": "Europa",
    "options": [
-    "Europa",
-    "Zuid-Amerika",
     "Afrika",
-    "Oceanië"
+    "Europa",
+    "Oceanië",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1692,9 +1692,9 @@
    "answer": "Europa",
    "options": [
     "Azië",
-    "Afrika",
+    "Europa",
     "Noord-Amerika",
-    "Europa"
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -1721,10 +1721,10 @@
    "question": "In welk werelddeel ligt Sudan?",
    "answer": "Afrika",
    "options": [
-    "Zuid-Amerika",
+    "Oceanië",
+    "Noord-Amerika",
     "Europa",
-    "Afrika",
-    "Noord-Amerika"
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -1751,10 +1751,10 @@
    "question": "In welk werelddeel ligt Suriname?",
    "answer": "Zuid-Amerika",
    "options": [
-    "Azië",
-    "Afrika",
+    "Noord-Amerika",
     "Zuid-Amerika",
-    "Oceanië"
+    "Europa",
+    "Azië"
    ],
    "hint": "",
    "note": "",
@@ -1782,9 +1782,9 @@
    "answer": "Azië",
    "options": [
     "Azië",
-    "Europa",
-    "Noord-Amerika",
-    "Afrika"
+    "Oceanië",
+    "Afrika",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1811,7 +1811,7 @@
    "question": "In welk werelddeel ligt Tsjechië?",
    "answer": "Europa",
    "options": [
-    "Afrika",
+    "Azië",
     "Noord-Amerika",
     "Europa",
     "Zuid-Amerika"
@@ -1841,10 +1841,10 @@
    "question": "In welk werelddeel ligt Turkije?",
    "answer": "Azië",
    "options": [
-    "Afrika",
-    "Oceanië",
+    "Europa",
     "Azië",
-    "Noord-Amerika"
+    "Noord-Amerika",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1871,9 +1871,9 @@
    "question": "In welk werelddeel ligt Venezuela?",
    "answer": "Zuid-Amerika",
    "options": [
+    "Afrika",
     "Zuid-Amerika",
-    "Noord-Amerika",
-    "Europa",
+    "Oceanië",
     "Azië"
    ],
    "hint": "",
@@ -1901,10 +1901,10 @@
    "question": "In welk werelddeel ligt Verenigd Koninkrijk?",
    "answer": "Europa",
    "options": [
-    "Zuid-Amerika",
-    "Europa",
     "Oceanië",
-    "Afrika"
+    "Zuid-Amerika",
+    "Azië",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -1931,10 +1931,10 @@
    "question": "In welk werelddeel ligt Verenigde Staten?",
    "answer": "Noord-Amerika",
    "options": [
+    "Oceanië",
     "Europa",
-    "Afrika",
-    "Zuid-Amerika",
-    "Noord-Amerika"
+    "Noord-Amerika",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -1961,10 +1961,10 @@
    "question": "In welk werelddeel ligt Vietnam?",
    "answer": "Azië",
    "options": [
-    "Noord-Amerika",
+    "Azië",
+    "Zuid-Amerika",
     "Oceanië",
-    "Europa",
-    "Azië"
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -1991,10 +1991,10 @@
    "question": "In welk werelddeel ligt Zuid-Afrika?",
    "answer": "Afrika",
    "options": [
-    "Azië",
-    "Noord-Amerika",
     "Zuid-Amerika",
-    "Afrika"
+    "Afrika",
+    "Azië",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -2021,10 +2021,10 @@
    "question": "In welk werelddeel ligt Zuid-Korea?",
    "answer": "Azië",
    "options": [
-    "Oceanië",
-    "Noord-Amerika",
-    "Azië",
-    "Zuid-Amerika"
+    "Afrika",
+    "Europa",
+    "Zuid-Amerika",
+    "Azië"
    ],
    "hint": "",
    "note": "",
@@ -2051,10 +2051,10 @@
    "question": "In welk werelddeel ligt Zweden?",
    "answer": "Europa",
    "options": [
-    "Europa",
     "Zuid-Amerika",
     "Noord-Amerika",
-    "Azië"
+    "Afrika",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -2081,10 +2081,10 @@
    "question": "In welk werelddeel ligt Zwitserland?",
    "answer": "Europa",
    "options": [
-    "Europa",
-    "Zuid-Amerika",
     "Oceanië",
-    "Afrika"
+    "Azië",
+    "Europa",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2111,10 +2111,10 @@
    "question": "In welk werelddeel ligt Algerije?",
    "answer": "Afrika",
    "options": [
-    "Azië",
-    "Afrika",
+    "Europa",
     "Oceanië",
-    "Zuid-Amerika"
+    "Afrika",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2141,10 +2141,10 @@
    "question": "In welk werelddeel ligt Angola?",
    "answer": "Afrika",
    "options": [
-    "Europa",
+    "Oceanië",
     "Afrika",
-    "Noord-Amerika",
-    "Azië"
+    "Azië",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -2171,10 +2171,10 @@
    "question": "In welk werelddeel ligt Bolivia?",
    "answer": "Zuid-Amerika",
    "options": [
+    "Zuid-Amerika",
     "Oceanië",
-    "Europa",
     "Azië",
-    "Zuid-Amerika"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2201,10 +2201,10 @@
    "question": "In welk werelddeel ligt Burkina Faso?",
    "answer": "Afrika",
    "options": [
-    "Zuid-Amerika",
     "Afrika",
-    "Noord-Amerika",
-    "Europa"
+    "Azië",
+    "Zuid-Amerika",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2231,10 +2231,10 @@
    "question": "In welk werelddeel ligt Cambodja?",
    "answer": "Azië",
    "options": [
-    "Azië",
-    "Oceanië",
     "Afrika",
-    "Zuid-Amerika"
+    "Zuid-Amerika",
+    "Oceanië",
+    "Azië"
    ],
    "hint": "",
    "note": "",
@@ -2261,10 +2261,10 @@
    "question": "In welk werelddeel ligt Costa Rica?",
    "answer": "Noord-Amerika",
    "options": [
-    "Azië",
+    "Afrika",
+    "Zuid-Amerika",
     "Europa",
-    "Noord-Amerika",
-    "Zuid-Amerika"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2291,8 +2291,8 @@
    "question": "In welk werelddeel ligt Cuba?",
    "answer": "Noord-Amerika",
    "options": [
-    "Azië",
     "Noord-Amerika",
+    "Afrika",
     "Europa",
     "Zuid-Amerika"
    ],
@@ -2323,8 +2323,8 @@
    "options": [
     "Afrika",
     "Zuid-Amerika",
-    "Oceanië",
-    "Azië"
+    "Azië",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2351,10 +2351,10 @@
    "question": "In welk werelddeel ligt Fiji?",
    "answer": "Oceanië",
    "options": [
-    "Zuid-Amerika",
     "Noord-Amerika",
+    "Oceanië",
     "Azië",
-    "Oceanië"
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -2381,10 +2381,10 @@
    "question": "In welk werelddeel ligt Gabon?",
    "answer": "Afrika",
    "options": [
-    "Oceanië",
-    "Noord-Amerika",
     "Afrika",
-    "Zuid-Amerika"
+    "Azië",
+    "Noord-Amerika",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -2411,10 +2411,10 @@
    "question": "In welk werelddeel ligt Ghana?",
    "answer": "Afrika",
    "options": [
-    "Afrika",
-    "Zuid-Amerika",
     "Oceanië",
-    "Azië"
+    "Zuid-Amerika",
+    "Azië",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -2441,10 +2441,10 @@
    "question": "In welk werelddeel ligt Guatemala?",
    "answer": "Noord-Amerika",
    "options": [
-    "Zuid-Amerika",
     "Noord-Amerika",
-    "Afrika",
-    "Azië"
+    "Azië",
+    "Zuid-Amerika",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -2471,9 +2471,9 @@
    "question": "In welk werelddeel ligt Guinee?",
    "answer": "Afrika",
    "options": [
-    "Azië",
+    "Oceanië",
     "Europa",
-    "Zuid-Amerika",
+    "Noord-Amerika",
     "Afrika"
    ],
    "hint": "",
@@ -2501,9 +2501,9 @@
    "question": "In welk werelddeel ligt Ivoorkust?",
    "answer": "Afrika",
    "options": [
-    "Zuid-Amerika",
+    "Oceanië",
     "Noord-Amerika",
-    "Azië",
+    "Europa",
     "Afrika"
    ],
    "hint": "",
@@ -2531,10 +2531,10 @@
    "question": "In welk werelddeel ligt Jemen?",
    "answer": "Azië",
    "options": [
-    "Oceanië",
+    "Zuid-Amerika",
     "Europa",
     "Azië",
-    "Noord-Amerika"
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -2561,10 +2561,10 @@
    "question": "In welk werelddeel ligt Kameroen?",
    "answer": "Afrika",
    "options": [
-    "Europa",
     "Oceanië",
+    "Noord-Amerika",
     "Afrika",
-    "Noord-Amerika"
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -2592,9 +2592,9 @@
    "answer": "Azië",
    "options": [
     "Oceanië",
+    "Zuid-Amerika",
     "Azië",
-    "Afrika",
-    "Europa"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2622,9 +2622,9 @@
    "answer": "Afrika",
    "options": [
     "Afrika",
-    "Oceanië",
     "Europa",
-    "Zuid-Amerika"
+    "Zuid-Amerika",
+    "Azië"
    ],
    "hint": "",
    "note": "",
@@ -2651,10 +2651,10 @@
    "question": "In welk werelddeel ligt Kirgizië?",
    "answer": "Azië",
    "options": [
+    "Noord-Amerika",
     "Azië",
-    "Afrika",
-    "Zuid-Amerika",
-    "Noord-Amerika"
+    "Europa",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2681,10 +2681,10 @@
    "question": "In welk werelddeel ligt Libië?",
    "answer": "Afrika",
    "options": [
-    "Azië",
-    "Zuid-Amerika",
     "Oceanië",
-    "Afrika"
+    "Europa",
+    "Afrika",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2712,9 +2712,9 @@
    "answer": "Afrika",
    "options": [
     "Azië",
-    "Zuid-Amerika",
-    "Noord-Amerika",
-    "Afrika"
+    "Afrika",
+    "Oceanië",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -2741,10 +2741,10 @@
    "question": "In welk werelddeel ligt Maleisië?",
    "answer": "Azië",
    "options": [
-    "Azië",
+    "Zuid-Amerika",
+    "Oceanië",
     "Afrika",
-    "Noord-Amerika",
-    "Zuid-Amerika"
+    "Azië"
    ],
    "hint": "",
    "note": "",
@@ -2771,10 +2771,10 @@
    "question": "In welk werelddeel ligt Mali?",
    "answer": "Afrika",
    "options": [
-    "Azië",
     "Afrika",
-    "Europa",
-    "Zuid-Amerika"
+    "Noord-Amerika",
+    "Zuid-Amerika",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -2801,10 +2801,10 @@
    "question": "In welk werelddeel ligt Mauritanië?",
    "answer": "Afrika",
    "options": [
-    "Zuid-Amerika",
-    "Afrika",
     "Europa",
-    "Azië"
+    "Afrika",
+    "Oceanië",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2831,10 +2831,10 @@
    "question": "In welk werelddeel ligt Mongolië?",
    "answer": "Azië",
    "options": [
+    "Oceanië",
+    "Europa",
     "Azië",
-    "Afrika",
-    "Noord-Amerika",
-    "Oceanië"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2861,10 +2861,10 @@
    "question": "In welk werelddeel ligt Mozambique?",
    "answer": "Afrika",
    "options": [
-    "Oceanië",
+    "Afrika",
+    "Europa",
     "Zuid-Amerika",
-    "Azië",
-    "Afrika"
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -2921,10 +2921,10 @@
    "question": "In welk werelddeel ligt Namibië?",
    "answer": "Afrika",
    "options": [
+    "Afrika",
     "Oceanië",
-    "Europa",
     "Noord-Amerika",
-    "Afrika"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2951,10 +2951,10 @@
    "question": "In welk werelddeel ligt Nepal?",
    "answer": "Azië",
    "options": [
-    "Oceanië",
+    "Azië",
+    "Afrika",
     "Noord-Amerika",
-    "Europa",
-    "Azië"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -2984,7 +2984,7 @@
     "Zuid-Amerika",
     "Europa",
     "Afrika",
-    "Azië"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -3011,9 +3011,9 @@
    "question": "In welk werelddeel ligt Noord-Korea?",
    "answer": "Azië",
    "options": [
-    "Oceanië",
-    "Noord-Amerika",
+    "Afrika",
     "Azië",
+    "Oceanië",
     "Europa"
    ],
    "hint": "",
@@ -3041,10 +3041,10 @@
    "question": "In welk werelddeel ligt Oeganda?",
    "answer": "Afrika",
    "options": [
-    "Oceanië",
-    "Zuid-Amerika",
+    "Noord-Amerika",
     "Afrika",
-    "Noord-Amerika"
+    "Zuid-Amerika",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -3071,10 +3071,10 @@
    "question": "In welk werelddeel ligt Oezbekistan?",
    "answer": "Azië",
    "options": [
-    "Azië",
-    "Europa",
-    "Zuid-Amerika",
-    "Afrika"
+    "Afrika",
+    "Noord-Amerika",
+    "Oceanië",
+    "Azië"
    ],
    "hint": "",
    "note": "",
@@ -3101,10 +3101,10 @@
    "question": "In welk werelddeel ligt Papoea-Nieuw-Guinea?",
    "answer": "Oceanië",
    "options": [
-    "Europa",
-    "Oceanië",
     "Azië",
-    "Noord-Amerika"
+    "Zuid-Amerika",
+    "Europa",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -3131,10 +3131,10 @@
    "question": "In welk werelddeel ligt Paraguay?",
    "answer": "Zuid-Amerika",
    "options": [
+    "Noord-Amerika",
+    "Europa",
     "Oceanië",
-    "Azië",
-    "Zuid-Amerika",
-    "Noord-Amerika"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -3191,10 +3191,10 @@
    "question": "In welk werelddeel ligt Rwanda?",
    "answer": "Afrika",
    "options": [
-    "Zuid-Amerika",
+    "Noord-Amerika",
+    "Afrika",
     "Oceanië",
-    "Azië",
-    "Afrika"
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -3221,10 +3221,10 @@
    "question": "In welk werelddeel ligt Salomonseilanden?",
    "answer": "Oceanië",
    "options": [
+    "Azië",
+    "Zuid-Amerika",
     "Oceanië",
-    "Europa",
-    "Noord-Amerika",
-    "Azië"
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -3251,10 +3251,10 @@
    "question": "In welk werelddeel ligt Samoa?",
    "answer": "Oceanië",
    "options": [
-    "Azië",
-    "Oceanië",
     "Zuid-Amerika",
-    "Europa"
+    "Oceanië",
+    "Europa",
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -3281,9 +3281,9 @@
    "question": "In welk werelddeel ligt Senegal?",
    "answer": "Afrika",
    "options": [
-    "Oceanië",
-    "Europa",
     "Afrika",
+    "Europa",
+    "Oceanië",
     "Noord-Amerika"
    ],
    "hint": "",
@@ -3311,10 +3311,10 @@
    "question": "In welk werelddeel ligt Sri Lanka?",
    "answer": "Azië",
    "options": [
+    "Oceanië",
     "Azië",
     "Europa",
-    "Zuid-Amerika",
-    "Oceanië"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -3341,10 +3341,10 @@
    "question": "In welk werelddeel ligt Syrië?",
    "answer": "Azië",
    "options": [
+    "Afrika",
+    "Oceanië",
     "Azië",
-    "Europa",
-    "Zuid-Amerika",
-    "Oceanië"
+    "Noord-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -3371,10 +3371,10 @@
    "question": "In welk werelddeel ligt Tanzania?",
    "answer": "Afrika",
    "options": [
-    "Afrika",
+    "Europa",
     "Oceanië",
-    "Noord-Amerika",
-    "Zuid-Amerika"
+    "Azië",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -3401,9 +3401,9 @@
    "question": "In welk werelddeel ligt Tsjaad?",
    "answer": "Afrika",
    "options": [
-    "Afrika",
-    "Azië",
     "Noord-Amerika",
+    "Azië",
+    "Afrika",
     "Zuid-Amerika"
    ],
    "hint": "",
@@ -3431,10 +3431,10 @@
    "question": "In welk werelddeel ligt Tunesië?",
    "answer": "Afrika",
    "options": [
-    "Zuid-Amerika",
+    "Oceanië",
     "Europa",
-    "Afrika",
-    "Noord-Amerika"
+    "Zuid-Amerika",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -3461,10 +3461,10 @@
    "question": "In welk werelddeel ligt Turkmenistan?",
    "answer": "Azië",
    "options": [
-    "Afrika",
     "Azië",
-    "Oceanië",
-    "Europa"
+    "Europa",
+    "Zuid-Amerika",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",
@@ -3491,10 +3491,10 @@
    "question": "In welk werelddeel ligt Uruguay?",
    "answer": "Zuid-Amerika",
    "options": [
+    "Azië",
     "Europa",
-    "Zuid-Amerika",
-    "Noord-Amerika",
-    "Oceanië"
+    "Oceanië",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -3521,10 +3521,10 @@
    "question": "In welk werelddeel ligt Wit-Rusland?",
    "answer": "Europa",
    "options": [
-    "Afrika",
     "Noord-Amerika",
-    "Oceanië",
-    "Europa"
+    "Zuid-Amerika",
+    "Europa",
+    "Afrika"
    ],
    "hint": "",
    "note": "",
@@ -3551,10 +3551,10 @@
    "question": "In welk werelddeel ligt Zambia?",
    "answer": "Afrika",
    "options": [
-    "Europa",
-    "Oceanië",
     "Noord-Amerika",
-    "Afrika"
+    "Afrika",
+    "Oceanië",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -3581,10 +3581,10 @@
    "question": "In welk werelddeel ligt Zimbabwe?",
    "answer": "Afrika",
    "options": [
-    "Zuid-Amerika",
-    "Noord-Amerika",
     "Oceanië",
-    "Afrika"
+    "Afrika",
+    "Zuid-Amerika",
+    "Europa"
    ],
    "hint": "",
    "note": "",
@@ -3613,8 +3613,8 @@
    "options": [
     "Azië",
     "Afrika",
-    "Oceanië",
-    "Europa"
+    "Noord-Amerika",
+    "Zuid-Amerika"
    ],
    "hint": "",
    "note": "",
@@ -3641,10 +3641,10 @@
    "question": "In welk werelddeel ligt Nederland?",
    "answer": "Europa",
    "options": [
-    "Noord-Amerika",
     "Europa",
-    "Oceanië",
-    "Zuid-Amerika"
+    "Noord-Amerika",
+    "Zuid-Amerika",
+    "Oceanië"
    ],
    "hint": "",
    "note": "",

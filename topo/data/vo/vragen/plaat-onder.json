@@ -11,10 +11,10 @@
    "question": "Op welke plaat ligt Brasilia?",
    "answer": "Zuid-Amerikaanse plaat",
    "options": [
-    "Zuid-Amerikaanse plaat",
-    "Afrikaanse plaat",
-    "Scotiaplaat",
-    "Arabische plaat"
+    "Antarctische plaat",
+    "Filipijnse plaat",
+    "Juan de Fucaplaat",
+    "Zuid-Amerikaanse plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -52,9 +52,9 @@
    "question": "Op welke plaat ligt Rio de Janeiro?",
    "answer": "Zuid-Amerikaanse plaat",
    "options": [
-    "Arabische plaat",
-    "Australische plaat",
-    "Filipijnse plaat",
+    "Sundaplaat",
+    "Indische plaat",
+    "Juan de Fucaplaat",
     "Zuid-Amerikaanse plaat"
    ],
    "hint": "",
@@ -93,10 +93,10 @@
    "question": "Op welke plaat ligt São Paulo?",
    "answer": "Zuid-Amerikaanse plaat",
    "options": [
-    "Afrikaanse plaat",
-    "Noord-Amerikaanse plaat",
+    "Antarctische plaat",
     "Zuid-Amerikaanse plaat",
-    "Scotiaplaat"
+    "Indische plaat",
+    "Cocosplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -135,9 +135,9 @@
    "answer": "Euraziatische plaat",
    "options": [
     "Euraziatische plaat",
-    "Filipijnse plaat",
-    "Ochotskplaat",
-    "Somalische plaat"
+    "Pacifische plaat",
+    "Anatolische plaat",
+    "Nazcaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -176,9 +176,9 @@
    "answer": "Euraziatische plaat",
    "options": [
     "Euraziatische plaat",
-    "Caribische plaat",
-    "Noord-Amerikaanse plaat",
-    "Somalische plaat"
+    "Juan de Fucaplaat",
+    "Antarctische plaat",
+    "Arabische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -216,10 +216,10 @@
    "question": "Op welke plaat ligt Belgrado?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Euraziatische plaat",
-    "Zuid-Amerikaanse plaat",
-    "Filipijnse plaat",
-    "Antarctische plaat"
+    "Juan de Fucaplaat",
+    "Somalische plaat",
+    "Noord-Amerikaanse plaat",
+    "Euraziatische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -257,10 +257,10 @@
    "question": "Op welke plaat ligt Berlijn?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Euraziatische plaat",
-    "Pacifische plaat",
-    "Indische plaat",
-    "Ochotskplaat"
+    "Juan de Fucaplaat",
+    "Cocosplaat",
+    "Scotiaplaat",
+    "Euraziatische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -298,9 +298,9 @@
    "question": "Op welke plaat ligt Bern?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Nazcaplaat",
-    "Indische plaat",
-    "Cocosplaat",
+    "Anatolische plaat",
+    "Scotiaplaat",
+    "Afrikaanse plaat",
     "Euraziatische plaat"
    ],
    "hint": "",
@@ -339,10 +339,10 @@
    "question": "Op welke plaat ligt Boekarest?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Euraziatische plaat",
-    "Pacifische plaat",
-    "Antarctische plaat",
-    "Caribische plaat"
+    "Sundaplaat",
+    "Australische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Euraziatische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -380,10 +380,10 @@
    "question": "Op welke plaat ligt Bordeaux?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Euraziatische plaat",
     "Juan de Fucaplaat",
-    "Scotiaplaat",
-    "Arabische plaat"
+    "Euraziatische plaat",
+    "Somalische plaat",
+    "Antarctische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -421,10 +421,10 @@
    "question": "Op welke plaat ligt Bratislava?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Juan de Fucaplaat",
-    "Somalische plaat",
-    "Noord-Amerikaanse plaat",
-    "Euraziatische plaat"
+    "Arabische plaat",
+    "Filipijnse plaat",
+    "Euraziatische plaat",
+    "Nazcaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -462,10 +462,10 @@
    "question": "Op welke plaat ligt Brussel?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Juan de Fucaplaat",
-    "Cocosplaat",
     "Scotiaplaat",
-    "Euraziatische plaat"
+    "Anatolische plaat",
+    "Euraziatische plaat",
+    "Caribische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -503,9 +503,9 @@
    "question": "Op welke plaat ligt Budapest?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Anatolische plaat",
-    "Scotiaplaat",
-    "Afrikaanse plaat",
+    "Noord-Amerikaanse plaat",
+    "Sundaplaat",
+    "Arabische plaat",
     "Euraziatische plaat"
    ],
    "hint": "",
@@ -544,10 +544,10 @@
    "question": "Op welke plaat ligt Buenos Aires?",
    "answer": "Zuid-Amerikaanse plaat",
    "options": [
-    "Sundaplaat",
-    "Australische plaat",
-    "Euraziatische plaat",
-    "Zuid-Amerikaanse plaat"
+    "Caribische plaat",
+    "Afrikaanse plaat",
+    "Zuid-Amerikaanse plaat",
+    "Anatolische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -585,10 +585,10 @@
    "question": "Op welke plaat ligt Cairo?",
    "answer": "Afrikaanse plaat",
    "options": [
-    "Juan de Fucaplaat",
+    "Arabische plaat",
     "Afrikaanse plaat",
-    "Somalische plaat",
-    "Antarctische plaat"
+    "Caribische plaat",
+    "Cocosplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -626,10 +626,10 @@
    "question": "Op welke plaat ligt Chicago?",
    "answer": "Noord-Amerikaanse plaat",
    "options": [
-    "Arabische plaat",
-    "Filipijnse plaat",
+    "Australische plaat",
     "Noord-Amerikaanse plaat",
-    "Nazcaplaat"
+    "Cocosplaat",
+    "Antarctische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -668,9 +668,9 @@
    "answer": "Indische plaat",
    "options": [
     "Scotiaplaat",
-    "Anatolische plaat",
-    "Indische plaat",
-    "Caribische plaat"
+    "Australische plaat",
+    "Sundaplaat",
+    "Indische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -708,10 +708,10 @@
    "question": "Op welke plaat ligt Dublin?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Noord-Amerikaanse plaat",
-    "Sundaplaat",
+    "Euraziatische plaat",
+    "Caribische plaat",
     "Arabische plaat",
-    "Euraziatische plaat"
+    "Somalische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -749,10 +749,10 @@
    "question": "Op welke plaat ligt Genève?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Caribische plaat",
-    "Afrikaanse plaat",
+    "Anatolische plaat",
     "Euraziatische plaat",
-    "Anatolische plaat"
+    "Cocosplaat",
+    "Scotiaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -791,9 +791,9 @@
    "answer": "Euraziatische plaat",
    "options": [
     "Arabische plaat",
-    "Euraziatische plaat",
+    "Anatolische plaat",
     "Caribische plaat",
-    "Cocosplaat"
+    "Euraziatische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -831,10 +831,10 @@
    "question": "Op welke plaat ligt Hamburg?",
    "answer": "Euraziatische plaat",
    "options": [
+    "Zuid-Amerikaanse plaat",
+    "Sundaplaat",
     "Australische plaat",
-    "Euraziatische plaat",
-    "Cocosplaat",
-    "Antarctische plaat"
+    "Euraziatische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -872,10 +872,10 @@
    "question": "Op welke plaat ligt Helsinki?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Scotiaplaat",
-    "Australische plaat",
-    "Sundaplaat",
-    "Euraziatische plaat"
+    "Euraziatische plaat",
+    "Filipijnse plaat",
+    "Ochotskplaat",
+    "Australische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -913,10 +913,10 @@
    "question": "Op welke plaat ligt Jakarta?",
    "answer": "Sundaplaat",
    "options": [
-    "Sundaplaat",
+    "Zuid-Amerikaanse plaat",
     "Cocosplaat",
-    "Somalische plaat",
-    "Afrikaanse plaat"
+    "Australische plaat",
+    "Sundaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -954,10 +954,10 @@
    "question": "Op welke plaat ligt Kaapstad?",
    "answer": "Afrikaanse plaat",
    "options": [
-    "Anatolische plaat",
     "Afrikaanse plaat",
-    "Cocosplaat",
-    "Scotiaplaat"
+    "Anatolische plaat",
+    "Pacifische plaat",
+    "Zuid-Amerikaanse plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -995,10 +995,10 @@
    "question": "Op welke plaat ligt Keulen?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Arabische plaat",
-    "Anatolische plaat",
-    "Caribische plaat",
-    "Euraziatische plaat"
+    "Euraziatische plaat",
+    "Noord-Amerikaanse plaat",
+    "Zuid-Amerikaanse plaat",
+    "Juan de Fucaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1036,10 +1036,10 @@
    "question": "Op welke plaat ligt Kolkata?",
    "answer": "Indische plaat",
    "options": [
-    "Zuid-Amerikaanse plaat",
-    "Sundaplaat",
-    "Australische plaat",
-    "Indische plaat"
+    "Somalische plaat",
+    "Indische plaat",
+    "Scotiaplaat",
+    "Anatolische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1077,10 +1077,10 @@
    "question": "Op welke plaat ligt Kopenhagen?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Euraziatische plaat",
-    "Filipijnse plaat",
-    "Ochotskplaat",
-    "Australische plaat"
+    "Arabische plaat",
+    "Sundaplaat",
+    "Afrikaanse plaat",
+    "Euraziatische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1118,10 +1118,10 @@
    "question": "Op welke plaat ligt Lagos?",
    "answer": "Afrikaanse plaat",
    "options": [
+    "Australische plaat",
     "Zuid-Amerikaanse plaat",
-    "Caribische plaat",
-    "Antarctische plaat",
-    "Afrikaanse plaat"
+    "Afrikaanse plaat",
+    "Arabische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1159,10 +1159,10 @@
    "question": "Op welke plaat ligt Liverpool?",
    "answer": "Euraziatische plaat",
    "options": [
+    "Ochotskplaat",
     "Euraziatische plaat",
     "Anatolische plaat",
-    "Pacifische plaat",
-    "Zuid-Amerikaanse plaat"
+    "Nazcaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1200,9 +1200,9 @@
    "question": "Op welke plaat ligt Londen?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Euraziatische plaat",
     "Noord-Amerikaanse plaat",
-    "Zuid-Amerikaanse plaat",
+    "Euraziatische plaat",
+    "Arabische plaat",
     "Juan de Fucaplaat"
    ],
    "hint": "",
@@ -1241,10 +1241,10 @@
    "question": "Op welke plaat ligt Luxemburg?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Arabische plaat",
-    "Euraziatische plaat",
-    "Scotiaplaat",
-    "Anatolische plaat"
+    "Cocosplaat",
+    "Indische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Euraziatische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1282,10 +1282,10 @@
    "question": "Op welke plaat ligt Lyon?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Arabische plaat",
-    "Sundaplaat",
-    "Afrikaanse plaat",
-    "Euraziatische plaat"
+    "Euraziatische plaat",
+    "Scotiaplaat",
+    "Caribische plaat",
+    "Zuid-Amerikaanse plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1323,10 +1323,10 @@
    "question": "Op welke plaat ligt Madrid?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Australische plaat",
-    "Zuid-Amerikaanse plaat",
     "Euraziatische plaat",
-    "Arabische plaat"
+    "Nazcaplaat",
+    "Filipijnse plaat",
+    "Anatolische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1364,10 +1364,10 @@
    "question": "Op welke plaat ligt Marseille?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Ochotskplaat",
+    "Sundaplaat",
+    "Antarctische plaat",
     "Euraziatische plaat",
-    "Anatolische plaat",
-    "Nazcaplaat"
+    "Indische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1405,10 +1405,10 @@
    "question": "Op welke plaat ligt Mexico-Stad?",
    "answer": "Noord-Amerikaanse plaat",
    "options": [
-    "Zuid-Amerikaanse plaat",
-    "Noord-Amerikaanse plaat",
-    "Arabische plaat",
-    "Juan de Fucaplaat"
+    "Nazcaplaat",
+    "Pacifische plaat",
+    "Afrikaanse plaat",
+    "Noord-Amerikaanse plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1446,10 +1446,10 @@
    "question": "Op welke plaat ligt Milaan?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Cocosplaat",
-    "Indische plaat",
-    "Zuid-Amerikaanse plaat",
-    "Euraziatische plaat"
+    "Antarctische plaat",
+    "Euraziatische plaat",
+    "Nazcaplaat",
+    "Indische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1488,9 +1488,9 @@
    "answer": "Noord-Amerikaanse plaat",
    "options": [
     "Noord-Amerikaanse plaat",
-    "Scotiaplaat",
+    "Euraziatische plaat",
     "Caribische plaat",
-    "Euraziatische plaat"
+    "Zuid-Amerikaanse plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1528,10 +1528,10 @@
    "question": "Op welke plaat ligt Moskou?",
    "answer": "Euraziatische plaat",
    "options": [
+    "Pacifische plaat",
+    "Afrikaanse plaat",
     "Euraziatische plaat",
-    "Nazcaplaat",
-    "Filipijnse plaat",
-    "Anatolische plaat"
+    "Scotiaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1569,10 +1569,10 @@
    "question": "Op welke plaat ligt Mumbai?",
    "answer": "Indische plaat",
    "options": [
-    "Sundaplaat",
-    "Antarctische plaat",
+    "Juan de Fucaplaat",
+    "Australische plaat",
     "Indische plaat",
-    "Arabische plaat"
+    "Scotiaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1610,10 +1610,10 @@
    "question": "Op welke plaat ligt München?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Nazcaplaat",
-    "Pacifische plaat",
-    "Afrikaanse plaat",
-    "Euraziatische plaat"
+    "Arabische plaat",
+    "Euraziatische plaat",
+    "Zuid-Amerikaanse plaat",
+    "Antarctische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1652,9 +1652,9 @@
    "answer": "Noord-Amerikaanse plaat",
    "options": [
     "Antarctische plaat",
-    "Noord-Amerikaanse plaat",
     "Nazcaplaat",
-    "Indische plaat"
+    "Cocosplaat",
+    "Noord-Amerikaanse plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1692,10 +1692,10 @@
    "question": "Op welke plaat ligt Oslo?",
    "answer": "Euraziatische plaat",
    "options": [
+    "Sundaplaat",
+    "Somalische plaat",
     "Euraziatische plaat",
-    "Zuid-Amerikaanse plaat",
-    "Caribische plaat",
-    "Noord-Amerikaanse plaat"
+    "Nazcaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1733,10 +1733,10 @@
    "question": "Op welke plaat ligt Paramaribo?",
    "answer": "Zuid-Amerikaanse plaat",
    "options": [
-    "Pacifische plaat",
-    "Afrikaanse plaat",
+    "Caribische plaat",
     "Zuid-Amerikaanse plaat",
-    "Scotiaplaat"
+    "Antarctische plaat",
+    "Australische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1774,10 +1774,10 @@
    "question": "Op welke plaat ligt Parijs?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Juan de Fucaplaat",
-    "Australische plaat",
+    "Ochotskplaat",
+    "Indische plaat",
     "Euraziatische plaat",
-    "Scotiaplaat"
+    "Anatolische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1815,10 +1815,10 @@
    "question": "Op welke plaat ligt Praag?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Arabische plaat",
+    "Scotiaplaat",
+    "Noord-Amerikaanse plaat",
     "Euraziatische plaat",
-    "Zuid-Amerikaanse plaat",
-    "Antarctische plaat"
+    "Filipijnse plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1856,10 +1856,10 @@
    "question": "Op welke plaat ligt Rome?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Antarctische plaat",
-    "Nazcaplaat",
-    "Cocosplaat",
-    "Euraziatische plaat"
+    "Euraziatische plaat",
+    "Australische plaat",
+    "Filipijnse plaat",
+    "Afrikaanse plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1897,10 +1897,10 @@
    "question": "Op welke plaat ligt Sint Petersburg?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Sundaplaat",
-    "Somalische plaat",
-    "Euraziatische plaat",
-    "Nazcaplaat"
+    "Ochotskplaat",
+    "Antarctische plaat",
+    "Juan de Fucaplaat",
+    "Euraziatische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1938,10 +1938,10 @@
    "question": "Op welke plaat ligt Stockholm?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Caribische plaat",
+    "Juan de Fucaplaat",
     "Euraziatische plaat",
-    "Antarctische plaat",
-    "Australische plaat"
+    "Sundaplaat",
+    "Arabische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -1979,10 +1979,10 @@
    "question": "Op welke plaat ligt Sydney?",
    "answer": "Australische plaat",
    "options": [
-    "Ochotskplaat",
-    "Arabische plaat",
+    "Juan de Fucaplaat",
     "Australische plaat",
-    "Anatolische plaat"
+    "Scotiaplaat",
+    "Sundaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -2020,10 +2020,10 @@
    "question": "Op welke plaat ligt Teheran?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Scotiaplaat",
-    "Noord-Amerikaanse plaat",
     "Euraziatische plaat",
-    "Filipijnse plaat"
+    "Afrikaanse plaat",
+    "Nazcaplaat",
+    "Caribische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -2061,10 +2061,10 @@
    "question": "Op welke plaat ligt Warschau?",
    "answer": "Euraziatische plaat",
    "options": [
+    "Arabische plaat",
     "Euraziatische plaat",
-    "Australische plaat",
-    "Filipijnse plaat",
-    "Afrikaanse plaat"
+    "Nazcaplaat",
+    "Scotiaplaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -2102,10 +2102,10 @@
    "question": "Op welke plaat ligt Washington?",
    "answer": "Noord-Amerikaanse plaat",
    "options": [
-    "Ochotskplaat",
-    "Antarctische plaat",
-    "Juan de Fucaplaat",
-    "Noord-Amerikaanse plaat"
+    "Somalische plaat",
+    "Noord-Amerikaanse plaat",
+    "Indische plaat",
+    "Arabische plaat"
    ],
    "hint": "",
    "note": "Gebaseerd op het plaatmodel PB2002 (Bird, 2003). Alleen plaatsen die ruim van een plaatgrens af liggen.",
@@ -2143,9 +2143,9 @@
    "question": "Op welke plaat ligt Wenen?",
    "answer": "Euraziatische plaat",
    "options": [
-    "Juan de Fucaplaat",
     "Euraziatische plaat",
-    "Sundaplaat",
+    "Australische plaat",
+    "Somalische plaat",
     "Arabische plaat"
    ],
    "hint": "",

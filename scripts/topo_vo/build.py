@@ -118,6 +118,29 @@ def iso_of(p):
     return alias.get(a, a)
 
 
+def lev(a, b):
+    if abs(len(a) - len(b)) > 2:
+        return 9
+    d = list(range(len(b) + 1))
+    for i in range(1, len(a) + 1):
+        prev, d[0] = d[0], i
+        for j in range(1, len(b) + 1):
+            prev, d[j] = d[j], min(d[j] + 1, d[j - 1] + 1, prev + (a[i - 1] != b[j - 1]))
+    return d[len(b)]
+
+
+def is_wc_capital(p, iso):
+    """Noemt world-countries deze stad als hoofdstad? Spellingvarianten (Ulaanbaatar/Ulan Bator) tellen mee."""
+    # NAMEALT bewust niet: Natural Earth geeft daar soms een andere stad (Maradi heeft 'Niamey').
+    varianten = {norm(p.get(k) or "") for k in ("NAME", "NAMEASCII", "NAME_EN", "NAME_NL")} - {""}
+    officieel = {norm(x) for x in wc_cap.get(iso, []) + CAP_ALIAS.get(iso, [])}
+    return any(v == o or (len(v) > 6 and len(o) > 6 and v[0] == o[0] and lev(v, o) <= 2) for v in varianten for o in officieel)
+
+
+# Schrijfwijzen die te ver uiteenlopen voor automatische herkenning.
+CAP_ALIAS = {"MNG": ["Ulaanbaatar"], "PLW": ["Melekeok", "Ngerulmud"], "NRU": ["Yaren"], "SMR": ["San Marino"]}
+
+
 def city_item(p, geom, extra_doelen=(), force=False):
     iso = iso_of(p)
     naam = nice(p.get("NAME_NL") or p.get("NAME"))
@@ -127,8 +150,11 @@ def city_item(p, geom, extra_doelen=(), force=False):
     CITY_KEYS.add(key)
     pop = p.get("POP_MAX") or 0
     fc = p.get("FEATURECLA", "")
-    in_wc = norm(p.get("NAME") or "") in {norm(x) for x in wc_cap.get(iso, [])}
-    cap = fc == "Admin-0 capital" or (fc == "Admin-0 capital alt" and in_wc)
+    # Een hoofdstad telt alleen als world-countries hem ook als hoofdstad noemt (spellingvarianten toegestaan).
+    # Natural Earth markeert soms een vroegere of bestuurlijke stad (Rangoon, Abidjan) als hoofdstad.
+    officieel = {norm(x) for x in wc_cap.get(iso, [])}
+    in_wc = is_wc_capital(p, iso)
+    cap = (fc.startswith("Admin-0 capital") and (in_wc or not officieel)) or (in_wc and iso not in BEVESTIGD)
     alt = sorted({x for x in [p.get("NAME"), p.get("NAMEASCII")] if x and x != naam})
     it = add({"id": f"stad-{iso.lower()}-{slug(naam)}", "naam": naam, "alt": alt, "type": "hoofdstad" if cap else "stad",
               "land": iso, "werelddeel": LAND.get(iso, {}).get("werelddeel"), "subregio": LAND.get(iso, {}).get("subregio"),
@@ -139,7 +165,7 @@ def city_item(p, geom, extra_doelen=(), force=False):
         names = {(p.get("NAME") or "").lower(), (p.get("NAMEASCII") or "").lower(), (p.get("NAME_EN") or "").lower()}
         it["feiten"]["hoofdstad_van"] = LAND.get(iso, {}).get("naam")
         it["feiten"]["officiele_hoofdstad"] = in_wc or len(wc_cap.get(iso, [])) <= 1
-    if fc == "Admin-0 capital alt" and not cap:
+    if fc.startswith("Admin-0 capital") and not cap:
         it["feiten"]["bestuursfunctie"] = "tweede of vroegere bestuursstad, geen officiële hoofdstad"
     if iso == "ISR" and cap:
         it["feiten"]["status"] = "De status als hoofdstad wordt internationaal betwist."
@@ -148,6 +174,10 @@ def city_item(p, geom, extra_doelen=(), force=False):
     return it
 
 
+# Landen waarvan een als hoofdstad gemarkeerde stad door world-countries is bevestigd. Alleen voor de
+# overige landen (Burundi: Gitega) mag een niet-gemarkeerde stad met dezelfde naam de hoofdstad zijn.
+BEVESTIGD = {iso_of(f["properties"]) for f in pp if f["properties"].get("FEATURECLA", "").startswith("Admin-0 capital")
+             and is_wc_capital(f["properties"], iso_of(f["properties"]))}
 SA = {"ARG", "BOL", "BRA", "CHL", "COL", "ECU", "GUY", "PRY", "PER", "SUR", "URY", "VEN", "GUF", "FLK"}
 for f in sorted(pp, key=lambda f: -(f["properties"].get("POP_MAX") or 0)):
     p = f["properties"]; iso = iso_of(p)
@@ -155,7 +185,7 @@ for f in sorted(pp, key=lambda f: -(f["properties"].get("POP_MAX") or 0)):
         continue
     cont = LAND.get(iso, {}).get("werelddeel")
     pop = p.get("POP_MAX") or 0
-    cap = p.get("FEATURECLA", "").startswith("Admin-0 capital") and iso in LAND
+    cap = (p.get("FEATURECLA", "").startswith("Admin-0 capital") or (is_wc_capital(p, iso) and iso not in BEVESTIGD)) and iso in LAND
     ok = cap or pop >= 1_000_000 \
         or (cont == "Europa" and pop >= 400_000) or (iso in SA and pop >= 500_000) or (iso == "BRA" and pop >= 250_000)
     if not ok:
@@ -356,13 +386,14 @@ for naam, t, lon, lat, ex in C.NL:
     d = []
     if t in ("rivier", "kanaal", "meer", "zee", "zeearm", "dijk", "eiland"):
         d += ["KD25B", "H-E1", "V-E1"] if t != "eiland" else ["H-E1", "V-E1"]
-    if t in ("stad", "regio", "luchthaven", "polder"):
+    if t in ("stad", "hoofdstad", "regio", "luchthaven", "polder"):
         d += ["KD25C"]
-    if t == "stad":
+    if t in ("stad", "hoofdstad"):
         d += ["H-E2", "V-E1", "V-E2"]
     it = add({"id": f"nl-{slug(t)}-{slug(naam)}", "naam": naam, "alt": ex.get("alt", []), "type": t, "land": "NLD",
               "werelddeel": "Europa", "coord": [lon, lat], "punt": "benadering", "doelen": d,
-              "feiten": {k: v for k, v in ex.items() if k in ("provincie", "hoogte_m", "provinciehoofdstad", "hoofdstad", "regeringszetel")},
+              "feiten": {**{k: v for k, v in ex.items() if k in ("provincie", "hoogte_m", "provinciehoofdstad", "hoofdstad", "regeringszetel")},
+                         **({"hoofdstad_van": "Nederland", "officiele_hoofdstad": True} if t == "hoofdstad" else {})},
               "_slonaam": ex.get("slonaam", naam), "_slolijst": "NEDERLAND"})
     if ex.get("rivierref") and ex["rivierref"] in RIVER_ID:
         it["geo"] = {"kaart": "rivieren", "key": RIVER_ID[ex["rivierref"]]}
@@ -681,6 +712,10 @@ for g, lst in groups.items():
 for k, feats in GEO.items():
     with open(os.path.join(RAW, k + ".geojson"), "w", encoding="utf-8") as f:
         json.dump({"type": "FeatureCollection", "features": feats}, f, ensure_ascii=False)
+caps = Counter(i["land"] for i in ITEMS.values() if i["type"] == "hoofdstad")
+zonder = sorted(i["naam"] for i in ITEMS.values() if i["type"] == "land" and i["feiten"].get("onafhankelijk") and not caps.get(i["land"]))
+meer = sorted(f"{LAND[k]['naam']}:{v}" for k, v in caps.items() if v > 1 and k in LAND)
+print("landen zonder hoofdstad:", zonder, "| meer dan één:", meer, file=sys.stderr)
 print("items:", len(ITEMS), {g: len(v) for g, v in groups.items()}, file=sys.stderr)
 print("types:", Counter(i["type"] for i in ITEMS.values()).most_common(), file=sys.stderr)
 print("slo300:", sum(1 for i in ITEMS.values() if i.get("slo300")), file=sys.stderr)

@@ -60,9 +60,11 @@ def speelbare_vormen(sel, vragen):
     for i in sel:
         if not i.get("geo"):
             f = FAMILIE.get(i["type"], i["type"])
-            punten[f] = punten.get(f, 0) + 1
+            punten.setdefault(f, []).append(i)
+    geschikt = [i for lst in punten.values() if len(lst) >= 4 for i in lst]
     vormen = ["point", "choice", "type"]
-    if any(n >= 4 for n in punten.values()):
+    # Alleen aanbieden als ook een gewone ronde (moeilijkheid 1-2) genoeg geschikte plekken heeft.
+    if len([i for i in geschikt if i.get("moeilijkheid", 2) <= 2]) >= 5:
         vormen += ["missing", "zoom"]
     if vragen:
         vormen += ["quiz"]
@@ -139,7 +141,7 @@ S("h-d1-zuid-amerika", "Brazilië in Zuid-Amerika", "havo", [4], ["H-D1"], "zuid
 S("h-e1-water", "Water in Nederland: Rijn, Maas, IJsselmeergebied, Wadden en Delta", "havo", [4, 5], ["H-E1"], "nederland",
   lambda i: i.get("land") == "NLD" and "H-E1" in i["doelen"] and i["type"] not in ("stad", "provincie", "eiland"))
 S("h-e2-steden", "Steden in Nederland", "havo", [5], ["H-E2"], "nederland",
-  lambda i: i.get("land") == "NLD" and i["type"] == "stad")
+  lambda i: i.get("land") == "NLD" and i["type"] in ("stad", "hoofdstad"))
 
 # ---------------- vwo
 S("v-a1-mentale-kaart", "Mentale kaart van de wereld (basislijst)", "vwo", [4], ["V-A1", "BASIS-TOPO"], "wereld",

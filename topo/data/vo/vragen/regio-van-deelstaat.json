@@ -11,10 +11,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Acre?",
    "answer": "Noord",
    "options": [
-    "Centraal-West",
+    "Zuidoost",
     "Noordoost",
-    "Zuid",
-    "Noord"
+    "Noord",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -48,10 +48,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Alagoas?",
    "answer": "Noordoost",
    "options": [
-    "Zuid",
     "Centraal-West",
-    "Zuidoost",
-    "Noordoost"
+    "Noordoost",
+    "Noord",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -85,9 +85,9 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Amapá?",
    "answer": "Noord",
    "options": [
-    "Zuidoost",
     "Noordoost",
     "Noord",
+    "Centraal-West",
     "Zuid"
    ],
    "hint": "",
@@ -122,9 +122,9 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Amazonas?",
    "answer": "Noord",
    "options": [
-    "Centraal-West",
     "Noord",
     "Zuidoost",
+    "Noordoost",
     "Zuid"
    ],
    "hint": "",
@@ -159,10 +159,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Bahia?",
    "answer": "Noordoost",
    "options": [
+    "Noordoost",
     "Zuid",
-    "Zuidoost",
-    "Centraal-West",
-    "Noordoost"
+    "Noord",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -196,8 +196,8 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Ceará?",
    "answer": "Noordoost",
    "options": [
-    "Noordoost",
     "Zuidoost",
+    "Noordoost",
     "Zuid",
     "Noord"
    ],
@@ -233,10 +233,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Espírito Santo?",
    "answer": "Zuidoost",
    "options": [
-    "Zuidoost",
     "Noord",
+    "Zuidoost",
     "Noordoost",
-    "Zuid"
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -271,9 +271,9 @@
    "answer": "Centraal-West",
    "options": [
     "Noordoost",
-    "Centraal-West",
-    "Zuid",
-    "Zuidoost"
+    "Noord",
+    "Zuidoost",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -307,10 +307,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Goiás?",
    "answer": "Centraal-West",
    "options": [
-    "Zuid",
     "Centraal-West",
-    "Zuidoost",
-    "Noord"
+    "Zuid",
+    "Noord",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -344,10 +344,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Maranhão?",
    "answer": "Noordoost",
    "options": [
-    "Noordoost",
-    "Zuid",
     "Noord",
-    "Zuidoost"
+    "Noordoost",
+    "Centraal-West",
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -381,10 +381,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Mato Grosso?",
    "answer": "Centraal-West",
    "options": [
-    "Zuid",
+    "Centraal-West",
     "Zuidoost",
-    "Noordoost",
-    "Centraal-West"
+    "Zuid",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -418,9 +418,9 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Mato Grosso do Sul?",
    "answer": "Centraal-West",
    "options": [
-    "Noordoost",
-    "Centraal-West",
     "Zuid",
+    "Centraal-West",
+    "Noord",
     "Zuidoost"
    ],
    "hint": "",
@@ -492,9 +492,9 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Paraná?",
    "answer": "Zuid",
    "options": [
-    "Zuid",
     "Noord",
-    "Noordoost",
+    "Zuid",
+    "Zuidoost",
     "Centraal-West"
    ],
    "hint": "",
@@ -529,10 +529,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Paraíba?",
    "answer": "Noordoost",
    "options": [
-    "Zuidoost",
+    "Zuid",
     "Centraal-West",
-    "Noord",
-    "Noordoost"
+    "Noordoost",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -566,10 +566,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Pará?",
    "answer": "Noord",
    "options": [
-    "Zuid",
-    "Centraal-West",
+    "Noord",
     "Noordoost",
-    "Noord"
+    "Zuidoost",
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -603,10 +603,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Pernambuco?",
    "answer": "Noordoost",
    "options": [
-    "Zuid",
-    "Zuidoost",
     "Noordoost",
-    "Centraal-West"
+    "Centraal-West",
+    "Zuid",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -640,9 +640,9 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Piauí?",
    "answer": "Noordoost",
    "options": [
-    "Noordoost",
-    "Zuid",
     "Centraal-West",
+    "Noord",
+    "Noordoost",
     "Zuidoost"
    ],
    "hint": "",
@@ -677,10 +677,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Rio Grande do Norte?",
    "answer": "Noordoost",
    "options": [
-    "Zuid",
     "Noord",
-    "Noordoost",
-    "Zuidoost"
+    "Zuid",
+    "Centraal-West",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -716,8 +716,8 @@
    "options": [
     "Centraal-West",
     "Zuid",
-    "Noordoost",
-    "Noord"
+    "Zuidoost",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -751,7 +751,7 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Rio de Janeiro?",
    "answer": "Zuidoost",
    "options": [
-    "Noordoost",
+    "Zuid",
     "Zuidoost",
     "Noord",
     "Centraal-West"
@@ -788,10 +788,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Rondônia?",
    "answer": "Noord",
    "options": [
-    "Zuidoost",
+    "Centraal-West",
     "Noord",
     "Zuid",
-    "Centraal-West"
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -825,10 +825,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Roraima?",
    "answer": "Noord",
    "options": [
+    "Zuid",
     "Zuidoost",
     "Noord",
-    "Zuid",
-    "Centraal-West"
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -864,8 +864,8 @@
    "options": [
     "Noord",
     "Zuidoost",
-    "Zuid",
-    "Noordoost"
+    "Noordoost",
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -899,9 +899,9 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Sergipe?",
    "answer": "Noordoost",
    "options": [
-    "Noord",
-    "Zuid",
     "Noordoost",
+    "Zuid",
+    "Noord",
     "Centraal-West"
    ],
    "hint": "",
@@ -936,10 +936,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat São Paulo?",
    "answer": "Zuidoost",
    "options": [
-    "Zuid",
-    "Noord",
     "Zuidoost",
-    "Centraal-West"
+    "Noord",
+    "Zuid",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -973,10 +973,10 @@
    "question": "In welke regio van Brazilië ligt de deelstaat Tocantins?",
    "answer": "Noord",
    "options": [
-    "Zuidoost",
-    "Zuid",
     "Centraal-West",
-    "Noord"
+    "Noord",
+    "Noordoost",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",

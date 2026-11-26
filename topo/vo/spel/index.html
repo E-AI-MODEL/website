@@ -550,7 +550,9 @@ function buildQueue(pool){
   const qs=shuffle(factPool()).slice(0,limit-chosen.length).map(factTask);
   return shuffle([...chosen.map((it,i)=>({id:it.id,kind:'item',item:it,mode:modeFor(it,i)})),...qs]);
  }
- return pickItems(setItems,limit).map((it,i)=>({id:it.id,kind:'item',item:it,mode:modeFor(it,i)}));
+ // 'Wat mist er' en 'ingezoomd': de ronde bestaat uit plekken die daarvoor geschikt zijn.
+ const geschikt=mode==='missing'||mode==='zoom'?setItems.filter(canMissing):setItems;
+ return pickItems(geschikt.length?geschikt:setItems,limit).map((it,i)=>({id:it.id,kind:'item',item:it,mode:modeFor(it,i)}));
 }
 function start(pool){
  queue=buildQueue(pool);

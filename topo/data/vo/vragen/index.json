@@ -14,32 +14,32 @@
   {
    "sjabloon": "grootste-stad",
    "bestand": "vragen/grootste-stad.json",
-   "aantal": 83
+   "aantal": 75
   },
   {
    "sjabloon": "hoofdstad-van-land",
    "bestand": "vragen/hoofdstad-van-land.json",
-   "aantal": 186
+   "aantal": 195
   },
   {
    "sjabloon": "hoogste-berg",
    "bestand": "vragen/hoogste-berg.json",
-   "aantal": 31
+   "aantal": 30
   },
   {
    "sjabloon": "land-van-hoofdstad",
    "bestand": "vragen/land-van-hoofdstad.json",
-   "aantal": 186
+   "aantal": 195
   },
   {
    "sjabloon": "land-van-stad",
    "bestand": "vragen/land-van-stad.json",
-   "aantal": 92
+   "aantal": 95
   },
   {
    "sjabloon": "noordelijkst-nl",
    "bestand": "vragen/noordelijkst-nl.json",
-   "aantal": 41
+   "aantal": 40
   },
   {
    "sjabloon": "plaat-onder",
@@ -87,5 +87,5 @@
    "aantal": 122
   }
  ],
- "totaal": 1515
+ "totaal": 1526
 }

@@ -155,10 +155,21 @@ assert.equal(totaal, vi.totaal, 'Totaal aantal vragen klopt niet');
 // ---- inhoudelijke steekproeven (bekende feiten, niet uit het geheugen van de generator)
 const vind = (naam, type) => items.find(i => (i.naam === naam || (i.alt || []).includes(naam)) && (!type || i.type === type));
 const near = (it, lon, lat, tol = 0.5) => Math.abs(it.coord[0] - lon) <= tol && Math.abs(it.coord[1] - lat) <= tol;
-assert.ok(near(vind('Amsterdam', 'stad'), 4.9, 52.37, 0.05), 'Amsterdam ligt verkeerd');
+assert.ok(near(vind('Amsterdam', 'hoofdstad'), 4.9, 52.37, 0.05), 'Amsterdam ligt verkeerd');
 assert.ok(near(vind('Brasilia', 'hoofdstad'), -47.9, -15.8), 'Brasilia ligt verkeerd');
 assert.equal(vind('Lagos').type, 'stad', 'Lagos is geen hoofdstad van Nigeria');
 assert.equal(vind('Abuja').type, 'hoofdstad');
+// Elk onafhankelijk land heeft een hoofdstad (Nauru heeft officieel geen); meer dan één alleen waar dat klopt.
+const hoofdsteden = {};
+for (const i of items) if (i.type === 'hoofdstad') hoofdsteden[i.land] = (hoofdsteden[i.land] || 0) + 1;
+for (const l of items.filter(i => i.type === 'land' && i.feiten?.onafhankelijk && i.land !== 'NRU'))
+  assert.ok(hoofdsteden[l.land] >= 1, l.naam + ' heeft geen hoofdstad');
+assert.deepEqual(Object.keys(hoofdsteden).filter(k => hoofdsteden[k] > 1), ['ZAF'], 'Onverwacht meerdere hoofdsteden');
+// Natural Earth noemt soms een vroegere hoofdstad; alleen bevestigde hoofdsteden tellen.
+for (const [oud, nieuw] of [['Abidjan', 'Yamoussoukro'], ['Dar es Salaam', 'Dodoma'], ['Bujumbura', 'Gitega']]) {
+  assert.notEqual(vind(oud)?.type, 'hoofdstad', oud + ' is geen hoofdstad');
+  assert.equal(vind(nieuw)?.type, 'hoofdstad', nieuw + ' ontbreekt als hoofdstad');
+}
 assert.equal(vind('Manaus').feiten.deelstaat, 'AM');
 assert.equal(vind('Manaus').feiten.regio, 'Noord');
 assert.equal(vind('Ciudad Juárez').feiten.tweelingstad, vind('El Paso').id);

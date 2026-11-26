@@ -11,9 +11,9 @@
    "question": "In welke deelstaat ligt Brasilia?",
    "answer": "Federaal District",
    "options": [
-    "Rio Grande do Sul",
-    "Mato Grosso do Sul",
-    "São Paulo",
+    "Ceará",
+    "Tocantins",
+    "Roraima",
     "Federaal District"
    ],
    "hint": "",
@@ -48,10 +48,10 @@
    "question": "In welke deelstaat ligt Rio de Janeiro?",
    "answer": "Rio de Janeiro",
    "options": [
-    "Pernambuco",
-    "Rio de Janeiro",
-    "Alagoas",
-    "Amapá"
+    "Paraná",
+    "Santa Catarina",
+    "Amazonas",
+    "Rio de Janeiro"
    ],
    "hint": "",
    "note": "",
@@ -85,10 +85,10 @@
    "question": "In welke deelstaat ligt São Paulo?",
    "answer": "São Paulo",
    "options": [
+    "Minas Gerais",
     "Acre",
-    "Tocantins",
-    "São Paulo",
-    "Pernambuco"
+    "Paraíba",
+    "São Paulo"
    ],
    "hint": "",
    "note": "",
@@ -122,10 +122,10 @@
    "question": "In welke deelstaat ligt Belo Horizonte?",
    "answer": "Minas Gerais",
    "options": [
+    "Rio de Janeiro",
+    "Roraima",
     "Minas Gerais",
-    "Piauí",
-    "Acre",
-    "Rio Grande do Norte"
+    "Pará"
    ],
    "hint": "",
    "note": "",
@@ -159,10 +159,10 @@
    "question": "In welke deelstaat ligt Curitiba?",
    "answer": "Paraná",
    "options": [
-    "Pernambuco",
-    "Paraná",
     "Maranhão",
-    "Roraima"
+    "Sergipe",
+    "Paraná",
+    "Minas Gerais"
    ],
    "hint": "",
    "note": "",
@@ -197,9 +197,9 @@
    "answer": "Ceará",
    "options": [
     "Ceará",
-    "Rio Grande do Norte",
-    "Pará",
-    "Minas Gerais"
+    "Pernambuco",
+    "Goiás",
+    "Mato Grosso"
    ],
    "hint": "",
    "note": "",
@@ -233,10 +233,10 @@
    "question": "In welke deelstaat ligt Porto Alegre?",
    "answer": "Rio Grande do Sul",
    "options": [
-    "Paraíba",
+    "Piauí",
     "Rio Grande do Sul",
-    "Paraná",
-    "Rio Grande do Norte"
+    "Amazonas",
+    "Mato Grosso"
    ],
    "hint": "",
    "note": "",
@@ -271,9 +271,9 @@
    "answer": "Pernambuco",
    "options": [
     "Pernambuco",
-    "Acre",
-    "Bahia",
-    "Pará"
+    "Sergipe",
+    "Tocantins",
+    "Amapá"
    ],
    "hint": "",
    "note": "",
@@ -307,9 +307,9 @@
    "question": "In welke deelstaat ligt Salvador?",
    "answer": "Bahia",
    "options": [
+    "Goiás",
+    "Rio Grande do Norte",
     "Bahia",
-    "Maranhão",
-    "Amazonas",
     "Mato Grosso"
    ],
    "hint": "",
@@ -344,10 +344,10 @@
    "question": "In welke deelstaat ligt Aracaju?",
    "answer": "Sergipe",
    "options": [
-    "Sergipe",
-    "Rio Grande do Norte",
-    "Roraima",
-    "Amazonas"
+    "Bahia",
+    "Santa Catarina",
+    "Ceará",
+    "Sergipe"
    ],
    "hint": "",
    "note": "",
@@ -381,10 +381,10 @@
    "question": "In welke deelstaat ligt Belém?",
    "answer": "Pará",
    "options": [
-    "Alagoas",
     "Pará",
-    "Piauí",
-    "Maranhão"
+    "Paraíba",
+    "Bahia",
+    "Paraná"
    ],
    "hint": "",
    "note": "",
@@ -418,9 +418,9 @@
    "question": "In welke deelstaat ligt Campinas?",
    "answer": "São Paulo",
    "options": [
-    "Minas Gerais",
-    "Acre",
-    "Paraíba",
+    "Pernambuco",
+    "Rio Grande do Sul",
+    "Piauí",
     "São Paulo"
    ],
    "hint": "",
@@ -455,10 +455,10 @@
    "question": "In welke deelstaat ligt Campo Grande?",
    "answer": "Mato Grosso do Sul",
    "options": [
-    "Rio de Janeiro",
-    "Roraima",
+    "Paraíba",
+    "Acre",
     "Mato Grosso do Sul",
-    "Pará"
+    "Bahia"
    ],
    "hint": "",
    "note": "",
@@ -492,10 +492,10 @@
    "question": "In welke deelstaat ligt Canoas?",
    "answer": "Rio Grande do Sul",
    "options": [
-    "Maranhão",
-    "Sergipe",
+    "Alagoas",
     "Rio Grande do Sul",
-    "Minas Gerais"
+    "Goiás",
+    "Amazonas"
    ],
    "hint": "",
    "note": "",
@@ -529,10 +529,10 @@
    "question": "In welke deelstaat ligt Cuiabá?",
    "answer": "Mato Grosso",
    "options": [
-    "Mato Grosso",
-    "Pernambuco",
     "Federaal District",
-    "Maranhão"
+    "Rio Grande do Sul",
+    "Mato Grosso",
+    "Rio de Janeiro"
    ],
    "hint": "",
    "note": "",
@@ -566,10 +566,10 @@
    "question": "In welke deelstaat ligt Duque de Caxias?",
    "answer": "Rio de Janeiro",
    "options": [
-    "Piauí",
-    "Rio de Janeiro",
-    "Amazonas",
-    "Mato Grosso"
+    "Bahia",
+    "Mato Grosso do Sul",
+    "Sergipe",
+    "Rio de Janeiro"
    ],
    "hint": "",
    "note": "",
@@ -603,10 +603,10 @@
    "question": "In welke deelstaat ligt Florianópolis?",
    "answer": "Santa Catarina",
    "options": [
+    "Rio Grande do Norte",
+    "Pará",
     "Santa Catarina",
-    "Sergipe",
-    "Tocantins",
-    "Amapá"
+    "São Paulo"
    ],
    "hint": "",
    "note": "",
@@ -640,10 +640,10 @@
    "question": "In welke deelstaat ligt Goiânia?",
    "answer": "Goiás",
    "options": [
-    "Federaal District",
-    "Rio Grande do Norte",
+    "Mato Grosso",
     "Goiás",
-    "Mato Grosso"
+    "Piauí",
+    "Pernambuco"
    ],
    "hint": "",
    "note": "",
@@ -677,10 +677,10 @@
    "question": "In welke deelstaat ligt Jaboatão dos Guararapes?",
    "answer": "Pernambuco",
    "options": [
-    "Bahia",
-    "Sergipe",
-    "Ceará",
-    "Pernambuco"
+    "Pernambuco",
+    "Amazonas",
+    "Rio de Janeiro",
+    "Espírito Santo"
    ],
    "hint": "",
    "note": "",
@@ -714,10 +714,10 @@
    "question": "In welke deelstaat ligt Joinville?",
    "answer": "Santa Catarina",
    "options": [
+    "Ceará",
     "Santa Catarina",
-    "Paraíba",
-    "Bahia",
-    "Paraná"
+    "Maranhão",
+    "Acre"
    ],
    "hint": "",
    "note": "",
@@ -751,8 +751,8 @@
    "question": "In welke deelstaat ligt João Pessoa?",
    "answer": "Paraíba",
    "options": [
-    "Piauí",
     "Rio de Janeiro",
+    "Mato Grosso do Sul",
     "Rio Grande do Norte",
     "Paraíba"
    ],
@@ -789,9 +789,9 @@
    "answer": "São Paulo",
    "options": [
     "Paraná",
-    "Acre",
-    "São Paulo",
-    "Bahia"
+    "Tocantins",
+    "Mato Grosso",
+    "São Paulo"
    ],
    "hint": "",
    "note": "",
@@ -825,10 +825,10 @@
    "question": "In welke deelstaat ligt Londrina?",
    "answer": "Paraná",
    "options": [
-    "Alagoas",
     "Paraná",
-    "Goiás",
-    "Amazonas"
+    "Rio Grande do Sul",
+    "Rio de Janeiro",
+    "Amapá"
    ],
    "hint": "",
    "note": "",
@@ -862,10 +862,10 @@
    "question": "In welke deelstaat ligt Maceió?",
    "answer": "Alagoas",
    "options": [
-    "Goiás",
-    "Rio Grande do Sul",
+    "Piauí",
+    "Mato Grosso do Sul",
     "Alagoas",
-    "Rio de Janeiro"
+    "Goiás"
    ],
    "hint": "",
    "note": "",
@@ -899,10 +899,10 @@
    "question": "In welke deelstaat ligt Manaus?",
    "answer": "Amazonas",
    "options": [
-    "Ceará",
+    "Espírito Santo",
+    "Amazonas",
     "Minas Gerais",
-    "Sergipe",
-    "Amazonas"
+    "Rio de Janeiro"
    ],
    "hint": "",
    "note": "",
@@ -936,10 +936,10 @@
    "question": "In welke deelstaat ligt Natal?",
    "answer": "Rio Grande do Norte",
    "options": [
-    "Rio Grande do Sul",
-    "Pará",
-    "Rio Grande do Norte",
-    "São Paulo"
+    "Paraná",
+    "Santa Catarina",
+    "Bahia",
+    "Rio Grande do Norte"
    ],
    "hint": "",
    "note": "",
@@ -973,10 +973,10 @@
    "question": "In welke deelstaat ligt Niterói?",
    "answer": "Rio de Janeiro",
    "options": [
-    "Maranhão",
     "Rio de Janeiro",
-    "Pernambuco",
-    "Pará"
+    "Ceará",
+    "Minas Gerais",
+    "Bahia"
    ],
    "hint": "",
    "note": "",
@@ -1011,9 +1011,9 @@
    "answer": "Rio de Janeiro",
    "options": [
     "Rio de Janeiro",
-    "Amazonas",
-    "Rio Grande do Sul",
-    "Espírito Santo"
+    "Rio Grande do Norte",
+    "Espírito Santo",
+    "Rio Grande do Sul"
    ],
    "hint": "",
    "note": "",
@@ -1047,10 +1047,10 @@
    "question": "In welke deelstaat ligt Novo Hamburgo?",
    "answer": "Rio Grande do Sul",
    "options": [
-    "Ceará",
+    "Rondônia",
+    "Goiás",
     "Rio Grande do Sul",
-    "Maranhão",
-    "Acre"
+    "Amapá"
    ],
    "hint": "",
    "note": "",
@@ -1084,10 +1084,10 @@
    "question": "In welke deelstaat ligt Olinda?",
    "answer": "Pernambuco",
    "options": [
+    "Mato Grosso",
+    "Pernambuco",
     "Rio de Janeiro",
-    "Mato Grosso do Sul",
-    "Rio Grande do Norte",
-    "Pernambuco"
+    "Ceará"
    ],
    "hint": "",
    "note": "",
@@ -1121,10 +1121,10 @@
    "question": "In welke deelstaat ligt Ribeirão Preto?",
    "answer": "São Paulo",
    "options": [
-    "Paraná",
     "Tocantins",
-    "Mato Grosso",
-    "São Paulo"
+    "São Paulo",
+    "Sergipe",
+    "Paraná"
    ],
    "hint": "",
    "note": "",
@@ -1158,10 +1158,10 @@
    "question": "In welke deelstaat ligt Santo André?",
    "answer": "São Paulo",
    "options": [
-    "São Paulo",
     "Rio Grande do Norte",
-    "Rio Grande do Sul",
-    "Amapá"
+    "São Paulo",
+    "Maranhão",
+    "Mato Grosso do Sul"
    ],
    "hint": "",
    "note": "",
@@ -1195,10 +1195,10 @@
    "question": "In welke deelstaat ligt Santos?",
    "answer": "São Paulo",
    "options": [
-    "Pernambuco",
-    "Mato Grosso",
+    "Espírito Santo",
+    "Santa Catarina",
     "São Paulo",
-    "Federaal District"
+    "Alagoas"
    ],
    "hint": "",
    "note": "",
@@ -1232,10 +1232,10 @@
    "question": "In welke deelstaat ligt Sorocaba?",
    "answer": "São Paulo",
    "options": [
-    "Ceará",
-    "São Paulo",
-    "Mato Grosso do Sul",
-    "Rio Grande do Sul"
+    "Roraima",
+    "Bahia",
+    "Santa Catarina",
+    "São Paulo"
    ],
    "hint": "",
    "note": "",
@@ -1269,9 +1269,9 @@
    "question": "In welke deelstaat ligt São José dos Campos?",
    "answer": "São Paulo",
    "options": [
-    "Paraná",
     "Roraima",
-    "Bahia",
+    "Pará",
+    "Espírito Santo",
     "São Paulo"
    ],
    "hint": "",
@@ -1307,9 +1307,9 @@
    "answer": "Paraná",
    "options": [
     "Paraná",
-    "Ceará",
-    "Minas Gerais",
-    "Bahia"
+    "Rondônia",
+    "Goiás",
+    "Minas Gerais"
    ],
    "hint": "",
    "note": "",
@@ -1343,10 +1343,10 @@
    "question": "In welke deelstaat ligt São Luís?",
    "answer": "Maranhão",
    "options": [
+    "Minas Gerais",
     "Maranhão",
-    "Rio Grande do Sul",
-    "Espírito Santo",
-    "Rio de Janeiro"
+    "Bahia",
+    "Sergipe"
    ],
    "hint": "",
    "note": "",
@@ -1380,10 +1380,10 @@
    "question": "In welke deelstaat ligt Teresina?",
    "answer": "Piauí",
    "options": [
-    "Rondônia",
-    "Goiás",
-    "Piauí",
-    "Amapá"
+    "Rio Grande do Sul",
+    "Paraná",
+    "Pernambuco",
+    "Piauí"
    ],
    "hint": "",
    "note": "",
@@ -1417,10 +1417,10 @@
    "question": "In welke deelstaat ligt Uberlândia?",
    "answer": "Minas Gerais",
    "options": [
-    "Mato Grosso",
-    "Minas Gerais",
+    "Mato Grosso do Sul",
+    "Santa Catarina",
     "Rio de Janeiro",
-    "Ceará"
+    "Minas Gerais"
    ],
    "hint": "",
    "note": "",
@@ -1454,10 +1454,10 @@
    "question": "In welke deelstaat ligt Vila Velha?",
    "answer": "Amapá",
    "options": [
-    "Tocantins",
-    "Amapá",
-    "São Paulo",
-    "Paraíba"
+    "Paraná",
+    "Maranhão",
+    "Mato Grosso",
+    "Amapá"
    ],
    "hint": "",
    "note": "",
@@ -1491,10 +1491,10 @@
    "question": "In welke deelstaat ligt Vitória?",
    "answer": "Espírito Santo",
    "options": [
-    "Rio Grande do Sul",
     "Espírito Santo",
-    "Mato Grosso",
-    "Minas Gerais"
+    "Alagoas",
+    "Pará",
+    "Paraíba"
    ],
    "hint": "",
    "note": "",

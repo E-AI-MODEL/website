@@ -11,9 +11,9 @@
    "question": "Welke stad ligt tegenover Brownsville, aan de andere kant van de grens?",
    "answer": "Matamoros",
    "options": [
-    "Nogales (Mexico)",
     "Matamoros",
     "Ciudad Juárez",
+    "Nuevo Laredo",
     "Mexicali"
    ],
    "hint": "",
@@ -43,9 +43,9 @@
    "answer": "Mexicali",
    "options": [
     "Reynosa",
-    "Matamoros",
     "Tijuana",
-    "Mexicali"
+    "Mexicali",
+    "Matamoros"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -73,10 +73,10 @@
    "question": "Welke stad ligt tegenover Ciudad Juárez, aan de andere kant van de grens?",
    "answer": "El Paso",
    "options": [
-    "Calexico",
+    "Brownsville",
+    "San Diego",
     "El Paso",
-    "McAllen",
-    "San Diego"
+    "Laredo"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -104,10 +104,10 @@
    "question": "Welke stad ligt tegenover El Paso, aan de andere kant van de grens?",
    "answer": "Ciudad Juárez",
    "options": [
+    "Nogales (Mexico)",
     "Ciudad Juárez",
-    "Matamoros",
     "Tijuana",
-    "Nuevo Laredo"
+    "Reynosa"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -135,10 +135,10 @@
    "question": "Welke stad ligt tegenover Laredo, aan de andere kant van de grens?",
    "answer": "Nuevo Laredo",
    "options": [
-    "Tijuana",
-    "Matamoros",
+    "Mexicali",
+    "Ciudad Juárez",
     "Nuevo Laredo",
-    "Reynosa"
+    "Nogales (Mexico)"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -166,10 +166,10 @@
    "question": "Welke stad ligt tegenover Matamoros, aan de andere kant van de grens?",
    "answer": "Brownsville",
    "options": [
-    "Brownsville",
     "Nogales (VS)",
-    "McAllen",
-    "Laredo"
+    "El Paso",
+    "Brownsville",
+    "McAllen"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -197,10 +197,10 @@
    "question": "Welke stad ligt tegenover McAllen, aan de andere kant van de grens?",
    "answer": "Reynosa",
    "options": [
+    "Matamoros",
+    "Nuevo Laredo",
     "Reynosa",
-    "Tijuana",
-    "Mexicali",
-    "Nogales (Mexico)"
+    "Mexicali"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -228,10 +228,10 @@
    "question": "Welke stad ligt tegenover Mexicali, aan de andere kant van de grens?",
    "answer": "Calexico",
    "options": [
-    "El Paso",
-    "Calexico",
     "Laredo",
-    "San Diego"
+    "Calexico",
+    "Brownsville",
+    "El Paso"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -260,9 +260,9 @@
    "answer": "Nogales (VS)",
    "options": [
     "El Paso",
-    "McAllen",
-    "Brownsville",
-    "Nogales (VS)"
+    "Calexico",
+    "Nogales (VS)",
+    "San Diego"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -290,10 +290,10 @@
    "question": "Welke stad ligt tegenover Nogales (VS), aan de andere kant van de grens?",
    "answer": "Nogales (Mexico)",
    "options": [
-    "Ciudad Juárez",
+    "Nuevo Laredo",
+    "Mexicali",
     "Nogales (Mexico)",
-    "Reynosa",
-    "Tijuana"
+    "Reynosa"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -321,10 +321,10 @@
    "question": "Welke stad ligt tegenover Nuevo Laredo, aan de andere kant van de grens?",
    "answer": "Laredo",
    "options": [
-    "McAllen",
+    "Brownsville",
+    "Nogales (VS)",
     "Calexico",
-    "Laredo",
-    "El Paso"
+    "Laredo"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -352,10 +352,10 @@
    "question": "Welke stad ligt tegenover Reynosa, aan de andere kant van de grens?",
    "answer": "McAllen",
    "options": [
-    "Nogales (VS)",
-    "Brownsville",
     "McAllen",
-    "El Paso"
+    "Calexico",
+    "Brownsville",
+    "San Diego"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -383,10 +383,10 @@
    "question": "Welke stad ligt tegenover San Diego, aan de andere kant van de grens?",
    "answer": "Tijuana",
    "options": [
-    "Tijuana",
-    "Nogales (Mexico)",
-    "Matamoros",
-    "Reynosa"
+    "Ciudad Juárez",
+    "Nuevo Laredo",
+    "Reynosa",
+    "Tijuana"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",
@@ -414,10 +414,10 @@
    "question": "Welke stad ligt tegenover Tijuana, aan de andere kant van de grens?",
    "answer": "San Diego",
    "options": [
-    "San Diego",
+    "McAllen",
     "El Paso",
-    "Laredo",
-    "Brownsville"
+    "San Diego",
+    "Calexico"
    ],
    "hint": "",
    "note": "Tweelingsteden zijn sterk verbonden door pendel, handel en maquiladora's.",

@@ -11,10 +11,10 @@
    "question": "Wat is de hoofdstad van de provincie Drenthe?",
    "answer": "Assen",
    "options": [
-    "Arnhem",
-    "Groningen",
     "Assen",
-    "Lelystad"
+    "'s-Hertogenbosch",
+    "Haarlem",
+    "Zwolle"
    ],
    "hint": "",
    "note": "",
@@ -43,10 +43,10 @@
    "question": "Wat is de hoofdstad van de provincie Flevoland?",
    "answer": "Lelystad",
    "options": [
-    "Utrecht",
-    "Lelystad",
     "Groningen",
-    "Den Haag"
+    "Lelystad",
+    "Utrecht",
+    "Assen"
    ],
    "hint": "",
    "note": "",
@@ -75,10 +75,10 @@
    "question": "Wat is de hoofdstad van de provincie Fryslân?",
    "answer": "Leeuwarden",
    "options": [
-    "Assen",
-    "Groningen",
+    "Arnhem",
     "Leeuwarden",
-    "Lelystad"
+    "Groningen",
+    "Middelburg"
    ],
    "hint": "",
    "note": "",
@@ -107,9 +107,9 @@
    "question": "Wat is de hoofdstad van de provincie Gelderland?",
    "answer": "Arnhem",
    "options": [
-    "Maastricht",
-    "Leeuwarden",
     "Arnhem",
+    "'s-Hertogenbosch",
+    "Groningen",
     "Haarlem"
    ],
    "hint": "",
@@ -140,9 +140,9 @@
    "answer": "Groningen",
    "options": [
     "Middelburg",
-    "Assen",
-    "Lelystad",
-    "Groningen"
+    "Den Haag",
+    "Groningen",
+    "Leeuwarden"
    ],
    "hint": "",
    "note": "",
@@ -171,10 +171,10 @@
    "question": "Wat is de hoofdstad van de provincie Limburg?",
    "answer": "Maastricht",
    "options": [
-    "Groningen",
-    "Zwolle",
+    "Utrecht",
     "Maastricht",
-    "Utrecht"
+    "Den Haag",
+    "Assen"
    ],
    "hint": "",
    "note": "",
@@ -203,10 +203,10 @@
    "question": "Wat is de hoofdstad van de provincie Noord-Brabant?",
    "answer": "'s-Hertogenbosch",
    "options": [
-    "Leeuwarden",
-    "Middelburg",
+    "Utrecht",
     "'s-Hertogenbosch",
-    "Lelystad"
+    "Assen",
+    "Zwolle"
    ],
    "hint": "",
    "note": "",
@@ -235,10 +235,10 @@
    "question": "Wat is de hoofdstad van de provincie Noord-Holland?",
    "answer": "Haarlem",
    "options": [
-    "'s-Hertogenbosch",
-    "Leeuwarden",
-    "Arnhem",
-    "Haarlem"
+    "Maastricht",
+    "Haarlem",
+    "Utrecht",
+    "Zwolle"
    ],
    "hint": "",
    "note": "",
@@ -267,10 +267,10 @@
    "question": "Wat is de hoofdstad van de provincie Overijssel?",
    "answer": "Zwolle",
    "options": [
-    "Groningen",
+    "Haarlem",
+    "Den Haag",
     "Zwolle",
-    "Lelystad",
-    "Den Haag"
+    "Maastricht"
    ],
    "hint": "",
    "note": "",
@@ -299,10 +299,10 @@
    "question": "Wat is de hoofdstad van de provincie Utrecht?",
    "answer": "Utrecht",
    "options": [
+    "'s-Hertogenbosch",
+    "Den Haag",
     "Utrecht",
-    "Haarlem",
-    "Leeuwarden",
-    "Arnhem"
+    "Zwolle"
    ],
    "hint": "",
    "note": "",
@@ -331,10 +331,10 @@
    "question": "Wat is de hoofdstad van de provincie Zeeland?",
    "answer": "Middelburg",
    "options": [
-    "Zwolle",
+    "Middelburg",
     "Groningen",
-    "Utrecht",
-    "Middelburg"
+    "Zwolle",
+    "Arnhem"
    ],
    "hint": "",
    "note": "",
@@ -364,9 +364,9 @@
    "answer": "Den Haag",
    "options": [
     "Den Haag",
-    "Middelburg",
-    "Lelystad",
-    "Zwolle"
+    "Utrecht",
+    "Haarlem",
+    "Assen"
    ],
    "hint": "",
    "note": "",

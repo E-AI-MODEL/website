@@ -29,6 +29,8 @@ jobs:
           python-version: '3.12'
       - name: Validate the TOPO VO data bank and generated pages
         run: |
+          node --check scripts/topo_vo/pagina/spel.js
+          node --check scripts/topo_vo/pagina/start.js
           node scripts/validate_topo_vo_data.mjs
           python3 scripts/topo_vo/maak_paginas.py --check
       - name: Use the pinned browser runtime

@@ -39,14 +39,46 @@
    "id": "land-van-hoofdstad-2",
    "kind": "fact",
    "category": "hoofdsteden",
+   "name": "Amsterdam",
+   "question": "Amsterdam is de hoofdstad van welk land?",
+   "answer": "Nederland",
+   "options": [
+    "Portugal",
+    "Verenigd Koninkrijk",
+    "Italië",
+    "Nederland"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1,
+     2
+    ]
+   },
+   "itemId": "nl-hoofdstad-amsterdam"
+  },
+  {
+   "id": "land-van-hoofdstad-3",
+   "kind": "fact",
+   "category": "hoofdsteden",
    "name": "Ankara",
    "question": "Ankara is de hoofdstad van welk land?",
    "answer": "Turkije",
    "options": [
-    "Myanmar",
-    "Azerbeidzjan",
-    "Singapore",
-    "Turkije"
+    "Zuid-Korea",
+    "Oezbekistan",
+    "Turkije",
+    "China"
    ],
    "hint": "",
    "note": "",
@@ -68,17 +100,17 @@
    "itemId": "stad-tur-ankara"
   },
   {
-   "id": "land-van-hoofdstad-3",
+   "id": "land-van-hoofdstad-4",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Athene",
    "question": "Athene is de hoofdstad van welk land?",
    "answer": "Griekenland",
    "options": [
-    "Luxemburg",
-    "Slovenië",
     "Griekenland",
-    "Bosnië en Herzegovina"
+    "Tsjechië",
+    "Noord-Macedonië",
+    "Polen"
    ],
    "hint": "",
    "note": "",
@@ -100,17 +132,17 @@
    "itemId": "stad-grc-athene"
   },
   {
-   "id": "land-van-hoofdstad-4",
+   "id": "land-van-hoofdstad-5",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bagdad",
    "question": "Bagdad is de hoofdstad van welk land?",
    "answer": "Irak",
    "options": [
+    "China",
     "Irak",
-    "Turkmenistan",
-    "Libanon",
-    "Maleisië"
+    "Oost-Timor",
+    "Laos"
    ],
    "hint": "",
    "note": "",
@@ -132,17 +164,17 @@
    "itemId": "stad-irq-bagdad"
   },
   {
-   "id": "land-van-hoofdstad-5",
+   "id": "land-van-hoofdstad-6",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bangkok",
    "question": "Bangkok is de hoofdstad van welk land?",
    "answer": "Thailand",
    "options": [
-    "China",
+    "Jordanië",
     "Thailand",
-    "Oost-Timor",
-    "Laos"
+    "Qatar",
+    "Sri Lanka"
    ],
    "hint": "",
    "note": "",
@@ -164,17 +196,17 @@
    "itemId": "stad-tha-bangkok"
   },
   {
-   "id": "land-van-hoofdstad-6",
+   "id": "land-van-hoofdstad-7",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Beijing",
    "question": "Beijing is de hoofdstad van welk land?",
    "answer": "China",
    "options": [
-    "Jordanië",
+    "Koeweit",
+    "Laos",
     "China",
-    "Qatar",
-    "Sri Lanka"
+    "Bahrein"
    ],
    "hint": "",
    "note": "",
@@ -196,17 +228,17 @@
    "itemId": "stad-chn-peking"
   },
   {
-   "id": "land-van-hoofdstad-7",
+   "id": "land-van-hoofdstad-8",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Belgrado",
    "question": "Belgrado is de hoofdstad van welk land?",
    "answer": "Servië",
    "options": [
-    "Monaco",
-    "Montenegro",
     "Servië",
-    "Zwitserland"
+    "Spanje",
+    "België",
+    "Griekenland"
    ],
    "hint": "",
    "note": "",
@@ -228,17 +260,17 @@
    "itemId": "stad-srb-belgrado"
   },
   {
-   "id": "land-van-hoofdstad-8",
+   "id": "land-van-hoofdstad-9",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Berlijn",
    "question": "Berlijn is de hoofdstad van welk land?",
    "answer": "Duitsland",
    "options": [
-    "Duitsland",
-    "Spanje",
-    "België",
-    "Hongarije"
+    "Montenegro",
+    "Albanië",
+    "Servië",
+    "Duitsland"
    ],
    "hint": "",
    "note": "",
@@ -260,16 +292,16 @@
    "itemId": "stad-deu-berlijn"
   },
   {
-   "id": "land-van-hoofdstad-9",
+   "id": "land-van-hoofdstad-10",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bern",
    "question": "Bern is de hoofdstad van welk land?",
    "answer": "Zwitserland",
    "options": [
-    "Montenegro",
-    "Albanië",
-    "Rusland",
+    "Estland",
+    "Frankrijk",
+    "Luxemburg",
     "Zwitserland"
    ],
    "hint": "",
@@ -292,17 +324,17 @@
    "itemId": "stad-che-bern"
   },
   {
-   "id": "land-van-hoofdstad-10",
+   "id": "land-van-hoofdstad-11",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Boekarest",
    "question": "Boekarest is de hoofdstad van welk land?",
    "answer": "Roemenië",
    "options": [
-    "Estland",
-    "Frankrijk",
-    "Luxemburg",
-    "Roemenië"
+    "Zwitserland",
+    "Roemenië",
+    "San Marino",
+    "IJsland"
    ],
    "hint": "",
    "note": "",
@@ -324,17 +356,17 @@
    "itemId": "stad-rou-boekarest"
   },
   {
-   "id": "land-van-hoofdstad-11",
+   "id": "land-van-hoofdstad-12",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bratislava",
    "question": "Bratislava is de hoofdstad van welk land?",
    "answer": "Slowakije",
    "options": [
-    "Zwitserland",
+    "Polen",
+    "Bulgarije",
     "Slowakije",
-    "San Marino",
-    "IJsland"
+    "België"
    ],
    "hint": "",
    "note": "",
@@ -356,7 +388,7 @@
    "itemId": "stad-svk-bratislava"
   },
   {
-   "id": "land-van-hoofdstad-12",
+   "id": "land-van-hoofdstad-13",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Brussel",
@@ -364,9 +396,9 @@
    "answer": "België",
    "options": [
     "Portugal",
-    "Denemarken",
+    "Vaticaanstad",
     "België",
-    "Bosnië en Herzegovina"
+    "Servië"
    ],
    "hint": "",
    "note": "",
@@ -388,17 +420,17 @@
    "itemId": "stad-bel-brussel"
   },
   {
-   "id": "land-van-hoofdstad-13",
+   "id": "land-van-hoofdstad-14",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Budapest",
    "question": "Budapest is de hoofdstad van welk land?",
    "answer": "Hongarije",
    "options": [
-    "Portugal",
-    "Vaticaanstad",
-    "Hongarije",
-    "Servië"
+    "Oekraïne",
+    "Andorra",
+    "Albanië",
+    "Hongarije"
    ],
    "hint": "",
    "note": "",
@@ -420,17 +452,17 @@
    "itemId": "stad-hun-boedapest"
   },
   {
-   "id": "land-van-hoofdstad-14",
+   "id": "land-van-hoofdstad-15",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Buenos Aires",
    "question": "Buenos Aires is de hoofdstad van welk land?",
    "answer": "Argentinië",
    "options": [
-    "Venezuela",
-    "Peru",
-    "Brazilië",
-    "Argentinië"
+    "Paraguay",
+    "Argentinië",
+    "Suriname",
+    "Colombia"
    ],
    "hint": "",
    "note": "",
@@ -452,17 +484,17 @@
    "itemId": "stad-arg-buenos-aires"
   },
   {
-   "id": "land-van-hoofdstad-15",
+   "id": "land-van-hoofdstad-16",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Cairo",
    "question": "Cairo is de hoofdstad van welk land?",
    "answer": "Egypte",
    "options": [
-    "Zuid-Soedan",
+    "Mali",
     "Egypte",
-    "Libië",
-    "Guinee"
+    "Centraal-Afrikaanse Republiek",
+    "Ivoorkust"
    ],
    "hint": "",
    "note": "",
@@ -484,17 +516,17 @@
    "itemId": "stad-egy-cairo"
   },
   {
-   "id": "land-van-hoofdstad-16",
+   "id": "land-van-hoofdstad-17",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Dhaka",
    "question": "Dhaka is de hoofdstad van welk land?",
    "answer": "Bangladesh",
    "options": [
-    "Cambodja",
+    "Jemen",
+    "Bhutan",
     "Bangladesh",
-    "Brunei",
-    "Singapore"
+    "Syrië"
    ],
    "hint": "",
    "note": "",
@@ -514,17 +546,17 @@
    "itemId": "stad-bgd-dhaka"
   },
   {
-   "id": "land-van-hoofdstad-17",
+   "id": "land-van-hoofdstad-18",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Dublin",
    "question": "Dublin is de hoofdstad van welk land?",
    "answer": "Ierland",
    "options": [
-    "Noorwegen",
-    "Wit-Rusland",
+    "Tsjechië",
+    "Bosnië en Herzegovina",
     "Ierland",
-    "Spanje"
+    "Polen"
    ],
    "hint": "",
    "note": "",
@@ -546,17 +578,17 @@
    "itemId": "stad-irl-dublin"
   },
   {
-   "id": "land-van-hoofdstad-18",
+   "id": "land-van-hoofdstad-19",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Helsinki",
    "question": "Helsinki is de hoofdstad van welk land?",
    "answer": "Finland",
    "options": [
-    "Polen",
-    "Tsjechië",
+    "Verenigd Koninkrijk",
     "Finland",
-    "IJsland"
+    "Nederland",
+    "Albanië"
    ],
    "hint": "",
    "note": "",
@@ -578,17 +610,17 @@
    "itemId": "stad-fin-helsinki"
   },
   {
-   "id": "land-van-hoofdstad-19",
+   "id": "land-van-hoofdstad-20",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Jakarta",
    "question": "Jakarta is de hoofdstad van welk land?",
    "answer": "Indonesië",
    "options": [
-    "Verenigde Arabische Emiraten",
+    "Qatar",
     "Indonesië",
-    "Armenië",
-    "Qatar"
+    "Tadzjikistan",
+    "Pakistan"
    ],
    "hint": "",
    "note": "",
@@ -610,17 +642,17 @@
    "itemId": "stad-idn-jakarta"
   },
   {
-   "id": "land-van-hoofdstad-20",
+   "id": "land-van-hoofdstad-21",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Jeruzalem",
    "question": "Jeruzalem is de hoofdstad van welk land?",
    "answer": "Israël",
    "options": [
-    "Qatar",
+    "Afghanistan",
     "Israël",
-    "Tadzjikistan",
-    "Pakistan"
+    "Verenigde Arabische Emiraten",
+    "Jordanië"
    ],
    "hint": "",
    "note": "",
@@ -642,17 +674,17 @@
    "itemId": "stad-isr-jeruzalem"
   },
   {
-   "id": "land-van-hoofdstad-21",
+   "id": "land-van-hoofdstad-22",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kopenhagen",
    "question": "Kopenhagen is de hoofdstad van welk land?",
    "answer": "Denemarken",
    "options": [
-    "Zweden",
-    "Moldavië",
-    "Albanië",
-    "Denemarken"
+    "Denemarken",
+    "Servië",
+    "San Marino",
+    "Tsjechië"
    ],
    "hint": "",
    "note": "",
@@ -674,7 +706,7 @@
    "itemId": "stad-dnk-kopenhagen"
   },
   {
-   "id": "land-van-hoofdstad-22",
+   "id": "land-van-hoofdstad-23",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Lissabon",
@@ -682,9 +714,9 @@
    "answer": "Portugal",
    "options": [
     "Spanje",
-    "Noord-Macedonië",
-    "Portugal",
-    "Polen"
+    "Denemarken",
+    "Moldavië",
+    "Portugal"
    ],
    "hint": "",
    "note": "",
@@ -706,17 +738,17 @@
    "itemId": "stad-prt-lissabon"
   },
   {
-   "id": "land-van-hoofdstad-23",
+   "id": "land-van-hoofdstad-24",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Londen",
    "question": "Londen is de hoofdstad van welk land?",
    "answer": "Verenigd Koninkrijk",
    "options": [
-    "Malta",
-    "Bosnië en Herzegovina",
-    "Frankrijk",
-    "Verenigd Koninkrijk"
+    "Slovenië",
+    "Verenigd Koninkrijk",
+    "Andorra",
+    "Litouwen"
    ],
    "hint": "",
    "note": "",
@@ -738,17 +770,17 @@
    "itemId": "stad-gbr-londen"
   },
   {
-   "id": "land-van-hoofdstad-24",
+   "id": "land-van-hoofdstad-25",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Luxemburg",
    "question": "Luxemburg is de hoofdstad van welk land?",
    "answer": "Luxemburg",
    "options": [
-    "Noorwegen",
-    "Ierland",
-    "Slovenië",
-    "Luxemburg"
+    "Luxemburg",
+    "Portugal",
+    "Estland",
+    "Bosnië en Herzegovina"
    ],
    "hint": "",
    "note": "",
@@ -770,17 +802,17 @@
    "itemId": "stad-lux-luxemburg"
   },
   {
-   "id": "land-van-hoofdstad-25",
+   "id": "land-van-hoofdstad-26",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Madrid",
    "question": "Madrid is de hoofdstad van welk land?",
    "answer": "Spanje",
    "options": [
-    "Zwitserland",
+    "Wit-Rusland",
     "Spanje",
-    "Andorra",
-    "Zweden"
+    "Bulgarije",
+    "IJsland"
    ],
    "hint": "",
    "note": "",
@@ -802,17 +834,17 @@
    "itemId": "stad-esp-madrid"
   },
   {
-   "id": "land-van-hoofdstad-26",
+   "id": "land-van-hoofdstad-27",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Manilla",
    "question": "Manilla is de hoofdstad van welk land?",
    "answer": "Filipijnen",
    "options": [
-    "Oman",
-    "Singapore",
-    "Filipijnen",
-    "Cambodja"
+    "Armenië",
+    "Irak",
+    "Indonesië",
+    "Filipijnen"
    ],
    "hint": "",
    "note": "",
@@ -832,17 +864,17 @@
    "itemId": "stad-phl-manilla"
   },
   {
-   "id": "land-van-hoofdstad-27",
+   "id": "land-van-hoofdstad-28",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Mexico-Stad",
    "question": "Mexico-Stad is de hoofdstad van welk land?",
    "answer": "Mexico",
    "options": [
-    "Mexico",
     "Panama",
-    "El Salvador",
-    "Saint Kitts en Nevis"
+    "Mexico",
+    "Antigua en Barbuda",
+    "Jamaica"
    ],
    "hint": "",
    "note": "",
@@ -864,16 +896,16 @@
    "itemId": "stad-mex-mexico-stad"
   },
   {
-   "id": "land-van-hoofdstad-28",
+   "id": "land-van-hoofdstad-29",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Moskou",
    "question": "Moskou is de hoofdstad van welk land?",
    "answer": "Rusland",
    "options": [
-    "Frankrijk",
-    "Slowakije",
-    "Spanje",
+    "San Marino",
+    "Zwitserland",
+    "Bulgarije",
     "Rusland"
    ],
    "hint": "",
@@ -896,7 +928,7 @@
    "itemId": "stad-rus-moskou"
   },
   {
-   "id": "land-van-hoofdstad-29",
+   "id": "land-van-hoofdstad-30",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "New Delhi",
@@ -904,9 +936,9 @@
    "answer": "India",
    "options": [
     "India",
-    "Bangladesh",
-    "Myanmar",
-    "Israël"
+    "Qatar",
+    "Mongolië",
+    "Oman"
    ],
    "hint": "",
    "note": "",
@@ -928,17 +960,17 @@
    "itemId": "stad-ind-new-delhi"
   },
   {
-   "id": "land-van-hoofdstad-30",
+   "id": "land-van-hoofdstad-31",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Oslo",
    "question": "Oslo is de hoofdstad van welk land?",
    "answer": "Noorwegen",
    "options": [
-    "Spanje",
-    "Estland",
-    "Oekraïne",
-    "Noorwegen"
+    "Wit-Rusland",
+    "Noorwegen",
+    "Zwitserland",
+    "Zweden"
    ],
    "hint": "",
    "note": "",
@@ -960,17 +992,17 @@
    "itemId": "stad-nor-oslo"
   },
   {
-   "id": "land-van-hoofdstad-31",
+   "id": "land-van-hoofdstad-32",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Paramaribo",
    "question": "Paramaribo is de hoofdstad van welk land?",
    "answer": "Suriname",
    "options": [
-    "Brazilië",
-    "Colombia",
+    "Paraguay",
+    "Ecuador",
     "Suriname",
-    "Venezuela"
+    "Argentinië"
    ],
    "hint": "",
    "note": "",
@@ -992,17 +1024,17 @@
    "itemId": "stad-sur-paramaribo"
   },
   {
-   "id": "land-van-hoofdstad-32",
+   "id": "land-van-hoofdstad-33",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Parijs",
    "question": "Parijs is de hoofdstad van welk land?",
    "answer": "Frankrijk",
    "options": [
-    "Tsjechië",
-    "Malta",
-    "België",
-    "Frankrijk"
+    "Wit-Rusland",
+    "Frankrijk",
+    "Montenegro",
+    "Denemarken"
    ],
    "hint": "",
    "note": "",
@@ -1024,7 +1056,7 @@
    "itemId": "stad-fra-parijs"
   },
   {
-   "id": "land-van-hoofdstad-33",
+   "id": "land-van-hoofdstad-34",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Praag",
@@ -1032,9 +1064,9 @@
    "answer": "Tsjechië",
    "options": [
     "Tsjechië",
-    "Frankrijk",
-    "Noorwegen",
-    "Ierland"
+    "Monaco",
+    "Oostenrijk",
+    "Albanië"
    ],
    "hint": "",
    "note": "",
@@ -1056,17 +1088,17 @@
    "itemId": "stad-cze-praag"
   },
   {
-   "id": "land-van-hoofdstad-34",
+   "id": "land-van-hoofdstad-35",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Rome",
    "question": "Rome is de hoofdstad van welk land?",
    "answer": "Italië",
    "options": [
-    "Spanje",
-    "Malta",
-    "Noord-Macedonië",
-    "Italië"
+    "Noorwegen",
+    "Griekenland",
+    "Italië",
+    "Albanië"
    ],
    "hint": "",
    "note": "",
@@ -1088,16 +1120,16 @@
    "itemId": "stad-ita-rome"
   },
   {
-   "id": "land-van-hoofdstad-35",
+   "id": "land-van-hoofdstad-36",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Santiago",
    "question": "Santiago is de hoofdstad van welk land?",
    "answer": "Chili",
    "options": [
-    "Uruguay",
-    "Paraguay",
-    "Guyana",
+    "Ecuador",
+    "Bolivia",
+    "Colombia",
     "Chili"
    ],
    "hint": "",
@@ -1120,17 +1152,17 @@
    "itemId": "stad-chl-santiago"
   },
   {
-   "id": "land-van-hoofdstad-36",
+   "id": "land-van-hoofdstad-37",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Seoul",
    "question": "Seoul is de hoofdstad van welk land?",
    "answer": "Zuid-Korea",
    "options": [
-    "Georgië",
-    "Bhutan",
+    "Brunei",
     "Zuid-Korea",
-    "Laos"
+    "Libanon",
+    "Nepal"
    ],
    "hint": "",
    "note": "",
@@ -1152,17 +1184,17 @@
    "itemId": "stad-kor-seoel"
   },
   {
-   "id": "land-van-hoofdstad-37",
+   "id": "land-van-hoofdstad-38",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Stockholm",
    "question": "Stockholm is de hoofdstad van welk land?",
    "answer": "Zweden",
    "options": [
-    "Kroatië",
+    "Spanje",
+    "Noorwegen",
     "Zweden",
-    "Bosnië en Herzegovina",
-    "Ierland"
+    "Polen"
    ],
    "hint": "",
    "note": "",
@@ -1184,17 +1216,17 @@
    "itemId": "stad-swe-stockholm"
   },
   {
-   "id": "land-van-hoofdstad-38",
+   "id": "land-van-hoofdstad-39",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Teheran",
    "question": "Teheran is de hoofdstad van welk land?",
    "answer": "Iran",
    "options": [
-    "Tadzjikistan",
-    "Oost-Timor",
-    "Bahrein",
-    "Iran"
+    "Filipijnen",
+    "Iran",
+    "Cambodja",
+    "Tadzjikistan"
    ],
    "hint": "",
    "note": "",
@@ -1216,17 +1248,17 @@
    "itemId": "stad-irn-teheran"
   },
   {
-   "id": "land-van-hoofdstad-39",
+   "id": "land-van-hoofdstad-40",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Tokyo",
    "question": "Tokyo is de hoofdstad van welk land?",
    "answer": "Japan",
    "options": [
-    "Pakistan",
-    "Japan",
-    "Sri Lanka",
-    "Libanon"
+    "Tadzjikistan",
+    "Nepal",
+    "Oost-Timor",
+    "Japan"
    ],
    "hint": "",
    "note": "",
@@ -1248,17 +1280,17 @@
    "itemId": "stad-jpn-tokio"
   },
   {
-   "id": "land-van-hoofdstad-40",
+   "id": "land-van-hoofdstad-41",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Warschau",
    "question": "Warschau is de hoofdstad van welk land?",
    "answer": "Polen",
    "options": [
-    "Oekraïne",
-    "Zwitserland",
-    "Polen",
-    "Malta"
+    "Frankrijk",
+    "Kroatië",
+    "Vaticaanstad",
+    "Polen"
    ],
    "hint": "",
    "note": "",
@@ -1280,16 +1312,16 @@
    "itemId": "stad-pol-warschau"
   },
   {
-   "id": "land-van-hoofdstad-41",
+   "id": "land-van-hoofdstad-42",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Washington",
    "question": "Washington is de hoofdstad van welk land?",
    "answer": "Verenigde Staten",
    "options": [
-    "Honduras",
-    "Bahama's",
-    "Mexico",
+    "Saint Lucia",
+    "Belize",
+    "Saint Vincent en de Grenadines",
     "Verenigde Staten"
    ],
    "hint": "",
@@ -1312,16 +1344,16 @@
    "itemId": "stad-usa-washington-d-c"
   },
   {
-   "id": "land-van-hoofdstad-42",
+   "id": "land-van-hoofdstad-43",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Wenen",
    "question": "Wenen is de hoofdstad van welk land?",
    "answer": "Oostenrijk",
    "options": [
-    "Roemenië",
+    "Ierland",
+    "Andorra",
     "Oostenrijk",
-    "Liechtenstein",
     "Malta"
    ],
    "hint": "",
@@ -1344,17 +1376,17 @@
    "itemId": "stad-aut-wenen"
   },
   {
-   "id": "land-van-hoofdstad-43",
+   "id": "land-van-hoofdstad-44",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Abu Dhabi",
    "question": "Abu Dhabi is de hoofdstad van welk land?",
    "answer": "Verenigde Arabische Emiraten",
    "options": [
-    "Sri Lanka",
     "Verenigde Arabische Emiraten",
-    "Armenië",
-    "Singapore"
+    "Saoedi-Arabië",
+    "Turkmenistan",
+    "Maleisië"
    ],
    "hint": "",
    "note": "",
@@ -1374,17 +1406,17 @@
    "itemId": "stad-are-abu-dhabi"
   },
   {
-   "id": "land-van-hoofdstad-44",
+   "id": "land-van-hoofdstad-45",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Abuja",
    "question": "Abuja is de hoofdstad van welk land?",
    "answer": "Nigeria",
    "options": [
-    "Marokko",
+    "Oeganda",
     "Nigeria",
-    "Swaziland",
-    "Tsjaad"
+    "Mauritanië",
+    "Ethiopië"
    ],
    "hint": "",
    "note": "",
@@ -1404,17 +1436,17 @@
    "itemId": "stad-nga-abuja"
   },
   {
-   "id": "land-van-hoofdstad-45",
+   "id": "land-van-hoofdstad-46",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Accra",
    "question": "Accra is de hoofdstad van welk land?",
    "answer": "Ghana",
    "options": [
-    "Swaziland",
-    "Ghana",
-    "Sudan",
-    "Niger"
+    "Mauritanië",
+    "Malawi",
+    "Guinee-Bissau",
+    "Ghana"
    ],
    "hint": "",
    "note": "",
@@ -1434,17 +1466,17 @@
    "itemId": "stad-gha-accra"
   },
   {
-   "id": "land-van-hoofdstad-46",
+   "id": "land-van-hoofdstad-47",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Addis Abeba",
    "question": "Addis Abeba is de hoofdstad van welk land?",
    "answer": "Ethiopië",
    "options": [
-    "Ivoorkust",
-    "Egypte",
-    "Libië",
-    "Ethiopië"
+    "Equatoriaal-Guinea",
+    "Zambia",
+    "Ethiopië",
+    "Centraal-Afrikaanse Republiek"
    ],
    "hint": "",
    "note": "",
@@ -1464,17 +1496,17 @@
    "itemId": "stad-eth-addis-abeba"
   },
   {
-   "id": "land-van-hoofdstad-47",
+   "id": "land-van-hoofdstad-48",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Algiers",
    "question": "Algiers is de hoofdstad van welk land?",
    "answer": "Algerije",
    "options": [
-    "Burundi",
-    "Oeganda",
+    "Rwanda",
+    "Sao Tomé en Principe",
     "Algerije",
-    "Kenia"
+    "Comoren"
    ],
    "hint": "",
    "note": "",
@@ -1494,7 +1526,7 @@
    "itemId": "stad-dza-algiers"
   },
   {
-   "id": "land-van-hoofdstad-48",
+   "id": "land-van-hoofdstad-49",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Amman",
@@ -1502,9 +1534,9 @@
    "answer": "Jordanië",
    "options": [
     "Jordanië",
-    "Libanon",
-    "Jemen",
-    "Koeweit"
+    "Georgië",
+    "Maleisië",
+    "Kazachstan"
    ],
    "hint": "",
    "note": "",
@@ -1524,17 +1556,17 @@
    "itemId": "stad-jor-amman"
   },
   {
-   "id": "land-van-hoofdstad-49",
+   "id": "land-van-hoofdstad-50",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Andorra la Vella",
    "question": "Andorra la Vella is de hoofdstad van welk land?",
    "answer": "Andorra",
    "options": [
-    "Andorra",
-    "Frankrijk",
-    "Oekraïne",
-    "Litouwen"
+    "Italië",
+    "België",
+    "Spanje",
+    "Andorra"
    ],
    "hint": "",
    "note": "",
@@ -1554,17 +1586,17 @@
    "itemId": "stad-and-andorra-la-vella"
   },
   {
-   "id": "land-van-hoofdstad-50",
+   "id": "land-van-hoofdstad-51",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Antananarivo",
    "question": "Antananarivo is de hoofdstad van welk land?",
    "answer": "Madagaskar",
    "options": [
-    "Congo-Kinshasa",
-    "Botswana",
+    "Gabon",
     "Madagaskar",
-    "Equatoriaal-Guinea"
+    "Kaapverdië",
+    "Mauritanië"
    ],
    "hint": "",
    "note": "",
@@ -1584,16 +1616,16 @@
    "itemId": "stad-mdg-antananarivo"
   },
   {
-   "id": "land-van-hoofdstad-51",
+   "id": "land-van-hoofdstad-52",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Apia",
    "question": "Apia is de hoofdstad van welk land?",
    "answer": "Samoa",
    "options": [
-    "Mauritius",
-    "Tonga",
-    "Papoea-Nieuw-Guinea",
+    "Nauru",
+    "Nieuw-Zeeland",
+    "Salomonseilanden",
     "Samoa"
    ],
    "hint": "",
@@ -1614,16 +1646,16 @@
    "itemId": "stad-wsm-apia"
   },
   {
-   "id": "land-van-hoofdstad-52",
+   "id": "land-van-hoofdstad-53",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Asjchabad",
    "question": "Asjchabad is de hoofdstad van welk land?",
    "answer": "Turkmenistan",
    "options": [
-    "Georgië",
-    "Brunei",
-    "Laos",
+    "Oman",
+    "Jemen",
+    "Turkije",
     "Turkmenistan"
    ],
    "hint": "",
@@ -1644,17 +1676,17 @@
    "itemId": "stad-tkm-asjchabad"
   },
   {
-   "id": "land-van-hoofdstad-53",
+   "id": "land-van-hoofdstad-54",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Asmara",
    "question": "Asmara is de hoofdstad van welk land?",
    "answer": "Eritrea",
    "options": [
-    "Liberia",
-    "Mozambique",
-    "Eritrea",
-    "Kenia"
+    "Lesotho",
+    "Congo-Kinshasa",
+    "Nigeria",
+    "Eritrea"
    ],
    "hint": "",
    "note": "",
@@ -1674,17 +1706,17 @@
    "itemId": "stad-eri-asmara"
   },
   {
-   "id": "land-van-hoofdstad-54",
+   "id": "land-van-hoofdstad-55",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Asunción",
    "question": "Asunción is de hoofdstad van welk land?",
    "answer": "Paraguay",
    "options": [
+    "Bolivia",
     "Paraguay",
-    "Uruguay",
-    "Ecuador",
-    "Suriname"
+    "Suriname",
+    "Peru"
    ],
    "hint": "",
    "note": "",
@@ -1704,17 +1736,17 @@
    "itemId": "stad-pry-asuncion"
   },
   {
-   "id": "land-van-hoofdstad-55",
+   "id": "land-van-hoofdstad-56",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bakoe",
    "question": "Bakoe is de hoofdstad van welk land?",
    "answer": "Azerbeidzjan",
    "options": [
+    "Cyprus",
+    "Mongolië",
     "Azerbeidzjan",
-    "Saoedi-Arabië",
-    "Tadzjikistan",
-    "Afghanistan"
+    "Syrië"
    ],
    "hint": "",
    "note": "",
@@ -1734,17 +1766,17 @@
    "itemId": "stad-aze-bakoe"
   },
   {
-   "id": "land-van-hoofdstad-56",
+   "id": "land-van-hoofdstad-57",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bamako",
    "question": "Bamako is de hoofdstad van welk land?",
    "answer": "Mali",
    "options": [
-    "Guinee-Bissau",
-    "Eritrea",
     "Mali",
-    "Sudan"
+    "Algerije",
+    "Sao Tomé en Principe",
+    "Comoren"
    ],
    "hint": "",
    "note": "",
@@ -1764,17 +1796,17 @@
    "itemId": "stad-mli-bamako"
   },
   {
-   "id": "land-van-hoofdstad-57",
+   "id": "land-van-hoofdstad-58",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bandar Seri Begawan",
    "question": "Bandar Seri Begawan is de hoofdstad van welk land?",
    "answer": "Brunei",
    "options": [
-    "Bangladesh",
-    "Cyprus",
+    "Verenigde Arabische Emiraten",
+    "Tadzjikistan",
     "Brunei",
-    "Afghanistan"
+    "Georgië"
    ],
    "hint": "",
    "note": "",
@@ -1794,17 +1826,17 @@
    "itemId": "stad-brn-bandar-seri-begawan"
   },
   {
-   "id": "land-van-hoofdstad-58",
+   "id": "land-van-hoofdstad-59",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bangui",
    "question": "Bangui is de hoofdstad van welk land?",
    "answer": "Centraal-Afrikaanse Republiek",
    "options": [
-    "Guinee",
-    "Kaapverdië",
-    "Congo-Kinshasa",
-    "Centraal-Afrikaanse Republiek"
+    "Algerije",
+    "Centraal-Afrikaanse Republiek",
+    "Ivoorkust",
+    "Libië"
    ],
    "hint": "",
    "note": "",
@@ -1824,17 +1856,17 @@
    "itemId": "stad-caf-bangui"
   },
   {
-   "id": "land-van-hoofdstad-59",
+   "id": "land-van-hoofdstad-60",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Banjul",
    "question": "Banjul is de hoofdstad van welk land?",
    "answer": "Gambia",
    "options": [
-    "Ghana",
+    "Oeganda",
+    "Tanzania",
     "Gambia",
-    "Benin",
-    "Djibouti"
+    "Zuid-Soedan"
    ],
    "hint": "",
    "note": "",
@@ -1854,17 +1886,17 @@
    "itemId": "stad-gmb-banjul"
   },
   {
-   "id": "land-van-hoofdstad-60",
+   "id": "land-van-hoofdstad-61",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Basseterre",
    "question": "Basseterre is de hoofdstad van welk land?",
    "answer": "Saint Kitts en Nevis",
    "options": [
+    "Jamaica",
     "Saint Kitts en Nevis",
-    "Guatemala",
-    "Verenigde Staten",
-    "Nicaragua"
+    "Costa Rica",
+    "Dominica"
    ],
    "hint": "",
    "note": "",
@@ -1884,17 +1916,17 @@
    "itemId": "stad-kna-basseterre"
   },
   {
-   "id": "land-van-hoofdstad-61",
+   "id": "land-van-hoofdstad-62",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Beiroet",
    "question": "Beiroet is de hoofdstad van welk land?",
    "answer": "Libanon",
    "options": [
-    "Libanon",
-    "Jordanië",
-    "India",
-    "Nepal"
+    "Georgië",
+    "Turkije",
+    "Zuid-Korea",
+    "Libanon"
    ],
    "hint": "",
    "note": "",
@@ -1914,17 +1946,17 @@
    "itemId": "stad-lbn-beiroet"
   },
   {
-   "id": "land-van-hoofdstad-62",
+   "id": "land-van-hoofdstad-63",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Belmopan",
    "question": "Belmopan is de hoofdstad van welk land?",
    "answer": "Belize",
    "options": [
-    "Belize",
-    "Antigua en Barbuda",
     "Saint Kitts en Nevis",
-    "Dominicaanse Republiek"
+    "Belize",
+    "Guatemala",
+    "Honduras"
    ],
    "hint": "",
    "note": "",
@@ -1944,17 +1976,17 @@
    "itemId": "stad-blz-belmopan"
   },
   {
-   "id": "land-van-hoofdstad-63",
+   "id": "land-van-hoofdstad-64",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bisjkek",
    "question": "Bisjkek is de hoofdstad van welk land?",
    "answer": "Kirgizië",
    "options": [
+    "Indonesië",
+    "Libanon",
     "Kirgizië",
-    "Pakistan",
-    "Armenië",
-    "Syrië"
+    "Oost-Timor"
    ],
    "hint": "",
    "note": "",
@@ -1974,17 +2006,17 @@
    "itemId": "stad-kgz-bisjkek"
   },
   {
-   "id": "land-van-hoofdstad-64",
+   "id": "land-van-hoofdstad-65",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bissau",
    "question": "Bissau is de hoofdstad van welk land?",
    "answer": "Guinee-Bissau",
    "options": [
-    "Guinee",
-    "Guinee-Bissau",
-    "Swaziland",
-    "Mozambique"
+    "Ivoorkust",
+    "Comoren",
+    "Marokko",
+    "Guinee-Bissau"
    ],
    "hint": "",
    "note": "",
@@ -2004,17 +2036,17 @@
    "itemId": "stad-gnb-bissau"
   },
   {
-   "id": "land-van-hoofdstad-65",
+   "id": "land-van-hoofdstad-66",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bogota",
    "question": "Bogota is de hoofdstad van welk land?",
    "answer": "Colombia",
    "options": [
-    "Argentinië",
-    "Chili",
-    "Colombia",
-    "Guyana"
+    "Uruguay",
+    "Ecuador",
+    "Suriname",
+    "Colombia"
    ],
    "hint": "",
    "note": "",
@@ -2034,17 +2066,17 @@
    "itemId": "stad-col-bogota"
   },
   {
-   "id": "land-van-hoofdstad-66",
+   "id": "land-van-hoofdstad-67",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Brazzaville",
    "question": "Brazzaville is de hoofdstad van welk land?",
    "answer": "Congo-Brazzaville",
    "options": [
-    "Malawi",
-    "Somalië",
     "Congo-Brazzaville",
-    "Zuid-Afrika"
+    "Guinee-Bissau",
+    "Nigeria",
+    "Gambia"
    ],
    "hint": "",
    "note": "",
@@ -2064,17 +2096,17 @@
    "itemId": "stad-cog-brazzaville"
   },
   {
-   "id": "land-van-hoofdstad-67",
+   "id": "land-van-hoofdstad-68",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Bridgetown",
    "question": "Bridgetown is de hoofdstad van welk land?",
    "answer": "Barbados",
    "options": [
-    "El Salvador",
-    "Belize",
-    "Barbados",
-    "Saint Lucia"
+    "Saint Vincent en de Grenadines",
+    "Dominicaanse Republiek",
+    "Antigua en Barbuda",
+    "Barbados"
    ],
    "hint": "",
    "note": "",
@@ -2092,36 +2124,6 @@
     ]
    },
    "itemId": "stad-brb-bridgetown"
-  },
-  {
-   "id": "land-van-hoofdstad-68",
-   "kind": "fact",
-   "category": "hoofdsteden",
-   "name": "Bujumbura",
-   "question": "Bujumbura is de hoofdstad van welk land?",
-   "answer": "Burundi",
-   "options": [
-    "Rwanda",
-    "Togo",
-    "Guinee-Bissau",
-    "Burundi"
-   ],
-   "hint": "",
-   "note": "",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "land-van-hoofdstad"
-   },
-   "doelen": [
-    "KD25A"
-   ],
-   "leerjaren": {
-    "onderbouw": [
-     2
-    ]
-   },
-   "itemId": "stad-bdi-bujumbura"
   },
   {
    "id": "land-van-hoofdstad-69",
@@ -2457,14 +2459,44 @@
    "id": "land-van-hoofdstad-80",
    "kind": "fact",
    "category": "hoofdsteden",
+   "name": "Dodoma",
+   "question": "Dodoma is de hoofdstad van welk land?",
+   "answer": "Tanzania",
+   "options": [
+    "Senegal",
+    "Marokko",
+    "Tanzania",
+    "Mauritanië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-tza-dodoma"
+  },
+  {
+   "id": "land-van-hoofdstad-81",
+   "kind": "fact",
+   "category": "hoofdsteden",
    "name": "Doesjanbe",
    "question": "Doesjanbe is de hoofdstad van welk land?",
    "answer": "Tadzjikistan",
    "options": [
-    "Jordanië",
-    "Jemen",
-    "Myanmar",
-    "Tadzjikistan"
+    "Georgië",
+    "Kazachstan",
+    "Tadzjikistan",
+    "Syrië"
    ],
    "hint": "",
    "note": "",
@@ -2484,17 +2516,17 @@
    "itemId": "stad-tjk-doesjanbe"
   },
   {
-   "id": "land-van-hoofdstad-81",
+   "id": "land-van-hoofdstad-82",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Doha",
    "question": "Doha is de hoofdstad van welk land?",
    "answer": "Qatar",
    "options": [
-    "Libanon",
-    "Japan",
+    "Verenigde Arabische Emiraten",
+    "Iran",
     "Qatar",
-    "Saoedi-Arabië"
+    "Nepal"
    ],
    "hint": "",
    "note": "",
@@ -2514,17 +2546,17 @@
    "itemId": "stad-qat-doha"
   },
   {
-   "id": "land-van-hoofdstad-82",
+   "id": "land-van-hoofdstad-83",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Freetown",
    "question": "Freetown is de hoofdstad van welk land?",
    "answer": "Sierra Leone",
    "options": [
-    "Somalië",
-    "Angola",
+    "Liberia",
     "Sierra Leone",
-    "Senegal"
+    "Burundi",
+    "Eritrea"
    ],
    "hint": "",
    "note": "",
@@ -2544,17 +2576,17 @@
    "itemId": "stad-sle-freetown"
   },
   {
-   "id": "land-van-hoofdstad-83",
+   "id": "land-van-hoofdstad-84",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Funafuti",
    "question": "Funafuti is de hoofdstad van welk land?",
    "answer": "Tuvalu",
    "options": [
-    "Marshalleilanden",
+    "Nauru",
+    "Salomonseilanden",
     "Tuvalu",
-    "Palau",
-    "Nauru"
+    "Kiribati"
    ],
    "hint": "",
    "note": "",
@@ -2574,17 +2606,17 @@
    "itemId": "stad-tuv-funafuti"
   },
   {
-   "id": "land-van-hoofdstad-84",
+   "id": "land-van-hoofdstad-85",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Gaborone",
    "question": "Gaborone is de hoofdstad van welk land?",
    "answer": "Botswana",
    "options": [
-    "Ghana",
-    "Malawi",
+    "Comoren",
     "Botswana",
-    "Senegal"
+    "Liberia",
+    "Burkina Faso"
    ],
    "hint": "",
    "note": "",
@@ -2604,17 +2636,17 @@
    "itemId": "stad-bwa-gaborone"
   },
   {
-   "id": "land-van-hoofdstad-85",
+   "id": "land-van-hoofdstad-86",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Georgetown",
    "question": "Georgetown is de hoofdstad van welk land?",
    "answer": "Guyana",
    "options": [
-    "Colombia",
     "Guyana",
-    "Uruguay",
-    "Bolivia"
+    "Argentinië",
+    "Colombia",
+    "Uruguay"
    ],
    "hint": "",
    "note": "",
@@ -2634,17 +2666,47 @@
    "itemId": "stad-guy-georgetown"
   },
   {
-   "id": "land-van-hoofdstad-86",
+   "id": "land-van-hoofdstad-87",
+   "kind": "fact",
+   "category": "hoofdsteden",
+   "name": "Gitega",
+   "question": "Gitega is de hoofdstad van welk land?",
+   "answer": "Burundi",
+   "options": [
+    "Tsjaad",
+    "Namibië",
+    "Sierra Leone",
+    "Burundi"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-bdi-gitega"
+  },
+  {
+   "id": "land-van-hoofdstad-88",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Guatemala-Stad",
    "question": "Guatemala-Stad is de hoofdstad van welk land?",
    "answer": "Guatemala",
    "options": [
-    "Trinidad en Tobago",
+    "Barbados",
+    "Jamaica",
     "Guatemala",
-    "Verenigde Staten",
-    "Belize"
+    "Honduras"
    ],
    "hint": "",
    "note": "",
@@ -2664,17 +2726,17 @@
    "itemId": "stad-gtm-guatemala-stad"
   },
   {
-   "id": "land-van-hoofdstad-87",
+   "id": "land-van-hoofdstad-89",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Hanoi",
    "question": "Hanoi is de hoofdstad van welk land?",
    "answer": "Vietnam",
    "options": [
-    "Jordanië",
-    "Singapore",
-    "Mongolië",
-    "Vietnam"
+    "Vietnam",
+    "Bhutan",
+    "Syrië",
+    "Pakistan"
    ],
    "hint": "",
    "note": "",
@@ -2694,17 +2756,17 @@
    "itemId": "stad-vnm-hanoi"
   },
   {
-   "id": "land-van-hoofdstad-88",
+   "id": "land-van-hoofdstad-90",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Harare",
    "question": "Harare is de hoofdstad van welk land?",
    "answer": "Zimbabwe",
    "options": [
+    "Madagaskar",
     "Zimbabwe",
-    "Burundi",
-    "Ethiopië",
-    "Tunesië"
+    "Botswana",
+    "Djibouti"
    ],
    "hint": "",
    "note": "",
@@ -2724,17 +2786,17 @@
    "itemId": "stad-zwe-harare"
   },
   {
-   "id": "land-van-hoofdstad-89",
+   "id": "land-van-hoofdstad-91",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Havana",
    "question": "Havana is de hoofdstad van welk land?",
    "answer": "Cuba",
    "options": [
-    "Saint Lucia",
+    "Barbados",
+    "Belize",
     "Cuba",
-    "Antigua en Barbuda",
-    "Grenada"
+    "Guatemala"
    ],
    "hint": "",
    "note": "",
@@ -2754,7 +2816,7 @@
    "itemId": "stad-cub-havana"
   },
   {
-   "id": "land-van-hoofdstad-90",
+   "id": "land-van-hoofdstad-92",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Honiara",
@@ -2762,9 +2824,9 @@
    "answer": "Salomonseilanden",
    "options": [
     "Salomonseilanden",
-    "Maldiven",
-    "Samoa",
-    "Tonga"
+    "Tonga",
+    "Fiji",
+    "Kiribati"
    ],
    "hint": "",
    "note": "",
@@ -2784,17 +2846,17 @@
    "itemId": "stad-slb-honiara"
   },
   {
-   "id": "land-van-hoofdstad-91",
+   "id": "land-van-hoofdstad-93",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Islamabad",
    "question": "Islamabad is de hoofdstad van welk land?",
    "answer": "Pakistan",
    "options": [
-    "Turkmenistan",
-    "Oman",
-    "Pakistan",
-    "China"
+    "Kazachstan",
+    "Singapore",
+    "Verenigde Arabische Emiraten",
+    "Pakistan"
    ],
    "hint": "",
    "note": "",
@@ -2814,17 +2876,17 @@
    "itemId": "stad-pak-islamabad"
   },
   {
-   "id": "land-van-hoofdstad-92",
+   "id": "land-van-hoofdstad-94",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Jerevan",
    "question": "Jerevan is de hoofdstad van welk land?",
    "answer": "Armenië",
    "options": [
+    "Vietnam",
     "Armenië",
-    "Pakistan",
-    "Koeweit",
-    "Syrië"
+    "Georgië",
+    "Bhutan"
    ],
    "hint": "",
    "note": "",
@@ -2844,17 +2906,17 @@
    "itemId": "stad-arm-jerevan"
   },
   {
-   "id": "land-van-hoofdstad-93",
+   "id": "land-van-hoofdstad-95",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kabul",
    "question": "Kabul is de hoofdstad van welk land?",
    "answer": "Afghanistan",
    "options": [
-    "Oman",
-    "Filipijnen",
     "Afghanistan",
-    "Laos"
+    "Zuid-Korea",
+    "Azerbeidzjan",
+    "Mongolië"
    ],
    "hint": "",
    "note": "",
@@ -2874,17 +2936,17 @@
    "itemId": "stad-afg-kabul"
   },
   {
-   "id": "land-van-hoofdstad-94",
+   "id": "land-van-hoofdstad-96",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kampala",
    "question": "Kampala is de hoofdstad van welk land?",
    "answer": "Oeganda",
    "options": [
-    "Somalië",
-    "Oeganda",
-    "Namibië",
-    "Swaziland"
+    "Algerije",
+    "Burkina Faso",
+    "Guinee",
+    "Oeganda"
    ],
    "hint": "",
    "note": "",
@@ -2904,17 +2966,17 @@
    "itemId": "stad-uga-kampala"
   },
   {
-   "id": "land-van-hoofdstad-95",
+   "id": "land-van-hoofdstad-97",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kathmandu",
    "question": "Kathmandu is de hoofdstad van welk land?",
    "answer": "Nepal",
    "options": [
-    "Azerbeidzjan",
-    "Bhutan",
-    "Nepal",
-    "Cambodja"
+    "Israël",
+    "Myanmar",
+    "Armenië",
+    "Nepal"
    ],
    "hint": "",
    "note": "",
@@ -2934,7 +2996,7 @@
    "itemId": "stad-npl-kathmandu"
   },
   {
-   "id": "land-van-hoofdstad-96",
+   "id": "land-van-hoofdstad-98",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Khartoem",
@@ -2942,9 +3004,9 @@
    "answer": "Sudan",
    "options": [
     "Sudan",
-    "Niger",
-    "Swaziland",
-    "Zimbabwe"
+    "Kameroen",
+    "Gabon",
+    "Centraal-Afrikaanse Republiek"
    ],
    "hint": "",
    "note": "",
@@ -2964,17 +3026,17 @@
    "itemId": "stad-sdn-khartoem"
   },
   {
-   "id": "land-van-hoofdstad-97",
+   "id": "land-van-hoofdstad-99",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kiev",
    "question": "Kiev is de hoofdstad van welk land?",
    "answer": "Oekraïne",
    "options": [
-    "Malta",
     "Oekraïne",
-    "Finland",
-    "België"
+    "Servië",
+    "Hongarije",
+    "Moldavië"
    ],
    "hint": "",
    "note": "",
@@ -2994,17 +3056,17 @@
    "itemId": "stad-ukr-kiev"
   },
   {
-   "id": "land-van-hoofdstad-98",
+   "id": "land-van-hoofdstad-100",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kigali",
    "question": "Kigali is de hoofdstad van welk land?",
    "answer": "Rwanda",
    "options": [
-    "Marokko",
-    "Egypte",
+    "Congo-Kinshasa",
     "Rwanda",
-    "Nigeria"
+    "Zuid-Soedan",
+    "Equatoriaal-Guinea"
    ],
    "hint": "",
    "note": "",
@@ -3024,17 +3086,17 @@
    "itemId": "stad-rwa-kigali"
   },
   {
-   "id": "land-van-hoofdstad-99",
+   "id": "land-van-hoofdstad-101",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kingston",
    "question": "Kingston is de hoofdstad van welk land?",
    "answer": "Jamaica",
    "options": [
-    "Honduras",
+    "Cuba",
+    "Nicaragua",
     "Jamaica",
-    "Verenigde Staten",
-    "Dominica"
+    "Guatemala"
    ],
    "hint": "",
    "note": "",
@@ -3054,17 +3116,17 @@
    "itemId": "stad-jam-kingston"
   },
   {
-   "id": "land-van-hoofdstad-100",
+   "id": "land-van-hoofdstad-102",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kingstown",
    "question": "Kingstown is de hoofdstad van welk land?",
    "answer": "Saint Vincent en de Grenadines",
    "options": [
+    "Belize",
     "Saint Vincent en de Grenadines",
-    "Panama",
-    "Antigua en Barbuda",
-    "Grenada"
+    "Dominica",
+    "Jamaica"
    ],
    "hint": "",
    "note": "",
@@ -3084,17 +3146,17 @@
    "itemId": "stad-vct-kingstown"
   },
   {
-   "id": "land-van-hoofdstad-101",
+   "id": "land-van-hoofdstad-103",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kinshasa",
    "question": "Kinshasa is de hoofdstad van welk land?",
    "answer": "Congo-Kinshasa",
    "options": [
-    "Ethiopië",
     "Congo-Kinshasa",
-    "Angola",
-    "Ivoorkust"
+    "Malawi",
+    "Zimbabwe",
+    "Senegal"
    ],
    "hint": "",
    "note": "",
@@ -3114,17 +3176,17 @@
    "itemId": "stad-cod-kinshasa"
   },
   {
-   "id": "land-van-hoofdstad-102",
+   "id": "land-van-hoofdstad-104",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Koeweit",
    "question": "Koeweit is de hoofdstad van welk land?",
    "answer": "Koeweit",
    "options": [
-    "Mongolië",
-    "Libanon",
-    "Kirgizië",
-    "Koeweit"
+    "Azerbeidzjan",
+    "Kazachstan",
+    "Koeweit",
+    "China"
    ],
    "hint": "",
    "note": "",
@@ -3144,17 +3206,17 @@
    "itemId": "stad-kwt-koeweit"
   },
   {
-   "id": "land-van-hoofdstad-103",
+   "id": "land-van-hoofdstad-105",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Kuala Lumpur",
    "question": "Kuala Lumpur is de hoofdstad van welk land?",
    "answer": "Maleisië",
    "options": [
-    "Bahrein",
-    "Kazachstan",
-    "Maleisië",
-    "China"
+    "Pakistan",
+    "Saoedi-Arabië",
+    "Afghanistan",
+    "Maleisië"
    ],
    "hint": "",
    "note": "",
@@ -3174,7 +3236,7 @@
    "itemId": "stad-mys-kuala-lumpur"
   },
   {
-   "id": "land-van-hoofdstad-104",
+   "id": "land-van-hoofdstad-106",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Libreville",
@@ -3182,9 +3244,9 @@
    "answer": "Gabon",
    "options": [
     "Guinee",
-    "Ivoorkust",
-    "Congo-Kinshasa",
-    "Gabon"
+    "Senegal",
+    "Gabon",
+    "Djibouti"
    ],
    "hint": "",
    "note": "",
@@ -3204,17 +3266,17 @@
    "itemId": "stad-gab-libreville"
   },
   {
-   "id": "land-van-hoofdstad-105",
+   "id": "land-van-hoofdstad-107",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Lilongwe",
    "question": "Lilongwe is de hoofdstad van welk land?",
    "answer": "Malawi",
    "options": [
-    "Ghana",
-    "Rwanda",
-    "Malawi",
-    "Congo-Brazzaville"
+    "Tanzania",
+    "Eritrea",
+    "Angola",
+    "Malawi"
    ],
    "hint": "",
    "note": "",
@@ -3234,17 +3296,17 @@
    "itemId": "stad-mwi-lilongwe"
   },
   {
-   "id": "land-van-hoofdstad-106",
+   "id": "land-van-hoofdstad-108",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Lima",
    "question": "Lima is de hoofdstad van welk land?",
    "answer": "Peru",
    "options": [
-    "Colombia",
-    "Guyana",
     "Peru",
-    "Brazilië"
+    "Paraguay",
+    "Colombia",
+    "Uruguay"
    ],
    "hint": "",
    "note": "",
@@ -3264,7 +3326,7 @@
    "itemId": "stad-per-lima"
   },
   {
-   "id": "land-van-hoofdstad-107",
+   "id": "land-van-hoofdstad-109",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Ljubljana",
@@ -3272,9 +3334,9 @@
    "answer": "Slovenië",
    "options": [
     "Slovenië",
-    "Liechtenstein",
-    "Spanje",
-    "Polen"
+    "Zweden",
+    "Finland",
+    "Vaticaanstad"
    ],
    "hint": "",
    "note": "",
@@ -3294,17 +3356,47 @@
    "itemId": "stad-svn-ljubljana"
   },
   {
-   "id": "land-van-hoofdstad-108",
+   "id": "land-van-hoofdstad-110",
+   "kind": "fact",
+   "category": "hoofdsteden",
+   "name": "Lobamba",
+   "question": "Lobamba is de hoofdstad van welk land?",
+   "answer": "Swaziland",
+   "options": [
+    "Swaziland",
+    "Gabon",
+    "Rwanda",
+    "Botswana"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-swz-lobamba"
+  },
+  {
+   "id": "land-van-hoofdstad-111",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Lomé",
    "question": "Lomé is de hoofdstad van welk land?",
    "answer": "Togo",
    "options": [
-    "Zimbabwe",
-    "Oeganda",
-    "Gambia",
-    "Togo"
+    "Libië",
+    "Togo",
+    "Liberia",
+    "Tunesië"
    ],
    "hint": "",
    "note": "",
@@ -3324,7 +3416,7 @@
    "itemId": "stad-tgo-lome"
   },
   {
-   "id": "land-van-hoofdstad-109",
+   "id": "land-van-hoofdstad-112",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Luanda",
@@ -3332,9 +3424,9 @@
    "answer": "Angola",
    "options": [
     "Angola",
-    "Sierra Leone",
-    "Eritrea",
-    "Ghana"
+    "Niger",
+    "Burkina Faso",
+    "Congo-Kinshasa"
    ],
    "hint": "",
    "note": "",
@@ -3354,17 +3446,17 @@
    "itemId": "stad-ago-luanda"
   },
   {
-   "id": "land-van-hoofdstad-110",
+   "id": "land-van-hoofdstad-113",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Lusaka",
    "question": "Lusaka is de hoofdstad van welk land?",
    "answer": "Zambia",
    "options": [
-    "Libië",
+    "Ghana",
+    "Tunesië",
     "Zambia",
-    "Malawi",
-    "Tunesië"
+    "Marokko"
    ],
    "hint": "",
    "note": "",
@@ -3384,17 +3476,17 @@
    "itemId": "stad-zmb-lusaka"
   },
   {
-   "id": "land-van-hoofdstad-111",
+   "id": "land-van-hoofdstad-114",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Majuro",
    "question": "Majuro is de hoofdstad van welk land?",
    "answer": "Marshalleilanden",
    "options": [
+    "Fiji",
+    "Papoea-Nieuw-Guinea",
     "Marshalleilanden",
-    "Australië",
-    "Palau",
-    "Fiji"
+    "Vanuatu"
    ],
    "hint": "",
    "note": "",
@@ -3414,17 +3506,17 @@
    "itemId": "stad-mhl-majuro"
   },
   {
-   "id": "land-van-hoofdstad-112",
+   "id": "land-van-hoofdstad-115",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Malabo",
    "question": "Malabo is de hoofdstad van welk land?",
    "answer": "Equatoriaal-Guinea",
    "options": [
-    "Gambia",
-    "Marokko",
-    "Djibouti",
-    "Equatoriaal-Guinea"
+    "Equatoriaal-Guinea",
+    "Nigeria",
+    "Gabon",
+    "Eritrea"
    ],
    "hint": "",
    "note": "",
@@ -3444,17 +3536,17 @@
    "itemId": "stad-gnq-malabo"
   },
   {
-   "id": "land-van-hoofdstad-113",
+   "id": "land-van-hoofdstad-116",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Malé",
    "question": "Malé is de hoofdstad van welk land?",
    "answer": "Maldiven",
    "options": [
-    "Vanuatu",
-    "Maldiven",
-    "Kiribati",
-    "Marshalleilanden"
+    "Nauru",
+    "Australië",
+    "Papoea-Nieuw-Guinea",
+    "Maldiven"
    ],
    "hint": "",
    "note": "",
@@ -3474,17 +3566,17 @@
    "itemId": "stad-mdv-male"
   },
   {
-   "id": "land-van-hoofdstad-114",
+   "id": "land-van-hoofdstad-117",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Managua",
    "question": "Managua is de hoofdstad van welk land?",
    "answer": "Nicaragua",
    "options": [
-    "Nicaragua",
-    "Bahama's",
-    "Costa Rica",
-    "Canada"
+    "Saint Lucia",
+    "Grenada",
+    "Saint Vincent en de Grenadines",
+    "Nicaragua"
    ],
    "hint": "",
    "note": "",
@@ -3504,17 +3596,17 @@
    "itemId": "stad-nic-managua"
   },
   {
-   "id": "land-van-hoofdstad-115",
+   "id": "land-van-hoofdstad-118",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Manama",
    "question": "Manama is de hoofdstad van welk land?",
    "answer": "Bahrein",
    "options": [
-    "Japan",
-    "Cambodja",
-    "Jemen",
-    "Bahrein"
+    "Bahrein",
+    "Laos",
+    "Qatar",
+    "Georgië"
    ],
    "hint": "",
    "note": "",
@@ -3534,17 +3626,17 @@
    "itemId": "stad-bhr-manama"
   },
   {
-   "id": "land-van-hoofdstad-116",
+   "id": "land-van-hoofdstad-119",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Maputo",
    "question": "Maputo is de hoofdstad van welk land?",
    "answer": "Mozambique",
    "options": [
-    "Gambia",
-    "Niger",
+    "Egypte",
+    "Kaapverdië",
     "Mozambique",
-    "Egypte"
+    "Malawi"
    ],
    "hint": "",
    "note": "",
@@ -3564,17 +3656,17 @@
    "itemId": "stad-moz-maputo"
   },
   {
-   "id": "land-van-hoofdstad-117",
+   "id": "land-van-hoofdstad-120",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Maseru",
    "question": "Maseru is de hoofdstad van welk land?",
    "answer": "Lesotho",
    "options": [
-    "Kaapverdië",
-    "Burkina Faso",
     "Lesotho",
-    "Mauritanië"
+    "Nigeria",
+    "Ghana",
+    "Congo-Kinshasa"
    ],
    "hint": "",
    "note": "",
@@ -3594,17 +3686,17 @@
    "itemId": "stad-lso-maseru"
   },
   {
-   "id": "land-van-hoofdstad-118",
+   "id": "land-van-hoofdstad-121",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Masqat",
    "question": "Masqat is de hoofdstad van welk land?",
    "answer": "Oman",
    "options": [
-    "Noord-Korea",
-    "Oman",
-    "India",
-    "Syrië"
+    "Zuid-Korea",
+    "Brunei",
+    "Myanmar",
+    "Oman"
    ],
    "hint": "",
    "note": "",
@@ -3624,17 +3716,17 @@
    "itemId": "stad-omn-masqat"
   },
   {
-   "id": "land-van-hoofdstad-119",
+   "id": "land-van-hoofdstad-122",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Melekeok",
    "question": "Melekeok is de hoofdstad van welk land?",
    "answer": "Palau",
    "options": [
-    "Palau",
-    "Samoa",
     "Seychellen",
-    "Marshalleilanden"
+    "Salomonseilanden",
+    "Palau",
+    "Fiji"
    ],
    "hint": "",
    "note": "",
@@ -3654,17 +3746,17 @@
    "itemId": "stad-plw-melekeok"
   },
   {
-   "id": "land-van-hoofdstad-120",
+   "id": "land-van-hoofdstad-123",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Minsk",
    "question": "Minsk is de hoofdstad van welk land?",
    "answer": "Wit-Rusland",
    "options": [
-    "Wit-Rusland",
-    "Duitsland",
-    "Frankrijk",
-    "Slowakije"
+    "Griekenland",
+    "Italië",
+    "Denemarken",
+    "Wit-Rusland"
    ],
    "hint": "",
    "note": "",
@@ -3684,17 +3776,17 @@
    "itemId": "stad-blr-minsk"
   },
   {
-   "id": "land-van-hoofdstad-121",
+   "id": "land-van-hoofdstad-124",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Mogadishu",
    "question": "Mogadishu is de hoofdstad van welk land?",
    "answer": "Somalië",
    "options": [
-    "Somalië",
-    "Rwanda",
-    "Equatoriaal-Guinea",
-    "Kenia"
+    "Comoren",
+    "Nigeria",
+    "Marokko",
+    "Somalië"
    ],
    "hint": "",
    "note": "",
@@ -3714,17 +3806,17 @@
    "itemId": "stad-som-mogadishu"
   },
   {
-   "id": "land-van-hoofdstad-122",
+   "id": "land-van-hoofdstad-125",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Monaco",
    "question": "Monaco is de hoofdstad van welk land?",
    "answer": "Monaco",
    "options": [
-    "Zweden",
-    "Monaco",
-    "Vaticaanstad",
-    "Finland"
+    "Polen",
+    "Tsjechië",
+    "San Marino",
+    "Monaco"
    ],
    "hint": "",
    "note": "",
@@ -3744,17 +3836,17 @@
    "itemId": "stad-mco-monaco"
   },
   {
-   "id": "land-van-hoofdstad-123",
+   "id": "land-van-hoofdstad-126",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Monrovia",
    "question": "Monrovia is de hoofdstad van welk land?",
    "answer": "Liberia",
    "options": [
-    "Zimbabwe",
+    "Ethiopië",
+    "Swaziland",
     "Liberia",
-    "Gambia",
-    "Tunesië"
+    "Zambia"
    ],
    "hint": "",
    "note": "",
@@ -3774,17 +3866,17 @@
    "itemId": "stad-lbr-monrovia"
   },
   {
-   "id": "land-van-hoofdstad-124",
+   "id": "land-van-hoofdstad-127",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Montevideo",
    "question": "Montevideo is de hoofdstad van welk land?",
    "answer": "Uruguay",
    "options": [
-    "Suriname",
     "Bolivia",
-    "Chili",
-    "Uruguay"
+    "Colombia",
+    "Uruguay",
+    "Venezuela"
    ],
    "hint": "",
    "note": "",
@@ -3804,17 +3896,17 @@
    "itemId": "stad-ury-montevideo"
   },
   {
-   "id": "land-van-hoofdstad-125",
+   "id": "land-van-hoofdstad-128",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Moroni",
    "question": "Moroni is de hoofdstad van welk land?",
    "answer": "Comoren",
    "options": [
-    "Algerije",
-    "Namibië",
-    "Comoren",
-    "Tanzania"
+    "Guinee-Bissau",
+    "Nigeria",
+    "Tunesië",
+    "Comoren"
    ],
    "hint": "",
    "note": "",
@@ -3834,17 +3926,17 @@
    "itemId": "stad-com-moroni"
   },
   {
-   "id": "land-van-hoofdstad-126",
+   "id": "land-van-hoofdstad-129",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Nairobi",
    "question": "Nairobi is de hoofdstad van welk land?",
    "answer": "Kenia",
    "options": [
-    "Niger",
-    "Namibië",
-    "Kenia",
-    "Congo-Brazzaville"
+    "Sao Tomé en Principe",
+    "Zuid-Soedan",
+    "Togo",
+    "Kenia"
    ],
    "hint": "",
    "note": "",
@@ -3864,17 +3956,17 @@
    "itemId": "stad-ken-nairobi"
   },
   {
-   "id": "land-van-hoofdstad-127",
+   "id": "land-van-hoofdstad-130",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Nassau",
    "question": "Nassau is de hoofdstad van welk land?",
    "answer": "Bahama's",
    "options": [
-    "Antigua en Barbuda",
-    "Haïti",
-    "Verenigde Staten",
-    "Bahama's"
+    "Canada",
+    "Mexico",
+    "Bahama's",
+    "Trinidad en Tobago"
    ],
    "hint": "",
    "note": "",
@@ -3894,17 +3986,47 @@
    "itemId": "stad-bhs-nassau"
   },
   {
-   "id": "land-van-hoofdstad-128",
+   "id": "land-van-hoofdstad-131",
+   "kind": "fact",
+   "category": "hoofdsteden",
+   "name": "Naypyidaw",
+   "question": "Naypyidaw is de hoofdstad van welk land?",
+   "answer": "Myanmar",
+   "options": [
+    "Noord-Korea",
+    "Myanmar",
+    "Turkmenistan",
+    "Thailand"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-mmr-naypyidaw"
+  },
+  {
+   "id": "land-van-hoofdstad-132",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Ndjamena",
    "question": "Ndjamena is de hoofdstad van welk land?",
    "answer": "Tsjaad",
    "options": [
-    "Tunesië",
-    "Somalië",
-    "Tsjaad",
-    "Djibouti"
+    "Algerije",
+    "Lesotho",
+    "Congo-Kinshasa",
+    "Tsjaad"
    ],
    "hint": "",
    "note": "",
@@ -3924,17 +4046,17 @@
    "itemId": "stad-tcd-ndjamena"
   },
   {
-   "id": "land-van-hoofdstad-129",
+   "id": "land-van-hoofdstad-133",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Niamey",
    "question": "Niamey is de hoofdstad van welk land?",
    "answer": "Niger",
    "options": [
-    "Kaapverdië",
+    "Centraal-Afrikaanse Republiek",
+    "Ivoorkust",
     "Niger",
-    "Kenia",
-    "Congo-Kinshasa"
+    "Madagaskar"
    ],
    "hint": "",
    "note": "",
@@ -3954,17 +4076,17 @@
    "itemId": "stad-ner-niamey"
   },
   {
-   "id": "land-van-hoofdstad-130",
+   "id": "land-van-hoofdstad-134",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Nicosia",
    "question": "Nicosia is de hoofdstad van welk land?",
    "answer": "Cyprus",
    "options": [
-    "Georgië",
-    "Singapore",
-    "Cyprus",
-    "Syrië"
+    "Filipijnen",
+    "Thailand",
+    "Afghanistan",
+    "Cyprus"
    ],
    "hint": "",
    "note": "",
@@ -3984,17 +4106,17 @@
    "itemId": "stad-cyp-nicosia"
   },
   {
-   "id": "land-van-hoofdstad-131",
+   "id": "land-van-hoofdstad-135",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Nouakchott",
    "question": "Nouakchott is de hoofdstad van welk land?",
    "answer": "Mauritanië",
    "options": [
-    "Kameroen",
-    "Burundi",
     "Mauritanië",
-    "Kaapverdië"
+    "Marokko",
+    "Burundi",
+    "Zambia"
    ],
    "hint": "",
    "note": "",
@@ -4014,16 +4136,16 @@
    "itemId": "stad-mrt-nouakchott"
   },
   {
-   "id": "land-van-hoofdstad-132",
+   "id": "land-van-hoofdstad-136",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Nuku'alofa",
    "question": "Nuku'alofa is de hoofdstad van welk land?",
    "answer": "Tonga",
    "options": [
+    "Tuvalu",
+    "Maldiven",
     "Tonga",
-    "Palau",
-    "Fiji",
     "Vanuatu"
    ],
    "hint": "",
@@ -4044,17 +4166,17 @@
    "itemId": "stad-ton-nuku-alofa"
   },
   {
-   "id": "land-van-hoofdstad-133",
+   "id": "land-van-hoofdstad-137",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Nur-Sultan",
    "question": "Nur-Sultan is de hoofdstad van welk land?",
    "answer": "Kazachstan",
    "options": [
-    "Cyprus",
+    "Israël",
     "Kazachstan",
-    "Bhutan",
-    "Turkije"
+    "Turkije",
+    "Oman"
    ],
    "hint": "",
    "note": "",
@@ -4074,7 +4196,37 @@
    "itemId": "stad-kaz-nur-sultan"
   },
   {
-   "id": "land-van-hoofdstad-134",
+   "id": "land-van-hoofdstad-138",
+   "kind": "fact",
+   "category": "hoofdsteden",
+   "name": "Nuuk",
+   "question": "Nuuk is de hoofdstad van welk land?",
+   "answer": "Groenland",
+   "options": [
+    "Groenland",
+    "Panama",
+    "Grenada",
+    "Honduras"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-grl-nuuk"
+  },
+  {
+   "id": "land-van-hoofdstad-139",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Ottawa",
@@ -4082,9 +4234,9 @@
    "answer": "Canada",
    "options": [
     "Canada",
-    "El Salvador",
-    "Jamaica",
-    "Dominica"
+    "Belize",
+    "Panama",
+    "Nicaragua"
    ],
    "hint": "",
    "note": "",
@@ -4104,17 +4256,17 @@
    "itemId": "stad-can-ottawa"
   },
   {
-   "id": "land-van-hoofdstad-135",
+   "id": "land-van-hoofdstad-140",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Ouagadougou",
    "question": "Ouagadougou is de hoofdstad van welk land?",
    "answer": "Burkina Faso",
    "options": [
-    "Burundi",
+    "Nigeria",
     "Congo-Kinshasa",
     "Burkina Faso",
-    "Gabon"
+    "Tunesië"
    ],
    "hint": "",
    "note": "",
@@ -4134,7 +4286,7 @@
    "itemId": "stad-bfa-ouagadougou"
   },
   {
-   "id": "land-van-hoofdstad-136",
+   "id": "land-van-hoofdstad-141",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Palikir",
@@ -4143,8 +4295,8 @@
    "options": [
     "Seychellen",
     "Micronesia",
-    "Australië",
-    "Samoa"
+    "Nieuw-Zeeland",
+    "Nauru"
    ],
    "hint": "",
    "note": "",
@@ -4164,17 +4316,17 @@
    "itemId": "stad-fsm-palikir"
   },
   {
-   "id": "land-van-hoofdstad-137",
+   "id": "land-van-hoofdstad-142",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Panama-Stad",
    "question": "Panama-Stad is de hoofdstad van welk land?",
    "answer": "Panama",
    "options": [
-    "Nicaragua",
-    "Saint Lucia",
+    "Belize",
     "Panama",
-    "Trinidad en Tobago"
+    "Dominica",
+    "Canada"
    ],
    "hint": "",
    "note": "",
@@ -4194,17 +4346,17 @@
    "itemId": "stad-pan-panama-stad"
   },
   {
-   "id": "land-van-hoofdstad-138",
+   "id": "land-van-hoofdstad-143",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Phnom-Penh",
    "question": "Phnom-Penh is de hoofdstad van welk land?",
    "answer": "Cambodja",
    "options": [
-    "Cambodja",
-    "Libanon",
-    "Georgië",
-    "Bhutan"
+    "Myanmar",
+    "Iran",
+    "Indonesië",
+    "Cambodja"
    ],
    "hint": "",
    "note": "",
@@ -4224,17 +4376,17 @@
    "itemId": "stad-khm-phnom-penh"
   },
   {
-   "id": "land-van-hoofdstad-139",
+   "id": "land-van-hoofdstad-144",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Podgorica",
    "question": "Podgorica is de hoofdstad van welk land?",
    "answer": "Montenegro",
    "options": [
-    "Litouwen",
     "Montenegro",
-    "Polen",
-    "Slovenië"
+    "Vaticaanstad",
+    "Slovenië",
+    "Rusland"
    ],
    "hint": "",
    "note": "",
@@ -4254,17 +4406,17 @@
    "itemId": "stad-mne-podgorica"
   },
   {
-   "id": "land-van-hoofdstad-140",
+   "id": "land-van-hoofdstad-145",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Port Louis",
    "question": "Port Louis is de hoofdstad van welk land?",
    "answer": "Mauritius",
    "options": [
-    "Palau",
-    "Australië",
     "Mauritius",
-    "Tuvalu"
+    "Salomonseilanden",
+    "Fiji",
+    "Papoea-Nieuw-Guinea"
    ],
    "hint": "",
    "note": "",
@@ -4284,17 +4436,17 @@
    "itemId": "stad-mus-port-louis"
   },
   {
-   "id": "land-van-hoofdstad-141",
+   "id": "land-van-hoofdstad-146",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Port Moresby",
    "question": "Port Moresby is de hoofdstad van welk land?",
    "answer": "Papoea-Nieuw-Guinea",
    "options": [
-    "Maldiven",
-    "Kiribati",
-    "Samoa",
-    "Papoea-Nieuw-Guinea"
+    "Vanuatu",
+    "Papoea-Nieuw-Guinea",
+    "Salomonseilanden",
+    "Micronesia"
    ],
    "hint": "",
    "note": "",
@@ -4314,17 +4466,17 @@
    "itemId": "stad-png-port-moresby"
   },
   {
-   "id": "land-van-hoofdstad-142",
+   "id": "land-van-hoofdstad-147",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Port Vila",
    "question": "Port Vila is de hoofdstad van welk land?",
    "answer": "Vanuatu",
    "options": [
-    "Fiji",
+    "Mauritius",
+    "Tuvalu",
     "Vanuatu",
-    "Salomonseilanden",
-    "Samoa"
+    "Palau"
    ],
    "hint": "",
    "note": "",
@@ -4344,17 +4496,17 @@
    "itemId": "stad-vut-port-vila"
   },
   {
-   "id": "land-van-hoofdstad-143",
+   "id": "land-van-hoofdstad-148",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Port of Spain",
    "question": "Port of Spain is de hoofdstad van welk land?",
    "answer": "Trinidad en Tobago",
    "options": [
-    "Barbados",
+    "Nicaragua",
     "Trinidad en Tobago",
     "Dominica",
-    "Bahama's"
+    "Antigua en Barbuda"
    ],
    "hint": "",
    "note": "",
@@ -4374,17 +4526,17 @@
    "itemId": "stad-tto-port-of-spain"
   },
   {
-   "id": "land-van-hoofdstad-144",
+   "id": "land-van-hoofdstad-149",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Port-au-Prince",
    "question": "Port-au-Prince is de hoofdstad van welk land?",
    "answer": "Haïti",
    "options": [
-    "Haïti",
-    "Saint Kitts en Nevis",
-    "Jamaica",
-    "El Salvador"
+    "El Salvador",
+    "Dominicaanse Republiek",
+    "Barbados",
+    "Haïti"
    ],
    "hint": "",
    "note": "",
@@ -4404,17 +4556,47 @@
    "itemId": "stad-hti-port-au-prince"
   },
   {
-   "id": "land-van-hoofdstad-145",
+   "id": "land-van-hoofdstad-150",
+   "kind": "fact",
+   "category": "hoofdsteden",
+   "name": "Porto-Novo",
+   "question": "Porto-Novo is de hoofdstad van welk land?",
+   "answer": "Benin",
+   "options": [
+    "Angola",
+    "Benin",
+    "Gabon",
+    "Djibouti"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-ben-porto-novo"
+  },
+  {
+   "id": "land-van-hoofdstad-151",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Praia",
    "question": "Praia is de hoofdstad van welk land?",
    "answer": "Kaapverdië",
    "options": [
-    "Madagaskar",
     "Kaapverdië",
-    "Kenia",
-    "Zambia"
+    "Madagaskar",
+    "Ethiopië",
+    "Gambia"
    ],
    "hint": "",
    "note": "",
@@ -4434,17 +4616,17 @@
    "itemId": "stad-cpv-praia"
   },
   {
-   "id": "land-van-hoofdstad-146",
+   "id": "land-van-hoofdstad-152",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Pyongyang",
    "question": "Pyongyang is de hoofdstad van welk land?",
    "answer": "Noord-Korea",
    "options": [
-    "Turkije",
-    "Afghanistan",
-    "Filipijnen",
-    "Noord-Korea"
+    "Tadzjikistan",
+    "Noord-Korea",
+    "Oost-Timor",
+    "Sri Lanka"
    ],
    "hint": "",
    "note": "",
@@ -4464,16 +4646,16 @@
    "itemId": "stad-prk-pyongyang"
   },
   {
-   "id": "land-van-hoofdstad-147",
+   "id": "land-van-hoofdstad-153",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Quito",
    "question": "Quito is de hoofdstad van welk land?",
    "answer": "Ecuador",
    "options": [
-    "Uruguay",
     "Ecuador",
-    "Bolivia",
+    "Paraguay",
+    "Argentinië",
     "Peru"
    ],
    "hint": "",
@@ -4494,7 +4676,7 @@
    "itemId": "stad-ecu-quito"
   },
   {
-   "id": "land-van-hoofdstad-148",
+   "id": "land-van-hoofdstad-154",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Rabat",
@@ -4503,8 +4685,8 @@
    "options": [
     "Marokko",
     "Gabon",
-    "Mali",
-    "Zuid-Soedan"
+    "Ethiopië",
+    "Algerije"
    ],
    "hint": "",
    "note": "",
@@ -4524,17 +4706,17 @@
    "itemId": "stad-mar-rabat"
   },
   {
-   "id": "land-van-hoofdstad-149",
+   "id": "land-van-hoofdstad-155",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Reykjavik",
    "question": "Reykjavik is de hoofdstad van welk land?",
    "answer": "IJsland",
    "options": [
-    "Monaco",
-    "Oekraïne",
+    "Slovenië",
     "IJsland",
-    "Noord-Macedonië"
+    "Roemenië",
+    "Tsjechië"
    ],
    "hint": "",
    "note": "",
@@ -4554,17 +4736,17 @@
    "itemId": "stad-isl-reykjavik"
   },
   {
-   "id": "land-van-hoofdstad-150",
+   "id": "land-van-hoofdstad-156",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Riga",
    "question": "Riga is de hoofdstad van welk land?",
    "answer": "Letland",
    "options": [
-    "IJsland",
-    "Malta",
-    "Vaticaanstad",
-    "Letland"
+    "Bulgarije",
+    "Letland",
+    "Finland",
+    "Bosnië en Herzegovina"
    ],
    "hint": "",
    "note": "",
@@ -4584,17 +4766,17 @@
    "itemId": "stad-lva-riga"
   },
   {
-   "id": "land-van-hoofdstad-151",
+   "id": "land-van-hoofdstad-157",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Riyad",
    "question": "Riyad is de hoofdstad van welk land?",
    "answer": "Saoedi-Arabië",
    "options": [
+    "Verenigde Arabische Emiraten",
+    "Mongolië",
     "Saoedi-Arabië",
-    "Irak",
-    "Georgië",
-    "Verenigde Arabische Emiraten"
+    "China"
    ],
    "hint": "",
    "note": "",
@@ -4614,17 +4796,17 @@
    "itemId": "stad-sau-riyad"
   },
   {
-   "id": "land-van-hoofdstad-152",
+   "id": "land-van-hoofdstad-158",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Roseau",
    "question": "Roseau is de hoofdstad van welk land?",
    "answer": "Dominica",
    "options": [
-    "Cuba",
-    "Dominica",
-    "Nicaragua",
-    "Belize"
+    "Dominicaanse Republiek",
+    "Honduras",
+    "El Salvador",
+    "Dominica"
    ],
    "hint": "",
    "note": "",
@@ -4644,17 +4826,17 @@
    "itemId": "stad-dma-roseau"
   },
   {
-   "id": "land-van-hoofdstad-153",
+   "id": "land-van-hoofdstad-159",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Saint George's",
    "question": "Saint George's is de hoofdstad van welk land?",
    "answer": "Grenada",
    "options": [
-    "Costa Rica",
-    "Haïti",
-    "Antigua en Barbuda",
-    "Grenada"
+    "Guatemala",
+    "Grenada",
+    "Barbados",
+    "Verenigde Staten"
    ],
    "hint": "",
    "note": "",
@@ -4674,17 +4856,17 @@
    "itemId": "stad-grd-saint-george-s"
   },
   {
-   "id": "land-van-hoofdstad-154",
+   "id": "land-van-hoofdstad-160",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Saint John's",
    "question": "Saint John's is de hoofdstad van welk land?",
    "answer": "Antigua en Barbuda",
    "options": [
-    "Grenada",
-    "Saint Lucia",
-    "Nicaragua",
-    "Antigua en Barbuda"
+    "Guatemala",
+    "Dominica",
+    "Antigua en Barbuda",
+    "Saint Lucia"
    ],
    "hint": "",
    "note": "",
@@ -4704,17 +4886,17 @@
    "itemId": "stad-atg-saint-john-s"
   },
   {
-   "id": "land-van-hoofdstad-155",
+   "id": "land-van-hoofdstad-161",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "San José",
    "question": "San José is de hoofdstad van welk land?",
    "answer": "Costa Rica",
    "options": [
-    "Costa Rica",
-    "Guatemala",
-    "Belize",
-    "Antigua en Barbuda"
+    "Grenada",
+    "Bahama's",
+    "Dominicaanse Republiek",
+    "Costa Rica"
    ],
    "hint": "",
    "note": "",
@@ -4734,17 +4916,17 @@
    "itemId": "stad-cri-san-jose"
   },
   {
-   "id": "land-van-hoofdstad-156",
+   "id": "land-van-hoofdstad-162",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "San Marino",
    "question": "San Marino is de hoofdstad van welk land?",
    "answer": "San Marino",
    "options": [
-    "Polen",
-    "Wit-Rusland",
-    "Malta",
-    "San Marino"
+    "Oostenrijk",
+    "San Marino",
+    "Montenegro",
+    "Vaticaanstad"
    ],
    "hint": "",
    "note": "",
@@ -4764,16 +4946,16 @@
    "itemId": "stad-smr-san-marino"
   },
   {
-   "id": "land-van-hoofdstad-157",
+   "id": "land-van-hoofdstad-163",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "San Salvador",
    "question": "San Salvador is de hoofdstad van welk land?",
    "answer": "El Salvador",
    "options": [
-    "Panama",
-    "Trinidad en Tobago",
-    "Costa Rica",
+    "Belize",
+    "Nicaragua",
+    "Jamaica",
     "El Salvador"
    ],
    "hint": "",
@@ -4794,17 +4976,17 @@
    "itemId": "stad-slv-san-salvador"
   },
   {
-   "id": "land-van-hoofdstad-158",
+   "id": "land-van-hoofdstad-164",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Sanaa",
    "question": "Sanaa is de hoofdstad van welk land?",
    "answer": "Jemen",
    "options": [
-    "Israël",
     "Jemen",
-    "Laos",
-    "Azerbeidzjan"
+    "Iran",
+    "Armenië",
+    "Jordanië"
    ],
    "hint": "",
    "note": "",
@@ -4824,17 +5006,17 @@
    "itemId": "stad-yem-sanaa"
   },
   {
-   "id": "land-van-hoofdstad-159",
+   "id": "land-van-hoofdstad-165",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Santo Domingo",
    "question": "Santo Domingo is de hoofdstad van welk land?",
    "answer": "Dominicaanse Republiek",
    "options": [
-    "Saint Kitts en Nevis",
-    "Cuba",
-    "Belize",
-    "Dominicaanse Republiek"
+    "Dominicaanse Republiek",
+    "Trinidad en Tobago",
+    "Saint Vincent en de Grenadines",
+    "Belize"
    ],
    "hint": "",
    "note": "",
@@ -4854,17 +5036,17 @@
    "itemId": "stad-dom-santo-domingo"
   },
   {
-   "id": "land-van-hoofdstad-160",
+   "id": "land-van-hoofdstad-166",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Sao Tomé",
    "question": "Sao Tomé is de hoofdstad van welk land?",
    "answer": "Sao Tomé en Principe",
    "options": [
-    "Sao Tomé en Principe",
-    "Libië",
-    "Benin",
-    "Egypte"
+    "Rwanda",
+    "Algerije",
+    "Djibouti",
+    "Sao Tomé en Principe"
    ],
    "hint": "",
    "note": "",
@@ -4884,7 +5066,7 @@
    "itemId": "stad-stp-sao-tome"
   },
   {
-   "id": "land-van-hoofdstad-161",
+   "id": "land-van-hoofdstad-167",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Sarajevo",
@@ -4892,9 +5074,9 @@
    "answer": "Bosnië en Herzegovina",
    "options": [
     "Bosnië en Herzegovina",
-    "Zweden",
-    "Duitsland",
-    "Letland"
+    "Montenegro",
+    "Letland",
+    "Moldavië"
    ],
    "hint": "",
    "note": "",
@@ -4914,17 +5096,17 @@
    "itemId": "stad-bih-sarajevo"
   },
   {
-   "id": "land-van-hoofdstad-162",
+   "id": "land-van-hoofdstad-168",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Singapore",
    "question": "Singapore is de hoofdstad van welk land?",
    "answer": "Singapore",
    "options": [
-    "Armenië",
+    "Libanon",
+    "Cyprus",
     "Singapore",
-    "Brunei",
-    "Vietnam"
+    "Nepal"
    ],
    "hint": "",
    "note": "",
@@ -4944,17 +5126,17 @@
    "itemId": "stad-sgp-singapore"
   },
   {
-   "id": "land-van-hoofdstad-163",
+   "id": "land-van-hoofdstad-169",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Skopje",
    "question": "Skopje is de hoofdstad van welk land?",
    "answer": "Noord-Macedonië",
    "options": [
+    "Polen",
     "Noord-Macedonië",
-    "Frankrijk",
-    "Liechtenstein",
-    "Oekraïne"
+    "Slovenië",
+    "Litouwen"
    ],
    "hint": "",
    "note": "",
@@ -4974,17 +5156,17 @@
    "itemId": "stad-mkd-skopje"
   },
   {
-   "id": "land-van-hoofdstad-164",
+   "id": "land-van-hoofdstad-170",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Sofia",
    "question": "Sofia is de hoofdstad van welk land?",
    "answer": "Bulgarije",
    "options": [
-    "Frankrijk",
-    "Tsjechië",
-    "Moldavië",
-    "Bulgarije"
+    "Duitsland",
+    "Bulgarije",
+    "Hongarije",
+    "Oekraïne"
    ],
    "hint": "",
    "note": "",
@@ -5004,17 +5186,47 @@
    "itemId": "stad-bgr-sofia"
   },
   {
-   "id": "land-van-hoofdstad-165",
+   "id": "land-van-hoofdstad-171",
+   "kind": "fact",
+   "category": "hoofdsteden",
+   "name": "Sucre",
+   "question": "Sucre is de hoofdstad van welk land?",
+   "answer": "Bolivia",
+   "options": [
+    "Paraguay",
+    "Suriname",
+    "Bolivia",
+    "Argentinië"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-bol-sucre"
+  },
+  {
+   "id": "land-van-hoofdstad-172",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Suva",
    "question": "Suva is de hoofdstad van welk land?",
    "answer": "Fiji",
    "options": [
-    "Marshalleilanden",
-    "Fiji",
-    "Kiribati",
-    "Nauru"
+    "Australië",
+    "Tonga",
+    "Salomonseilanden",
+    "Fiji"
    ],
    "hint": "",
    "note": "",
@@ -5034,17 +5246,17 @@
    "itemId": "stad-fji-suva"
   },
   {
-   "id": "land-van-hoofdstad-166",
+   "id": "land-van-hoofdstad-173",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Taipei",
    "question": "Taipei is de hoofdstad van welk land?",
    "answer": "Taiwan",
    "options": [
-    "Singapore",
+    "Jordanië",
     "Taiwan",
-    "Syrië",
-    "Oost-Timor"
+    "Bhutan",
+    "Azerbeidzjan"
    ],
    "hint": "",
    "note": "",
@@ -5064,7 +5276,7 @@
    "itemId": "stad-twn-taipei"
   },
   {
-   "id": "land-van-hoofdstad-167",
+   "id": "land-van-hoofdstad-174",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Tallinn",
@@ -5072,9 +5284,9 @@
    "answer": "Estland",
    "options": [
     "Estland",
-    "Duitsland",
-    "Liechtenstein",
-    "Vaticaanstad"
+    "Servië",
+    "Oostenrijk",
+    "Denemarken"
    ],
    "hint": "",
    "note": "",
@@ -5094,17 +5306,17 @@
    "itemId": "stad-est-tallinn"
   },
   {
-   "id": "land-van-hoofdstad-168",
+   "id": "land-van-hoofdstad-175",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Tasjkent",
    "question": "Tasjkent is de hoofdstad van welk land?",
    "answer": "Oezbekistan",
    "options": [
-    "Iran",
-    "Koeweit",
     "Oezbekistan",
-    "Singapore"
+    "Saoedi-Arabië",
+    "Noord-Korea",
+    "Pakistan"
    ],
    "hint": "",
    "note": "",
@@ -5124,17 +5336,17 @@
    "itemId": "stad-uzb-tasjkent"
   },
   {
-   "id": "land-van-hoofdstad-169",
+   "id": "land-van-hoofdstad-176",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Tbilisi",
    "question": "Tbilisi is de hoofdstad van welk land?",
    "answer": "Georgië",
    "options": [
+    "Noord-Korea",
+    "Maleisië",
     "Georgië",
-    "Sri Lanka",
-    "Tadzjikistan",
-    "Indonesië"
+    "Zuid-Korea"
    ],
    "hint": "",
    "note": "",
@@ -5154,17 +5366,17 @@
    "itemId": "stad-geo-tbilisi"
   },
   {
-   "id": "land-van-hoofdstad-170",
+   "id": "land-van-hoofdstad-177",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Tegucigalpa",
    "question": "Tegucigalpa is de hoofdstad van welk land?",
    "answer": "Honduras",
    "options": [
-    "Saint Kitts en Nevis",
-    "Jamaica",
-    "Dominica",
-    "Honduras"
+    "Cuba",
+    "Honduras",
+    "Saint Lucia",
+    "Antigua en Barbuda"
    ],
    "hint": "",
    "note": "",
@@ -5184,17 +5396,17 @@
    "itemId": "stad-hnd-tegucigalpa"
   },
   {
-   "id": "land-van-hoofdstad-171",
+   "id": "land-van-hoofdstad-178",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Thimphu",
    "question": "Thimphu is de hoofdstad van welk land?",
    "answer": "Bhutan",
    "options": [
-    "Cyprus",
+    "Tadzjikistan",
     "Bhutan",
-    "Georgië",
-    "Zuid-Korea"
+    "Japan",
+    "Kazachstan"
    ],
    "hint": "",
    "note": "",
@@ -5214,17 +5426,17 @@
    "itemId": "stad-btn-thimphu"
   },
   {
-   "id": "land-van-hoofdstad-172",
+   "id": "land-van-hoofdstad-179",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Tirana",
    "question": "Tirana is de hoofdstad van welk land?",
    "answer": "Albanië",
    "options": [
-    "Albanië",
-    "Oostenrijk",
-    "Letland",
-    "Hongarije"
+    "IJsland",
+    "Frankrijk",
+    "Noorwegen",
+    "Albanië"
    ],
    "hint": "",
    "note": "",
@@ -5244,16 +5456,16 @@
    "itemId": "stad-alb-tirana"
   },
   {
-   "id": "land-van-hoofdstad-173",
+   "id": "land-van-hoofdstad-180",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Tripoli",
    "question": "Tripoli is de hoofdstad van welk land?",
    "answer": "Libië",
    "options": [
-    "Zuid-Soedan",
-    "Burkina Faso",
-    "Congo-Brazzaville",
+    "Guinee-Bissau",
+    "Mozambique",
+    "Egypte",
     "Libië"
    ],
    "hint": "",
@@ -5274,17 +5486,17 @@
    "itemId": "stad-lby-tripoli"
   },
   {
-   "id": "land-van-hoofdstad-174",
+   "id": "land-van-hoofdstad-181",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Tunis",
    "question": "Tunis is de hoofdstad van welk land?",
    "answer": "Tunesië",
    "options": [
-    "Egypte",
-    "Kenia",
     "Tunesië",
-    "Rwanda"
+    "Zuid-Soedan",
+    "Equatoriaal-Guinea",
+    "Malawi"
    ],
    "hint": "",
    "note": "",
@@ -5304,17 +5516,17 @@
    "itemId": "stad-tun-tunis"
   },
   {
-   "id": "land-van-hoofdstad-175",
+   "id": "land-van-hoofdstad-182",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Ulaanbaatar",
    "question": "Ulaanbaatar is de hoofdstad van welk land?",
    "answer": "Mongolië",
    "options": [
-    "Armenië",
-    "Nepal",
+    "Libanon",
+    "Japan",
     "Mongolië",
-    "Thailand"
+    "Indonesië"
    ],
    "hint": "",
    "note": "",
@@ -5334,16 +5546,16 @@
    "itemId": "stad-mng-ulaanbaatar"
   },
   {
-   "id": "land-van-hoofdstad-176",
+   "id": "land-van-hoofdstad-183",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Vaduz",
    "question": "Vaduz is de hoofdstad van welk land?",
    "answer": "Liechtenstein",
    "options": [
+    "Kroatië",
+    "IJsland",
     "Slovenië",
-    "Duitsland",
-    "Hongarije",
     "Liechtenstein"
    ],
    "hint": "",
@@ -5364,17 +5576,17 @@
    "itemId": "stad-lie-vaduz"
   },
   {
-   "id": "land-van-hoofdstad-177",
+   "id": "land-van-hoofdstad-184",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Valletta",
    "question": "Valletta is de hoofdstad van welk land?",
    "answer": "Malta",
    "options": [
-    "Kroatië",
-    "Ierland",
     "Malta",
-    "Verenigd Koninkrijk"
+    "Zweden",
+    "Portugal",
+    "Andorra"
    ],
    "hint": "",
    "note": "",
@@ -5394,17 +5606,17 @@
    "itemId": "stad-mlt-valletta"
   },
   {
-   "id": "land-van-hoofdstad-178",
+   "id": "land-van-hoofdstad-185",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Vaticaanstad",
    "question": "Vaticaanstad is de hoofdstad van welk land?",
    "answer": "Vaticaanstad",
    "options": [
-    "Andorra",
-    "Hongarije",
     "Vaticaanstad",
-    "Portugal"
+    "Wit-Rusland",
+    "Luxemburg",
+    "Estland"
    ],
    "hint": "",
    "note": "",
@@ -5424,17 +5636,17 @@
    "itemId": "stad-vat-vaticaanstad"
   },
   {
-   "id": "land-van-hoofdstad-179",
+   "id": "land-van-hoofdstad-186",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Victoria",
    "question": "Victoria is de hoofdstad van welk land?",
    "answer": "Seychellen",
    "options": [
+    "Australië",
     "Seychellen",
-    "Palau",
-    "Papoea-Nieuw-Guinea",
-    "Australië"
+    "Micronesia",
+    "Maldiven"
    ],
    "hint": "",
    "note": "",
@@ -5454,17 +5666,17 @@
    "itemId": "stad-syc-victoria"
   },
   {
-   "id": "land-van-hoofdstad-180",
+   "id": "land-van-hoofdstad-187",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Vientiane",
    "question": "Vientiane is de hoofdstad van welk land?",
    "answer": "Laos",
    "options": [
+    "Sri Lanka",
+    "Koeweit",
     "Laos",
-    "Libanon",
-    "Syrië",
-    "Kirgizië"
+    "Pakistan"
    ],
    "hint": "",
    "note": "",
@@ -5484,17 +5696,17 @@
    "itemId": "stad-lao-vientiane"
   },
   {
-   "id": "land-van-hoofdstad-181",
+   "id": "land-van-hoofdstad-188",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Vilnius",
    "question": "Vilnius is de hoofdstad van welk land?",
    "answer": "Litouwen",
    "options": [
-    "Noorwegen",
-    "Duitsland",
+    "Finland",
+    "Litouwen",
     "Hongarije",
-    "Litouwen"
+    "Bosnië en Herzegovina"
    ],
    "hint": "",
    "note": "",
@@ -5514,7 +5726,7 @@
    "itemId": "stad-ltu-vilnius"
   },
   {
-   "id": "land-van-hoofdstad-182",
+   "id": "land-van-hoofdstad-189",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Wellington",
@@ -5522,9 +5734,9 @@
    "answer": "Nieuw-Zeeland",
    "options": [
     "Nieuw-Zeeland",
+    "Kiribati",
     "Micronesia",
-    "Seychellen",
-    "Palau"
+    "Marshalleilanden"
    ],
    "hint": "",
    "note": "",
@@ -5544,17 +5756,47 @@
    "itemId": "stad-nzl-wellington"
   },
   {
-   "id": "land-van-hoofdstad-183",
+   "id": "land-van-hoofdstad-190",
+   "kind": "fact",
+   "category": "hoofdsteden",
+   "name": "Willemstad",
+   "question": "Willemstad is de hoofdstad van welk land?",
+   "answer": "Curaçao",
+   "options": [
+    "El Salvador",
+    "Barbados",
+    "Curaçao",
+    "Bahama's"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-cuw-willemstad"
+  },
+  {
+   "id": "land-van-hoofdstad-191",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Windhoek",
    "question": "Windhoek is de hoofdstad van welk land?",
    "answer": "Namibië",
    "options": [
-    "Guinee",
+    "Rwanda",
     "Namibië",
-    "Zimbabwe",
-    "Malawi"
+    "Marokko",
+    "Ivoorkust"
    ],
    "hint": "",
    "note": "",
@@ -5574,7 +5816,37 @@
    "itemId": "stad-nam-windhoek"
   },
   {
-   "id": "land-van-hoofdstad-184",
+   "id": "land-van-hoofdstad-192",
+   "kind": "fact",
+   "category": "hoofdsteden",
+   "name": "Yamoussoukro",
+   "question": "Yamoussoukro is de hoofdstad van welk land?",
+   "answer": "Ivoorkust",
+   "options": [
+    "Eritrea",
+    "Zuid-Afrika",
+    "Ivoorkust",
+    "Djibouti"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "land-van-hoofdstad"
+   },
+   "doelen": [
+    "KD25A"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     2
+    ]
+   },
+   "itemId": "stad-civ-yamoussoukro"
+  },
+  {
+   "id": "land-van-hoofdstad-193",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Yaoundé",
@@ -5582,9 +5854,9 @@
    "answer": "Kameroen",
    "options": [
     "Kameroen",
-    "Tsjaad",
-    "Oeganda",
-    "Kenia"
+    "Swaziland",
+    "Ghana",
+    "Lesotho"
    ],
    "hint": "",
    "note": "",
@@ -5604,17 +5876,17 @@
    "itemId": "stad-cmr-yaounde"
   },
   {
-   "id": "land-van-hoofdstad-185",
+   "id": "land-van-hoofdstad-194",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Zagreb",
    "question": "Zagreb is de hoofdstad van welk land?",
    "answer": "Kroatië",
    "options": [
+    "Polen",
     "Kroatië",
-    "Slowakije",
-    "Luxemburg",
-    "San Marino"
+    "Nederland",
+    "Rusland"
    ],
    "hint": "",
    "note": "",
@@ -5634,16 +5906,16 @@
    "itemId": "stad-hrv-zagreb"
   },
   {
-   "id": "land-van-hoofdstad-186",
+   "id": "land-van-hoofdstad-195",
    "kind": "fact",
    "category": "hoofdsteden",
    "name": "Zuid-Tarawa",
    "question": "Zuid-Tarawa is de hoofdstad van welk land?",
    "answer": "Kiribati",
    "options": [
-    "Salomonseilanden",
-    "Marshalleilanden",
-    "Australië",
+    "Seychellen",
+    "Maldiven",
+    "Vanuatu",
     "Kiribati"
    ],
    "hint": "",

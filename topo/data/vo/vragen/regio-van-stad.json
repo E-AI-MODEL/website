@@ -11,10 +11,10 @@
    "question": "In welke regio van Brazilië ligt Brasilia?",
    "answer": "Centraal-West",
    "options": [
-    "Centraal-West",
-    "Zuid",
     "Zuidoost",
-    "Noordoost"
+    "Noordoost",
+    "Zuid",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -48,9 +48,9 @@
    "question": "In welke regio van Brazilië ligt Rio de Janeiro?",
    "answer": "Zuidoost",
    "options": [
-    "Zuid",
-    "Noord",
     "Zuidoost",
+    "Noordoost",
+    "Noord",
     "Centraal-West"
    ],
    "hint": "",
@@ -85,8 +85,8 @@
    "question": "In welke regio van Brazilië ligt São Paulo?",
    "answer": "Zuidoost",
    "options": [
-    "Noordoost",
     "Centraal-West",
+    "Noordoost",
     "Zuidoost",
     "Noord"
    ],
@@ -122,10 +122,10 @@
    "question": "In welke regio van Brazilië ligt Belo Horizonte?",
    "answer": "Zuidoost",
    "options": [
-    "Zuidoost",
+    "Zuid",
     "Centraal-West",
-    "Noordoost",
-    "Noord"
+    "Zuidoost",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -159,9 +159,9 @@
    "question": "In welke regio van Brazilië ligt Curitiba?",
    "answer": "Zuid",
    "options": [
-    "Noordoost",
-    "Centraal-West",
     "Zuid",
+    "Centraal-West",
+    "Noord",
     "Zuidoost"
    ],
    "hint": "",
@@ -196,10 +196,10 @@
    "question": "In welke regio van Brazilië ligt Fortaleza?",
    "answer": "Noordoost",
    "options": [
-    "Zuid",
+    "Centraal-West",
     "Noordoost",
-    "Noord",
-    "Centraal-West"
+    "Zuidoost",
+    "Noord"
    ],
    "hint": "",
    "note": "",
@@ -233,10 +233,10 @@
    "question": "In welke regio van Brazilië ligt Porto Alegre?",
    "answer": "Zuid",
    "options": [
-    "Zuidoost",
-    "Centraal-West",
+    "Noordoost",
     "Zuid",
-    "Noord"
+    "Noord",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -271,9 +271,9 @@
    "answer": "Noordoost",
    "options": [
     "Noordoost",
-    "Centraal-West",
     "Noord",
-    "Zuidoost"
+    "Zuid",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -307,8 +307,8 @@
    "question": "In welke regio van Brazilië ligt Salvador?",
    "answer": "Noordoost",
    "options": [
-    "Noord",
     "Centraal-West",
+    "Noord",
     "Zuid",
     "Noordoost"
    ],
@@ -344,10 +344,10 @@
    "question": "In welke regio van Brazilië ligt Aracaju?",
    "answer": "Noordoost",
    "options": [
-    "Zuid",
+    "Noordoost",
     "Zuidoost",
-    "Noord",
-    "Noordoost"
+    "Centraal-West",
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -382,8 +382,8 @@
    "answer": "Noord",
    "options": [
     "Noord",
-    "Zuid",
     "Zuidoost",
+    "Zuid",
     "Centraal-West"
    ],
    "hint": "",
@@ -418,10 +418,10 @@
    "question": "In welke regio van Brazilië ligt Campinas?",
    "answer": "Zuidoost",
    "options": [
-    "Centraal-West",
-    "Noordoost",
     "Zuidoost",
-    "Noord"
+    "Noordoost",
+    "Noord",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -455,10 +455,10 @@
    "question": "In welke regio van Brazilië ligt Campo Grande?",
    "answer": "Centraal-West",
    "options": [
+    "Noord",
     "Zuid",
     "Zuidoost",
-    "Centraal-West",
-    "Noordoost"
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -492,10 +492,10 @@
    "question": "In welke regio van Brazilië ligt Canoas?",
    "answer": "Zuid",
    "options": [
-    "Zuid",
-    "Centraal-West",
+    "Zuidoost",
+    "Noordoost",
     "Noord",
-    "Zuidoost"
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -529,10 +529,10 @@
    "question": "In welke regio van Brazilië ligt Cuiabá?",
    "answer": "Centraal-West",
    "options": [
+    "Noord",
     "Noordoost",
-    "Centraal-West",
-    "Zuidoost",
-    "Noord"
+    "Zuid",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -566,10 +566,10 @@
    "question": "In welke regio van Brazilië ligt Duque de Caxias?",
    "answer": "Zuidoost",
    "options": [
+    "Centraal-West",
     "Noordoost",
-    "Zuidoost",
-    "Noord",
-    "Zuid"
+    "Zuid",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -603,10 +603,10 @@
    "question": "In welke regio van Brazilië ligt Florianópolis?",
    "answer": "Zuid",
    "options": [
-    "Zuid",
     "Noord",
-    "Zuidoost",
-    "Noordoost"
+    "Noordoost",
+    "Centraal-West",
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -640,10 +640,10 @@
    "question": "In welke regio van Brazilië ligt Goiânia?",
    "answer": "Centraal-West",
    "options": [
-    "Noordoost",
     "Noord",
-    "Zuid",
-    "Centraal-West"
+    "Centraal-West",
+    "Zuidoost",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -677,10 +677,10 @@
    "question": "In welke regio van Brazilië ligt Jaboatão dos Guararapes?",
    "answer": "Noordoost",
    "options": [
-    "Noordoost",
-    "Zuidoost",
+    "Noord",
     "Centraal-West",
-    "Zuid"
+    "Zuid",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -715,9 +715,9 @@
    "answer": "Zuid",
    "options": [
     "Zuid",
+    "Noordoost",
     "Centraal-West",
-    "Zuidoost",
-    "Noordoost"
+    "Noord"
    ],
    "hint": "",
    "note": "",
@@ -752,9 +752,9 @@
    "answer": "Noordoost",
    "options": [
     "Noordoost",
-    "Centraal-West",
-    "Noord",
-    "Zuidoost"
+    "Zuid",
+    "Zuidoost",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -788,9 +788,9 @@
    "question": "In welke regio van Brazilië ligt Jundiaí?",
    "answer": "Zuidoost",
    "options": [
-    "Noord",
-    "Zuid",
     "Centraal-West",
+    "Noordoost",
+    "Noord",
     "Zuidoost"
    ],
    "hint": "",
@@ -825,10 +825,10 @@
    "question": "In welke regio van Brazilië ligt Londrina?",
    "answer": "Zuid",
    "options": [
-    "Zuidoost",
-    "Noordoost",
+    "Zuid",
     "Noord",
-    "Zuid"
+    "Centraal-West",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -862,10 +862,10 @@
    "question": "In welke regio van Brazilië ligt Maceió?",
    "answer": "Noordoost",
    "options": [
+    "Noordoost",
     "Noord",
-    "Centraal-West",
-    "Zuid",
-    "Noordoost"
+    "Zuidoost",
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -899,9 +899,9 @@
    "question": "In welke regio van Brazilië ligt Manaus?",
    "answer": "Noord",
    "options": [
-    "Zuidoost",
-    "Centraal-West",
     "Zuid",
+    "Centraal-West",
+    "Noordoost",
     "Noord"
    ],
    "hint": "",
@@ -936,10 +936,10 @@
    "question": "In welke regio van Brazilië ligt Natal?",
    "answer": "Noordoost",
    "options": [
+    "Noordoost",
     "Noord",
     "Centraal-West",
-    "Zuidoost",
-    "Noordoost"
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -973,9 +973,9 @@
    "question": "In welke regio van Brazilië ligt Niterói?",
    "answer": "Zuidoost",
    "options": [
+    "Zuid",
     "Noord",
     "Zuidoost",
-    "Centraal-West",
     "Noordoost"
    ],
    "hint": "",
@@ -1012,7 +1012,7 @@
    "options": [
     "Noord",
     "Noordoost",
-    "Zuid",
+    "Centraal-West",
     "Zuidoost"
    ],
    "hint": "",
@@ -1047,10 +1047,10 @@
    "question": "In welke regio van Brazilië ligt Novo Hamburgo?",
    "answer": "Zuid",
    "options": [
-    "Zuid",
     "Noordoost",
-    "Centraal-West",
-    "Noord"
+    "Zuidoost",
+    "Noord",
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -1084,8 +1084,8 @@
    "question": "In welke regio van Brazilië ligt Olinda?",
    "answer": "Noordoost",
    "options": [
+    "Noord",
     "Noordoost",
-    "Zuid",
     "Zuidoost",
     "Centraal-West"
    ],
@@ -1121,10 +1121,10 @@
    "question": "In welke regio van Brazilië ligt Ribeirão Preto?",
    "answer": "Zuidoost",
    "options": [
+    "Zuid",
     "Centraal-West",
-    "Noordoost",
-    "Noord",
-    "Zuidoost"
+    "Zuidoost",
+    "Noordoost"
    ],
    "hint": "",
    "note": "",
@@ -1158,10 +1158,10 @@
    "question": "In welke regio van Brazilië ligt Santo André?",
    "answer": "Zuidoost",
    "options": [
-    "Zuidoost",
+    "Zuid",
     "Noord",
     "Centraal-West",
-    "Zuid"
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -1197,8 +1197,8 @@
    "options": [
     "Zuidoost",
     "Noord",
-    "Centraal-West",
-    "Zuid"
+    "Noordoost",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -1232,10 +1232,10 @@
    "question": "In welke regio van Brazilië ligt Sorocaba?",
    "answer": "Zuidoost",
    "options": [
-    "Zuid",
-    "Noordoost",
     "Noord",
-    "Zuidoost"
+    "Zuidoost",
+    "Zuid",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -1270,7 +1270,7 @@
    "answer": "Zuidoost",
    "options": [
     "Zuidoost",
-    "Noord",
+    "Zuid",
     "Noordoost",
     "Centraal-West"
    ],
@@ -1306,10 +1306,10 @@
    "question": "In welke regio van Brazilië ligt São José dos Pinhais?",
    "answer": "Zuid",
    "options": [
-    "Zuidoost",
-    "Noord",
     "Zuid",
-    "Noordoost"
+    "Centraal-West",
+    "Noordoost",
+    "Zuidoost"
    ],
    "hint": "",
    "note": "",
@@ -1343,10 +1343,10 @@
    "question": "In welke regio van Brazilië ligt São Luís?",
    "answer": "Noordoost",
    "options": [
-    "Noord",
-    "Centraal-West",
+    "Zuid",
     "Zuidoost",
-    "Noordoost"
+    "Noordoost",
+    "Noord"
    ],
    "hint": "",
    "note": "",
@@ -1380,10 +1380,10 @@
    "question": "In welke regio van Brazilië ligt Teresina?",
    "answer": "Noordoost",
    "options": [
+    "Noordoost",
     "Centraal-West",
-    "Zuid",
-    "Noord",
-    "Noordoost"
+    "Zuidoost",
+    "Zuid"
    ],
    "hint": "",
    "note": "",
@@ -1417,10 +1417,10 @@
    "question": "In welke regio van Brazilië ligt Uberlândia?",
    "answer": "Zuidoost",
    "options": [
-    "Noord",
     "Zuidoost",
-    "Centraal-West",
-    "Noordoost"
+    "Noord",
+    "Noordoost",
+    "Centraal-West"
    ],
    "hint": "",
    "note": "",
@@ -1454,10 +1454,10 @@
    "question": "In welke regio van Brazilië ligt Vila Velha?",
    "answer": "Noord",
    "options": [
-    "Zuid",
     "Zuidoost",
-    "Noord",
-    "Centraal-West"
+    "Centraal-West",
+    "Zuid",
+    "Noord"
    ],
    "hint": "",
    "note": "",
@@ -1491,9 +1491,9 @@
    "question": "In welke regio van Brazilië ligt Vitória?",
    "answer": "Zuidoost",
    "options": [
-    "Zuid",
-    "Noord",
     "Centraal-West",
+    "Noordoost",
+    "Zuid",
     "Zuidoost"
    ],
    "hint": "",

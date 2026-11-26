@@ -7,14 +7,14 @@
    "id": "noordelijkst-nl-1",
    "kind": "fact",
    "category": "nederland",
-   "name": "Groningen",
+   "name": "Leeuwarden",
    "question": "Welke stad ligt het noordelijkst?",
-   "answer": "Groningen",
+   "answer": "Leeuwarden",
    "options": [
-    "Emmeloord",
-    "Breda",
-    "Deventer",
-    "Groningen"
+    "Zutphen",
+    "Leeuwarden",
+    "Arnhem",
+    "Middelburg"
    ],
    "hint": "",
    "note": "",
@@ -32,196 +32,10 @@
      1
     ]
    },
-   "itemId": "nl-stad-groningen"
+   "itemId": "nl-stad-leeuwarden"
   },
   {
    "id": "noordelijkst-nl-2",
-   "kind": "fact",
-   "category": "nederland",
-   "name": "Kampen",
-   "question": "Welke stad ligt het noordelijkst?",
-   "answer": "Kampen",
-   "options": [
-    "Roermond",
-    "Kampen",
-    "Wageningen",
-    "Deventer"
-   ],
-   "hint": "",
-   "note": "",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "noordelijkst-nl"
-   },
-   "doelen": [
-    "BASIS-TOPO",
-    "KD24C"
-   ],
-   "leerjaren": {
-    "onderbouw": [
-     1
-    ]
-   },
-   "itemId": "nl-stad-kampen"
-  },
-  {
-   "id": "noordelijkst-nl-3",
-   "kind": "fact",
-   "category": "nederland",
-   "name": "Den Helder",
-   "question": "Welke stad ligt het noordelijkst?",
-   "answer": "Den Helder",
-   "options": [
-    "Den Helder",
-    "Venlo",
-    "Alphen aan den Rijn",
-    "Vlissingen"
-   ],
-   "hint": "",
-   "note": "",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "noordelijkst-nl"
-   },
-   "doelen": [
-    "BASIS-TOPO",
-    "KD24C"
-   ],
-   "leerjaren": {
-    "onderbouw": [
-     1
-    ]
-   },
-   "itemId": "nl-stad-den-helder"
-  },
-  {
-   "id": "noordelijkst-nl-4",
-   "kind": "fact",
-   "category": "nederland",
-   "name": "Hengelo",
-   "question": "Welke stad ligt het noordelijkst?",
-   "answer": "Hengelo",
-   "options": [
-    "Hengelo",
-    "Rotterdam",
-    "Delft",
-    "Maastricht"
-   ],
-   "hint": "",
-   "note": "",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "noordelijkst-nl"
-   },
-   "doelen": [
-    "BASIS-TOPO",
-    "KD24C"
-   ],
-   "leerjaren": {
-    "onderbouw": [
-     1
-    ]
-   },
-   "itemId": "nl-stad-hengelo"
-  },
-  {
-   "id": "noordelijkst-nl-5",
-   "kind": "fact",
-   "category": "nederland",
-   "name": "Drachten",
-   "question": "Welke stad ligt het noordelijkst?",
-   "answer": "Drachten",
-   "options": [
-    "Maastricht",
-    "Helmond",
-    "Drachten",
-    "Utrecht"
-   ],
-   "hint": "",
-   "note": "",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "noordelijkst-nl"
-   },
-   "doelen": [
-    "BASIS-TOPO",
-    "KD24C"
-   ],
-   "leerjaren": {
-    "onderbouw": [
-     1
-    ]
-   },
-   "itemId": "nl-stad-drachten"
-  },
-  {
-   "id": "noordelijkst-nl-6",
-   "kind": "fact",
-   "category": "nederland",
-   "name": "Sneek",
-   "question": "Welke stad ligt het noordelijkst?",
-   "answer": "Sneek",
-   "options": [
-    "Tilburg",
-    "Sneek",
-    "Meppel",
-    "Emmeloord"
-   ],
-   "hint": "",
-   "note": "",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "noordelijkst-nl"
-   },
-   "doelen": [
-    "BASIS-TOPO",
-    "KD24C"
-   ],
-   "leerjaren": {
-    "onderbouw": [
-     1
-    ]
-   },
-   "itemId": "nl-stad-sneek"
-  },
-  {
-   "id": "noordelijkst-nl-7",
-   "kind": "fact",
-   "category": "nederland",
-   "name": "Zutphen",
-   "question": "Welke stad ligt het noordelijkst?",
-   "answer": "Zutphen",
-   "options": [
-    "Tilburg",
-    "Zutphen",
-    "Venlo",
-    "Rotterdam"
-   ],
-   "hint": "",
-   "note": "",
-   "shuffleMode": "quiz",
-   "check": {
-    "type": "databank",
-    "sjabloon": "noordelijkst-nl"
-   },
-   "doelen": [
-    "BASIS-TOPO",
-    "KD24C"
-   ],
-   "leerjaren": {
-    "onderbouw": [
-     1
-    ]
-   },
-   "itemId": "nl-stad-zutphen"
-  },
-  {
-   "id": "noordelijkst-nl-8",
    "kind": "fact",
    "category": "nederland",
    "name": "Den Helder",
@@ -252,7 +66,7 @@
    "itemId": "nl-stad-den-helder"
   },
   {
-   "id": "noordelijkst-nl-9",
+   "id": "noordelijkst-nl-3",
    "kind": "fact",
    "category": "nederland",
    "name": "Drachten",
@@ -283,7 +97,7 @@
    "itemId": "nl-stad-drachten"
   },
   {
-   "id": "noordelijkst-nl-10",
+   "id": "noordelijkst-nl-4",
    "kind": "fact",
    "category": "nederland",
    "name": "Zwolle",
@@ -314,7 +128,7 @@
    "itemId": "nl-stad-zwolle"
   },
   {
-   "id": "noordelijkst-nl-11",
+   "id": "noordelijkst-nl-5",
    "kind": "fact",
    "category": "nederland",
    "name": "Drachten",
@@ -345,7 +159,7 @@
    "itemId": "nl-stad-drachten"
   },
   {
-   "id": "noordelijkst-nl-12",
+   "id": "noordelijkst-nl-6",
    "kind": "fact",
    "category": "nederland",
    "name": "Emmen",
@@ -376,7 +190,7 @@
    "itemId": "nl-stad-emmen"
   },
   {
-   "id": "noordelijkst-nl-13",
+   "id": "noordelijkst-nl-7",
    "kind": "fact",
    "category": "nederland",
    "name": "Amsterdam",
@@ -404,10 +218,10 @@
      1
     ]
    },
-   "itemId": "nl-stad-amsterdam"
+   "itemId": "nl-hoofdstad-amsterdam"
   },
   {
-   "id": "noordelijkst-nl-14",
+   "id": "noordelijkst-nl-8",
    "kind": "fact",
    "category": "nederland",
    "name": "Lelystad",
@@ -438,7 +252,7 @@
    "itemId": "nl-stad-lelystad"
   },
   {
-   "id": "noordelijkst-nl-15",
+   "id": "noordelijkst-nl-9",
    "kind": "fact",
    "category": "nederland",
    "name": "Kampen",
@@ -469,7 +283,7 @@
    "itemId": "nl-stad-kampen"
   },
   {
-   "id": "noordelijkst-nl-16",
+   "id": "noordelijkst-nl-10",
    "kind": "fact",
    "category": "nederland",
    "name": "Groningen",
@@ -500,7 +314,7 @@
    "itemId": "nl-stad-groningen"
   },
   {
-   "id": "noordelijkst-nl-17",
+   "id": "noordelijkst-nl-11",
    "kind": "fact",
    "category": "nederland",
    "name": "Veendam",
@@ -531,7 +345,7 @@
    "itemId": "nl-stad-veendam"
   },
   {
-   "id": "noordelijkst-nl-18",
+   "id": "noordelijkst-nl-12",
    "kind": "fact",
    "category": "nederland",
    "name": "Delfzijl",
@@ -562,7 +376,7 @@
    "itemId": "nl-stad-delfzijl"
   },
   {
-   "id": "noordelijkst-nl-19",
+   "id": "noordelijkst-nl-13",
    "kind": "fact",
    "category": "nederland",
    "name": "Drachten",
@@ -593,7 +407,7 @@
    "itemId": "nl-stad-drachten"
   },
   {
-   "id": "noordelijkst-nl-20",
+   "id": "noordelijkst-nl-14",
    "kind": "fact",
    "category": "nederland",
    "name": "Almere",
@@ -624,7 +438,7 @@
    "itemId": "nl-stad-almere"
   },
   {
-   "id": "noordelijkst-nl-21",
+   "id": "noordelijkst-nl-15",
    "kind": "fact",
    "category": "nederland",
    "name": "Drachten",
@@ -655,7 +469,7 @@
    "itemId": "nl-stad-drachten"
   },
   {
-   "id": "noordelijkst-nl-22",
+   "id": "noordelijkst-nl-16",
    "kind": "fact",
    "category": "nederland",
    "name": "Groningen",
@@ -686,7 +500,7 @@
    "itemId": "nl-stad-groningen"
   },
   {
-   "id": "noordelijkst-nl-23",
+   "id": "noordelijkst-nl-17",
    "kind": "fact",
    "category": "nederland",
    "name": "Heerenveen",
@@ -717,7 +531,7 @@
    "itemId": "nl-stad-heerenveen"
   },
   {
-   "id": "noordelijkst-nl-24",
+   "id": "noordelijkst-nl-18",
    "kind": "fact",
    "category": "nederland",
    "name": "Lelystad",
@@ -748,7 +562,7 @@
    "itemId": "nl-stad-lelystad"
   },
   {
-   "id": "noordelijkst-nl-25",
+   "id": "noordelijkst-nl-19",
    "kind": "fact",
    "category": "nederland",
    "name": "Delfzijl",
@@ -779,7 +593,7 @@
    "itemId": "nl-stad-delfzijl"
   },
   {
-   "id": "noordelijkst-nl-26",
+   "id": "noordelijkst-nl-20",
    "kind": "fact",
    "category": "nederland",
    "name": "Almelo",
@@ -810,7 +624,7 @@
    "itemId": "nl-stad-almelo"
   },
   {
-   "id": "noordelijkst-nl-27",
+   "id": "noordelijkst-nl-21",
    "kind": "fact",
    "category": "nederland",
    "name": "Delfzijl",
@@ -841,7 +655,7 @@
    "itemId": "nl-stad-delfzijl"
   },
   {
-   "id": "noordelijkst-nl-28",
+   "id": "noordelijkst-nl-22",
    "kind": "fact",
    "category": "nederland",
    "name": "Emmen",
@@ -872,7 +686,7 @@
    "itemId": "nl-stad-emmen"
   },
   {
-   "id": "noordelijkst-nl-29",
+   "id": "noordelijkst-nl-23",
    "kind": "fact",
    "category": "nederland",
    "name": "Veendam",
@@ -903,7 +717,7 @@
    "itemId": "nl-stad-veendam"
   },
   {
-   "id": "noordelijkst-nl-30",
+   "id": "noordelijkst-nl-24",
    "kind": "fact",
    "category": "nederland",
    "name": "Emmen",
@@ -934,7 +748,7 @@
    "itemId": "nl-stad-emmen"
   },
   {
-   "id": "noordelijkst-nl-31",
+   "id": "noordelijkst-nl-25",
    "kind": "fact",
    "category": "nederland",
    "name": "Veendam",
@@ -965,7 +779,7 @@
    "itemId": "nl-stad-veendam"
   },
   {
-   "id": "noordelijkst-nl-32",
+   "id": "noordelijkst-nl-26",
    "kind": "fact",
    "category": "nederland",
    "name": "Den Helder",
@@ -996,7 +810,7 @@
    "itemId": "nl-stad-den-helder"
   },
   {
-   "id": "noordelijkst-nl-33",
+   "id": "noordelijkst-nl-27",
    "kind": "fact",
    "category": "nederland",
    "name": "Haarlem",
@@ -1027,7 +841,7 @@
    "itemId": "nl-stad-haarlem"
   },
   {
-   "id": "noordelijkst-nl-34",
+   "id": "noordelijkst-nl-28",
    "kind": "fact",
    "category": "nederland",
    "name": "Delfzijl",
@@ -1058,7 +872,7 @@
    "itemId": "nl-stad-delfzijl"
   },
   {
-   "id": "noordelijkst-nl-35",
+   "id": "noordelijkst-nl-29",
    "kind": "fact",
    "category": "nederland",
    "name": "Lelystad",
@@ -1089,7 +903,7 @@
    "itemId": "nl-stad-lelystad"
   },
   {
-   "id": "noordelijkst-nl-36",
+   "id": "noordelijkst-nl-30",
    "kind": "fact",
    "category": "nederland",
    "name": "Deventer",
@@ -1120,7 +934,7 @@
    "itemId": "nl-stad-deventer"
   },
   {
-   "id": "noordelijkst-nl-37",
+   "id": "noordelijkst-nl-31",
    "kind": "fact",
    "category": "nederland",
    "name": "Emmeloord",
@@ -1151,7 +965,7 @@
    "itemId": "nl-stad-emmeloord"
   },
   {
-   "id": "noordelijkst-nl-38",
+   "id": "noordelijkst-nl-32",
    "kind": "fact",
    "category": "nederland",
    "name": "Emmeloord",
@@ -1182,7 +996,7 @@
    "itemId": "nl-stad-emmeloord"
   },
   {
-   "id": "noordelijkst-nl-39",
+   "id": "noordelijkst-nl-33",
    "kind": "fact",
    "category": "nederland",
    "name": "Zwolle",
@@ -1213,7 +1027,7 @@
    "itemId": "nl-stad-zwolle"
   },
   {
-   "id": "noordelijkst-nl-40",
+   "id": "noordelijkst-nl-34",
    "kind": "fact",
    "category": "nederland",
    "name": "Sneek",
@@ -1244,7 +1058,7 @@
    "itemId": "nl-stad-sneek"
   },
   {
-   "id": "noordelijkst-nl-41",
+   "id": "noordelijkst-nl-35",
    "kind": "fact",
    "category": "nederland",
    "name": "Groningen",
@@ -1273,6 +1087,161 @@
     ]
    },
    "itemId": "nl-stad-groningen"
+  },
+  {
+   "id": "noordelijkst-nl-36",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Heerenveen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Heerenveen",
+   "options": [
+    "Heerenveen",
+    "Amsterdam",
+    "Zoetermeer",
+    "Lelystad"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-heerenveen"
+  },
+  {
+   "id": "noordelijkst-nl-37",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Delfzijl",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Delfzijl",
+   "options": [
+    "Enschede",
+    "Dordrecht",
+    "Delfzijl",
+    "Kampen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-delfzijl"
+  },
+  {
+   "id": "noordelijkst-nl-38",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Heerenveen",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Heerenveen",
+   "options": [
+    "Haarlem",
+    "Almere",
+    "Middelburg",
+    "Heerenveen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-heerenveen"
+  },
+  {
+   "id": "noordelijkst-nl-39",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Purmerend",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Purmerend",
+   "options": [
+    "Tilburg",
+    "Apeldoorn",
+    "Purmerend",
+    "Vlissingen"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-purmerend"
+  },
+  {
+   "id": "noordelijkst-nl-40",
+   "kind": "fact",
+   "category": "nederland",
+   "name": "Emmeloord",
+   "question": "Welke stad ligt het noordelijkst?",
+   "answer": "Emmeloord",
+   "options": [
+    "Emmeloord",
+    "Utrecht",
+    "Heerlen",
+    "Almelo"
+   ],
+   "hint": "",
+   "note": "",
+   "shuffleMode": "quiz",
+   "check": {
+    "type": "databank",
+    "sjabloon": "noordelijkst-nl"
+   },
+   "doelen": [
+    "BASIS-TOPO",
+    "KD24C"
+   ],
+   "leerjaren": {
+    "onderbouw": [
+     1
+    ]
+   },
+   "itemId": "nl-stad-emmeloord"
   }
  ]
 }

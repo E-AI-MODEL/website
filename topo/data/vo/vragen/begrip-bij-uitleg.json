@@ -11,10 +11,10 @@
    "question": "Welk begrip past bij deze uitleg? De verhouding tussen een afstand op de kaart en de echte afstand. Bij 1:100.000 is 1 cm op de kaart 1 km in het echt.",
    "answer": "schaal",
    "options": [
-    "choropletenkaart",
     "schaal",
+    "GIS",
     "register (atlas)",
-    "keerkring"
+    "schaalniveau"
    ],
    "hint": "",
    "note": "",
@@ -52,10 +52,10 @@
    "question": "Welk begrip past bij deze uitleg? Het niveau waarop je naar een verschijnsel kijkt: lokaal, regionaal, nationaal, continentaal of mondiaal.",
    "answer": "schaalniveau",
    "options": [
+    "schaal",
+    "keerkring",
     "schaalniveau",
-    "legenda",
-    "topografische kaart",
-    "evenaar"
+    "GIS"
    ],
    "hint": "",
    "note": "",
@@ -93,10 +93,10 @@
    "question": "Welk begrip past bij deze uitleg? De uitleg bij een kaart: welke kleuren, lijnen en tekens wat betekenen.",
    "answer": "legenda",
    "options": [
-    "GIS",
     "legenda",
-    "kaartprojectie",
-    "poolcirkel"
+    "choropletenkaart",
+    "keerkring",
+    "isolijn"
    ],
    "hint": "",
    "note": "",
@@ -134,10 +134,10 @@
    "question": "Welk begrip past bij deze uitleg? De manier waarop de bolle aarde op een plat vlak wordt getekend. Elke projectie vervormt iets: oppervlakte, vorm of afstand.",
    "answer": "kaartprojectie",
    "options": [
-    "topografische kaart",
-    "legenda",
+    "GIS",
     "kaartprojectie",
-    "choropletenkaart"
+    "thematische kaart",
+    "topografische kaart"
    ],
    "hint": "",
    "note": "",
@@ -175,10 +175,10 @@
    "question": "Welk begrip past bij deze uitleg? De afstand in graden ten noorden of zuiden van de evenaar, van 0° tot 90°.",
    "answer": "breedtegraad",
    "options": [
-    "schaal",
-    "nulmeridiaan",
+    "poolcirkel",
+    "choropletenkaart",
     "breedtegraad",
-    "register (atlas)"
+    "thematische kaart"
    ],
    "hint": "",
    "note": "",
@@ -208,9 +208,9 @@
    "answer": "lengtegraad",
    "options": [
     "evenaar",
-    "GIS",
-    "breedtegraad",
-    "lengtegraad"
+    "lengtegraad",
+    "choropletenkaart",
+    "breedtegraad"
    ],
    "hint": "",
    "note": "",
@@ -239,10 +239,10 @@
    "question": "Welk begrip past bij deze uitleg? De denkbeeldige lijn op 0° breedte die de aarde in een noordelijk en zuidelijk halfrond verdeelt.",
    "answer": "evenaar",
    "options": [
-    "kaartprojectie",
-    "GIS",
-    "mentale kaart",
-    "evenaar"
+    "evenaar",
+    "poolcirkel",
+    "isolijn",
+    "choropletenkaart"
    ],
    "hint": "",
    "note": "",
@@ -271,10 +271,10 @@
    "question": "Welk begrip past bij deze uitleg? De lijn op 0° lengte, die door Greenwich bij Londen loopt.",
    "answer": "nulmeridiaan",
    "options": [
-    "nulmeridiaan",
     "lengtegraad",
-    "keerkring",
-    "evenaar"
+    "nulmeridiaan",
+    "GIS",
+    "isolijn"
    ],
    "hint": "",
    "note": "",
@@ -303,10 +303,10 @@
    "question": "Welk begrip past bij deze uitleg? De breedtecirkels op ongeveer 23,5° noord (Kreeftskeerkring) en zuid (Steenbokskeerkring). Tussen de keerkringen staat de zon op een dag in het jaar loodrecht boven je.",
    "answer": "keerkring",
    "options": [
+    "topografische kaart",
     "keerkring",
-    "isolijn",
-    "lengtegraad",
-    "breedtegraad"
+    "schaalniveau",
+    "thematische kaart"
    ],
    "hint": "",
    "note": "",
@@ -344,10 +344,10 @@
    "question": "Welk begrip past bij deze uitleg? De breedtecirkels op ongeveer 66,5°. Daarbuiten gaat de zon minstens één dag per jaar niet onder of niet op.",
    "answer": "poolcirkel",
    "options": [
-    "poolcirkel",
+    "evenaar",
     "thematische kaart",
-    "GIS",
-    "isolijn"
+    "breedtegraad",
+    "poolcirkel"
    ],
    "hint": "",
    "note": "",
@@ -385,10 +385,10 @@
    "question": "Welk begrip past bij deze uitleg? Een kaart die laat zien wat er in een gebied ligt: wegen, water, bebouwing, bos en hoogte.",
    "answer": "topografische kaart",
    "options": [
-    "nulmeridiaan",
-    "schaal",
-    "thematische kaart",
-    "topografische kaart"
+    "lengtegraad",
+    "topografische kaart",
+    "choropletenkaart",
+    "keerkring"
    ],
    "hint": "",
    "note": "",
@@ -420,9 +420,9 @@
    "question": "Welk begrip past bij deze uitleg? Een kaart over één onderwerp, zoals bevolkingsdichtheid, klimaat of inkomen.",
    "answer": "thematische kaart",
    "options": [
-    "lengtegraad",
     "thematische kaart",
-    "GIS",
+    "schaalniveau",
+    "mentale kaart",
     "isolijn"
    ],
    "hint": "",
@@ -461,10 +461,10 @@
    "question": "Welk begrip past bij deze uitleg? Een thematische kaart waarop gebieden een kleur krijgen naar een waarde, zoals inwoners per km².",
    "answer": "choropletenkaart",
    "options": [
-    "schaal",
-    "GIS",
-    "choropletenkaart",
-    "keerkring"
+    "register (atlas)",
+    "kaartprojectie",
+    "thematische kaart",
+    "choropletenkaart"
    ],
    "hint": "",
    "note": "",
@@ -499,8 +499,8 @@
    "answer": "isolijn",
    "options": [
     "poolcirkel",
+    "thematische kaart",
     "isolijn",
-    "schaalniveau",
     "topografische kaart"
    ],
    "hint": "",
@@ -535,9 +535,9 @@
    "question": "Welk begrip past bij deze uitleg? De alfabetische lijst achter in de atlas waarmee je een plaatsnaam opzoekt met kaartnummer en vakaanduiding.",
    "answer": "register (atlas)",
    "options": [
+    "choropletenkaart",
     "evenaar",
     "topografische kaart",
-    "breedtegraad",
     "register (atlas)"
    ],
    "hint": "",
@@ -576,10 +576,10 @@
    "question": "Welk begrip past bij deze uitleg? Geografisch informatiesysteem: software die kaartlagen met gegevens combineert om ruimtelijke vragen te beantwoorden.",
    "answer": "GIS",
    "options": [
-    "lengtegraad",
+    "breedtegraad",
     "GIS",
-    "thematische kaart",
-    "keerkring"
+    "kaartprojectie",
+    "schaalniveau"
    ],
    "hint": "",
    "note": "",
@@ -618,9 +618,9 @@
    "answer": "mentale kaart",
    "options": [
     "mentale kaart",
-    "schaalniveau",
-    "GIS",
-    "choropletenkaart"
+    "thematische kaart",
+    "choropletenkaart",
+    "kaartprojectie"
    ],
    "hint": "",
    "note": "",
@@ -656,9 +656,9 @@
    "answer": "bevolkingsdichtheid",
    "options": [
     "natuurlijke groei",
-    "pushfactor",
-    "demografische transitie",
-    "bevolkingsdichtheid"
+    "geldovermakingen",
+    "bevolkingsdichtheid",
+    "pullfactor"
    ],
    "hint": "",
    "note": "",
@@ -696,10 +696,10 @@
    "question": "Welk begrip past bij deze uitleg? Het aantal geboorten min het aantal sterfgevallen in een jaar, meestal per 1000 inwoners.",
    "answer": "natuurlijke groei",
    "options": [
-    "pullfactor",
+    "demografische transitie",
     "natuurlijke groei",
-    "pushfactor",
-    "bevolkingsdichtheid"
+    "geldovermakingen",
+    "migratie"
    ],
    "hint": "",
    "note": "",
@@ -726,10 +726,10 @@
    "question": "Welk begrip past bij deze uitleg? Het model van hoe geboorte- en sterftecijfer dalen als een land zich ontwikkelt, met een fase van snelle bevolkingsgroei ertussen.",
    "answer": "demografische transitie",
    "options": [
-    "geldovermakingen",
+    "pushfactor",
     "migratie",
-    "natuurlijke groei",
-    "demografische transitie"
+    "demografische transitie",
+    "geldovermakingen"
    ],
    "hint": "",
    "note": "",
@@ -768,9 +768,9 @@
    "answer": "migratie",
    "options": [
     "pushfactor",
-    "pullfactor",
-    "geldovermakingen",
-    "migratie"
+    "bevolkingsdichtheid",
+    "migratie",
+    "demografische transitie"
    ],
    "hint": "",
    "note": "",
@@ -809,10 +809,10 @@
    "question": "Welk begrip past bij deze uitleg? Een reden om uit een gebied weg te trekken, zoals werkloosheid, geweld of droogte.",
    "answer": "pushfactor",
    "options": [
-    "pushfactor",
+    "migratie",
+    "natuurlijke groei",
     "demografische transitie",
-    "bevolkingsdichtheid",
-    "natuurlijke groei"
+    "pushfactor"
    ],
    "hint": "",
    "note": "",
@@ -845,10 +845,10 @@
    "question": "Welk begrip past bij deze uitleg? Een reden om naar een gebied toe te trekken, zoals werk, veiligheid of familie.",
    "answer": "pullfactor",
    "options": [
+    "demografische transitie",
     "pullfactor",
-    "bevolkingsdichtheid",
-    "migratie",
-    "pushfactor"
+    "pushfactor",
+    "migratie"
    ],
    "hint": "",
    "note": "",
@@ -881,9 +881,9 @@
    "question": "Welk begrip past bij deze uitleg? Geld dat migranten naar familie in hun herkomstland sturen (remittances). Voor sommige landen een grote inkomstenbron.",
    "answer": "geldovermakingen",
    "options": [
+    "pullfactor",
+    "pushfactor",
     "migratie",
-    "demografische transitie",
-    "natuurlijke groei",
     "geldovermakingen"
    ],
    "hint": "",
@@ -913,9 +913,9 @@
    "question": "Welk begrip past bij deze uitleg? De groei van het aandeel van de bevolking dat in steden woont.",
    "answer": "verstedelijking",
    "options": [
+    "leefbaarheid",
+    "agglomeratie",
     "verstedelijking",
-    "segregatie",
-    "stedelijk netwerk",
     "primaatstad"
    ],
    "hint": "",
@@ -955,9 +955,9 @@
    "question": "Welk begrip past bij deze uitleg? Het verhuizen van mensen uit de stad naar woonwijken en dorpen rond de stad.",
    "answer": "suburbanisatie",
    "options": [
-    "wereldstad",
-    "leefbaarheid",
-    "segregatie",
+    "favela",
+    "gentrificatie",
+    "megastad",
     "suburbanisatie"
    ],
    "hint": "",
@@ -996,10 +996,10 @@
    "question": "Welk begrip past bij deze uitleg? Een stad samen met de aangrenzende bebouwde gemeenten die er functioneel bij horen.",
    "answer": "agglomeratie",
    "options": [
-    "leefbaarheid",
     "agglomeratie",
-    "primaatstad",
-    "krimpgebied"
+    "wereldstad",
+    "verstedelijking",
+    "suburbanisatie"
    ],
    "hint": "",
    "note": "",
@@ -1038,8 +1038,8 @@
    "answer": "megastad",
    "options": [
     "favela",
+    "verstedelijking",
     "leefbaarheid",
-    "gentrificatie",
     "megastad"
    ],
    "hint": "",
@@ -1078,9 +1078,9 @@
    "question": "Welk begrip past bij deze uitleg? Een stad met een sleutelrol in de wereldeconomie, door hoofdkantoren, banken, beurs en verbindingen.",
    "answer": "wereldstad",
    "options": [
-    "favela",
-    "gentrificatie",
     "agglomeratie",
+    "gentrificatie",
+    "stedelijk netwerk",
     "wereldstad"
    ],
    "hint": "",
@@ -1116,9 +1116,9 @@
    "answer": "primaatstad",
    "options": [
     "leefbaarheid",
-    "krimpgebied",
-    "primaatstad",
-    "segregatie"
+    "verstedelijking",
+    "segregatie",
+    "primaatstad"
    ],
    "hint": "",
    "note": "",
@@ -1152,10 +1152,10 @@
    "question": "Welk begrip past bij deze uitleg? Een groep steden die door verkeer, werk en voorzieningen sterk met elkaar verbonden zijn, zoals de Randstad.",
    "answer": "stedelijk netwerk",
    "options": [
-    "megastad",
-    "verstedelijking",
+    "primaatstad",
     "stedelijk netwerk",
-    "primaatstad"
+    "verstedelijking",
+    "agglomeratie"
    ],
    "hint": "",
    "note": "",
@@ -1193,10 +1193,10 @@
    "question": "Welk begrip past bij deze uitleg? Het opwaarderen van een oude stadswijk, waarbij huizen duurder worden en bewoners met hogere inkomens de oorspronkelijke bewoners vervangen.",
    "answer": "gentrificatie",
    "options": [
-    "leefbaarheid",
-    "verstedelijking",
     "segregatie",
-    "gentrificatie"
+    "gentrificatie",
+    "stedelijk netwerk",
+    "primaatstad"
    ],
    "hint": "",
    "note": "",
@@ -1231,10 +1231,10 @@
    "question": "Welk begrip past bij deze uitleg? Het ruimtelijk gescheiden wonen van groepen naar inkomen, herkomst of leeftijd.",
    "answer": "segregatie",
    "options": [
-    "segregatie",
+    "agglomeratie",
+    "wereldstad",
     "stedelijk netwerk",
-    "suburbanisatie",
-    "verstedelijking"
+    "segregatie"
    ],
    "hint": "",
    "note": "",
@@ -1269,10 +1269,10 @@
    "question": "Welk begrip past bij deze uitleg? Hoe prettig en veilig het is om in een buurt te wonen, bepaald door woningen, voorzieningen, veiligheid en sociale contacten.",
    "answer": "leefbaarheid",
    "options": [
-    "suburbanisatie",
-    "leefbaarheid",
     "favela",
-    "verstedelijking"
+    "wereldstad",
+    "suburbanisatie",
+    "leefbaarheid"
    ],
    "hint": "",
    "note": "",
@@ -1307,10 +1307,10 @@
    "question": "Welk begrip past bij deze uitleg? Een gebied waar het aantal inwoners daalt, vaak aan de randen van het land.",
    "answer": "krimpgebied",
    "options": [
+    "megastad",
+    "wereldstad",
     "primaatstad",
-    "krimpgebied",
-    "verstedelijking",
-    "agglomeratie"
+    "krimpgebied"
    ],
    "hint": "",
    "note": "",
@@ -1348,10 +1348,10 @@
    "question": "Welk begrip past bij deze uitleg? Een informele woonwijk in een Braziliaanse stad, vaak op hellingen of aan de stadsrand, met slechte voorzieningen.",
    "answer": "favela",
    "options": [
-    "favela",
-    "verstedelijking",
-    "gentrificatie",
-    "leefbaarheid"
+    "segregatie",
+    "stedelijk netwerk",
+    "suburbanisatie",
+    "favela"
    ],
    "hint": "",
    "note": "",
@@ -1385,9 +1385,9 @@
    "question": "Welk begrip past bij deze uitleg? Het proces waarin landen en regio's economisch, politiek en cultureel steeds sterker met elkaar verbonden raken.",
    "answer": "mondialisering",
    "options": [
-    "Mercosur",
-    "mainport",
+    "knelpunt (zeestraat)",
     "multinational",
+    "offshoring",
     "mondialisering"
    ],
    "hint": "",
@@ -1423,10 +1423,10 @@
    "question": "Welk begrip past bij deze uitleg? Het verschijnsel dat afstanden 'kleiner' voelen omdat vervoer en communicatie sneller en goedkoper worden.",
    "answer": "tijdruimtecompressie",
    "options": [
-    "containerisatie",
-    "mainport",
-    "knelpunt (zeestraat)",
-    "tijdruimtecompressie"
+    "multinational",
+    "tijdruimtecompressie",
+    "mondialisering",
+    "containerisatie"
    ],
    "hint": "",
    "note": "",
@@ -1455,10 +1455,10 @@
    "question": "Welk begrip past bij deze uitleg? Een onderneming met vestigingen in meerdere landen.",
    "answer": "multinational",
    "options": [
-    "handelsblok",
-    "centrum en periferie",
-    "tijdruimtecompressie",
-    "multinational"
+    "mainport",
+    "containerisatie",
+    "multinational",
+    "Mercosur"
    ],
    "hint": "",
    "note": "",
@@ -1492,10 +1492,10 @@
    "question": "Welk begrip past bij deze uitleg? Geld dat een bedrijf in het buitenland investeert in een eigen vestiging of overname.",
    "answer": "buitenlandse directe investering",
    "options": [
-    "knelpunt (zeestraat)",
-    "buitenlandse directe investering",
+    "tijdruimtecompressie",
     "Mercosur",
-    "centrum en periferie"
+    "multinational",
+    "buitenlandse directe investering"
    ],
    "hint": "",
    "note": "",
@@ -1529,10 +1529,10 @@
    "question": "Welk begrip past bij deze uitleg? Het vervoer van goederen in gestandaardiseerde containers, waardoor overslag snel en goedkoop werd.",
    "answer": "containerisatie",
    "options": [
-    "handelsblok",
+    "Mercosur",
+    "tijdruimtecompressie",
     "containerisatie",
-    "knelpunt (zeestraat)",
-    "mondialisering"
+    "centrum en periferie"
    ],
    "hint": "",
    "note": "",
@@ -1566,10 +1566,10 @@
    "question": "Welk begrip past bij deze uitleg? Een haven of luchthaven die een knooppunt is voor internationaal vervoer.",
    "answer": "mainport",
    "options": [
-    "tijdruimtecompressie",
-    "mainport",
+    "offshoring",
     "mondialisering",
-    "buitenlandse directe investering"
+    "mainport",
+    "containerisatie"
    ],
    "hint": "",
    "note": "",
@@ -1607,10 +1607,10 @@
    "question": "Welk begrip past bij deze uitleg? Een smalle doorgang waar veel scheepvaart doorheen moet; een blokkade heeft wereldwijde gevolgen.",
    "answer": "knelpunt (zeestraat)",
    "options": [
-    "Mercosur",
     "tijdruimtecompressie",
+    "mainport",
     "knelpunt (zeestraat)",
-    "centrum en periferie"
+    "buitenlandse directe investering"
    ],
    "hint": "",
    "note": "",
@@ -1644,10 +1644,10 @@
    "question": "Welk begrip past bij deze uitleg? Een model waarin rijke kerngebieden (centrum) economisch domineren over armere randgebieden (periferie), met de semi-periferie ertussen.",
    "answer": "centrum en periferie",
    "options": [
-    "knelpunt (zeestraat)",
-    "mondialisering",
+    "multinational",
+    "mainport",
     "centrum en periferie",
-    "handelsblok"
+    "mondialisering"
    ],
    "hint": "",
    "note": "",
@@ -1682,10 +1682,10 @@
    "question": "Welk begrip past bij deze uitleg? Een land met een relatief laag inkomen per inwoner en minder voorzieningen zoals onderwijs en zorg.",
    "answer": "ontwikkelingsland",
    "options": [
-    "ontwikkelingsland",
     "informele sector",
+    "bbp per inwoner",
     "HDI",
-    "bbp per inwoner"
+    "ontwikkelingsland"
    ],
    "hint": "",
    "note": "",
@@ -1719,10 +1719,10 @@
    "question": "Welk begrip past bij deze uitleg? De waarde van alle goederen en diensten die in een land in een jaar worden gemaakt, gedeeld door het aantal inwoners.",
    "answer": "bbp per inwoner",
    "options": [
-    "bbp per inwoner",
-    "HDI",
     "ontwikkelingsland",
-    "informele sector"
+    "HDI",
+    "informele sector",
+    "bbp per inwoner"
    ],
    "hint": "",
    "note": "",
@@ -1758,9 +1758,9 @@
    "answer": "HDI",
    "options": [
     "HDI",
-    "bbp per inwoner",
     "informele sector",
-    "ontwikkelingsland"
+    "ontwikkelingsland",
+    "bbp per inwoner"
    ],
    "hint": "",
    "note": "",
@@ -1796,10 +1796,10 @@
    "question": "Welk begrip past bij deze uitleg? Werk dat niet geregistreerd is en waarover geen belasting wordt betaald, zoals straathandel.",
    "answer": "informele sector",
    "options": [
-    "HDI",
-    "bbp per inwoner",
     "informele sector",
-    "ontwikkelingsland"
+    "ontwikkelingsland",
+    "HDI",
+    "bbp per inwoner"
    ],
    "hint": "",
    "note": "",
@@ -1833,10 +1833,10 @@
    "question": "Welk begrip past bij deze uitleg? Een fabriek in Mexico, vaak vlak bij de grens, die onderdelen invoert, assembleert en het product weer uitvoert naar de VS.",
    "answer": "maquiladora",
    "options": [
-    "grootgrondbezit",
-    "verstedelijking",
-    "woestijnvorming",
-    "maquiladora"
+    "maquiladora",
+    "register (atlas)",
+    "wateroverlast",
+    "inheemse bevolking"
    ],
    "hint": "",
    "note": "",
@@ -1864,10 +1864,10 @@
    "question": "Welk begrip past bij deze uitleg? Twee steden aan weerszijden van een grens die sterk met elkaar verbonden zijn.",
    "answer": "tweelingstad",
    "options": [
+    "subductie",
+    "tijdruimtecompressie",
     "tweelingstad",
-    "ruimteclaim",
-    "buitenlandse directe investering",
-    "bbp per inwoner"
+    "krimpgebied"
    ],
    "hint": "",
    "note": "",
@@ -1895,10 +1895,10 @@
    "question": "Welk begrip past bij deze uitleg? Contact over een grens heen: handel, pendel, migratie, investeringen of samenwerking.",
    "answer": "grensoverschrijdende relatie",
    "options": [
-    "informele sector",
+    "bodemdaling",
     "grensoverschrijdende relatie",
-    "Mercosur",
-    "droogtepolygoon"
+    "verwering",
+    "ontbossing"
    ],
    "hint": "",
    "note": "",
@@ -1926,10 +1926,10 @@
    "question": "Welk begrip past bij deze uitleg? Het verplaatsen van productie of diensten naar een land met lagere kosten.",
    "answer": "offshoring",
    "options": [
-    "centrum en periferie",
-    "offshoring",
-    "knelpunt (zeestraat)",
-    "mondialisering"
+    "containerisatie",
+    "mainport",
+    "buitenlandse directe investering",
+    "offshoring"
    ],
    "hint": "",
    "note": "",
@@ -1964,10 +1964,10 @@
    "question": "Welk begrip past bij deze uitleg? Een groep landen die onderling handelsbelemmeringen weghalen, zoals de EU of Mercosur.",
    "answer": "handelsblok",
    "options": [
-    "buitenlandse directe investering",
     "Mercosur",
-    "handelsblok",
-    "multinational"
+    "knelpunt (zeestraat)",
+    "buitenlandse directe investering",
+    "handelsblok"
    ],
    "hint": "",
    "note": "",
@@ -2002,10 +2002,10 @@
    "question": "Welk begrip past bij deze uitleg? Een handelsblok in Zuid-Amerika met onder meer Brazilië, Argentinië, Paraguay en Uruguay.",
    "answer": "Mercosur",
    "options": [
-    "offshoring",
-    "knelpunt (zeestraat)",
+    "buitenlandse directe investering",
+    "handelsblok",
     "Mercosur",
-    "tijdruimtecompressie"
+    "mainport"
    ],
    "hint": "",
    "note": "",
@@ -2039,10 +2039,10 @@
    "question": "Welk begrip past bij deze uitleg? De theorie dat de aardkorst uit platen bestaat die langzaam bewegen op de mantel.",
    "answer": "platentektoniek",
    "options": [
-    "delta",
-    "morene",
+    "subductie",
+    "epicentrum",
     "platentektoniek",
-    "landdegradatie"
+    "gletsjer"
    ],
    "hint": "",
    "note": "",
@@ -2080,10 +2080,10 @@
    "question": "Welk begrip past bij deze uitleg? De harde buitenste laag van de aarde: de aardkorst en het bovenste deel van de mantel. Hieruit bestaan de platen.",
    "answer": "lithosfeer",
    "options": [
-    "stuwwal",
-    "tsunami",
+    "platentektoniek",
     "lithosfeer",
-    "hotspot"
+    "plooiingsgebergte",
+    "slenk"
    ],
    "hint": "",
    "note": "",
@@ -2117,10 +2117,10 @@
    "question": "Welk begrip past bij deze uitleg? Een grens waar twee platen naar elkaar toe bewegen; er ontstaan gebergten, vulkanen en aardbevingen.",
    "answer": "convergente plaatgrens",
    "options": [
-    "woestijnvorming",
-    "convergente plaatgrens",
-    "gesteentekringloop",
-    "delta"
+    "epicentrum",
+    "tsunami",
+    "hotspot",
+    "convergente plaatgrens"
    ],
    "hint": "",
    "note": "",
@@ -2158,10 +2158,10 @@
    "question": "Welk begrip past bij deze uitleg? Een grens waar platen uit elkaar bewegen; magma stijgt op en er ontstaat nieuwe korst.",
    "answer": "divergente plaatgrens",
    "options": [
-    "lithosfeer",
+    "subductie",
     "aardbeving",
-    "meander",
-    "divergente plaatgrens"
+    "divergente plaatgrens",
+    "epicentrum"
    ],
    "hint": "",
    "note": "",
@@ -2199,10 +2199,10 @@
    "question": "Welk begrip past bij deze uitleg? Een grens waar platen langs elkaar schuiven; er ontstaan vooral aardbevingen.",
    "answer": "transforme plaatgrens",
    "options": [
-    "verwering",
+    "convergente plaatgrens",
     "transforme plaatgrens",
-    "gletsjer",
-    "oceanische rug"
+    "vulkanisme",
+    "stuwwal"
    ],
    "hint": "",
    "note": "",
@@ -2240,9 +2240,9 @@
    "question": "Welk begrip past bij deze uitleg? Het wegduiken van een zware oceanische plaat onder een andere plaat.",
    "answer": "subductie",
    "options": [
-    "divergente plaatgrens",
-    "epicentrum",
-    "hotspot",
+    "landdegradatie",
+    "convergente plaatgrens",
+    "plooiingsgebergte",
     "subductie"
    ],
    "hint": "",
@@ -2277,10 +2277,10 @@
    "question": "Welk begrip past bij deze uitleg? Een onderzees gebergte langs een divergente plaatgrens.",
    "answer": "oceanische rug",
    "options": [
-    "transforme plaatgrens",
-    "aardbeving",
-    "oceanische rug",
-    "epicentrum"
+    "verwering",
+    "sedimentatie",
+    "meander",
+    "oceanische rug"
    ],
    "hint": "",
    "note": "",
@@ -2314,10 +2314,10 @@
    "question": "Welk begrip past bij deze uitleg? Een langgerekte daling van het land tussen breuklijnen.",
    "answer": "slenk",
    "options": [
-    "convergente plaatgrens",
+    "morene",
     "slenk",
-    "vulkanisme",
-    "stuwwal"
+    "transforme plaatgrens",
+    "tsunami"
    ],
    "hint": "",
    "note": "",
@@ -2351,10 +2351,10 @@
    "question": "Welk begrip past bij deze uitleg? Een plek waar heet mantelmateriaal opstijgt, midden op een plaat, met vulkanen als gevolg.",
    "answer": "hotspot",
    "options": [
-    "landdegradatie",
-    "convergente plaatgrens",
-    "plooiingsgebergte",
-    "hotspot"
+    "verwering",
+    "hotspot",
+    "oceanische rug",
+    "morene"
    ],
    "hint": "",
    "note": "",
@@ -2388,8 +2388,8 @@
    "question": "Welk begrip past bij deze uitleg? Een plotselinge trilling van de aardkorst doordat opgebouwde spanning langs een breuk vrijkomt.",
    "answer": "aardbeving",
    "options": [
-    "morene",
     "convergente plaatgrens",
+    "stuwwal",
     "aardbeving",
     "divergente plaatgrens"
    ],
@@ -2429,10 +2429,10 @@
    "question": "Welk begrip past bij deze uitleg? Het punt aan het aardoppervlak recht boven de haard van een aardbeving.",
    "answer": "epicentrum",
    "options": [
-    "verwering",
-    "sedimentatie",
-    "meander",
-    "epicentrum"
+    "erosie",
+    "epicentrum",
+    "woestijnvorming",
+    "gletsjer"
    ],
    "hint": "",
    "note": "",
@@ -2466,10 +2466,10 @@
    "question": "Welk begrip past bij deze uitleg? Een vloedgolf die ontstaat door een zeebeving, vulkaanuitbarsting of aardverschuiving onder water.",
    "answer": "tsunami",
    "options": [
-    "morene",
-    "convergente plaatgrens",
     "tsunami",
-    "sedimentatie"
+    "erosie",
+    "transforme plaatgrens",
+    "plooiingsgebergte"
    ],
    "hint": "",
    "note": "",
@@ -2507,10 +2507,10 @@
    "question": "Welk begrip past bij deze uitleg? Een gebergte dat ontstaat doordat gesteentelagen door botsende platen worden samengedrukt en omhooggeduwd.",
    "answer": "plooiingsgebergte",
    "options": [
-    "morene",
+    "tsunami",
     "plooiingsgebergte",
-    "transforme plaatgrens",
-    "epicentrum"
+    "gletsjer",
+    "delta"
    ],
    "hint": "",
    "note": "",
@@ -2544,10 +2544,10 @@
    "question": "Welk begrip past bij deze uitleg? Alle verschijnselen waarbij magma naar het aardoppervlak komt.",
    "answer": "vulkanisme",
    "options": [
+    "plooiingsgebergte",
+    "meander",
     "vulkanisme",
-    "sedimentatie",
-    "stuwwal",
-    "convergente plaatgrens"
+    "slenk"
    ],
    "hint": "",
    "note": "",
@@ -2585,10 +2585,10 @@
    "question": "Welk begrip past bij deze uitleg? Het proces waarin stollings-, afzettings- en metamorfe gesteenten in elkaar overgaan.",
    "answer": "gesteentekringloop",
    "options": [
-    "convergente plaatgrens",
-    "stuwwal",
-    "gesteentekringloop",
-    "divergente plaatgrens"
+    "transforme plaatgrens",
+    "lithosfeer",
+    "platentektoniek",
+    "gesteentekringloop"
    ],
    "hint": "",
    "note": "",
@@ -2622,10 +2622,10 @@
    "question": "Welk begrip past bij deze uitleg? Het uiteenvallen van gesteente ter plekke, door temperatuur, vorst, water of planten (fysisch of chemisch).",
    "answer": "verwering",
    "options": [
-    "erosie",
     "verwering",
-    "woestijnvorming",
-    "gletsjer"
+    "oceanische rug",
+    "divergente plaatgrens",
+    "transforme plaatgrens"
    ],
    "hint": "",
    "note": "",
@@ -2659,10 +2659,10 @@
    "question": "Welk begrip past bij deze uitleg? Het wegvoeren van losgemaakt materiaal door water, wind of ijs.",
    "answer": "erosie",
    "options": [
-    "erosie",
-    "verwering",
-    "transforme plaatgrens",
-    "tsunami"
+    "delta",
+    "oceanische rug",
+    "aardbeving",
+    "erosie"
    ],
    "hint": "",
    "note": "",
@@ -2703,8 +2703,8 @@
    "options": [
     "tsunami",
     "sedimentatie",
-    "gletsjer",
-    "delta"
+    "platentektoniek",
+    "morene"
    ],
    "hint": "",
    "note": "",
@@ -2739,10 +2739,10 @@
    "question": "Welk begrip past bij deze uitleg? Het gebied waar een rivier zich splitst en sediment afzet voordat ze in zee uitmondt.",
    "answer": "delta",
    "options": [
+    "slenk",
     "stuwwal",
     "delta",
-    "gesteentekringloop",
-    "verwering"
+    "epicentrum"
    ],
    "hint": "",
    "note": "",
@@ -2781,10 +2781,10 @@
    "question": "Welk begrip past bij deze uitleg? Een bocht in een rivier die zich verplaatst doordat de buitenbocht uitslijt en in de binnenbocht zand wordt afgezet.",
    "answer": "meander",
    "options": [
-    "transforme plaatgrens",
-    "lithosfeer",
     "platentektoniek",
-    "meander"
+    "hotspot",
+    "meander",
+    "erosie"
    ],
    "hint": "",
    "note": "",
@@ -2818,10 +2818,10 @@
    "question": "Welk begrip past bij deze uitleg? Een ijsmassa die door zijn eigen gewicht langzaam naar beneden stroomt.",
    "answer": "gletsjer",
    "options": [
-    "sedimentatie",
-    "oceanische rug",
-    "aardbeving",
-    "gletsjer"
+    "plooiingsgebergte",
+    "divergente plaatgrens",
+    "gletsjer",
+    "tsunami"
    ],
    "hint": "",
    "note": "",
@@ -2855,10 +2855,10 @@
    "question": "Welk begrip past bij deze uitleg? Puin dat een gletsjer heeft meegevoerd en afgezet.",
    "answer": "morene",
    "options": [
-    "slenk",
-    "stuwwal",
     "morene",
-    "epicentrum"
+    "plooiingsgebergte",
+    "stuwwal",
+    "woestijnvorming"
    ],
    "hint": "",
    "note": "",
@@ -2892,10 +2892,10 @@
    "question": "Welk begrip past bij deze uitleg? Een heuvelrug die ontstond doordat landijs grond voor zich uit duwde. De Veluwe is er een voorbeeld van.",
    "answer": "stuwwal",
    "options": [
-    "verwering",
-    "stuwwal",
-    "sedimentatie",
-    "morene"
+    "divergente plaatgrens",
+    "landdegradatie",
+    "slenk",
+    "stuwwal"
    ],
    "hint": "",
    "note": "",
@@ -2927,10 +2927,10 @@
    "question": "Welk begrip past bij deze uitleg? Het achteruitgaan van de kwaliteit van de bodem door bijvoorbeeld erosie, overbegrazing of uitputting.",
    "answer": "landdegradatie",
    "options": [
-    "platentektoniek",
-    "sedimentatie",
+    "delta",
+    "epicentrum",
     "landdegradatie",
-    "plooiingsgebergte"
+    "gletsjer"
    ],
    "hint": "",
    "note": "",
@@ -2969,9 +2969,9 @@
    "answer": "woestijnvorming",
    "options": [
     "woestijnvorming",
-    "plooiingsgebergte",
-    "morene",
-    "landdegradatie"
+    "epicentrum",
+    "gletsjer",
+    "divergente plaatgrens"
    ],
    "hint": "",
    "note": "",
@@ -3009,10 +3009,10 @@
    "question": "Welk begrip past bij deze uitleg? Weer is de toestand van de atmosfeer op een moment; klimaat is het gemiddelde weer over minstens dertig jaar.",
    "answer": "weer en klimaat",
    "options": [
-    "passaatwind",
-    "hoogtezones",
-    "stuwingsregen",
-    "weer en klimaat"
+    "weer en klimaat",
+    "Golfstroom",
+    "savanne",
+    "passaatwind"
    ],
    "hint": "",
    "note": "",
@@ -3050,10 +3050,10 @@
    "question": "Welk begrip past bij deze uitleg? Een gebied met een vergelijkbaar klimaat, bijvoorbeeld tropisch, droog, gematigd, landklimaat of poolklimaat.",
    "answer": "klimaatzone",
    "options": [
-    "lagedrukgebied",
-    "klimaatverandering",
+    "broeikaseffect",
     "klimaatzone",
-    "Golfstroom"
+    "toendra",
+    "klimaatclassificatie van Köppen"
    ],
    "hint": "",
    "note": "",
@@ -3091,10 +3091,10 @@
    "question": "Welk begrip past bij deze uitleg? Een indeling van klimaten op basis van temperatuur en neerslag, met hoofdgroepen A (tropisch) tot en met E (pool).",
    "answer": "klimaatclassificatie van Köppen",
    "options": [
-    "steppe",
-    "El Niño",
-    "klimaatclassificatie van Köppen",
-    "toendra"
+    "savanne",
+    "hogedrukgebied",
+    "permafrost",
+    "klimaatclassificatie van Köppen"
    ],
    "hint": "",
    "note": "",
@@ -3128,10 +3128,10 @@
    "question": "Welk begrip past bij deze uitleg? De intertropische convergentiezone: een gordel rond de evenaar waar passaatwinden samenkomen en lucht opstijgt, met veel regen.",
    "answer": "ITCZ",
    "options": [
-    "lagedrukgebied",
-    "savanne",
+    "El Niño",
+    "stuwingsregen",
     "ITCZ",
-    "passaatwind"
+    "klimaatverandering"
    ],
    "hint": "",
    "note": "",
@@ -3165,10 +3165,10 @@
    "question": "Welk begrip past bij deze uitleg? Een constante wind tussen de subtropische hogedrukgebieden en de evenaar.",
    "answer": "passaatwind",
    "options": [
+    "toendra",
     "passaatwind",
-    "landschapszone",
-    "tropisch regenwoud",
-    "weer en klimaat"
+    "savanne",
+    "El Niño"
    ],
    "hint": "",
    "note": "",
@@ -3202,10 +3202,10 @@
    "question": "Welk begrip past bij deze uitleg? Het wereldwijde stelsel van luchtstromen dat warmte van de evenaar naar de polen verplaatst.",
    "answer": "luchtcirculatie",
    "options": [
-    "luchtcirculatie",
     "El Niño",
-    "toendra",
-    "ITCZ"
+    "luchtcirculatie",
+    "broeikaseffect",
+    "klimaatverandering"
    ],
    "hint": "",
    "note": "",
@@ -3239,10 +3239,10 @@
    "question": "Welk begrip past bij deze uitleg? Een gebied met dalende lucht en hoge luchtdruk, meestal droog en helder weer.",
    "answer": "hogedrukgebied",
    "options": [
-    "Golfstroom",
-    "klimaatzone",
+    "hoogtezones",
     "hogedrukgebied",
-    "stuwingsregen"
+    "toendra",
+    "lagedrukgebied"
    ],
    "hint": "",
    "note": "",
@@ -3280,10 +3280,10 @@
    "question": "Welk begrip past bij deze uitleg? Een gebied met stijgende lucht en lage luchtdruk, meestal bewolkt en nat weer.",
    "answer": "lagedrukgebied",
    "options": [
-    "landschapszone",
-    "savanne",
     "lagedrukgebied",
-    "stuwingsregen"
+    "broeikaseffect",
+    "savanne",
+    "klimaatzone"
    ],
    "hint": "",
    "note": "",
@@ -3321,10 +3321,10 @@
    "question": "Welk begrip past bij deze uitleg? Regen doordat lucht tegen een gebergte omhoog moet, afkoelt en condenseert. Achter het gebergte ligt een droge regenschaduw.",
    "answer": "stuwingsregen",
    "options": [
-    "savanne",
+    "zeestroming",
+    "mitigatie",
     "stuwingsregen",
-    "tropisch regenwoud",
-    "toendra"
+    "ITCZ"
    ],
    "hint": "",
    "note": "",
@@ -3358,10 +3358,10 @@
    "question": "Welk begrip past bij deze uitleg? Een grote stroming in de oceaan, warm of koud, die het klimaat van kustgebieden beïnvloedt.",
    "answer": "zeestroming",
    "options": [
-    "El Niño",
-    "lagedrukgebied",
     "zeestroming",
-    "klimaatverandering"
+    "luchtcirculatie",
+    "steppe",
+    "lagedrukgebied"
    ],
    "hint": "",
    "note": "",
@@ -3395,10 +3395,10 @@
    "question": "Welk begrip past bij deze uitleg? Een warme zeestroming van de Golf van Mexico naar de Noord-Atlantische Oceaan, die West-Europa relatief warm houdt.",
    "answer": "Golfstroom",
    "options": [
-    "El Niño",
+    "permafrost",
     "Golfstroom",
-    "broeikaseffect",
-    "klimaatverandering"
+    "passaatwind",
+    "El Niño"
    ],
    "hint": "",
    "note": "",
@@ -3432,10 +3432,10 @@
    "question": "Welk begrip past bij deze uitleg? Een periodieke opwarming van het oppervlaktewater in de oostelijke Grote Oceaan, met droogte en overstromingen in verschillende delen van de wereld.",
    "answer": "El Niño",
    "options": [
+    "passaatwind",
+    "klimaatclassificatie van Köppen",
     "El Niño",
-    "broeikaseffect",
-    "savanne",
-    "klimaatzone"
+    "luchtcirculatie"
    ],
    "hint": "",
    "note": "",
@@ -3470,10 +3470,10 @@
    "question": "Welk begrip past bij deze uitleg? Het vasthouden van warmte door gassen zoals CO₂ en methaan in de atmosfeer. Extra uitstoot versterkt het effect.",
    "answer": "broeikaseffect",
    "options": [
+    "toendra",
+    "klimaatzone",
     "broeikaseffect",
-    "luchtcirculatie",
-    "steppe",
-    "lagedrukgebied"
+    "stuwingsregen"
    ],
    "hint": "",
    "note": "",
@@ -3511,10 +3511,10 @@
    "question": "Welk begrip past bij deze uitleg? De verandering van het klimaat over lange tijd. De huidige opwarming komt vooral door uitstoot van broeikasgassen.",
    "answer": "klimaatverandering",
    "options": [
-    "tropisch regenwoud",
-    "klimaatzone",
-    "klimaatclassificatie van Köppen",
-    "klimaatverandering"
+    "adaptatie",
+    "klimaatverandering",
+    "passaatwind",
+    "hogedrukgebied"
    ],
    "hint": "",
    "note": "",
@@ -3552,10 +3552,10 @@
    "question": "Welk begrip past bij deze uitleg? Maatregelen om klimaatverandering te beperken, zoals minder CO₂ uitstoten.",
    "answer": "mitigatie",
    "options": [
-    "permafrost",
+    "weer en klimaat",
     "mitigatie",
-    "passaatwind",
-    "Golfstroom"
+    "savanne",
+    "stuwingsregen"
    ],
    "hint": "",
    "note": "",
@@ -3588,9 +3588,9 @@
    "question": "Welk begrip past bij deze uitleg? Maatregelen om je aan te passen aan de gevolgen van klimaatverandering, zoals hogere dijken.",
    "answer": "adaptatie",
    "options": [
-    "klimaatzone",
-    "El Niño",
-    "savanne",
+    "weer en klimaat",
+    "passaatwind",
+    "landschapszone",
     "adaptatie"
    ],
    "hint": "",
@@ -3629,10 +3629,10 @@
    "question": "Welk begrip past bij deze uitleg? Een brede zone op aarde met een samenhangend geheel van klimaat, bodem en begroeiing, zoals tropisch regenwoud of toendra.",
    "answer": "landschapszone",
    "options": [
-    "passaatwind",
-    "klimaatclassificatie van Köppen",
-    "landschapszone",
-    "luchtcirculatie"
+    "luchtcirculatie",
+    "adaptatie",
+    "toendra",
+    "landschapszone"
    ],
    "hint": "",
    "note": "",
@@ -3666,10 +3666,10 @@
    "question": "Welk begrip past bij deze uitleg? Een landschapszone rond de evenaar met het hele jaar warmte en veel regen, en een zeer grote soortenrijkdom.",
    "answer": "tropisch regenwoud",
    "options": [
-    "adaptatie",
-    "landschapszone",
+    "savanne",
     "tropisch regenwoud",
-    "klimaatzone"
+    "broeikaseffect",
+    "passaatwind"
    ],
    "hint": "",
    "note": "",
@@ -3708,10 +3708,10 @@
    "question": "Welk begrip past bij deze uitleg? Een tropisch grasland met verspreide bomen, met een natte en een droge tijd.",
    "answer": "savanne",
    "options": [
-    "toendra",
-    "klimaatzone",
+    "klimaatclassificatie van Köppen",
+    "taiga",
     "savanne",
-    "stuwingsregen"
+    "luchtcirculatie"
    ],
    "hint": "",
    "note": "",
@@ -3746,10 +3746,10 @@
    "question": "Welk begrip past bij deze uitleg? Een droog grasland in een gematigd of subtropisch klimaat, met weinig bomen.",
    "answer": "steppe",
    "options": [
-    "weer en klimaat",
-    "steppe",
-    "tropisch regenwoud",
-    "stuwingsregen"
+    "stuwingsregen",
+    "taiga",
+    "adaptatie",
+    "steppe"
    ],
    "hint": "",
    "note": "",
@@ -3783,10 +3783,10 @@
    "question": "Welk begrip past bij deze uitleg? De noordelijke naaldbossenzone met lange, koude winters.",
    "answer": "taiga",
    "options": [
-    "luchtcirculatie",
-    "adaptatie",
-    "toendra",
-    "taiga"
+    "weer en klimaat",
+    "taiga",
+    "Golfstroom",
+    "permafrost"
    ],
    "hint": "",
    "note": "",
@@ -3820,10 +3820,10 @@
    "question": "Welk begrip past bij deze uitleg? Een boomloze vlakte in het hoge noorden met permafrost, mossen en lage struiken.",
    "answer": "toendra",
    "options": [
-    "klimaatverandering",
-    "ITCZ",
+    "weer en klimaat",
+    "taiga",
     "toendra",
-    "steppe"
+    "ITCZ"
    ],
    "hint": "",
    "note": "",
@@ -3857,10 +3857,10 @@
    "question": "Welk begrip past bij deze uitleg? Grond die het hele jaar bevroren blijft.",
    "answer": "permafrost",
    "options": [
-    "klimaatclassificatie van Köppen",
-    "steppe",
-    "permafrost",
-    "luchtcirculatie"
+    "tropisch regenwoud",
+    "klimaatzone",
+    "savanne",
+    "permafrost"
    ],
    "hint": "",
    "note": "",
@@ -3894,10 +3894,10 @@
    "question": "Welk begrip past bij deze uitleg? De opeenvolging van klimaat en begroeiing naarmate je hoger in een gebergte komt.",
    "answer": "hoogtezones",
    "options": [
+    "hogedrukgebied",
     "stuwingsregen",
-    "steppe",
-    "adaptatie",
-    "hoogtezones"
+    "hoogtezones",
+    "El Niño"
    ],
    "hint": "",
    "note": "",
@@ -3931,10 +3931,10 @@
    "question": "Welk begrip past bij deze uitleg? Het hele gebied waarvan het water via één rivier naar zee stroomt.",
    "answer": "stroomgebied",
    "options": [
-    "regenrivier",
+    "polder",
     "stroomgebied",
-    "Deltaprogramma",
-    "wad"
+    "droogmakerij",
+    "gemengde rivier"
    ],
    "hint": "",
    "note": "",
@@ -3972,9 +3972,9 @@
    "question": "Welk begrip past bij deze uitleg? Een rivier die vooral door regenwater wordt gevoed, met grote verschillen in afvoer. De Maas is er een voorbeeld van.",
    "answer": "regenrivier",
    "options": [
-    "zoetwatervoorraad",
-    "gemengde rivier",
-    "meerlaagsveiligheid",
+    "bodemdaling",
+    "uiterwaard",
+    "zomerbed en winterbed",
     "regenrivier"
    ],
    "hint": "",
@@ -4009,10 +4009,10 @@
    "question": "Welk begrip past bij deze uitleg? Een rivier die door regen- én smeltwater wordt gevoed, waardoor de afvoer gelijkmatiger is. De Rijn is er een voorbeeld van.",
    "answer": "gemengde rivier",
    "options": [
-    "zomerbed en winterbed",
-    "Deltawerken",
-    "gemengde rivier",
-    "polder"
+    "regenrivier",
+    "polder",
+    "Ruimte voor de Rivier",
+    "gemengde rivier"
    ],
    "hint": "",
    "note": "",
@@ -4046,10 +4046,10 @@
    "question": "Welk begrip past bij deze uitleg? De hoeveelheid water die per seconde door een rivier stroomt, gemeten in m³/s. Bij Lobith wordt de afvoer van de Rijn gemeten.",
    "answer": "rivierafvoer",
    "options": [
-    "polder",
+    "inpoldering",
+    "Deltawerken",
     "rivierafvoer",
-    "droogmakerij",
-    "regenrivier"
+    "bodemdaling"
    ],
    "hint": "",
    "note": "",
@@ -4083,10 +4083,10 @@
    "question": "Welk begrip past bij deze uitleg? Water dat buiten de oevers of over of door een waterkering stroomt.",
    "answer": "overstroming",
    "options": [
-    "inpoldering",
-    "kwel",
+    "stormvloedkering",
+    "meerlaagsveiligheid",
     "overstroming",
-    "droogmakerij"
+    "bodemdaling"
    ],
    "hint": "",
    "note": "",
@@ -4124,10 +4124,10 @@
    "question": "Welk begrip past bij deze uitleg? Hinder door te veel water, bijvoorbeeld doordat riolen en sloten hevige regen niet snel genoeg kunnen afvoeren.",
    "answer": "wateroverlast",
    "options": [
-    "bodemdaling",
-    "uiterwaard",
-    "zomerbed en winterbed",
-    "wateroverlast"
+    "wateroverlast",
+    "polder",
+    "Deltawerken",
+    "verzilting"
    ],
    "hint": "",
    "note": "",
@@ -4165,10 +4165,10 @@
    "question": "Welk begrip past bij deze uitleg? Het land tussen de rivier en de dijk, dat bij hoogwater onder water mag lopen.",
    "answer": "uiterwaard",
    "options": [
+    "uiterwaard",
+    "droogmakerij",
     "wateroverlast",
-    "stormvloedkering",
-    "inpoldering",
-    "uiterwaard"
+    "Ruimte voor de Rivier"
    ],
    "hint": "",
    "note": "",
@@ -4202,10 +4202,10 @@
    "question": "Welk begrip past bij deze uitleg? Het zomerbed is de vaste geul van de rivier; het winterbed is het hele gebied tussen de dijken, inclusief de uiterwaarden.",
    "answer": "zomerbed en winterbed",
    "options": [
-    "rivierafvoer",
     "zomerbed en winterbed",
-    "gemengde rivier",
-    "wateroverlast"
+    "verzilting",
+    "zandsuppletie",
+    "kwel"
    ],
    "hint": "",
    "note": "",
@@ -4239,10 +4239,10 @@
    "question": "Welk begrip past bij deze uitleg? Een programma waarbij rivieren meer ruimte kregen, door bijvoorbeeld nevengeulen, dijkverlegging en lagere uiterwaarden.",
    "answer": "Ruimte voor de Rivier",
    "options": [
-    "inpoldering",
-    "Deltawerken",
     "Ruimte voor de Rivier",
-    "bodemdaling"
+    "gemengde rivier",
+    "stormvloedkering",
+    "verzilting"
    ],
    "hint": "",
    "note": "",
@@ -4276,10 +4276,10 @@
    "question": "Welk begrip past bij deze uitleg? Het stelsel van dammen, sluizen en stormvloedkeringen in Zuidwest-Nederland, gebouwd na de watersnood van 1953.",
    "answer": "Deltawerken",
    "options": [
-    "Deltawerken",
-    "polder",
-    "Ruimte voor de Rivier",
-    "verzilting"
+    "regenrivier",
+    "inpoldering",
+    "bodemdaling",
+    "Deltawerken"
    ],
    "hint": "",
    "note": "",
@@ -4317,10 +4317,10 @@
    "question": "Welk begrip past bij deze uitleg? Een beweegbare waterkering die alleen bij hoog water sluit.",
    "answer": "stormvloedkering",
    "options": [
+    "regenrivier",
+    "meerlaagsveiligheid",
     "stormvloedkering",
-    "verzilting",
-    "zandsuppletie",
-    "kwel"
+    "Deltawerken"
    ],
    "hint": "",
    "note": "",
@@ -4354,9 +4354,9 @@
    "question": "Welk begrip past bij deze uitleg? Het nationale programma dat Nederland beschermt tegen overstromingen en zorgt voor voldoende zoetwater, ook bij klimaatverandering.",
    "answer": "Deltaprogramma",
    "options": [
-    "Ruimte voor de Rivier",
+    "zomerbed en winterbed",
     "Deltaprogramma",
-    "meerlaagsveiligheid",
+    "uiterwaard",
     "stroomgebied"
    ],
    "hint": "",
@@ -4391,10 +4391,10 @@
    "question": "Welk begrip past bij deze uitleg? Een laaggelegen stuk land omringd door dijken, waarvan het waterpeil kunstmatig wordt geregeld.",
    "answer": "polder",
    "options": [
-    "regenrivier",
-    "inpoldering",
+    "wad",
+    "polder",
     "bodemdaling",
-    "polder"
+    "wateroverlast"
    ],
    "hint": "",
    "note": "",
@@ -4432,10 +4432,10 @@
    "question": "Welk begrip past bij deze uitleg? Een polder die is ontstaan door een meer droog te malen.",
    "answer": "droogmakerij",
    "options": [
-    "regenrivier",
-    "meerlaagsveiligheid",
+    "rivierafvoer",
+    "uiterwaard",
     "droogmakerij",
-    "Deltawerken"
+    "overstroming"
    ],
    "hint": "",
    "note": "",
@@ -4469,10 +4469,10 @@
    "question": "Welk begrip past bij deze uitleg? Het aanleggen van een polder door een gebied te bedijken en droog te malen.",
    "answer": "inpoldering",
    "options": [
-    "zomerbed en winterbed",
+    "wateroverlast",
     "polder",
-    "inpoldering",
-    "bodemdaling"
+    "Deltaprogramma",
+    "inpoldering"
    ],
    "hint": "",
    "note": "",
@@ -4504,10 +4504,10 @@
    "question": "Welk begrip past bij deze uitleg? Het langzaam zakken van de bodem, onder andere door ontwatering van veen en klei en door gaswinning.",
    "answer": "bodemdaling",
    "options": [
-    "wad",
+    "wateroverlast",
+    "Deltaprogramma",
     "bodemdaling",
-    "inpoldering",
-    "wateroverlast"
+    "Ruimte voor de Rivier"
    ],
    "hint": "",
    "note": "",
@@ -4545,9 +4545,9 @@
    "question": "Welk begrip past bij deze uitleg? Grondwater dat onder een dijk door omhoog komt in een lager gelegen polder.",
    "answer": "kwel",
    "options": [
-    "overstroming",
-    "Deltawerken",
+    "zomerbed en winterbed",
     "inpoldering",
+    "regenrivier",
     "kwel"
    ],
    "hint": "",
@@ -4582,10 +4582,10 @@
    "question": "Welk begrip past bij deze uitleg? Het zouter worden van grond- en oppervlaktewater doordat zeewater het land binnendringt.",
    "answer": "verzilting",
    "options": [
-    "rivierafvoer",
-    "uiterwaard",
+    "wad",
+    "zomerbed en winterbed",
     "verzilting",
-    "overstroming"
+    "inpoldering"
    ],
    "hint": "",
    "note": "",
@@ -4619,10 +4619,10 @@
    "question": "Welk begrip past bij deze uitleg? De beschikbare hoeveelheid zoet water. Het IJsselmeer is de grootste zoetwaterbuffer van Nederland.",
    "answer": "zoetwatervoorraad",
    "options": [
-    "wateroverlast",
-    "polder",
-    "Deltaprogramma",
-    "zoetwatervoorraad"
+    "overstroming",
+    "Ruimte voor de Rivier",
+    "zoetwatervoorraad",
+    "kwel"
    ],
    "hint": "",
    "note": "",
@@ -4656,10 +4656,10 @@
    "question": "Welk begrip past bij deze uitleg? Een aanpak met drie lagen: overstromingen voorkomen, de gevolgen beperken door slim te bouwen, en goede rampenbeheersing.",
    "answer": "meerlaagsveiligheid",
    "options": [
-    "wateroverlast",
-    "Deltaprogramma",
     "meerlaagsveiligheid",
-    "Ruimte voor de Rivier"
+    "gemengde rivier",
+    "rivierafvoer",
+    "stroomgebied"
    ],
    "hint": "",
    "note": "",
@@ -4693,10 +4693,10 @@
    "question": "Welk begrip past bij deze uitleg? Het aanvullen van strand of vooroever met zand om de kust op zijn plaats te houden.",
    "answer": "zandsuppletie",
    "options": [
-    "overstroming",
-    "regenrivier",
-    "gemengde rivier",
-    "zandsuppletie"
+    "inpoldering",
+    "zandsuppletie",
+    "Deltaprogramma",
+    "gemengde rivier"
    ],
    "hint": "",
    "note": "",
@@ -4730,10 +4730,10 @@
    "question": "Welk begrip past bij deze uitleg? Het regelmatig stijgen (vloed) en dalen (eb) van de zeespiegel door de aantrekkingskracht van de maan en de zon.",
    "answer": "getijden",
    "options": [
-    "wad",
-    "zomerbed en winterbed",
-    "getijden",
-    "inpoldering"
+    "zoetwatervoorraad",
+    "stormvloedkering",
+    "droogmakerij",
+    "getijden"
    ],
    "hint": "",
    "note": "",
@@ -4765,10 +4765,10 @@
    "question": "Welk begrip past bij deze uitleg? Een gebied dat bij vloed onder water staat en bij eb droogvalt.",
    "answer": "wad",
    "options": [
-    "overstroming",
+    "wateroverlast",
     "Ruimte voor de Rivier",
-    "wad",
-    "kwel"
+    "gemengde rivier",
+    "wad"
    ],
    "hint": "",
    "note": "",
@@ -4802,10 +4802,10 @@
    "question": "Welk begrip past bij deze uitleg? De manier waarop de ruimte in een gebied wordt verdeeld over functies zoals wonen, werken, natuur, landbouw en water.",
    "answer": "ruimtelijke inrichting",
    "options": [
+    "energietransitie",
+    "toekomstscenario",
     "ruimtelijke inrichting",
-    "ruimteclaim",
-    "Groene Hart",
-    "energietransitie"
+    "ruimteclaim"
    ],
    "hint": "",
    "note": "",
@@ -4839,10 +4839,10 @@
    "question": "Welk begrip past bij deze uitleg? De vraag naar ruimte vanuit een functie, zoals woningbouw, natuur of energie.",
    "answer": "ruimteclaim",
    "options": [
-    "toekomstscenario",
-    "ruimteclaim",
     "Groene Hart",
-    "ruimtelijke inrichting"
+    "ruimtelijke inrichting",
+    "ruimteclaim",
+    "toekomstscenario"
    ],
    "hint": "",
    "note": "",
@@ -4869,10 +4869,10 @@
    "question": "Welk begrip past bij deze uitleg? Een beschrijving van een mogelijke toekomst, om keuzes over de inrichting te vergelijken.",
    "answer": "toekomstscenario",
    "options": [
-    "ruimtelijke inrichting",
     "toekomstscenario",
-    "ruimteclaim",
-    "Groene Hart"
+    "Groene Hart",
+    "ruimtelijke inrichting",
+    "energietransitie"
    ],
    "hint": "",
    "note": "",
@@ -4899,10 +4899,10 @@
    "question": "Welk begrip past bij deze uitleg? Het relatief open, agrarische gebied in het midden van de Randstad.",
    "answer": "Groene Hart",
    "options": [
-    "energietransitie",
-    "ruimtelijke inrichting",
+    "toekomstscenario",
+    "Groene Hart",
     "ruimteclaim",
-    "Groene Hart"
+    "ruimtelijke inrichting"
    ],
    "hint": "",
    "note": "",
@@ -4940,10 +4940,10 @@
    "question": "Welk begrip past bij deze uitleg? De overgang van fossiele brandstoffen naar duurzame energie, met ruimte nodig voor bijvoorbeeld windparken en zonneparken.",
    "answer": "energietransitie",
    "options": [
-    "toekomstscenario",
+    "energietransitie",
     "Groene Hart",
     "ruimtelijke inrichting",
-    "energietransitie"
+    "toekomstscenario"
    ],
    "hint": "",
    "note": "",
@@ -4972,10 +4972,10 @@
    "question": "Welk begrip past bij deze uitleg? Het kappen of afbranden van bos, bijvoorbeeld voor landbouw, veeteelt, mijnbouw of wegen.",
    "answer": "ontbossing",
    "options": [
-    "waterkrachtcentrale",
-    "landhervorming",
     "ontbossing",
-    "regionale ongelijkheid"
+    "droogtepolygoon",
+    "regionale ongelijkheid",
+    "hulpbron"
    ],
    "hint": "",
    "note": "",
@@ -5013,10 +5013,10 @@
    "question": "Welk begrip past bij deze uitleg? Grootschalige, commerciële landbouw voor de (wereld)markt, zoals de teelt van soja en suikerriet.",
    "answer": "agrobusiness",
    "options": [
-    "waterkrachtcentrale",
-    "droogtepolygoon",
+    "hulpbron",
     "ontbossing",
-    "agrobusiness"
+    "agrobusiness",
+    "binnenlandse migratie"
    ],
    "hint": "",
    "note": "",
@@ -5051,10 +5051,10 @@
    "question": "Welk begrip past bij deze uitleg? Iets uit de natuur dat mensen gebruiken, zoals ijzererts, olie, water of vruchtbare grond.",
    "answer": "hulpbron",
    "options": [
-    "ontbossing",
-    "hulpbron",
     "binnenlandse migratie",
-    "droogtepolygoon"
+    "droogtepolygoon",
+    "agrobusiness",
+    "hulpbron"
    ],
    "hint": "",
    "note": "",
@@ -5092,10 +5092,10 @@
    "question": "Welk begrip past bij deze uitleg? Een elektriciteitscentrale die stromend water van een stuwdam gebruikt.",
    "answer": "waterkrachtcentrale",
    "options": [
+    "droogtepolygoon",
     "waterkrachtcentrale",
-    "agrobusiness",
-    "ontbossing",
-    "droogtepolygoon"
+    "grootgrondbezit",
+    "binnenlandse migratie"
    ],
    "hint": "",
    "note": "",
@@ -5133,10 +5133,10 @@
    "question": "Welk begrip past bij deze uitleg? Grote verschillen in welvaart tussen regio's binnen een land, zoals tussen het zuidoosten en het noordoosten van Brazilië.",
    "answer": "regionale ongelijkheid",
    "options": [
-    "agrobusiness",
-    "ontbossing",
+    "grootgrondbezit",
     "regionale ongelijkheid",
-    "binnenlandse migratie"
+    "hulpbron",
+    "waterkrachtcentrale"
    ],
    "hint": "",
    "note": "",
@@ -5170,10 +5170,10 @@
    "question": "Welk begrip past bij deze uitleg? Verhuizen binnen een land, bijvoorbeeld van het platteland in het noordoosten van Brazilië naar steden in het zuidoosten.",
    "answer": "binnenlandse migratie",
    "options": [
-    "etnische en culturele diversiteit",
     "grootgrondbezit",
-    "hulpbron",
-    "binnenlandse migratie"
+    "etnische en culturele diversiteit",
+    "binnenlandse migratie",
+    "landhervorming"
    ],
    "hint": "",
    "note": "",
@@ -5207,10 +5207,10 @@
    "question": "Welk begrip past bij deze uitleg? Een verdeling waarbij een kleine groep eigenaren een groot deel van de landbouwgrond bezit.",
    "answer": "grootgrondbezit",
    "options": [
-    "etnische en culturele diversiteit",
-    "waterkrachtcentrale",
     "grootgrondbezit",
-    "inheemse bevolking"
+    "waterkrachtcentrale",
+    "binnenlandse migratie",
+    "agrobusiness"
    ],
    "hint": "",
    "note": "",
@@ -5244,10 +5244,10 @@
    "question": "Welk begrip past bij deze uitleg? Beleid om landbouwgrond eerlijker te verdelen.",
    "answer": "landhervorming",
    "options": [
-    "binnenlandse migratie",
     "landhervorming",
-    "hulpbron",
-    "waterkrachtcentrale"
+    "droogtepolygoon",
+    "ontbossing",
+    "agrobusiness"
    ],
    "hint": "",
    "note": "",
@@ -5281,10 +5281,10 @@
    "question": "Welk begrip past bij deze uitleg? De oorspronkelijke bewoners van een gebied en hun nakomelingen.",
    "answer": "inheemse bevolking",
    "options": [
+    "droogtepolygoon",
+    "hulpbron",
     "grootgrondbezit",
-    "agrobusiness",
-    "inheemse bevolking",
-    "droogtepolygoon"
+    "inheemse bevolking"
    ],
    "hint": "",
    "note": "",
@@ -5318,9 +5318,9 @@
    "question": "Welk begrip past bij deze uitleg? De verscheidenheid aan herkomst, taal, godsdienst en gewoonten binnen een bevolking.",
    "answer": "etnische en culturele diversiteit",
    "options": [
-    "binnenlandse migratie",
-    "inheemse bevolking",
+    "droogtepolygoon",
     "etnische en culturele diversiteit",
+    "waterkrachtcentrale",
     "grootgrondbezit"
    ],
    "hint": "",
@@ -5355,10 +5355,10 @@
    "question": "Welk begrip past bij deze uitleg? Het gebied in het noordoosten van Brazilië dat vaak door langdurige droogte wordt getroffen.",
    "answer": "droogtepolygoon",
    "options": [
-    "droogtepolygoon",
-    "hulpbron",
-    "ontbossing",
-    "regionale ongelijkheid"
+    "grootgrondbezit",
+    "inheemse bevolking",
+    "regionale ongelijkheid",
+    "droogtepolygoon"
    ],
    "hint": "",
    "note": "",
@@ -5387,9 +5387,9 @@
    "answer": "afbakening",
    "options": [
     "afbakening",
-    "geldovermakingen",
-    "nulmeridiaan",
-    "stedelijk netwerk"
+    "landschapszone",
+    "bodemdaling",
+    "divergente plaatgrens"
    ],
    "hint": "",
    "note": "",
