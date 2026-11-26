@@ -158,7 +158,7 @@ body>header{flex:0 0 auto;width:min(1430px,100%);padding-top:12px;padding-bottom
 <h2>Hoe wil je spelen?</h2>
 <div class="group"><h3>Vraagvorm</h3><div class="controls" id="vormen"></div><p id="vormNote"></p></div>
 <div class="group"><h3>Aantal vragen</h3><div class="controls" id="aantal"></div></div>
-<div class="group"><h3>Hulp</h3><div class="controls" id="hulp"></div><p>Foute plekken komen later in de ronde terug.</p></div>
+<div class="group"><h3>Hulp</h3><div class="controls" id="hulp"></div><p>Zonder hulp: geen hints en geen spiekkaart. Foute plekken komen later in de ronde terug.</p></div>
 <div class="group"><h3>Manier van oefenen</h3><div class="controls" id="manier"></div><p>Extra uitdaging: ook moeilijkere plekken en minder inzoomen.</p></div>
 </section>
 </div>
@@ -194,7 +194,7 @@ function vormBeschikbaar(s,v){
  if(!s)return false;
  if(!s.kaart)return v==='quiz';
  if(v==='mix'||v==='point'||v==='choice'||v==='type')return true;
- if(v==='quiz'||v==='shuffle')return Boolean(s.vragen);
+ if(v==='shuffle')return Boolean(s.vragen);
  return s.vraagvormen.includes(v);
 }
 function pills(id,list,value,disabled){

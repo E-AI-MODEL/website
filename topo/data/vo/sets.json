@@ -656,8 +656,7 @@
    "bestanden": [
     "items/fysisch.json",
     "items/wateren.json"
-   ],
-   "vragen": "vragen/sets/ob2-werelddelen-oceanen.json"
+   ]
   },
   {
    "id": "ob2-landen-afrika",
@@ -1242,8 +1241,6 @@
     "point",
     "choice",
     "type",
-    "missing",
-    "zoom",
     "quiz"
    ],
    "uitleg": "",
@@ -1700,8 +1697,6 @@
     "point",
     "choice",
     "type",
-    "missing",
-    "zoom",
     "quiz"
    ],
    "uitleg": "",
@@ -2596,8 +2591,7 @@
     "choice",
     "type",
     "missing",
-    "zoom",
-    "quiz"
+    "zoom"
    ],
    "uitleg": "",
    "aantal": 60,

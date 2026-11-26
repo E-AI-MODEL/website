@@ -20,7 +20,7 @@ function vormBeschikbaar(s,v){
  if(!s)return false;
  if(!s.kaart)return v==='quiz';
  if(v==='mix'||v==='point'||v==='choice'||v==='type')return true;
- if(v==='quiz'||v==='shuffle')return Boolean(s.vragen);
+ if(v==='shuffle')return Boolean(s.vragen);
  return s.vraagvormen.includes(v);
 }
 function pills(id,list,value,disabled){

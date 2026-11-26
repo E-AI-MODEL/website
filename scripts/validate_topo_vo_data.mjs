@@ -112,6 +112,9 @@ for (const s of sets.sets) {
     const opKaart = s.items.filter(id => byId.get(id).kaarten.includes(s.kaart)).length;
     assert.equal(opKaart, s.items.length, `${s.id}: niet alle items passen op kaart ${s.kaart}`);
   }
+  assert.equal(s.vraagvormen.includes('quiz'), Boolean(s.vragen), `${s.id}: vraagvorm 'zonder kaart' past niet bij de vragenbundel`);
+  if (s.kaart && s.vraagvormen.includes('missing'))
+    assert.ok(s.items.filter(id => !byId.get(id).geo).length >= 4, `${s.id}: 'wat mist er' zonder genoeg punten`);
   if (s.vragen) {
     const qs = json(s.vragen).questions;
     assert.ok(qs.length > 0, `${s.id}: lege vragenbundel`);

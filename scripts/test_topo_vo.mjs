@@ -138,6 +138,15 @@ try {
     } finally { await page.close(); }
   }
 
+  // 3b. Zonder hulp: geen hints en geen spiekkaart.
+  {
+    const page = await open('/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5&assist=none&test=1');
+    try {
+      assert.ok(await page.locator('#help').isHidden() && await page.locator('#showAnswer').isHidden(), 'Hulp of spiekkaart zichtbaar zonder hulp');
+      console.log('TOPO VO zonder hulp OK');
+    } finally { await page.close(); }
+  }
+
   // 4. Startpagina: niveau, set en vraagvorm leiden naar de juiste spellink.
   {
     const page = await browser.newPage(phone);
@@ -159,6 +168,8 @@ try {
       await page.locator('#tab-niveau').click(); await page.locator('[data-niveau="onderbouw"]').click(); await page.locator('#tab-oefenen').click();
       await page.locator('[data-set="ob-begrippen-kaart"]').click(); await page.locator('#tab-spel').click();
       assert.ok(await page.locator('[data-group="vormen"][data-value="point"]').isDisabled(), 'Kaartvorm hoort uit bij een begrippenset');
+      await page.locator('#tab-oefenen').click(); await page.locator('[data-set="ob3-wereld-verdieping"]').click(); await page.locator('#tab-spel').click();
+      assert.ok(await page.locator('[data-group="vormen"][data-value="missing"]').isDisabled(), "'Wat mist er' hoort uit bij een set met alleen landen");
       await page.screenshot({path: `${out}/start.png`});
       console.log('TOPO VO startpagina OK');
     } finally { await page.close(); }

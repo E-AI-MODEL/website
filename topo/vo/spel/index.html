@@ -535,13 +535,19 @@ function pickItems(pool,limit){
  return shuffle(use).slice(0,limit);
 }
 function factTask(q){return {id:q.id,kind:'fact',q,mode:'quiz'}}
+// Gewoon oefenen: ook bij vragen zonder kaart alleen vragen over basis- en middelplekken.
+function factPool(){
+ if(challenge||!SET.kaart)return facts;
+ const easy=facts.filter(q=>!q.itemId||(items.get(q.itemId)?.moeilijkheid||2)<=2);
+ return easy.length?easy:facts;
+}
 function buildQueue(pool){
  const limit=questionLimit;
  if(pool)return shuffle(pool).map((x,i)=>x.question?factTask(x):{id:x.id,kind:'item',item:x,mode:modeFor(x,i)});
- if(!SET.kaart||mode==='quiz')return shuffle(facts).slice(0,limit).map(factTask);
+ if(!SET.kaart||mode==='quiz')return shuffle(factPool()).slice(0,limit).map(factTask);
  if(mode==='shuffle'&&facts.length){
   const chosen=pickItems(setItems,Math.max(1,Math.round(limit*.7)));
-  const qs=shuffle(facts).slice(0,limit-chosen.length).map(factTask);
+  const qs=shuffle(factPool()).slice(0,limit-chosen.length).map(factTask);
   return shuffle([...chosen.map((it,i)=>({id:it.id,kind:'item',item:it,mode:modeFor(it,i)})),...qs]);
  }
  return pickItems(setItems,limit).map((it,i)=>({id:it.id,kind:'item',item:it,mode:modeFor(it,i)}));
@@ -564,7 +570,7 @@ function draw(){
  const layout=document.querySelector('#game .game-grid');
  layout.dataset.mode=currentMode;layout.classList.toggle('shuffle-no-map',currentMode==='quiz');
  $('next').classList.add('hide');$('feedback').classList.add('hide');
- $('help').style.visibility=noHints?'hidden':'visible';$('help').textContent='Help me!';$('skip').style.visibility='visible';$('answerOptions').innerHTML='';
+ $('help').style.visibility=noHints?'hidden':'visible';$('help').textContent='Help me!';$('skip').style.visibility='visible';$('showAnswer').style.visibility=noHints?'hidden':'visible';$('answerOptions').innerHTML='';
  $('progressText').textContent=(index+1)+'/'+queue.length;$('missionName').textContent=(mode==='shuffle'?'TOPO SHUFFLE':'MISSIE '+round)+' · '+SET.titel.toUpperCase();
  $('progressFill').style.width=(100*index/queue.length)+'%';$('score').textContent='★ '+stars;
  if(currentMode==='quiz'){
@@ -770,6 +776,7 @@ $('again').onclick=()=>start();
 $('retry').onclick=()=>{if(retryPool)start(retryPool)};
 // ---------------------------------------------------------------- spiekkaart
 function openSheet(){
+ if(noHints)return;
  if(!$('game').classList.contains('hide')&&!done){const t=current();peekCount++;assisted.add(t.id);wrong.add(t.id);queueAgain(t)}
  const task=current();
  if(!SET.kaart){

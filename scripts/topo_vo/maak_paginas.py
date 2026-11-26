@@ -115,7 +115,7 @@ START_HTML = """<!doctype html>
 <h2>Hoe wil je spelen?</h2>
 <div class="group"><h3>Vraagvorm</h3><div class="controls" id="vormen"></div><p id="vormNote"></p></div>
 <div class="group"><h3>Aantal vragen</h3><div class="controls" id="aantal"></div></div>
-<div class="group"><h3>Hulp</h3><div class="controls" id="hulp"></div><p>Foute plekken komen later in de ronde terug.</p></div>
+<div class="group"><h3>Hulp</h3><div class="controls" id="hulp"></div><p>Zonder hulp: geen hints en geen spiekkaart. Foute plekken komen later in de ronde terug.</p></div>
 <div class="group"><h3>Manier van oefenen</h3><div class="controls" id="manier"></div><p>Extra uitdaging: ook moeilijkere plekken en minder inzoomen.</p></div>
 </section>
 </div>

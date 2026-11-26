@@ -44,12 +44,40 @@ def onafh(i):
 SETS = []
 
 
-def S(id, titel, niveau, leerjaren, doelen, kaart, f, vraagvormen=ALLE, uitleg=""):
+# Zelfde families als in pagina/spel.js: 'wat mist er' en 'ingezoomd' werken alleen met minstens vier
+# punten (plekken zonder vorm op de kaart) van dezelfde familie.
+FAMILIE = {"stad": "plaats", "hoofdstad": "plaats", "grensstad": "plaats", "plaats": "plaats", "luchthaven": "plaats", "haven": "plaats",
+           "favela": "plaats", "zee": "water", "oceaan": "water", "golf": "water", "baai": "water", "zeestraat": "water", "zeearm": "water",
+           "lagune": "water", "fjord": "water", "meer": "water", "eiland": "eiland", "eilandengroep": "eiland", "gebergte": "reliëf",
+           "plateau": "reliëf", "vlakte": "reliëf", "bekken": "reliëf", "laagland": "reliëf", "dal": "reliëf", "toendra": "reliëf",
+           "berg": "top", "vulkaan": "top", "deelstaat": "gebied", "provincie": "gebied", "staat": "gebied", "landsdeel": "gebied",
+           "regio": "gebied", "natuurgebied": "gebied", "polder": "gebied", "bioom": "gebied", "waterkering": "werk", "dijk": "werk",
+           "stuwdam": "werk", "kustproject": "werk", "rivierproject": "werk"}
+
+
+def speelbare_vormen(sel, vragen):
+    punten = {}
+    for i in sel:
+        if not i.get("geo"):
+            f = FAMILIE.get(i["type"], i["type"])
+            punten[f] = punten.get(f, 0) + 1
+    vormen = ["point", "choice", "type"]
+    if any(n >= 4 for n in punten.values()):
+        vormen += ["missing", "zoom"]
+    if vragen:
+        vormen += ["quiz"]
+    return vormen
+
+
+def S(id, titel, niveau, leerjaren, doelen, kaart, f, vraagvormen=None, uitleg=""):
     sel = [i for i in items if f(i)]
     sel.sort(key=lambda i: (i.get("moeilijkheid", 3), i["naam"]))
     zonder_kaart = [i["id"] for i in sel if kaart not in i.get("kaarten", [])]
     sel = [i for i in sel if kaart in i.get("kaarten", [])] if len(zonder_kaart) < len(sel) else sel
     vr = bundel(id, [i["id"] for i in sel], doelen=doelen)
+    vraagvormen = [v for v in (vraagvormen or ALLE) if v in speelbare_vormen(sel, vr)]
+    if vr and "quiz" not in vraagvormen:
+        os.remove(os.path.join(D, vr)); vr = None
     SETS.append({"id": id, "titel": titel, "niveau": niveau, "leerjaren": leerjaren, "doelen": doelen, "kaart": kaart,
                  "vraagvormen": vraagvormen, "uitleg": uitleg, "aantal": len(sel), "items": [i["id"] for i in sel],
                  "bestanden": sorted({"items/" + GROEP[i["id"]] + ".json" for i in sel}), **({"vragen": vr} if vr else {}),
