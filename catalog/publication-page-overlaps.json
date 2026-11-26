@@ -1,0 +1,12 @@
+{
+  "schema": "eai-publication-duplicates-v1",
+  "open": [
+    {
+      "urls": [
+        "/",
+        "/nl/"
+      ],
+      "reason": "Twee bestaande, vrijwel gelijke homepages met verschillende canonieke URLs. Dit blijft open totdat één definitieve publicatieroute is gekozen en de oude URL netjes doorverwijst."
+    }
+  ]
+}

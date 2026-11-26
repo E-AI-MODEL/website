@@ -87,6 +87,11 @@ jobs:
       - name: Verify editorial card scope and build output
         run: python -m unittest discover -s tests -p 'test_story_cards.py' -v
       - run: python scripts/verify_ui.py --root site-build
+      - name: Test en controleer dubbele publicatiepagina's
+        run: |
+          python -m unittest discover -s tests -p 'test_publication_duplicates.py' -v
+          mkdir -p test-results
+          python scripts/check_publication_duplicates.py --root site-build --summary "$GITHUB_STEP_SUMMARY" --json test-results/publication-duplicates.json
       - name: Verify LEIF is published without rewriting answers or access screen
         run: |
           test -s site-build/leif/index.html
