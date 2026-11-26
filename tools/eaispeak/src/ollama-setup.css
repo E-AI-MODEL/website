@@ -27,3 +27,5 @@
 .ollama-reply{margin:15px 0;padding:14px 16px;background:rgba(210,227,227,.24);border-left:1px solid #91b2ad;border-radius:0 9px 9px 0;color:#365b64;font:400 13px/1.8 system-ui,sans-serif;overflow-wrap:anywhere}
 
 .ollama-guide{border-top:1px solid rgba(127,156,159,.2);margin-top:14px;padding-top:4px}.ollama-guide>summary{padding:10px 0;color:#52717b;font:400 12px/1.6 system-ui,sans-serif;cursor:pointer;list-style:none}.ollama-guide>summary::-webkit-details-marker{display:none}.ollama-guide>summary:focus-visible{outline:1px solid #87a5a9;outline-offset:3px}.ollama-guide[open]>:not(summary){animation:system-arrive 1s ease both}
+
+.ollama-command code{white-space:pre-wrap;min-width:0;flex:1}.ollama-copy{flex-shrink:0}
