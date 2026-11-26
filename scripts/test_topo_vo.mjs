@@ -69,7 +69,9 @@ try {
       const seen = new Set();
       for (let i = 0; i < 5; i++) {
         seen.add(await answerCorrect(page));
-        assert.equal(await page.locator('#score').textContent(), '★ ' + (i + 1), set + '/' + mode + ': ster ontbreekt na goed antwoord');
+        const score = await page.locator('#score').textContent();
+        if (score !== '★ ' + (i + 1)) console.log('TOPO VO DIAGNOSE', set, mode, i, JSON.stringify(await hook(page, 'state')));
+        assert.equal(score, '★ ' + (i + 1), set + '/' + mode + ': ster ontbreekt na goed antwoord');
         if (i === 0) { await layout(page, set + '/' + mode + ' na antwoord'); await page.screenshot({path: `${out}/${set}-${mode}.png`}); }
         await page.locator('#next').click();
       }

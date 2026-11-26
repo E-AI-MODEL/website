@@ -44,7 +44,7 @@ const FAMNAAM={plaats:['de','plaats'],water:['het','water'],eiland:['het','eilan
 const C=['#ffc2b8','#ffe3a4','#c9e6ae','#f4dfbc','#c7e6e7','#ffe4bb','#d7e8ba','#ffcfc0','#e8d8e8','#f5e4bd','#d7e0ee','#d2e7bc'];
 let SET=null,K=null,kaartId=null,items=new Map(),setItems=[],facts=[],begrippen=new Map(),geo={},topoTalk={},lastSpoken={};
 let scale=1,cosL=1,W=1000,H=600,basisFeatures=[],contextFeatures=[],projCache=new Map();
-let queue=[],index=0,stars=0,helpCount=0,peekCount=0,round=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,nearMiss=false,done=false,currentMode='point',zoom=1,guessOptions=[],correctStreak=0,wrongStreak=0,wrongTapTimes=[],retryPool=null;
+let submitLog=[],queue=[],index=0,stars=0,helpCount=0,peekCount=0,round=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,nearMiss=false,done=false,currentMode='point',zoom=1,guessOptions=[],correctStreak=0,wrongStreak=0,wrongTapTimes=[],retryPool=null;
 const fmt=n=>Math.round(n*10)/10;
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -464,6 +464,7 @@ $('answerOptions').addEventListener('click',e=>{
 $('answerOptions').addEventListener('submit',e=>{
  if(e.target.id!=='typeForm')return;e.preventDefault();if(done)return;
  const it=current().item,v=tidy($('typedAnswer').value);
+ submitLog.push(index+':'+v+'>'+tidy(it.naam));
  const names=[it.naam,...(it.alt||[])].map(tidy).filter(Boolean);
  if(names.includes(v)){answer(true);return}
  const close=names.some(n=>n.length>=5&&lev(v,n)<=(n.length>=9?2:1));
@@ -612,7 +613,7 @@ const getJSON=async path=>{const res=await fetch(DATA+path);if(!res.ok)throw Err
    for(let i=1;i<64;i++)for(let j=1;j<64;j++){const gx=b.left+(b.right-b.left)*i/64,gy=b.top+(b.bottom-b.top)*j/64;if(inside(sh,gx,gy)){const d=edgeDist(sh,gx,gy);if(d>bd){bd=d;best=[gx,gy]}}}
    if(best)[x,y]=best}
   else if(sh&&!sh.rings.length&&sh.lines.length){const l=sh.lines.reduce((a,b)=>b.length>a.length?b:a);[x,y]=l[Math.floor(l.length/2)]}
-  p.x=x;p.y=y;const s=p.matrixTransform(svg.getScreenCTM());return {x:s.x,y:s.y}},mode:()=>currentMode,answer:()=>{const t=current();return t.kind==='fact'?t.q.answer:t.item.naam},queueLength:()=>queue.length,index:()=>index};
+  p.x=x;p.y=y;const s=p.matrixTransform(svg.getScreenCTM());return {x:s.x,y:s.y}},mode:()=>currentMode,answer:()=>{const t=current();return t.kind==='fact'?t.q.answer:t.item.naam},queueLength:()=>queue.length,index:()=>index,state:()=>({index,attempts,nearMiss,done,mode:currentMode,revisit:Boolean(current()?.revisit),assisted:[...assisted],wrong:[...wrong],feedback:$('feedback').textContent,log:submitLog.slice(-6)})};
  start();
 })().catch(err=>{
  console.error(err);$('loading').innerHTML='<span class="sticker">OEPS!</span><h2>Kaart even kwijt!</h2><p>De kaart of vragenbank kon niet laden. Probeer het opnieuw.</p><p><button class="big" onclick="location.reload()">OPNIEUW ↗</button></p>';
