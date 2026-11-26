@@ -44,6 +44,7 @@ async function answerCorrect(page) {
   const mode = await hook(page, 'mode');
   const answer = await hook(page, 'answer');
   if (mode === 'point') {
+    await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
     const p = await hook(page, 'targetScreen');
     await page.mouse.click(p.x, p.y);
   } else if (mode === 'choice' || mode === 'zoom' || mode === 'quiz') {

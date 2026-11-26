@@ -355,8 +355,8 @@ function shapeOf(it){
  let pg=null;
  if(it.geo){
   const file=geoFile(it.geo.kaart),fc=geo[file];
-  const f=fc&&fc.features.find(x=>featureKey(file,x)===it.geo.key);
-  if(f){pg=projGeom(f.geometry);if(!pg.rings.length&&!pg.lines.length)pg=null}
+  const fs=fc?fc.features.filter(x=>featureKey(file,x)===it.geo.key):[];
+  if(fs.length){pg={rings:[],lines:[]};for(const f of fs){const p=projGeom(f.geometry);pg.rings.push(...p.rings);pg.lines.push(...p.lines)}if(!pg.rings.length&&!pg.lines.length)pg=null}
  }
  projCache.set(it.id,pg);return pg;
 }
@@ -658,15 +658,16 @@ function tapResult(svg,x,y){
   const dots=dotsFor(target);
   if(!dots.length)return {ok:Math.hypot(pt(target)[0]-x,pt(target)[1]-y)<=30*u};
   const cands=dots.map(it=>({it,d:Math.hypot(pt(it)[0]-x,pt(it)[1]-y)})).sort((a,b)=>a.d-b.d);
-  const best=cands[0];
-  if(best&&best.it.id===target.id&&best.d<=30*u)return {ok:true};
+  const best=cands[0],own=cands.find(c=>c.it.id===target.id);
+  // Twee stippen die bijna op elkaar liggen (Kinshasa en Brazzaville) zijn niet te onderscheiden: een bijna-gelijke tik telt goed.
+  if(own&&own.d<=30*u&&own.d<=best.d+6*u)return {ok:true};
   return {ok:false,hit:best&&best.d<=30*u?best.it:null};
  }
  const s=shapeOf(target);
  if(kd==='area'){
-  if(inside(s,x,y))return {ok:true};
+  // Ook kleine landen en zeestraten: een tik op of vlak naast de vorm telt goed.
+  if(inside(s,x,y)||edgeDist(s,x,y)<=9*u)return {ok:true};
   const other=visible.find(it=>it.id!==target.id&&kindOf(it)==='area'&&inside(shapeOf(it),x,y));
-  if(!other&&edgeDist(s,x,y)<=9*u)return {ok:true};
   return {ok:false,hit:other||null};
  }
  const lines=visible.filter(it=>kindOf(it)==='line').map(it=>({it,d:edgeDist(shapeOf(it),x,y)})).sort((a,b)=>a.d-b.d);
@@ -832,7 +833,9 @@ const getJSON=async path=>{const res=await fetch(DATA+path);if(!res.ok)throw Err
   $('credits').textContent=kaartId==='nederland'?'Provinciegrenzen: CBS/PDOK · Water, wegen en spoor: Kadaster/PDOK BRT TOP10NL (CC BY 4.0) · Natural Earth · Oefenkaart, geen navigatiekaart':'Kaartdata: Natural Earth (publiek domein)'+(setItems.some(it=>it.type==='plaat')?' · Platen: PB2002, Bird (2003), ODC-By':'')+' · Oefenkaart, geen navigatiekaart';
  }
  if(params.get('test')==='1')window.__topoVo={task:()=>current(),targetScreen:()=>{const svg=$('map').querySelector('svg'),it=current().item,p=svg.createSVGPoint();let [x,y]=pt(it);const sh=shapeOf(it);
-  if(sh&&sh.rings.length&&!inside(sh,x,y)){const b=boundsOf(sh.rings.flat());let best=null;for(let i=1;i<24&&!best;i++)for(let j=1;j<24;j++){const gx=b.left+(b.right-b.left)*i/24,gy=b.top+(b.bottom-b.top)*j/24;if(inside(sh,gx,gy)&&edgeDist(sh,gx,gy)>.5){best=[gx,gy];break}}if(best)[x,y]=best}
+  if(sh&&sh.rings.length){const big=sh.rings.reduce((a,r)=>{const bb=boundsOf(r);const ar=(bb.right-bb.left)*(bb.bottom-bb.top);return ar>a[1]?[r,ar]:a},[null,-1])[0];const b=boundsOf(big);let best=null,bd=-1;
+   for(let i=1;i<64;i++)for(let j=1;j<64;j++){const gx=b.left+(b.right-b.left)*i/64,gy=b.top+(b.bottom-b.top)*j/64;if(inside(sh,gx,gy)){const d=edgeDist(sh,gx,gy);if(d>bd){bd=d;best=[gx,gy]}}}
+   if(best)[x,y]=best}
   else if(sh&&!sh.rings.length&&sh.lines.length){const l=sh.lines.reduce((a,b)=>b.length>a.length?b:a);[x,y]=l[Math.floor(l.length/2)]}
   p.x=x;p.y=y;const s=p.matrixTransform(svg.getScreenCTM());return {x:s.x,y:s.y}},mode:()=>currentMode,answer:()=>{const t=current();return t.kind==='fact'?t.q.answer:t.item.naam},queueLength:()=>queue.length,index:()=>index};
  start();
