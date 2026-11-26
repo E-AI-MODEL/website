@@ -33,7 +33,7 @@ jobs:
           reuse: ${{ inputs.reuse_build }}
       - name: Controleer de opgehaalde bouw
         run: |
-          pip install beautifulsoup4
+          python -m pip install beautifulsoup4
           python scripts/verify_ui.py --root site-build
           python -m unittest discover -s tests -p 'test_archive_review.py'
       - name: Inventory pages, links and live HTTP responses

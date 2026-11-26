@@ -33,7 +33,7 @@ jobs:
           reuse: ${{ inputs.reuse_build }}
       - name: Controleer de opgehaalde bouw
         run: |
-          pip install beautifulsoup4
+          python -m pip install beautifulsoup4
           python scripts/verify_ui.py --root site-build
       - name: Use the pinned browser runtime
         uses: ./.github/actions/browser-runtime

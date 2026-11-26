@@ -123,6 +123,9 @@ class ReleaseGateTests(unittest.TestCase):
                 self.assertNotIn("playwright install", source)
                 self.assertNotIn("~/.cache/ms-playwright", source)
                 self.assertNotIn("continue-on-error", source)
+                if "beautifulsoup4" in source:
+                    self.assertIn("python -m pip install beautifulsoup4", source)
+                    self.assertNotRegex(source, r"(?m)^\s*(?:run:\s*)?pip install")
                 for item in required:
                     self.assertIn(item, source)
 

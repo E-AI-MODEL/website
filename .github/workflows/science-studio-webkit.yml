@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: pip install beautifulsoup4
+      - run: python -m pip install beautifulsoup4
       - uses: ./.github/actions/checked-build
         with:
           reuse: ${{ inputs.reuse_build }}

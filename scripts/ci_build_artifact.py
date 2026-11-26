@@ -13,6 +13,7 @@ import shutil
 import stat
 import subprocess
 import tempfile
+import time
 from urllib.error import HTTPError
 from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener, urlopen
@@ -88,19 +89,57 @@ def api_json(path, token):
         return json.load(response)
 
 
-def pages(path, field, token):
+class InconsistentPages(ValueError):
+    """The listing changed or was incomplete while GitHub served it."""
+
+
+PAGE_BACKOFF = (1, 2, 4)
+
+
+def page_snapshot(path, field, token):
     items = []
+    expected = None
+    seen = set()
     for page in range(1, 101):
         data = api_json(path + ("&" if "?" in path else "?") + f"per_page=100&page={page}", token)
         part = data[field]
-        if not isinstance(part, list) or len(part) > 100:
+        count = data["total_count"]
+        if (not isinstance(part, list) or len(part) > 100
+                or type(count) is not int or count < 0):
             raise ValueError("Ongeldige GitHub-paginering")
+        if expected is None:
+            expected = count
+        elif expected != count:
+            raise InconsistentPages("Onvolledige of dubbele GitHub-resultaten")
+        for item in part:
+            if type(item.get("id")) is not int or item["id"] < 1:
+                raise ValueError("Ongeldige GitHub-resultaatidentiteit")
+            if item["id"] in seen:
+                raise InconsistentPages("Onvolledige of dubbele GitHub-resultaten")
+            seen.add(item["id"])
         items.extend(part)
-        if len(part) < 100:
-            if len(items) != data["total_count"] or len({x["id"] for x in items}) != len(items):
-                raise ValueError("Onvolledige of dubbele GitHub-resultaten")
+        if len(items) > expected:
+            raise InconsistentPages("Onvolledige of dubbele GitHub-resultaten")
+        if len(part) < 100 or len(items) == expected:
+            if len(items) != expected:
+                raise InconsistentPages("Onvolledige of dubbele GitHub-resultaten")
             return items
     raise ValueError("Te veel GitHub-resultaten")
+
+
+def pages(path, field, token):
+    # Concurrent uploads/job updates can make a listing inconsistent.
+    # Restart the complete read; never combine pages from different reads.
+    # Persistent inconsistency is still a hard failure.
+    for delay in (*PAGE_BACKOFF, None):
+        try:
+            return page_snapshot(path, field, token)
+        except InconsistentPages:
+            if delay is None:
+                raise
+            print(f"GitHub-lijst {field} inconsistent; herlees alle pagina's")
+            time.sleep(delay)
+
 
 
 def download(path, token, archive):
