@@ -13,6 +13,12 @@ permissions:
 jobs:
   exports:
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+      options: --shm-size=1g
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -29,10 +35,12 @@ jobs:
         run: |
           pip install beautifulsoup4
           python scripts/verify_ui.py --root site-build
+      - name: Use the pinned browser runtime
+        uses: ./.github/actions/browser-runtime
+        with:
+          binding: node
       - name: Test real PNG, PDF and text files
         run: |
-          npm install --no-save playwright@1.56.1
-          npx playwright install --with-deps chromium webkit
           node scripts/check_own_exports.mjs
       - name: Verify signed and altered synthetic files
         run: node scripts/check_own_verifier.mjs

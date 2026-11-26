@@ -90,6 +90,42 @@ class ReleaseGateTests(unittest.TestCase):
             standalone = root / ".github/workflows" / (job + ".yml")
             self.assertIn("workflow_dispatch:", standalone.read_text())
 
+    def test_heavy_browser_jobs_use_the_pinned_runtime_and_keep_evidence(self):
+        root = Path(__file__).resolve().parents[1]
+        cases = {
+            "anatomie-webkit": ("test_anatomie_webkit.mjs", "test_hartslaglab_browser.mjs",
+                                "audit_anatomie_content.py", "anatomie-*.png", "hartslaglab-*.png"),
+            "audit-archive": ("audit_archive.py", "audit_archive_session_test.mjs",
+                              "audit_archive_ui.mjs", "audit_archive_functional.mjs", "audit-results/"),
+            "check-own-exports": ("check_own_exports.mjs", "check_own_verifier.mjs", "own-export-results/"),
+            "llm-observatorium-ui": ("test_llm_learning_math.mjs", "test_llm_real_trace.py",
+                                    "test_llm_observatorium.mjs", "test_llm_mobile_webkit.mjs", "llm-*.png"),
+            "science-fixed-workspace": ("test_science_math_adaptive.mjs site-build chromium",
+                                        "test_science_math_adaptive.mjs site-build webkit",
+                                        "test_science_fixed_workspace.mjs site-build chromium",
+                                        "test_science_fixed_workspace.mjs site-build webkit",
+                                        "test_science_mobile_aim.mjs", "test_schuine_worp_studio.mjs",
+                                        "science-*.png"),
+            "science-studio-webkit": ("test_schuine_worp_studio.mjs site-build webkit", "worp-studio-*.png"),
+        }
+        for name, required in cases.items():
+            with self.subTest(workflow=name):
+                source = (root / ".github/workflows" / (name + ".yml")).read_text()
+                self.assertIn("image: mcr.microsoft.com/playwright:v1.56.1-noble", source)
+                self.assertIn("options: --shm-size=1g", source)
+                self.assertEqual(source.count("uses: ./.github/actions/browser-runtime"), 1)
+                self.assertIn("binding: node", source)
+                self.assertIn("uses: ./.github/actions/checked-build", source)
+                self.assertIn("workflow_dispatch:", source)
+                self.assertIn("actions: read", source)
+                self.assertIn("if: always()", source)
+                self.assertIn("github.run_attempt", source)
+                self.assertNotIn("playwright install", source)
+                self.assertNotIn("~/.cache/ms-playwright", source)
+                self.assertNotIn("continue-on-error", source)
+                for item in required:
+                    self.assertIn(item, source)
+
     def test_lo_consolidation_retains_every_independent_probe(self):
         root = Path(__file__).resolve().parents[1]
         combined = (root / ".github/workflows/lo-aanvalslab.yml").read_text()
