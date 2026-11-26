@@ -52,8 +52,8 @@ def timestamp(value):
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
-def producer_upload(target, run, jobs, attempt):
-    name, upload = _PRODUCERS[target]
+def producer_upload(producer, run, jobs, attempt):
+    name, upload = producer
     matches = [j for j in jobs if j.get("name") == name]
     if len(matches) != 1:
         raise ValueError("De unieke bouwjob ontbreekt")
@@ -74,13 +74,20 @@ def producer_upload(target, run, jobs, attempt):
 
 
 def select_release_artifact(target, run, jobs, artifacts, jobs_for_attempt):
+    # Production always retains the original main-only producer and identity.
+    return select_job_artifact(f"{target}-release", _PRODUCERS[target], run, jobs,
+                               artifacts, jobs_for_attempt, "main")
+
+
+def select_job_artifact(prefix, producer, run, jobs, artifacts, jobs_for_attempt, head_branch):
+    """Select the exact successful producer upload, including a carried job."""
     attempt = run["run_attempt"]
     if type(attempt) is not int or attempt < 1:
         raise ValueError("Ongeldige validatiepoging")
-    times = producer_upload(target, run, jobs, attempt)
-    pattern = re.compile(rf"{target}-release-{run['id']}-([1-9][0-9]*)")
+    times = producer_upload(producer, run, jobs, attempt)
+    pattern = re.compile(rf"{re.escape(prefix)}-{run['id']}-([1-9][0-9]*)")
     identity = {
-        "id": run["id"], "head_sha": run["head_sha"], "head_branch": "main",
+        "id": run["id"], "head_sha": run["head_sha"], "head_branch": head_branch,
         "repository_id": run["repository"]["id"],
         "head_repository_id": run["head_repository"]["id"],
     }
@@ -109,7 +116,7 @@ def select_release_artifact(target, run, jobs, artifacts, jobs_for_attempt):
         raise ValueError("Het unieke artifact van de geslaagde bouwjob ontbreekt, is verlopen of is dubbel")
     artifact, origin_attempt = candidates[0]
     if origin_attempt != attempt:
-        origin_times = producer_upload(target, run, jobs_for_attempt(origin_attempt), origin_attempt)
+        origin_times = producer_upload(producer, run, jobs_for_attempt(origin_attempt), origin_attempt)
         if origin_times != times:
             raise ValueError("De eerdere bouwjob is niet de bouwjob uit de geslaagde validatie")
     return artifact, origin_attempt
