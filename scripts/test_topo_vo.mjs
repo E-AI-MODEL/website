@@ -50,10 +50,11 @@ async function answerCorrect(page) {
   } else if (mode === 'choice' || mode === 'zoom' || mode === 'quiz') {
     await optionFor(page, answer).click();
   } else {
+    // Enter verstuurt het formulier, net als op een telefoontoetsenbord; de CHECK-knop wordt apart getest.
     await page.locator('#typedAnswer').fill(answer);
-    await page.locator('.type-submit').click();
+    await page.locator('#typedAnswer').press('Enter');
   }
-  await page.locator('#next').waitFor({state: 'visible', timeout: 4000});
+  await page.locator('#next').waitFor({state: 'visible', timeout: 6000});
   return mode;
 }
 
