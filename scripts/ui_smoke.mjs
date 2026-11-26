@@ -150,6 +150,7 @@ try {
   for (const lang of ['nl','en']) {
     for (const width of [1440,390,320]) {
       const hub=await context.newPage();
+      await hub.route('**/*', route => new URL(route.request().url()).origin===base ? route.continue() : route.abort());
       await hub.setViewportSize({width,height:900});
       await hub.goto(base+'/'+lang+'/tools/#vak-heelal',{waitUntil:'load'});
       const cards=hub.locator('#vak-heelal .heelal-card');

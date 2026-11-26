@@ -137,18 +137,42 @@ body{position:fixed;inset:0;background:#050914}
   const D=window.LEO_DATA,M=window.LEO_MODEL, modes=window.LEO_MODES,tasks=window.LEO_TASKS,byId=M.byId;
   const n=(v,k=0)=>Number(v).toLocaleString("nl-NL",{minimumFractionDigits:k,maximumFractionDigits:k});
   const s={mode:"hemel",view:"earth",star:49669,other:49583,yaw:.95,pitch:.48,zoom:1,spin:false,years:0,sigma:0,light:"apparent",date:"2026-03-25T21:00",lat:51.92,lon:4.48,anim:null,blend:0,playing:false,points:[],chartPoints:[],drag:null,frame:0};
-  const scene=$("scene"),chart=$("chart"),c=scene.getContext("2d"),g=chart.getContext("2d"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const app=$("app"),scene=$("scene"),chart=$("chart"),c=scene.getContext("2d"),g=chart.getContext("2d"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
   let W=0,H=0,CW=0,CH=0,raf=0,last=0,lastReadout=0,chartDirty=true;
   const setText=(id,t)=>$(id).textContent=t;
   const selected=()=>byId.get(s.star), other=()=>byId.get(s.other);
   const spatial=()=>s.view!=="earth"&&["ruimte","meten"].includes(s.mode);
   const show=(id,v)=>$(id).hidden=!v;
-  function resize(el,ctx){const r=el.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);if(r.width&&r.height){el.width=Math.round(r.width*d);el.height=Math.round(r.height*d);ctx.setTransform(d,0,0,d,0,0)}return [r.width,r.height]}
-  function invalidate(change=true){if(change)chartDirty=true;if(!raf)raf=requestAnimationFrame(draw)}
-  const ro=new ResizeObserver(()=>{[W,H]=resize(scene,c);[CW,CH]=resize(chart,g);invalidate()});ro.observe(scene);ro.observe(chart);
+  // Assigning even the same canvas dimensions clears its backing store.
+  // Do not allocate new buffers or schedule painting for a hidden console.
+  function resize(el,ctx){
+    const r=el.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);
+    if(r.width<1||r.height<1)return [0,0];
+    const w=Math.round(r.width*d),h=Math.round(r.height*d);
+    if(el.width!==w)el.width=w;
+    if(el.height!==h)el.height=h;
+    ctx.setTransform(d,0,0,d,0,0);
+    return [r.width,r.height];
+  }
+  function invalidate(change=true){if(change)chartDirty=true;if(!app.hidden&&!raf)raf=requestAnimationFrame(draw)}
+  function resizeCanvases(){if(app.hidden)return;[W,H]=resize(scene,c);[CW,CH]=resize(chart,g);invalidate()}
+  const ro=new ResizeObserver(resizeCanvases);ro.observe(scene);ro.observe(chart);
   const stage=$("stage"),head=stage.querySelector(".stage-head"),hud=stage.querySelector(".stage-metrics"),foot=stage.querySelector(".stage-footer");
-  const fitScene=()=>{const sr=stage.getBoundingClientRect(),a=head.getBoundingClientRect(),b=hud.getBoundingClientRect(),f=foot.getBoundingClientRect();stage.style.setProperty("--scene-top",Math.max(0,Math.ceil(Math.max(a.bottom,b.bottom)-sr.top+6))+"px");stage.style.setProperty("--scene-bottom",Math.ceil(sr.bottom-f.top+4)+"px");};
+  const fitScene=()=>{
+    if(app.hidden)return;
+    const sr=stage.getBoundingClientRect(),a=head.getBoundingClientRect(),b=hud.getBoundingClientRect(),f=foot.getBoundingClientRect();
+    const top=Math.max(0,Math.ceil(Math.max(a.bottom,b.bottom)-sr.top+6))+"px",bottom=Math.ceil(sr.bottom-f.top+4)+"px";
+    if(stage.style.getPropertyValue("--scene-top")!==top)stage.style.setProperty("--scene-top",top);
+    if(stage.style.getPropertyValue("--scene-bottom")!==bottom)stage.style.setProperty("--scene-bottom",bottom);
+  };
   const fitObserver=new ResizeObserver(fitScene);[stage,head,hud,foot].forEach(el=>fitObserver.observe(el));
+  app.addEventListener("leo-view-change",()=>{
+    if(raf)cancelAnimationFrame(raf);
+    raf=0;last=0;chartDirty=true;
+    if(app.hidden){W=H=CW=CH=0;return}
+    // The route has made the console visible. Lay it out before painting.
+    fitScene();resizeCanvases();
+  });
   const opt=(id,title)=>'<option value="'+id+'">'+title+'</option>';
   const starsOptions=M.stars.map(v=>opt(v.id,v.name)).join("");
   function setStar(id){if(!byId.has(id))return;if(s.view==="near"&&byId.get(id).d>250){s.view="space";s.blend=1;s.zoom=1;$("zoom").value=1;syncCamera()}s.star=id;if(s.other===id)s.other=M.stars.find(v=>v.id!==id).id;s.sigma=0;updateInspector();buildControls();updateText();invalidate()}
@@ -381,7 +405,7 @@ body{position:fixed;inset:0;background:#050914}
     });
   }
   function draw(now){
-    raf=0;if(!W||!H)return;
+    raf=0;if(app.hidden||!W||!H)return;
     const delta=Math.min(50,now-(last||now));last=now;
     if(s.anim){
       const f=M.clamp((now-s.anim.start)/s.anim.duration,0,1),v=f*f*(3-2*f);
@@ -514,7 +538,15 @@ const starDisk=(()=>{
 })();
 const chapterStills=[9,31,48,72,94];
 let W=1,H=1,t=reduce?chapterStills[0]:0,playing=!reduce,visible=false,frame=0,raf=0,last=0,chapter=-1,yawOffset=0,pitchOffset=0,drag=null,painted=0,projected=[],lastUI=-1;
-function resize(){const r=canvas.getBoundingClientRect();if(r.width<1||r.height<1)return;const d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.round(W*d);canvas.height=Math.round(H*d);ctx.setTransform(d,0,0,d,0,0);if(visible)request()}
+function resize(){
+ if(!visible)return;
+ const r=canvas.getBoundingClientRect();if(r.width<1||r.height<1)return;
+ const d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;
+ const w=Math.round(W*d),h=Math.round(H*d);
+ if(canvas.width!==w)canvas.width=w;
+ if(canvas.height!==h)canvas.height=h;
+ ctx.setTransform(d,0,0,d,0,0);request();
+}
 new ResizeObserver(resize).observe(canvas);
 // Time-aware monotone cubic interpolation keeps the camera moving through
 // adjacent waypoints, without overshooting or stopping at each one.
@@ -665,8 +697,21 @@ canvas.addEventListener("pointerup",()=>drag=null);canvas.addEventListener("poin
 canvas.addEventListener("keydown",e=>{if(e.key===" "){e.preventDefault();play()}else if(e.key==="ArrowRight"){e.preventDefault();seek(t+5)}else if(e.key==="ArrowLeft"){e.preventDefault();seek(t-5)}});
 function route(){
  const hash=location.hash.slice(1),lab=window.LEO_MODES.some(m=>m[0]===hash)||hash==="bronnen";
- visible=!lab;$("voyage").hidden=!visible;$("app").hidden=visible;
- if(visible){document.title="Stellair Observatorium | Leeuw";resize();last=0;updateUI(true);request()}else{playing=false;if(raf)cancelAnimationFrame(raf);raf=0;document.title="Stellair Observatorium | Leeuw in 3D";if(hash==="bronnen"){requestAnimationFrame(()=>{const el=$("bronnen"),body=el.closest(".panel-body");document.body.classList.add("panel-open");document.body.classList.remove("graph-open");$("labDock").setAttribute("aria-expanded","true");$("graphToggle").setAttribute("aria-expanded","false");el.querySelector("details").open=true;body.scrollTop=body.scrollTop+el.getBoundingClientRect().top-body.getBoundingClientRect().top;})}}
+ const app=$("app"),film=$("voyage");
+ // Stop the outgoing renderer before exposing the incoming canvas.
+ if(lab){
+   visible=false;playing=false;if(raf)cancelAnimationFrame(raf);raf=0;last=0;drag=null;
+   film.hidden=true;
+   const changed=app.hidden;app.hidden=false;
+   if(changed)app.dispatchEvent(new Event("leo-view-change"));
+   document.title="Stellair Observatorium | Leeuw in 3D";
+   if(hash==="bronnen"){requestAnimationFrame(()=>{if(app.hidden)return;const el=$("bronnen"),body=el.closest(".panel-body");document.body.classList.add("panel-open");document.body.classList.remove("graph-open");$("labDock").setAttribute("aria-expanded","true");$("graphToggle").setAttribute("aria-expanded","false");el.querySelector("details").open=true;body.scrollTop=body.scrollTop+el.getBoundingClientRect().top-body.getBoundingClientRect().top;})}
+ }else{
+   const changed=!app.hidden;app.hidden=true;
+   if(changed)app.dispatchEvent(new Event("leo-view-change"));
+   visible=true;film.hidden=false;
+   document.title="Stellair Observatorium | Leeuw";last=0;resize();updateUI(true);request();
+ }
 }
 window.addEventListener("hashchange",route);
 document.addEventListener("visibilitychange",()=>{if(document.hidden){last=0;if(raf)cancelAnimationFrame(raf);raf=0}else request()});
