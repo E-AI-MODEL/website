@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 import zipfile
 
 from release_artifact import record
@@ -52,8 +53,8 @@ def timestamp(value):
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
-def producer_upload(producer, run, jobs, attempt):
-    name, upload = producer
+def producer_job(producer, run, jobs, attempt):
+    name, _ = producer
     matches = [j for j in jobs if j.get("name") == name]
     if len(matches) != 1:
         raise ValueError("De unieke bouwjob ontbreekt")
@@ -62,7 +63,39 @@ def producer_upload(producer, run, jobs, attempt):
             or job.get("head_sha") != run["head_sha"] or job.get("status") != "completed"
             or job.get("conclusion") != "success"):
         raise ValueError("De bouwjob is niet geslaagd voor deze versie")
-    steps = [s for s in job.get("steps", []) if s.get("name") == upload]
+    return job
+
+
+# Carried jobs can initially have an empty steps array. Retry only that
+# metadata state, never a failed upload, a different job or an invalid record.
+# Five refreshes with at most 30 seconds of backoff; API calls have their
+# own timeouts and the workflow still has its normal job timeout.
+STEP_BACKOFF = (1, 2, 4, 8, 15)
+
+
+def producer_upload(producer, run, jobs, attempt, jobs_for_attempt=None):
+    _, upload = producer
+    job = producer_job(producer, run, jobs, attempt)
+    if job.get("steps") == [] and jobs_for_attempt is not None:
+        def identity(record):
+            job_id = record.get("id")
+            if type(job_id) is not int or job_id < 1:
+                raise ValueError("Ongeldige bouwjob-identiteit")
+            return (job_id, timestamp(record.get("started_at")),
+                    timestamp(record.get("completed_at")))
+
+        expected = identity(job)
+        for delay in STEP_BACKOFF:
+            print(f"Wacht op uploadmetadata van bouwjob {expected[0]} (poging {attempt})")
+            time.sleep(delay)
+            job = producer_job(producer, run, jobs_for_attempt(attempt), attempt)
+            if identity(job) != expected:
+                raise ValueError("De bouwjob is gewijzigd tijdens de metadatacontrole")
+            if job.get("steps") != []:
+                break
+    if not isinstance(job.get("steps"), list):
+        raise ValueError("Ongeldige uploadmetadata")
+    steps = [s for s in job["steps"] if s.get("name") == upload]
     if len(steps) != 1 or steps[0].get("status") != "completed" or steps[0].get("conclusion") != "success":
         raise ValueError("De geslaagde uploadstap ontbreekt")
     step = steps[0]
@@ -84,7 +117,7 @@ def select_job_artifact(prefix, producer, run, jobs, artifacts, jobs_for_attempt
     attempt = run["run_attempt"]
     if type(attempt) is not int or attempt < 1:
         raise ValueError("Ongeldige validatiepoging")
-    times = producer_upload(producer, run, jobs, attempt)
+    times = producer_upload(producer, run, jobs, attempt, jobs_for_attempt)
     pattern = re.compile(rf"{re.escape(prefix)}-{run['id']}-([1-9][0-9]*)")
     identity = {
         "id": run["id"], "head_sha": run["head_sha"], "head_branch": head_branch,
@@ -116,7 +149,8 @@ def select_job_artifact(prefix, producer, run, jobs, artifacts, jobs_for_attempt
         raise ValueError("Het unieke artifact van de geslaagde bouwjob ontbreekt, is verlopen of is dubbel")
     artifact, origin_attempt = candidates[0]
     if origin_attempt != attempt:
-        origin_times = producer_upload(producer, run, jobs_for_attempt(origin_attempt), origin_attempt)
+        origin_times = producer_upload(producer, run, jobs_for_attempt(origin_attempt),
+                                       origin_attempt, jobs_for_attempt)
         if origin_times != times:
             raise ValueError("De eerdere bouwjob is niet de bouwjob uit de geslaagde validatie")
     return artifact, origin_attempt

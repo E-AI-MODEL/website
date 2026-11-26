@@ -106,6 +106,60 @@ class CiBuildArtifactTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             producer_for("site", ".github/workflows/eaispeak.yml")
 
+    def test_carried_producer_steps_are_refreshed_before_selection(self):
+        from unittest.mock import Mock
+        for target in ("site", "eaispeak"):
+            with self.subTest(target=target):
+                prefix, producer, latest, original, artifact = self.records(target)
+                latest["id"] = 202
+                original["id"] = 201
+                empty = {**latest, "steps": []}
+                original_empty = {**original, "steps": []}
+                fetch = Mock(side_effect=[[empty], [latest], [original_empty], [original]])
+                with patch("release_candidate.time.sleep") as sleep:
+                    self.assertEqual(select_job_artifact(
+                        prefix, producer, self.run, [empty], [artifact], fetch, "feature"),
+                        (artifact, 1))
+                self.assertEqual([c.args for c in fetch.call_args_list], [(3,), (3,), (1,), (1,)])
+                self.assertEqual([c.args for c in sleep.call_args_list], [(1,), (2,), (1,)])
+
+    def test_missing_steps_fail_closed_after_bounded_refreshes(self):
+        from unittest.mock import Mock
+        from release_candidate import STEP_BACKOFF
+        prefix, producer, latest, original, artifact = self.records("site")
+        latest = {**latest, "id": 202, "steps": []}
+        fetch = Mock(return_value=[latest])
+        with patch("release_candidate.time.sleep") as sleep:
+            with self.assertRaisesRegex(ValueError, "geslaagde uploadstap ontbreekt"):
+                select_job_artifact(prefix, producer, self.run, [latest], [artifact], fetch, "feature")
+        self.assertEqual(fetch.call_count, len(STEP_BACKOFF))
+        self.assertEqual([c.args[0] for c in sleep.call_args_list], list(STEP_BACKOFF))
+        self.assertLessEqual(sum(STEP_BACKOFF), 30)
+
+    def test_retry_never_accepts_a_different_job_or_failed_upload(self):
+        from unittest.mock import Mock
+        prefix, producer, latest, original, artifact = self.records("site")
+        latest["id"] = 202
+        empty = {**latest, "steps": []}
+        failed = {**latest, "steps": [{**latest["steps"][0], "conclusion": "failure"}]}
+        for replacement in ([{**latest, "id": 999}], [{**latest, "head_sha": "b"*40}],
+                            [{**latest, "completed_at": "2026-11-25T21:36:41Z"}],
+                            [failed], [latest, latest], []):
+            fetch = Mock(return_value=replacement)
+            with self.subTest(replacement=replacement), patch("release_candidate.time.sleep") as sleep:
+                with self.assertRaises(ValueError):
+                    select_job_artifact(prefix, producer, self.run, [empty], [artifact], fetch, "feature")
+                fetch.assert_called_once_with(3)
+                sleep.assert_called_once_with(1)
+        for invalid in (failed, {**latest, "steps": [{"name": "not the upload"}]},
+                        {**latest, "conclusion": "failure"}, {**latest, "steps": None}):
+            fetch = Mock()
+            with self.subTest(invalid=invalid), patch("release_candidate.time.sleep") as sleep:
+                with self.assertRaises(ValueError):
+                    select_job_artifact(prefix, producer, self.run, [invalid], [artifact], fetch, "feature")
+                fetch.assert_not_called()
+                sleep.assert_not_called()
+
     def test_pages_fail_closed_on_missing_and_duplicate_data(self):
         with patch("ci_build_artifact.api_json", return_value={"total_count": 2, "jobs": [{"id": 1}]}):
             with self.assertRaises(ValueError):
