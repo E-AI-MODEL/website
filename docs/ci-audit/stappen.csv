@@ -354,7 +354,7 @@ site-check.yml,static-checks,1,Run actions/checkout@v4,success(),,actions/checko
 site-check.yml,static-checks,2,Controleer alle verplichte resultaten,success(),scripts/check_release_gate.py,,0,45562543789,d81def4e25261e04be6f844e0619ceb5f23029c2,139032813481,static-checks,3,opnieuw bevestigd
 test-html-gallery-auth.yml,auth,1,Run actions/checkout@v4,success(),,actions/checkout@v4,,,,,,,niet opnieuw bevestigd
 test-html-gallery-auth.yml,auth,2,Run actions/setup-node@v4,success(),,actions/setup-node@v4,,,,,,,niet opnieuw bevestigd
-test-html-gallery-auth.yml,auth,3,Parse Worker modules and password tool,success(),,,,,,,,,niet opnieuw bevestigd
+test-html-gallery-auth.yml,auth,3,Parse Worker modules and password tool,success(),"services/html-galerij/scripts/password-hash.mjs, services/html-galerij/src/admin-client.js, services/html-galerij/src/admin.js, services/html-galerij/src/auth.js, services/html-galerij/src/dashboard.js, services/html-galerij/src/index.js, services/html-galerij/src/ui.js",,,,,,,,niet opnieuw bevestigd
 test-html-gallery-auth.yml,auth,4,"Test login, sessions, authorization, CSRF, and deletion",success(),tests/test_html_galerij_admin.mjs,,,,,,,,niet opnieuw bevestigd
 test-html-gallery-auth.yml,auth,5,"Test website management sources, access boundaries and audit actions",success(),tests/test_eai_site_admin.mjs,,,,,,,,niet opnieuw bevestigd
 test-html-gallery-auth.yml,auth,6,Test the complete gallery with a real SQLite transaction,success(),tests/test_html_gallery_sqlite.mjs,,,,,,,,niet opnieuw bevestigd

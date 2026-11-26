@@ -63,6 +63,13 @@ scripts/test_wihtml_journey.mjs,verify-wihtml/wihtml#9,,ja,verify-wihtml/wihtml#
 scripts/ui_smoke.mjs,verify-ui/verify#25,,ja,
 scripts/validate_topo_content.mjs,deploy-topo-theory7/deploy-topo#3 | topo-mobile-verify/verify#3,topo/data/provincies-2026.geojson | topo/data/shuffle-vragen.json | topo/data/taalbank.json | topo/index.html | topo/nederland/index.html,ja,deploy-topo-theory7/deploy-topo#3 | topo-mobile-verify/verify#3
 scripts/verify_ui.py,audit-archive/audit#4 | check-own-exports/exports#4 | deploy-theory7/deploy#4 | deploy-theory7/deploy#10 | verify-ui/verify#14 | verify-ui/verify#44,assets/ui-manifest.json | leif/continue/index.html | leif/index.html | leif/verhaal/index.html | tools/eaimesh/start/index.html | tools/eaistudio/studio/icons/apple-touch-icon.png | tools/eaistudio/studio/icons/icon-192.png | tools/eaistudio/studio/icons/icon-512.png | tools/eaistudio/studio/index.html | tools/eaistudio/studio/manifest.webmanifest | tools/eaistudio/studio/service-worker.js,ja,audit-archive/audit#4 | check-own-exports/exports#4 | deploy-theory7/deploy#4 | deploy-theory7/deploy#10 | verify-ui/verify#14 | verify-ui/verify#44
+services/html-galerij/scripts/password-hash.mjs,test-html-gallery-auth/auth#3,,ja,
+services/html-galerij/src/admin-client.js,test-html-gallery-auth/auth#3,,ja,
+services/html-galerij/src/admin.js,test-html-gallery-auth/auth#3,,ja,
+services/html-galerij/src/auth.js,test-html-gallery-auth/auth#3,,ja,
+services/html-galerij/src/dashboard.js,test-html-gallery-auth/auth#3,,ja,
+services/html-galerij/src/index.js,test-html-gallery-auth/auth#3,,ja,
+services/html-galerij/src/ui.js,test-html-gallery-auth/auth#3,,ja,
 tests/test_abyss_publish.py,build-site/build#39,,ja,build-site/build#39
 tests/test_anatomie_content_audit.py,anatomie-webkit/webkit#4,content/anatomie/eaiDetail.js | content/anatomie/guide.js | scripts/audit_anatomie_content.py | scripts/build_anatomie.py,ja,anatomie-webkit/webkit#4
 tests/test_anatomie_picking.mjs,anatomie-webkit/webkit#12,../content/anatomie/picking.js,ja,anatomie-webkit/webkit#12
