@@ -252,3 +252,21 @@ body.eaigit-wizard{
 .eg-delivery .eg-choice[aria-pressed="true"]{border-color:#8dbfa0;background:#edf6ef;color:#1a644d}
 .eg-delivery .eg-choice[aria-pressed="true"] span:last-child{color:#1a644d}
 .eg-delivery>.eg-footnote{margin-top:12px}
+
+
+/* Public GitHub checks are optional and never replace the browser results. */
+.eg-check-panel{margin:20px 0 16px;padding:17px 19px;border:1px solid #dce7e6;border-radius:12px;background:#fafdfd}
+.eg-check-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.eg-check-head h3{font:500 18px/1.25 Georgia,serif;margin:5px 0 6px;color:#183744}
+.eg-check-head button{flex-shrink:0}
+.eg-check-summary{font-weight:650;color:#274c58;font-size:13px;margin:10px 0 4px}
+.eg-check-panel[data-state="failed"] .eg-check-summary{color:#963c3c}
+.eg-check-explanation{font-size:12.5px;line-height:1.55;color:#59747b;margin:0 0 8px}
+.eg-check-revision{font-size:11px;color:#70878d;margin:7px 0 12px;overflow-wrap:anywhere}
+.eg-check-list{padding:0;margin:10px 0 14px;list-style:none;display:grid;gap:8px}
+.eg-check-list li{min-width:0;padding:9px 11px;border:1px solid #e4eded;border-radius:7px;background:#fff;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 12px;align-items:center;font-size:12px}
+.eg-check-list strong{font-size:12px;font-weight:570;overflow-wrap:anywhere}
+.eg-check-list span{font-size:11px;color:#647a82;text-align:right}
+.eg-check-list a{grid-column:1/-1;font-size:11px}
+.eg-check-panel a{color:#16678a;text-decoration:underline;text-underline-offset:2px;font-size:12px}
+@media(max-width:450px){.eg-check-panel{padding:13px}.eg-check-list li{grid-template-columns:1fr}.eg-check-list span{text-align:left}}

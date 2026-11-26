@@ -1,0 +1,23 @@
+PR,titel,head,"geraakte CI-, script- en testbestanden"
+396,"Onafhankelijke astronomische benchmark: galpy, Astropy en twee Gaia-meetreeksen",d81def4e25261e04be6f844e0619ceb5f23029c2,.github/workflows/astronomy-validation.yml | scripts/extract_astronomy_benchmark.mjs | scripts/validate_astronomy.py | tests/fixtures/astronomy-rotation-curves.json | tests/requirements-astronomy.txt
+395,Maak vier herkenbare ingangen voor Heelal en voeg Leeuw toe,40152d088449bc0dcf482d63f552677b1588fb85,scripts/prepare_ui.py | scripts/ui_smoke.mjs | tests/test_science_observatory_navigation.mjs
+362,EAIspeak: vervang technische modeldropdown door zwevend mistmenu,feb2386ad5dbd937d4a8d408ad4fc8cfc4f41719,
+356,Fix: Noord-Nederland TOPO vraagkaart en feedback op iPhone,b789be86ddffafb0bc8dff80d49f95860de31ab2,scripts/test_topo_mobile.mjs
+352,EAIgit mobiel: openbare GitHub-controles direct bij het project,3fa635bf2ca7e16f18c38bfe8339f28fc028e70e,.github/workflows/projecthulp-browser.yml | tests/test_eaigit_github_checks.mjs
+346,Publicatie: toon en blokkeer onbedoeld dubbele pagina's,d345b3211f6d0f744bbf0716f10e9b1dcbef2c97,.github/workflows/verify-ui.yml | scripts/check_publication_duplicates.py | tests/test_publication_duplicates.py
+305,"DELF scolaire: live NL→FR, Phonon-stem en rustige podiumweergave",7d666043022740a387eabad67e7a9a6c41dc9f56,.github/workflows/build-site.yml | .github/workflows/delf-generate-audio.yml | .github/workflows/delf-live.yml | .github/workflows/deploy-delf-preview.yml | .github/workflows/eaispeak-bridge.yml | scripts/build_site.py
+290,Fix: livecontrole herkent oude hoofdpagina’s als strenge doorverwijzingen,01b631c706270c78a995d7ba4d94de1038ca69cb,bestandslijst niet opgehaald
+279,"EAIgame 2.0: verhaal, storyboard, wereldregels en vier stijlen",1c4036aac104c070d5b38020f57b81950bb655f7,.github/workflows/eaigame-assets.yml | scripts/eaigame_asset_proof.py
+278,Verwijder anatomieblokkade uit PR-controles en versnel Theory7-publicatie,a5eb59d41f1532935d54c7e904a1d82f563bea77,.github/workflows/audit-archive.yml | .github/workflows/build-site.yml | .github/workflows/deploy-theory7.yml | .github/workflows/site-check.yml | .github/workflows/verify-ui.yml | scripts/anatomie_ci_scope.py | scripts/reuse_published_anatomie.py | scripts/verify_eaigit_live.py | tests/test_anatomie_ci_scope.py
+277,EAIgame: Sites-bord herstellen en 50 verbeteringen gefaseerd bouwen,3681f17d4d70db17ff6889d85d70cacb00c3ac07,.github/workflows/eaigame.yml | scripts/test_eaigame_browser.mjs | scripts/test_eaigame_sites_browser.mjs | tests/test_eaigame_sites_levels.mjs
+275,Beveilig HTML-galerij: e-mail/wachtwoordlogin en server-side rechten,d96b763fe3352919865d99a8c1865316f4a697bf,bestandslijst niet opgehaald
+262,Diagnose bestaande hefboom-WebKit-timeout zonder aanpassing aan het model,6b362fb6d34223c9ff5248a239853b1c5929072b,scripts/test_science_fixed_workspace.mjs
+260,Schuine worp: meetinformatie klopt weer na wissen en herstellen,e66505b8c8f71c68f785c2babf4e0e7fe2ea063f,bestandslijst niet opgehaald
+257,Menu vereenvoudigen en interactieve HTML bij elkaar brengen,890d09e7261470e709741d553d6760a725410f9c,scripts/prepare_ui.py | scripts/ui_smoke.mjs | scripts/verify_ui.py | tests/test_anatomie_publish.py | tests/test_science_observatory_navigation.mjs | tests/test_site_menu_groups.py
+231,Wiskunde: nieuwe interactieve werkruimte voor functies en afgeleiden,8935dfefea9f7971d505f329b5ef0f79b3d14487,bestandslijst niet opgehaald
+226,Sport en bewegen: nieuwe URL en heldere menuteksten,e9b247c95275ec5ed945a8c7a86d3f6f6513ee4a,bestandslijst niet opgehaald
+214,Galactisch Observatorium: uitleg reageert op modelinstellingen,b24e0dac94af37dc6fc695fa1155723201505303,bestandslijst niet opgehaald
+209,LO Aanvalslab: test nieuwe teamverdediging met open trackingdata,7a5e06a1062320a39fca4ad937c176b6cb0f7773,bestandslijst niet opgehaald
+99,LEIF: beheer openen zonder e-maillink of wachttijd,984e1c2e86fb46fcb264ef30715dce21b3eed9ef,bestandslijst niet opgehaald
+68,Maak de homepage toegankelijk voor de hele school met visuele uitleg,616cbf73fe71de2e5a3d0429b6bc61eeed2f38f0,bestandslijst niet opgehaald
+58,House of Talents: zelfstandige HTML-overdracht Onderwijs in,7e44b2b83a5f04b88256b28238d59df208a1892d,bestandslijst niet opgehaald

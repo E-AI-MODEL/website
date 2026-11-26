@@ -5,6 +5,7 @@ import {buildJourney,primaryFinding,helpPrompt} from "./journey.mjs";
 import {buildLocalWorkPlan,reasonForStep} from "./work-plan.mjs";
 import {selectAuditAction} from "./audit-advice.mjs";
 import {getHelpTopic,getHelpForStep} from "./help-topics.mjs";
+import {githubChecksView} from "./github-checks.mjs";
 
 const $=id=>document.getElementById(id);
 const state={intent:null,source:null,goal:"code",delivery:"local",zip:null,singleFile:null,repoUrl:"",archive:null,repo:null,repoError:null,aim:"",guidance:null,steps:[],stepIndex:0,busy:false,experience:"guided",workPlan:null,completedSteps:new Set()};
@@ -99,6 +100,29 @@ function liList(id,entries,problem=false){
   node.append(li);
  }
 }
+function renderGithubChecks(){
+ const view=githubChecksView(state.repo);
+ show("githubCheckPanel",view.visible);
+ if(!view.visible)return;
+ label("githubCheckSummary",view.summary);
+ label("githubCheckExplanation",view.explanation);
+ label("githubCheckRevision",view.headSha?"GitHub commit: "+view.headSha.slice(0,12):"Geen bevestigde commit beschikbaar.");
+ const list=$("githubCheckList");list.replaceChildren();
+ for(const run of view.runs){
+  const item=document.createElement("li");
+  const name=document.createElement("strong");name.textContent=run.name;
+  const status=document.createElement("span");status.textContent=run.status;
+  item.append(name,status);
+  if(run.url){
+   const link=document.createElement("a");link.href=run.url;link.target="_blank";
+   link.rel="noopener noreferrer";link.textContent="Bekijk controle";
+   item.append(link);
+  }
+  list.append(item);
+ }
+ $("githubCheckLink").href=view.actionsUrl;
+ $("githubCheckPanel").dataset.state=view.state;
+}
 function renderResult(){
  const advice=(state.intent==="local"||state.source==="file")?null:makeAdvice({
   goal:state.goal,aim:state.aim,experience:state.experience==="compact"?"advanced":"beginner",
@@ -143,6 +167,7 @@ function renderResult(){
   repoError:state.repoError,advice,aim:state.aim,steps:state.steps,delivery:state.delivery
  });
  showWorkEvidence(state.workPlan);
+ renderGithubChecks();
  navigate("result");
 }
 async function analyze(){
@@ -348,6 +373,24 @@ $("repoSkip").addEventListener("click",()=>{state.repoUrl="";$("repoUrl").value=
 $("aimBack").addEventListener("click",()=>previous("aim"));
 $("aimSkip").addEventListener("click",()=>{$("projectAim").value="";state.aim="";analyze();});
 $("analyze").addEventListener("click",()=>{state.aim=$("projectAim").value.trim().slice(0,220);analyze();});
+$("githubCheckReload").addEventListener("click",async()=>{
+ if(state.busy||!state.repo?.readable||!state.repoUrl)return;
+ state.busy=true;
+ const button=$("githubCheckReload");button.disabled=true;
+ label("githubCheckSummary","GitHub-controles worden opnieuw opgehaald…");
+ try{
+  const repo=await runWorker("github",{url:state.repoUrl});
+  state.repo=repo;state.repoError=null;
+  renderResult();
+ }catch(error){
+  state.repo={...state.repo,actionChecks:null};
+  renderResult();
+  label("githubCheckSummary","Vernieuwen niet gelukt");
+  label("githubCheckExplanation",error?.message||"Controleer je verbinding en probeer opnieuw.");
+ }finally{
+  button.disabled=false;state.busy=false;
+ }
+});
 $("resultBack").addEventListener("click",()=>navigate("aim"));
 $("reset").addEventListener("click",reset);
 $("startGuidance").addEventListener("click",()=>{state.stepIndex=0;renderGuide();});

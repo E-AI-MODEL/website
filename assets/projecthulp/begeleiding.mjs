@@ -87,7 +87,9 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
   problems.push(issue(finding.title,finding.detail,"attention",finding.path,finding.line));
  }
  if(ci?.runs?.length){
-  for(const run of ci.runs.slice(0,3)){
+  // Prioritize failures instead of hiding them behind the first successful checks.
+  const ordered=[...ci.runs].sort((a,b)=>Number(b.conclusion==="failure")-Number(a.conclusion==="failure"));
+  for(const run of ordered.slice(0,3)){
    if(run.status==="completed"&&run.conclusion==="success"){
     addGood("GitHub Actions meldt een geslaagde controle: "+run.name+". Dat bewijst geen functionele werking.");
    }else if(run.conclusion==="failure"&&!ci.syntaxErrors?.length){
@@ -96,7 +98,8 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
   }
   uncertain.push("Van GitHub Actions zijn alleen jobstatussen en eventuele EAIgit-syntaxisannotaties gelezen. Het volledige rapport is nog niet gekoppeld.");
  }
- if(ci?.incomplete)uncertain.push("Niet alle GitHub Actions-resultaten konden worden gelezen.");
+ if(ci?.incomplete)uncertain.push("Niet alle GitHub Actions-resultaten konden worden gelezen of aan de bronversie gekoppeld.");
+ if(ci?.annotationsIncomplete)uncertain.push("Niet alle GitHub Actions-foutdetails konden worden gelezen.");
  if(advice?.comparison&&repo?.readable&&!repo.truncated&&archive){
   const n=advice.comparison.missingCount||0;
   if(n>0)problems.push(issue(n===1?"Eén bestand staat nog niet in GitHub":n+" bestanden staan nog niet in GitHub","Vergelijk de mappen en voeg de ontbrekende uitgepakte bestanden toe. Gelijke bestandsnamen bewijzen niet dat de inhoud gelijk is.","attention"));
@@ -120,7 +123,7 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
  else if(!archive&&!repo?.readable)next.push(localRoute?"Beschrijf je doel en maak een passend lokaal bestand. Een GitHub-repository is niet verplicht.":"Selecteer een bestand of ZIP zodat de projectbestanden kunnen worden onderzocht.");
  else if(!repo?.readable&&!["repair","explore","local"].includes(intent))next.push("Voeg desgewenst een openbare GitHub-repository toe voor een vergelijking. Dit is niet nodig om je lokale bestand te onderzoeken.");
  else if(problems.some(x=>x.title.includes("ZIP in GitHub")))next.push("Pak het ZIP-bestand op je eigen apparaat uit en voeg daarna de losse projectbestanden toe. GitHub pakt een geüpload ZIP niet automatisch uit.");
- else if(problems.some(x=>x.title==="Syntaxisfout bevestigd door GitHub Actions"))next.push("Open de gemelde syntaxisfout in GitHub, herstel deze en laat de GitHub Actions-controle opnieuw uitvoeren.");
+ else if(problems.some(x=>x.title==="Syntaxisfout gemeld door GitHub Actions"))next.push("Open de gemelde syntaxisfout in GitHub, herstel deze en laat de GitHub Actions-controle opnieuw uitvoeren.");
  else if(problems.some(x=>x.title==="Ongeldige JSON"||x.title==="Lokaal bestand niet gevonden"||x.title==="ZIP en GitHub bevatten verschillende versies"))next.push("Bekijk de concrete fouten en verschillen bij het genoemde bestand en regelnummer. Verander niets voordat duidelijk is welke versie moet blijven.");
  else if(advice?.comparison?.missingCount)next.push("Voeg de ontbrekende losse bestanden toe aan GitHub. Bewaar de mapindeling en controleer eventuele privégegevens.");
  else if(problems.some(x=>x.title.includes("Verwijzingen")))next.push("Controleer de verwijzingen vanuit de startpagina en herstel de ontbrekende bestanden.");
@@ -134,7 +137,7 @@ export function makeGuidance({archive=null,repo=null,advice=null,goal="site",aim
   codexUrl:"https://codex.openai.com/",
   codexHelpUrl:"https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan",
   // Benoem niet-verifieerbare fouten nooit als bewezen.
-  codeErrorsVerified:Boolean(ci?.syntaxErrors?.length),logicErrorsVerified:false
+  codeErrorsVerified:false,githubCodeErrorsReported:Boolean(ci?.syntaxErrors?.length),logicErrorsVerified:false
  };
 }
 export function continuationPrompt(guidance,{repo=null}={}){
