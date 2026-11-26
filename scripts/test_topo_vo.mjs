@@ -128,6 +128,10 @@ try {
       await page.locator('#typedAnswer').fill(answer);
       await page.locator('.type-submit').click();
       await page.locator('#next').waitFor({state: 'visible'});
+      const voor = await page.locator('#next').boundingBox();
+      await page.waitForTimeout(400);
+      const na = await page.locator('#next').boundingBox();
+      assert.ok(Math.abs(voor.y - na.y) < 2, 'VERDER! verspringt na een goed antwoord');
       // Toetsenbord op een telefoon: invoer en CHECK blijven zichtbaar.
       await page.locator('#next').click();
       await page.locator('#typedAnswer').focus();

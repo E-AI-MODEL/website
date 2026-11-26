@@ -383,6 +383,8 @@ function queueAgain(task){
  queue.splice(later,0,again);
 }
 function factNote(q){return q.note?' '+q.note:''}
+// Vraag klaar: toetsenbordstand meteen sluiten, zodat VERDER! niet later nog verspringt.
+function closeKeyboard(){$('typedAnswer')?.blur();if(document.body.classList.contains('keyboard-open')){document.body.classList.remove('keyboard-open');resize()}}
 function answer(ok,extra){
  if(done)return;
  attempts++;
@@ -394,14 +396,13 @@ function answer(ok,extra){
   wrongStreak=0;$('score').textContent='★ '+stars;$('mapHint').textContent='GEVONDEN!';
   const phrase=correctStreak>=3?voice('goede_reeks'):voice('goed_antwoord');
   feedback((phrase||'Goed!')+(task.kind==='fact'?factNote(task.q):' '+naamZin(task.item))+(extra||''),'');
-  $('next').classList.remove('hide');$('skip').style.visibility='hidden';$('help').style.visibility='hidden';
-  $('typedAnswer')?.blur();
+  closeKeyboard();$('next').classList.remove('hide');$('skip').style.visibility='hidden';$('help').style.visibility='hidden';
  }else{
   correctStreak=0;wrongStreak++;wrong.add(task.id);queueAgain(task);
   if(attempts>=2){
    done=true;
    feedback(task.kind==='fact'?'Het goede antwoord is '+task.q.answer+'.'+factNote(task.q):'Dit is '+task.item.naam+'. Deze komt straks terug!','neutral');
-   $('next').classList.remove('hide');$('help').style.visibility='hidden';
+   closeKeyboard();$('next').classList.remove('hide');$('help').style.visibility='hidden';
   }else{
    const wild=wrongTapTimes.length>=4&&wrongTapTimes.at(-1)-wrongTapTimes.at(-4)<8000;
    const phrase=wild?voice('wild_klikken'):wrongStreak>=3?voice('veel_fouten'):voice('fout_antwoord');
@@ -521,7 +522,7 @@ $('help').onclick=()=>{
 $('skip').onclick=()=>{
  const task=current();wrong.add(task.id);queueAgain(task);done=true;
  feedback(task.kind==='fact'?'Het goede antwoord is '+task.q.answer+'.':'Dit is '+task.item.naam+'. Deze komt terug!','neutral');
- $('next').classList.remove('hide');$('skip').style.visibility='hidden';
+ closeKeyboard();$('next').classList.remove('hide');$('skip').style.visibility='hidden';
  if(task.kind==='item')requestAnimationFrame(focusMap);
 };
 $('next').onclick=()=>{if(!done)return;document.activeElement?.blur?.();index++;draw()};
