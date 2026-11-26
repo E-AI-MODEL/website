@@ -390,6 +390,46 @@ try{
  const zipLocalSteps=await page.locator("#routeList button").allTextContents();
  assert(zipLocalSteps.some(x=>/lokaal uit/.test(x)));
  assert(!zipLocalSteps.some(x=>/repository|GitHub/i.test(x)));
+ // The real browser worker must not announce success when the ninth check fails.
+ const commitSha="a".repeat(40),treeSha="b".repeat(40);
+ let checkMode="failure";
+ const fixtureRun=(id,conclusion)=>({id,name:"EAIgit syntax "+id,head_sha:commitSha,status:"completed",conclusion,html_url:"https://github.com/voorbeeld/project/actions/runs/123/job/"+id});
+ await page.unroute("https://api.github.com/**");
+ await page.route("https://api.github.com/**",route=>{
+  const url=route.request().url();
+  let data,status=200;
+  if(url.includes("/git/trees/"))data={sha:treeSha,truncated:false,tree:[{type:"blob",path:".github/workflows/check.yml"},{type:"blob",path:"index.html"}]};
+  else if(url.endsWith("/commits/main"))data={sha:commitSha,commit:{tree:{sha:treeSha}}};
+  else if(url.includes("/check-runs?")){
+   assert.ok(url.includes("/commits/"+commitSha+"/"),"The checks must use the exact commit");
+   if(checkMode==="unavailable"){status=429;data={message:"rate limit"};}
+   else data={total_count:9,check_runs:Array.from({length:9},(_,i)=>fixtureRun(i+1,i===8&&checkMode==="failure"?"failure":"success"))};
+  }else if(url.includes("/annotations?"))data=[];
+  else data={full_name:"voorbeeld/project",html_url:"https://github.com/voorbeeld/project",private:false,default_branch:"main"};
+  return route.fulfill({status,contentType:"application/json",headers:{"access-control-allow-origin":"*"},body:JSON.stringify(data)});
+ });
+ await page.setViewportSize({width:390,height:844});
+ await page.goto(base+"/tools/eaigit/");
+ await page.locator('[data-intent="repair"]').click();
+ await page.locator('[data-source="github"]').click();
+ await page.locator("#repoUrl").fill("https://github.com/voorbeeld/project");
+ await page.locator("#repoNext").click();
+ await page.locator("#aimSkip").click();
+ await page.locator("#stage-result:not(.eg-hidden)").waitFor({timeout:15000});
+ assert.equal(await page.locator("#githubCheckPanel").getAttribute("data-state"),"failed");
+ assert.match(await page.locator("#githubCheckList").innerText(),/EAIgit syntax 9/);
+ assert.equal(await page.locator("#githubCheckList li").count(),8);
+ assert.match(await page.locator("#githubCheckRevision").innerText(),/aaaaaaaaaaaa/);
+ await page.screenshot({path:join(out,"eaigit-github-checks-failure-mobile.png"),fullPage:true});
+ checkMode="success";
+ await page.locator("#githubCheckReload").click();
+ await page.waitForFunction(()=>document.querySelector("#githubCheckPanel").dataset.state==="checked");
+ assert.match(await page.locator("#githubCheckExplanation").innerText(),/werking.*niet getest/);
+ checkMode="unavailable";
+ await page.locator("#githubCheckReload").click();
+ await page.waitForFunction(()=>document.querySelector("#githubCheckPanel").dataset.state==="unavailable");
+ assert.equal(await page.locator("#githubCheckList li").count(),0,"Old successful results must disappear after an unsuccessful refresh");
+ assert.equal(sent.filter(x=>x.method!=="GET").length,0);
  // Oude URL blijft werken, zonder de oude naam in de nieuwe UI.
  await page.goto(base+"/tools/projecthulp/");
  await page.waitForURL("**/tools/eaigit/");
