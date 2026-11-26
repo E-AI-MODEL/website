@@ -114,6 +114,57 @@ try{
  await assertFixedMode('choice','choice','cities,capitals');
  await assertFixedMode('type','type','cities,capitals');
  await assertFixedMode('missing','missing','cities');
+
+ // Regression: northern game must show full feedback and the help actions on iPhone
+ // even after a wrong map tap or a multiline hint. The map must still fit on screen.
+ async function checkNorthFeedback(height){
+  const page=await browser.newPage({viewport:{width:390,height},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+  page.on('pageerror',error=>failures.push('north-feedback-'+height+': '+error.message));
+  try{
+   await page.goto(base+'/topo/',{waitUntil:'domcontentloaded'});
+   if(await page.locator('#privacyLayer').isVisible())await page.locator('#privacyOk').click();
+   await page.locator('#start').click();
+   assert.equal(await page.locator('#kind').textContent(),'AANWIJZEN');
+   async function check(stage){
+    const sizes=await page.evaluate(()=>{
+     const rect=selector=>{const element=document.querySelector(selector);const r=element.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}};
+     const question=document.querySelector('.question-card');
+     return {viewport:window.visualViewport?.height||window.innerHeight,
+      card:rect('.question-card'),prompt:rect('#prompt'),feedback:rect('#feedback'),
+      links:rect('.small-links'),map:rect('.game-board'),next:rect('#next'),
+      cardOverflow:question.scrollHeight-question.clientHeight,
+      bodyHeight:document.body.scrollHeight};
+    });
+    console.log('TOPO NORTH '+height+' '+stage+' '+JSON.stringify(sizes));
+    assert.ok(sizes.cardOverflow<=3,'North card scrolls and hides content: '+stage);
+     assert.ok(sizes.prompt.bottom<=sizes.card.bottom-3,'North question text clipped: '+stage);
+    assert.ok(sizes.links.bottom<=sizes.card.bottom-3,'North help actions clipped: '+stage);
+    assert.ok(sizes.map.bottom<=sizes.viewport+3,'North map clipped: '+stage);
+    assert.ok(sizes.map.height>=120,'North map collapsed: '+stage);
+    assert.ok(sizes.bodyHeight<=sizes.viewport+8,'North page scrolls: '+stage);
+    if(stage!=='initial'){
+     assert.ok(sizes.feedback.bottom<=sizes.links.top+3,'North feedback covered by help actions: '+stage);
+     assert.ok(sizes.feedback.bottom<=sizes.card.bottom-3,'North feedback clipped: '+stage);
+    }
+   }
+   await check('initial');
+   const target=await page.evaluate(()=>game.queue[game.idx]);
+   const wrong=await page.evaluate(()=>db.find(item=>item.id!==game.queue[game.idx].id&&item.kind===game.queue[game.idx].kind)?.id);
+   assert.ok(wrong,'Could not find wrong marker');
+   await page.evaluate(id=>document.querySelector('#map [data-place="'+id+'"]').dispatchEvent(new MouseEvent('click',{bubbles:true,clientX:190,clientY:400})),wrong);
+   assert.equal(await page.locator('#feedback').isVisible(),true);
+   await check('wrong-answer');
+   await page.screenshot({path:'test-results/topo/north-'+height+'-wrong.png',fullPage:true});
+   await page.locator('#help').click();
+   await check('multiline-hint');
+   await page.screenshot({path:'test-results/topo/north-'+height+'-hint.png',fullPage:true});
+   await page.evaluate(id=>document.querySelector('#map [data-place="'+id+'"]').dispatchEvent(new MouseEvent('click',{bubbles:true,clientX:190,clientY:400})),target.id);
+   assert.equal(await page.locator('#next').isVisible(),true);
+   await check('correct-answer');
+  }finally{await page.close();}
+ }
+ await checkNorthFeedback(844);
+ await checkNorthFeedback(650);
  // Fixed settings page: tabs, footer and the play action must remain visible.
  const settings=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
  await settings.goto(base+'/topo/instellingen/');

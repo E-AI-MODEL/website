@@ -91,3 +91,48 @@ test('Compact hoofdmenu behoudt de volledige proefcatalogus in zoeken', () => {
   }
   assert.match(galaxy, /modeSet\(MODE\[location\.hash\.slice\(1\)\]/);
 });
+
+test('Leeuw: bronrecords, publicatieroute, zeven standen en onafhankelijke rekenwaarden', () => {
+  const route = '/tools/science-observatory/labs/leeuw/';
+  const html = load('content/science-observatory/labs/leeuw.html');
+  assert.equal(html, load('tools/science-observatory/labs/leeuw/index.html'));
+  assert.ok(load('content/science-observatory/landing.html').includes(route));
+  assert.ok(load('scripts/prepare_ui.py').includes(route));
+  assert.ok(load('sitemap.xml').includes('https://eaimodel.nl' + route));
+  assert.match(load('scripts/build_site.py'), /"wiskunde-b", "leeuw"\)/);
+  const data = JSON.parse(html.match(/<script id="leo-data" type="application\/json">([^]*?)<\/script>/)[1]);
+  assert.equal(data.stars.length, 9);
+  assert.equal(new Set(data.stars.map(s=>s[0])).size, 9);
+  assert.ok(data.paths.flat().every(id=>data.stars.some(s=>s[0]===id)));
+  assert.equal((html.match(/class="nav-btn(?: active)?" data-mode=/g)||[]).length,7);
+  const ctx = {window:{},document:{getElementById:()=>({textContent:JSON.stringify(data)})}};
+  const script=html.match(/<script id="leo-model">([^]*?)<\/script>/)[1];
+  new Function('window','document',script)(ctx.window,ctx.document);
+  const m=ctx.window.LEO_MODEL;
+  assert.ok(Math.abs(m.byId.get(49669).d-79.2989)<.001);
+  assert.ok(Math.abs(m.byId.get(49583).d-1815.510)<.001);
+  assert.ok(Math.abs(m.separation(m.byId.get(49669).r,m.byId.get(49583).r)-1736.502)<.01);
+  for(const star of m.stars){
+    assert.ok(Math.abs(m.norm(star.u)-1)<1e-10);
+    assert.ok(star.lo < star.d && star.d < star.hi);
+    assert.ok(Math.abs(m.norm(m.pos(star,0))-star.d)<1e-8);
+    assert.ok(Math.abs(m.angle(star.r,m.pos(star,0)))<.000003);
+    assert.equal(m.separation(star.r,star.r),0);
+    assert.ok(m.norm(m.sub(m.pos(star,1000),star.r))>0);
+  }
+  assert.ok(Math.abs(m.flux(5,0)-.01)<1e-10);
+  assert.ok(Math.abs(m.gmst(Date.UTC(2000,0,1,12))-280.46061837)<1e-8);
+  const h=m.horizon({ra:0,dec:0},Date.UTC(2000,0,1,12),0,-280.46061837);
+  assert.ok(Math.abs(h.alt-90)<1e-6);
+});
+
+test('Leeuw gebruikt vaste Melkweg-console en behoudt de projectiebediening', () => {
+  const html=load('content/science-observatory/labs/leeuw.html');
+  for(const id of ['app','navigation','stage','scene','quickRange','labDock','graphToggle','spin','chart','panelClose']) assert.match(html,new RegExp('id="'+id+'"'));
+  assert.match(html,/height:100dvh/);
+  assert.match(html,/position:fixed;inset:0/);
+  assert.match(html,/function startIntro\(/);
+  assert.match(html,/s\.blend=s\.anim\.from\+/);
+  assert.match(html,/Math\.min\(2\.5,r\)/);
+  assert.match(html,/line\(c,a,b,"#9ab9cf8c",\.65\)/);
+});

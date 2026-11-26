@@ -2209,7 +2209,7 @@ def inject_embed(source: Path, canonical_path: str, fallback_title: str, footer_
 
 def redirect(target: str) -> str:
     canonical = target if target.startswith("http") else f"{BASE_URL}{target}"
-    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={esc(target)}"><link rel="canonical" href="{esc(canonical)}"><title>Doorsturen…</title></head><body><p><a href="{esc(target)}">Ga verder</a></p></body></html>'
+    return f'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url={esc(target)}"><link rel="canonical" href="{esc(canonical)}"><title>Doorsturen…</title></head><body><p><a href="{esc(target)}">Ga verder</a></p></body></html>'
 
 def require_sources(sources: Path) -> None:
     required = [file for _, _, file, _ in PUBLICATIONS] + ["onderwijsin-embed1.html", "onderwijsin-3d.html", "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"]
@@ -2678,7 +2678,7 @@ def build(sources: Path, out: Path) -> None:
           doc("Interactief onderzoeken", science_landing.read_text(encoding="utf-8"),
               "/tools/science-observatory/", "observatoria",
               "Onderzoek natuurkunde, wiskunde, de Melkweg, anatomie, AI en sport met interactieve modellen."))
-    for slug in ("melkweg", "gravitatie-banen", "natuurkunde", "schuine-worp", "wiskunde-a", "wiskunde-b"):
+    for slug in ("melkweg", "gravitatie-banen", "natuurkunde", "wiskunde-a", "wiskunde-b", "leeuw"):
         source = science_source / "labs" / (slug + ".html")
         if not source.is_file():
             raise FileNotFoundError(f"Science Observatory-model ontbreekt: {source}")
@@ -2758,7 +2758,7 @@ def build(sources: Path, out: Path) -> None:
     write(out, "tools/eaimesh/index.html", doc('EAImesh', '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">EAImesh</div><h1>Bekijk hoe een GitHub-repository in elkaar zit.</h1><p class="lede">EAImesh leest een openbare GitHub-repository en maakt de bestanden en hun samenhang zichtbaar. Kies wat je wilt bekijken en hoeveel detail je nodig hebt.</p><div class="button-row"><a class="button" href="/tools/eaimesh/start/">Open EAImesh</a><a class="button secondary" href="/nl/tools/">Alle tools</a></div></div></section><section class="section"><div class="wrap"><h2>Zo begin je</h2><p>Sleep de EAImesh-knop op de startpagina naar je bladwijzerbalk. Open daarna een openbare GitHub-repository en klik op die bladwijzer. EAImesh 0.6.1 draait daar in je browser; je hebt geen account bij EAI nodig.</p></div></section></main>', "/tools/eaimesh/", "tools", 'EAImesh leest een openbare GitHub-repository en maakt de bestanden en hun samenhang zichtbaar. Kies wat je wilt bekijken en hoeveel detail je nodig hebt.'))
     write(out, "tools/prompt-framework/index.html", doc("EAI Prompt Framework", load_content_fragment("prompt-framework-page.html"), "/tools/prompt-framework/", "prompt-framework", "Ontwerp een complete EAI-instructie vanuit doel, menselijke stap, AI-hulp, grenzen en controle."))
     write(out, "model-monitor/index.html", doc("AI (Act) Model Monitor", load_content_fragment("model-monitor-page.html"), "/model-monitor/", "model-monitor", "Vergelijk AI-modellen en landen, bekijk gebruik en incidenten, volg onderwijsontwikkelingen en de EU AI Act, en traceer cijfers naar hun bron."))
-    write(out, "eai-tools-modules/index.html", redirect("/tools/"))
+    write(out, "eai-tools-modules/index.html", redirect("/nl/tools/"))
 
     toolkit = sources / "eai-tools-modules-eai-toolkit-beyond-explainability-embed1.html"
     write(out, "tools/beyond-explainability/index.html", inject_embed(toolkit, "/tools/beyond-explainability/", "EAI Toolkit: Beyond Explainability", "/tools/"))
@@ -2787,7 +2787,7 @@ def build(sources: Path, out: Path) -> None:
     not_found = '<main><section class="page-hero"><div class="wrap"><div class="eyebrow">404</div><h1>Deze pagina is er niet meer.</h1><p class="lede">De oude Google-site bevatte ook een paar dode links. Ga terug naar de publicaties of tools.</p><div class="button-row"><a class="button" href="/publicaties/">Publicaties</a><a class="button secondary" href="/tools/">Tools</a></div></div></section></main>'
     write(out, "404.html", doc("Niet gevonden", not_found, "/404.html"))
     write(out, "robots.txt", "User-agent: *\nAllow: /\nSitemap: https://eaimodel.nl/sitemap.xml\n")
-    urls = ["/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/tools/eaigame/", "/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/lo-aanvalslab/", "/tools/sport-en-bewegen/", "/tools/sport-en-bewegen/opstellingen/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/labs/hartslag/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaiwork/", "/tools/html-galerij/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/statistieken/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
+    urls = ["/tools/eaimesh/", "/tools/eaimesh/start/", "/tools/eaistudio/", "/tools/eaistudio/studio/", "/tools/eaigame/", "/", "/toepassingen/", "/toepassingen/onderwijs-ai/", "/onderwijs/", "/kennis/", "/twee-pijlers/", "/workshop-ai/", "/werkvormen/", "/taalwerkvormen/", "/verdieping/", "/onderbouwing/", "/bronnen/", "/praktijk/", "/publicaties/", "/publicaties/de-vraag-die-we-vergeten/", "/tools/", "/tools/prompt-framework/", "/tools/abyss/", "/tools/melkweg-lab/", "/tools/lo-aanvalslab/", "/tools/sport-en-bewegen/", "/tools/sport-en-bewegen/opstellingen/", "/tools/llm-observatorium/", "/tools/science-observatory/", "/tools/anatomie/", "/tools/anatomie/labs/hartslag/", "/tools/science-observatory/labs/melkweg/", "/tools/science-observatory/labs/gravitatie-banen/", "/tools/science-observatory/labs/leeuw/", "/tools/science-observatory/labs/natuurkunde/", "/tools/science-observatory/labs/wiskunde-a/", "/tools/science-observatory/labs/wiskunde-b/", "/tools/eaiwork/", "/tools/html-galerij/", "/tools/wihtml/", "/tools/wihtml/bibliotheek/", "/tools/wihtml/studio/", "/tools/wihtml/voorbeeld/", "/model-monitor/", "/statistieken/", "/over/", "/eaa-model/", "/onderwijsin/", "/onderwijsin/3d/"] + [f"/werkvormen/{item['slug']}/" for item in workforms] + [f"/publicaties/{slug}/" for slug, _, _, _ in PUBLICATIONS] + ["/tools/beyond-explainability/"]
     urls.append('/topo/')
     # The bilingual redesign is maintained in nl/ and en/. Preserve it during
     # the legacy article/tool build, including its current home and assets.
@@ -2842,6 +2842,12 @@ def build(sources: Path, out: Path) -> None:
     leif_source = repo_root / "leif"
     if leif_source.is_dir():
         shutil.copytree(leif_source, out / "leif", dirs_exist_ok=True)
+    # Local standalone builds may be included; CI overlays the already tested bundle
+    # after preparing the shared UI, so its exact bytes never change.
+    eaispeak_dist = repo_root / "tools" / "eaispeak" / "dist"
+    if (eaispeak_dist / "index.html").is_file():
+        shutil.copytree(eaispeak_dist, out / "tools" / "eaispeak", dirs_exist_ok=True)
+        write(out, "tools/delf-live/index.html", redirect("/tools/eaispeak/"))
     finish_generated_pages(out)
     # EAIgit is a separate browser wizard: publish only its four intended pages.
     # Do not let the general site generator rewrite their UI or JavaScript.
@@ -2869,7 +2875,7 @@ def build(sources: Path, out: Path) -> None:
     # Publish only the explicit app asset allowlist. Never copy sources/
     # (tools/ict-scan/bronnen), which stay readable through GitHub only.
     ict_scan_source = repo_root / "tools" / "ict-scan"
-    for filename in ("index.html", "style.css", "monitor.css", "record-taxonomy.js", "inventory-index.js", "report-print.js", "report-print.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js", "ux-clarity.css", "studio-interface.css", "relationship-orbit.css", "relationship-atlas.js", "relationship-atlas.css", "document-library.js", "document-library.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", ".htaccess", "README.md"):
+    for filename in ("index.html", "style.css", "monitor.css", "record-taxonomy.js", "inventory-index.js", "report-print.js", "report-print.css", "app.js", "enhancements.js", "github-sync.js", "rail-drawer.js", "visual-explorer.js", "visual-explorer.css", "record-cards.js", "record-github.js", "record-cards.css", "scene-navigation.js", "scene-navigation.css", "evidence-experience.js", "evidence-experience.css", "dashboard-composer.js", "dashboard-composer.css", "composer-resize.js", "composer-resize.css", "edit-gate.css", "edit-gate.js", "edit-api.php", "ux-clarity.css", "studio-interface.css", "relationship-orbit.css", "relationship-atlas.js", "relationship-atlas.css", "document-library.js", "document-library.css", "role-modes.js", "role-modes.css", "answer-engine.js", "answer-engine.css", "frameworks.json", "emmaus-logo.svg", "organisation.js", "assurance-ui.js", "assurance.css", "assurance/source-register.js", "assurance/engine.js", "assurance/profile.js", "assurance/adapter.js", "assurance/record-contract.js", "assurance/worker.js", "assurance/evaluation-corpus.json", "assurance/profiles/emmauscollege.json", ".htaccess", "README.md"):
         source_file = ict_scan_source / filename
         if not source_file.is_file():
             raise FileNotFoundError(f"Missing ICT-scan source file: {source_file}")

@@ -12,19 +12,14 @@ from bs4 import BeautifulSoup, Comment
 from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, LEGACY_HUB_REDIRECTS, canonical
 
 
-def assert_live_ui_contract(path: str, soup: BeautifulSoup, version: str) -> None:
-    """Redirects and editorial pages have different strict page contracts."""
-    if path in LEGACY_HUB_REDIRECTS:
-        target = LEGACY_HUB_REDIRECTS[path]
-        link = soup.find('link', rel='canonical')
-        refresh = soup.find('meta', attrs={'http-equiv': 'refresh'})
-        fallback = soup.select_one('main a[href]')
-        assert link and link.get('href') == 'https://eaimodel.nl' + target, f'Invalid canonical redirect: {path}'
-        assert refresh and refresh.get('content') == '0;url=' + target, f'Invalid refresh redirect: {path}'
-        assert fallback and fallback.get('href') == target and fallback.get_text(strip=True), f'Invalid fallback redirect: {path}'
-        return
-    assert soup.body and soup.body.get('data-ui-version') == version, f'Stale UI: {path}'
-    assert soup.select_one('.eai-site-menu'), path
+def assert_redirect_contract(path: str, soup: BeautifulSoup) -> None:
+    target = LEGACY_HUB_REDIRECTS[path]
+    link = soup.find('link', rel='canonical')
+    refresh = soup.find('meta', attrs={'http-equiv': 'refresh'})
+    fallback = soup.select_one('main a[href]')
+    assert link and link.get('href') == 'https://eaimodel.nl' + target, f'Invalid canonical redirect: {path}'
+    assert refresh and refresh.get('content') == '0;url=' + target, f'Invalid refresh redirect: {path}'
+    assert fallback and fallback.get('href') == target and fallback.get_text(strip=True), f'Invalid fallback redirect: {path}'
 
 
 def check(root: Path):
@@ -39,7 +34,7 @@ def check(root: Path):
         if route in LEGACY_HUB_REDIRECTS:
             # Redirect handoffs are byte-verified on the live site like all HTML.
             # They have no shared menu because the browser immediately navigates.
-            assert_live_ui_contract(route, soup, manifest['version'])
+            assert_redirect_contract(route, soup)
             assert 'location.search + location.hash' in (root / rel).read_text(), rel
             continue
         assert len(soup.select('header.eai-masthead')) == 1, rel
@@ -186,8 +181,16 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                 assert matched, f'HTML content mismatch: {path}'
                 if edge_beacon:
                     print(f'Cloudflare RUM injection verified without weakening HTML hash: {path}', flush=True)
+                if path in LEGACY_HUB_REDIRECTS:
+                    # These six old hubs are intentional redirect handoffs,
+                    # not editorial pages with the shared UI marker/menu.
+                    # The full bytes must match the prepared build, and
+                    # the redirect destination itself must also be valid.
+                    assert_redirect_contract(path, BeautifulSoup(data, 'html.parser'))
+                    continue
                 soup = BeautifulSoup(data, 'html.parser')
-                assert_live_ui_contract(path, soup, manifest['version'])
+                assert soup.body.get('data-ui-version') == manifest['version'], f'Stale UI: {path}'
+                assert soup.select_one('.eai-site-menu'), path
             # Cloudflare also injects its strictly validated RUM beacon into
             # the standalone LEIF pages. Do not weaken the byte-exact release
             # check: html_matches_release permits only that verified script.

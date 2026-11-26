@@ -147,6 +147,8 @@ class ReleaseTests(unittest.TestCase):
         )
         for bad, label in bad_cases:
             with self.subTest(label=label, html=bad):
+                with self.assertRaisesRegex(AssertionError, f'Invalid {label} redirect: /kennis/'):
+                    verify_ui.assert_redirect_contract(route, verify_ui.BeautifulSoup(bad, 'html.parser'))
                 data = bad.encode()
                 file = self.root / relative
                 file.parent.mkdir(parents=True, exist_ok=True)

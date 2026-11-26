@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  actions: read
 
 concurrency:
   group: eai-public-analytics
@@ -19,8 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
-          persist-credentials: true
+          ref: ${{ github.sha }}
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -36,23 +37,40 @@ jobs:
           set -euo pipefail
           if [[ -z "$CLOUDFLARE_ANALYTICS_TOKEN" || -z "$CLOUDFLARE_ACCOUNT_ID" || -z "$CLOUDFLARE_SITE_TAG" ]]; then
             echo "::notice::Cloudflare Web Analytics is not connected. Add the three repository secrets."
-            exit 0
+            exit 1
           fi
 
           # Secrets are used only in the runner; the public JSON contains aggregates.
           python scripts/publish_web_analytics.py statistieken/data.json
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add statistieken/data.json
-          if git diff --cached --quiet; then
-            echo "No new statistics to publish."
-            exit 0
-          fi
-          git commit -m "data: refresh public Cloudflare Web Analytics"
-          git pull --rebase origin main
-          git push origin HEAD:main
-
+      - run: python3 scripts/recovery_files.py create statistieken/data.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            recovery-files/
+            recovery-manifest.json
+          if-no-files-found: error
+          retention-days: 30
+  publish:
+    needs: refresh
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    environment: theory7-herstel
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controleer toestemming voor deze momentopname
+        env:
+          OWNER_ID: ${{ github.repository_owner_id }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" |
+            jq -e --arg id "$OWNER_ID" 'any(.[]; .state == "approved" and (.user.id|tostring) == $id and any(.environments[]; .name == "theory7-herstel"))'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recovery-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: python3 scripts/recovery_files.py verify && cp -a recovery-files/. .
       - name: Verify Theory7 FTPS certificate
         if: success()
         shell: bash

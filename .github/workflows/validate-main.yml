@@ -1,0 +1,25 @@
+name: Valideer de publicatieversie
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validation:
+    uses: ./.github/workflows/site-check.yml
+  topo-package:
+    needs: validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/release_artifact.py create --root topo --manifest release-manifest.json --commit "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: topo-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            topo/
+            release-manifest.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

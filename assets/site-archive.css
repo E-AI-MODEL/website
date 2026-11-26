@@ -12,7 +12,12 @@ body.eai-archive-page main .container{width:100%;max-width:100%;min-width:0;marg
 .archive-review-note>span{font:500 12px/1.4 ui-sans-serif,system-ui,sans-serif;color:#625743}
 .archive-review-note h2{margin:10px 0 14px}
 .archive-review-note p:last-child{margin-bottom:0}
-.archive-original{border-top:1px solid #d6dddf;padding-top:14px;margin-top:26px}
+.archive-original{box-sizing:border-box;width:100%;max-width:100%;min-width:0;border-top:1px solid #d6dddf;padding-top:14px;margin-top:26px}
+.archive-original:not([open])>:not(summary){display:none}
+body.eai-archive-page .archive-original section{box-sizing:border-box;min-width:0;max-width:100%}
+body.eai-archive-page .archive-original .archive-table-scroll{display:block;width:100%;min-width:0;max-width:100%;overflow-x:auto}
+body.eai-archive-page .archive-original .archive-table-scroll td,
+body.eai-archive-page .archive-original .archive-table-scroll th{overflow-wrap:anywhere}
 .archive-original>summary{padding:12px 0;cursor:pointer;font:600 15px/1.5 ui-sans-serif,system-ui,sans-serif}
 .archive-wide,.archive-table-scroll{box-sizing:border-box;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;margin:18px 0}
 .archive-wide>svg{display:block}

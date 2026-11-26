@@ -454,6 +454,8 @@ def check(root: Path, register: dict, taxonomy: dict) -> list[str]:
                                          "/tools/science-observatory/labs/melkweg/")),
         ("Melkweg 2", lambda: extract_modes(root, "content/melkweg-lab/index.html",
                                            "/tools/melkweg-lab/")),
+        ("Leeuw", lambda: extract_modes(root, "content/science-observatory/labs/leeuw.html",
+                                      "/tools/science-observatory/labs/leeuw/")),
         ("Taalmodel", lambda: extract_llm(root)),
         ("TAALwerkvormen", lambda: extract_taal(root)),
         ("LLMscan", lambda: extract_llmscan(root)),
