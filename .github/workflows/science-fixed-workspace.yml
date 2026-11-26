@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 jobs:
   physics-fixed:
     runs-on: ubuntu-24.04
@@ -52,7 +53,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: fixed-physics-laboratory-screenshots
+          name: fixed-physics-laboratory-screenshots-${{ github.run_attempt }}
           path: |
             test-results/physics-*.png
             test-results/math-*.png

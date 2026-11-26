@@ -24,7 +24,7 @@ jobs:
       - run: python tools/lo-aanvalslab/calibratie/v13/extract_tracking.py
       - uses: actions/upload-artifact@v4
         with:
-          name: tracking-metingen
+          name: tracking-metingen-${{ github.run_attempt }}
           path: tools/lo-aanvalslab/calibratie/v13/tracking_metrics.json
           if-no-files-found: error
   browsers:

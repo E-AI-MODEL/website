@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   visual-dashboard:
@@ -38,6 +39,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: eaiwork-dashboard-screenshots
+          name: eaiwork-dashboard-screenshots-${{ github.run_attempt }}
           path: test-results/eaiwork-dashboard-*.png
           if-no-files-found: ignore

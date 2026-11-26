@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 jobs:
   browsers:
     runs-on: ubuntu-24.04
@@ -60,7 +61,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: chromium-${{ matrix.group }}
+          name: chromium-${{ matrix.group }}-${{ github.run_attempt }}
           path: test-results/
   verify:
     runs-on: ubuntu-24.04
@@ -110,7 +111,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: public-ui-check
+          name: public-ui-check-${{ github.run_attempt }}
           path: test-results/
 
       - name: Controleer dat de geteste bestanden ongewijzigd zijn

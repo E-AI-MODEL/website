@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 jobs:
   exports:
     runs-on: ubuntu-24.04
@@ -38,6 +39,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: own-export-evidence
+          name: own-export-evidence-${{ github.run_attempt }}
           retention-days: 14
           path: own-export-results/
