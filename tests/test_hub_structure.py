@@ -38,8 +38,8 @@ class HubStructureTests(unittest.TestCase):
 
     def test_articles_and_research_expose_news_without_repeating_same_card(self):
         for rel, urls in {
-            'nl/publicaties/index.html': ['/nl/onderzoek/zhang-genai-taal/',
-                                           '/nl/blog/wat-ons-werk-ons-werk-maakt/'],
+            'nl/publicaties/index.html': ['/nl/blog/wat-dot-tie-nou/',
+                                           '/nl/onderzoek/zhang-genai-taal/'],
             'nl/onderzoek/index.html': ['/nl/onderzoek/zhang-genai-taal/',
                                          '/nl/onderzoek/leermiddelen/'],
             'en/publications/index.html': ['/en/research/zhang-genai-language/',
@@ -53,6 +53,19 @@ class HubStructureTests(unittest.TestCase):
                 self.assertEqual(len(articles), 2)
                 self.assertEqual([a.select_one('h3 a')['href'] for a in articles], urls)
                 self.assertTrue(all(article.select_one('p') for article in articles))
+
+    def test_new_dot_article_and_previous_essay_are_discoverable(self):
+        blog = BeautifulSoup((ROOT / 'nl/blog/index.html').read_text(encoding='utf-8'), 'html.parser')
+        new = '/nl/blog/wat-dot-tie-nou/'
+        old = '/nl/blog/wat-ons-werk-ons-werk-maakt/'
+        for route in (new, old):
+            self.assertTrue(blog.select(f'main a[href="{route}"]'), route)
+        self.assertIn(('Wat dot-tie nou?', new), dict(groups(False))['Artikelen'])
+        records = {record['url']: record for record in site_search_records(ROOT / 'does-not-exist')}
+        self.assertEqual(records[new]['title'], 'Wat dot-tie nou?')
+        for term in ('Outlook', 'Microsoft 365', 'Google Workspace'):
+            self.assertIn(term, records[new]['description'])
+        self.assertIn(old, records)
 
     def test_tools_have_one_catalog_and_preserve_missing_items(self):
         doc = BeautifulSoup((ROOT / 'nl/tools/index.html').read_text(encoding='utf-8'), 'html.parser')
