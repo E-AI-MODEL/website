@@ -260,7 +260,7 @@
   const box=end.classList.contains('result')?end:end.querySelector('.result')||end;
   const over=()=>box.scrollHeight>box.clientHeight+1||end.scrollHeight>end.clientHeight+1||document.documentElement.scrollHeight>innerHeight+1||Boolean(review&&review.scrollHeight>review.clientHeight+1);
   end.querySelectorAll('.vast-weg').forEach(n=>n.classList.remove('vast-weg'));
-  for(const sel of ['.star','.help-summary small','.sticker']){if(!over())break;end.querySelectorAll(sel).forEach(n=>n.classList.add('vast-weg'))}
+  for(const sel of ['.star','.help-summary small','.sticker','.end-note']){if(!over())break;end.querySelectorAll(sel).forEach(n=>n.classList.add('vast-weg'))}
   const h2=end.querySelector('h2');
   if(h2){setFs(h2);let fs=parseFloat(getComputedStyle(h2).fontSize);while(fs>26&&over()){fs-=3;setFs(h2,fs)}}
   if(review){review.classList.remove('vast-klein');if(over())review.classList.add('vast-klein')}

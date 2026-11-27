@@ -64,17 +64,24 @@ jobs:
           test -s candidate/topo/vo/index.html
           test -s candidate/topo/vo/spel/index.html
           test -s candidate/topo/data/vo/sets.json
+          test -s candidate/topo/vast-scherm.css
+          test -s candidate/topo/vast-scherm.js
           python3 - <<'PY'
+          import hashlib
           import json
           from pathlib import Path
           root = Path('candidate/topo')
+          # Every page loads the shared fixed-screen layer with the version of exactly these files.
+          tags = '<link rel="stylesheet" href="/topo/vast-scherm.css?v=%s"><script src="/topo/vast-scherm.js?v=%s" defer></script>' % tuple(
+              hashlib.sha256((root / name).read_bytes()).hexdigest()[:10] for name in ('vast-scherm.css', 'vast-scherm.js'))
           geo = json.loads((root / 'data/provincies-2026.geojson').read_text())
           assert len(geo['features']) == 12, 'Expected twelve province boundaries'
           for file in ('index.html', 'instellingen/index.html', 'nederland/index.html', 'vo/index.html', 'vo/spel/index.html'):
               html = (root / file).read_text(encoding='utf-8')
               assert '<html' in html and '</html>' in html, file
               assert 'TOPO!' in html, file
-          print('TOPO sources and 12 province boundaries OK')
+              assert html.count(tags) == 1, file + ': fixed-screen layer missing or outdated'
+          print('TOPO sources, fixed-screen layer and 12 province boundaries OK')
           PY
       - name: Verify map, capitals, water sources and approved TOPO copy
         if: steps.deployment.outputs.id != ''
@@ -122,7 +129,7 @@ jobs:
           mirror -R --parallel=2 --transfer-all --verbose candidate/topo/ /topo/
           bye
           EOF
-      - name: Verify published PO and VO pages and data independently
+      - name: Verify published PO and VO pages, data and fixed-screen layer independently
         if: steps.deployment.outputs.id != ''
         env:
           RELEASE_SHA: ${{ github.sha }}
@@ -163,6 +170,9 @@ jobs:
           for rel in ('data/vo/sets.json', 'data/vo/doelen.json'):
               assert hashlib.sha256((root / rel).read_bytes()).digest() == hashlib.sha256(fetch(rel)).digest(), 'Live TOPO VO data differs: ' + rel
           print('Published TOPO VO sets and goals confirmed')
+          for rel in ('vast-scherm.css', 'vast-scherm.js'):
+              assert hashlib.sha256((root / rel).read_bytes()).digest() == hashlib.sha256(fetch(rel)).digest(), 'Live TOPO fixed-screen layer differs: ' + rel
+          print('Published TOPO fixed-screen layer confirmed')
           PY
 
       - name: Registreer de uitkomst na de livecontroles

@@ -29,6 +29,18 @@ SPEL_CSS = """<style id="topo-vo">
 .map-art .map-text.place{font-weight:900;fill:#30454d;stroke:#fff8e8;paint-order:stroke;stroke-linejoin:round}
 .map-art .map-text.water{fill:#5f9cb5;stroke:#e4f4fa;letter-spacing:1px}
 #map svg{cursor:crosshair}
+.map-art .tap-line line{stroke:#d9483b;stroke-linecap:round;fill:none}
+.map-art .tap-mark path{stroke:#d9483b;stroke-linecap:round;fill:none}
+.map-art .map-text.tap-km{fill:#a2352b;font-weight:1000;stroke:#fff8e8;paint-order:stroke;stroke-linejoin:round}
+body.playing #game .question-card .sure-row{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;align-items:center;flex:none}
+body.playing #game .question-card .sure-row.hide{display:none!important}
+body.playing #game .question-card .sure-row span{font-size:13px;font-weight:1000;color:#385b66;padding-right:2px}
+body.playing #game .question-card .sure-row button{min-height:44px;border:2px solid var(--ink);border-radius:13px;font-weight:1000;font-size:16px;box-shadow:0 3px 0 var(--ink);background:var(--lime)}
+body.playing #game .question-card .sure-row button[data-sure="0"]{background:#ffe3a4}
+body.playing #game .question-card .sure-row:not(.hide)~.small-links{display:none!important}
+body.playing #game #answerOptions .option.chosen{background:#fff1b8;outline:3px solid var(--ink);outline-offset:-1px}
+.end-note{max-width:60ch;margin:8px auto 0;font-size:15px;line-height:1.35;font-weight:850;color:#3d5560}
+.scores .sure-good{background:#c9e6ae!important}.scores .sure-wrong{background:#ffc8bc!important}
 .question-card h2.long{font-size:clamp(19px,2.2vw,30px)!important;line-height:1.15!important}
 .question-card h2.xlong{font-size:clamp(16px,1.8vw,24px)!important;line-height:1.2!important}
 .glossary{margin:0;padding:14px 16px;line-height:1.35;background:#fff;border-radius:13px}.glossary dt{font-weight:1000;margin-top:10px}.glossary dd{margin:2px 0 0;font-weight:750;color:#3d5560}
@@ -66,9 +78,9 @@ SPEL_HTML = """<!doctype html>
 <section id="game" class="hide">
  <div class="game-top"><a class="back" id="back" href="/topo/vo/">← Terug</a><div class="progress-box"><div class="progress-label"><span id="missionName">MISSIE 1</span><span id="progressText">1/10</span></div><div class="bar"><div id="progressFill"></div></div></div><div class="level" id="score">★ 0</div></div>
  <div class="game-grid"><div class="game-board"><div class="map-frame" id="map"></div><div class="hint-chip" id="mapHint">KIJK OP DE KAART!</div></div>
- <section class="question-card"><span class="q-label" id="kind">TOPO!</span><h2 id="prompt"></h2><p id="sub"></p><div id="answerOptions"></div><div class="feedback hide" id="feedback" aria-live="polite"></div><button class="next hide" id="next">VERDER! →</button><div class="small-links"><button id="help">Help me!</button><button id="showAnswer">Spiekkaart</button><button id="skip">Even overslaan →</button></div></section></div>
+ <section class="question-card"><span class="q-label" id="kind">TOPO!</span><h2 id="prompt"></h2><p id="sub"></p><div id="answerOptions"></div><div class="feedback hide" id="feedback" aria-live="polite"></div><button class="next hide" id="next">VERDER! →</button><div class="sure-row hide" id="sure" role="group" aria-label="Hoe zeker ben je?"><span>Hoe zeker?</span><button type="button" data-sure="1">Zeker!</button><button type="button" data-sure="0">Ik gok</button></div><div class="small-links"><button id="help">Help me!</button><button id="showAnswer">Spiekkaart</button><button id="skip">Even overslaan →</button></div></section></div>
 </section>
-<section id="end" class="hide result"><span class="sticker">RONDE KLAAR!</span><h2 id="endTitle">Lekker bezig!</h2><p id="endText"></p><div id="helpSummary" class="scores"></div><div id="review" class="review"></div><div class="actions"><button id="retry" class="big hide">FOUTEN OEFENEN!</button><button id="again" class="big secondary">NOG EEN KEER!</button><a id="change" href="/topo/vo/" class="quiet">Andere set</a></div></section>
+<section id="end" class="hide result"><span class="sticker">RONDE KLAAR!</span><h2 id="endTitle">Lekker bezig!</h2><p id="endText"></p><div id="helpSummary" class="scores"></div><p id="endNote" class="end-note hide"></p><div id="review" class="review"></div><div class="actions"><button id="retry" class="big hide">FOUTEN OEFENEN!</button><button id="again" class="big secondary">NOG EEN KEER!</button><button id="later" class="quiet hide" type="button">Herhaallink</button><a id="change" href="/topo/vo/" class="quiet">Andere set</a></div></section>
 </main>
 <div class="overlay hide" id="sheetLayer" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="modal"><button class="close" id="closeSheet" aria-label="Sluiten">×</button><span class="sticker">SPIEKKAART</span><h2 id="sheetTitle">Even spieken!</h2><div class="sheet-tools" id="sheetTools"><button id="zoomOut" type="button" aria-label="Uitzoomen">−</button><strong id="zoomText">100%</strong><button id="zoomIn" type="button" aria-label="Inzoomen">+</button><button id="zoomFit" type="button">Passend</button></div><div class="sheet-map" id="sheetMap"><div class="sheet-canvas" id="sheetCanvas"></div></div><p id="sheetNote">Kijk goed. Probeer het daarna zelf!</p></div></div>
 <div class="credits" id="credits">Kaartdata: Natural Earth (publiek domein) · Oefenkaart, geen navigatiekaart</div>
@@ -114,7 +126,8 @@ START_HTML = """<!doctype html>
 <div class="group"><h3>Vraagvorm</h3><div class="controls" id="vormen"></div><p id="vormNote"></p></div>
 <div class="group"><h3>Aantal vragen</h3><div class="controls" id="aantal"></div></div>
 <div class="group"><h3>Hulp</h3><div class="controls" id="hulp"></div><p>Zonder hulp: geen hints en geen spiekkaart. Foute plekken komen later in de ronde terug.</p></div>
-<div class="group"><h3>Manier van oefenen</h3><div class="controls" id="manier"></div><p>Extra uitdaging: ook moeilijkere plekken en minder inzoomen.</p></div>
+<div class="group"><h3>Manier van oefenen</h3><div class="controls" id="manier"></div><p>Meebewegend: gaat het goed, dan wordt het moeilijker; loop je vast, dan krijg je meer hulp. Extra uitdaging: ook moeilijkere plekken en minder inzoomen.</p></div>
+<div class="group"><h3>Slim leren</h3><div class="controls" id="slim"></div><p>Eerst kijken: je ziet de plekken eerst, daarna haal je ze zelf op. Zeker of gok: je geeft aan hoe zeker je bent; aan het eind zie je waar je je vergiste.</p></div>
 </section>
 </div>
 </div>

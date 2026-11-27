@@ -5,12 +5,13 @@ const DATA='/topo/data/vo/';
 const p=new URLSearchParams(location.search);
 const NIVEAUS=[['onderbouw','Onderbouw','klas 1–3',[1,2,3]],['havo','Havo','klas 4–5',[4,5]],['vwo','Vwo','klas 4–6',[4,5,6]]];
 const VORMEN=[['mix','Lekker afwisselen'],['shuffle','TOPO SHUFFLE!'],['point','Aanwijzen'],['choice','Kiezen'],['type','Typen'],['missing','Wat mist er?'],['zoom','Ingezoomd'],['quiz','Zonder kaart']];
-const AANTAL=[['5','5'],['10','10'],['20','20'],['40','40'],['all','Alles']];
+const AANTAL=[['5','5'],['10','10'],['20','20'],['40','40'],['all','Alles'],['kennen','Tot ik het ken']];
 const HULP=[['help','Met hulp'],['none','Zonder hulp']];
-const MANIER=[['normal','Gewoon oefenen'],['challenge','Extra uitdaging']];
+const MANIER=[['normal','Gewoon oefenen'],['adaptief','Meebewegend'],['challenge','Extra uitdaging']];
+const SLIM=[['kijk','Eerst kijken'],['zeker','Zeker of gok?']];
 const KAARTNAAM={wereld:'Wereldkaart',europa:'Europa',nederland:'Nederland','zuid-amerika':'Zuid-Amerika',brazilie:'Brazilië','mexico-vs':'Mexico – VS'};
 let SETS=[],DOELEN={};
-const state={niveau:p.get('niveau')||'onderbouw',leerjaar:p.get('leerjaar')||'alle',set:p.get('set')||'',mode:p.get('mode')||'mix',questions:p.get('questions')||'10',assist:p.get('assist')||'help',level:p.get('level')||'normal'};
+const state={niveau:p.get('niveau')||'onderbouw',leerjaar:p.get('leerjaar')||'alle',set:p.get('set')||'',mode:p.get('mode')||'mix',questions:p.get('questions')||'10',assist:p.get('assist')||'help',level:p.get('level')||'normal',kijk:p.get('kijk')==='1',zeker:p.get('zeker')==='1'};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 function setById(id){return SETS.find(s=>s.id===id)}
 function visibleSets(){
@@ -28,7 +29,8 @@ function pills(id,list,value,disabled){
 }
 function spelUrl(){
  const q=new URLSearchParams({set:state.set,mode:state.mode,questions:state.questions});
- if(state.assist==='none')q.set('assist','none');if(state.level==='challenge')q.set('level','challenge');
+ if(state.assist==='none')q.set('assist','none');if(state.level!=='normal')q.set('level',state.level);
+ if(state.kijk)q.set('kijk','1');if(state.zeker)q.set('zeker','1');
  return '/topo/vo/spel/?'+q.toString();
 }
 function render(){
@@ -43,11 +45,13 @@ function render(){
  if(s&&!vormBeschikbaar(s,state.mode))state.mode=s.kaart?'mix':'quiz';
  pills('vormen',VORMEN,state.mode,v=>!vormBeschikbaar(s,v));
  pills('aantal',AANTAL,state.questions);pills('hulp',HULP,state.assist);pills('manier',MANIER,state.level);
+ $('slim').innerHTML=SLIM.map(([v,l])=>'<button type="button" class="pill" data-group="slim" data-value="'+v+'" aria-pressed="'+Boolean(state[v])+'">'+(state[v]?'✓ ':'')+esc(l)+'</button>').join('');
  $('vormNote').textContent=state.mode==='shuffle'?'Alles door elkaar: aanwijzen, kiezen, typen, ingezoomde plekken en vragen zonder kaart.':state.mode==='quiz'?'Vragen zonder kaart: feiten en begrippen bij deze set.':'Kies een vraagvorm, of laat de vragen afwisselen.';
  const vorm=VORMEN.find(v=>v[0]===state.mode)?.[1]||'';
- $('summary').innerHTML=s?esc(niv[1])+(state.leerjaar!=='alle'?' klas '+esc(state.leerjaar):'')+' · '+esc(s.titel)+'<small>'+esc(vorm)+' · '+(state.questions==='all'?'alle':state.questions)+' vragen'+(state.assist==='none'?' · zonder hulp':'')+(state.level==='challenge'?' · extra uitdaging':'')+'</small>':'Kies een set<small>Kies eerst een niveau en een set.</small>';
+ $('summary').innerHTML=s?esc(niv[1])+(state.leerjaar!=='alle'?' klas '+esc(state.leerjaar):'')+' · '+esc(s.titel)+'<small>'+esc(vorm)+' · '+(state.questions==='all'?'alle vragen':state.questions==='kennen'?'tot je het kent':state.questions+' vragen')+(state.assist==='none'?' · zonder hulp':'')+(state.level==='challenge'?' · extra uitdaging':state.level==='adaptief'?' · meebewegend':'')+(state.kijk?' · eerst kijken':'')+(state.zeker?' · zeker of gok':'')+'</small>':'Kies een set<small>Kies eerst een niveau en een set.</small>';
  $('go').href=s?spelUrl():'#';$('go').setAttribute('aria-disabled',String(!s));
  const q=new URLSearchParams({niveau:state.niveau,leerjaar:state.leerjaar,set:state.set,mode:state.mode,questions:state.questions,assist:state.assist,level:state.level});
+ if(state.kijk)q.set('kijk','1');if(state.zeker)q.set('zeker','1');
  history.replaceState(null,'','?'+q.toString());
 }
 document.addEventListener('click',e=>{
@@ -64,6 +68,7 @@ document.addEventListener('click',e=>{
  else if(g==='aantal')state.questions=b.dataset.value;
  else if(g==='hulp')state.assist=b.dataset.value;
  else if(g==='manier')state.level=b.dataset.value;
+ else if(g==='slim')state[b.dataset.value]=!state[b.dataset.value];
  else return;
  render();
 });

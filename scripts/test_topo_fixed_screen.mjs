@@ -56,6 +56,19 @@ const SCENARIOS = [
   ['vo-quiz', '/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=5', ready, false],
   ['vo-spiek', '/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5', async p => { await ready(p); await p.locator('#showAnswer').click(); }, false],
   ['vo-eind', '/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5', async p => { await ready(p); await toEnd(p); }, false],
+  ['vo-kijk', '/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5&kijk=1', ready, true],
+  ['vo-zeker', '/topo/vo/spel/?set=ob2-landen-afrika&mode=choice&questions=5&zeker=1', async p => { await ready(p); await p.locator('#answerOptions .option').first().click(); }, true],
+  ['vo-kennen', '/topo/vo/spel/?set=ob1-nl-basis&mode=point&questions=kennen&level=adaptief', ready, true],
+  ['vo-eind-zeker', '/topo/vo/spel/?set=ob2-landen-afrika&mode=choice&questions=10&zeker=1', async p => {
+    await ready(p);
+    for (let i = 0; i < 40 && await p.locator('#end').isHidden(); i++) {
+      for (let k = 0; k < 4 && await p.locator('#next').isHidden(); k++) {
+        const o = p.locator('#answerOptions .option:not(.bad)').first(); await o.click();
+        if (await p.locator('#sure').isVisible()) await p.locator('#sure [data-sure="1"]').click();
+      }
+      await p.locator('#next').click();
+    }
+  }, false],
 ];
 
 function measure() {
@@ -92,10 +105,7 @@ function measure() {
 
 const report = [];
 const onlyVp = process.env.TOPO_VP ? new Set(process.env.TOPO_VP.split(',')) : null;
-for (const vp of VIEWPORTS) {
-  if (onlyVp && !onlyVp.has(vp.name)) continue;
-  for (const [id, url, act, mapQuestion] of SCENARIOS) {
-    if (only && !only.has(id)) continue;
+async function runScreen(vp, id, url, act, mapQuestion) {
     const page = await browser.newPage({viewport: {width: vp.width, height: vp.height}, isMobile: Boolean(vp.phone), hasTouch: Boolean(vp.phone), deviceScaleFactor: 1});
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
@@ -127,8 +137,95 @@ for (const vp of VIEWPORTS) {
     } finally {
       await page.close();
     }
-  }
 }
+// Een paar schermen tegelijk: sneller, en elk scherm heeft zijn eigen pagina.
+const jobs = [];
+for (const vp of VIEWPORTS) {
+  if (onlyVp && !onlyVp.has(vp.name)) continue;
+  for (const [id, url, act, mapQuestion] of SCENARIOS) if (!only || only.has(id)) jobs.push(() => runScreen(vp, id, url, act, mapQuestion));
+}
+const workers = Math.max(1, Number(process.env.TOPO_PARALLEL || 3));
+await Promise.all(Array.from({length: workers}, async () => { while (jobs.length) await jobs.shift()(); }));
+report.sort((a, b) => VIEWPORTS.findIndex(v => v.name === a.vp) - VIEWPORTS.findIndex(v => v.name === b.vp));
+
+// Interactie: slepen en knijpen bewegen de kaart en geven nooit een antwoord; knoppen zoomen; terug-knop herstelt.
+async function interaction(id, url, prep) {
+  if (only && !only.has('interactie')) return;
+  const page = await browser.newPage({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, deviceScaleFactor: 1});
+  const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  const fails = [];
+  try {
+    await page.goto(base + url, {waitUntil: 'domcontentloaded'});
+    await page.waitForTimeout(300);
+    await prep(page);
+    await page.waitForTimeout(400);
+    const vb = () => page.evaluate(() => document.querySelector('#map svg').getAttribute('viewBox').split(' ').map(Number));
+    const box = await page.locator('#map').boundingBox();
+    const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
+    const home = await vb();
+    // Slepen met de vinger (pointer-events zoals een telefoon ze stuurt).
+    await page.evaluate(([x, y]) => {
+      const t = document.elementFromPoint(x, y), o = {bubbles: true, cancelable: true, pointerId: 7, pointerType: 'touch', isPrimary: true};
+      t.dispatchEvent(new PointerEvent('pointerdown', {...o, clientX: x, clientY: y}));
+      for (let i = 1; i <= 8; i++) t.dispatchEvent(new PointerEvent('pointermove', {...o, clientX: x + i * 12, clientY: y + i * 6}));
+      t.dispatchEvent(new PointerEvent('pointerup', {...o, clientX: x + 96, clientY: y + 48}));
+      t.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, clientX: x + 96, clientY: y + 48}));
+    }, [cx, cy]);
+    await page.waitForTimeout(250);
+    const dragged = await vb();
+    if (Math.abs(dragged[0] - home[0]) < 1 && Math.abs(dragged[1] - home[1]) < 1) fails.push('slepen verschuift de kaart niet');
+    if (Math.abs(dragged[2] - home[2]) > 0.5) fails.push('slepen verandert de zoom');
+    if (await page.locator('#next').isVisible() || await page.locator('#feedback').isVisible()) fails.push('slepen gaf een antwoord');
+    // Knijpen: twee vingers uit elkaar = inzoomen.
+    await page.evaluate(([x, y]) => {
+      const t = document.elementFromPoint(x, y), o = id => ({bubbles: true, cancelable: true, pointerId: id, pointerType: 'touch'});
+      t.dispatchEvent(new PointerEvent('pointerdown', {...o(1), clientX: x - 30, clientY: y}));
+      t.dispatchEvent(new PointerEvent('pointerdown', {...o(2), clientX: x + 30, clientY: y}));
+      for (let i = 1; i <= 6; i++) { t.dispatchEvent(new PointerEvent('pointermove', {...o(1), clientX: x - 30 - i * 12, clientY: y})); t.dispatchEvent(new PointerEvent('pointermove', {...o(2), clientX: x + 30 + i * 12, clientY: y})); }
+      t.dispatchEvent(new PointerEvent('pointerup', {...o(1), clientX: x - 102, clientY: y}));
+      t.dispatchEvent(new PointerEvent('pointerup', {...o(2), clientX: x + 102, clientY: y}));
+    }, [cx, cy]);
+    await page.waitForTimeout(250);
+    const pinched = await vb();
+    if (!(pinched[2] < dragged[2] * 0.6)) fails.push('knijpen zoomt niet in (' + Math.round(dragged[2]) + ' → ' + Math.round(pinched[2]) + ')');
+    if (await page.locator('#next').isVisible()) fails.push('knijpen gaf een antwoord');
+    const homeBtn = page.locator('.game-board .vast-zoom-home');
+    if (!(await homeBtn.isVisible())) fails.push('terug-knop verschijnt niet na zoomen');
+    else { await homeBtn.click(); await page.waitForTimeout(200); const back = await vb(); if (back.some((v, i) => Math.abs(v - home[i]) > 0.5)) fails.push('terug-knop herstelt de kaart niet'); }
+    await page.locator('.game-board .vast-zoom-in').click(); await page.waitForTimeout(200);
+    const zin = await vb();
+    if (!(zin[2] < home[2] * 0.8)) fails.push('+ zoomt niet in');
+    await page.locator('.game-board .vast-zoom-out').click(); await page.locator('.game-board .vast-zoom-out').click(); await page.waitForTimeout(200);
+    const zout = await vb();
+    if (!(zout[2] > zin[2])) fails.push('− zoomt niet uit');
+    // Stippen blijven even groot op het scherm (VO tekent ze opnieuw).
+    if (url.includes('/vo/')) {
+      await page.waitForTimeout(200);
+      const dot = await page.evaluate(() => { const d = document.querySelector('#map .city-dot, #map .capital-dot'); return d ? d.getBoundingClientRect().width : null; });
+      if (dot !== null && (dot < 6 || dot > 14)) fails.push('stip na zoomen ' + Math.round(dot) + 'px (verwacht ±9px)');
+    }
+    // Spiekkaart: + zoomt, geen scrollvlak.
+    if (await page.locator('#showAnswer').isVisible()) {
+      await page.locator('#showAnswer').click(); await page.waitForTimeout(300);
+      const svb = () => page.evaluate(() => document.querySelector('#sheetMap svg').getAttribute('viewBox').split(' ').map(Number));
+      const s0 = await svb();
+      await page.locator('#sheetMap .vast-zoom-in').click(); await page.waitForTimeout(200);
+      const s1 = await svb();
+      if (!(s1[2] < s0[2] * 0.8)) fails.push('spiekkaart + zoomt niet in');
+      await page.locator('#closeSheet').click();
+    }
+  } catch (e) { fails.push('scenario faalde: ' + e.message.split('\n')[0]); }
+  if (errors.length) fails.push('scriptfout: ' + errors[0]);
+  report.push({vp: 'interactie', id, fails});
+  await page.close();
+}
+const ready2 = p => p.waitForFunction(() => document.getElementById('loading')?.classList.contains('hide'), null, {timeout: 15000});
+await interaction('po-north', '/topo/', async p => { await privacy(p); await p.locator('#start').click(); });
+await interaction('po-nl', '/topo/nederland/?mode=point&questions=5', ready2);
+await interaction('vo-point', '/topo/vo/spel/?set=ob2-landen-afrika&mode=point&questions=5', ready2);
+await interaction('vo-choice', '/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5', ready2);
+
 await browser.close();
 const failed = report.filter(r => r.fails.length);
 for (const r of failed) console.log(`✗ ${r.vp} ${r.id}: ${r.fails.join('; ')}`);

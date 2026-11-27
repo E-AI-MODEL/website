@@ -6,7 +6,8 @@
 :root{--vast-h:100dvh;--vast-pad:6px;--vast-gap:6px;--vast-hud:44px}
 
 /* ------------------------------------------------------------------ speelveld */
-html:has(body.playing),body.playing{height:100%!important;overflow:hidden!important;overscroll-behavior:none}
+body.playing{height:100%!important;overflow:hidden!important;overscroll-behavior:none}
+html:has(body.playing){height:100%!important;overflow:hidden!important;overscroll-behavior:none}
 body.playing .top,body.playing .foot,body.playing .credits{display:none!important}
 body.playing main{width:100%!important;max-width:none!important;height:var(--vast-h)!important;max-height:var(--vast-h)!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;display:block!important}
 body.playing #game:not(.hide){
@@ -52,6 +53,7 @@ body.playing #game .question-card #sub{display:block!important;font-size:13px!im
 body.playing #game #answerOptions{display:block;min-height:0!important;max-height:none!important;overflow:visible!important;flex:none!important}
 body.playing #game #answerOptions:empty{display:none}
 body.playing #game #answerOptions:has(.option){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:none!important;grid-auto-rows:minmax(48px,auto)!important;gap:6px!important}
+body.playing #game[data-vorm="choice"] #answerOptions,body.playing #game[data-vorm="nomap"] #answerOptions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:none!important;grid-auto-rows:minmax(48px,auto)!important;gap:6px!important}
 body.playing #game #answerOptions .option{display:flex!important;align-items:center;justify-content:center;width:auto!important;height:auto!important;min-height:48px!important;margin:0!important;padding:5px 8px!important;font-size:16px;line-height:1.12!important;text-align:center;white-space:normal!important;overflow:hidden!important;text-overflow:clip!important;overflow-wrap:anywhere;border-radius:13px!important;box-shadow:0 3px 0 var(--ink)!important;vertical-align:top}
 body.playing #game #typeForm{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:6px!important;align-items:stretch!important;margin:0}
 body.playing #game #typeForm .type-label{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap}
@@ -70,6 +72,7 @@ body.playing #game .game-grid.shuffle-no-map .game-board{display:none!important}
 body.playing #game[data-vorm="nomap"] .question-card{grid-area:2/1!important;align-self:center;width:min(720px,100%)!important;justify-self:center;max-height:100%!important;padding:22px 16px 14px!important;gap:10px;transform:rotate(-.5deg)!important}
 body.playing #game[data-vorm="nomap"] .question-card h2{font-size:26px!important}
 body.playing #game[data-vorm="nomap"] #answerOptions:has(.option){grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(50px,auto)!important}
+body.playing #game[data-vorm="nomap"] #answerOptions{grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(50px,auto)!important}
 body.playing #game[data-vorm="nomap"] #answerOptions .option{justify-content:flex-start;text-align:left;font-size:17px}
 
 /* Toetsenbord open (typen): alleen vraag, invoer en zo veel mogelijk kaart. */
@@ -91,6 +94,7 @@ body.playing.keyboard-open #game .game-board>.feedback{font-size:13px;padding:5p
  body.playing #game[data-vorm="nomap"] .game-top{grid-area:1/1!important;width:min(720px,100%);justify-self:center}
  body.playing #game[data-vorm="nomap"] .question-card{width:min(860px,100%)!important}
  body.playing #game[data-vorm="nomap"] #answerOptions:has(.option){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.playing #game[data-vorm="nomap"] #answerOptions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
  body.playing #game .question-card{margin-top:7px!important}
 }
 @media (min-aspect-ratio:9/10) and (min-height:620px){
@@ -98,6 +102,7 @@ body.playing.keyboard-open #game .game-board>.feedback{font-size:13px;padding:5p
  body.playing #game .question-card h2{font-size:30px!important}
  body.playing #game .question-card #sub{font-size:15px!important}
  body.playing #game #answerOptions:has(.option){grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(54px,auto)!important;gap:8px!important}
+ body.playing #game[data-vorm="choice"] #answerOptions,body.playing #game[data-vorm="nomap"] #answerOptions{grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(54px,auto)!important;gap:8px!important}
  body.playing #game #answerOptions .option{justify-content:flex-start;text-align:left;font-size:18px;padding:8px 14px!important}
  body.playing #game .game-board>.feedback{font-size:17px;left:12px;right:auto;max-width:min(560px,calc(100% - 24px));bottom:12px}
 }
@@ -106,11 +111,13 @@ body.playing.keyboard-open #game .game-board>.feedback{font-size:13px;padding:5p
  body.playing #game[data-vorm="nomap"] .question-card{padding:14px 12px 8px!important;gap:6px}
  body.playing #game[data-vorm="nomap"] .question-card h2{font-size:21px!important}
  body.playing #game[data-vorm="nomap"] #answerOptions:has(.option){grid-auto-rows:minmax(44px,auto)!important}
+ body.playing #game[data-vorm="nomap"] #answerOptions{grid-auto-rows:minmax(44px,auto)!important}
  :root{--vast-hud:40px}
  body.playing #game .question-card{padding:13px 10px 8px!important;gap:5px}
  body.playing #game .question-card h2{font-size:20px!important}
  body.playing #game .question-card #sub{font-size:12px!important}
  body.playing #game #answerOptions:has(.option){grid-auto-rows:minmax(44px,auto)!important}
+ body.playing #game[data-vorm="choice"] #answerOptions{grid-auto-rows:minmax(44px,auto)!important}
  body.playing #game #answerOptions .option{min-height:44px!important;font-size:15px}
 }
 
@@ -144,7 +151,8 @@ body.playing.keyboard-open #game .game-board>.feedback{font-size:13px;padding:5p
 }
 
 /* ------------------------------------------------------------------ eindscherm en laden: één scherm */
-body.vast-eind,html:has(body.vast-eind){height:100%;overflow:hidden!important}
+body.vast-eind{height:100%;overflow:hidden!important}
+html:has(body.vast-eind){height:100%;overflow:hidden!important}
 body.vast-eind{display:flex;flex-direction:column;height:var(--vast-h)!important;min-height:0!important}
 body.vast-eind .top{width:100%!important;max-width:1540px;margin:0 auto!important;align-self:center;flex:none;padding-top:calc(env(safe-area-inset-top,0px) + 10px)!important;padding-bottom:6px!important}
 body.vast-eind main{flex:1 1 auto;min-height:0!important;height:auto!important;display:flex!important;flex-direction:column;justify-content:center;padding:6px 12px 10px!important;overflow:hidden!important;width:100%!important}
@@ -185,7 +193,8 @@ body.vast-eind #end .review.vast-klein span{font-size:12px!important;padding:3px
 }
 
 /* ------------------------------------------------------------------ instellingen en VO-start: één scherm, geen scrollvlak */
-html:has(body.vast-instellingen),body.vast-instellingen{height:var(--vast-h)!important;max-height:var(--vast-h)!important;overflow:hidden!important}
+body.vast-instellingen{height:var(--vast-h)!important;max-height:var(--vast-h)!important;overflow:hidden!important}
+html:has(body.vast-instellingen){height:var(--vast-h)!important;max-height:var(--vast-h)!important;overflow:hidden!important}
 body.vast-instellingen{display:flex!important;flex-direction:column;min-height:0}
 body.vast-instellingen>header{flex:none;padding-top:calc(env(safe-area-inset-top,0px) + 10px)!important;padding-bottom:8px!important}
 body.vast-instellingen .wrap{flex:1 1 0!important;min-height:0!important;display:flex!important;flex-direction:column;overflow:hidden!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px)!important}
@@ -254,9 +263,9 @@ body.vast-instellingen .toplinks .plain{min-height:44px}
  body.vast-instellingen .bottom{padding-top:6px!important}
 }
 @media (max-width:400px){
- body>header{padding-left:10px!important;padding-right:10px!important;gap:6px!important}
- body>header .logo{font-size:20px!important}
- body>header .toplinks{gap:2px!important}
- body>header .back{font-size:12px!important;padding:0 9px!important}
- body>header .toplinks .plain{font-size:12px!important;padding:0 6px!important}
+ body.vast-instellingen>header{padding-left:10px!important;padding-right:10px!important;gap:6px!important}
+ body.vast-instellingen>header .logo{font-size:20px!important}
+ body.vast-instellingen>header .toplinks{gap:2px!important}
+ body.vast-instellingen>header .back{font-size:12px!important;padding:0 9px!important}
+ body.vast-instellingen>header .toplinks .plain{font-size:12px!important;padding:0 6px!important}
 }
