@@ -133,6 +133,9 @@ async function runScreen(vp, id, url, act, mapQuestion) {
         else if (vp.phone && !vp.landscape && m.map.area < 0.55) fails.push('kaart ' + Math.round(m.map.area * 100) + '% van het scherm (min 55%)');
         else if (!vp.phone && m.map.area < 0.4) fails.push('kaart ' + Math.round(m.map.area * 100) + '% van het scherm (min 40%)');
       }
+      // Rust: een scherm dat niets doet, mag niet blijven herberekenen (geen meet-lus).
+      const busy = await page.evaluate(() => new Promise(done => { let n = 0; const o = new MutationObserver(l => { n += l.length; }); o.observe(document.body, {subtree: true, childList: true, attributes: true, characterData: true}); setTimeout(() => { o.disconnect(); done(n); }, 800); }));
+      if (busy > 12) fails.push('scherm blijft herberekenen (' + busy + ' wijzigingen in 0,8 s)');
       if (errors.length) fails.push('scriptfout: ' + errors[0]);
       report.push({vp: vp.name, id, fails, map: m.map});
       if (fails.length || process.env.TOPO_SHOTS) await page.screenshot({path: `${out}/${vp.name}-${id}.png`});

@@ -298,6 +298,12 @@ try {
       const seen = new Set(first);
       for (let i = 0; i < 40 && await pager.locator('.vast-pager-next').isEnabled(); i++) { await pager.locator('.vast-pager-next').click(); (await visibleTerms()).forEach(t => seen.add(t)); }
       assert.equal(seen.size, total, 'Niet elk begrip is bereikbaar');
+      // Draaien naar liggend: de bladzijden worden opnieuw verdeeld en passen weer.
+      await page.setViewportSize({width: 844, height: 390});
+      await page.waitForTimeout(400);
+      const fitsLandscape = await page.evaluate(() => { const m = document.getElementById('sheetMap'), dl = m.querySelector('.glossary'); return dl.getBoundingClientRect().bottom <= m.getBoundingClientRect().bottom + 1; });
+      assert.ok(fitsLandscape, 'Begrippen vallen na draaien buiten de spiekkaart');
+      await page.setViewportSize({width: 390, height: 844});
       await page.locator('#closeSheet').click();
     } finally { await page.close(); }
     // Kijkronde gevraagd bij een set zonder kaart: eerlijk melden in plaats van stil negeren.

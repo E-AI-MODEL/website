@@ -245,11 +245,16 @@
   fitGame();
   const map=$('map');if(map){const svg=svgIn(map);if(svg){if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(map)}}
  }
+ let endObserver=null;
+ const endOpts={subtree:true,childList:true,attributes:true,attributeFilter:['class']};
  function syncEnd(){
   const end=$('end');if(!end)return;
   const on=!end.classList.contains('hide')&&!document.body.classList.contains('playing');
   document.body.classList.toggle('vast-eind',on);
-  if(on)fitEnd(end);
+  if(!on)return;
+  // Eigen klassen (vast-weg, vast-klein, +N meer) mogen het passen niet opnieuw starten.
+  endObserver?.disconnect();
+  try{fitEnd(end)}finally{endObserver?.observe(end,endOpts)}
  }
  function fitEnd(end){
   const review=end.querySelector('#review');
@@ -290,6 +295,9 @@
    foot.appendChild(b);
   }
   if(print)foot.appendChild(print);
+  const refit=raf(()=>{if(layer.classList.contains('hide'))return;const svg=svgIn(map);if(svg&&!svg.querySelector('.dyn'))fitLabels(svg);updateControls(map);pageGlossary(map,foot)});
+  window.addEventListener('resize',refit);window.visualViewport?.addEventListener('resize',refit);
+  if(window.ResizeObserver)new ResizeObserver(refit).observe(map);
   new MutationObserver(()=>{if(!layer.classList.contains('hide')){modal.classList.remove('vast-lijst');const b=foot.querySelector('.vast-lijst-knop');if(b){b.textContent='Lijst';b.setAttribute('aria-pressed','false')}requestAnimationFrame(()=>{const svg=svgIn(map);if(svg){state(svg);if(!svg.querySelector('.dyn'))fitLabels(svg)}updateControls(map);pageGlossary(map,foot)})}}).observe(layer,{attributes:true,attributeFilter:['class']});
  }
  // Begrippenlijst (sets zonder kaart): bladzijden die precies passen, geen scrollvlak.
@@ -314,8 +322,9 @@
    while(end<pairs.length){show(start,end+1);if(over())break;end++}
    pages.push([start,end]);start=end;
   }
-  if(pages.length<2){show(0,pairs.length);pager.hidden=true;return}
-  const st={pages,page:0,show:()=>{const [a,b]=st.pages[st.page];show(a,b);pager.querySelector('span').textContent=(st.page+1)+'/'+st.pages.length;pager.querySelector('.vast-pager-prev').disabled=st.page===0;pager.querySelector('.vast-pager-next').disabled=st.page>=st.pages.length-1}};
+  if(pages.length<2){show(0,pairs.length);pager.hidden=true;pager.__st=null;return}
+  const was=pager.__st&&pager.__st.dl===dl?pager.__st.pages[pager.__st.page][0]:0;
+  const st={dl,pages,page:Math.max(0,pages.findIndex(([a,b])=>was>=a&&was<b)),show:()=>{const [a,b]=st.pages[st.page];show(a,b);pager.querySelector('span').textContent=(st.page+1)+'/'+st.pages.length;pager.querySelector('.vast-pager-prev').disabled=st.page===0;pager.querySelector('.vast-pager-next').disabled=st.page>=st.pages.length-1}};
   pager.__st=st;st.show();
  }
  function fitTags(tags){
@@ -430,7 +439,9 @@
    const box=settingsBox();
    new MutationObserver(list=>{
     if(settingsBusy)return;
-    const ours=list.every(m=>m.type==='attributes'?m.target.classList?.contains('vast-pager')||m.attributeName==='class':[...m.addedNodes,...m.removedNodes].every(n=>n.classList?.contains?.('vast-pager')));
+    // Eigen wijzigingen (bladerknoppen, teller) starten het passen niet opnieuw.
+    const inPager=n=>Boolean((n.nodeType===1?n:n.parentElement)?.closest?.('.vast-pager'));
+    const ours=list.every(m=>inPager(m.target)||(m.type==='childList'&&[...m.addedNodes,...m.removedNodes].every(inPager)));
     if(!ours)scheduleSettings();
    }).observe(box,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden','aria-pressed']});
    window.addEventListener('resize',scheduleSettings);window.visualViewport?.addEventListener('resize',scheduleSettings);
@@ -448,8 +459,7 @@
   const game=$('game');
   if(game)new MutationObserver(schedule).observe(game,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','data-mode']});
   const end=$('end');
-  const own=n=>n.nodeType===1&&n.classList.contains('vast-meer');
-  if(end)new MutationObserver(list=>{if(list.some(m=>m.type!=='childList'||![...m.addedNodes,...m.removedNodes].every(own)))schedule()}).observe(end,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+  if(end){endObserver=new MutationObserver(schedule);endObserver.observe(end,endOpts)}
   new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:['class']});
   schedule();
  }
