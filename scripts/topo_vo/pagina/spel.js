@@ -17,7 +17,8 @@ const mastery=countChoice==='kennen';
 const questionLimit=mastery?10:countChoice==='all'?Infinity:Math.max(5,Math.min(80,parseInt(countChoice,10)||10));
 const noHints=params.get('assist')==='none';
 const challenge=params.get('level')==='challenge';
-const adaptive=params.get('level')==='adaptief';
+const adaptiveAsked=params.get('level')==='adaptief';
+let adaptive=adaptiveAsked;
 const studyFirst=params.get('kijk')==='1';
 const askSure=params.get('zeker')==='1';
 // Herhaallink: alle gemiste plekken (ook bij een grote set); 1000 is alleen een noodrem tegen kapotte links.
@@ -358,7 +359,7 @@ function start(pool){
  queue=buildQueue(pool);
  if(!queue.length){$('loading').classList.remove('hide');$('loading').innerHTML='<span class="sticker">OEPS!</span><h2>Geen vragen!</h2><p>Deze set heeft geen vragen voor deze vraagvorm. Kies een andere vorm.</p><p><a class="big" href="/topo/vo/?set='+encodeURIComponent(setId)+'">ANDERE KEUZE ↗</a></p>';return}
  index=0;stars=0;helpCount=0;peekCount=0;correctStreak=0;wrongStreak=0;wrongTapTimes=[];assisted=new Set();wrong=new Set();repeated=new Set();round++;
- masteryStopped=false;steun=1;goodRun=0;badRun=0;sureLog=[];pendingJudge=null;currentSure=null;answered=0;steunNote='';
+ adaptive=adaptiveAsked&&queue.some(t=>t.kind==='item');masteryStopped=false;steun=1;goodRun=0;badRun=0;sureLog=[];pendingJudge=null;currentSure=null;answered=0;steunNote='';
  masteryMap=new Map();if(mastery)for(const t of queue)masteryMap.set(t.id,{streak:0,tries:0,misses:0,done:false,task:t});
  // Kijkronde: eerst elke plek rustig bekijken, daarna in een andere volgorde zelf ophalen.
  studyCount=0;
@@ -394,13 +395,15 @@ function draw(){
   focusMap();requestAnimationFrame(focusMap);return;
  }
  if(studyCount&&index===studyCount)feedback('Nu jij! Weet je nog waar ze liggen?','neutral');
- else if(studyFirst&&!studyCount&&index===0&&round===1)feedback('Eerst kijken kan alleen bij vragen op de kaart. We beginnen meteen.','neutral');
+ else if(index===0&&round===1&&((studyFirst&&!studyCount)||(adaptiveAsked&&!adaptive)))feedback(((studyFirst&&!studyCount)?'Eerst kijken':'Meebewegend')+(studyFirst&&!studyCount&&adaptiveAsked&&!adaptive?' en meebewegen kunnen':' kan')+' alleen bij vragen op de kaart. We beginnen meteen.','neutral');
  if(currentMode==='quiz'){
   const q=task.q;$('map').innerHTML='';
   setKind(q.category==='begrippen'?'BEGRIP':'ZONDER KAART');
   setPrompt(q.question);$('sub').textContent='Kies het goede antwoord.'+(mode==='shuffle'&&index%3===0?' '+voice('shuffle'):'');
   $('mapHint').textContent='ZONDER KAART';
-  $('answerOptions').innerHTML=shuffle(q.options).map(y=>'<button type="button" class="option" data-fact-choice="'+encodeURIComponent(y)+'">'+esc(y)+'</button>').join('');
+  let opts=shuffle(q.options);
+  if(adaptive&&steun===2){const drop=opts.findIndex(o=>o!==q.answer);if(drop>=0)opts.splice(drop,1)}
+  $('answerOptions').innerHTML=opts.map(y=>'<button type="button" class="option" data-fact-choice="'+encodeURIComponent(y)+'">'+esc(y)+'</button>').join('');
   return;
  }
  const it=task.item,t=typ(it);

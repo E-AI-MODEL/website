@@ -310,10 +310,16 @@ try {
       await page.setViewportSize({width: 390, height: 844});
       await page.locator('#closeSheet').click();
     } finally { await page.close(); }
-    // Kijkronde gevraagd bij een set zonder kaart: eerlijk melden in plaats van stil negeren.
+    // Kijkronde of meebewegen gevraagd bij een set zonder kaart: eerlijk melden in plaats van stil negeren.
     page = await open('/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=5&kijk=1&test=1');
     try {
       assert.match(await page.locator('#feedback').textContent(), /Eerst kijken kan alleen bij vragen op de kaart/);
+    } finally { await page.close(); }
+    page = await open('/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=10&level=adaptief&test=1');
+    try {
+      assert.match(await page.locator('#feedback').textContent(), /Meebewegend kan alleen bij vragen op de kaart/);
+      for (let i = 0; i < 4; i++) { await answerWith(page, true); await page.locator('#next').waitFor({state: 'visible'}); assert.doesNotMatch(await page.locator('#feedback').textContent(), /moeilijker|meer hulp/); await page.locator('#next').click(); }
+      assert.equal((await hook(page, 'state')).steun, 1, 'Zonder kaartvragen hoort de steun niet te veranderen');
     } finally { await page.close(); }
     console.log('TOPO VO extra leerstrategieën OK');
   }
@@ -350,6 +356,7 @@ try {
       await pickSet(page, 'ob-begrippen-kaart'); await page.locator('#tab-spel').click();
       assert.ok(await (await reveal(page, '[data-group="vormen"][data-value="point"]')).isDisabled(), 'Kaartvorm hoort uit bij een begrippenset');
       assert.ok(await (await reveal(page, '[data-group="slim"][data-value="kijk"]')).isDisabled(), 'Eerst kijken hoort uit bij een set zonder kaart');
+      assert.ok(await (await reveal(page, '[data-group="manier"][data-value="adaptief"]')).isDisabled(), 'Meebewegend hoort uit bij een set zonder kaart');
       await page.locator('#tab-oefenen').click(); await pickSet(page, 'ob3-wereld-verdieping'); await page.locator('#tab-spel').click();
       assert.ok(await (await reveal(page, '[data-group="vormen"][data-value="missing"]')).isDisabled(), "'Wat mist er' hoort uit bij een set met alleen landen");
       await page.screenshot({path: `${out}/start.png`});

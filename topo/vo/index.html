@@ -219,9 +219,12 @@ function render(){
  $('setNote').innerHTML=s?'<strong>Dit oefen je:</strong> '+s.doelen.map(c=>DOELEN[c]?'<span class="doel" title="'+esc(DOELEN[c].omschrijving)+'">'+esc(c)+' · '+esc(DOELEN[c].titel)+'</span>':'').join(' ')+(s.uitleg?'<br><small>'+esc(s.uitleg)+'</small>':''):'Kies een set.';
  if(s&&!vormBeschikbaar(s,state.mode))state.mode=s.kaart?'mix':'quiz';
  pills('vormen',VORMEN,state.mode,v=>!vormBeschikbaar(s,v));
- pills('aantal',AANTAL,state.questions);pills('hulp',HULP,state.assist);pills('manier',MANIER,state.level);
+ // Meebewegend en Eerst kijken werken met vragen op de kaart.
+ const kaartVragen=Boolean(s&&s.kaart&&state.mode!=='quiz');
+ if(!kaartVragen&&state.level==='adaptief')state.level='normal';
+ pills('aantal',AANTAL,state.questions);pills('hulp',HULP,state.assist);pills('manier',MANIER,state.level,v=>v==='adaptief'&&!kaartVragen);
  // Eerst kijken kan alleen als er plekken op een kaart te bekijken zijn.
- const kijkKan=Boolean(s&&s.kaart&&state.mode!=='quiz');
+ const kijkKan=kaartVragen;
  if(!kijkKan)state.kijk=false;
  $('slim').innerHTML=SLIM.map(([v,l])=>{const off=v==='kijk'&&!kijkKan;return '<button type="button" class="pill" data-group="slim" data-value="'+v+'" aria-pressed="'+Boolean(state[v])+'"'+(off?' disabled aria-label="'+esc(l)+' (alleen bij vragen op de kaart)"':'')+'>'+(state[v]?'✓ ':'')+esc(l)+'</button>'}).join('');
  $('vormNote').textContent=state.mode==='shuffle'?'Alles door elkaar: aanwijzen, kiezen, typen, ingezoomde plekken en vragen zonder kaart.':state.mode==='quiz'?'Vragen zonder kaart: feiten en begrippen bij deze set.':'Kies een vraagvorm, of laat de vragen afwisselen.';
