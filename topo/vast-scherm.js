@@ -324,6 +324,16 @@
    foot.appendChild(b);
   }
   if(print)foot.appendChild(print);
+  // Afdrukken: altijd de hele kaart, ook als je had ingezoomd; daarna terug naar jouw beeld.
+  window.addEventListener('beforeprint',()=>{
+   const svg=svgIn(map);if(!svg||!svg.dataset.full||layer.classList.contains('hide'))return;
+   svg.__vastPrint=svg.getAttribute('viewBox');state(svg).last=svg.dataset.full;svg.setAttribute('viewBox',svg.dataset.full);
+   if(!svg.querySelector('.dyn'))fitLabels(svg);
+  });
+  window.addEventListener('afterprint',()=>{
+   const svg=svgIn(map);if(!svg||svg.__vastPrint==null)return;
+   const vb=svg.__vastPrint;svg.__vastPrint=null;state(svg).last=vb;svg.setAttribute('viewBox',vb);changed(svg);
+  });
   const refit=raf(()=>{if(layer.classList.contains('hide'))return;const svg=svgIn(map);if(svg&&!svg.querySelector('.dyn'))fitLabels(svg);updateControls(map);pageGlossary(map,foot)});
   window.addEventListener('resize',refit);window.visualViewport?.addEventListener('resize',refit);
   if(window.ResizeObserver)new ResizeObserver(refit).observe(map);

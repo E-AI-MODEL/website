@@ -241,6 +241,13 @@ if (!only || only.has('interactie')) {
     await privacy(page);
     await page.locator('#openSheet').click();
     await page.waitForTimeout(300);
+    // Eerst inzoomen: de afdruk moet toch de hele kaart tonen, en daarna je eigen beeld terugzetten.
+    await page.locator('#sheetMap .vast-zoom-in').click(); await page.locator('#sheetMap .vast-zoom-in').click();
+    await page.waitForTimeout(200);
+    const zoomed = await page.evaluate(() => document.querySelector('#sheetMap svg').getAttribute('viewBox'));
+    await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+    const printed = await page.evaluate(() => { const s = document.querySelector('#sheetMap svg'); return [s.getAttribute('viewBox'), s.dataset.full]; });
+    if (printed[0] !== printed[1]) fails.push('afdruk toont alleen het ingezoomde stuk (' + printed[0] + ')');
     await page.emulateMedia({media: 'print'});
     const pr = await page.evaluate(() => {
       const tags = document.getElementById('answerTags'), modal = document.querySelector('#sheetLayer .modal'), svg = document.querySelector('#sheetMap svg');
@@ -252,6 +259,10 @@ if (!only || only.has('interactie')) {
     if (pr.clipped) fails.push('spiekkaart wordt afgesneden bij afdrukken');
     if (!pr.ratio) fails.push('kaart wordt bijgesneden bij afdrukken');
     if (pr.zoom) fails.push('zoomknoppen staan op de afdruk');
+    await page.emulateMedia({media: 'screen'});
+    await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
+    const after = await page.evaluate(() => document.querySelector('#sheetMap svg').getAttribute('viewBox'));
+    if (after !== zoomed) fails.push('na afdrukken staat het eigen beeld niet terug');
   } catch (e) { fails.push('scenario faalde: ' + e.message.split('\n')[0]); }
   report.push({vp: 'interactie', id: 'afdrukken', fails});
   await page.close();
