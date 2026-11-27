@@ -195,7 +195,9 @@ try {
       assert.equal(await page.locator('#kind').textContent(), 'KIJKRONDE');
       assert.match(await page.locator('#progressText').textContent(), /^KIJK 1\/5$/);
       assert.ok(await page.locator('#next').isVisible(), 'Kijkronde: VERDER! hoort er meteen te staan');
-      assert.ok(await page.locator('#map .target-area, #map .city-focus').count() > 0, 'Kijkronde: plek niet uitgelicht');
+      // Vlak, lijn (rivier) of stip: de plek is uitgelicht.
+      await page.waitForFunction(() => document.querySelector('#map .target-area, #map .target-line, #map .city-focus'), null, {timeout: 3000}).catch(() => {});
+      assert.ok(await page.locator('#map .target-area, #map .target-line, #map .city-focus').count() > 0, 'Kijkronde: plek niet uitgelicht');
       for (let i = 0; i < 5; i++) await page.locator('#next').click();
       assert.notEqual(await page.locator('#kind').textContent(), 'KIJKRONDE');
       assert.equal(await page.locator('#progressText').textContent(), '1/5');
