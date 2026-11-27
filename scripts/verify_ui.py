@@ -12,6 +12,62 @@ from bs4 import BeautifulSoup, Comment
 from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, LEGACY_HUB_REDIRECTS, canonical
 
 
+# Standalone EAIgit pages are not necessarily in the editorial UI manifest.
+# Keep the public routes and essential entry files mandatory. Inventory both
+# owned asset trees recursively, including nested vendor files, CSS, images,
+# static/dynamic module imports and worker scripts. EAIgit's current only
+# additional shared runtime asset is site.css; any new dependency outside
+# these namespaces must be included here or in the shared UI manifest.
+EAIGIT_ASSET_DIRS = ('assets/eaigit', 'assets/projecthulp')
+EAIGIT_SOURCE_ROOT = Path(__file__).resolve().parents[1]
+EAIGIT_REQUIRED_FILES = (
+    'tools/eaigit/index.html',
+    'tools/eaigit/hulp/index.html',
+    'tools/eaigit/prompts/index.html',
+    'tools/projecthulp/index.html',
+    'assets/eaigit/wizard.mjs',
+    'assets/eaigit/help-page.mjs',
+    'assets/eaigit/prompts-page.mjs',
+    'assets/projecthulp/analyse.mjs',
+    'assets/projecthulp/inhoudscontrole.mjs',
+    'assets/projecthulp/onderzoek-worker.mjs',
+    'assets/projecthulp/los-bestand.mjs',
+    'assets/site.css',
+)
+
+
+def eaigit_asset_files(root: Path) -> set[str]:
+    """Inventory the complete owned directories, not a list of entry modules."""
+    files = set()
+    for relative in EAIGIT_ASSET_DIRS:
+        directory = root / relative
+        if directory.is_symlink() or not directory.is_dir():
+            raise FileNotFoundError(f'EAIgit asset directory missing: {relative}')
+        for path in directory.rglob('*'):
+            if path.is_symlink():
+                raise ValueError(f'EAIgit asset may not be a symlink: {path}')
+            if path.is_file():
+                files.add(path.relative_to(root).as_posix())
+    return files
+
+
+def eaigit_source_files() -> list[str]:
+    # Source checkout is the exact release commit. A file omitted by the
+    # builder must still be required, even when no longer visible in its output.
+    return sorted(set(EAIGIT_REQUIRED_FILES) | eaigit_asset_files(EAIGIT_SOURCE_ROOT))
+
+
+def eaigit_release_hashes(root: Path) -> dict[str, str]:
+    expected = {}
+    for relative in sorted(set(eaigit_source_files()) | eaigit_asset_files(root)):
+        local = root / relative
+        if local.is_symlink() or not local.is_file() or not local.stat().st_size:
+            raise FileNotFoundError(f'EAIgit release file missing or empty: {relative}')
+        url = '/' + relative.removesuffix('index.html')
+        expected[url] = hashlib.sha256(local.read_bytes()).hexdigest()
+    return expected
+
+
 def assert_redirect_contract(path: str, soup: BeautifulSoup) -> None:
     target = LEGACY_HUB_REDIRECTS[path]
     link = soup.find('link', rel='canonical')
@@ -25,6 +81,8 @@ def assert_redirect_contract(path: str, soup: BeautifulSoup) -> None:
 def check(root: Path):
     manifest = json.loads((root / 'assets/ui-manifest.json').read_text())
     assert manifest['pages'], 'No pages were prepared'
+    # Refuse an incomplete release before publication, even for standalone tools.
+    eaigit_release_hashes(root)
     for name, info in manifest['assets'].items():
         data = (root / info['url'].lstrip('/')).read_bytes()
         assert hashlib.sha256(data).hexdigest() == info['sha256'], name
@@ -172,6 +230,7 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     # Same UI assets can accompany changed page copy. Verify every generated
     # page's exact bytes, rather than a fixed sample or the UI version alone.
     expected_html = expected_pages(root, manifest)
+    expected_eaigit = eaigit_release_hashes(root)
     deadline = time.monotonic() + timeout
     while True:
         try:
@@ -230,6 +289,20 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                         print(f'Cloudflare RUM injection verified without weakening HTML hash: {online_path}', flush=True)
                 else:
                     assert hashlib.sha256(remote).hexdigest() == expected, f'Tool content mismatch: {online_path}'
+            # Verify EAIgit from the same validated release, not repository sources.
+            # A prepared HTML route has already received the identical hash check.
+            for path, digest in expected_eaigit.items():
+                if path in expected_html:
+                    continue
+                data = get(path)
+                if path.endswith('/'):
+                    matched, edge_beacon = html_matches_release(data, digest)
+                    assert matched, f'EAIgit content mismatch: {path}'
+                    if edge_beacon:
+                        print(f'Cloudflare RUM injection verified without weakening HTML hash: {path}', flush=True)
+                else:
+                    assert hashlib.sha256(data).hexdigest() == digest, f'EAIgit content mismatch: {path}'
+            print(f'EAIgit LIVE verified: all {len(expected_eaigit)} required release files match', flush=True)
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
             print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')
