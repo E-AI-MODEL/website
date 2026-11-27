@@ -13,8 +13,14 @@ from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, LEGACY_HUB_REDIRECTS, canon
 
 
 # Standalone EAIgit pages are not necessarily in the editorial UI manifest.
-# Include the original release-proof targets and the newer entry-point modules.
-EAIGIT_RELEASE_FILES = (
+# Keep the public routes and essential entry files mandatory. Inventory both
+# owned asset trees recursively, including nested vendor files, CSS, images,
+# static/dynamic module imports and worker scripts. EAIgit's current only
+# additional shared runtime asset is site.css; any new dependency outside
+# these namespaces must be included here or in the shared UI manifest.
+EAIGIT_ASSET_DIRS = ('assets/eaigit', 'assets/projecthulp')
+EAIGIT_SOURCE_ROOT = Path(__file__).resolve().parents[1]
+EAIGIT_REQUIRED_FILES = (
     'tools/eaigit/index.html',
     'tools/eaigit/hulp/index.html',
     'tools/eaigit/prompts/index.html',
@@ -26,14 +32,36 @@ EAIGIT_RELEASE_FILES = (
     'assets/projecthulp/inhoudscontrole.mjs',
     'assets/projecthulp/onderzoek-worker.mjs',
     'assets/projecthulp/los-bestand.mjs',
+    'assets/site.css',
 )
+
+
+def eaigit_asset_files(root: Path) -> set[str]:
+    """Inventory the complete owned directories, not a list of entry modules."""
+    files = set()
+    for relative in EAIGIT_ASSET_DIRS:
+        directory = root / relative
+        if directory.is_symlink() or not directory.is_dir():
+            raise FileNotFoundError(f'EAIgit asset directory missing: {relative}')
+        for path in directory.rglob('*'):
+            if path.is_symlink():
+                raise ValueError(f'EAIgit asset may not be a symlink: {path}')
+            if path.is_file():
+                files.add(path.relative_to(root).as_posix())
+    return files
+
+
+def eaigit_source_files() -> list[str]:
+    # Source checkout is the exact release commit. A file omitted by the
+    # builder must still be required, even when no longer visible in its output.
+    return sorted(set(EAIGIT_REQUIRED_FILES) | eaigit_asset_files(EAIGIT_SOURCE_ROOT))
 
 
 def eaigit_release_hashes(root: Path) -> dict[str, str]:
     expected = {}
-    for relative in EAIGIT_RELEASE_FILES:
+    for relative in sorted(set(eaigit_source_files()) | eaigit_asset_files(root)):
         local = root / relative
-        if not local.is_file() or not local.stat().st_size:
+        if local.is_symlink() or not local.is_file() or not local.stat().st_size:
             raise FileNotFoundError(f'EAIgit release file missing or empty: {relative}')
         url = '/' + relative.removesuffix('index.html')
         expected[url] = hashlib.sha256(local.read_bytes()).hexdigest()

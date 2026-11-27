@@ -8,6 +8,12 @@ permissions:
 jobs:
   browser:
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-noble
+      options: --shm-size=1g
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
@@ -18,11 +24,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-save playwright@1.56.1
-      - run: npx playwright install --with-deps ${{ matrix.engine }}
-      - run: node scripts/test_leeuw_console.mjs . ${{ matrix.engine }}
+      - name: Use the pinned browser runtime
+        uses: ./.github/actions/browser-runtime
+        with:
+          binding: node
+      - name: Verify the selected browser exists and run all scenarios
         env:
+          ENGINE: ${{ matrix.engine }}
           DEBUG: ${{ matrix.engine == 'webkit' && 'pw:browser' || '' }}
+        run: |
+          node -e 'const fs=require("node:fs"); const browser=require("playwright")[process.env.ENGINE]; if(!browser||!fs.existsSync(browser.executablePath())) throw Error("Selected browser is absent from pinned image");'
+          # Headless Linux CI has no physical GPU. Avoid choosing a Vulkan
+          # driver that cannot create its instance on this runner.
+          if [ "$ENGINE" = webkit ]; then
+            export LIBGL_ALWAYS_SOFTWARE=1
+            export GALLIUM_DRIVER=llvmpipe
+          fi
+          node scripts/test_leeuw_console.mjs . "$ENGINE"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

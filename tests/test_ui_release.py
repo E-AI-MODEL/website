@@ -36,7 +36,8 @@ class ReleaseTests(unittest.TestCase):
         story_path.parent.mkdir(parents=True, exist_ok=True)
         story_path.write_bytes(self.story)
         self.eaigit = {}
-        for relative in verify_ui.EAIGIT_RELEASE_FILES:
+        self.eaigit_files = verify_ui.eaigit_source_files()
+        for relative in self.eaigit_files:
             target = self.root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             data = (b'<html><body>EAIgit: ' + relative.encode() + b'</body></html>'
@@ -202,7 +203,7 @@ class ReleaseTests(unittest.TestCase):
                 verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
 
     def test_eaigit_missing_or_empty_build_file_fails_before_network(self):
-        for relative in verify_ui.EAIGIT_RELEASE_FILES:
+        for relative in self.eaigit_files:
             with self.subTest(file=relative):
                 local = self.root / relative
                 original = local.read_bytes()
@@ -218,6 +219,55 @@ class ReleaseTests(unittest.TestCase):
                             network.assert_not_called()
                     finally:
                         local.write_bytes(original)
+
+    def test_eaigit_inventory_covers_all_owned_assets_and_shared_css(self):
+        required = {
+            'assets/eaigit/journey.mjs',
+            'assets/eaigit/work-plan.mjs',
+            'assets/eaigit/vendor/acorn-8.15.0.mjs',
+            'assets/eaigit/wizard.css',
+            'assets/eaigit/references.css',
+            'assets/eaigit/prompt-dashboard.css',
+            'assets/eaigit/logo.svg',
+            'assets/projecthulp/begeleiding.mjs',
+            'assets/projecthulp/static-audit.mjs',
+            'assets/projecthulp/zip.mjs',
+            'assets/site.css',
+        }
+        source = Path(__file__).resolve().parents[1]
+        for directory in ('assets/eaigit', 'assets/projecthulp'):
+            required.update(p.relative_to(source).as_posix()
+                            for p in (source / directory).rglob('*') if p.is_file())
+        self.assertTrue(required.issubset(set(self.eaigit_files)))
+        self.assertEqual(set(verify_ui.eaigit_release_hashes(self.root)), set(self.eaigit))
+
+    def test_new_nested_source_asset_is_required_even_if_build_omits_it(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            for folder in verify_ui.EAIGIT_ASSET_DIRS:
+                (source / folder).mkdir(parents=True)
+            relative = 'assets/eaigit/vendor/new-module.mjs'
+            new_source = source / relative
+            new_source.parent.mkdir(parents=True)
+            new_source.write_bytes(b'export const example = 1;')
+            with patch.object(verify_ui, 'EAIGIT_SOURCE_ROOT', source):
+                with self.assertRaisesRegex(FileNotFoundError, 'EAIgit release file missing or empty'):
+                    verify_ui.eaigit_release_hashes(self.root)
+                built = self.root / relative
+                built.parent.mkdir(parents=True, exist_ok=True)
+                built.write_bytes(new_source.read_bytes())
+                self.assertIn('/' + relative, verify_ui.eaigit_release_hashes(self.root))
+
+    def test_new_generated_asset_is_also_checked_live(self):
+        relative = 'assets/projecthulp/generated/new-style.css'
+        built = self.root / relative
+        built.parent.mkdir(parents=True)
+        built.write_bytes(b'.new{color:red}')
+        target = '/' + relative
+        self.eaigit[target] = b'.new{color:blue}'
+        with patch.object(verify_ui, 'urlopen', side_effect=self.release_response):
+            with self.assertRaisesRegex(RuntimeError, 'EAIgit content mismatch: ' + target):
+                verify_ui.verify_live('https://example.test', self.manifest, 0, self.root)
 
     def test_each_eaigit_live_file_must_match(self):
         for target in self.eaigit:
