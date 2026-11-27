@@ -130,7 +130,7 @@ body>header{flex:0 0 auto;width:min(1430px,100%);padding-top:12px;padding-bottom
 .overlay .modal details{margin:10px 0 16px;font-size:14px;line-height:1.4}.overlay .modal summary{font-weight:1000;cursor:pointer}
 @media(max-width:850px){.sheet-grid.sets{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.province.set{min-height:78px;padding:9px 10px}.set-title{font-size:13px}.set-meta{font-size:10.5px}.zone small{font-size:10px}.copy{font-size:12px;padding:8px 9px}.toplinks .plain{font-size:12px}}
-</style><link rel="stylesheet" href="/topo/vast-scherm.css?v=b84eb3a94e"><script src="/topo/vast-scherm.js?v=d111c4c4a1" defer></script></head>
+</style><link rel="stylesheet" href="/topo/vast-scherm.css?v=4371c83177"><script src="/topo/vast-scherm.js?v=25100243f7" defer></script></head>
 <body>
 <header><a class="logo" href="/topo/vo/">Let’s go <span>TOPO!</span><b class="vo">VO</b></a><div class="toplinks"><button class="plain" id="openPrivacy" type="button">Privacy</button><a class="back" href="/topo/">Basisschool</a></div></header>
 <main class="wrap">
@@ -220,7 +220,10 @@ function render(){
  if(s&&!vormBeschikbaar(s,state.mode))state.mode=s.kaart?'mix':'quiz';
  pills('vormen',VORMEN,state.mode,v=>!vormBeschikbaar(s,v));
  pills('aantal',AANTAL,state.questions);pills('hulp',HULP,state.assist);pills('manier',MANIER,state.level);
- $('slim').innerHTML=SLIM.map(([v,l])=>'<button type="button" class="pill" data-group="slim" data-value="'+v+'" aria-pressed="'+Boolean(state[v])+'">'+(state[v]?'✓ ':'')+esc(l)+'</button>').join('');
+ // Eerst kijken kan alleen als er plekken op een kaart te bekijken zijn.
+ const kijkKan=Boolean(s&&s.kaart&&state.mode!=='quiz');
+ if(!kijkKan)state.kijk=false;
+ $('slim').innerHTML=SLIM.map(([v,l])=>{const off=v==='kijk'&&!kijkKan;return '<button type="button" class="pill" data-group="slim" data-value="'+v+'" aria-pressed="'+Boolean(state[v])+'"'+(off?' disabled aria-label="'+esc(l)+' (alleen bij vragen op de kaart)"':'')+'>'+(state[v]?'✓ ':'')+esc(l)+'</button>'}).join('');
  $('vormNote').textContent=state.mode==='shuffle'?'Alles door elkaar: aanwijzen, kiezen, typen, ingezoomde plekken en vragen zonder kaart.':state.mode==='quiz'?'Vragen zonder kaart: feiten en begrippen bij deze set.':'Kies een vraagvorm, of laat de vragen afwisselen.';
  const vorm=VORMEN.find(v=>v[0]===state.mode)?.[1]||'';
  $('summary').innerHTML=s?esc(niv[1])+(state.leerjaar!=='alle'?' klas '+esc(state.leerjaar):'')+' · '+esc(s.titel)+'<small>'+esc(vorm)+' · '+(state.questions==='all'?'alle vragen':state.questions==='kennen'?'tot je het kent':state.questions+' vragen')+(state.assist==='none'?' · zonder hulp':'')+(state.level==='challenge'?' · extra uitdaging':state.level==='adaptief'?' · meebewegend':'')+(state.kijk?' · eerst kijken':'')+(state.zeker?' · zeker of gok':'')+'</small>':'Kies een set<small>Kies eerst een niveau en een set.</small>';

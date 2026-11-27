@@ -148,7 +148,7 @@
    zoomBy(svg,Math.exp(-Math.max(-120,Math.min(120,step))*0.0022),e.clientX,e.clientY);
   },{passive:false});
   new MutationObserver(list=>{
-   const svg=svgIn(frame);if(!svg)return;
+   const svg=svgIn(frame);if(!svg){updateControls(frame);return}
    const fresh=list.some(m=>m.type==='childList'&&[...m.addedNodes].some(n=>n===svg||n.contains?.(svg)));
    const st=views.get(svg),vb=svg.getAttribute('viewBox');
    if(fresh||!st||vb!==st.last){state(svg);if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(frame)}
@@ -290,7 +290,33 @@
    foot.appendChild(b);
   }
   if(print)foot.appendChild(print);
-  new MutationObserver(()=>{if(!layer.classList.contains('hide')){modal.classList.remove('vast-lijst');const b=foot.querySelector('.vast-lijst-knop');if(b){b.textContent='Lijst';b.setAttribute('aria-pressed','false')}requestAnimationFrame(()=>{const svg=svgIn(map);if(svg){state(svg);if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(map)}})}}).observe(layer,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(()=>{if(!layer.classList.contains('hide')){modal.classList.remove('vast-lijst');const b=foot.querySelector('.vast-lijst-knop');if(b){b.textContent='Lijst';b.setAttribute('aria-pressed','false')}requestAnimationFrame(()=>{const svg=svgIn(map);if(svg){state(svg);if(!svg.querySelector('.dyn'))fitLabels(svg)}updateControls(map);pageGlossary(map,foot)})}}).observe(layer,{attributes:true,attributeFilter:['class']});
+ }
+ // Begrippenlijst (sets zonder kaart): bladzijden die precies passen, geen scrollvlak.
+ function pageGlossary(map,foot){
+  const dl=map.querySelector('.glossary');
+  let pager=foot.querySelector('.vast-pager');
+  if(!dl){if(pager)pager.hidden=true;return}
+  const pairs=[];let cur=null;
+  for(const n of dl.children){if(n.tagName==='DT'){cur=[n];pairs.push(cur)}else if(cur)cur.push(n)}
+  if(!pager){
+   pager=document.createElement('div');pager.className='vast-pager';pager.setAttribute('role','group');pager.setAttribute('aria-label','Meer begrippen');
+   pager.innerHTML='<button type="button" class="vast-pager-prev" aria-label="Vorige">‹</button><span aria-live="polite"></span><button type="button" class="vast-pager-next" aria-label="Volgende">›</button>';
+   foot.appendChild(pager);
+   pager.addEventListener('click',e=>{const b=e.target.closest('button'),st=pager.__st;if(!b||!st)return;st.page=Math.max(0,Math.min(st.pages.length-1,st.page+(b.classList.contains('vast-pager-next')?1:-1)));st.show()});
+  }
+  pager.hidden=false;
+  const box=map,show=(a,b)=>pairs.forEach((p,i)=>p.forEach(n=>n.classList.toggle('vast-pagina-weg',i<a||i>=b)));
+  const over=()=>box.scrollHeight>box.clientHeight+1||dl.getBoundingClientRect().bottom>box.getBoundingClientRect().bottom+1;
+  const pages=[];let start=0;
+  while(start<pairs.length){
+   let end=start+1;show(start,end);
+   while(end<pairs.length){show(start,end+1);if(over())break;end++}
+   pages.push([start,end]);start=end;
+  }
+  if(pages.length<2){show(0,pairs.length);pager.hidden=true;return}
+  const st={pages,page:0,show:()=>{const [a,b]=st.pages[st.page];show(a,b);pager.querySelector('span').textContent=(st.page+1)+'/'+st.pages.length;pager.querySelector('.vast-pager-prev').disabled=st.page===0;pager.querySelector('.vast-pager-next').disabled=st.page>=st.pages.length-1}};
+  pager.__st=st;st.show();
  }
  function fitTags(tags){
   setFs(tags);

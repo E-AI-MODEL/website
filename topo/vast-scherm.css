@@ -44,6 +44,7 @@ body.playing #game .game-board>.feedback{position:absolute;left:8px;right:8px;bo
 .vast-zoom button[disabled]{opacity:.45}
 .vast-zoom .vast-zoom-home{font-size:15px;background:var(--lime)}
 .vast-zoom .vast-zoom-home[hidden]{display:none}
+.vast-zoom[hidden]{display:none!important}
 
 /* Vraagkaart: compact onder de kaart. */
 body.playing #game .question-card{grid-area:2/1;position:relative;z-index:3;display:flex!important;flex-direction:column;gap:6px;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;padding:15px 12px 10px!important;margin:0!important;border-width:2px!important;border-radius:20px!important;box-shadow:3px 4px 0 var(--ink)!important;transform:none!important;width:auto!important}
@@ -136,7 +137,8 @@ body.playing.keyboard-open #game .game-board>.feedback{font-size:13px;padding:5p
 #sheetLayer .sheet-canvas:has(.glossary){overflow:hidden;line-height:1.3}
 #sheetLayer .sheet-map:has(.glossary){background:#fff;touch-action:auto!important}
 .vast-sheet-foot{display:flex;align-items:center;gap:8px;flex:none;min-height:44px}
-.vast-sheet-foot>p{flex:1 1 auto;margin:0!important}
+#sheetLayer .vast-sheet-foot>p{flex:1 1 0!important;min-width:0;margin:0!important}
+.vast-sheet-foot .vast-pager{margin:0;flex:none}
 .vast-sheet-foot button{min-height:44px;padding:0 14px;border:2px solid var(--ink);border-radius:13px;background:#fff;box-shadow:0 3px 0 var(--ink);font:inherit;font-weight:1000;font-size:14px;color:var(--ink);white-space:nowrap}
 #sheetLayer .answer-tags{display:none!important}
 #sheetLayer .modal.vast-lijst .sheet-map{display:none!important}

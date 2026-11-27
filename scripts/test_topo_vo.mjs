@@ -279,6 +279,30 @@ try {
       assert.equal((await hook(page, 'state')).steun, 2);
       if (await hook(page, 'mode') === 'choice') assert.equal(await page.locator('#answerOptions .option').count(), 3, 'Meer hulp: drie keuzes');
     } finally { await page.close(); }
+    // Begrippenlijst op de spiekkaart: bladeren in plaats van afsnijden, geen zoomknoppen.
+    page = await open('/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=5&test=1');
+    try {
+      await page.locator('#showAnswer').click();
+      await page.waitForTimeout(300);
+      assert.ok(!(await page.locator('#sheetMap .vast-zoom').isVisible()), 'Zoomknoppen horen niet bij een begrippenlijst');
+      const pager = page.locator('#sheetLayer .vast-sheet-foot .vast-pager');
+      assert.ok(await pager.isVisible(), 'Begrippenlijst zonder bladzijden');
+      const visibleTerms = () => page.locator('#sheetMap dt:not(.vast-pagina-weg)').allTextContents();
+      const first = await visibleTerms();
+      const total = await page.locator('#sheetMap dt').count();
+      assert.ok(first.length > 0 && first.length < total, 'Eerste bladzijde toont niet een deel van de lijst');
+      const fits = await page.evaluate(() => { const m = document.getElementById('sheetMap'), dl = m.querySelector('.glossary'); return dl.getBoundingClientRect().bottom <= m.getBoundingClientRect().bottom + 1; });
+      assert.ok(fits, 'Begrippen vallen buiten de spiekkaart');
+      const seen = new Set(first);
+      for (let i = 0; i < 40 && await pager.locator('.vast-pager-next').isEnabled(); i++) { await pager.locator('.vast-pager-next').click(); (await visibleTerms()).forEach(t => seen.add(t)); }
+      assert.equal(seen.size, total, 'Niet elk begrip is bereikbaar');
+      await page.locator('#closeSheet').click();
+    } finally { await page.close(); }
+    // Kijkronde gevraagd bij een set zonder kaart: eerlijk melden in plaats van stil negeren.
+    page = await open('/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=5&kijk=1&test=1');
+    try {
+      assert.match(await page.locator('#feedback').textContent(), /Eerst kijken kan alleen bij vragen op de kaart/);
+    } finally { await page.close(); }
     console.log('TOPO VO extra leerstrategieën OK');
   }
 
@@ -313,6 +337,7 @@ try {
       await page.locator('#tab-niveau').click(); await page.locator('[data-niveau="onderbouw"]').click(); await page.locator('#tab-oefenen').click();
       await pickSet(page, 'ob-begrippen-kaart'); await page.locator('#tab-spel').click();
       assert.ok(await (await reveal(page, '[data-group="vormen"][data-value="point"]')).isDisabled(), 'Kaartvorm hoort uit bij een begrippenset');
+      assert.ok(await (await reveal(page, '[data-group="slim"][data-value="kijk"]')).isDisabled(), 'Eerst kijken hoort uit bij een set zonder kaart');
       await page.locator('#tab-oefenen').click(); await pickSet(page, 'ob3-wereld-verdieping'); await page.locator('#tab-spel').click();
       assert.ok(await (await reveal(page, '[data-group="vormen"][data-value="missing"]')).isDisabled(), "'Wat mist er' hoort uit bij een set met alleen landen");
       await page.screenshot({path: `${out}/start.png`});

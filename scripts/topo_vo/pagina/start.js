@@ -45,7 +45,10 @@ function render(){
  if(s&&!vormBeschikbaar(s,state.mode))state.mode=s.kaart?'mix':'quiz';
  pills('vormen',VORMEN,state.mode,v=>!vormBeschikbaar(s,v));
  pills('aantal',AANTAL,state.questions);pills('hulp',HULP,state.assist);pills('manier',MANIER,state.level);
- $('slim').innerHTML=SLIM.map(([v,l])=>'<button type="button" class="pill" data-group="slim" data-value="'+v+'" aria-pressed="'+Boolean(state[v])+'">'+(state[v]?'✓ ':'')+esc(l)+'</button>').join('');
+ // Eerst kijken kan alleen als er plekken op een kaart te bekijken zijn.
+ const kijkKan=Boolean(s&&s.kaart&&state.mode!=='quiz');
+ if(!kijkKan)state.kijk=false;
+ $('slim').innerHTML=SLIM.map(([v,l])=>{const off=v==='kijk'&&!kijkKan;return '<button type="button" class="pill" data-group="slim" data-value="'+v+'" aria-pressed="'+Boolean(state[v])+'"'+(off?' disabled aria-label="'+esc(l)+' (alleen bij vragen op de kaart)"':'')+'>'+(state[v]?'✓ ':'')+esc(l)+'</button>'}).join('');
  $('vormNote').textContent=state.mode==='shuffle'?'Alles door elkaar: aanwijzen, kiezen, typen, ingezoomde plekken en vragen zonder kaart.':state.mode==='quiz'?'Vragen zonder kaart: feiten en begrippen bij deze set.':'Kies een vraagvorm, of laat de vragen afwisselen.';
  const vorm=VORMEN.find(v=>v[0]===state.mode)?.[1]||'';
  $('summary').innerHTML=s?esc(niv[1])+(state.leerjaar!=='alle'?' klas '+esc(state.leerjaar):'')+' · '+esc(s.titel)+'<small>'+esc(vorm)+' · '+(state.questions==='all'?'alle vragen':state.questions==='kennen'?'tot je het kent':state.questions+' vragen')+(state.assist==='none'?' · zonder hulp':'')+(state.level==='challenge'?' · extra uitdaging':state.level==='adaptief'?' · meebewegend':'')+(state.kijk?' · eerst kijken':'')+(state.zeker?' · zeker of gok':'')+'</small>':'Kies een set<small>Kies eerst een niveau en een set.</small>';

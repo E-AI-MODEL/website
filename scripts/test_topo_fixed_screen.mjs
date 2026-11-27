@@ -57,6 +57,7 @@ const SCENARIOS = [
   ['vo-spiek', '/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5', async p => { await ready(p); await p.locator('#showAnswer').click(); }, false],
   ['vo-eind', '/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5', async p => { await ready(p); await toEnd(p); }, false],
   ['vo-kijk', '/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5&kijk=1', ready, true],
+  ['vo-spiek-begrippen', '/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=5', async p => { await ready(p); await p.locator('#showAnswer').click(); }, false],
   ['vo-zeker', '/topo/vo/spel/?set=ob2-landen-afrika&mode=choice&questions=5&zeker=1', async p => { await ready(p); await p.locator('#answerOptions .option').first().click(); }, true],
   ['vo-kennen', '/topo/vo/spel/?set=ob1-nl-basis&mode=point&questions=kennen&level=adaptief', ready, true],
   ['vo-eind-zeker', '/topo/vo/spel/?set=ob2-landen-afrika&mode=choice&questions=10&zeker=1', async p => {

@@ -227,7 +227,7 @@ body.playing #game #answerOptions .option.chosen{background:#fff1b8;outline:3px 
 .question-card h2.xlong{font-size:clamp(16px,1.8vw,24px)!important;line-height:1.2!important}
 .glossary{margin:0;padding:14px 16px;line-height:1.35;background:#fff;border-radius:13px}.glossary dt{font-weight:1000;margin-top:10px}.glossary dd{margin:2px 0 0;font-weight:750;color:#3d5560}
 .sheet-map:has(.glossary){background:#fff}
-</style><link rel="stylesheet" href="/topo/vast-scherm.css?v=b84eb3a94e"><script src="/topo/vast-scherm.js?v=d111c4c4a1" defer></script></head><body>
+</style><link rel="stylesheet" href="/topo/vast-scherm.css?v=4371c83177"><script src="/topo/vast-scherm.js?v=25100243f7" defer></script></head><body>
 <header class="top"><a href="/topo/vo/" class="logo">Let’s go <span>TOPO!</span><b class="vo">VO</b></a><a href="/topo/vo/" class="other">Instellingen</a></header>
 <main>
 <section id="loading" class="result"><span class="sticker">TOPO! VO</span><h2>Kaart laden…</h2><p>Je oefenset komt eraan.</p></section>
@@ -298,7 +298,7 @@ const FAMNAAM={plaats:['de','plaats'],water:['het','water'],eiland:['het','eilan
 const C=['#ffc2b8','#ffe3a4','#c9e6ae','#f4dfbc','#c7e6e7','#ffe4bb','#d7e8ba','#ffcfc0','#e8d8e8','#f5e4bd','#d7e0ee','#d2e7bc'];
 let SET=null,K=null,kaartId=null,items=new Map(),setItems=[],facts=[],begrippen=new Map(),geo={},topoTalk={},lastSpoken={};
 let mapOpts=null,scale=1,cosL=1,W=1000,H=600,basisFeatures=[],contextFeatures=[],projCache=new Map();
-let steun=1,goodRun=0,badRun=0,masteryMap=new Map(),sureLog=[],pendingJudge=null,currentSure=null,lastTap=null,tapLine=null,studyCount=0,usedHelp=false,answered=0,steunNote='';
+let masteryStopped=false,steun=1,goodRun=0,badRun=0,masteryMap=new Map(),sureLog=[],pendingJudge=null,currentSure=null,lastTap=null,tapLine=null,studyCount=0,usedHelp=false,answered=0,steunNote='';
 let submitLog=[],queue=[],index=0,stars=0,helpCount=0,peekCount=0,round=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,nearMiss=false,done=false,currentMode='point',zoom=1,guessOptions=[],correctStreak=0,wrongStreak=0,wrongTapTimes=[],retryPool=null;
 const fmt=n=>Math.round(n*10)/10;
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
@@ -600,7 +600,7 @@ function start(pool){
  queue=buildQueue(pool);
  if(!queue.length){$('loading').classList.remove('hide');$('loading').innerHTML='<span class="sticker">OEPS!</span><h2>Geen vragen!</h2><p>Deze set heeft geen vragen voor deze vraagvorm. Kies een andere vorm.</p><p><a class="big" href="/topo/vo/?set='+encodeURIComponent(setId)+'">ANDERE KEUZE ↗</a></p>';return}
  index=0;stars=0;helpCount=0;peekCount=0;correctStreak=0;wrongStreak=0;wrongTapTimes=[];assisted=new Set();wrong=new Set();repeated=new Set();round++;
- steun=1;goodRun=0;badRun=0;sureLog=[];pendingJudge=null;currentSure=null;answered=0;steunNote='';
+ masteryStopped=false;steun=1;goodRun=0;badRun=0;sureLog=[];pendingJudge=null;currentSure=null;answered=0;steunNote='';
  masteryMap=new Map();if(mastery)for(const t of queue)masteryMap.set(t.id,{streak:0,tries:0,misses:0,done:false,task:t});
  // Kijkronde: eerst elke plek rustig bekijken, daarna in een andere volgorde zelf ophalen.
  studyCount=0;
@@ -636,6 +636,7 @@ function draw(){
   focusMap();requestAnimationFrame(focusMap);return;
  }
  if(studyCount&&index===studyCount)feedback('Nu jij! Weet je nog waar ze liggen?','neutral');
+ else if(studyFirst&&!studyCount&&index===0&&round===1)feedback('Eerst kijken kan alleen bij vragen op de kaart. We beginnen meteen.','neutral');
  if(currentMode==='quiz'){
   const q=task.q;$('map').innerHTML='';
   setKind(q.category==='begrippen'?'BEGRIP':'ZONDER KAART');
@@ -730,7 +731,8 @@ function settle(task,independent){
  const m=masteryMap.get(task.id);if(!m)return;
  m.tries++;
  if(independent){m.streak++;if(m.streak>=2){m.done=true;return}}else{m.streak=0;m.misses++}
- if(queue.length>=masteryMap.size*6)return;
+ // Doorgaan tot alles gekend is; je kunt altijd zelf stoppen met ← Terug. Alleen een ruime noodrem (20 vragen per plek).
+ if(answered>=masteryMap.size*20){masteryStopped=true;return}
  // Fout: snel terug (na 2). Goed: later terug (na 5), zodat je het echt moet ophalen.
  const again={...m.task,revisit:true};
  if(again.kind==='item')again.mode=modeFor(again.item,index+m.tries+1);
@@ -903,8 +905,14 @@ function finish(){
  let missed=firsts.filter(x=>wrong.has(x.id)),reviewTitle='Deze nog eens:';
  if(mastery){
   const all=[...masteryMap.values()],known=all.filter(m=>m.done).length;
-  $('endText').textContent=(known===all.length?'Je kent ze alle '+all.length+'!':known+' van '+all.length+' gekend.')+' '+answered+' vragen, '+stars+' meteen goed.';
-  missed=all.filter(m=>m.misses>0).sort((a,b)=>b.misses-a.misses).map(m=>m.task);reviewTitle='Deze waren lastig:';
+  if(known===all.length){
+   $('endText').textContent='Je kent ze alle '+all.length+'! '+answered+' vragen, '+stars+' meteen goed.';
+   missed=all.filter(m=>m.misses>0).sort((a,b)=>b.misses-a.misses).map(m=>m.task);reviewTitle='Deze waren lastig:';
+  }else{
+   $('endTitle').textContent='NOG NIET ALLES!';
+   $('endText').textContent=known+' van '+all.length+' gekend na '+answered+' vragen. Pauze nemen helpt: oefen de rest straks nog eens.';
+   missed=all.filter(m=>!m.done).map(m=>m.task);reviewTitle='Nog niet gekend:';
+  }
  }else $('endText').textContent=stars+' van '+firsts.length+' meteen goed, zonder hulp.';
  let chips='<span>TIPS '+helpCount+'×</span><span>SPIEKKAART '+peekCount+'×</span>';
  const notes=[];
