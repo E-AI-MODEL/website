@@ -40,6 +40,15 @@ jobs:
             export LIBGL_ALWAYS_SOFTWARE=1
             export GALLIUM_DRIVER=llvmpipe
           fi
+          # GitHub mounts /github/home for pwuser, but this container runs as root.
+          # Firefox refuses to start with a HOME owned by another user.
+          if [ "$ENGINE" = firefox ]; then
+            export HOME=/root
+            if [ ! -d "$HOME" ] || [ ! -O "$HOME" ] || [ ! -w "$HOME" ]; then
+              echo "::error::Firefox HOME must exist and be owned and writable by the running user (uid=$(id -u))"
+              exit 1
+            fi
+          fi
           node scripts/test_leeuw_console.mjs . "$ENGINE"
       - uses: actions/upload-artifact@v4
         if: always()
