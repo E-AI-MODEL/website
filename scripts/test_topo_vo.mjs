@@ -355,6 +355,23 @@ try {
       assert.equal(await page.getAttribute('#go', 'href'), '/topo/vo/spel/?set=v-d1-zuid-amerika&mode=missing&questions=5');
       const fit = await page.evaluate(() => ({body: document.body.scrollHeight, vh: innerHeight, go: document.getElementById('go').getBoundingClientRect().bottom}));
       assert.ok(fit.body <= fit.vh + 4 && fit.go <= fit.vh, 'Startpagina past niet op een telefoon');
+      // Na bladeren en een ander niveau: de nieuw gekozen set staat in beeld (niet verstopt op een oude bladzijde).
+      {
+        const small = await browser.newPage(phone);
+        try {
+          // havo (12 sets) en vwo (11 sets) geven hier evenveel bladzijden: precies het geval waarin een oude bladzijde bleef staan.
+          await small.goto(base + '/topo/vo/?niveau=havo');
+          await small.locator('#privacyOk').click();
+          await small.locator('#tab-oefenen').click();
+          const pager = small.locator('#sets + .vast-pager');
+          await small.waitForTimeout(200);
+          assert.ok(await pager.isVisible(), 'Verwacht bladzijden bij havo op een klein scherm');
+          while (await pager.locator('.vast-pager-next').isEnabled()) await pager.locator('.vast-pager-next').click();
+          await small.locator('#tab-niveau').click(); await small.locator('[data-niveau="vwo"]').click(); await small.locator('#tab-oefenen').click();
+          await small.waitForTimeout(200);
+          assert.ok(await small.locator('#sets [aria-pressed="true"]').isVisible(), 'Gekozen set staat na een ander niveau niet in beeld');
+        } finally { await small.close(); }
+      }
       await page.locator('#tab-niveau').click(); await page.locator('[data-niveau="onderbouw"]').click(); await page.locator('#tab-oefenen').click();
       await pickSet(page, 'ob-begrippen-kaart'); await page.locator('#tab-spel').click();
       assert.ok(await (await reveal(page, '[data-group="vormen"][data-value="point"]')).isDisabled(), 'Kaartvorm hoort uit bij een begrippenset');

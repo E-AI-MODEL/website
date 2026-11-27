@@ -152,22 +152,35 @@
    const svg=svgIn(frame);if(!svg){updateControls(frame);return}
    const fresh=list.some(m=>m.type==='childList'&&[...m.addedNodes].some(n=>n===svg||n.contains?.(svg)));
    const st=views.get(svg),vb=svg.getAttribute('viewBox');
-   if(fresh||!st||vb!==st.last){state(svg);clearHud(frame,svg);if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(frame)}
+   if(fresh||!st||vb!==st.last){const s2=state(svg);s2.engine=parse(vb);clearHud(frame,svg,s2.engine);if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(frame)}
   }).observe(frame,{subtree:true,childList:true,attributes:true,attributeFilter:['viewBox']});
  }
  // De spelbalk ligt staand over de bovenkant van de kaart: schuif het beeld van het spel daaronder,
  // zodat geen plek onder Terug of de voortgang verdwijnt. (Liggend ligt de balk naast de kaart: niets te doen.)
- function clearHud(frame,svg){
-  const hud=frame.id==='map'?document.querySelector('#game .game-top'):null;if(!hud)return;
+ function clearHud(frame,svg,base){
+  const hud=frame.id==='map'?document.querySelector('#game .game-top'):null;if(!hud||!base)return;
+  const [x,y,w,h]=base;if(!(w>0&&h>0))return;
   const m=frame.getBoundingClientRect(),t=hud.getBoundingClientRect();
-  if(!t.height||t.bottom<=m.top||t.top>=m.bottom||t.right<=m.left||t.left>=m.right)return;
-  const top=Math.min(m.height*.3,t.bottom-m.top+4);if(top<4||!m.height)return;
-  const [x,y,w,h]=parse(svg.getAttribute('viewBox'));if(!(w>0&&h>0))return;
-  const k=Math.min(m.width/w,(m.height-top)/h);
-  const W=m.width/k,H=m.height/k,cx=x+w/2;
-  const nb=[cx-W/2,y-top/k-((m.height-top)/k-h)/2,W,H].map(v=>Math.round(v*100)/100);
+  const over=t.height&&!(t.bottom<=m.top||t.top>=m.bottom||t.right<=m.left||t.left>=m.right);
+  const top=over?Math.min(m.height*.3,t.bottom-m.top+4):0;
+  let nb=base;
+  if(top>=4&&m.height&&m.width){
+   const k=Math.min(m.width/w,(m.height-top)/h);
+   const W=m.width/k,H=m.height/k,cx=x+w/2;
+   nb=[cx-W/2,y-top/k-((m.height-top)/k-h)/2,W,H].map(v=>Math.round(v*100)/100);
+  }
   const vb=nb.join(' '),st=state(svg);
-  st.last=vb;st.home=nb;svg.setAttribute('viewBox',vb);changed(svg);
+  st.home=nb;
+  if(vb===svg.getAttribute('viewBox')){st.last=vb;return}
+  st.last=vb;svg.setAttribute('viewBox',vb);changed(svg);
+ }
+ // Na draaien of een ander kaartvak: opnieuw ruimte maken onder de spelbalk (of weer weghalen als die naast de kaart staat),
+ // ook als het spel zelf het beeld niet opnieuw instelt. Een kaart die je zelf hebt gezoomd blijft zoals hij is.
+ function reclearHud(frame){
+  const svg=svgIn(frame),st=svg&&views.get(svg);if(!st||!st.engine)return;
+  const cur=svg.getAttribute('viewBox');if(cur!==st.last)return;
+  const v=parse(cur);if(v.some((n,i)=>Math.abs(n-st.home[i])>.5))return;
+  clearHud(frame,svg,st.engine);
  }
  // Na slepen of knijpen geen antwoord-tik.
  window.addEventListener('click',e=>{
@@ -412,9 +425,11 @@
   if(size>=items.length){pager.hidden=true;show(0,items.length);return 99}
   const pages=Math.ceil(items.length/size);
   const chosen=items.findIndex(it=>it.getAttribute('aria-pressed')==='true'||it.querySelector?.('[aria-pressed="true"]'));
-  const old=host.__vastPage;
-  const page=old&&old.keep&&old.pages===pages?Math.min(old.page,pages-1):Math.max(0,Math.floor(Math.max(0,chosen)/size));
-  const st={size,pages,page,keep:Boolean(old&&old.keep&&old.pages===pages)};
+  // Zelfde knoppen en zelfde keuze: blijf op de bladzijde waar je naartoe bladerde. Anders: toon de gekozen knop.
+  const sig=isGroups?items.length+':'+items.map(g=>g.querySelector('h3')?.textContent||'').join('|'):items.length+':'+chosen+':'+items.map(it=>it.dataset?.set||it.dataset?.value||it.textContent.trim().slice(0,24)).join('|');
+  const old=host.__vastPage,same=Boolean(old&&old.keep&&old.pages===pages&&old.sig===sig&&old.size===size);
+  const page=same?Math.min(old.page,pages-1):Math.max(0,Math.floor(Math.max(0,chosen)/size));
+  const st={size,pages,page,keep:same,sig};
   st.show=()=>{show(st.page*st.size,st.size);pager.querySelector('span').textContent=(st.page+1)+'/'+st.pages;pager.querySelector('.vast-pager-prev').disabled=st.page===0;pager.querySelector('.vast-pager-next').disabled=st.page>=st.pages-1};
   host.__vastPage=st;st.show();
   return Math.ceil(size/cols);
@@ -474,7 +489,8 @@
     const r=e.contentRect;if(!r.width||!r.height)return;
     if(!last){last=[r.width,r.height];return}
     if(Math.abs(r.width-last[0])<2&&Math.abs(r.height-last[1])<2)return;
-    last=[r.width,r.height];clearTimeout(timer);timer=setTimeout(()=>window.dispatchEvent(new Event('resize')),90);
+    last=[r.width,r.height];clearTimeout(timer);
+    timer=setTimeout(()=>{window.dispatchEvent(new Event('resize'));requestAnimationFrame(()=>requestAnimationFrame(()=>reclearHud(map)))},90);
    }).observe(map);
   }
   setupSheet();

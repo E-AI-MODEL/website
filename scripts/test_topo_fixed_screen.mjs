@@ -256,6 +256,34 @@ if (!only || only.has('interactie')) {
   report.push({vp: 'interactie', id: 'afdrukken', fails});
   await page.close();
 }
+// Draaien: Noord-Nederland (aanwijzen) houdt na liggend → staand alle plekken onder de spelbalk vandaan.
+if (!only || only.has('interactie')) {
+  const page = await browser.newPage({viewport: {width: 844, height: 390}, isMobile: true, hasTouch: true, deviceScaleFactor: 1});
+  const fails = [];
+  try {
+    await page.goto(base + '/topo/', {waitUntil: 'domcontentloaded'});
+    await privacy(page);
+    await page.locator('#start').click();
+    await page.waitForTimeout(400);
+    await page.setViewportSize({width: 390, height: 844});
+    await page.waitForTimeout(700);
+    const r = await page.evaluate(() => {
+      const hud = document.querySelector('#game .game-top').getBoundingClientRect(), svg = document.querySelector('#map svg');
+      // hoogste klikbare plek op de kaart
+      let top = Infinity;
+      for (const n of svg.querySelectorAll('[data-place]')) { const b = n.getBoundingClientRect(); if (b.height) top = Math.min(top, b.top); }
+      return {hudBottom: hud.bottom, top, vb: svg.getAttribute('viewBox')};
+    });
+    if (!(r.top >= r.hudBottom - 1)) fails.push('na draaien ligt een plek onder de spelbalk (' + Math.round(r.top) + ' < ' + Math.round(r.hudBottom) + ')');
+    if (r.vb === '0 0 1240 900') fails.push('na draaien naar staand is geen ruimte onder de spelbalk gemaakt');
+    await page.setViewportSize({width: 844, height: 390});
+    await page.waitForTimeout(700);
+    const extra = await page.evaluate(() => { const vb = document.querySelector('#map svg').getAttribute('viewBox').split(' ').map(Number); return vb; });
+    if (extra.join(' ') !== '0 0 1240 900') fails.push('liggend staat er nog ruimte voor een spelbalk boven de kaart (' + extra.join(' ') + ')');
+  } catch (e) { fails.push('scenario faalde: ' + e.message.split('\n')[0]); }
+  report.push({vp: 'interactie', id: 'draaien-noord', fails});
+  await page.close();
+}
 const ready2 = p => p.waitForFunction(() => document.getElementById('loading')?.classList.contains('hide'), null, {timeout: 15000});
 await interaction('po-north', '/topo/', async p => { await privacy(p); await p.locator('#start').click(); });
 await interaction('po-nl', '/topo/nederland/?mode=point&questions=5', ready2);
