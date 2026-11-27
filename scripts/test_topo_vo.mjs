@@ -26,10 +26,23 @@ const hook = (page, fn) => page.evaluate(f => window.__topoVo[f](), fn);
 const exact = text => new RegExp('^\\s*' + text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$');
 const optionFor = (page, text) => page.locator('#answerOptions .option').filter({hasText: exact(text)}).first();
 
+// Sets staan op bladzijden als ze niet op één scherm passen: blader tot de set zichtbaar is.
+async function pickSet(page, id) {
+  const set = page.locator(`[data-set="${id}"]`);
+  const pager = page.locator('#sets + .vast-pager');
+  await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+  if (!(await set.isVisible()) && await pager.isVisible()) {
+    while (await pager.locator('.vast-pager-prev').isEnabled()) await pager.locator('.vast-pager-prev').click();
+    for (let i = 0; i < 20 && !(await set.isVisible()) && await pager.locator('.vast-pager-next').isEnabled(); i++) await pager.locator('.vast-pager-next').click();
+  }
+  await set.click();
+}
 async function layout(page, label) {
   const s = await page.evaluate(() => {
     const r = q => { const n = document.querySelector(q); if (!n) return null; const b = n.getBoundingClientRect(); return {top: b.top, bottom: b.bottom, height: b.height}; };
-    return {vh: window.visualViewport?.height || innerHeight, body: document.body.scrollHeight, card: r('.question-card'), links: r('.small-links'),
+    // Vast scherm: na een antwoord neemt VERDER! de plek van de hulpknoppen in.
+    const next = r('#next');
+    return {vh: window.visualViewport?.height || innerHeight, body: document.body.scrollHeight, card: r('.question-card'), links: next && next.height ? next : r('.small-links'),
       map: r('.game-board'), mode: document.querySelector('.game-grid').dataset.mode,
       options: [...document.querySelectorAll('#answerOptions .option')].map(n => n.getBoundingClientRect().bottom)};
   });
@@ -163,7 +176,7 @@ try {
       await page.locator('#privacyOk').click();
       await page.locator('[data-niveau="vwo"]').click();
       await page.locator('#tab-oefenen').click();
-      await page.locator('[data-set="v-d1-zuid-amerika"]').click();
+      await pickSet(page, 'v-d1-zuid-amerika');
       assert.match(await page.locator('#setNote').textContent(), /V-D1/);
       await page.locator('#tab-spel').click();
       await page.locator('[data-group="vormen"][data-value="missing"]').click();
@@ -173,9 +186,9 @@ try {
       const fit = await page.evaluate(() => ({body: document.body.scrollHeight, vh: innerHeight, go: document.getElementById('go').getBoundingClientRect().bottom}));
       assert.ok(fit.body <= fit.vh + 4 && fit.go <= fit.vh, 'Startpagina past niet op een telefoon');
       await page.locator('#tab-niveau').click(); await page.locator('[data-niveau="onderbouw"]').click(); await page.locator('#tab-oefenen').click();
-      await page.locator('[data-set="ob-begrippen-kaart"]').click(); await page.locator('#tab-spel').click();
+      await pickSet(page, 'ob-begrippen-kaart'); await page.locator('#tab-spel').click();
       assert.ok(await page.locator('[data-group="vormen"][data-value="point"]').isDisabled(), 'Kaartvorm hoort uit bij een begrippenset');
-      await page.locator('#tab-oefenen').click(); await page.locator('[data-set="ob3-wereld-verdieping"]').click(); await page.locator('#tab-spel').click();
+      await page.locator('#tab-oefenen').click(); await pickSet(page, 'ob3-wereld-verdieping'); await page.locator('#tab-spel').click();
       assert.ok(await page.locator('[data-group="vormen"][data-value="missing"]').isDisabled(), "'Wat mist er' hoort uit bij een set met alleen landen");
       await page.screenshot({path: `${out}/start.png`});
       console.log('TOPO VO startpagina OK');

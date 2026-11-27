@@ -43,7 +43,7 @@ const FAMILIE={stad:'plaats',hoofdstad:'plaats',grensstad:'plaats',plaats:'plaat
 const FAMNAAM={plaats:['de','plaats'],water:['het','water'],eiland:['het','eiland'],'reliëf':['het','landschap'],top:['de','berg'],gebied:['het','gebied'],werk:['het','waterwerk']};
 const C=['#ffc2b8','#ffe3a4','#c9e6ae','#f4dfbc','#c7e6e7','#ffe4bb','#d7e8ba','#ffcfc0','#e8d8e8','#f5e4bd','#d7e0ee','#d2e7bc'];
 let SET=null,K=null,kaartId=null,items=new Map(),setItems=[],facts=[],begrippen=new Map(),geo={},topoTalk={},lastSpoken={};
-let scale=1,cosL=1,W=1000,H=600,basisFeatures=[],contextFeatures=[],projCache=new Map();
+let mapOpts=null,scale=1,cosL=1,W=1000,H=600,basisFeatures=[],contextFeatures=[],projCache=new Map();
 let submitLog=[],queue=[],index=0,stars=0,helpCount=0,peekCount=0,round=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,nearMiss=false,done=false,currentMode='point',zoom=1,guessOptions=[],correctStreak=0,wrongStreak=0,wrongTapTimes=[],retryPool=null;
 const fmt=n=>Math.round(n*10)/10;
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
@@ -152,7 +152,7 @@ function baseLayers(){
  return baseCache;
 }
 function mapSvg(cls,label){
- return '<svg class="map-art '+cls+'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+fmt(W)+' '+fmt(H)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+esc(label)+'">'+baseLayers()+'<g class="dyn"></g></svg>';
+ return '<svg class="map-art '+cls+'" xmlns="http://www.w3.org/2000/svg" data-full="0 0 '+fmt(W)+' '+fmt(H)+'" viewBox="0 0 '+fmt(W)+' '+fmt(H)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+esc(label)+'">'+baseLayers()+'<g class="dyn"></g></svg>';
 }
 // ---------------------------------------------------------------- welke plekken tonen
 function current(){return queue[index]}
@@ -214,7 +214,9 @@ function viewFor(task,m){
  if(['werelddeel','oceaan','plaat'].includes(it.type))return fitBox(full,10,0,0);
  return fitBox(tb,Math.max(70,Math.max(tw,th)*.9),Math.min(W,260),Math.min(H,260));
 }
-function unitsPerPx(svg){const vb=svg.viewBox.baseVal;return vb.width/Math.max(1,svg.clientWidth||svg.getBoundingClientRect().width||400)}
+// Kaart past met 'meet' in zijn vak: de krapste richting bepaalt de schaal.
+function unitsPerPx(svg){const vb=svg.viewBox.baseVal,r=svg.getBoundingClientRect(),w=svg.clientWidth||r.width||400,h=svg.clientHeight||r.height||w;return Math.max(vb.width/Math.max(1,w),vb.height/Math.max(1,h))}
+function fitAspect(vb,el){const ratio=(el.clientWidth||1)/(el.clientHeight||1);let [x,y,w,h]=vb;if(w/h<ratio){const n=h*ratio;x-=(n-w)/2;w=n}else{const n=w/ratio;y-=(n-h)/2;h=n}return [x,y,w,h]}
 function placeLabels(svg){
  const b=svg.viewBox.baseVal,accepted=[],u=unitsPerPx(svg),margin=6*u;
  for(const el of svg.querySelectorAll('.map-text.anchor')){el.style.display='';const r=el.getBBox();if(r.x<b.x+margin||r.x+r.width>b.x+b.width-margin||r.y<b.y+margin||r.y+r.height>b.y+b.height-margin)el.style.display='none'}
@@ -269,8 +271,18 @@ function focusMap(){
  else{opts.highlight=it;if(kindOf(it)==='point')opts.dots=dotsFor(it)}
  if(done&&currentMode!=='missing'){opts.highlight=it;opts.labels=[it]}
  if(done&&currentMode==='missing'){opts.hide=null;opts.labels=pointItems(it);opts.highlight=it}
- dynLayer(svg,opts);
+ mapOpts=opts;dynLayer(svg,opts);
 }
+// Na zoomen of slepen (vast-scherm.js): stippen en namen opnieuw op schermmaat.
+let viewTimer=0;
+document.addEventListener('topo:view',e=>{
+ const svg=e.target;clearTimeout(viewTimer);
+ viewTimer=setTimeout(()=>{
+  if(!svg.isConnected)return;
+  if(svg.closest('#map')&&mapOpts)dynLayer(svg,mapOpts);
+  else if(svg.closest('#sheetMap')&&SET.kaart)dynLayer(svg,sheetOpts());
+ },70);
+});
 // ---------------------------------------------------------------- ronde samenstellen
 function canMissing(it){return kindOf(it)==='point'&&pointItems(it).length>=4}
 function distractors(it,n){
@@ -371,7 +383,6 @@ function draw(){
 }
 function feedback(t,kind){
  const f=$('feedback');
- if(currentMode==='choice'||currentMode==='zoom'){f.className='feedback hide';$('sub').textContent=t;$('sub').classList.toggle('answer-wrong',kind==='bad');return}
  f.className='feedback '+(kind||'');f.textContent=t;
 }
 function queueAgain(task){
@@ -560,14 +571,15 @@ function openSheet(){
  zoom=1;updateZoom();
  if(SET.kaart){
   const svg=$('sheetCanvas').querySelector('svg');
-  const vb=task&&task.item?viewFor(task,'point'):[0,0,W,H];
-  svg.setAttribute('viewBox',vb.map(fmt).join(' '));dynLayer(svg,{dots:setItems.filter(it=>kindOf(it)==='point'),labels:setItems});
+  const vb=fitAspect(task&&task.item?viewFor(task,'point'):[0,0,W,H],$('sheetMap'));
+  svg.setAttribute('viewBox',vb.map(fmt).join(' '));dynLayer(svg,sheetOpts());
  }
 }
 function updateZoom(){
  zoom=Math.max(1,Math.min(4,zoom));$('sheetCanvas').style.width=(zoom*100)+'%';$('zoomText').textContent=Math.round(zoom*100)+'%';
- const svg=$('sheetCanvas').querySelector('svg');if(svg&&!$('sheetLayer').classList.contains('hide'))dynLayer(svg,{dots:setItems.filter(it=>kindOf(it)==='point'),labels:setItems});
+ const svg=$('sheetCanvas').querySelector('svg');if(svg&&!$('sheetLayer').classList.contains('hide'))dynLayer(svg,sheetOpts());
 }
+function sheetOpts(){return {dots:setItems.filter(it=>kindOf(it)==='point'),labels:setItems}}
 $('showAnswer').onclick=openSheet;
 $('closeSheet').onclick=()=>{$('sheetLayer').classList.add('hide');$('showAnswer').focus()};
 $('zoomIn').onclick=()=>{zoom+=.5;updateZoom()};

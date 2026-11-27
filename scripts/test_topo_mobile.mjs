@@ -4,7 +4,8 @@ import { mkdirSync } from 'node:fs';
 const base='http://127.0.0.1:8765';
 mkdirSync('test-results/topo',{recursive:true});
 const engine=process.env.TOPO_BROWSER==='webkit'?webkit:chromium;
-const browser=await engine.launch({headless:true});
+const launch=process.env.TOPO_CHROME?{executablePath:process.env.TOPO_CHROME,args:['--no-sandbox']}:{};
+const browser=await engine.launch({headless:true,...launch});
 const failures=[];
 async function scenario(label,url,adjust){
  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -97,12 +98,13 @@ try{
     await options.nth(0).click();
     const after=await page.evaluate(()=>{
       const q=document.querySelector('.question-card').getBoundingClientRect();
-      const l=document.querySelector('.small-links').getBoundingClientRect();
+      const links=document.querySelector('.small-links').getBoundingClientRect(),next=document.getElementById('next').getBoundingClientRect();
+      const l=next.height?next:links;
       const choices=[...document.querySelectorAll('#answerOptions .option')].map(x=>x.getBoundingClientRect());
       return {questionBottom:q.bottom,linksBottom:l.bottom,optionBottom:choices.at(-1).bottom,
         minChoiceHeight:Math.min(...choices.map(x=>x.height)),viewport:window.visualViewport?.height||window.innerHeight};
     });
-    assert.ok(after.linksBottom<=after.questionBottom-3,'Help links cut off after feedback');
+    assert.ok(after.linksBottom<=after.questionBottom-3,'Help links or VERDER cut off after feedback');
     assert.ok(after.optionBottom<after.linksBottom,'Fourth answer cut off after feedback');
     assert.ok(after.minChoiceHeight>=32,'Choices too small after feedback');
     await page.screenshot({path:'test-results/topo/fixed-choice-feedback.png',fullPage:true});
@@ -133,18 +135,25 @@ try{
       card:rect('.question-card'),prompt:rect('#prompt'),feedback:rect('#feedback'),
       links:rect('.small-links'),map:rect('.game-board'),next:rect('#next'),
       cardOverflow:question.scrollHeight-question.clientHeight,
+      feedbackOverflow:document.getElementById('feedback').scrollHeight-document.getElementById('feedback').clientHeight,
       bodyHeight:document.body.scrollHeight};
     });
     console.log('TOPO NORTH '+height+' '+stage+' '+JSON.stringify(sizes));
     assert.ok(sizes.cardOverflow<=3,'North card scrolls and hides content: '+stage);
      assert.ok(sizes.prompt.bottom<=sizes.card.bottom-3,'North question text clipped: '+stage);
-    assert.ok(sizes.links.bottom<=sizes.card.bottom-3,'North help actions clipped: '+stage);
+    // Vast scherm: hulpknoppen of VERDER! staan altijd helemaal in de vraagkaart.
+    const actions=sizes.next.height?sizes.next:sizes.links;
+    assert.ok(actions.height>=44,'North actions missing: '+stage);
+    assert.ok(actions.bottom<=sizes.card.bottom-3,'North help actions clipped: '+stage);
     assert.ok(sizes.map.bottom<=sizes.viewport+3,'North map clipped: '+stage);
     assert.ok(sizes.map.height>=120,'North map collapsed: '+stage);
     assert.ok(sizes.bodyHeight<=sizes.viewport+8,'North page scrolls: '+stage);
     if(stage!=='initial'){
-     assert.ok(sizes.feedback.bottom<=sizes.links.top+3,'North feedback covered by help actions: '+stage);
-     assert.ok(sizes.feedback.bottom<=sizes.card.bottom-3,'North feedback clipped: '+stage);
+     // Feedback zweeft over de kaart: helemaal zichtbaar en nooit over de vraagkaart of de knoppen.
+     assert.ok(sizes.feedback.height>0,'North feedback missing: '+stage);
+     assert.ok(sizes.feedback.top>=sizes.map.top-1&&sizes.feedback.bottom<=sizes.map.bottom+1,'North feedback outside the map: '+stage);
+     assert.ok(sizes.feedback.bottom<=sizes.card.top+1,'North feedback covers the question: '+stage);
+     assert.ok(sizes.feedbackOverflow<=2,'North feedback clipped: '+stage);
     }
    }
    await check('initial');

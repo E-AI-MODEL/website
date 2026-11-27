@@ -10,6 +10,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import topo_vast_scherm  # noqa: E402  gedeelde vaste-schermlaag (zelfde versie als PO)
+
 REPO = Path(__file__).resolve().parents[2]
 BRON = Path(__file__).resolve().parent / "pagina"
 
@@ -30,11 +33,6 @@ SPEL_CSS = """<style id="topo-vo">
 .question-card h2.xlong{font-size:clamp(16px,1.8vw,24px)!important;line-height:1.2!important}
 .glossary{margin:0;padding:14px 16px;line-height:1.35;background:#fff;border-radius:13px}.glossary dt{font-weight:1000;margin-top:10px}.glossary dd{margin:2px 0 0;font-weight:750;color:#3d5560}
 .sheet-map:has(.glossary){background:#fff}
-@media(max-width:900px) and (orientation:portrait){
- body.playing .game-grid[data-mode="point"] .question-card{height:auto!important;min-height:clamp(147px,22%,183px);max-height:60%}
- body.playing .game-grid[data-mode="type"] .question-card,body.playing .game-grid[data-mode="missing"] .question-card{height:auto!important;min-height:clamp(180px,30%,251px);max-height:62%}
- body.playing.keyboard-open .game-grid .question-card{min-height:0!important}
-}
 </style>"""
 
 START_CSS = """<style id="topo-vo-start">
@@ -61,7 +59,7 @@ SPEL_HTML = """<!doctype html>
 <meta name="robots" content="noindex,follow">
 <title>Spelen | Let’s go TOPO! VO</title><meta name="description" content="Oefen topografie en aardrijkskunde voor havo en vwo, klas 1 tot en met 6. Geen account nodig.">
 @@STYLES@@
-@@VO_CSS@@</head><body>
+@@VO_CSS@@@@VAST@@</head><body>
 <header class="top"><a href="/topo/vo/" class="logo">Let’s go <span>TOPO!</span><b class="vo">VO</b></a><a href="/topo/vo/" class="other">Instellingen</a></header>
 <main>
 <section id="loading" class="result"><span class="sticker">TOPO! VO</span><h2>Kaart laden…</h2><p>Je oefenset komt eraan.</p></section>
@@ -87,7 +85,7 @@ START_HTML = """<!doctype html>
 <meta name="description" content="Topografie en aardrijkskunde oefenen voor havo en vwo, klas 1 tot en met 6. Kerndoelen, examenstof en de SLO-basislijst. Geen account nodig.">
 <link rel="canonical" href="https://eaimodel.nl/topo/vo/">
 @@STYLES@@
-@@VO_CSS@@</head>
+@@VO_CSS@@@@VAST@@</head>
 <body>
 <header><a class="logo" href="/topo/vo/">Let’s go <span>TOPO!</span><b class="vo">VO</b></a><div class="toplinks"><button class="plain" id="openPrivacy" type="button">Privacy</button><a class="back" href="/topo/">Basisschool</a></div></header>
 <main class="wrap">
@@ -148,7 +146,7 @@ def fill(template, **parts):
 
 
 def spel_pagina():
-    html = fill(SPEL_HTML, styles=po_styles("topo/nederland/index.html"), vo_css=SPEL_CSS,
+    html = fill(SPEL_HTML, styles=po_styles("topo/nederland/index.html"), vo_css=SPEL_CSS, vast=topo_vast_scherm.tags(),
                 js=(BRON / "spel.js").read_text(encoding="utf-8"))
     return REPO / "topo/vo/spel/index.html", html
 
@@ -158,7 +156,7 @@ def start_pagina():
     privacy = re.search(r'<div class="overlay" id="privacyLayer".*?</div></div>', home, re.S).group(0)
     privacy = privacy.replace("Let’s go, TOPO!", "Let’s go, TOPO! VO").replace("<summary>Voor ouders</summary>", "<summary>Voor ouders en docenten</summary>")
     assert "Voor ouders en docenten" in privacy
-    html = fill(START_HTML, styles=po_styles("topo/instellingen/index.html"), vo_css=START_CSS, privacy=privacy,
+    html = fill(START_HTML, styles=po_styles("topo/instellingen/index.html"), vo_css=START_CSS, vast=topo_vast_scherm.tags(), privacy=privacy,
                 js=(BRON / "start.js").read_text(encoding="utf-8"))
     return REPO / "topo/vo/index.html", html
 
