@@ -26,10 +26,37 @@ const hook = (page, fn) => page.evaluate(f => window.__topoVo[f](), fn);
 const exact = text => new RegExp('^\\s*' + text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$');
 const optionFor = (page, text) => page.locator('#answerOptions .option').filter({hasText: exact(text)}).first();
 
+// Keuzes staan op bladzijden als ze niet op één scherm passen: blader tot het element zichtbaar is.
+async function reveal(page, selector) {
+  const el = page.locator(selector).first();
+  await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+  if (await el.isVisible()) return el;
+  for (const pager of await page.locator('.panel:not([hidden]) .vast-pager').all()) {
+    if (!(await pager.isVisible())) continue;
+    while (await pager.locator('.vast-pager-prev').isEnabled()) await pager.locator('.vast-pager-prev').click();
+    for (let i = 0; i < 20 && !(await el.isVisible()) && await pager.locator('.vast-pager-next').isEnabled(); i++) await pager.locator('.vast-pager-next').click();
+    if (await el.isVisible()) return el;
+  }
+  return el;
+}
+const pick = async (page, selector) => (await reveal(page, selector)).click();
+// Sets staan op bladzijden als ze niet op één scherm passen: blader tot de set zichtbaar is.
+async function pickSet(page, id) {
+  const set = page.locator(`[data-set="${id}"]`);
+  const pager = page.locator('#sets + .vast-pager');
+  await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+  if (!(await set.isVisible()) && await pager.isVisible()) {
+    while (await pager.locator('.vast-pager-prev').isEnabled()) await pager.locator('.vast-pager-prev').click();
+    for (let i = 0; i < 20 && !(await set.isVisible()) && await pager.locator('.vast-pager-next').isEnabled(); i++) await pager.locator('.vast-pager-next').click();
+  }
+  await set.click();
+}
 async function layout(page, label) {
   const s = await page.evaluate(() => {
     const r = q => { const n = document.querySelector(q); if (!n) return null; const b = n.getBoundingClientRect(); return {top: b.top, bottom: b.bottom, height: b.height}; };
-    return {vh: window.visualViewport?.height || innerHeight, body: document.body.scrollHeight, card: r('.question-card'), links: r('.small-links'),
+    // Vast scherm: na een antwoord neemt VERDER! de plek van de hulpknoppen in.
+    const next = r('#next');
+    return {vh: window.visualViewport?.height || innerHeight, body: document.body.scrollHeight, card: r('.question-card'), links: next && next.height ? next : r('.small-links'),
       map: r('.game-board'), mode: document.querySelector('.game-grid').dataset.mode,
       options: [...document.querySelectorAll('#answerOptions .option')].map(n => n.getBoundingClientRect().bottom)};
   });
@@ -46,7 +73,10 @@ async function answerCorrect(page) {
   if (mode === 'point') {
     await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
     const p = await hook(page, 'targetScreen');
-    await page.mouse.click(p.x, p.y);
+    // Ligt de plek net onder een zoomknop, dan tikt een leerling na een veegje; de proef tikt dan direct op de kaart.
+    const free = await page.evaluate(({x, y}) => Boolean(document.elementFromPoint(x, y)?.closest('#map')), p);
+    if (free) await page.mouse.click(p.x, p.y);
+    else await page.evaluate(({x, y}) => document.querySelector('#map svg').dispatchEvent(new MouseEvent('click', {bubbles: true, clientX: x, clientY: y})), p);
   } else if (mode === 'choice' || mode === 'zoom' || mode === 'quiz') {
     await optionFor(page, answer).click();
   } else {
@@ -154,6 +184,149 @@ try {
     } finally { await page.close(); }
   }
 
+  // 4a. Extra leerstrategieën: kijkronde, zeker of gok, ruimtelijke foutfeedback, tot ik het ken, meebewegend, herhaallink.
+  {
+    const answerWith = async (page, ok) => {
+      const mode = await hook(page, 'mode'), ans = await hook(page, 'answer');
+      if (mode === 'type') { await page.locator('#typedAnswer').fill(ok ? ans : 'xqzw'); await page.locator('#typedAnswer').press('Enter'); }
+      else if (ok) await optionFor(page, ans).click();
+      else await page.locator('#answerOptions .option').filter({hasNotText: exact(ans)}).first().click();
+    };
+    // Kijkronde: eerst bekijken (geen sterren, meteen VERDER!), daarna zelf ophalen.
+    let page = await open('/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=5&kijk=1&test=1');
+    try {
+      assert.equal(await page.locator('#kind').textContent(), 'KIJKRONDE');
+      assert.match(await page.locator('#progressText').textContent(), /^KIJK 1\/5$/);
+      assert.ok(await page.locator('#next').isVisible(), 'Kijkronde: VERDER! hoort er meteen te staan');
+      // Vlak, lijn (rivier) of stip: de plek is uitgelicht.
+      await page.waitForFunction(() => document.querySelector('#map .target-area, #map .target-line, #map .city-focus'), null, {timeout: 3000}).catch(() => {});
+      assert.ok(await page.locator('#map .target-area, #map .target-line, #map .city-focus').count() > 0, 'Kijkronde: plek niet uitgelicht');
+      for (let i = 0; i < 5; i++) await page.locator('#next').click();
+      assert.notEqual(await page.locator('#kind').textContent(), 'KIJKRONDE');
+      assert.equal(await page.locator('#progressText').textContent(), '1/5');
+      await page.waitForFunction(() => /Nu jij/.test(document.getElementById('feedback').textContent), null, {timeout: 3000});
+      for (let i = 0; i < 5; i++) { await answerCorrect(page); await page.locator('#next').click(); }
+      await page.locator('#end').waitFor({state: 'visible'});
+      assert.match(await page.locator('#endText').textContent(), /^5 van 5 meteen goed/);
+    } finally { await page.close(); }
+    // Zeker of gok: eerst zekerheid kiezen, dan pas feedback; eindscherm laat zien waar je zeker fout zat.
+    page = await open('/topo/vo/spel/?set=ob2-landen-afrika&mode=choice&questions=5&zeker=1&test=1');
+    try {
+      await answerWith(page, false);
+      assert.ok(await page.locator('#sure').isVisible(), 'Zekerheidsknoppen ontbreken');
+      assert.ok(!(await page.locator('#feedback').isVisible()), 'Feedback hoort pas na de zekerheid');
+      assert.equal(await page.locator('#answerOptions .option.chosen').count(), 1);
+      await page.locator('#sure [data-sure="1"]').click();
+      assert.match(await page.locator('#feedback').textContent(), /Je was zeker, maar/);
+      await answerWith(page, true);
+      assert.ok(!(await page.locator('#sure').isVisible()), 'Tweede poging vraagt geen zekerheid');
+      await page.locator('#next').click();
+      for (let i = 0; i < 12 && await page.locator('#end').isHidden(); i++) {
+        await answerWith(page, true);
+        if (await page.locator('#sure').isVisible()) await page.locator('#sure [data-sure="0"]').click();
+        await page.locator('#next').waitFor({state: 'visible'});
+        await page.locator('#next').click();
+      }
+      await page.locator('#end').waitFor({state: 'visible'});
+      assert.match(await page.locator('#helpSummary').textContent(), /ZEKER MAAR FOUT 1/);
+      assert.match(await page.locator('#endNote').textContent(), /Zeker maar fout: /);
+      const later = await hook(page, 'later');
+      assert.match(later, /items=/, 'Herhaallink ontbreekt');
+      await page.screenshot({path: `${out}/strategie-zeker-eind.png`});
+      // Herhaallink met veel plekken (grote set, 'Alles'): niets valt weg.
+      const big = sets.find(x => x.id === 'h-c2-aarde').items.slice(0, 120);
+      const many = await open('/topo/vo/spel/?set=h-c2-aarde&mode=mix&questions=all&test=1&items=' + big.join(','));
+      try { assert.ok(await many.evaluate(() => window.__topoVo.queueLength()) > 80, 'Herhaallink kapt af na 80 plekken'); } finally { await many.close(); }
+      // Herhaallink: precies de gemiste plekken.
+      const ids = new URL(later).searchParams.get('items').split(',');
+      const again = await open(new URL(later).pathname + new URL(later).search + '&test=1');
+      try {
+        const queue = await again.evaluate(() => window.__topoVo.queueLength());
+        assert.equal(queue, ids.length, 'Herhaallink laadt niet precies de gemiste plekken');
+        assert.ok(ids.includes((await hook(again, 'task')).id), 'Herhaallink start met een andere plek');
+      } finally { await again.close(); }
+    } finally { await page.close(); }
+    // Ruimtelijke foutfeedback: afstand en richting, na de tweede misser een lijn naar de goede plek.
+    page = await open('/topo/vo/spel/?set=ob2-landen-afrika&mode=point&questions=5&test=1');
+    try {
+      await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+      const box = await page.locator('#map').boundingBox(), t = await hook(page, 'targetScreen');
+      // Buiten de spelbalk, de zoomknoppen en de melding onderaan.
+      const wx = t.x > box.x + box.width / 2 ? box.x + 30 : box.x + box.width - 70, wy = box.y + box.height * 0.42;
+      await page.mouse.click(wx, wy);
+      assert.match(await page.locator('#feedback').textContent(), /\d+ km verder naar het (noord|oost|zuid|west)/);
+      assert.equal(await page.locator('#map .tap-mark').count(), 1, 'Tikplek niet gemarkeerd');
+      await page.mouse.click(wx, wy - 4);
+      await page.locator('#next').waitFor({state: 'visible'});
+      assert.match(await page.locator('#feedback').textContent(), /Je tikte zo’n \d+ km ernaast/);
+      await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+      assert.equal(await page.locator('#map .tap-line').count(), 1, 'Lijn naar de goede plek ontbreekt');
+      await page.screenshot({path: `${out}/strategie-afstand.png`});
+    } finally { await page.close(); }
+    // Tot ik het ken: elke plek twee keer zelf goed; een overgeslagen plek komt terug tot hij ook twee keer goed is.
+    page = await open('/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=kennen&test=1');
+    try {
+      let n = 0;
+      for (; n < 60 && await page.locator('#end').isHidden(); n++) {
+        if (n === 2) { await page.locator('#skip').click(); } else await answerWith(page, true);
+        await page.locator('#next').waitFor({state: 'visible'});
+        await page.locator('#next').click();
+      }
+      assert.equal(n, 21, 'Tot ik het ken: verwacht 10 + 9 + 2 vragen (overgeslagen plek nog twee keer), kreeg ' + n);
+      assert.match(await page.locator('#endText').textContent(), /^Je kent ze alle 10!/);
+      assert.match(await page.locator('#review').textContent(), /Deze waren lastig:/);
+    } finally { await page.close(); }
+    // Meebewegend: drie keer zelf goed maakt het moeilijker (kiezen wordt typen), twee keer vastlopen geeft meer hulp.
+    page = await open('/topo/vo/spel/?set=ob1-nl-basis&mode=choice&questions=10&level=adaptief&test=1');
+    try {
+      for (let i = 0; i < 3; i++) { await answerWith(page, true); await page.locator('#next').waitFor({state: 'visible'}); if (i === 2) assert.match(await page.locator('#feedback').textContent(), /iets moeilijker/); await page.locator('#next').click(); }
+      assert.equal((await hook(page, 'state')).steun, 0);
+      assert.equal(await hook(page, 'mode'), 'type', 'Meer uitdaging: kiezen hoort typen te worden');
+      for (let i = 0; i < 2; i++) { await page.locator('#skip').click(); await page.locator('#next').click(); }
+      assert.equal((await hook(page, 'state')).steun, 1);
+      for (let i = 0; i < 2; i++) { await page.locator('#skip').click(); await page.locator('#next').click(); }
+      assert.equal((await hook(page, 'state')).steun, 2);
+      if (await hook(page, 'mode') === 'choice') assert.equal(await page.locator('#answerOptions .option').count(), 3, 'Meer hulp: drie keuzes');
+    } finally { await page.close(); }
+    // Begrippenlijst op de spiekkaart: bladeren in plaats van afsnijden, geen zoomknoppen.
+    page = await open('/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=5&test=1');
+    try {
+      await page.locator('#showAnswer').click();
+      await page.waitForTimeout(300);
+      assert.ok(!(await page.locator('#sheetMap .vast-zoom').isVisible()), 'Zoomknoppen horen niet bij een begrippenlijst');
+      const pager = page.locator('#sheetLayer .vast-sheet-foot .vast-pager');
+      assert.ok(await pager.isVisible(), 'Begrippenlijst zonder bladzijden');
+      const visibleTerms = () => page.locator('#sheetMap dt:not(.vast-pagina-weg)').allTextContents();
+      const first = await visibleTerms();
+      const total = await page.locator('#sheetMap dt').count();
+      assert.ok(first.length > 0 && first.length < total, 'Eerste bladzijde toont niet een deel van de lijst');
+      const fits = await page.evaluate(() => { const m = document.getElementById('sheetMap'), dl = m.querySelector('.glossary'); return dl.getBoundingClientRect().bottom <= m.getBoundingClientRect().bottom + 1; });
+      assert.ok(fits, 'Begrippen vallen buiten de spiekkaart');
+      const seen = new Set(first);
+      for (let i = 0; i < 40 && await pager.locator('.vast-pager-next').isEnabled(); i++) { await pager.locator('.vast-pager-next').click(); (await visibleTerms()).forEach(t => seen.add(t)); }
+      assert.equal(seen.size, total, 'Niet elk begrip is bereikbaar');
+      // Draaien naar liggend: de bladzijden worden opnieuw verdeeld en passen weer.
+      await page.setViewportSize({width: 844, height: 390});
+      await page.waitForTimeout(400);
+      const fitsLandscape = await page.evaluate(() => { const m = document.getElementById('sheetMap'), dl = m.querySelector('.glossary'); return dl.getBoundingClientRect().bottom <= m.getBoundingClientRect().bottom + 1; });
+      assert.ok(fitsLandscape, 'Begrippen vallen na draaien buiten de spiekkaart');
+      await page.setViewportSize({width: 390, height: 844});
+      await page.locator('#closeSheet').click();
+    } finally { await page.close(); }
+    // Kijkronde of meebewegen gevraagd bij een set zonder kaart: eerlijk melden in plaats van stil negeren.
+    page = await open('/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=5&kijk=1&test=1');
+    try {
+      assert.match(await page.locator('#feedback').textContent(), /Eerst kijken kan alleen bij vragen op de kaart/);
+    } finally { await page.close(); }
+    page = await open('/topo/vo/spel/?set=h-begrippen-aarde&mode=quiz&questions=10&level=adaptief&test=1');
+    try {
+      assert.match(await page.locator('#feedback').textContent(), /Meebewegend kan alleen bij vragen op de kaart/);
+      for (let i = 0; i < 4; i++) { await answerWith(page, true); await page.locator('#next').waitFor({state: 'visible'}); assert.doesNotMatch(await page.locator('#feedback').textContent(), /moeilijker|meer hulp/); await page.locator('#next').click(); }
+      assert.equal((await hook(page, 'state')).steun, 1, 'Zonder kaartvragen hoort de steun niet te veranderen');
+    } finally { await page.close(); }
+    console.log('TOPO VO extra leerstrategieën OK');
+  }
+
   // 4. Startpagina: niveau, set en vraagvorm leiden naar de juiste spellink.
   {
     const page = await browser.newPage(phone);
@@ -163,20 +336,49 @@ try {
       await page.locator('#privacyOk').click();
       await page.locator('[data-niveau="vwo"]').click();
       await page.locator('#tab-oefenen').click();
-      await page.locator('[data-set="v-d1-zuid-amerika"]').click();
+      await pickSet(page, 'v-d1-zuid-amerika');
       assert.match(await page.locator('#setNote').textContent(), /V-D1/);
       await page.locator('#tab-spel').click();
-      await page.locator('[data-group="vormen"][data-value="missing"]').click();
-      await page.locator('[data-group="aantal"][data-value="5"]').click();
+      await pick(page, '[data-group="vormen"][data-value="missing"]');
+      await pick(page, '[data-group="aantal"][data-value="5"]');
       const href = await page.getAttribute('#go', 'href');
       assert.equal(href, '/topo/vo/spel/?set=v-d1-zuid-amerika&mode=missing&questions=5');
+      // Leerstrategieën komen in de spellink (en dus ook in de link voor de klas).
+      await pick(page, '[data-group="aantal"][data-value="kennen"]');
+      await pick(page, '[data-group="manier"][data-value="adaptief"]');
+      await pick(page, '[data-group="slim"][data-value="kijk"]');
+      await pick(page, '[data-group="slim"][data-value="zeker"]');
+      assert.equal(await page.getAttribute('#go', 'href'), '/topo/vo/spel/?set=v-d1-zuid-amerika&mode=missing&questions=kennen&level=adaptief&kijk=1&zeker=1');
+      assert.match(await page.locator('#summary').textContent(), /tot je het kent · meebewegend · eerst kijken · zeker of gok/);
+      await pick(page, '[data-group="aantal"][data-value="5"]'); await pick(page, '[data-group="manier"][data-value="normal"]');
+      await pick(page, '[data-group="slim"][data-value="kijk"]'); await pick(page, '[data-group="slim"][data-value="zeker"]');
+      assert.equal(await page.getAttribute('#go', 'href'), '/topo/vo/spel/?set=v-d1-zuid-amerika&mode=missing&questions=5');
       const fit = await page.evaluate(() => ({body: document.body.scrollHeight, vh: innerHeight, go: document.getElementById('go').getBoundingClientRect().bottom}));
       assert.ok(fit.body <= fit.vh + 4 && fit.go <= fit.vh, 'Startpagina past niet op een telefoon');
+      // Na bladeren en een ander niveau: de nieuw gekozen set staat in beeld (niet verstopt op een oude bladzijde).
+      {
+        const small = await browser.newPage(phone);
+        try {
+          // havo (12 sets) en vwo (11 sets) geven hier evenveel bladzijden: precies het geval waarin een oude bladzijde bleef staan.
+          await small.goto(base + '/topo/vo/?niveau=havo');
+          await small.locator('#privacyOk').click();
+          await small.locator('#tab-oefenen').click();
+          const pager = small.locator('#sets + .vast-pager');
+          await small.waitForTimeout(200);
+          assert.ok(await pager.isVisible(), 'Verwacht bladzijden bij havo op een klein scherm');
+          while (await pager.locator('.vast-pager-next').isEnabled()) await pager.locator('.vast-pager-next').click();
+          await small.locator('#tab-niveau').click(); await small.locator('[data-niveau="vwo"]').click(); await small.locator('#tab-oefenen').click();
+          await small.waitForTimeout(200);
+          assert.ok(await small.locator('#sets [aria-pressed="true"]').isVisible(), 'Gekozen set staat na een ander niveau niet in beeld');
+        } finally { await small.close(); }
+      }
       await page.locator('#tab-niveau').click(); await page.locator('[data-niveau="onderbouw"]').click(); await page.locator('#tab-oefenen').click();
-      await page.locator('[data-set="ob-begrippen-kaart"]').click(); await page.locator('#tab-spel').click();
-      assert.ok(await page.locator('[data-group="vormen"][data-value="point"]').isDisabled(), 'Kaartvorm hoort uit bij een begrippenset');
-      await page.locator('#tab-oefenen').click(); await page.locator('[data-set="ob3-wereld-verdieping"]').click(); await page.locator('#tab-spel').click();
-      assert.ok(await page.locator('[data-group="vormen"][data-value="missing"]').isDisabled(), "'Wat mist er' hoort uit bij een set met alleen landen");
+      await pickSet(page, 'ob-begrippen-kaart'); await page.locator('#tab-spel').click();
+      assert.ok(await (await reveal(page, '[data-group="vormen"][data-value="point"]')).isDisabled(), 'Kaartvorm hoort uit bij een begrippenset');
+      assert.ok(await (await reveal(page, '[data-group="slim"][data-value="kijk"]')).isDisabled(), 'Eerst kijken hoort uit bij een set zonder kaart');
+      assert.ok(await (await reveal(page, '[data-group="manier"][data-value="adaptief"]')).isDisabled(), 'Meebewegend hoort uit bij een set zonder kaart');
+      await page.locator('#tab-oefenen').click(); await pickSet(page, 'ob3-wereld-verdieping'); await page.locator('#tab-spel').click();
+      assert.ok(await (await reveal(page, '[data-group="vormen"][data-value="missing"]')).isDisabled(), "'Wat mist er' hoort uit bij een set met alleen landen");
       await page.screenshot({path: `${out}/start.png`});
       console.log('TOPO VO startpagina OK');
     } finally { await page.close(); }

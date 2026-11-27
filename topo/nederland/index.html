@@ -190,7 +190,7 @@ body.playing .game-grid.shuffle-no-map .question-card{flex:0 1 auto;width:min(71
 .map-art.detail-close .pdok-water{opacity:.81}
 .map-art.detail-close .pdok-routes{opacity:.25}
 @media(prefers-reduced-data:reduce){.map-art .pdok-detail{display:none}}
-</style><style id="choice-inline-feedback">body.playing .game-grid[data-mode="choice"] .question-card #sub,body.playing .game-grid[data-mode="zoom"] .question-card #sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:19px;flex:0 0 19px;margin-bottom:7px}body.playing #sub.answer-wrong{color:#a73e37}</style></head><body>
+</style><style id="choice-inline-feedback">body.playing .game-grid[data-mode="choice"] .question-card #sub,body.playing .game-grid[data-mode="zoom"] .question-card #sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:19px;flex:0 0 19px;margin-bottom:7px}body.playing #sub.answer-wrong{color:#a73e37}</style><link rel="stylesheet" href="/topo/vast-scherm.css?v=bf87f47ccc"><script src="/topo/vast-scherm.js?v=92b4740bce" defer></script></head><body>
 <header class="top"><a href="/topo/" class="logo">Let’s go <span>TOPO!</span></a><a href="/topo/instellingen/" class="other">Instellingen</a></header>
 <main>
 <section id="loading" class="result"><span class="sticker">HEEL NEDERLAND</span><h2>Kaart laden…</h2><p>De twaalf provincies komen eraan.</p></section>
@@ -355,7 +355,7 @@ function countryMap(showNames,focused){
   const [x,y]=proj(lon,lat);
   return '<text class="map-text water" x="'+fmt(x)+'" y="'+fmt(y)+'" text-anchor="middle" transform="rotate('+rotate+' '+fmt(x)+' '+fmt(y)+')">'+label+'</text>';
  }).join('');
- return '<svg class="map-art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 850" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kaart van de provincies van Nederland">'+
+ return '<svg class="map-art" xmlns="http://www.w3.org/2000/svg" data-full="0 0 1020 850" viewBox="0 0 1020 850" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kaart van de provincies van Nederland">'+
  '<defs><pattern id="topo-grid" width="79" height="79" patternUnits="userSpaceOnUse"><path d="M79 0H0V79" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="1"/></pattern></defs>'+
  '<rect x="-1000" y="-1000" width="3000" height="3000" fill="#cbe9f4"/>'+
  '<rect x="-1000" y="-1000" width="3000" height="3000" fill="url(#topo-grid)"/>'+
@@ -516,13 +516,6 @@ function draw(){
 }
 function feedback(t,kind){
  const f=$('feedback');
- if(currentMode==='choice'||currentMode==='zoom'){
-  // Feedback replaces existing helper text. It may not shrink four answers.
-  f.className='feedback hide';
-  $('sub').textContent=t;
-  $('sub').classList.toggle('answer-wrong',kind==='bad');
-  return;
- }
  f.className='feedback '+(kind||'');
  f.textContent=t;
 }
@@ -634,7 +627,7 @@ $('again').onclick=start;
 function openSheet(){
  if(!$('game').classList.contains('hide')&&!done){peekCount++;assisted.add(current().id);wrong.add(current().id);queueAgain(current());}
  $('sheetCanvas').innerHTML=countryMap(true,'sheet');$('sheetLayer').classList.remove('hide');
- $('sheetLayer .modal p').textContent=voice('spieken_hints')||'Kijk goed. Probeer het daarna zelf!';
+ document.querySelector('#sheetLayer .modal p').textContent=voice('spieken_hints')||'Kijk goed. Probeer het daarna zelf!';
  zoom=1;updateZoom();
 }
 function updateZoom(){zoom=Math.max(1,Math.min(4,zoom));$('sheetCanvas').style.width=(zoom*100)+'%';$('zoomText').textContent=Math.round(zoom*100)+'%';}

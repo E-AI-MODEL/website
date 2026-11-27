@@ -12,7 +12,7 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.56.1-noble
       options: --shm-size=1g
-    timeout-minutes: 12
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -33,6 +33,10 @@ jobs:
           node --check scripts/topo_vo/pagina/start.js
           node scripts/validate_topo_vo_data.mjs
           python3 scripts/topo_vo/maak_paginas.py --check
+      - name: Check the shared fixed-screen layer on all TOPO pages
+        run: |
+          node --check topo/vast-scherm.js
+          python3 scripts/topo_vast_scherm.py --check
       - name: Use the pinned browser runtime
         uses: ./.github/actions/browser-runtime
         with:
@@ -61,6 +65,7 @@ jobs:
           PY
           node scripts/test_topo_mobile.mjs
           node scripts/test_topo_vo.mjs
+          node scripts/test_topo_fixed_screen.mjs
         env:
           TOPO_BROWSER: ${{ matrix.browser }}
       - uses: actions/upload-artifact@v4
@@ -70,3 +75,4 @@ jobs:
           path: |
             test-results/topo/
             test-results/topo-vo/
+            test-results/topo-fixed/

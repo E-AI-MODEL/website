@@ -1,0 +1,299 @@
+/* Let's go TOPO! — vast scherm (PO en VO).
+   Eén laag over alle spelpagina's: het spel past altijd op één scherm, zonder scrollen.
+   Staand: kaart boven, vraag onder. Liggend en groot scherm: kaart links, vraag rechts.
+   Deze laag laadt als laatste en wint daarom bewust met #game en !important. */
+
+:root{--vast-h:100dvh;--vast-pad:6px;--vast-gap:6px;--vast-hud:44px}
+
+/* ------------------------------------------------------------------ speelveld */
+body.playing{height:100%!important;overflow:hidden!important;overscroll-behavior:none}
+html:has(body.playing){height:100%!important;overflow:hidden!important;overscroll-behavior:none}
+body.playing .top,body.playing .foot,body.playing .credits{display:none!important}
+body.playing main{width:100%!important;max-width:none!important;height:var(--vast-h)!important;max-height:var(--vast-h)!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;display:block!important}
+body.playing #game:not(.hide){
+ position:relative;height:var(--vast-h)!important;max-height:var(--vast-h)!important;width:100%!important;max-width:none!important;overflow:hidden!important;
+ display:grid!important;gap:var(--vast-gap)!important;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;
+ padding:calc(env(safe-area-inset-top,0px) + var(--vast-pad)) calc(env(safe-area-inset-right,0px) + var(--vast-pad)) calc(env(safe-area-inset-bottom,0px) + var(--vast-pad)) calc(env(safe-area-inset-left,0px) + var(--vast-pad))!important
+}
+body.playing #game .game-grid{display:contents!important}
+
+/* Kopregel als spelbalk over de kaart. */
+body.playing #game .game-top{grid-area:1/1;align-self:start;z-index:6;display:flex!important;align-items:center;gap:6px;min-height:var(--vast-hud)!important;height:var(--vast-hud);margin:6px 6px 0!important;pointer-events:none}
+body.playing #game .game-top>*{pointer-events:auto}
+/* alleen Terug is een knop; voortgang, score, hint en melding laten tikken door naar de kaart */
+body.playing #game .game-top .progress-box,body.playing #game .game-top .level,body.playing #game .hint-chip,body.playing #game .game-board>.feedback{pointer-events:none!important}
+body.playing #game .back{display:inline-flex;align-items:center;min-height:var(--vast-hud);height:var(--vast-hud);padding:0 12px!important;font-size:13px!important;border-width:2px!important;border-radius:13px!important;background:#fff;box-shadow:0 3px 0 var(--ink)!important;white-space:nowrap}
+body.playing #game .progress-box{flex:1 1 auto;min-width:0;max-width:none!important;margin:0!important;height:var(--vast-hud);display:flex;flex-direction:column;justify-content:center;background:#fffffff0;border:2px solid var(--ink);border-radius:13px;padding:4px 9px;box-shadow:0 3px 0 var(--ink)}
+body.playing #game .progress-label{font-size:10px!important;line-height:1.15;margin:0 0 4px!important;gap:6px;min-width:0}
+body.playing #game .progress-label span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.playing #game .progress-label span:last-child{flex:none}
+body.playing #game .bar{height:10px!important;border-width:2px}
+body.playing #game .level{display:inline-flex!important;align-items:center;min-height:var(--vast-hud);height:var(--vast-hud);padding:0 11px!important;font-size:14px!important;border-width:2px!important;border-radius:13px!important;box-shadow:0 3px 0 var(--ink);white-space:nowrap}
+
+/* Kaart: het grootste vlak. */
+body.playing #game .game-board{grid-area:1/1;position:relative;display:flex!important;height:auto!important;min-height:0!important;max-height:none!important;padding:0!important;margin:0!important;border-width:2px!important;border-radius:20px!important;box-shadow:3px 4px 0 var(--ink)!important;overflow:hidden!important;background:#cbe9f4}
+body.playing #game .game-board .map-frame{flex:1 1 auto;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;border-radius:18px!important;overflow:hidden!important;aspect-ratio:auto!important;touch-action:none}
+body.playing #game .game-board .map-frame svg{width:100%!important;height:100%!important;touch-action:none}
+body.playing #game .hint-chip{top:calc(var(--vast-hud) + 14px)!important;left:10px!important;bottom:auto!important;font-size:11px!important;padding:5px 9px!important;z-index:4;max-width:calc(100% - 80px)}
+
+/* Feedback zweeft onderaan over de kaart (het script zet hem daar). */
+body.playing #game .game-board>.feedback{position:absolute;left:8px;right:8px;bottom:8px;z-index:5;margin:0!important;max-height:46%;overflow:hidden;padding:8px 12px!important;font-size:15px;line-height:1.25!important;border-width:2px;border-radius:14px;box-shadow:3px 4px 0 var(--ink);transform:rotate(-.6deg)}
+
+/* Zoomknoppen op elke kaart. */
+.vast-zoom{position:absolute;right:8px;top:calc(var(--vast-hud) + 14px);z-index:4;display:flex;flex-direction:column;gap:6px}
+.vast-zoom button{width:44px;height:44px;padding:0;border:2px solid var(--ink);border-radius:13px;background:#fffffff2;box-shadow:0 3px 0 var(--ink);font:inherit;font-size:24px;font-weight:1000;line-height:1;color:var(--ink);display:grid;place-items:center;touch-action:manipulation}
+.vast-zoom button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.vast-zoom button[disabled]{opacity:.45}
+.vast-zoom .vast-zoom-home{font-size:15px;background:var(--lime)}
+.vast-zoom .vast-zoom-home[hidden]{display:none}
+.vast-zoom[hidden]{display:none!important}
+
+/* Vraagkaart: compact onder de kaart. */
+body.playing #game .question-card{grid-area:2/1;position:relative;z-index:3;display:flex!important;flex-direction:column;gap:6px;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;padding:15px 12px 10px!important;margin:0!important;border-width:2px!important;border-radius:20px!important;box-shadow:3px 4px 0 var(--ink)!important;transform:none!important;width:auto!important}
+body.playing #game .question-card .q-label{position:absolute;top:-12px;left:14px;margin:0!important;font-size:11px!important;padding:3px 8px!important;line-height:1.2;z-index:2;box-shadow:2px 2px 0 var(--ink)}
+body.playing #game .question-card h2{font-size:24px!important;line-height:1.08!important;margin:0!important;letter-spacing:-.045em;overflow:hidden;overflow-wrap:anywhere;flex:none!important}
+body.playing #game .question-card #sub{display:block!important;font-size:13px!important;line-height:1.2!important;margin:0!important;height:auto!important;flex:none!important;white-space:normal!important;overflow:hidden;color:#49616a}
+body.playing #game #answerOptions{display:block;min-height:0!important;max-height:none!important;overflow:visible!important;flex:none!important}
+body.playing #game #answerOptions:empty{display:none}
+body.playing #game #answerOptions:has(.option){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:none!important;grid-auto-rows:minmax(48px,auto)!important;gap:6px!important}
+body.playing #game[data-vorm="choice"] #answerOptions,body.playing #game[data-vorm="nomap"] #answerOptions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:none!important;grid-auto-rows:minmax(48px,auto)!important;gap:6px!important}
+body.playing #game #answerOptions .option{display:flex!important;align-items:center;justify-content:center;width:auto!important;height:auto!important;min-height:48px!important;margin:0!important;padding:5px 8px!important;font-size:16px;line-height:1.12!important;text-align:center;white-space:normal!important;overflow:hidden!important;text-overflow:clip!important;overflow-wrap:anywhere;border-radius:13px!important;box-shadow:0 3px 0 var(--ink)!important;vertical-align:top}
+body.playing #game #typeForm{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:6px!important;align-items:stretch!important;margin:0}
+body.playing #game #typeForm .type-label{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap}
+body.playing #game .typed{min-height:48px!important;height:48px;margin:0!important;padding:8px 11px!important;font-size:17px!important;border-width:2px!important}
+body.playing #game .type-submit{min-height:48px!important;margin:0!important;padding:0 14px!important;font-size:16px!important;width:auto!important;white-space:nowrap}
+body.playing #game .question-card .next{min-height:48px!important;margin:0!important;padding:8px!important;font-size:18px!important;border-radius:15px!important;flex:none}
+body.playing #game .question-card .small-links{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px!important;margin:0!important;padding:0!important;flex:none!important}
+body.playing #game .question-card .small-links button{display:flex!important;align-items:center;justify-content:center;min-height:44px!important;padding:2px 4px!important;margin:0!important;font-size:12px!important;line-height:1.1;text-align:center;white-space:normal!important;border:2px solid #385b6655!important;border-radius:12px!important;background:#f7f4e6!important;text-decoration:none!important;color:#28444e!important}
+body.playing #game .question-card .next:not(.hide)~.small-links{display:none!important}
+body.playing #game .question-card .feedback{margin:0!important;max-height:none!important;overflow:visible!important;font-size:15px!important;padding:8px 11px!important}
+
+/* Vraag zonder kaart (TOPO SHUFFLE-feiten, begrippen). */
+body.playing #game[data-vorm="nomap"]{grid-template-rows:auto minmax(0,1fr)!important}
+body.playing #game[data-vorm="nomap"] .game-top{grid-area:1/1;margin:0!important}
+body.playing #game .game-grid.shuffle-no-map .game-board{display:none!important}
+body.playing #game[data-vorm="nomap"] .question-card{grid-area:2/1!important;align-self:center;width:min(720px,100%)!important;justify-self:center;max-height:100%!important;padding:22px 16px 14px!important;gap:10px;transform:rotate(-.5deg)!important}
+body.playing #game[data-vorm="nomap"] .question-card h2{font-size:26px!important}
+body.playing #game[data-vorm="nomap"] #answerOptions:has(.option){grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(50px,auto)!important}
+body.playing #game[data-vorm="nomap"] #answerOptions{grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(50px,auto)!important}
+body.playing #game[data-vorm="nomap"] #answerOptions .option{justify-content:flex-start;text-align:left;font-size:17px}
+
+/* Toetsenbord open (typen): alleen vraag, invoer en zo veel mogelijk kaart. */
+body.playing.keyboard-open #game .game-top,body.playing.keyboard-open #game .q-label,body.playing.keyboard-open #game #sub,body.playing.keyboard-open #game .small-links,body.playing.keyboard-open #game .vast-zoom,body.playing.keyboard-open #game .hint-chip{display:none!important}
+body.playing.keyboard-open #game .question-card{padding:8px 10px!important;gap:5px}
+body.playing.keyboard-open #game .question-card h2{font-size:19px!important}
+body.playing.keyboard-open #game .game-board>.feedback{font-size:13px;padding:5px 9px!important}
+
+/* Liggend en groot scherm: kaart links over de volle hoogte, spelbalk en vraag rechts. */
+@media (min-aspect-ratio:9/10){
+ body.playing #game:not(.hide){grid-template-columns:minmax(0,1fr) clamp(250px,36vw,440px);grid-template-rows:auto minmax(0,1fr)}
+ body.playing #game .game-board{grid-area:1/1/3/2}
+ body.playing #game .game-top{grid-area:1/2;margin:0!important}
+ body.playing #game .question-card{grid-area:2/2;align-self:stretch;justify-content:flex-start;padding-top:16px!important}
+ body.playing #game .question-card .small-links,body.playing #game .question-card .next{margin-top:auto!important}
+ body.playing #game .hint-chip{top:10px!important}
+ .vast-zoom{top:10px}
+ body.playing #game[data-vorm="nomap"]{grid-template-columns:minmax(0,1fr)!important}
+ body.playing #game[data-vorm="nomap"] .game-top{grid-area:1/1!important;width:min(720px,100%);justify-self:center}
+ body.playing #game[data-vorm="nomap"] .question-card{width:min(860px,100%)!important}
+ body.playing #game[data-vorm="nomap"] #answerOptions:has(.option){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.playing #game[data-vorm="nomap"] #answerOptions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.playing #game .question-card{margin-top:7px!important}
+}
+@media (min-aspect-ratio:9/10) and (min-height:620px){
+ body.playing #game .question-card{gap:10px;padding:20px 16px 14px!important}
+ body.playing #game .question-card h2{font-size:30px!important}
+ body.playing #game .question-card #sub{font-size:15px!important}
+ body.playing #game #answerOptions:has(.option){grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(54px,auto)!important;gap:8px!important}
+ body.playing #game[data-vorm="choice"] #answerOptions,body.playing #game[data-vorm="nomap"] #answerOptions{grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:minmax(54px,auto)!important;gap:8px!important}
+ body.playing #game #answerOptions .option{justify-content:flex-start;text-align:left;font-size:18px;padding:8px 14px!important}
+ body.playing #game .game-board>.feedback{font-size:17px;left:12px;right:auto;max-width:min(560px,calc(100% - 24px));bottom:12px}
+}
+@media (min-width:1000px){:root{--vast-pad:12px;--vast-gap:12px}}
+@media (max-height:420px) and (min-aspect-ratio:9/10){
+ body.playing #game[data-vorm="nomap"] .question-card{padding:14px 12px 8px!important;gap:6px}
+ body.playing #game[data-vorm="nomap"] .question-card h2{font-size:21px!important}
+ body.playing #game[data-vorm="nomap"] #answerOptions:has(.option){grid-auto-rows:minmax(44px,auto)!important}
+ body.playing #game[data-vorm="nomap"] #answerOptions{grid-auto-rows:minmax(44px,auto)!important}
+ :root{--vast-hud:40px}
+ body.playing #game .question-card{padding:13px 10px 8px!important;gap:5px}
+ body.playing #game .question-card h2{font-size:20px!important}
+ body.playing #game .question-card #sub{font-size:12px!important}
+ body.playing #game #answerOptions:has(.option){grid-auto-rows:minmax(44px,auto)!important}
+ body.playing #game[data-vorm="choice"] #answerOptions{grid-auto-rows:minmax(44px,auto)!important}
+ body.playing #game #answerOptions .option{min-height:44px!important;font-size:15px}
+}
+
+/* ------------------------------------------------------------------ spiekkaart: schermvullend */
+#sheetLayer:not(.hide){padding:0!important;align-items:stretch!important;justify-content:stretch!important}
+#sheetLayer .modal{width:100%!important;max-width:none!important;height:var(--vast-h)!important;max-height:var(--vast-h)!important;margin:0!important;border-radius:0!important;border-width:0!important;box-shadow:none!important;overflow:hidden!important;display:flex!important;flex-direction:column;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px)!important;transform:none!important}
+#sheetLayer .modal>.sticker,#sheetLayer .modal>.mini-label{align-self:flex-start;margin:0!important;font-size:11px!important;padding:4px 9px!important}
+#sheetLayer .modal h2{font-size:24px!important;line-height:1.05!important;margin:0 56px 0 0!important}
+#sheetLayer .close{width:44px!important;height:44px!important;top:calc(env(safe-area-inset-top,0px) + 10px)!important;right:10px!important;z-index:6;font-size:24px!important;display:grid;place-items:center;padding:0}
+#sheetLayer .sheet-tools,#sheetLayer .sheet-zoom-tools,#sheetLayer .sheet-zoom-note{display:none!important}
+#sheetLayer .sheet-map{position:relative;flex:1 1 auto;min-height:0!important;max-height:none!important;height:auto!important;overflow:hidden!important;touch-action:none!important;border:2px solid var(--ink);border-radius:16px;background:#cbe9f4;margin:0!important}
+#sheetLayer .sheet-canvas,#sheetLayer .sheet-map-canvas{width:100%!important;height:100%!important;min-width:0!important;line-height:0}
+#sheetLayer .sheet-canvas>svg,#sheetLayer .sheet-map-canvas>svg{width:100%!important;height:100%!important;display:block;touch-action:none}
+#sheetLayer .sheet-map .vast-zoom{top:8px;right:8px}
+#sheetLayer .modal>p,#sheetLayer #sheetNote{margin:0!important;font-size:14px!important;line-height:1.25;flex:none}
+#sheetLayer .sheet-canvas:has(.glossary){overflow:hidden;line-height:1.3}
+#sheetLayer .sheet-map:has(.glossary){background:#fff;touch-action:auto!important}
+.vast-sheet-foot{display:flex;align-items:center;gap:8px;flex:none;min-height:44px}
+#sheetLayer .vast-sheet-foot>p{flex:1 1 0!important;min-width:0;margin:0!important}
+.vast-sheet-foot .vast-pager{margin:0;flex:none}
+.vast-sheet-foot button{min-height:44px;padding:0 14px;border:2px solid var(--ink);border-radius:13px;background:#fff;box-shadow:0 3px 0 var(--ink);font:inherit;font-weight:1000;font-size:14px;color:var(--ink);white-space:nowrap}
+#sheetLayer .answer-tags{display:none!important}
+#sheetLayer .modal.vast-lijst .sheet-map{display:none!important}
+#sheetLayer .modal.vast-lijst .answer-tags{display:flex!important;flex:1 1 auto;min-height:0;overflow:hidden;align-content:flex-start;margin:0!important}
+#sheetLayer #printSheet{min-height:44px}
+@media (max-width:700px){#sheetLayer #printSheet{display:none!important}}
+@media (min-width:760px) and (min-height:560px){
+ #sheetLayer:not(.hide){padding:18px!important;align-items:center!important;justify-content:center!important}
+ #sheetLayer .modal{width:min(1180px,100%)!important;height:min(calc(var(--vast-h) - 36px),940px)!important;border-width:3px!important;border-radius:25px!important;box-shadow:8px 9px 0 var(--ink)!important;padding:18px!important;gap:10px}
+ #sheetLayer .modal h2{font-size:34px!important}
+ #sheetLayer .close{top:16px!important;right:16px!important}
+}
+
+/* ------------------------------------------------------------------ eindscherm en laden: één scherm */
+body.vast-eind{height:100%;overflow:hidden!important}
+html:has(body.vast-eind){height:100%;overflow:hidden!important}
+body.vast-eind{display:flex;flex-direction:column;height:var(--vast-h)!important;min-height:0!important}
+body.vast-eind .top{width:100%!important;max-width:1540px;margin:0 auto!important;align-self:center;flex:none;padding-top:calc(env(safe-area-inset-top,0px) + 10px)!important;padding-bottom:6px!important}
+body.vast-eind main{flex:1 1 auto;min-height:0!important;height:auto!important;display:flex!important;flex-direction:column;justify-content:center;padding:6px 12px 10px!important;overflow:hidden!important;width:100%!important}
+body.vast-eind .foot,body.vast-eind .credits{flex:none;margin:0!important;padding:4px 10px calc(env(safe-area-inset-bottom,0px) + 6px)!important;font-size:11px!important}
+body.vast-eind #end:not(.hide){display:flex!important;flex-direction:column;align-items:center;justify-content:center;min-height:0;max-height:100%;overflow:hidden!important;margin:0 auto!important;width:min(760px,100%)!important;padding:18px 14px 16px!important}
+body.vast-eind #end .result>*,body.vast-eind #end.result>*{flex:none!important}
+body.vast-eind #end .result{margin:0!important;max-height:100%;overflow:hidden!important;width:100%;padding:18px 14px!important;display:flex;flex-direction:column;align-items:center}
+body.vast-eind #end h2{font-size:clamp(34px,10vw,72px)!important;margin:10px 0 6px!important}
+body.vast-eind #end p{margin:4px 0!important;font-size:17px!important}
+body.vast-eind #end .star{font-size:34px!important;margin:0!important}
+body.vast-eind #end .help-summary,body.vast-eind #end .scores{margin:8px auto 0!important;gap:8px!important}
+body.vast-eind #end .help-summary span,body.vast-eind #end .scores span{min-height:40px!important;padding:7px 12px!important;font-size:13px!important}
+body.vast-eind #end .review{margin:10px auto 0!important;gap:6px!important;max-width:100%;overflow:hidden}
+body.vast-eind #end .review span,body.vast-eind #end .review strong{font-size:14px}
+body.vast-eind #end .actions{margin-top:12px!important;gap:10px!important;flex-wrap:wrap}
+body.vast-eind #end .actions .big{min-height:52px;padding:10px 18px!important;font-size:19px!important}
+body.vast-eind #end .actions .quiet{min-height:44px;display:inline-flex;align-items:center}
+body.vast-eind #end .review .vast-meer{background:var(--lime)}
+body.vast-eind #end .vast-weg{display:none!important}
+body.vast-eind #end .review.vast-klein{gap:4px!important}
+body.vast-eind #end .review.vast-klein span{font-size:12px!important;padding:3px 9px!important}
+@media (max-height:560px){
+ body.vast-eind .foot,body.vast-eind .credits{display:none!important}
+ body.vast-eind #end .star,body.vast-eind #end .help-summary small{display:none!important}
+ body.vast-eind #end h2{font-size:clamp(30px,6vw,44px)!important;margin:6px 0 2px!important}
+ body.vast-eind #end:not(.hide){padding:8px 12px!important}
+ body.vast-eind #end .result{padding:12px 14px!important}
+ body.vast-eind .top{height:auto!important;min-height:0!important;padding-top:calc(env(safe-area-inset-top,0px) + 6px)!important;padding-bottom:2px!important}
+ body.vast-eind main{padding:2px 12px 6px!important}
+}
+
+/* ------------------------------------------------------------------ kopregel past op smalle telefoons */
+@media (max-width:400px){
+ .toplinks{gap:4px!important}
+ .toplinks .plain{padding:6px!important;font-size:10px!important}
+ .top{padding-left:10px!important;padding-right:10px!important;gap:6px!important}
+ .top .logo{font-size:18px!important}
+}
+
+/* ------------------------------------------------------------------ instellingen en VO-start: één scherm, geen scrollvlak */
+body.vast-instellingen{height:var(--vast-h)!important;max-height:var(--vast-h)!important;overflow:hidden!important}
+html:has(body.vast-instellingen){height:var(--vast-h)!important;max-height:var(--vast-h)!important;overflow:hidden!important}
+body.vast-instellingen{display:flex!important;flex-direction:column;min-height:0}
+body.vast-instellingen>header{flex:none;padding-top:calc(env(safe-area-inset-top,0px) + 10px)!important;padding-bottom:8px!important}
+body.vast-instellingen .wrap{flex:1 1 0!important;min-height:0!important;display:flex!important;flex-direction:column;overflow:hidden!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px)!important}
+body.vast-instellingen .board{flex:1 1 0!important;min-height:0!important;display:flex!important;flex-direction:column;overflow:hidden!important}
+body.vast-instellingen .layout{flex:1 1 0!important;min-height:0!important;overflow:hidden!important;grid-template-rows:minmax(0,1fr)}
+body.vast-instellingen .layout>div:last-child{min-height:0!important;overflow:hidden!important;display:flex;flex-direction:column}
+body.vast-instellingen .panel{min-height:0!important;flex:1 1 auto;display:flex;flex-direction:column;overflow:hidden}
+body.vast-instellingen .panel[hidden]{display:none!important}
+body.vast-instellingen .bottom{flex:none!important}
+body.vast-instellingen .pill{min-height:44px!important;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+body.vast-instellingen .tab{min-height:44px!important}
+body.vast-instellingen .zone{min-height:44px!important}
+body.vast-instellingen .go,body.vast-instellingen .copy{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
+body.vast-instellingen .back{min-height:44px;display:inline-flex;align-items:center}
+body.vast-instellingen .toplinks .plain{min-height:44px}
+/* compacter als het paneel anders niet past (het script zet deze klassen) */
+.panel.vast-dicht h2{font-size:24px!important;margin:0 0 6px!important}
+.panel.vast-dicht .hint{display:none!important}
+.panel.vast-dicht .group{margin-bottom:10px!important}
+.panel.vast-dicht .group h3{font-size:16px!important;margin:0 0 6px!important}
+.panel.vast-dicht .controls{gap:6px!important}
+.panel.vast-dicht .pill{padding:6px 11px!important;font-size:13px!important}
+.panel.vast-dicht .zonepick{gap:6px!important;margin-bottom:8px!important}
+.panel.vast-dicht .zone{padding:6px 10px!important;font-size:14px!important}
+.panel.vast-dicht .area-note{margin-top:8px!important;padding:7px 9px!important;font-size:12px!important;line-height:1.3!important}
+.panel.vast-dicht .group p{margin:4px 0!important;font-size:12px!important;line-height:1.25}
+.panel.vast-kort .group p,.panel.vast-kort .area-note:not(#setNote){display:none!important}
+.panel.vast-dicht .province{overflow-wrap:break-word!important;word-break:normal!important;hyphens:auto;-webkit-hyphens:auto}
+.panel.vast-dicht .province:not(.set){min-height:46px!important;padding:4px 2px!important;font-size:12px!important;line-height:1.1!important;letter-spacing:-.035em!important}
+.panel.vast-dicht .sheet-grid{gap:7px!important}
+.panel.vast-dicht .province.set{min-height:64px!important;padding:7px 9px!important;gap:3px!important}
+.panel.vast-dicht .set-title{font-size:13.5px!important;line-height:1.12!important}
+.panel.vast-dicht .set-meta{font-size:11px!important}
+.panel.vast-kort #setNote{display:none!important}
+.panel.vast-kolommen{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px;align-content:start}
+.panel.vast-kolommen>h2,.panel.vast-kolommen>.hint,.panel.vast-kolommen>.vast-pager,.panel.vast-kolommen>.area-note{grid-column:1/-1}
+.panel.vast-mini>h2{display:none!important}
+.panel.vast-mini .group{margin-bottom:6px!important}
+.panel.vast-mini .group h3{font-size:14px!important;margin:0 0 4px!important}
+.panel.vast-mini .controls{gap:5px!important}
+.panel.vast-mini .pill{font-size:12.5px!important;padding:3px 9px!important}
+.panel.vast-mini .zone{font-size:13px!important;padding:3px 9px!important}
+.panel.vast-mini .vast-pager{margin:4px 0 0!important}
+.vast-pagina-weg{display:none!important}
+.vast-pager{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 2px;flex:none}
+.vast-pager[hidden]{display:none!important}
+.vast-pager button{min-width:48px;min-height:44px;border:2px solid var(--ink);border-radius:13px;background:#fff;box-shadow:0 3px 0 var(--ink);font:inherit;font-size:20px;font-weight:1000;color:var(--ink);padding:0 12px}
+.vast-pager button:disabled{opacity:.35;box-shadow:none}
+.vast-pager span{min-width:56px;text-align:center;font-weight:1000;font-size:14px}
+.vast-pager .vast-pager-next{background:var(--lime)}
+@media (max-width:850px){
+ body.vast-instellingen .layout{display:flex!important;flex-direction:column;gap:4px}
+}
+@media (max-height:760px) and (max-width:850px){
+ body.vast-instellingen .intro .sticker,body.vast-instellingen .intro p{display:none!important}
+ body.vast-instellingen .intro{margin-bottom:6px!important}
+ body.vast-instellingen .intro h1{font-size:32px!important;margin:2px 0!important}
+}
+@media (max-height:700px) and (max-width:850px){body.vast-instellingen .intro{display:none!important}}
+@media (max-height:920px) and (min-width:851px){
+ body.vast-instellingen .intro{margin-bottom:12px!important}
+ body.vast-instellingen .intro h1{font-size:clamp(38px,5vw,62px)!important;margin:6px 0 2px!important}
+ body.vast-instellingen .intro p{font-size:16px!important;margin:2px 0!important}
+}
+@media (max-height:500px){
+ body.vast-instellingen .intro{display:none!important}
+ body.vast-instellingen>header{padding-top:calc(env(safe-area-inset-top,0px) + 5px)!important;padding-bottom:4px!important}
+ body.vast-instellingen .board{padding-top:8px!important;padding-bottom:8px!important}
+ body.vast-instellingen .layout{grid-template-columns:150px minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;display:grid!important}
+ body.vast-instellingen .tabs{flex-direction:column!important;padding:0!important;gap:6px!important}
+ body.vast-instellingen .tab{font-size:16px!important;padding:6px 10px!important;text-align:left!important}
+ body.vast-instellingen .panel{border-top:0!important;border-left:2px dashed #bcc9c6!important;padding:0 0 0 14px!important}
+ body.vast-instellingen .bottom{padding-top:6px!important}
+ body.vast-instellingen .summary small{display:none!important}
+}
+@media (max-width:400px){
+ body.vast-instellingen>header{padding-left:10px!important;padding-right:10px!important;gap:6px!important}
+ body.vast-instellingen>header .logo{font-size:20px!important}
+ body.vast-instellingen>header .toplinks{gap:2px!important}
+ body.vast-instellingen>header .back{font-size:12px!important;padding:0 9px!important}
+ body.vast-instellingen>header .toplinks .plain{font-size:12px!important;padding:0 6px!important}
+}
+
+/* startscherm PO: gekantelde naam blijft binnen beeld */
+body.home-fixed .top{padding-top:calc(env(safe-area-inset-top,0px) + 4px)!important}
+
+/* ------------------------------------------------------------------ afdrukken: de hele spiekkaart met antwoorden, niet het vaste scherm */
+@media print{
+ html,body,body.playing,body.vast-eind,body.vast-instellingen{height:auto!important;max-height:none!important;overflow:visible!important;display:block!important}
+ #sheetLayer:not(.hide){position:static!important;display:block!important;padding:0!important;background:#fff!important}
+ #sheetLayer .modal{height:auto!important;max-height:none!important;width:100%!important;overflow:visible!important;display:block!important;border:0!important;box-shadow:none!important;padding:0!important}
+ #sheetLayer .sheet-map,#sheetLayer .modal.vast-lijst .sheet-map{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important;border:0!important;flex:none!important}
+ #sheetLayer .sheet-canvas,#sheetLayer .sheet-map-canvas{height:auto!important}
+ #sheetLayer .sheet-canvas>svg,#sheetLayer .sheet-map-canvas>svg{width:100%!important;height:auto!important}
+ #sheetLayer .answer-tags,#sheetLayer .modal.vast-lijst .answer-tags{display:flex!important;overflow:visible!important;margin-top:12px!important}
+ #sheetLayer .vast-zoom,#sheetLayer .vast-sheet-foot button,#sheetLayer .vast-pager,#sheetLayer .close{display:none!important}
+ #sheetLayer .vast-pagina-weg{display:revert!important}
+}

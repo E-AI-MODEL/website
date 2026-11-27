@@ -211,25 +211,32 @@ body.playing .game-grid.shuffle-no-map .question-card{flex:0 1 auto;width:min(71
 .map-art .map-text.place{font-weight:900;fill:#30454d;stroke:#fff8e8;paint-order:stroke;stroke-linejoin:round}
 .map-art .map-text.water{fill:#5f9cb5;stroke:#e4f4fa;letter-spacing:1px}
 #map svg{cursor:crosshair}
+.map-art .tap-line line{stroke:#d9483b;stroke-linecap:round;fill:none}
+.map-art .tap-mark path{stroke:#d9483b;stroke-linecap:round;fill:none}
+.map-art .map-text.tap-km{fill:#a2352b;font-weight:1000;stroke:#fff8e8;paint-order:stroke;stroke-linejoin:round}
+body.playing #game .question-card .sure-row{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;align-items:center;flex:none}
+body.playing #game .question-card .sure-row.hide{display:none!important}
+body.playing #game .question-card .sure-row span{font-size:13px;font-weight:1000;color:#385b66;padding-right:2px}
+body.playing #game .question-card .sure-row button{min-height:44px;border:2px solid var(--ink);border-radius:13px;font-weight:1000;font-size:16px;box-shadow:0 3px 0 var(--ink);background:var(--lime)}
+body.playing #game .question-card .sure-row button[data-sure="0"]{background:#ffe3a4}
+body.playing #game .question-card .sure-row:not(.hide)~.small-links{display:none!important}
+body.playing #game #answerOptions .option.chosen{background:#fff1b8;outline:3px solid var(--ink);outline-offset:-1px}
+.end-note{max-width:60ch;margin:8px auto 0;font-size:15px;line-height:1.35;font-weight:850;color:#3d5560}
+.scores .sure-good{background:#c9e6ae!important}.scores .sure-wrong{background:#ffc8bc!important}
 .question-card h2.long{font-size:clamp(19px,2.2vw,30px)!important;line-height:1.15!important}
 .question-card h2.xlong{font-size:clamp(16px,1.8vw,24px)!important;line-height:1.2!important}
 .glossary{margin:0;padding:14px 16px;line-height:1.35;background:#fff;border-radius:13px}.glossary dt{font-weight:1000;margin-top:10px}.glossary dd{margin:2px 0 0;font-weight:750;color:#3d5560}
 .sheet-map:has(.glossary){background:#fff}
-@media(max-width:900px) and (orientation:portrait){
- body.playing .game-grid[data-mode="point"] .question-card{height:auto!important;min-height:clamp(147px,22%,183px);max-height:60%}
- body.playing .game-grid[data-mode="type"] .question-card,body.playing .game-grid[data-mode="missing"] .question-card{height:auto!important;min-height:clamp(180px,30%,251px);max-height:62%}
- body.playing.keyboard-open .game-grid .question-card{min-height:0!important}
-}
-</style></head><body>
+</style><link rel="stylesheet" href="/topo/vast-scherm.css?v=bf87f47ccc"><script src="/topo/vast-scherm.js?v=92b4740bce" defer></script></head><body>
 <header class="top"><a href="/topo/vo/" class="logo">Let’s go <span>TOPO!</span><b class="vo">VO</b></a><a href="/topo/vo/" class="other">Instellingen</a></header>
 <main>
 <section id="loading" class="result"><span class="sticker">TOPO! VO</span><h2>Kaart laden…</h2><p>Je oefenset komt eraan.</p></section>
 <section id="game" class="hide">
  <div class="game-top"><a class="back" id="back" href="/topo/vo/">← Terug</a><div class="progress-box"><div class="progress-label"><span id="missionName">MISSIE 1</span><span id="progressText">1/10</span></div><div class="bar"><div id="progressFill"></div></div></div><div class="level" id="score">★ 0</div></div>
  <div class="game-grid"><div class="game-board"><div class="map-frame" id="map"></div><div class="hint-chip" id="mapHint">KIJK OP DE KAART!</div></div>
- <section class="question-card"><span class="q-label" id="kind">TOPO!</span><h2 id="prompt"></h2><p id="sub"></p><div id="answerOptions"></div><div class="feedback hide" id="feedback" aria-live="polite"></div><button class="next hide" id="next">VERDER! →</button><div class="small-links"><button id="help">Help me!</button><button id="showAnswer">Spiekkaart</button><button id="skip">Even overslaan →</button></div></section></div>
+ <section class="question-card"><span class="q-label" id="kind">TOPO!</span><h2 id="prompt"></h2><p id="sub"></p><div id="answerOptions"></div><div class="feedback hide" id="feedback" aria-live="polite"></div><button class="next hide" id="next">VERDER! →</button><div class="sure-row hide" id="sure" role="group" aria-label="Hoe zeker ben je?"><span>Hoe zeker?</span><button type="button" data-sure="1">Zeker!</button><button type="button" data-sure="0">Ik gok</button></div><div class="small-links"><button id="help">Help me!</button><button id="showAnswer">Spiekkaart</button><button id="skip">Even overslaan →</button></div></section></div>
 </section>
-<section id="end" class="hide result"><span class="sticker">RONDE KLAAR!</span><h2 id="endTitle">Lekker bezig!</h2><p id="endText"></p><div id="helpSummary" class="scores"></div><div id="review" class="review"></div><div class="actions"><button id="retry" class="big hide">FOUTEN OEFENEN!</button><button id="again" class="big secondary">NOG EEN KEER!</button><a id="change" href="/topo/vo/" class="quiet">Andere set</a></div></section>
+<section id="end" class="hide result"><span class="sticker">RONDE KLAAR!</span><h2 id="endTitle">Lekker bezig!</h2><p id="endText"></p><div id="helpSummary" class="scores"></div><p id="endNote" class="end-note hide"></p><div id="review" class="review"></div><div class="actions"><button id="retry" class="big hide">FOUTEN OEFENEN!</button><button id="again" class="big secondary">NOG EEN KEER!</button><button id="later" class="quiet hide" type="button">Herhaallink</button><a id="change" href="/topo/vo/" class="quiet">Andere set</a></div></section>
 </main>
 <div class="overlay hide" id="sheetLayer" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="modal"><button class="close" id="closeSheet" aria-label="Sluiten">×</button><span class="sticker">SPIEKKAART</span><h2 id="sheetTitle">Even spieken!</h2><div class="sheet-tools" id="sheetTools"><button id="zoomOut" type="button" aria-label="Uitzoomen">−</button><strong id="zoomText">100%</strong><button id="zoomIn" type="button" aria-label="Inzoomen">+</button><button id="zoomFit" type="button">Passend</button></div><div class="sheet-map" id="sheetMap"><div class="sheet-canvas" id="sheetCanvas"></div></div><p id="sheetNote">Kijk goed. Probeer het daarna zelf!</p></div></div>
 <div class="credits" id="credits">Kaartdata: Natural Earth (publiek domein) · Oefenkaart, geen navigatiekaart</div>
@@ -243,9 +250,22 @@ const setId=params.get('set')||'ob1-nl-basis';
 const MODES=['mix','shuffle','point','choice','type','missing','zoom','quiz'];
 const mode=MODES.includes(params.get('mode'))?params.get('mode'):'mix';
 const countChoice=params.get('questions')||'10';
-const questionLimit=countChoice==='all'?Infinity:Math.max(5,Math.min(80,parseInt(countChoice,10)||10));
+// Leerstrategieën (alles via de link, niets opgeslagen):
+//  questions=kennen  oefenen tot je elke plek twee keer zelf goed hebt (met groeiende tussenpozen)
+//  level=adaptief    meebewegende steun: goed bezig = moeilijker, vastlopen = meer hulp
+//  kijk=1            eerst een kijkronde, dan zelf ophalen
+//  zeker=1           vóór de feedback aangeven: zeker of gok (aan het eind: waar zat je zeker fout?)
+//  items=a,b,c       herhaallink: precies deze plekken nog eens
+const mastery=countChoice==='kennen';
+const questionLimit=mastery?10:countChoice==='all'?Infinity:Math.max(5,Math.min(80,parseInt(countChoice,10)||10));
 const noHints=params.get('assist')==='none';
 const challenge=params.get('level')==='challenge';
+const adaptiveAsked=params.get('level')==='adaptief';
+let adaptive=adaptiveAsked;
+const studyFirst=params.get('kijk')==='1';
+const askSure=params.get('zeker')==='1';
+// Herhaallink: alle gemiste plekken (ook bij een grote set); 1000 is alleen een noodrem tegen kapotte links.
+const onlyIds=[...new Set((params.get('items')||'').split(',').map(x=>x.trim()).filter(Boolean))].slice(0,1000);
 const KAART={
  wereld:{bbox:[-180,-60,180,84],lat0:0,basis:'kaarten/wereld-landen.geojson',landen:true,
   ankers:[['Atlantische Oceaan',-38,22],['Grote Oceaan',-140,8],['Indische Oceaan',78,-22],['Noordelijke IJszee',10,79]]},
@@ -279,7 +299,8 @@ const FAMILIE={stad:'plaats',hoofdstad:'plaats',grensstad:'plaats',plaats:'plaat
 const FAMNAAM={plaats:['de','plaats'],water:['het','water'],eiland:['het','eiland'],'reliëf':['het','landschap'],top:['de','berg'],gebied:['het','gebied'],werk:['het','waterwerk']};
 const C=['#ffc2b8','#ffe3a4','#c9e6ae','#f4dfbc','#c7e6e7','#ffe4bb','#d7e8ba','#ffcfc0','#e8d8e8','#f5e4bd','#d7e0ee','#d2e7bc'];
 let SET=null,K=null,kaartId=null,items=new Map(),setItems=[],facts=[],begrippen=new Map(),geo={},topoTalk={},lastSpoken={};
-let scale=1,cosL=1,W=1000,H=600,basisFeatures=[],contextFeatures=[],projCache=new Map();
+let mapOpts=null,scale=1,cosL=1,W=1000,H=600,basisFeatures=[],contextFeatures=[],projCache=new Map();
+let masteryStopped=false,steun=1,goodRun=0,badRun=0,masteryMap=new Map(),sureLog=[],pendingJudge=null,currentSure=null,lastTap=null,tapLine=null,studyCount=0,usedHelp=false,answered=0,steunNote='';
 let submitLog=[],queue=[],index=0,stars=0,helpCount=0,peekCount=0,round=0,wrong=new Set(),assisted=new Set(),repeated=new Set(),hintStep=0,attempts=0,nearMiss=false,done=false,currentMode='point',zoom=1,guessOptions=[],correctStreak=0,wrongStreak=0,wrongTapTimes=[],retryPool=null;
 const fmt=n=>Math.round(n*10)/10;
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
@@ -388,7 +409,7 @@ function baseLayers(){
  return baseCache;
 }
 function mapSvg(cls,label){
- return '<svg class="map-art '+cls+'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+fmt(W)+' '+fmt(H)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+esc(label)+'">'+baseLayers()+'<g class="dyn"></g></svg>';
+ return '<svg class="map-art '+cls+'" xmlns="http://www.w3.org/2000/svg" data-full="0 0 '+fmt(W)+' '+fmt(H)+'" viewBox="0 0 '+fmt(W)+' '+fmt(H)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+esc(label)+'">'+baseLayers()+'<g class="dyn"></g></svg>';
 }
 // ---------------------------------------------------------------- welke plekken tonen
 function current(){return queue[index]}
@@ -411,8 +432,8 @@ function regionBounds(task){
  const it=task.item,full={left:0,right:W,top:0,bottom:H};
  if(!it||['werelddeel','oceaan','plaat'].includes(it.type))return full;
  const kd=kindOf(it);let pts=null;
- if(challenge)return full;
- if(kaartId==='wereld'){
+ if(challenge||(adaptive&&steun===0))return full;
+ if(kaartId==='wereld'&&!(adaptive&&steun===2)){
   const wd=continentOf(it);
   if(wd)pts=[...items.values()].filter(o=>o.werelddeel===wd&&o.type==='land'&&(o.kaarten||[]).includes('wereld')).map(pt);
  }else if(kaartId==='nederland'&&kd==='point'&&it.feiten?.provincie){
@@ -421,8 +442,8 @@ function regionBounds(task){
  }else if(kaartId==='brazilie'&&kd==='point'&&it.feiten?.regio){
   const fs=basisFeatures.filter(x=>x.properties.regio===it.feiten.regio);
   if(fs.length)pts=fs.flatMap(f=>projGeom(f.geometry).rings.flat());
- }else if(kaartId==='europa'||(kd==='point'&&kaartId!=='nederland')){
-  const [x,y]=pt(it),k=kaartId==='europa'?10:kaartId==='mexico-vs'?5:8;
+ }else if(kaartId==='europa'||kaartId==='wereld'||(kd==='point'&&kaartId!=='nederland')){
+  const [x,y]=pt(it),k0=kaartId==='europa'?10:kaartId==='mexico-vs'?5:8,k=adaptive&&steun===2?Math.max(3,Math.ceil(k0/2)):k0;
   const near=setItems.filter(o=>sameFamily(o,it)).sort((a,b)=>Math.hypot(pt(a)[0]-x,pt(a)[1]-y)-Math.hypot(pt(b)[0]-x,pt(b)[1]-y)).slice(0,k);
   pts=near.flatMap(o=>kindOf(o)==='area'?shapePts(o):[pt(o)]);
  }
@@ -447,10 +468,13 @@ function viewFor(task,m){
  if(m==='point'||m==='missing'){const b=regionBounds(task);const isFull=b.left===0&&b.right===W,min=isFull?0:kaartId==='nederland'||kaartId==='wereld'?220:110;return fitBox(b,isFull?12:Math.max(kaartId==='mexico-vs'?14:30,(b.right-b.left)*.1),min,min)}
  const tb=targetBounds(it),tw=tb.right-tb.left,th=tb.bottom-tb.top;
  if(m==='zoom')return fitBox(tb,Math.max(45,tw),150,150);
+ if(m==='kijk'&&['werelddeel','oceaan','plaat'].includes(it.type))return fitBox(full,10,0,0);
  if(['werelddeel','oceaan','plaat'].includes(it.type))return fitBox(full,10,0,0);
  return fitBox(tb,Math.max(70,Math.max(tw,th)*.9),Math.min(W,260),Math.min(H,260));
 }
-function unitsPerPx(svg){const vb=svg.viewBox.baseVal;return vb.width/Math.max(1,svg.clientWidth||svg.getBoundingClientRect().width||400)}
+// Kaart past met 'meet' in zijn vak: de krapste richting bepaalt de schaal.
+function unitsPerPx(svg){const vb=svg.viewBox.baseVal,r=svg.getBoundingClientRect(),w=svg.clientWidth||r.width||400,h=svg.clientHeight||r.height||w;return Math.max(vb.width/Math.max(1,w),vb.height/Math.max(1,h))}
+function fitAspect(vb,el){const ratio=(el.clientWidth||1)/(el.clientHeight||1);let [x,y,w,h]=vb;if(w/h<ratio){const n=h*ratio;x-=(n-w)/2;w=n}else{const n=w/ratio;y-=(n-h)/2;h=n}return [x,y,w,h]}
 function placeLabels(svg){
  const b=svg.viewBox.baseVal,accepted=[],u=unitsPerPx(svg),margin=6*u;
  for(const el of svg.querySelectorAll('.map-text.anchor')){el.style.display='';const r=el.getBBox();if(r.x<b.x+margin||r.x+r.width>b.x+b.width-margin||r.y<b.y+margin||r.y+r.height>b.y+b.height-margin)el.style.display='none'}
@@ -488,6 +512,13 @@ function dynLayer(svg,opts){
   return '<text class="map-text place"'+st(fs,4*u)+' x="'+fmt(x+dx)+'" y="'+fmt(y-(kindOf(it)==='point'?9*u:-fs/3))+'"'+(dx?'':' text-anchor="middle"')+'>'+esc(it.naam)+'</text>';
  }).join('');
  parts.push('<g>'+labels+'</g>');
+ if(opts.line){
+  const {tap,to}=opts.line,mx=(tap.x+to[0])/2,my=(tap.y+to[1])/2,d=km(unproj(tap.x,tap.y),unproj(to[0],to[1]));
+  const r=d<20?Math.max(1,Math.round(d)):d<200?Math.round(d/5)*5:d<1000?Math.round(d/10)*10:Math.round(d/50)*50;
+  parts.push('<g class="tap-line" aria-hidden="true"><line x1="'+fmt(tap.x)+'" y1="'+fmt(tap.y)+'" x2="'+fmt(to[0])+'" y2="'+fmt(to[1])+'" style="stroke-width:'+fmt(3*u)+'px;stroke-dasharray:'+fmt(7*u)+' '+fmt(5*u)+'"/><text class="map-text tap-km" x="'+fmt(mx)+'" y="'+fmt(my-6*u)+'" text-anchor="middle"'+st(fs,4*u)+'>'+r+' km</text></g>');
+ }
+ if(opts.tap&&!opts.line){const {x,y}=opts.tap,a=7*u;parts.push('<g class="tap-mark" aria-hidden="true"><path d="M'+fmt(x-a)+' '+fmt(y-a)+'L'+fmt(x+a)+' '+fmt(y+a)+'M'+fmt(x+a)+' '+fmt(y-a)+'L'+fmt(x-a)+' '+fmt(y+a)+'" style="stroke-width:'+fmt(3.4*u)+'px"/></g>')}
+ if(opts.line){const {x,y}=opts.line.tap,a=7*u;parts.push('<g class="tap-mark" aria-hidden="true"><path d="M'+fmt(x-a)+' '+fmt(y-a)+'L'+fmt(x+a)+' '+fmt(y+a)+'M'+fmt(x+a)+' '+fmt(y-a)+'L'+fmt(x-a)+' '+fmt(y+a)+'" style="stroke-width:'+fmt(3.4*u)+'px"/></g>')}
  g.innerHTML=parts.join('');
  placeLabels(svg);
 }
@@ -505,8 +536,21 @@ function focusMap(){
  else{opts.highlight=it;if(kindOf(it)==='point')opts.dots=dotsFor(it)}
  if(done&&currentMode!=='missing'){opts.highlight=it;opts.labels=[it]}
  if(done&&currentMode==='missing'){opts.hide=null;opts.labels=pointItems(it);opts.highlight=it}
- dynLayer(svg,opts);
+ if(currentMode==='kijk'){opts.highlight=it;opts.labels=[it];if(kindOf(it)==='point')opts.dots=dotsFor(it)}
+ if(currentMode==='point'&&lastTap&&!done)opts.tap=lastTap;
+ if(done&&tapLine)opts.line={tap:tapLine,to:nearestOn(it,tapLine.x,tapLine.y)};
+ mapOpts=opts;dynLayer(svg,opts);
 }
+// Na zoomen of slepen (vast-scherm.js): stippen en namen opnieuw op schermmaat.
+let viewTimer=0;
+document.addEventListener('topo:view',e=>{
+ const svg=e.target;clearTimeout(viewTimer);
+ viewTimer=setTimeout(()=>{
+  if(!svg.isConnected)return;
+  if(svg.closest('#map')&&mapOpts)dynLayer(svg,mapOpts);
+  else if(svg.closest('#sheetMap')&&SET.kaart)dynLayer(svg,sheetOpts());
+ },70);
+});
 // ---------------------------------------------------------------- ronde samenstellen
 function canMissing(it){return kindOf(it)==='point'&&pointItems(it).length>=4}
 function distractors(it,n){
@@ -558,6 +602,11 @@ function start(pool){
  queue=buildQueue(pool);
  if(!queue.length){$('loading').classList.remove('hide');$('loading').innerHTML='<span class="sticker">OEPS!</span><h2>Geen vragen!</h2><p>Deze set heeft geen vragen voor deze vraagvorm. Kies een andere vorm.</p><p><a class="big" href="/topo/vo/?set='+encodeURIComponent(setId)+'">ANDERE KEUZE ↗</a></p>';return}
  index=0;stars=0;helpCount=0;peekCount=0;correctStreak=0;wrongStreak=0;wrongTapTimes=[];assisted=new Set();wrong=new Set();repeated=new Set();round++;
+ adaptive=adaptiveAsked&&queue.some(t=>t.kind==='item');masteryStopped=false;steun=1;goodRun=0;badRun=0;sureLog=[];pendingJudge=null;currentSure=null;answered=0;steunNote='';
+ masteryMap=new Map();if(mastery)for(const t of queue)masteryMap.set(t.id,{streak:0,tries:0,misses:0,done:false,task:t});
+ // Kijkronde: eerst elke plek rustig bekijken, daarna in een andere volgorde zelf ophalen.
+ studyCount=0;
+ if(studyFirst&&SET.kaart&&!pool){const study=queue.filter(t=>t.kind==='item').map(t=>({id:'kijk-'+t.id,kind:'study',item:t.item,mode:'kijk'}));if(study.length){studyCount=study.length;queue=[...study,...shuffle(queue)]}}
  document.body.classList.add('playing');document.body.classList.remove('keyboard-open');
  $('loading').classList.add('hide');$('end').classList.add('hide');$('game').classList.remove('hide');draw();
 }
@@ -566,21 +615,38 @@ function setKind(text){$('kind').textContent=current().revisit?'NOG EENS!':text}
 function setPrompt(text){const h=$('prompt');h.textContent=text;h.classList.toggle('long',text.length>(currentMode==='quiz'?80:44));h.classList.toggle('xlong',text.length>150)}
 function draw(){
  if(index>=queue.length){finish();return}
- hintStep=0;attempts=0;nearMiss=false;done=false;
+ hintStep=0;attempts=0;nearMiss=false;done=false;usedHelp=false;lastTap=null;tapLine=null;pendingJudge=null;currentSure=null;$('sure')?.classList.add('hide');
  $('sub').classList.remove('answer-wrong');
- const task=current();currentMode=task.mode;
+ const task=current();currentMode=adaptMode(task);
  const layout=document.querySelector('#game .game-grid');
  layout.dataset.mode=currentMode;layout.classList.toggle('shuffle-no-map',currentMode==='quiz');
  $('next').classList.add('hide');$('feedback').classList.add('hide');
  $('help').style.visibility=noHints?'hidden':'visible';$('help').textContent='Help me!';$('skip').style.visibility='visible';$('showAnswer').style.visibility=noHints?'hidden':'visible';$('answerOptions').innerHTML='';
- $('progressText').textContent=(index+1)+'/'+queue.length;$('missionName').textContent=(mode==='shuffle'?'TOPO SHUFFLE':'MISSIE '+round)+' · '+SET.titel.toUpperCase();
- $('progressFill').style.width=(100*index/queue.length)+'%';$('score').textContent='★ '+stars;
+ $('missionName').textContent=(task.kind==='study'?'KIJKRONDE':mode==='shuffle'?'TOPO SHUFFLE':'MISSIE '+round)+' · '+SET.titel.toUpperCase();
+ const testTotal=queue.length-studyCount,testIndex=index-studyCount,known=[...masteryMap.values()].filter(m=>m.done).length;
+ if(task.kind==='study'){$('progressText').textContent='KIJK '+(index+1)+'/'+studyCount;$('progressFill').style.width=(100*index/studyCount)+'%'}
+ else if(mastery){$('progressText').textContent=known+'/'+masteryMap.size+' GEKEND';$('progressFill').style.width=(100*known/Math.max(1,masteryMap.size))+'%'}
+ else{$('progressText').textContent=(testIndex+1)+'/'+testTotal;$('progressFill').style.width=(100*testIndex/testTotal)+'%'}
+ $('score').textContent='★ '+stars;
+ if(task.kind==='study'){
+  const it=task.item;done=true;
+  $('map').innerHTML=mapSvg('',SET.titel);
+  $('kind').textContent='KIJKRONDE';setPrompt(it.naam);$('sub').textContent=naamZin(it);
+  $('mapHint').textContent='KIJK GOED!';
+  ['help','skip','showAnswer'].forEach(id=>$(id).style.visibility='hidden');
+  $('next').classList.remove('hide');
+  focusMap();requestAnimationFrame(focusMap);return;
+ }
+ if(studyCount&&index===studyCount)feedback('Nu jij! Weet je nog waar ze liggen?','neutral');
+ else if(index===0&&round===1&&((studyFirst&&!studyCount)||(adaptiveAsked&&!adaptive)))feedback(((studyFirst&&!studyCount)?'Eerst kijken':'Meebewegend')+(studyFirst&&!studyCount&&adaptiveAsked&&!adaptive?' en meebewegen kunnen':' kan')+' alleen bij vragen op de kaart. We beginnen meteen.','neutral');
  if(currentMode==='quiz'){
   const q=task.q;$('map').innerHTML='';
   setKind(q.category==='begrippen'?'BEGRIP':'ZONDER KAART');
   setPrompt(q.question);$('sub').textContent='Kies het goede antwoord.'+(mode==='shuffle'&&index%3===0?' '+voice('shuffle'):'');
   $('mapHint').textContent='ZONDER KAART';
-  $('answerOptions').innerHTML=shuffle(q.options).map(y=>'<button type="button" class="option" data-fact-choice="'+encodeURIComponent(y)+'">'+esc(y)+'</button>').join('');
+  let opts=shuffle(q.options);
+  if(adaptive&&steun===2){const drop=opts.findIndex(o=>o!==q.answer);if(drop>=0)opts.splice(drop,1)}
+  $('answerOptions').innerHTML=opts.map(y=>'<button type="button" class="option" data-fact-choice="'+encodeURIComponent(y)+'">'+esc(y)+'</button>').join('');
   return;
  }
  const it=task.item,t=typ(it);
@@ -590,7 +656,8 @@ function draw(){
   setKind('AANWIJZEN');setPrompt('Waar ligt '+withArticle(it)+'?');$('sub').textContent='Tik op de kaart!';$('mapHint').textContent='TIK OP DE KAART!';
  }else if(currentMode==='choice'||currentMode==='zoom'){
   setKind(currentMode==='zoom'?'INGEZOOMD':'KIEZEN');
-  const others=currentMode==='zoom'?shuffle(pointItems(it).filter(o=>o.id!==it.id).sort((a,b)=>Math.hypot(pt(a)[0]-pt(it)[0],pt(a)[1]-pt(it)[1])-Math.hypot(pt(b)[0]-pt(it)[0],pt(b)[1]-pt(it)[1])).slice(0,6)).slice(0,3):distractors(it,3);
+  const n=adaptive&&steun===2?2:3;
+  const others=currentMode==='zoom'?shuffle(pointItems(it).filter(o=>o.id!==it.id).sort((a,b)=>Math.hypot(pt(a)[0]-pt(it)[0],pt(a)[1]-pt(it)[1])-Math.hypot(pt(b)[0]-pt(it)[0],pt(b)[1]-pt(it)[1])).slice(0,6)).slice(0,n):distractors(it,n);
   const mixed=others.some(o=>o.type!==it.type);
   setPrompt(currentMode==='zoom'?(welk(mixed?FAMNAAM[fam(it)]||t:t)+' is omcirkeld?'):(welk(mixed?FAMNAAM[fam(it)]||t:t)+' is dit?'));
   $('sub').textContent=currentMode==='zoom'?'Kijk goed naar de ingezoomde kaart.'+(index%3===0?' '+voice('shuffle'):''):'Kies de naam.';
@@ -601,17 +668,16 @@ function draw(){
   setKind(currentMode==='missing'?'WAT MIST ER?':'TYPEN');
   setPrompt(currentMode==='missing'?welk(FAMNAAM[fam(it)]||t)+' mist er?':'Hoe heet '+ditDeze(t)+'?');
   $('sub').textContent=currentMode==='missing'?'Kijk naar de lege plek.':'Typ de naam.';$('mapHint').textContent='WELKE NAAM?';
-  $('answerOptions').innerHTML='<form id="typeForm" autocomplete="off"><label class="type-label" for="typedAnswer">Jouw antwoord</label><input id="typedAnswer" class="typed" type="text" maxlength="80" autocapitalize="words" spellcheck="false" required placeholder="Typ hier..."><button class="type-submit" type="submit">CHECK! →</button></form>';
+  $('answerOptions').innerHTML='<form id="typeForm" autocomplete="off"><label class="type-label" for="typedAnswer">Jouw antwoord</label><input id="typedAnswer" class="typed" type="text" maxlength="80" autocapitalize="words" spellcheck="false" required placeholder="'+(adaptive&&steun===2?'Begint met '+esc(it.naam.replace(/^(de|het) /i,'')[0])+'…':'Typ hier...')+'"><button class="type-submit" type="submit">CHECK! →</button></form>';
  }
  focusMap();requestAnimationFrame(focusMap);
 }
 function feedback(t,kind){
  const f=$('feedback');
- if(currentMode==='choice'||currentMode==='zoom'){f.className='feedback hide';$('sub').textContent=t;$('sub').classList.toggle('answer-wrong',kind==='bad');return}
  f.className='feedback '+(kind||'');f.textContent=t;
 }
 function queueAgain(task){
- if(task.revisit||repeated.has(task.id))return;
+ if(mastery||task.kind==='study'||task.revisit||repeated.has(task.id))return;
  repeated.add(task.id);
  const later=Math.min(index+4,queue.length);
  const again={...task,revisit:true};
@@ -625,27 +691,88 @@ function answer(ok,extra){
  if(done)return;
  attempts++;
  const task=current();
+ let sureNote='';
+ if(currentSure!=null&&attempts===1){
+  sureLog.push({id:task.kind==='fact'?task.q.id:task.item.id,label:task.kind==='fact'?task.q.answer:task.item.naam,sure:currentSure,ok});
+  if(currentSure&&!ok)sureNote='Je was zeker, maar dit klopt niet. Goed onthouden! ';
+  if(!currentSure&&ok)sureNote='Gegokt, maar goed! ';
+ }
+ currentSure=null;
  if(ok){
   done=true;
   const independent=attempts===1&&!assisted.has(task.id)&&!task.revisit;
   if(independent){stars++;correctStreak++}else{correctStreak=0;if(!task.revisit)wrong.add(task.id)}
+  settle(task,attempts===1&&!usedHelp);
   wrongStreak=0;$('score').textContent='★ '+stars;$('mapHint').textContent='GEVONDEN!';
   const phrase=correctStreak>=3?voice('goede_reeks'):voice('goed_antwoord');
-  feedback((phrase||'Goed!')+(task.kind==='fact'?factNote(task.q):' '+naamZin(task.item))+(extra||''),'');
+  feedback(sureNote+(phrase||'Goed!')+(task.kind==='fact'?factNote(task.q):' '+naamZin(task.item))+(extra||'')+steunNote,'');
   closeKeyboard();$('next').classList.remove('hide');$('skip').style.visibility='hidden';$('help').style.visibility='hidden';
  }else{
   correctStreak=0;wrongStreak++;wrong.add(task.id);queueAgain(task);
   if(attempts>=2){
-   done=true;
-   feedback(task.kind==='fact'?'Het goede antwoord is '+task.q.answer+'.'+factNote(task.q):'Dit is '+task.item.naam+'. Deze komt straks terug!','neutral');
+   done=true;settle(task,false);
+   if(lastTap&&currentMode==='point')tapLine=lastTap;
+   feedback(task.kind==='fact'?'Het goede antwoord is '+task.q.answer+'.'+factNote(task.q):'Dit is '+task.item.naam+'.'+(tapLine?' '+afstand(task.item,tapLine,true):'')+' Deze komt straks terug!'+steunNote,'neutral');
    closeKeyboard();$('next').classList.remove('hide');$('help').style.visibility='hidden';
   }else{
    const wild=wrongTapTimes.length>=4&&wrongTapTimes.at(-1)-wrongTapTimes.at(-4)<8000;
    const phrase=wild?voice('wild_klikken'):wrongStreak>=3?voice('veel_fouten'):voice('fout_antwoord');
-   feedback((extra?extra+' ':'')+(phrase||'Nog eens!'),'bad');
+   feedback(sureNote+(extra?extra+' ':'')+(phrase||'Nog eens!'),'bad');
   }
  }
  if(task.kind==='item')requestAnimationFrame(focusMap);
+}
+// Na elke afgeronde vraag: meebewegende steun bijstellen en (bij 'tot ik het ken') opnieuw inplannen.
+function settle(task,independent){
+ if(task.kind==='study')return;
+ answered++;steunNote='';
+ if(adaptive){
+  if(independent){goodRun++;badRun=0}else{badRun++;goodRun=0}
+  if(goodRun>=3&&steun>0){steun--;goodRun=0;steunNote=' Het gaat goed: de volgende wordt iets moeilijker.'}
+  else if(badRun>=2&&steun<2){steun++;badRun=0;steunNote=' Bij de volgende krijg je wat meer hulp.'}
+ }
+ if(!mastery)return;
+ const m=masteryMap.get(task.id);if(!m)return;
+ m.tries++;
+ if(independent){m.streak++;if(m.streak>=2){m.done=true;return}}else{m.streak=0;m.misses++}
+ // Doorgaan tot alles gekend is; je kunt altijd zelf stoppen met ← Terug. Alleen een ruime noodrem (20 vragen per plek).
+ if(answered>=masteryMap.size*20){masteryStopped=true;return}
+ // Fout: snel terug (na 2). Goed: later terug (na 5), zodat je het echt moet ophalen.
+ const again={...m.task,revisit:true};
+ if(again.kind==='item')again.mode=modeFor(again.item,index+m.tries+1);
+ queue.splice(Math.min(index+1+(independent?5:2),queue.length),0,again);
+}
+function adaptMode(task){
+ let m=task.mode;
+ if(!adaptive||task.kind!=='item')return m;
+ if(steun===0&&m==='choice')m='type';
+ if(steun===2&&(m==='type'||m==='missing')&&distractors(task.item,2).length>=2)m='choice';
+ return m;
+}
+// Ruimtelijke foutfeedback: hoe ver en welke kant op lag het goede antwoord vanaf je tik?
+function unproj(x,y){return [x/(cosL*scale)+K.bbox[0],K.bbox[3]-y/scale]}
+function nearestOn(it,x,y){
+ const s=shapeOf(it);if(!s)return pt(it);
+ if(s.rings.length&&inside(s,x,y))return [x,y];
+ let best=null,bd=Infinity;
+ for(const line of [...s.rings,...s.lines])for(let i=1;i<line.length;i++){
+  const a=line[i-1],b=line[i],dx=b[0]-a[0],dy=b[1]-a[1],k=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy||1)));
+  const px=a[0]+k*dx,py=a[1]+k*dy,d=Math.hypot(px-x,py-y);if(d<bd){bd=d;best=[px,py]}
+ }
+ return best||pt(it);
+}
+function km(a,b){const R=6371,r=Math.PI/180,[l1,f1]=a,[l2,f2]=b,h=Math.sin((f2-f1)*r/2)**2+Math.cos(f1*r)*Math.cos(f2*r)*Math.sin((l2-l1)*r/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+function afstand(it,tap,past){
+ const [tx,ty]=nearestOn(it,tap.x,tap.y),d=km(unproj(tap.x,tap.y),unproj(tx,ty));
+ const a=(Math.atan2(tap.y-ty,tx-tap.x)*180/Math.PI+360)%360;
+ const kant=['oosten','noordoosten','noorden','noordwesten','westen','zuidwesten','zuiden','zuidoosten'][Math.round(a/45)%8];
+ const r=d<20?Math.max(1,Math.round(d)):d<200?Math.round(d/5)*5:d<1000?Math.round(d/10)*10:Math.round(d/50)*50;
+ return past?'Je tikte zo’n '+r+' km ernaast; het ligt meer naar het '+kant+'.':'Het ligt zo’n '+r+' km verder naar het '+kant+'.';
+}
+// Zeker of gok? Het antwoord wordt pas beoordeeld als je je zekerheid hebt gekozen.
+function judge(fn){
+ if(!askSure||attempts>0||done||current()?.kind==='study'){fn();return}
+ pendingJudge=fn;$('sure').classList.remove('hide');closeKeyboard();
 }
 function naamZin(it){
  const f=it.feiten||{};
@@ -688,26 +815,36 @@ function tapResult(svg,x,y){
 $('map').addEventListener('click',e=>{
  if(currentMode!=='point'||done)return;
  const svg=$('map').querySelector('svg');if(!svg)return;
- const p=svgPoint(svg,e),r=tapResult(svg,p.x,p.y);
- if(!r.ok){wrongTapTimes.push(performance.now());if(wrongTapTimes.length>8)wrongTapTimes.shift()}
- answer(r.ok,r.ok?'':(r.hit?'Dat is '+r.hit.naam+'.':''));
+ const p=svgPoint(svg,e),r=tapResult(svg,p.x,p.y),tap={x:p.x,y:p.y};
+ lastTap=tap;if(mapOpts)dynLayer(svg,{...mapOpts,tap});
+ judge(()=>{
+  if(!r.ok){wrongTapTimes.push(performance.now());if(wrongTapTimes.length>8)wrongTapTimes.shift()}
+  answer(r.ok,r.ok?'':((r.hit?'Dat is '+r.hit.naam+'. ':'')+afstand(current().item,tap)));
+ });
+});
+$('sure')?.addEventListener('click',e=>{
+ const b=e.target.closest('[data-sure]');if(!b||!pendingJudge)return;
+ const fn=pendingJudge;pendingJudge=null;currentSure=b.dataset.sure==='1';$('sure').classList.add('hide');
+ document.querySelectorAll('#answerOptions .chosen').forEach(o=>o.classList.remove('chosen'));
+ fn();
 });
 $('answerOptions').addEventListener('click',e=>{
  const b=e.target.closest('[data-option],[data-fact-choice]');if(!b||done)return;
  const task=current();
  const ok=b.hasAttribute('data-fact-choice')?decodeURIComponent(b.dataset.factChoice)===task.q.answer:b.dataset.option===task.item.id;
- b.classList.add(ok?'good':'bad');answer(ok);
+ document.querySelectorAll('#answerOptions .chosen').forEach(o=>o.classList.remove('chosen'));
+ if(askSure&&attempts===0)b.classList.add('chosen');
+ judge(()=>{b.classList.add(ok?'good':'bad');answer(ok)});
 });
 $('answerOptions').addEventListener('submit',e=>{
  if(e.target.id!=='typeForm')return;e.preventDefault();if(done)return;
  const it=current().item,v=tidy($('typedAnswer').value);
  submitLog.push(index+':'+v+'>'+tidy(it.naam));
  const names=[it.naam,...(it.alt||[])].map(tidy).filter(Boolean);
- if(names.includes(v)){answer(true);return}
+ if(names.includes(v)){judge(()=>answer(true));return}
  const close=names.some(n=>n.length>=5&&lev(v,n)<=(n.length>=9?2:1));
  if(close&&!nearMiss){nearMiss=true;feedback('Bijna! Check je spelling en probeer het nog eens.','neutral');$('typedAnswer').focus();$('typedAnswer').select();return}
- answer(false);
- if(!done){$('typedAnswer').focus();$('typedAnswer').select()}
+ judge(()=>{answer(false);if(!done){$('typedAnswer').focus();$('typedAnswer').select()}});
 });
 $('answerOptions').addEventListener('focusin',e=>{if(e.target.matches('input')){document.body.classList.add('keyboard-open');resize()}});
 // Wacht even met het weghalen van de toetsenbordstand, zodat een tik op CHECK! niet verspringt.
@@ -751,12 +888,12 @@ $('help').onclick=()=>{
  const task=current();let hint=hintFor(task,hintStep);
  const name=task.kind==='fact'?task.q.answer:task.item.naam;
  if(!hint||hint.toLocaleLowerCase('nl').includes(name.toLocaleLowerCase('nl'))){hint=hintStep===0?'Gebruik de spiekkaart als je vastzit.':null;if(!hint)return}
- hintStep++;helpCount++;assisted.add(task.id);wrong.add(task.id);queueAgain(task);
+ hintStep++;helpCount++;usedHelp=true;assisted.add(task.id);wrong.add(task.id);queueAgain(task);pendingJudge=null;$('sure').classList.add('hide');document.querySelectorAll('#answerOptions .chosen').forEach(o=>o.classList.remove('chosen'));
  feedback((voice('spieken_hints')||'Kleine hint dan.')+' '+hint,'neutral');$('mapHint').textContent='ZOEK MAAR!';
  $('help').textContent='Nog een hint?';if(hintStep>=2)$('help').style.visibility='hidden';
 };
 $('skip').onclick=()=>{
- const task=current();wrong.add(task.id);queueAgain(task);done=true;
+ const task=current();wrong.add(task.id);queueAgain(task);done=true;pendingJudge=null;$('sure').classList.add('hide');settle(task,false);
  feedback(task.kind==='fact'?'Het goede antwoord is '+task.q.answer+'.':'Dit is '+task.item.naam+'. Deze komt terug!','neutral');
  closeKeyboard();$('next').classList.remove('hide');$('skip').style.visibility='hidden';
  if(task.kind==='item')requestAnimationFrame(focusMap);
@@ -766,22 +903,52 @@ $('next').onclick=()=>{if(!done)return;document.activeElement?.blur?.();index++;
 function finish(){
  document.body.classList.remove('playing','keyboard-open');
  $('game').classList.add('hide');$('end').classList.remove('hide');
- const firsts=queue.filter(x=>!x.revisit);
- $('endTitle').textContent=stars===firsts.length?(voice('bijnamen')||'KAARTBAAS!'):(voice('einde')||'LEKKER BEZIG!');
- $('endText').textContent=stars+' van '+firsts.length+' meteen goed, zonder hulp.';
- $('helpSummary').innerHTML='<span>TIPS '+helpCount+'×</span><span>SPIEKKAART '+peekCount+'×</span>';
- const missed=firsts.filter(x=>wrong.has(x.id));
+ const firsts=queue.filter(x=>!x.revisit&&x.kind!=='study');
  const label=x=>x.kind==='fact'?x.q.answer:x.item.naam;
- $('review').innerHTML=missed.length?'<strong>Deze nog eens:</strong>'+missed.map(x=>'<span>'+esc(label(x))+'</span>').join(''):'<span>Alles gevonden!</span>';
+ $('endTitle').textContent=stars===firsts.length?(voice('bijnamen')||'KAARTBAAS!'):(voice('einde')||'LEKKER BEZIG!');
+ let missed=firsts.filter(x=>wrong.has(x.id)),reviewTitle='Deze nog eens:';
+ if(mastery){
+  const all=[...masteryMap.values()],known=all.filter(m=>m.done).length;
+  if(known===all.length){
+   $('endText').textContent='Je kent ze alle '+all.length+'! '+answered+' vragen, '+stars+' meteen goed.';
+   missed=all.filter(m=>m.misses>0).sort((a,b)=>b.misses-a.misses).map(m=>m.task);reviewTitle='Deze waren lastig:';
+  }else{
+   $('endTitle').textContent='NOG NIET ALLES!';
+   $('endText').textContent=known+' van '+all.length+' gekend na '+answered+' vragen. Pauze nemen helpt: oefen de rest straks nog eens.';
+   missed=all.filter(m=>!m.done).map(m=>m.task);reviewTitle='Nog niet gekend:';
+  }
+ }else $('endText').textContent=stars+' van '+firsts.length+' meteen goed, zonder hulp.';
+ let chips='<span>TIPS '+helpCount+'×</span><span>SPIEKKAART '+peekCount+'×</span>';
+ const notes=[];
+ if(askSure&&sureLog.length){
+  const sw=sureLog.filter(x=>x.sure&&!x.ok),sg=sureLog.filter(x=>x.sure&&x.ok).length,gg=sureLog.filter(x=>!x.sure&&x.ok).length;
+  chips+='<span class="sure-good">ZEKER EN GOED '+sg+'</span><span class="sure-wrong">ZEKER MAAR FOUT '+sw.length+'</span>';
+  if(sw.length)notes.push('Zeker maar fout: '+sw.map(x=>x.label).join(', ')+'. '+(sw.length===1?'Die zit':'Die zitten')+' verkeerd in je hoofd: kijk er extra goed naar.');
+  else if(gg)notes.push('Geen enkele keer zeker en fout. '+gg+'× gegokt en toch goed: dat weet je beter dan je denkt.');
+  else notes.push('Je zekerheid klopte steeds. Mooi!');
+ }
+ $('helpSummary').innerHTML=chips;
+ $('review').innerHTML=missed.length?'<strong>'+reviewTitle+'</strong>'+missed.map(x=>'<span>'+esc(label(x))+'</span>').join(''):'<span>Alles gevonden!</span>';
  retryPool=missed.length?missed.map(x=>x.kind==='fact'?x.q:x.item):null;
  $('retry').classList.toggle('hide',!retryPool);
+ // Herhaallink: later (morgen) nog eens precies deze plekken. Alleen in de link, niets opgeslagen.
+ laterUrl=missed.length?location.origin+'/topo/vo/spel/?'+new URLSearchParams({set:SET.id,mode:SET.kaart?'mix':'quiz',questions:'all',items:missed.map(x=>x.kind==='fact'?x.q.id:x.item.id).join(',')}).toString():'';
+ $('later').classList.toggle('hide',!laterUrl);
+ if(laterUrl)notes.push('Morgen nog eens? Bewaar de herhaallink: na een nachtje slapen onthoud je het beter.');
+ $('endNote').textContent=notes.join(' ');$('endNote').classList.toggle('hide',!notes.length);
 }
+let laterUrl='';
+$('later').onclick=async()=>{
+ if(!laterUrl)return;
+ try{await navigator.clipboard.writeText(laterUrl);$('later').textContent='Link gekopieerd!'}catch(err){window.prompt('Kopieer deze herhaallink:',laterUrl)}
+ setTimeout(()=>{$('later').textContent='Herhaallink'},2200);
+};
 $('again').onclick=()=>start();
 $('retry').onclick=()=>{if(retryPool)start(retryPool)};
 // ---------------------------------------------------------------- spiekkaart
 function openSheet(){
  if(noHints)return;
- if(!$('game').classList.contains('hide')&&!done){const t=current();peekCount++;assisted.add(t.id);wrong.add(t.id);queueAgain(t)}
+ if(!$('game').classList.contains('hide')&&!done){const t=current();peekCount++;usedHelp=true;assisted.add(t.id);wrong.add(t.id);queueAgain(t)}
  const task=current();
  if(!SET.kaart){
   const list=SET.begrippen.map(id=>begrippen.get(id)).filter(Boolean);
@@ -796,14 +963,15 @@ function openSheet(){
  zoom=1;updateZoom();
  if(SET.kaart){
   const svg=$('sheetCanvas').querySelector('svg');
-  const vb=task&&task.item?viewFor(task,'point'):[0,0,W,H];
-  svg.setAttribute('viewBox',vb.map(fmt).join(' '));dynLayer(svg,{dots:setItems.filter(it=>kindOf(it)==='point'),labels:setItems});
+  const vb=fitAspect(task&&task.item?viewFor(task,'point'):[0,0,W,H],$('sheetMap'));
+  svg.setAttribute('viewBox',vb.map(fmt).join(' '));dynLayer(svg,sheetOpts());
  }
 }
 function updateZoom(){
  zoom=Math.max(1,Math.min(4,zoom));$('sheetCanvas').style.width=(zoom*100)+'%';$('zoomText').textContent=Math.round(zoom*100)+'%';
- const svg=$('sheetCanvas').querySelector('svg');if(svg&&!$('sheetLayer').classList.contains('hide'))dynLayer(svg,{dots:setItems.filter(it=>kindOf(it)==='point'),labels:setItems});
+ const svg=$('sheetCanvas').querySelector('svg');if(svg&&!$('sheetLayer').classList.contains('hide'))dynLayer(svg,sheetOpts());
 }
+function sheetOpts(){return {dots:setItems.filter(it=>kindOf(it)==='point'),labels:setItems}}
 $('showAnswer').onclick=openSheet;
 $('closeSheet').onclick=()=>{$('sheetLayer').classList.add('hide');$('showAnswer').focus()};
 $('zoomIn').onclick=()=>{zoom+=.5;updateZoom()};
@@ -850,7 +1018,11 @@ const getJSON=async path=>{const res=await fetch(DATA+path);if(!res.ok)throw Err
    for(let i=1;i<64;i++)for(let j=1;j<64;j++){const gx=b.left+(b.right-b.left)*i/64,gy=b.top+(b.bottom-b.top)*j/64;if(inside(sh,gx,gy)){const d=edgeDist(sh,gx,gy);if(d>bd){bd=d;best=[gx,gy]}}}
    if(best)[x,y]=best}
   else if(sh&&!sh.rings.length&&sh.lines.length){const l=sh.lines.reduce((a,b)=>b.length>a.length?b:a);[x,y]=l[Math.floor(l.length/2)]}
-  p.x=x;p.y=y;const s=p.matrixTransform(svg.getScreenCTM());return {x:s.x,y:s.y}},mode:()=>currentMode,answer:()=>{const t=current();return t.kind==='fact'?t.q.answer:t.item.naam},queueLength:()=>queue.length,index:()=>index,state:()=>({index,attempts,nearMiss,done,mode:currentMode,revisit:Boolean(current()?.revisit),assisted:[...assisted],wrong:[...wrong],feedback:$('feedback').textContent,log:submitLog.slice(-6)})};
+  p.x=x;p.y=y;const s=p.matrixTransform(svg.getScreenCTM());return {x:s.x,y:s.y}},mode:()=>currentMode,answer:()=>{const t=current();return t.kind==='fact'?t.q.answer:t.item.naam},queueLength:()=>queue.length,index:()=>index,later:()=>laterUrl,state:()=>({steun,studyCount,mastery:[...masteryMap.values()].map(m=>({id:m.task.id,streak:m.streak,done:m.done})),sure:sureLog.slice(),index,attempts,nearMiss,done,mode:currentMode,revisit:Boolean(current()?.revisit),assisted:[...assisted],wrong:[...wrong],feedback:$('feedback').textContent,log:submitLog.slice(-6)})};
+ if(onlyIds.length){
+  const pool=onlyIds.map(id=>setItems.find(it=>it.id===id)||facts.find(q=>q.id===id)).filter(Boolean);
+  if(pool.length){start(pool);return}
+ }
  start();
 })().catch(err=>{
  console.error(err);$('loading').innerHTML='<span class="sticker">OEPS!</span><h2>Kaart even kwijt!</h2><p>De kaart of vragenbank kon niet laden. Probeer het opnieuw.</p><p><button class="big" onclick="location.reload()">OPNIEUW ↗</button></p>';

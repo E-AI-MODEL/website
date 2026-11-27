@@ -314,10 +314,16 @@
     "scripts/test_science_mobile_aim.mjs": [
       "physics"
     ],
+    "scripts/test_topo_fixed_screen.mjs": [
+      "topo"
+    ],
     "scripts/test_topo_mobile.mjs": [
       "topo"
     ],
     "scripts/test_topo_vo.mjs": [
+      "topo"
+    ],
+    "scripts/topo_vast_scherm.py": [
       "topo"
     ],
     "scripts/topo_vo/*": [
