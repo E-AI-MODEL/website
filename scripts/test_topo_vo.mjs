@@ -230,6 +230,10 @@ try {
       const later = await hook(page, 'later');
       assert.match(later, /items=/, 'Herhaallink ontbreekt');
       await page.screenshot({path: `${out}/strategie-zeker-eind.png`});
+      // Herhaallink met veel plekken (grote set, 'Alles'): niets valt weg.
+      const big = sets.find(x => x.id === 'h-c2-aarde').items.slice(0, 120);
+      const many = await open('/topo/vo/spel/?set=h-c2-aarde&mode=mix&questions=all&test=1&items=' + big.join(','));
+      try { assert.ok(await many.evaluate(() => window.__topoVo.queueLength()) > 80, 'Herhaallink kapt af na 80 plekken'); } finally { await many.close(); }
       // Herhaallink: precies de gemiste plekken.
       const ids = new URL(later).searchParams.get('items').split(',');
       const again = await open(new URL(later).pathname + new URL(later).search + '&test=1');

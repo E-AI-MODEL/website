@@ -20,7 +20,8 @@ const challenge=params.get('level')==='challenge';
 const adaptive=params.get('level')==='adaptief';
 const studyFirst=params.get('kijk')==='1';
 const askSure=params.get('zeker')==='1';
-const onlyIds=(params.get('items')||'').split(',').map(x=>x.trim()).filter(Boolean).slice(0,80);
+// Herhaallink: alle gemiste plekken (ook bij een grote set); 1000 is alleen een noodrem tegen kapotte links.
+const onlyIds=[...new Set((params.get('items')||'').split(',').map(x=>x.trim()).filter(Boolean))].slice(0,1000);
 const KAART={
  wereld:{bbox:[-180,-60,180,84],lat0:0,basis:'kaarten/wereld-landen.geojson',landen:true,
   ankers:[['Atlantische Oceaan',-38,22],['Grote Oceaan',-140,8],['Indische Oceaan',78,-22],['Noordelijke IJszee',10,79]]},

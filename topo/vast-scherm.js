@@ -80,13 +80,14 @@
  function updateControls(frame){
   if(!frame)return;
   const box=frame.__vastZoom,svg=svgIn(frame);if(!box)return;
-  if(!svg){box.hidden=true;return}
-  box.hidden=false;
+  const set=(el,prop,val)=>{if(el[prop]!==val)el[prop]=val};
+  if(!svg){set(box,'hidden',true);return}
+  set(box,'hidden',false);
   const st=state(svg),vb=parse(svg.getAttribute('viewBox')),{minW,maxW}=limits(svg,st);
-  box.querySelector('.vast-zoom-in').disabled=vb[2]<=minW*1.01;
-  box.querySelector('.vast-zoom-out').disabled=vb[2]>=maxW*.99;
+  set(box.querySelector('.vast-zoom-in'),'disabled',vb[2]<=minW*1.01);
+  set(box.querySelector('.vast-zoom-out'),'disabled',vb[2]>=maxW*.99);
   const away=Math.abs(vb[2]-st.home[2])>st.home[2]*.01||Math.abs(vb[0]-st.home[0])>st.home[2]*.01||Math.abs(vb[1]-st.home[1])>st.home[3]*.01;
-  box.querySelector('.vast-zoom-home').hidden=!away;
+  set(box.querySelector('.vast-zoom-home'),'hidden',!away);
  }
  function attachPan(frame,host){
   if(!frame||frame.__vastPan)return;
@@ -167,12 +168,13 @@
   const r=svg.getBoundingClientRect();if(!r.width)return;
   const k=geom(svg).k;
   const shown=[];
+  // Alleen schrijven wat echt verandert: zo blijft een kaart in rust ook echt stil.
+  const put=(t,prop,val)=>{if(t.style[prop]!==val)t.style[prop]=val};
   for(const t of texts){
-   t.style.visibility='';
    if(t.dataset.fs==null){const cs=getComputedStyle(t);t.dataset.fs=parseFloat(cs.fontSize)||16;t.dataset.sw=parseFloat(cs.strokeWidth)||0}
    const fs=+t.dataset.fs;
-   if(fs*k<MIN_LABEL){const n=MIN_LABEL/k;t.style.fontSize=n+'px';if(+t.dataset.sw)t.style.strokeWidth=(+t.dataset.sw*n/fs)+'px'}
-   else{t.style.fontSize='';t.style.strokeWidth=''}
+   if(fs*k<MIN_LABEL){const n=Math.round(MIN_LABEL/k*100)/100;put(t,'fontSize',n+'px');if(+t.dataset.sw)put(t,'strokeWidth',Math.round(+t.dataset.sw*n/fs*100)/100+'px')}
+   else{put(t,'fontSize','');put(t,'strokeWidth','')}
    if(t.style.display==='none'||getComputedStyle(t).display==='none')continue;
    shown.push(t);
   }
@@ -184,10 +186,10 @@
    const b=t.getBoundingClientRect();
    if(!b.width)continue;
    const out=b.right<r.left||b.left>r.right||b.bottom<r.top||b.top>r.bottom;
-   if(out)continue;
+   if(out){put(t,'visibility','');continue}
    const hit=placed.some(p=>b.left<p.right+3&&b.right>p.left-3&&b.top<p.bottom+2&&b.bottom>p.top-2);
-   if(hit){t.style.visibility='hidden';continue}
-   placed.push(b);
+   put(t,'visibility',hit?'hidden':'');
+   if(!hit)placed.push(b);
   }
  }
 
@@ -304,7 +306,7 @@
  function pageGlossary(map,foot){
   const dl=map.querySelector('.glossary');
   let pager=foot.querySelector('.vast-pager');
-  if(!dl){if(pager)pager.hidden=true;return}
+  if(!dl){if(pager&&!pager.hidden)pager.hidden=true;return}
   const pairs=[];let cur=null;
   for(const n of dl.children){if(n.tagName==='DT'){cur=[n];pairs.push(cur)}else if(cur)cur.push(n)}
   if(!pager){
