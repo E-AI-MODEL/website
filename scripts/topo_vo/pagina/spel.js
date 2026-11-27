@@ -392,7 +392,7 @@ function draw(){
   $('next').classList.remove('hide');
   focusMap();requestAnimationFrame(focusMap);return;
  }
- if(studyCount&&index===studyCount)setTimeout(()=>{if(index===studyCount&&!done)feedback('Nu jij! Weet je nog waar ze liggen?','neutral')},0);
+ if(studyCount&&index===studyCount)feedback('Nu jij! Weet je nog waar ze liggen?','neutral');
  if(currentMode==='quiz'){
   const q=task.q;$('map').innerHTML='';
   setKind(q.category==='begrippen'?'BEGRIP':'ZONDER KAART');

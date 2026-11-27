@@ -133,7 +133,7 @@ async function runScreen(vp, id, url, act, mapQuestion) {
       report.push({vp: vp.name, id, fails, map: m.map});
       if (fails.length || process.env.TOPO_SHOTS) await page.screenshot({path: `${out}/${vp.name}-${id}.png`});
     } catch (e) {
-      report.push({vp: vp.name, id, fails: ['scenario faalde: ' + e.message.split('\n')[0]]});
+      report.push({vp: vp.name, id, fails: ['scenario faalde: ' + e.message.split('\n').slice(0, 3).join(' ')]});
     } finally {
       await page.close();
     }
@@ -196,7 +196,9 @@ async function interaction(id, url, prep) {
     await page.locator('.game-board .vast-zoom-in').click(); await page.waitForTimeout(200);
     const zin = await vb();
     if (!(zin[2] < home[2] * 0.8)) fails.push('+ zoomt niet in');
-    await page.locator('.game-board .vast-zoom-out').click(); await page.locator('.game-board .vast-zoom-out').click(); await page.waitForTimeout(200);
+    // − mag uitgeschakeld raken zodra de hele kaart in beeld is.
+    for (let k = 0; k < 2; k++) { const out = page.locator('.game-board .vast-zoom-out'); if (await out.isEnabled()) await out.click(); }
+    await page.waitForTimeout(200);
     const zout = await vb();
     if (!(zout[2] > zin[2])) fails.push('− zoomt niet uit');
     // Stippen blijven even groot op het scherm (VO tekent ze opnieuw).
@@ -215,7 +217,7 @@ async function interaction(id, url, prep) {
       if (!(s1[2] < s0[2] * 0.8)) fails.push('spiekkaart + zoomt niet in');
       await page.locator('#closeSheet').click();
     }
-  } catch (e) { fails.push('scenario faalde: ' + e.message.split('\n')[0]); }
+  } catch (e) { fails.push('scenario faalde: ' + e.message.split('\n').slice(0, 3).join(' ')); }
   if (errors.length) fails.push('scriptfout: ' + errors[0]);
   report.push({vp: 'interactie', id, fails});
   await page.close();

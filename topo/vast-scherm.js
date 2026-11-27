@@ -309,8 +309,14 @@
    panel.classList.remove('vast-dicht','vast-kort','vast-kolommen');
    panel.querySelectorAll('.vast-pagina-weg').forEach(n=>n.classList.remove('vast-pagina-weg'));
    panel.querySelectorAll('.vast-pager').forEach(n=>n.hidden=true);
-   const doc=document.documentElement;
-   const over=()=>box.scrollHeight>box.clientHeight+1||panel.scrollHeight>panel.clientHeight+1||doc.scrollHeight>doc.clientHeight+1;
+   const doc=document.documentElement,bar=document.querySelector('.board .bottom');
+   // Meten met scrollhoogte én met de echte plek op het scherm (WebKit rekent scrollhoogte soms anders).
+   const lowest=()=>{let b=0;for(const n of panel.querySelectorAll(':scope>*,:scope>.group>*,.sheet-grid>*')){if(!n.getClientRects().length)continue;const r=n.getBoundingClientRect();if(r.height&&r.bottom>b)b=r.bottom}return b};
+   const over=()=>{
+    if(box.scrollHeight>box.clientHeight+1||panel.scrollHeight>panel.clientHeight+1||doc.scrollHeight>doc.clientHeight+1)return true;
+    const low=lowest(),limit=Math.min(box.getBoundingClientRect().bottom,bar?bar.getBoundingClientRect().top:Infinity,window.visualViewport?.height||innerHeight);
+    return low>limit+1;
+   };
    if(!over())return;
    panel.classList.add('vast-dicht');
    const groups=[...panel.querySelectorAll(':scope>.group')];

@@ -199,7 +199,7 @@ body.vast-instellingen{display:flex!important;flex-direction:column;min-height:0
 body.vast-instellingen>header{flex:none;padding-top:calc(env(safe-area-inset-top,0px) + 10px)!important;padding-bottom:8px!important}
 body.vast-instellingen .wrap{flex:1 1 0!important;min-height:0!important;display:flex!important;flex-direction:column;overflow:hidden!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px)!important}
 body.vast-instellingen .board{flex:1 1 0!important;min-height:0!important;display:flex!important;flex-direction:column;overflow:hidden!important}
-body.vast-instellingen .layout{flex:1 1 0!important;min-height:0!important;overflow:hidden!important}
+body.vast-instellingen .layout{flex:1 1 0!important;min-height:0!important;overflow:hidden!important;grid-template-rows:minmax(0,1fr)}
 body.vast-instellingen .layout>div:last-child{min-height:0!important;overflow:hidden!important;display:flex;flex-direction:column}
 body.vast-instellingen .panel{min-height:0!important;flex:1 1 auto;display:flex;flex-direction:column;overflow:hidden}
 body.vast-instellingen .panel[hidden]{display:none!important}
@@ -256,7 +256,7 @@ body.vast-instellingen .toplinks .plain{min-height:44px}
  body.vast-instellingen .intro{display:none!important}
  body.vast-instellingen>header{padding-top:calc(env(safe-area-inset-top,0px) + 5px)!important;padding-bottom:4px!important}
  body.vast-instellingen .board{padding-top:8px!important;padding-bottom:8px!important}
- body.vast-instellingen .layout{grid-template-columns:150px minmax(0,1fr)!important;display:grid!important}
+ body.vast-instellingen .layout{grid-template-columns:150px minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;display:grid!important}
  body.vast-instellingen .tabs{flex-direction:column!important;padding:0!important;gap:6px!important}
  body.vast-instellingen .tab{font-size:16px!important;padding:6px 10px!important;text-align:left!important}
  body.vast-instellingen .panel{border-top:0!important;border-left:2px dashed #bcc9c6!important;padding:0 0 0 14px!important}
@@ -269,3 +269,6 @@ body.vast-instellingen .toplinks .plain{min-height:44px}
  body.vast-instellingen>header .back{font-size:12px!important;padding:0 9px!important}
  body.vast-instellingen>header .toplinks .plain{font-size:12px!important;padding:0 6px!important}
 }
+
+/* startscherm PO: gekantelde naam blijft binnen beeld */
+body.home-fixed .top{padding-top:calc(env(safe-area-inset-top,0px) + 4px)!important}

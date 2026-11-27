@@ -199,7 +199,7 @@ try {
       for (let i = 0; i < 5; i++) await page.locator('#next').click();
       assert.notEqual(await page.locator('#kind').textContent(), 'KIJKRONDE');
       assert.equal(await page.locator('#progressText').textContent(), '1/5');
-      assert.match(await page.locator('#feedback').textContent(), /Nu jij/);
+      await page.waitForFunction(() => /Nu jij/.test(document.getElementById('feedback').textContent), null, {timeout: 3000});
       for (let i = 0; i < 5; i++) { await answerCorrect(page); await page.locator('#next').click(); }
       await page.locator('#end').waitFor({state: 'visible'});
       assert.match(await page.locator('#endText').textContent(), /^5 van 5 meteen goed/);
