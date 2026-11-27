@@ -75,7 +75,8 @@ def groups(en: bool):
         ('Onderzoek', [('Onderzoek en onderbouwing', '/nl/onderzoek/'), ('Bronnenregister', '/bronnen/'),
                         ('Onderzoek leermiddelen', '/nl/onderzoek/leermiddelen/')]),
         ('Artikelen', [('Artikelen en publicaties', '/nl/publicaties/'), ('Blog', '/nl/blog/'),
-                       ('De vraag die we vergeten', '/publicaties/de-vraag-die-we-vergeten/')]),
+                       ('De vraag die we vergeten', '/publicaties/de-vraag-die-we-vergeten/'),
+                       ('Wat dot-tie nou?', '/nl/blog/wat-dot-tie-nou/')]),
         ('Zelf aan de slag', [('Kies een vakgebied of hulpmiddel', '/nl/tools/')]),
         ('Over EAI', [('Over EAI', '/nl/over/'), ('Websitegebruik', '/nl/insights/')]),
     ]
