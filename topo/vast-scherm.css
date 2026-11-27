@@ -233,6 +233,13 @@ body.vast-instellingen .toplinks .plain{min-height:44px}
 .panel.vast-kort #setNote{display:none!important}
 .panel.vast-kolommen{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px;align-content:start}
 .panel.vast-kolommen>h2,.panel.vast-kolommen>.hint,.panel.vast-kolommen>.vast-pager,.panel.vast-kolommen>.area-note{grid-column:1/-1}
+.panel.vast-mini>h2{display:none!important}
+.panel.vast-mini .group{margin-bottom:6px!important}
+.panel.vast-mini .group h3{font-size:14px!important;margin:0 0 4px!important}
+.panel.vast-mini .controls{gap:5px!important}
+.panel.vast-mini .pill{font-size:12.5px!important;padding:3px 9px!important}
+.panel.vast-mini .zone{font-size:13px!important;padding:3px 9px!important}
+.panel.vast-mini .vast-pager{margin:4px 0 0!important}
 .vast-pagina-weg{display:none!important}
 .vast-pager{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 2px;flex:none}
 .vast-pager[hidden]{display:none!important}
@@ -263,6 +270,7 @@ body.vast-instellingen .toplinks .plain{min-height:44px}
  body.vast-instellingen .tab{font-size:16px!important;padding:6px 10px!important;text-align:left!important}
  body.vast-instellingen .panel{border-top:0!important;border-left:2px dashed #bcc9c6!important;padding:0 0 0 14px!important}
  body.vast-instellingen .bottom{padding-top:6px!important}
+ body.vast-instellingen .summary small{display:none!important}
 }
 @media (max-width:400px){
  body.vast-instellingen>header{padding-left:10px!important;padding-right:10px!important;gap:6px!important}

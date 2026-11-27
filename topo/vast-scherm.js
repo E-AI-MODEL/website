@@ -332,7 +332,7 @@
   const panel=[...box.querySelectorAll('.panel')].find(p=>!p.hidden);if(!panel)return;
   settingsBusy=true;
   try{
-   panel.classList.remove('vast-dicht','vast-kort','vast-kolommen');
+   panel.classList.remove('vast-dicht','vast-kort','vast-kolommen','vast-mini');
    panel.querySelectorAll('.vast-pagina-weg').forEach(n=>n.classList.remove('vast-pagina-weg'));
    panel.querySelectorAll('.vast-pager').forEach(n=>n.hidden=true);
    const doc=document.documentElement,bar=document.querySelector('.board .bottom');
@@ -356,6 +356,8 @@
    }
    if(over())panel.classList.add('vast-kort');
    if(over()&&groups.length>1)pageItems(panel,groups,over,true);
+   // Past zelfs één groep met bladerknoppen niet (lage, liggende schermen): nog compacter, dan opnieuw verdelen.
+   if(over()){panel.classList.add('vast-mini');groups.forEach(g=>g.classList.remove('vast-pagina-weg'));if(groups.length>1)pageItems(panel,groups,over,true)}
   }finally{settingsBusy=false}
  }
  function pagerFor(host,after,isGroups){
@@ -394,8 +396,35 @@
  }
  const scheduleSettings=raf(fitSettings);
 
+ // ---------------------------------------------------------------- kopregel en startscherm passen ook met brede lettertypes
+ function fitHeader(){
+  for(const h of document.querySelectorAll('body>header')){
+   if(!h.offsetWidth)continue;
+   const logo=h.querySelector('.logo'),links=[...h.querySelectorAll('.toplinks .plain,.toplinks .back,:scope>.back,:scope>.other')];
+   [logo,...links].forEach(n=>n&&setFs(n));
+   let guard=0;
+   while(h.scrollWidth>h.clientWidth+1&&guard++<14){
+    if(logo){const f=parseFloat(getComputedStyle(logo).fontSize);if(f>15)setFs(logo,f-1)}
+    for(const l of links){const f=parseFloat(getComputedStyle(l).fontSize);if(f>9.5)setFs(l,Math.max(9.5,f-.5))}
+   }
+  }
+ }
+ function fitHome(){
+  const home=$('home');if(!home||home.classList.contains('hide')||!document.body.classList.contains('home-fixed'))return;
+  const h1=home.querySelector('h1');if(!h1)return;
+  setFs(h1);
+  const over=()=>home.scrollHeight>home.clientHeight+1;
+  let f=parseFloat(getComputedStyle(h1).fontSize);
+  while(f>30&&over()){f-=3;setFs(h1,f)}
+ }
+ const scheduleChrome=raf(()=>{fitHeader();fitHome()});
+ window.addEventListener('resize',scheduleChrome);window.visualViewport?.addEventListener('resize',scheduleChrome);
+ document.fonts?.ready?.then(scheduleChrome);
+
  // ---------------------------------------------------------------- start
  function init(){
+  scheduleChrome();
+  new MutationObserver(scheduleChrome).observe(document.body,{attributes:true,attributeFilter:['class']});
   if(settingsBox()){
    document.body.classList.add('vast-instellingen');
    const box=settingsBox();

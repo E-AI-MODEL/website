@@ -1,6 +1,7 @@
 // Vaste-schermproef voor alle TOPO-pagina's (PO en VO): geen scroll, alles in beeld, kaart als hoofdvlak.
 // Gebruik: node scripts/test_topo_fixed_screen.mjs   (server op 127.0.0.1:8765 of TOPO_BASE)
 //          TOPO_ONLY=vo-choice,po-nl-point  draait alleen deze scenario's; TOPO_VP=360x640 alleen dit formaat.
+//          TOPO_FONT="DejaVu Sans" test met een breder lettertype.
 //          TOPO_SHOTS=1 bewaart van elk scenario een schermafbeelding (anders alleen bij fouten).
 import { chromium, webkit } from 'playwright';
 import { mkdirSync } from 'node:fs';
@@ -108,6 +109,8 @@ const report = [];
 const onlyVp = process.env.TOPO_VP ? new Set(process.env.TOPO_VP.split(',')) : null;
 async function runScreen(vp, id, url, act, mapQuestion) {
     const page = await browser.newPage({viewport: {width: vp.width, height: vp.height}, isMobile: Boolean(vp.phone), hasTouch: Boolean(vp.phone), deviceScaleFactor: 1});
+    // TOPO_FONT="DejaVu Sans" test met een breder lettertype (zoals in de CI-container).
+    if (process.env.TOPO_FONT) await page.addInitScript(f => document.addEventListener('DOMContentLoaded', () => { const st = document.createElement('style'); st.textContent = '*{font-family:"' + f + '",sans-serif!important}'; document.head.appendChild(st); }), process.env.TOPO_FONT);
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
     try {
