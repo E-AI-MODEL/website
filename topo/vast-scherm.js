@@ -57,9 +57,16 @@
   const f=st.full,cx=Math.max(f[0],Math.min(f[0]+f[2],x+w/2)),cy=Math.max(f[1],Math.min(f[1]+f[3],y+h/2));
   x=cx-w/2;y=cy-h/2;
   const vb=[x,y,w,h].map(v=>Math.round(v*100)/100).join(' ');
+  // Eigen beeld van de leerling onthouden (zoom t.o.v. het spelbeeld en het midden), zodat draaien het niet wist.
+  st.manual={zoom:st.home[2]/w,center:[x+w/2,y+h/2]};
   if(vb===svg.getAttribute('viewBox'))return;
   st.last=vb;svg.setAttribute('viewBox',vb);
   changed(svg);
+ }
+ function restoreManual(svg,st){
+  const m=st.manual;if(!m)return;
+  const w=st.home[2]/m.zoom,h=st.home[3]/m.zoom;
+  setView(svg,m.center[0]-w/2,m.center[1]-h/2,w,h);
  }
  function zoomBy(svg,factor,cx,cy){
   const g=geom(svg);
@@ -67,7 +74,7 @@
   const [px,py]=toSvg(g,cx,cy),f=1/factor;
   setView(svg,px-(px-g.x)*f,py-(py-g.y)*f,g.w*f,g.h*f);
  }
- function goHome(svg){const st=state(svg);const [x,y,w,h]=st.home;const vb=st.home.join(' ');st.last=vb;svg.setAttribute('viewBox',vb);changed(svg)}
+ function goHome(svg){const st=state(svg);st.manual=null;const [x,y,w,h]=st.home;const vb=st.home.join(' ');st.last=vb;svg.setAttribute('viewBox',vb);changed(svg)}
  const viewEvents=new WeakMap();
  function changed(svg){
   updateControls(svg.closest('.vast-pan'));
@@ -152,14 +159,20 @@
    const svg=svgIn(frame);if(!svg){updateControls(frame);return}
    const fresh=list.some(m=>m.type==='childList'&&[...m.addedNodes].some(n=>n===svg||n.contains?.(svg)));
    const st=views.get(svg),vb=svg.getAttribute('viewBox');
-   if(fresh||!st||vb!==st.last){const s2=state(svg);s2.engine=parse(vb);clearHud(frame,svg,s2.engine);if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(frame)}
+   if(fresh||!st||vb!==st.last){
+    const s2=state(svg),keep=!fresh&&s2.manual&&performance.now()-lastResize<600;
+    s2.engine=parse(vb);
+    if(keep){const nb=hudView(frame,s2.engine)||s2.engine;s2.home=nb;restoreManual(svg,s2)}
+    else{s2.manual=null;clearHud(frame,svg,s2.engine)}
+    if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(frame);
+   }
   }).observe(frame,{subtree:true,childList:true,attributes:true,attributeFilter:['viewBox']});
  }
  // De spelbalk ligt staand over de bovenkant van de kaart: schuif het beeld van het spel daaronder,
  // zodat geen plek onder Terug of de voortgang verdwijnt. (Liggend ligt de balk naast de kaart: niets te doen.)
- function clearHud(frame,svg,base){
-  const hud=frame.id==='map'?document.querySelector('#game .game-top'):null;if(!hud||!base)return;
-  const [x,y,w,h]=base;if(!(w>0&&h>0))return;
+ function hudView(frame,base){
+  const hud=frame.id==='map'?document.querySelector('#game .game-top'):null;if(!hud||!base)return null;
+  const [x,y,w,h]=base;if(!(w>0&&h>0))return null;
   const m=frame.getBoundingClientRect(),t=hud.getBoundingClientRect();
   const over=t.height&&!(t.bottom<=m.top||t.top>=m.bottom||t.right<=m.left||t.left>=m.right);
   const top=over?Math.min(m.height*.3,t.bottom-m.top+4):0;
@@ -169,6 +182,10 @@
    const W=m.width/k,H=m.height/k,cx=x+w/2;
    nb=[cx-W/2,y-top/k-((m.height-top)/k-h)/2,W,H].map(v=>Math.round(v*100)/100);
   }
+  return nb;
+ }
+ function clearHud(frame,svg,base){
+  const nb=hudView(frame,base);if(!nb)return;
   const vb=nb.join(' '),st=state(svg);
   st.home=nb;
   if(vb===svg.getAttribute('viewBox')){st.last=vb;return}
@@ -179,9 +196,13 @@
  function reclearHud(frame){
   const svg=svgIn(frame),st=svg&&views.get(svg);if(!st||!st.engine)return;
   const cur=svg.getAttribute('viewBox');if(cur!==st.last)return;
-  const v=parse(cur);if(v.some((n,i)=>Math.abs(n-st.home[i])>.5))return;
+  if(st.manual){const nb=hudView(frame,st.engine);if(nb){st.home=nb;restoreManual(svg,st)}return}
   clearHud(frame,svg,st.engine);
  }
+ // Een nieuw beeld van het spel vlak na een maatwijziging is opnieuw scherpstellen, geen nieuwe vraag.
+ let lastResize=0;
+ const markResize=()=>{lastResize=performance.now()};
+ window.addEventListener('resize',markResize,true);window.visualViewport?.addEventListener('resize',markResize);
  // Na slepen of knijpen geen antwoord-tik.
  window.addEventListener('click',e=>{
   if(performance.now()<suppressUntil&&e.target.closest?.('.vast-pan')){e.preventDefault();e.stopImmediatePropagation();suppressUntil=0}

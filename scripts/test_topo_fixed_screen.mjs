@@ -295,6 +295,35 @@ if (!only || only.has('interactie')) {
   report.push({vp: 'interactie', id: 'draaien-noord', fails});
   await page.close();
 }
+// Draaien met een eigen zoom: het spel stelt opnieuw scherp, maar jouw ingezoomde beeld blijft staan.
+for (const [id, url] of [['draaien-zoom-vo', '/topo/vo/spel/?set=ob2-landen-afrika&mode=point&questions=5'], ['draaien-zoom-nl', '/topo/nederland/?mode=point&questions=5']]) {
+  if (only && !only.has('interactie')) break;
+  const page = await browser.newPage({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, deviceScaleFactor: 1});
+  const fails = [];
+  try {
+    await page.goto(base + url, {waitUntil: 'domcontentloaded'});
+    await page.waitForFunction(() => document.getElementById('loading')?.classList.contains('hide'), null, {timeout: 15000});
+    await page.waitForTimeout(400);
+    const vb = () => page.evaluate(() => document.querySelector('#map svg').getAttribute('viewBox').split(' ').map(Number));
+    await page.locator('.game-board .vast-zoom-in').click(); await page.locator('.game-board .vast-zoom-in').click();
+    await page.waitForTimeout(200);
+    const before = await vb();
+    await page.setViewportSize({width: 844, height: 390});
+    await page.waitForTimeout(900);
+    const after = await vb();
+    const homeBtn = page.locator('.game-board .vast-zoom-home');
+    if (!(await homeBtn.isVisible())) fails.push('na draaien is het eigen zoombeeld weg');
+    else {
+      await homeBtn.click(); await page.waitForTimeout(200);
+      const home = await vb();
+      if (!(after[2] < home[2] * 0.7)) fails.push('na draaien niet meer ingezoomd (' + Math.round(after[2]) + ' t.o.v. ' + Math.round(home[2]) + ')');
+      const c0 = [before[0] + before[2] / 2, before[1] + before[3] / 2], c1 = [after[0] + after[2] / 2, after[1] + after[3] / 2];
+      if (Math.hypot(c0[0] - c1[0], c0[1] - c1[1]) > before[2] * 0.25) fails.push('na draaien is het midden van je beeld verschoven');
+    }
+  } catch (e) { fails.push('scenario faalde: ' + e.message.split('\n')[0]); }
+  report.push({vp: 'interactie', id, fails});
+  await page.close();
+}
 const ready2 = p => p.waitForFunction(() => document.getElementById('loading')?.classList.contains('hide'), null, {timeout: 15000});
 await interaction('po-north', '/topo/', async p => { await privacy(p); await p.locator('#start').click(); });
 await interaction('po-nl', '/topo/nederland/?mode=point&questions=5', ready2);
