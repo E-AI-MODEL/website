@@ -667,6 +667,19 @@
       "search_scope": "algemeen"
     },
     {
+      "id": "page:/nl/blog/wat-dot-tie-nou/",
+      "url": "/nl/blog/wat-dot-tie-nou/",
+      "file": "nl/blog/wat-dot-tie-nou/index.html",
+      "title": "Wat dot-tie nou?",
+      "kind": "publicatie",
+      "category": "Onderzoek & publicaties · Blog",
+      "review": "bron_vastgelegd",
+      "parent": "page:/nl/blog/",
+      "family": "publicaties",
+      "in_committed_sitemap": true,
+      "search_scope": "algemeen"
+    },
+    {
       "id": "page:/nl/blog/what-the-watermerk/",
       "url": "/nl/blog/what-the-watermerk/",
       "file": "nl/blog/what-the-watermerk/index.html",
