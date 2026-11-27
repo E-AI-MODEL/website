@@ -20,6 +20,8 @@ body.playing #game .game-grid{display:contents!important}
 /* Kopregel als spelbalk over de kaart. */
 body.playing #game .game-top{grid-area:1/1;align-self:start;z-index:6;display:flex!important;align-items:center;gap:6px;min-height:var(--vast-hud)!important;height:var(--vast-hud);margin:6px 6px 0!important;pointer-events:none}
 body.playing #game .game-top>*{pointer-events:auto}
+/* alleen Terug is een knop; voortgang, score, hint en melding laten tikken door naar de kaart */
+body.playing #game .game-top .progress-box,body.playing #game .game-top .level,body.playing #game .hint-chip,body.playing #game .game-board>.feedback{pointer-events:none!important}
 body.playing #game .back{display:inline-flex;align-items:center;min-height:var(--vast-hud);height:var(--vast-hud);padding:0 12px!important;font-size:13px!important;border-width:2px!important;border-radius:13px!important;background:#fff;box-shadow:0 3px 0 var(--ink)!important;white-space:nowrap}
 body.playing #game .progress-box{flex:1 1 auto;min-width:0;max-width:none!important;margin:0!important;height:var(--vast-hud);display:flex;flex-direction:column;justify-content:center;background:#fffffff0;border:2px solid var(--ink);border-radius:13px;padding:4px 9px;box-shadow:0 3px 0 var(--ink)}
 body.playing #game .progress-label{font-size:10px!important;line-height:1.15;margin:0 0 4px!important;gap:6px;min-width:0}

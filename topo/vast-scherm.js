@@ -152,8 +152,22 @@
    const svg=svgIn(frame);if(!svg){updateControls(frame);return}
    const fresh=list.some(m=>m.type==='childList'&&[...m.addedNodes].some(n=>n===svg||n.contains?.(svg)));
    const st=views.get(svg),vb=svg.getAttribute('viewBox');
-   if(fresh||!st||vb!==st.last){state(svg);if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(frame)}
+   if(fresh||!st||vb!==st.last){state(svg);clearHud(frame,svg);if(!svg.querySelector('.dyn'))fitLabels(svg);updateControls(frame)}
   }).observe(frame,{subtree:true,childList:true,attributes:true,attributeFilter:['viewBox']});
+ }
+ // De spelbalk ligt staand over de bovenkant van de kaart: schuif het beeld van het spel daaronder,
+ // zodat geen plek onder Terug of de voortgang verdwijnt. (Liggend ligt de balk naast de kaart: niets te doen.)
+ function clearHud(frame,svg){
+  const hud=frame.id==='map'?document.querySelector('#game .game-top'):null;if(!hud)return;
+  const m=frame.getBoundingClientRect(),t=hud.getBoundingClientRect();
+  if(!t.height||t.bottom<=m.top||t.top>=m.bottom||t.right<=m.left||t.left>=m.right)return;
+  const top=Math.min(m.height*.3,t.bottom-m.top+4);if(top<4||!m.height)return;
+  const [x,y,w,h]=parse(svg.getAttribute('viewBox'));if(!(w>0&&h>0))return;
+  const k=Math.min(m.width/w,(m.height-top)/h);
+  const W=m.width/k,H=m.height/k,cx=x+w/2;
+  const nb=[cx-W/2,y-top/k-((m.height-top)/k-h)/2,W,H].map(v=>Math.round(v*100)/100);
+  const vb=nb.join(' '),st=state(svg);
+  st.last=vb;st.home=nb;svg.setAttribute('viewBox',vb);changed(svg);
  }
  // Na slepen of knijpen geen antwoord-tik.
  window.addEventListener('click',e=>{

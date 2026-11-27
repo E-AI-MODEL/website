@@ -73,7 +73,10 @@ async function answerCorrect(page) {
   if (mode === 'point') {
     await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
     const p = await hook(page, 'targetScreen');
-    await page.mouse.click(p.x, p.y);
+    // Ligt de plek net onder een zoomknop, dan tikt een leerling na een veegje; de proef tikt dan direct op de kaart.
+    const free = await page.evaluate(({x, y}) => Boolean(document.elementFromPoint(x, y)?.closest('#map')), p);
+    if (free) await page.mouse.click(p.x, p.y);
+    else await page.evaluate(({x, y}) => document.querySelector('#map svg').dispatchEvent(new MouseEvent('click', {bubbles: true, clientX: x, clientY: y})), p);
   } else if (mode === 'choice' || mode === 'zoom' || mode === 'quiz') {
     await optionFor(page, answer).click();
   } else {
