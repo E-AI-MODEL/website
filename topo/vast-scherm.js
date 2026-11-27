@@ -454,8 +454,14 @@
   if(map){
    attachPan(map,map.closest('.game-board'));
    // Kaartvak van maat veranderd (andere vraagvorm, toetsenbord, draaien): laat het spel opnieuw scherpstellen.
-   let last='';const kick=raf(()=>window.dispatchEvent(new Event('resize')));
-   if(window.ResizeObserver)new ResizeObserver(([e])=>{const r=e.contentRect,key=Math.round(r.width)+'x'+Math.round(r.height);if(key===last)return;const first=!last;last=key;if(!first&&r.width&&r.height)kick()}).observe(map);
+   // Kleine verschillen (<2px) negeren en een reeks wijzigingen samenvoegen tot één seintje.
+   let last=null,timer=0;
+   if(window.ResizeObserver)new ResizeObserver(([e])=>{
+    const r=e.contentRect;if(!r.width||!r.height)return;
+    if(!last){last=[r.width,r.height];return}
+    if(Math.abs(r.width-last[0])<2&&Math.abs(r.height-last[1])<2)return;
+    last=[r.width,r.height];clearTimeout(timer);timer=setTimeout(()=>window.dispatchEvent(new Event('resize')),90);
+   }).observe(map);
   }
   setupSheet();
   const game=$('game');

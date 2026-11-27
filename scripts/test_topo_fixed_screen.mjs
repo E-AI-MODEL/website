@@ -134,7 +134,10 @@ async function runScreen(vp, id, url, act, mapQuestion) {
         else if (!vp.phone && m.map.area < 0.4) fails.push('kaart ' + Math.round(m.map.area * 100) + '% van het scherm (min 40%)');
       }
       // Rust: een scherm dat niets doet, mag niet blijven herberekenen (geen meet-lus).
-      const busy = await page.evaluate(() => new Promise(done => { let n = 0; const o = new MutationObserver(l => { n += l.length; }); o.observe(document.body, {subtree: true, childList: true, attributes: true, characterData: true}); setTimeout(() => { o.disconnect(); done(n); }, 800); }));
+      // Kort nawerken mag (WebKit legt soms later uit); pas als ook een tweede periode druk is, is het een lus.
+      const window8 = () => page.evaluate(() => new Promise(done => { let n = 0; const o = new MutationObserver(l => { n += l.length; }); o.observe(document.body, {subtree: true, childList: true, attributes: true, characterData: true}); setTimeout(() => { o.disconnect(); done(n); }, 800); }));
+      let busy = await window8();
+      if (busy > 12) busy = await window8();
       if (busy > 12) fails.push('scherm blijft herberekenen (' + busy + ' wijzigingen in 0,8 s)');
       if (errors.length) fails.push('scriptfout: ' + errors[0]);
       report.push({vp: vp.name, id, fails, map: m.map});
