@@ -12,6 +12,34 @@ from bs4 import BeautifulSoup, Comment
 from prepare_ui import STORY_PATHS, DASH_CARD_PATHS, LEGACY_HUB_REDIRECTS, canonical
 
 
+# Standalone EAIgit pages are not necessarily in the editorial UI manifest.
+# Include the original release-proof targets and the newer entry-point modules.
+EAIGIT_RELEASE_FILES = (
+    'tools/eaigit/index.html',
+    'tools/eaigit/hulp/index.html',
+    'tools/eaigit/prompts/index.html',
+    'tools/projecthulp/index.html',
+    'assets/eaigit/wizard.mjs',
+    'assets/eaigit/help-page.mjs',
+    'assets/eaigit/prompts-page.mjs',
+    'assets/projecthulp/analyse.mjs',
+    'assets/projecthulp/inhoudscontrole.mjs',
+    'assets/projecthulp/onderzoek-worker.mjs',
+    'assets/projecthulp/los-bestand.mjs',
+)
+
+
+def eaigit_release_hashes(root: Path) -> dict[str, str]:
+    expected = {}
+    for relative in EAIGIT_RELEASE_FILES:
+        local = root / relative
+        if not local.is_file() or not local.stat().st_size:
+            raise FileNotFoundError(f'EAIgit release file missing or empty: {relative}')
+        url = '/' + relative.removesuffix('index.html')
+        expected[url] = hashlib.sha256(local.read_bytes()).hexdigest()
+    return expected
+
+
 def assert_redirect_contract(path: str, soup: BeautifulSoup) -> None:
     target = LEGACY_HUB_REDIRECTS[path]
     link = soup.find('link', rel='canonical')
@@ -25,6 +53,8 @@ def assert_redirect_contract(path: str, soup: BeautifulSoup) -> None:
 def check(root: Path):
     manifest = json.loads((root / 'assets/ui-manifest.json').read_text())
     assert manifest['pages'], 'No pages were prepared'
+    # Refuse an incomplete release before publication, even for standalone tools.
+    eaigit_release_hashes(root)
     for name, info in manifest['assets'].items():
         data = (root / info['url'].lstrip('/')).read_bytes()
         assert hashlib.sha256(data).hexdigest() == info['sha256'], name
@@ -172,6 +202,7 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
     # Same UI assets can accompany changed page copy. Verify every generated
     # page's exact bytes, rather than a fixed sample or the UI version alone.
     expected_html = expected_pages(root, manifest)
+    expected_eaigit = eaigit_release_hashes(root)
     deadline = time.monotonic() + timeout
     while True:
         try:
@@ -230,6 +261,20 @@ def verify_live(base: str, manifest: dict, timeout: int, root: Path):
                         print(f'Cloudflare RUM injection verified without weakening HTML hash: {online_path}', flush=True)
                 else:
                     assert hashlib.sha256(remote).hexdigest() == expected, f'Tool content mismatch: {online_path}'
+            # Verify EAIgit from the same validated release, not repository sources.
+            # A prepared HTML route has already received the identical hash check.
+            for path, digest in expected_eaigit.items():
+                if path in expected_html:
+                    continue
+                data = get(path)
+                if path.endswith('/'):
+                    matched, edge_beacon = html_matches_release(data, digest)
+                    assert matched, f'EAIgit content mismatch: {path}'
+                    if edge_beacon:
+                        print(f'Cloudflare RUM injection verified without weakening HTML hash: {path}', flush=True)
+                else:
+                    assert hashlib.sha256(data).hexdigest() == digest, f'EAIgit content mismatch: {path}'
+            print(f'EAIgit LIVE verified: all {len(expected_eaigit)} required release files match', flush=True)
             for info in manifest['assets'].values():
                 assert hashlib.sha256(get(info['url'])).hexdigest() == info['sha256'], f'Asset mismatch: {info["url"]}'
             print(f'LIVE verified: all {len(expected_html)} prepared HTML files and all asset hashes match UI {manifest["version"]}')
