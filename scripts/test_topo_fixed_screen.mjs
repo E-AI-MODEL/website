@@ -232,6 +232,30 @@ async function interaction(id, url, prep) {
   report.push({vp: 'interactie', id, fails});
   await page.close();
 }
+// Afdrukken: de spiekkaart van Noord-Nederland komt helemaal op papier, met de antwoordenlijst.
+if (!only || only.has('interactie')) {
+  const page = await browser.newPage({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, deviceScaleFactor: 1});
+  const fails = [];
+  try {
+    await page.goto(base + '/topo/', {waitUntil: 'domcontentloaded'});
+    await privacy(page);
+    await page.locator('#openSheet').click();
+    await page.waitForTimeout(300);
+    await page.emulateMedia({media: 'print'});
+    const pr = await page.evaluate(() => {
+      const tags = document.getElementById('answerTags'), modal = document.querySelector('#sheetLayer .modal'), svg = document.querySelector('#sheetMap svg');
+      const vb = svg.viewBox.baseVal, r = svg.getBoundingClientRect();
+      return {tags: tags.getClientRects().length > 0 && tags.getBoundingClientRect().height > 20, clipped: modal.scrollHeight > modal.clientHeight + 2,
+        ratio: Math.abs(r.width / r.height - vb.width / vb.height) < 0.05, zoom: [...document.querySelectorAll('#sheetLayer .vast-zoom')].some(z => z.getClientRects().length)};
+    });
+    if (!pr.tags) fails.push('antwoordenlijst ontbreekt bij afdrukken');
+    if (pr.clipped) fails.push('spiekkaart wordt afgesneden bij afdrukken');
+    if (!pr.ratio) fails.push('kaart wordt bijgesneden bij afdrukken');
+    if (pr.zoom) fails.push('zoomknoppen staan op de afdruk');
+  } catch (e) { fails.push('scenario faalde: ' + e.message.split('\n')[0]); }
+  report.push({vp: 'interactie', id: 'afdrukken', fails});
+  await page.close();
+}
 const ready2 = p => p.waitForFunction(() => document.getElementById('loading')?.classList.contains('hide'), null, {timeout: 15000});
 await interaction('po-north', '/topo/', async p => { await privacy(p); await p.locator('#start').click(); });
 await interaction('po-nl', '/topo/nederland/?mode=point&questions=5', ready2);
