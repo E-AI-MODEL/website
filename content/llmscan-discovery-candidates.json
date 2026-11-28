@@ -1,0 +1,112 @@
+{
+  "scanned": "2026-11-28",
+  "window_start": "2026-11-21",
+  "review_required": true,
+  "items": [
+    {
+      "id": "arxiv:2611.34094",
+      "title": "Silent on Code? A Computing Lens on Generative AI Guidance at Canadian Polytechnics and Research Universities",
+      "authors": [
+        "Marco Ho",
+        "Michael Pin-Chuan Lin",
+        "Rishva Riteshkumar Amin",
+        "Daniel Chang",
+        "Jeeho Ryoo"
+      ],
+      "date": "2026-11-25",
+      "source_url": "https://arxiv.org/abs/2611.34094v1",
+      "source": "arXiv",
+      "status": "kandidaat - niet inhoudelijk beoordeeld"
+    },
+    {
+      "id": "arxiv:2611.32266",
+      "title": "Unjamming Deferrals: Supporting Students Through JAMN Bot, a Mobile RAG-Grounded Policy Assistant",
+      "authors": [
+        "Mark Farinas",
+        "Alesandra Garcia",
+        "Maria Reyes",
+        "Jethro Nueva",
+        "Nawaf Qureshi",
+        "Mahmoud Elsaadany"
+      ],
+      "date": "2026-11-24",
+      "source_url": "https://arxiv.org/abs/2611.32266v1",
+      "source": "arXiv",
+      "status": "kandidaat - niet inhoudelijk beoordeeld"
+    },
+    {
+      "id": "arxiv:2611.32538",
+      "title": "Advanced Synthetic Image Detection Using Hybrid Feature Extraction",
+      "authors": [
+        "Ameya Uppina",
+        "S Navaneetha Krishnan",
+        "Nikhil N Iyer",
+        "Joe Dhanith P R"
+      ],
+      "date": "2026-11-24",
+      "source_url": "https://arxiv.org/abs/2611.32538v1",
+      "source": "arXiv",
+      "status": "kandidaat - niet inhoudelijk beoordeeld"
+    },
+    {
+      "id": "arxiv:2611.31797",
+      "title": "A Generative AI Agent to Emulate Interactive Human-driven Vehicles for Automated Driving Testing in Urban Areas",
+      "authors": [
+        "Jia Hu",
+        "Changjian Yu",
+        "Panqu Wang",
+        "Jaehyun So",
+        "Yang Chang",
+        "Xuerun Yan"
+      ],
+      "date": "2026-11-24",
+      "source_url": "https://arxiv.org/abs/2611.31797v1",
+      "source": "arXiv",
+      "status": "kandidaat - niet inhoudelijk beoordeeld"
+    },
+    {
+      "id": "arxiv:2611.31573",
+      "title": "The Paradox of Agency-Preserving AI: Negotiating Learner Agency in Layered Human-AI Interactions",
+      "authors": [
+        "Yueling Fan",
+        "Jacqueline Wong",
+        "Olov Engwall",
+        "Olga Viberg"
+      ],
+      "date": "2026-11-23",
+      "source_url": "https://arxiv.org/abs/2611.31573v1",
+      "source": "arXiv",
+      "status": "kandidaat - niet inhoudelijk beoordeeld"
+    },
+    {
+      "id": "arxiv:2611.29151",
+      "title": "Medical Specialty Prediction from Bangla Patient Narratives: A Comparative Study of ML, DL, Transformers, and LLMs",
+      "authors": [
+        "Tasnin Tabassum Ali",
+        "Faisal Ahmed",
+        "Muhammad Anwarul Azim"
+      ],
+      "date": "2026-11-22",
+      "source_url": "https://arxiv.org/abs/2611.29151v1",
+      "source": "arXiv",
+      "status": "kandidaat - niet inhoudelijk beoordeeld"
+    },
+    {
+      "id": "arxiv:2611.28951",
+      "title": "AI-generated support, worked examples, and script-based learning in undergraduate physics: A comparative study",
+      "authors": [
+        "Larissa Hahn",
+        "Marie Aylin Falkenberg",
+        "Marten Hogelücht",
+        "Pascal Klein"
+      ],
+      "date": "2026-11-21",
+      "source_url": "https://arxiv.org/abs/2611.28951v1",
+      "source": "arXiv",
+      "status": "kandidaat - niet inhoudelijk beoordeeld"
+    }
+  ],
+  "source_errors": [
+    "crossref: HTTPError: HTTP Error 429: Too Many Requests"
+  ]
+}
